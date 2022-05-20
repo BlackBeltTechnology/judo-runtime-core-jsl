@@ -61,19 +61,6 @@
         </pluginManagement>
     </build>
 
-
-	<dependencyManagement>
-		<dependencies>
-	        <dependency>
-	            <groupId>hu.blackbelt.judo.runtime</groupId>
-	            <artifactId>judo-runtime-core-dependencies</artifactId>
-				<type>pom</type>
-				<scope>import</scope>
-				<version>${project.version}</version>
-	        </dependency>
-		</dependencies>
-	</dependencyManagement>
-
     <dependencies>
         <dependency>
             <groupId>javax.validation</groupId>
@@ -90,6 +77,20 @@
             <artifactId>mapper-api</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>hu.blackbelt.judo.runtime</groupId>
+            <artifactId>judo-runtime-core-bootstrap</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>hu.blackbelt.judo.tatami</groupId>
+            <artifactId>judo-tatami-jsl-jsl2psm</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>hu.blackbelt.judo.tatami</groupId>
+            <artifactId>judo-tatami-jsl-workflow</artifactId>
+        </dependency>
 
     </dependencies>
 </project>

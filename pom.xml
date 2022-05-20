@@ -40,8 +40,10 @@
 
         <epsilon-runtime-version>1.4.0.20220316_214617_dcae201c_develop</epsilon-runtime-version>
         <judo-tatami-core-version>1.1.0.20220405_161751_7fec76d0_develop</judo-tatami-core-version>
-        <judo-runtime-core-version>1.0.0.20220519_233248_92c0690d_feature_JNG_3748_CleanupCores</judo-runtime-core-version>
+        <judo-tatami-jsl-version>1.1.0.20220520_161538_3d94e6d5_feature_JNG_3768_NamespaceFixes</judo-tatami-jsl-version>
         <judo-tatami-version>1.1.0.20220405_164003_ca74107c_develop</judo-tatami-version>
+ 
+       <judo-runtime-core-version>1.0.0-SNAPSHOT</judo-runtime-core-version>
 
         <!-- Code Quality-->
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -269,6 +271,20 @@
 					<type>pom</type>
 					<scope>import</scope>
 	            </dependency>
+
+
+		        <dependency>
+		            <groupId>hu.blackbelt.judo.tatami</groupId>
+		            <artifactId>judo-tatami-jsl-jsl2psm</artifactId>
+					<version>${judo-tatami-jsl-version}</version>
+		        </dependency>
+
+		        <dependency>
+		            <groupId>hu.blackbelt.judo.tatami</groupId>
+		            <artifactId>judo-tatami-jsl-workflow</artifactId>
+					<version>${judo-tatami-jsl-version}</version>
+		        </dependency>
+
 		</dependencies>
 	</dependencyManagement>
 
