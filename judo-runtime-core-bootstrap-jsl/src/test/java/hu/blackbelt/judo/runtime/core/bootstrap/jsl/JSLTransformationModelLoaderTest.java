@@ -26,8 +26,10 @@ class JSLTransformationModelLoaderTest {
         TransformationContext context = JSLTransformationModelLoader.loadAndTransformJslModels("test2::SalesModel2", "hsqldb",
                 new File("src/test/resources/models/sample.jsl").toURI(),
                 new File("src/test/resources/models/sample2.jsl").toURI()
-                );
+        );
 
-        saveModels(context, new File("target/test-classes/loader-test"), ImmutableList.of("hsqldb"));
+        File target = new File("target/test-classes/loader-test");
+        target.mkdirs();
+        saveModels(context, target, ImmutableList.of("hsqldb"));
     }
 }
