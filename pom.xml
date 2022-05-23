@@ -37,7 +37,7 @@
             javax.resource;version="[1.6,2)"
         </osgi-transaction-import>
 
-        <epsilon-runtime-version>1.4.0.20220316_214617_dcae201c_develop</epsilon-runtime-version>
+        <epsilon-runtime-version>1.4.0.20220523_132344_09a0b54b_develop</epsilon-runtime-version>
         <judo-tatami-core-version>1.1.0.20220405_161751_7fec76d0_develop</judo-tatami-core-version>
         <judo-tatami-jsl-version>1.1.0.20220520_161538_3d94e6d5_feature_JNG_3768_NamespaceFixes</judo-tatami-jsl-version>
         <judo-tatami-version>1.1.0.20220405_164003_ca74107c_develop</judo-tatami-version>
