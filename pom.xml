@@ -42,7 +42,7 @@
         <judo-tatami-jsl-version>1.1.0.20220520_161538_3d94e6d5_feature_JNG_3768_NamespaceFixes</judo-tatami-jsl-version>
         <judo-tatami-version>1.1.0.20220405_164003_ca74107c_develop</judo-tatami-version>
 
-        <judo-runtime-core-version>1.0.0-SNAPSHOT</judo-runtime-core-version>
+        <judo-runtime-core-version>1.0.0.20220523_100529_58a129bd_develop</judo-runtime-core-version>
 
         <!-- Code Quality-->
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
