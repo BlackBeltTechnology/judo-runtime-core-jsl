@@ -1,0 +1,7 @@
+model test2::SalesModel2
+
+import test1::SalesModel as SalesModel1
+entity abstract Person {
+	field SalesModel1::String firstName
+}
+
