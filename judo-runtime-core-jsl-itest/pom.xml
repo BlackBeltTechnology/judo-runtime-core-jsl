@@ -33,10 +33,31 @@
                     <dialects>hsqldb</dialects>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.3.0</version>
+                <executions>
+                    <execution>
+                        <id>add-source</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>add-test-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${project.basedir}/target/model/sdk/SalesModel</source>
+                                <source>${project.basedir}/target/model/sdk/SalesModel2</source>
+                                <source>${project.basedir}/target/model/sdk/SalesModel3</source>
+                                <source>${project.basedir}/target/model/sdk/SalesModelContract</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
-
     </build>
-
 
     <dependencies>
         <dependency>
@@ -54,6 +75,19 @@
             <artifactId>mapper-api</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>hu.blackbelt.judo.meta</groupId>
+            <artifactId>hu.blackbelt.judo.meta.asm.model</artifactId>
+        </dependency>
 
+        <dependency>
+            <groupId>hu.blackbelt.judo</groupId>
+            <artifactId>judo-dispatcher-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>hu.blackbelt.judo</groupId>
+            <artifactId>judo-sdk-common</artifactId>
+        </dependency>
     </dependencies>
 </project>
