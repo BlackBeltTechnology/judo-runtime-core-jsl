@@ -29,6 +29,7 @@
                 </executions>
                 <configuration>
                     <sources>${basedir}/src/test/resources/model</sources>
+                    <sdkPackagePrefix>${groupId}</sdkPackagePrefix>
                     <dialects>hsqldb</dialects>
                 </configuration>
             </plugin>
