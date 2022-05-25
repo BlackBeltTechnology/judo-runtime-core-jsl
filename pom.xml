@@ -20,6 +20,8 @@
         <timestamp>${maven.build.timestamp}</timestamp>
         <maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
         <src.dir>src/main</src.dir>
+        <!--suppress UnresolvedMavenProperty -->
+        <logback-test-config>${maven.multiModuleProjectDirectory}/logback-test.xml</logback-test-config>
 
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
@@ -40,10 +42,10 @@
 
         <epsilon-runtime-version>1.4.0.20220523_132344_09a0b54b_develop</epsilon-runtime-version>
         <judo-tatami-core-version>1.1.0.20220405_161751_7fec76d0_develop</judo-tatami-core-version>
-        <judo-tatami-jsl-version>1.1.0-SNAPSHOT</judo-tatami-jsl-version>
-        <judo-tatami-version>1.1.0-SNAPSHOT</judo-tatami-version>
+        <judo-tatami-jsl-version>1.1.0.20220525_073228_907e1311_feature_JNG_3770_JSLBatchTransfromation</judo-tatami-jsl-version>
+        <judo-tatami-version>1.1.0.20220525_072125_768f90aa_feature_JNG_3770_JSLBatchTransfromation</judo-tatami-version>
 
-        <judo-runtime-core-version>1.0.0.20220523_100529_58a129bd_develop</judo-runtime-core-version>
+        <judo-runtime-core-version>1.0.0.20220525_074020_89c359f7_feature_JNG_3770_JSLBatchTransfromation</judo-runtime-core-version>
 
         <!-- Code Quality-->
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -144,6 +146,9 @@
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>${surefire-version}</version>
                     <configuration>
+                        <systemPropertyVariables>
+                            <logback.configurationFile>${logback-test-config}</logback.configurationFile>
+                        </systemPropertyVariables>
                         <argLine>
                             -Dfile.encoding=UTF-8
                             --add-opens java.base/java.lang=ALL-UNNAMED

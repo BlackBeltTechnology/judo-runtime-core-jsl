@@ -61,6 +61,21 @@
 
     <dependencies>
         <dependency>
+            <groupId>hu.blackbelt.judo.runtime</groupId>
+            <artifactId>judo-runtime-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>hu.blackbelt.judo.runtime</groupId>
+            <artifactId>judo-runtime-core-bootstrap-hsqldb</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>hu.blackbelt.judo.runtime</groupId>
+            <artifactId>judo-runtime-core-bootstrap-postgresql</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
         </dependency>
