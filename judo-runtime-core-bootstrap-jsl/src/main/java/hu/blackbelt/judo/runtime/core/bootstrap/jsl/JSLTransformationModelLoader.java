@@ -34,12 +34,12 @@ public class JSLTransformationModelLoader {
 			WorkReport workReport = defaultWorkflow.startDefaultWorkflow();
 			if (workReport.getStatus() == WorkStatus.FAILED) {
 				outputDirectory.mkdirs();
-				saveModels(defaultWorkflow.getTransformationContext(), outputDirectory, ImmutableList.of("hsqldb"));
+				saveModels(defaultWorkflow.getTransformationContext(), outputDirectory, ImmutableList.of(dialect));
 				throw new RuntimeException(workReport.toString(), workReport.getError());
 			}
 		} catch (Exception e) {
 			outputDirectory.mkdirs();
-			saveModels(defaultWorkflow.getTransformationContext(), outputDirectory, ImmutableList.of("hsqldb"));
+			saveModels(defaultWorkflow.getTransformationContext(), outputDirectory, ImmutableList.of(dialect));
 			throw e;
 		}
 

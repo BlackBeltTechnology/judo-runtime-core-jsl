@@ -2,8 +2,6 @@ package hu.blackbelt.judo.runtime.core.bootstrap.jsl;
 
 import com.google.common.collect.ImmutableList;
 import hu.blackbelt.judo.tatami.core.workflow.work.TransformationContext;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -11,14 +9,6 @@ import java.io.File;
 import static hu.blackbelt.judo.tatami.jsl.workflow.DefaultWorkflowSave.saveModels;
 
 class JSLTransformationModelLoaderTest {
-
-    @BeforeEach
-    void setUp() {
-    }
-
-    @AfterEach
-    void tearDown() {
-    }
 
     @Test
     void loadAndTransformJslModels() {
