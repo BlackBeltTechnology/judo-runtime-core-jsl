@@ -1,0 +1,7 @@
+model SalesModel2
+
+import SalesModel3
+entity abstract Person {
+	field SalesModel3::String firstName
+}
+
