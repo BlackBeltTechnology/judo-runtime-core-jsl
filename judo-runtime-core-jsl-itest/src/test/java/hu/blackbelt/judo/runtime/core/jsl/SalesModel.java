@@ -12,16 +12,12 @@ import hu.blackbelt.judo.runtime.core.jsl.itest.salesmodel.sdk.salesmodel.salesm
 import hu.blackbelt.judo.runtime.core.jsl.itest.salesmodel.sdk.salesmodel.salesmodel.SalesPerson;
 import hu.blackbelt.judo.sdk.query.StringFilter;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 @Slf4j
-class SalesModelTest {
+class SalesModel {
 
     Injector injector;
 
@@ -31,10 +27,9 @@ class SalesModelTest {
     @Inject
     Person.PersonDao personDao;
 
-    @BeforeEach
     void init() throws Exception {
         JudoModelHolder modelHolder = JudoModelHolder.
-                loadFromURL("SalesModel", new File(" /Users/robson/Project/judo-ng/runtime/judo-runtime-core-jsl/judo-runtime-core-jsl-itest/target/model").toURI(), new HsqldbDialect());
+                loadFromURL("SalesModel", new File("/Users/robson/Project/judo-ng/runtime/judo-runtime-core-jsl/judo-runtime-core-jsl-itest/target/model").toURI(), new HsqldbDialect());
 
         injector = Guice.createInjector(
                 JudoHsqldbModules.builder().build(),
@@ -43,29 +38,25 @@ class SalesModelTest {
 
     }
 
-    @Test
-    public void test() {
+    public void run() {
         SalesPerson createdSalesPerson = salesPersonDao.create(SalesPerson.builder()
                         .withFirstName("Test")
                         .withLastName("Elek")
                         .build());
 
-        assertEquals("Test", createdSalesPerson.getFirstName());
-        assertEquals("Elek", createdSalesPerson.getLastName());
-
         List<SalesPerson> personList = salesPersonDao.search()
                         .filterByFirstName(StringFilter.equalTo("Test"))
                 .execute();
-
-        assertEquals(1, personList.size());
 
         Person createdPerson = personDao.create(Person.builder()
                 .withFirstName("Masik")
                 .withLastName("Test")
                 .build());
+    }
 
-        assertEquals("Masik", createdPerson.getFirstName());
-        assertEquals("Test", createdPerson.getLastName());
-
+    public static void main(String[] args) throws Exception {
+        SalesModel salesModel = new SalesModel();
+        salesModel.init();
+        salesModel.run();
     }
 }

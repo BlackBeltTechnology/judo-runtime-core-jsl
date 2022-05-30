@@ -42,7 +42,7 @@
 
         <epsilon-runtime-version>1.4.0.20220523_132344_09a0b54b_develop</epsilon-runtime-version>
         <judo-tatami-core-version>1.1.0.20220405_161751_7fec76d0_develop</judo-tatami-core-version>
-        <judo-tatami-jsl-version>1.1.0.20220525_194441_0ae83a36_feature_JNG_3770_JSLBatchTransfromation</judo-tatami-jsl-version>
+        <judo-tatami-jsl-version>1.1.0-SNAPSHOT</judo-tatami-jsl-version>
         <judo-tatami-version>1.1.0.20220525_193227_ed2d97d3_feature_JNG_3770_JSLBatchTransfromation</judo-tatami-version>
 
         <judo-runtime-core-version>1.0.0.20220525_074020_89c359f7_feature_JNG_3770_JSLBatchTransfromation</judo-runtime-core-version>
