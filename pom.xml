@@ -45,7 +45,7 @@
         <judo-tatami-jsl-version>1.1.0-SNAPSHOT</judo-tatami-jsl-version>
         <judo-tatami-version>1.1.0.20220525_193227_ed2d97d3_feature_JNG_3770_JSLBatchTransfromation</judo-tatami-version>
 
-        <judo-runtime-core-version>1.0.0.20220525_074020_89c359f7_feature_JNG_3770_JSLBatchTransfromation</judo-runtime-core-version>
+        <judo-runtime-core-version>1.0.0-SNAPSHOT</judo-runtime-core-version>
 
         <!-- Code Quality-->
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -432,6 +432,7 @@
                 <module>judo-runtime-core-jsl</module>
                 <module>judo-runtime-core-bootstrap-jsl</module>
                 <module>judo-runtime-core-jsl-itest</module>
+                <module>judo-runtime-core-jsl-spring-itest</module>
             </modules>
         </profile>
         <profile>

@@ -4,7 +4,7 @@ import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import hu.blackbelt.judo.runtime.core.bootstrap.JudoDefaultModule;
-import hu.blackbelt.judo.runtime.core.bootstrap.JudoModelHolder;
+import hu.blackbelt.judo.runtime.core.bootstrap.JudoModelLoader;
 import hu.blackbelt.judo.runtime.core.bootstrap.dao.rdbms.hsqldb.JudoHsqldbModules;
 import hu.blackbelt.judo.runtime.core.dao.rdbms.hsqldb.HsqldbDialect;
 import hu.blackbelt.judo.runtime.core.jsl.itest.salesmodel.daoprovider.salesmodel.SalesModelDaoModules;
@@ -15,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -33,8 +32,8 @@ class SalesModelTest {
 
     @BeforeEach
     void init() throws Exception {
-        JudoModelHolder modelHolder = JudoModelHolder.
-                loadFromURL("SalesModel", new File(" /Users/robson/Project/judo-ng/runtime/judo-runtime-core-jsl/judo-runtime-core-jsl-itest/target/model").toURI(), new HsqldbDialect());
+        JudoModelLoader modelHolder = JudoModelLoader.
+                loadFromClassloader("SalesModel", SalesModelTest.class.getClassLoader(), new HsqldbDialect(), true);
 
         injector = Guice.createInjector(
                 JudoHsqldbModules.builder().build(),
