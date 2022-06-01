@@ -31,6 +31,7 @@
                     <destination>${basedir}/target/test-classes/model</destination>
                     <sources>${basedir}/src/test/resources/model</sources>
                     <sdkPackagePrefix>hu.blackbelt.judo.runtime.core.jsl.itest</sdkPackagePrefix>
+                    <generateSdkGuice>true</generateSdkGuice>
                 </configuration>
             </plugin>
 
