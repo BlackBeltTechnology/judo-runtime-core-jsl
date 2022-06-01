@@ -84,7 +84,7 @@
 	            <artifactId>judo-runtime-core-dependencies</artifactId>
 				<type>pom</type>
 				<scope>import</scope>
-				<version>${project.version}</version>
+				<version>${judo-runtime-core-version}</version>
 	        </dependency>
 
 			<dependency>
