@@ -10,7 +10,7 @@
     <artifactId>judo-runtime-core-jsl-itest</artifactId>
     <packaging>jar</packaging>
 
-    <name>JUDO Runtime Core :: JUDO Language Specification DSL Integrationtests</name>
+    <name>JUDO Runtime Core :: JUDO Language Specification DSL Integration Tests</name>
 
     <build>
         <plugins>
@@ -24,13 +24,14 @@
                         <goals>
                             <goal>parser-workflow</goal>
                         </goals>
-                        <phase>generate-test-sources</phase>
+                        <phase>generate-sources</phase>
                     </execution>
                 </executions>
                 <configuration>
+                    <destination>${basedir}/target/test-classes/model</destination>
                     <sources>${basedir}/src/test/resources/model</sources>
-                    <sdkPackagePrefix>${groupId}</sdkPackagePrefix>
-                    <dialects>hsqldb</dialects>
+                    <sdkPackagePrefix>hu.blackbelt.judo.runtime.core.jsl.itest</sdkPackagePrefix>
+                    <generateSdkGuice>true</generateSdkGuice>
                 </configuration>
             </plugin>
 
@@ -41,21 +42,36 @@
                 <executions>
                     <execution>
                         <id>add-source</id>
-                        <phase>generate-test-sources</phase>
+                        <phase>generate-sources</phase>
                         <goals>
-                            <goal>add-test-source</goal>
+                            <goal>add-source</goal>
                         </goals>
                         <configuration>
                             <sources>
-                                <source>${project.basedir}/target/model/sdk/SalesModel</source>
-                                <source>${project.basedir}/target/model/sdk/SalesModel2</source>
-                                <source>${project.basedir}/target/model/sdk/SalesModel3</source>
-                                <source>${project.basedir}/target/model/sdk/SalesModelContract</source>
+                                <source>${project.basedir}/target/test-classes/model/sdk/SalesModel</source>
+                                <source>${project.basedir}/target/test-classes/model/sdk/SalesModel2</source>
+                                <source>${project.basedir}/target/test-classes/model/sdk/SalesModel3</source>
+                                <source>${project.basedir}/target/test-classes/model/sdk/SalesModelContract</source>
                             </sources>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
+            <!--
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <configuration>
+                    <instructions>
+                        <Export-Package>hu.blackbelt.judo.runtime.core.jsl.itest.*;version=${project.version}</Export-Package>
+                        <Include-Resource>
+                            {maven-resources},
+                            model=target/model
+                        </Include-Resource>
+                    </instructions>
+                </configuration>
+            </plugin>
+            -->
         </plugins>
     </build>
 
