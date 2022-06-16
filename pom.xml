@@ -41,11 +41,11 @@
         </osgi-transaction-import>
 
         <epsilon-runtime-version>1.4.0.20220523_132344_09a0b54b_develop</epsilon-runtime-version>
-        <judo-tatami-core-version>1.1.0.20220405_161751_7fec76d0_develop</judo-tatami-core-version>
-        <judo-tatami-jsl-version>1.1.0.20220601_152926_1b031880_feature_JNG_3773_DcumentingAndSetDefaults</judo-tatami-jsl-version>
+        <judo-tatami-core-version>1.1.0-SNAPSHOT</judo-tatami-core-version>
+        <judo-tatami-jsl-version>1.1.0-SNAPSHOT</judo-tatami-jsl-version>
         <judo-tatami-version>1.1.0.20220601_150225_24698e7f_feature_JNG_3774_AddSpringSupport</judo-tatami-version>
 
-        <judo-runtime-core-version>1.0.0.20220601_154129_8e378380_feature_JNG_3774_AddSpringSupport</judo-runtime-core-version>
+        <judo-runtime-core-version>1.0.0-SNAPSHOT</judo-runtime-core-version>
 
         <!-- Code Quality-->
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -290,6 +290,14 @@
                 <version>${judo-tatami-jsl-version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>fr.jmini.ecentral</groupId>
+                <artifactId>eclipse-platform-dependencies</artifactId>
+                <version>4.22</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
@@ -328,6 +336,17 @@
             <groupId>hu.blackbelt.epsilon</groupId>
             <artifactId>epsilon-runtime-execution</artifactId>
             <version>${epsilon-runtime-version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.eclipse.platform</groupId>
+                    <artifactId>org.eclipse.equinox.preferences</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.platform</groupId>
+            <artifactId>org.eclipse.equinox.preferences</artifactId>
+            <version>3.10.1</version>
         </dependency>
 
         <dependency>
