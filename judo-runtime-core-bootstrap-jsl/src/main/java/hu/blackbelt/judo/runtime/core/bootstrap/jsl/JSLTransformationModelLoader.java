@@ -28,6 +28,7 @@ public class JSLTransformationModelLoader {
 				DefaultWorkflowSetupParameters.defaultWorkflowSetupParameters()
 						.jslModel(model)
 						.dialectList(ImmutableList.of(dialect))
+						.generateGuice(true)
 						.modelName(model.getName())
 		);
 		try {
