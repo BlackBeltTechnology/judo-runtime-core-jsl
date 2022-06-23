@@ -30,7 +30,7 @@
                 </executions>
                 <configuration>
                     <sources>${basedir}/src/main/resources/model</sources>
-                    <sdkPackagePrefix>${groupId}</sdkPackagePrefix>
+                    <sdkPackagePrefix>${project.groupId}</sdkPackagePrefix>
                     <dialects>hsqldb,postgresql</dialects>
                     <generateSdkSpring>true</generateSdkSpring>
                     <sdkPackagePrefix>hu.blackbelt.judo.runtime.core.jsl.spring.test</sdkPackagePrefix>
