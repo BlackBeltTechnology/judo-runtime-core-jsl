@@ -44,8 +44,6 @@
         <epsilon-runtime-version>1.4.0.20220616_093846_72efef9e_develop</epsilon-runtime-version>
         <judo-tatami-core-version>1.1.0.20220617_192057_67402cb8_develop</judo-tatami-core-version>
         <judo-tatami-jsl-version>1.1.0.20220621_092639_c2349e1e_feature_JNG_3777_ReplaceDerivedWithQuery</judo-tatami-jsl-version>
-        <judo-tatami-version>1.1.0.20220617_210814_75bad5f7_develop</judo-tatami-version>
-
         <judo-runtime-core-version>1.0.0.20220621_092721_449a576a_feature_JNG_3777_ReplaceDerivedWithQuery</judo-runtime-core-version>
 
         <!-- Code Quality-->
