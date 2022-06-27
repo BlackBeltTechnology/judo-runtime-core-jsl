@@ -280,6 +280,12 @@
             </dependency>
 
             <dependency>
+                <groupId>org.antlr</groupId>
+                <artifactId>antlr-runtime</artifactId>
+                <version>3.2</version>
+            </dependency>
+
+            <dependency>
                 <groupId>hu.blackbelt.judo.tatami</groupId>
                 <artifactId>judo-tatami-jsl-jsl2psm</artifactId>
                 <version>${judo-tatami-jsl-version}</version>
