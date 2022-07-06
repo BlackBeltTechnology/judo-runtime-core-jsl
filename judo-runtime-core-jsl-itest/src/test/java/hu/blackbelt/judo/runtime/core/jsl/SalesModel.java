@@ -13,6 +13,7 @@ import hu.blackbelt.judo.runtime.core.jsl.itest.salesmodel.sdk.salesmodel.salesm
 import hu.blackbelt.judo.sdk.query.StringFilter;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Collection;
 import java.util.List;
 
 @Slf4j
@@ -44,7 +45,7 @@ class SalesModel {
                         .withLastName("Elek")
                         .build());
 
-        List<SalesPerson> personList = salesPersonDao.search()
+        List<SalesPerson> personList = salesPersonDao.query()
                         .filterByFirstName(StringFilter.equalTo("Test"))
                 .execute();
 
