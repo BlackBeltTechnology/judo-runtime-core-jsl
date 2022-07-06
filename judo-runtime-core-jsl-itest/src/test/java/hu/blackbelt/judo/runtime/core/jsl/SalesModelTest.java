@@ -12,6 +12,7 @@ import hu.blackbelt.judo.runtime.core.jsl.itest.salesmodel.sdk.salesmodel.salesm
 import hu.blackbelt.judo.runtime.core.jsl.itest.salesmodel.sdk.salesmodel.salesmodel.Person;
 import hu.blackbelt.judo.runtime.core.jsl.itest.salesmodel.sdk.salesmodel.salesmodel.SalesPerson;
 import hu.blackbelt.judo.runtime.core.jsl.itest.salesmodel.sdk.salesmodel.salesmodel._SalesPerson_leadsOver_Parameters;
+import hu.blackbelt.judo.sdk.query.NumberFilter;
 import hu.blackbelt.judo.sdk.query.StringFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
@@ -87,10 +88,17 @@ class SalesModelTest {
         assertEquals("Test", leadDao.getSalesPerson(lead2).getFirstName());
 
         List<Lead> leadListOfQuery = salesPersonDao
-                .queryLeadsOver(createdSalesPerson)
-                .execute(_SalesPerson_leadsOver_Parameters.builder()
+                .queryLeadsOver(createdSalesPerson, _SalesPerson_leadsOver_Parameters.builder()
                         .withLimit(10)
-                        .build());
+                        .build())
+                .execute();
+        assertEquals(1, leadListOfQuery.size());
+        assertEquals(100, leadListOfQuery.get(0).getValue());
+
+        leadListOfQuery = salesPersonDao
+                .queryLeads(createdSalesPerson)
+                .filterByValue(NumberFilter.equalTo(100))
+                .execute();
         assertEquals(1, leadListOfQuery.size());
         assertEquals(100, leadListOfQuery.get(0).getValue());
 
