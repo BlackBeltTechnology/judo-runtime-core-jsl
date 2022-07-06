@@ -37,7 +37,7 @@ class JudoRuntimeCoreSpringApplicationTests {
 		assertEquals("Test", createdSalesPerson.getFirstName());
 		assertEquals("Elek", createdSalesPerson.getLastName());
 
-		List<SalesPerson> personList = salesPersonDao.search()
+		List<SalesPerson> personList = salesPersonDao.query()
 				.filterByFirstName(StringFilter.equalTo("Test"))
 				.execute();
 
@@ -65,7 +65,7 @@ class JudoRuntimeCoreSpringApplicationTests {
 		assertEquals("Test", leadDao.getSalesPerson(lead2).getFirstName());
 
 		List<Lead> leadListOfQuery = salesPersonDao
-				.searchLeadsOver(createdSalesPerson.get__identifier())
+				.queryLeadsOver(createdSalesPerson)
 				.execute(_SalesPerson_leadsOver_Parameters.builder()
 						.withLimit(10)
 						.build());

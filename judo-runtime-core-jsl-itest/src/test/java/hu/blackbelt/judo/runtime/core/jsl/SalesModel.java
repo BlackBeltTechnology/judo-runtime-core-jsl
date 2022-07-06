@@ -44,7 +44,7 @@ class SalesModel {
                         .withLastName("Elek")
                         .build());
 
-        List<SalesPerson> personList = salesPersonDao.search()
+        List<SalesPerson> personList = salesPersonDao.query()
                         .filterByFirstName(StringFilter.equalTo("Test"))
                 .execute();
 
