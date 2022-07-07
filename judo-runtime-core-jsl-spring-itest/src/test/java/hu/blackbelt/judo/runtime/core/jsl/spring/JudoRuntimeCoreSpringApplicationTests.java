@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -35,8 +36,8 @@ class JudoRuntimeCoreSpringApplicationTests {
 				.withLastName("Elek")
 				.build());
 
-		assertEquals("Test", createdSalesPerson.getFirstName());
-		assertEquals("Elek", createdSalesPerson.getLastName());
+		assertEquals(Optional.of("Test"), createdSalesPerson.getFirstName());
+		assertEquals(Optional.of("Elek"), createdSalesPerson.getLastName());
 
 		List<SalesPerson> personList = salesPersonDao.query()
 				.filterByFirstName(StringFilter.equalTo("Test"))
@@ -49,21 +50,21 @@ class JudoRuntimeCoreSpringApplicationTests {
 				.withLastName("Test")
 				.build());
 
-		assertEquals("Masik", createdPerson.getFirstName());
-		assertEquals("Test", createdPerson.getLastName());
+		assertEquals(Optional.of("Masik"), createdPerson.getFirstName());
+		assertEquals(Optional.of("Test"), createdPerson.getLastName());
 
 		Lead lead1 = leadDao.create(Lead.builder()
 				.withSalesPerson(createdSalesPerson)
 				.build());
-		assertEquals(100000, lead1.getValue());
-		assertEquals("Test", leadDao.getSalesPerson(lead1).getFirstName());
+		assertEquals(Optional.of(100000), lead1.getValue());
+		assertEquals(Optional.of("Test"), leadDao.getSalesPerson(lead1).getFirstName());
 
 		Lead lead2 = leadDao.create(Lead.builder()
 				.withSalesPerson(createdSalesPerson)
 				.withValue(9)
 				.build());
-		assertEquals(9, lead2.getValue());
-		assertEquals("Test", leadDao.getSalesPerson(lead2).getFirstName());
+		assertEquals(Optional.of(9), lead2.getValue());
+		assertEquals(Optional.of("Test"), leadDao.getSalesPerson(lead2).getFirstName());
 
 		List<Lead> leadListOfQuery = salesPersonDao
 				.queryLeadsOver(createdSalesPerson, _SalesPerson_leadsOver_Parameters.builder()
@@ -71,14 +72,14 @@ class JudoRuntimeCoreSpringApplicationTests {
 						.build())
 				.execute();
 		assertEquals(1, leadListOfQuery.size());
-		assertEquals(100000, leadListOfQuery.get(0).getValue());
+		assertEquals(Optional.of(100000), leadListOfQuery.get(0).getValue());
 
 		leadListOfQuery = salesPersonDao
 				.queryLeads(createdSalesPerson)
 				.filterByValue(NumberFilter.equalTo(100000))
 				.execute();
 		assertEquals(1, leadListOfQuery.size());
-		assertEquals(100000, leadListOfQuery.get(0).getValue());
+		assertEquals(Optional.of(100000), leadListOfQuery.get(0).getValue());
 
 	}
 
