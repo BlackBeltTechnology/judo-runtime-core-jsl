@@ -10,9 +10,9 @@ type timestamp Timestamp
 type binary Binary
 
 enum MyEnum {
-	A = 0
-	B = 1
-	C = 2
+	Atomic = 0
+	Bombastic = 1
+	Crazy = 2
 }
 
 entity abstract AbstractEntityOptionalFields {
@@ -63,5 +63,5 @@ entity EntityWithDefaults {
     field Date dateAttr = `2022-07-11`
     field Timestamp timestampAttr = `2022-07-11T19:09:33Z`
     // field Binary binaryAttr
-    field MyEnum enumAttr = MyEnum#B
+    // field MyEnum enumAttr = MyEnum#Bombastic JNG-3840
 }
