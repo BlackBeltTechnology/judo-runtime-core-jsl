@@ -80,8 +80,7 @@ public class PrimitivesTest {
                         .withTimestampAttr(OffsetDateTime.parse("2022-07-11T19:09:33Z"))
                 // FIXME JNG-3842
                 //      .withBinaryAttr(FileType.builder().fileName("test.txt").build())
-                // FIXME JNG-3844
-                //      .withEnumAttr(MyEnum.Bombastic)
+                      .withEnumAttr(MyEnum.Bombastic)
                         .build());
 
         List<MyEntityWithOptionalFields> list = myEntityWithOptionalFieldsDao.query().execute();
@@ -97,8 +96,7 @@ public class PrimitivesTest {
         assertEquals(Optional.of(OffsetDateTime.parse("2022-07-11T19:09:33Z")), myEntityWithOptionalFields.getTimestampAttr());
         // FIXME JNG-3842
         // assertEquals("test.txt", myEntityWithOptionalFields.getBinaryAttr().get().getFileName());
-        // FIXME JNG-3844
-        // assertEquals(Optional.of(MyEnum.Bombastic), myEntityWithOptionalFields.getEnumAttr());
+         assertEquals(Optional.of(MyEnum.Bombastic), myEntityWithOptionalFields.getEnumAttr());
     }
 
     @Test()
