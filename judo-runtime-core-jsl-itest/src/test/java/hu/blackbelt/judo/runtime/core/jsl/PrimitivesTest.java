@@ -3,7 +3,6 @@ package hu.blackbelt.judo.runtime.core.jsl;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import hu.blackbelt.judo.dispatcher.api.FileType;
 import hu.blackbelt.judo.runtime.core.bootstrap.JudoDefaultModule;
 import hu.blackbelt.judo.runtime.core.bootstrap.JudoModelLoader;
 import hu.blackbelt.judo.runtime.core.bootstrap.dao.rdbms.hsqldb.JudoHsqldbModules;
@@ -36,12 +35,12 @@ public class PrimitivesTest {
     EntityWithIdentifiers.EntityWithIdentifiersDao entityWithIdentifiersDao;
 
     @Inject
-    EntityWithDefaults.EntityWithDefaultsDao entityWithDefaultsDao;
+    EntityWithPrimitiveDefaults.EntityWithPrimitiveDefaultsDao entityWithPrimitiveDefaultsDao;
 
     @BeforeEach
     void init() throws Exception {
         JudoModelLoader modelHolder = JudoModelLoader.
-                loadFromClassloader("Primitives", SalesModelTest.class.getClassLoader(), new HsqldbDialect(), true);
+                loadFromClassloader("Primitives", PrimitivesTest.class.getClassLoader(), new HsqldbDialect(), true);
 
         injector = Guice.createInjector(
                 JudoHsqldbModules.builder().build(),
@@ -173,5 +172,25 @@ public class PrimitivesTest {
         // FIXME JNG-3842
         // assertEquals("test.txt", myEntityWithOptionalFields.getBinaryAttr().get().getFileName());
         assertEquals(Optional.of(MyEnum.Bombastic), myEntityWithOptionalFields.getEnumAttr());
+    }
+
+    @Test
+    public void testEntityCreationWithPrimitiveDefaults() {
+        EntityWithPrimitiveDefaults entityWithDefaults = entityWithPrimitiveDefaultsDao.create(EntityWithPrimitiveDefaults.builder().build());
+
+        List<EntityWithPrimitiveDefaults> list = entityWithPrimitiveDefaultsDao.query().execute();
+
+        assertEquals(1, list.size());
+
+        assertEquals(Optional.of(1), entityWithDefaults.getIntegerAttr());
+        assertEquals(Optional.of(2.34), entityWithDefaults.getScaledAttr());
+        assertEquals(Optional.of("test"), entityWithDefaults.getStringAttr());
+        assertEquals(Optional.of("+36-1-123-123"), entityWithDefaults.getRegexAttr());
+        assertEquals(Optional.of(true), entityWithDefaults.getBoolAttr());
+        assertEquals(Optional.of(LocalDate.of(2022, 7, 11)), entityWithDefaults.getDateAttr());
+        assertEquals(Optional.of(OffsetDateTime.parse("2022-07-11T19:09:33Z")), entityWithDefaults.getTimestampAttr());
+        // FIXME JNG-3842
+        // assertEquals("test.txt", myEntityWithOptionalFields.getBinaryAttr().get().getFileName());
+        assertEquals(Optional.of(MyEnum.Bombastic), entityWithDefaults.getEnumAttr());
     }
 }

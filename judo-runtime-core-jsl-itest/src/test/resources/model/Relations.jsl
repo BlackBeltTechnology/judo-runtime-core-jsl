@@ -1,4 +1,4 @@
-model Primitives
+model Relations
 
 type numeric Integer(precision = 9, scale = 0)
 type numeric Scaled(precision = 9, scale = 2)
@@ -63,7 +63,7 @@ entity EntityWithPrimitiveDefaults {
     field Date dateAttr = `2022-07-11`
     field Timestamp timestampAttr = `2022-07-11T19:09:33Z`
     // field Binary binaryAttr FIXME JNG-3842
-    field MyEnum enumAttr = MyEnum#Bombastic
+    // field MyEnum enumAttr = MyEnum#Bombastic FIXME JNG-3840
 }
 
 /*
