@@ -66,7 +66,7 @@ entity EntityWithPrimitiveDefaults {
     field Date dateAttr = `2022-07-11`
     field Timestamp timestampAttr = `2022-07-11T19:09:33Z`
     field Time timeAttr = `23:59:59`
-    // field Binary binaryAttr FIXME JNG-3842
+    field Binary binaryAttr // There is no syntax for define default value for binary
     field MyEnum enumAttr = MyEnum#Bombastic
 }
 
@@ -80,7 +80,7 @@ entity EntityWithPrimitiveDefaultExpressions {
     field Date dateAttr = Date!now()
     field Timestamp timestampAttr = Timestamp!now()
     field Time timeAttr = Time!of(23,59,59)
-    // field Binary binaryAttr FIXME JNG-3842
-    // field MyEnum enumAttr = MyEnum#Bombastic FIXME JNG-3840
+    field Binary binaryAttr
+    field MyEnum enumAttr = MyEnum#Bombastic
 }
 */

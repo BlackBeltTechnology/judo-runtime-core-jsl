@@ -3,6 +3,7 @@ package hu.blackbelt.judo.runtime.core.jsl;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import hu.blackbelt.judo.dispatcher.api.FileType;
 import hu.blackbelt.judo.runtime.core.bootstrap.JudoDefaultModule;
 import hu.blackbelt.judo.runtime.core.bootstrap.JudoModelLoader;
 import hu.blackbelt.judo.runtime.core.bootstrap.dao.rdbms.hsqldb.JudoHsqldbModules;
@@ -71,8 +72,7 @@ public class FiltersTest {
                 .withDateAttr(DATE_1)
                 .withTimestampAttr(TIMESTAMP_1)
                 .withTimeAttr(TIME_1)
-                // FIXME JNG-3842
-                //      .withBinaryAttr(FileType.builder().fileName("test.txt").build())
+                .withBinaryAttr(FileType.builder().fileName("test.txt").build())
                 .withEnumAttr(ENUM_1)
                 .build());
 
@@ -85,8 +85,7 @@ public class FiltersTest {
                 .withDateAttr(DATE_2)
                 .withTimestampAttr(TIMESTAMP_2)
                 .withTimeAttr(TIME_2)
-                // FIXME JNG-3842
-                //      .withBinaryAttr(FileType.builder().fileName("test.txt").build())
+                .withBinaryAttr(FileType.builder().fileName("test.txt").build())
                 .withEnumAttr(ENUM_2)
                 .build());
     }

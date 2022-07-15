@@ -3,6 +3,8 @@ package hu.blackbelt.judo.runtime.core.jsl;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import hu.blackbelt.judo.dispatcher.api.Dispatcher;
+import hu.blackbelt.judo.dispatcher.api.FileType;
 import hu.blackbelt.judo.runtime.core.bootstrap.JudoDefaultModule;
 import hu.blackbelt.judo.runtime.core.bootstrap.JudoModelLoader;
 import hu.blackbelt.judo.runtime.core.bootstrap.dao.rdbms.hsqldb.JudoHsqldbModules;
@@ -81,8 +83,8 @@ public class PrimitivesTest {
                         .withTimestampAttr(OffsetDateTime.parse("2022-07-11T19:09:33Z"))
                         .withTimeAttr(LocalTime.parse("23:59:59"))
                 // FIXME JNG-3842
-                //      .withBinaryAttr(FileType.builder().fileName("test.txt").build())
-                      .withEnumAttr(MyEnum.Bombastic)
+                        .withBinaryAttr(FileType.builder().fileName("test.txt").build())
+                        .withEnumAttr(MyEnum.Bombastic)
                         .build());
 
         List<MyEntityWithOptionalFields> list = myEntityWithOptionalFieldsDao.query().execute();
@@ -164,7 +166,7 @@ public class PrimitivesTest {
         myEntityWithOptionalFields.setTimestampAttr(OffsetDateTime.parse("2022-07-11T19:09:33Z"));
         myEntityWithOptionalFields.setTimeAttr(LocalTime.parse("23:59:59"));
         // FIXME JNG-3842
-        // myEntityWithOptionalFields.setBinaryAttr(FileType.builder().fileName("test.txt").build());
+        myEntityWithOptionalFields.setBinaryAttr(FileType.builder().fileName("test.txt").build());
         myEntityWithOptionalFields.setEnumAttr(MyEnum.Bombastic);
 
         myEntityWithOptionalFieldsDao.update(myEntityWithOptionalFields);
@@ -177,8 +179,7 @@ public class PrimitivesTest {
         assertEquals(Optional.of(LocalDate.of(2022, 7, 11)), myEntityWithOptionalFields.getDateAttr());
         assertEquals(Optional.of(OffsetDateTime.parse("2022-07-11T19:09:33Z")), myEntityWithOptionalFields.getTimestampAttr());
         assertEquals(Optional.of(LocalTime.parse("23:59:59")), myEntityWithOptionalFields.getTimeAttr());
-        // FIXME JNG-3842
-        // assertEquals("test.txt", myEntityWithOptionalFields.getBinaryAttr().get().getFileName());
+        assertEquals("test.txt", myEntityWithOptionalFields.getBinaryAttr().get().getFileName());
         assertEquals(Optional.of(MyEnum.Bombastic), myEntityWithOptionalFields.getEnumAttr());
     }
 
@@ -198,8 +199,8 @@ public class PrimitivesTest {
         assertEquals(Optional.of(LocalDate.of(2022, 7, 11)), entityWithDefaults.getDateAttr());
         assertEquals(Optional.of(OffsetDateTime.parse("2022-07-11T19:09:33Z")), entityWithDefaults.getTimestampAttr());
         assertEquals(Optional.of(LocalTime.parse("23:59:59")), entityWithDefaults.getTimeAttr());
-        // FIXME JNG-3842
-        // assertEquals("test.txt", myEntityWithOptionalFields.getBinaryAttr().get().getFileName());
+        // There is no way to define default value in JSL for binary
+        // assertEquals("test.txt", entityWithDefaults.getBinaryAttr().get().getFileName());
         assertEquals(Optional.of(MyEnum.Bombastic), entityWithDefaults.getEnumAttr());
     }
 }
