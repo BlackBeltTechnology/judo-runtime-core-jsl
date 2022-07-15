@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -63,6 +64,7 @@ public class PrimitivesTest {
         assertEquals(Optional.empty(), myEntityWithOptionalFields.getBoolAttr());
         assertEquals(Optional.empty(), myEntityWithOptionalFields.getDateAttr());
         assertEquals(Optional.empty(), myEntityWithOptionalFields.getTimestampAttr());
+        assertEquals(Optional.empty(), myEntityWithOptionalFields.getTimeAttr());
         assertEquals(Optional.empty(), myEntityWithOptionalFields.getBinaryAttr());
         assertEquals(Optional.empty(), myEntityWithOptionalFields.getEnumAttr());
     }
@@ -77,6 +79,7 @@ public class PrimitivesTest {
                         .withBoolAttr(true)
                         .withDateAttr(LocalDate.of(2022, 7, 11))
                         .withTimestampAttr(OffsetDateTime.parse("2022-07-11T19:09:33Z"))
+                        .withTimeAttr(LocalTime.parse("23:59:59"))
                 // FIXME JNG-3842
                 //      .withBinaryAttr(FileType.builder().fileName("test.txt").build())
                       .withEnumAttr(MyEnum.Bombastic)
@@ -93,6 +96,7 @@ public class PrimitivesTest {
         assertEquals(Optional.of(true), myEntityWithOptionalFields.getBoolAttr());
         assertEquals(Optional.of(LocalDate.of(2022, 7, 11)), myEntityWithOptionalFields.getDateAttr());
         assertEquals(Optional.of(OffsetDateTime.parse("2022-07-11T19:09:33Z")), myEntityWithOptionalFields.getTimestampAttr());
+        assertEquals(Optional.of(LocalTime.parse("23:59:59")), myEntityWithOptionalFields.getTimeAttr());
         // FIXME JNG-3842
         // assertEquals("test.txt", myEntityWithOptionalFields.getBinaryAttr().get().getFileName());
          assertEquals(Optional.of(MyEnum.Bombastic), myEntityWithOptionalFields.getEnumAttr());
@@ -113,6 +117,7 @@ public class PrimitivesTest {
         assertTrue(thrown.getMessage().contains("name: boolAttr"));
         assertTrue(thrown.getMessage().contains("name: dateAttr"));
         assertTrue(thrown.getMessage().contains("name: timestampAttr"));
+        assertTrue(thrown.getMessage().contains("name: timeAttr"));
         assertTrue(thrown.getMessage().contains("name: binaryAttr"));
         assertTrue(thrown.getMessage().contains("name: enumAttr"));
 
@@ -146,6 +151,7 @@ public class PrimitivesTest {
         assertEquals(Optional.empty(), myEntityWithOptionalFields.getBoolAttr());
         assertEquals(Optional.empty(), myEntityWithOptionalFields.getDateAttr());
         assertEquals(Optional.empty(), myEntityWithOptionalFields.getTimestampAttr());
+        assertEquals(Optional.empty(), myEntityWithOptionalFields.getTimeAttr());
         assertEquals(Optional.empty(), myEntityWithOptionalFields.getBinaryAttr());
         assertEquals(Optional.empty(), myEntityWithOptionalFields.getEnumAttr());
 
@@ -156,6 +162,7 @@ public class PrimitivesTest {
         myEntityWithOptionalFields.setBoolAttr(true);
         myEntityWithOptionalFields.setDateAttr(LocalDate.of(2022, 7, 11));
         myEntityWithOptionalFields.setTimestampAttr(OffsetDateTime.parse("2022-07-11T19:09:33Z"));
+        myEntityWithOptionalFields.setTimeAttr(LocalTime.parse("23:59:59"));
         // FIXME JNG-3842
         // myEntityWithOptionalFields.setBinaryAttr(FileType.builder().fileName("test.txt").build());
         myEntityWithOptionalFields.setEnumAttr(MyEnum.Bombastic);
@@ -169,6 +176,7 @@ public class PrimitivesTest {
         assertEquals(Optional.of(true), myEntityWithOptionalFields.getBoolAttr());
         assertEquals(Optional.of(LocalDate.of(2022, 7, 11)), myEntityWithOptionalFields.getDateAttr());
         assertEquals(Optional.of(OffsetDateTime.parse("2022-07-11T19:09:33Z")), myEntityWithOptionalFields.getTimestampAttr());
+        assertEquals(Optional.of(LocalTime.parse("23:59:59")), myEntityWithOptionalFields.getTimeAttr());
         // FIXME JNG-3842
         // assertEquals("test.txt", myEntityWithOptionalFields.getBinaryAttr().get().getFileName());
         assertEquals(Optional.of(MyEnum.Bombastic), myEntityWithOptionalFields.getEnumAttr());
@@ -189,6 +197,7 @@ public class PrimitivesTest {
         assertEquals(Optional.of(true), entityWithDefaults.getBoolAttr());
         assertEquals(Optional.of(LocalDate.of(2022, 7, 11)), entityWithDefaults.getDateAttr());
         assertEquals(Optional.of(OffsetDateTime.parse("2022-07-11T19:09:33Z")), entityWithDefaults.getTimestampAttr());
+        assertEquals(Optional.of(LocalTime.parse("23:59:59")), entityWithDefaults.getTimeAttr());
         // FIXME JNG-3842
         // assertEquals("test.txt", myEntityWithOptionalFields.getBinaryAttr().get().getFileName());
         assertEquals(Optional.of(MyEnum.Bombastic), entityWithDefaults.getEnumAttr());
