@@ -10,6 +10,7 @@ import hu.blackbelt.judo.runtime.core.dao.rdbms.hsqldb.HsqldbDialect;
 import hu.blackbelt.judo.runtime.core.jsl.itest.primitives.guice.primitives.PrimitivesDaoModules;
 import hu.blackbelt.judo.runtime.core.jsl.itest.primitives.sdk.primitives.primitives.MyEntityWithOptionalFields;
 import hu.blackbelt.judo.runtime.core.jsl.itest.primitives.sdk.primitives.primitives.MyEnum;
+import hu.blackbelt.judo.sdk.query.BooleanFilter;
 import hu.blackbelt.judo.sdk.query.NumberFilter;
 import hu.blackbelt.judo.sdk.query.StringFilter;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +34,23 @@ public class FiltersTest {
 
     MyEntityWithOptionalFields entity2;
 
+    static final int INTEGER_1 = 1;
+    static final int INTEGER_2 = 2;
+    static final double SCALED_1 = 1.23;
+    static final double SCALED_2 = 2.34;
+    static final String STRING_1 = "test";
+    static final String STRING_2 = "Another";
+    static final String REGEX_1 = "+36-1-123-123";
+    static final String REGEX_2 = "+36-80-111-222";
+    static final boolean BOOL_1 = true;
+    static final boolean BOOL_2 = false;
+    static final LocalDate DATE_1 = LocalDate.of(2022, 7, 11);
+    static final LocalDate DATE_2 = LocalDate.of(1999, 9, 19);
+    static final OffsetDateTime TIMESTAMP_1 = OffsetDateTime.parse("2022-07-11T19:09:33Z");
+    static final OffsetDateTime TIMESTAMP_2 = OffsetDateTime.parse("1999-09-19T09:09:09Z");
+    static final MyEnum ENUM_1 = MyEnum.Bombastic;
+    static final MyEnum ENUM_2 = MyEnum.Atomic;
+
     @BeforeEach
     void init() throws Exception {
         JudoModelLoader modelHolder = JudoModelLoader.
@@ -44,29 +62,29 @@ public class FiltersTest {
                 new JudoDefaultModule(this, modelHolder));
 
         entity1 = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
-                .withIntegerAttr(1)
-                .withScaledAttr(1.23)
-                .withStringAttr("test")
-                .withRegexAttr("+36-1-123-123")
-                .withBoolAttr(true)
-                .withDateAttr(LocalDate.of(2022, 7, 11))
-                .withTimestampAttr(OffsetDateTime.parse("2022-07-11T19:09:33Z"))
+                .withIntegerAttr(INTEGER_1)
+                .withScaledAttr(SCALED_1)
+                .withStringAttr(STRING_1)
+                .withRegexAttr(REGEX_1)
+                .withBoolAttr(BOOL_1)
+                .withDateAttr(DATE_1)
+                .withTimestampAttr(TIMESTAMP_1)
                 // FIXME JNG-3842
                 //      .withBinaryAttr(FileType.builder().fileName("test.txt").build())
-                .withEnumAttr(MyEnum.Bombastic)
+                .withEnumAttr(ENUM_1)
                 .build());
 
         entity2 = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
-                .withIntegerAttr(2)
-                .withScaledAttr(2.34)
-                .withStringAttr("Another")
-                .withRegexAttr("+36-80-111-222")
-                .withBoolAttr(false)
-                .withDateAttr(LocalDate.of(1999, 9, 19))
-                .withTimestampAttr(OffsetDateTime.parse("1999-09-19T09:09:09Z"))
+                .withIntegerAttr(INTEGER_2)
+                .withScaledAttr(SCALED_2)
+                .withStringAttr(STRING_2)
+                .withRegexAttr(REGEX_2)
+                .withBoolAttr(BOOL_2)
+                .withDateAttr(DATE_2)
+                .withTimestampAttr(TIMESTAMP_2)
                 // FIXME JNG-3842
                 //      .withBinaryAttr(FileType.builder().fileName("test.txt").build())
-                .withEnumAttr(MyEnum.Atomic)
+                .withEnumAttr(ENUM_2)
                 .build());
     }
 
@@ -78,9 +96,9 @@ public class FiltersTest {
 
         List<MyEntityWithOptionalFields> multiFilter = myEntityWithOptionalFieldsDao
                 .query()
-                .filterByIntegerAttr(NumberFilter.equalTo(1))
-                .filterByScaledAttr(NumberFilter.lessThan(2))
-                .filterByStringAttr(StringFilter.equalTo("test"))
+                .filterByIntegerAttr(NumberFilter.equalTo(INTEGER_1))
+                .filterByScaledAttr(NumberFilter.lessThan(INTEGER_2))
+                .filterByStringAttr(StringFilter.equalTo(STRING_1))
                 .execute();
 
         assertEquals(1, multiFilter.size());
@@ -104,7 +122,7 @@ public class FiltersTest {
 
         MyEntityWithOptionalFields equals = myEntityWithOptionalFieldsDao
                 .query()
-                .filterByIntegerAttr(NumberFilter.equalTo(1))
+                .filterByIntegerAttr(NumberFilter.equalTo(INTEGER_1))
                 .execute()
                 .get(0);
 
@@ -112,7 +130,7 @@ public class FiltersTest {
 
         MyEntityWithOptionalFields notEquals = myEntityWithOptionalFieldsDao
                 .query()
-                .filterByIntegerAttr(NumberFilter.notEqualTo(1))
+                .filterByIntegerAttr(NumberFilter.notEqualTo(INTEGER_1))
                 .execute()
                 .get(0);
 
@@ -120,14 +138,14 @@ public class FiltersTest {
 
         List<MyEntityWithOptionalFields> greaterOrEquals = myEntityWithOptionalFieldsDao
                 .query()
-                .filterByIntegerAttr(NumberFilter.greaterOrEqualThan(1))
+                .filterByIntegerAttr(NumberFilter.greaterOrEqualThan(INTEGER_1))
                 .execute();
 
         assertEquals(2, greaterOrEquals.size());
 
         MyEntityWithOptionalFields greater = myEntityWithOptionalFieldsDao
                 .query()
-                .filterByIntegerAttr(NumberFilter.greaterThan(1))
+                .filterByIntegerAttr(NumberFilter.greaterThan(INTEGER_1))
                 .execute()
                 .get(0);
 
@@ -135,14 +153,14 @@ public class FiltersTest {
 
         List<MyEntityWithOptionalFields> lessOrEqual = myEntityWithOptionalFieldsDao
                 .query()
-                .filterByIntegerAttr(NumberFilter.lessOrEqualThan(2))
+                .filterByIntegerAttr(NumberFilter.lessOrEqualThan(INTEGER_2))
                 .execute();
 
         assertEquals(2, lessOrEqual.size());
 
         MyEntityWithOptionalFields less = myEntityWithOptionalFieldsDao
                 .query()
-                .filterByIntegerAttr(NumberFilter.lessThan(2))
+                .filterByIntegerAttr(NumberFilter.lessThan(INTEGER_2))
                 .execute()
                 .get(0);
 
@@ -165,7 +183,7 @@ public class FiltersTest {
 
         MyEntityWithOptionalFields equals = myEntityWithOptionalFieldsDao
                 .query()
-                .filterByScaledAttr(NumberFilter.equalTo(1.23))
+                .filterByScaledAttr(NumberFilter.equalTo(SCALED_1))
                 .execute()
                 .get(0);
 
@@ -173,7 +191,7 @@ public class FiltersTest {
 
         MyEntityWithOptionalFields notEquals = myEntityWithOptionalFieldsDao
                 .query()
-                .filterByScaledAttr(NumberFilter.notEqualTo(1.23))
+                .filterByScaledAttr(NumberFilter.notEqualTo(SCALED_1))
                 .execute()
                 .get(0);
 
@@ -181,14 +199,14 @@ public class FiltersTest {
 
         List<MyEntityWithOptionalFields> greaterOrEquals = myEntityWithOptionalFieldsDao
                 .query()
-                .filterByScaledAttr(NumberFilter.greaterOrEqualThan(1.23))
+                .filterByScaledAttr(NumberFilter.greaterOrEqualThan(SCALED_1))
                 .execute();
 
         assertEquals(2, greaterOrEquals.size());
 
         MyEntityWithOptionalFields greater = myEntityWithOptionalFieldsDao
                 .query()
-                .filterByScaledAttr(NumberFilter.greaterThan(1.23))
+                .filterByScaledAttr(NumberFilter.greaterThan(SCALED_1))
                 .execute()
                 .get(0);
 
@@ -196,14 +214,14 @@ public class FiltersTest {
 
         List<MyEntityWithOptionalFields> lessOrEqual = myEntityWithOptionalFieldsDao
                 .query()
-                .filterByScaledAttr(NumberFilter.lessOrEqualThan(2.34))
+                .filterByScaledAttr(NumberFilter.lessOrEqualThan(SCALED_2))
                 .execute();
 
         assertEquals(2, lessOrEqual.size());
 
         MyEntityWithOptionalFields less = myEntityWithOptionalFieldsDao
                 .query()
-                .filterByScaledAttr(NumberFilter.lessThan(2.34))
+                .filterByScaledAttr(NumberFilter.lessThan(SCALED_2))
                 .execute()
                 .get(0);
 
@@ -226,7 +244,7 @@ public class FiltersTest {
 
         MyEntityWithOptionalFields equals = myEntityWithOptionalFieldsDao
                 .query()
-                .filterByStringAttr(StringFilter.equalTo("test"))
+                .filterByStringAttr(StringFilter.equalTo(STRING_1))
                 .execute()
                 .get(0);
 
@@ -234,7 +252,7 @@ public class FiltersTest {
 
         MyEntityWithOptionalFields notEquals = myEntityWithOptionalFieldsDao
                 .query()
-                .filterByStringAttr(StringFilter.notEqualTo("test"))
+                .filterByStringAttr(StringFilter.notEqualTo(STRING_1))
                 .execute()
                 .get(0);
 
@@ -242,7 +260,7 @@ public class FiltersTest {
 
         List<MyEntityWithOptionalFields> iLike = myEntityWithOptionalFieldsDao
                 .query()
-                .filterByStringAttr(StringFilter.ilike("TEST"))
+                .filterByStringAttr(StringFilter.ilike(STRING_1.toUpperCase()))
                 .execute();
 
         assertEquals(1, iLike.size());
@@ -250,7 +268,7 @@ public class FiltersTest {
 
         List<MyEntityWithOptionalFields> like = myEntityWithOptionalFieldsDao
                 .query()
-                .filterByStringAttr(StringFilter.like("test"))
+                .filterByStringAttr(StringFilter.like(STRING_1))
                 .execute();
 
         assertEquals(1, like.size());
@@ -258,30 +276,61 @@ public class FiltersTest {
 
         List<MyEntityWithOptionalFields> lessThan = myEntityWithOptionalFieldsDao
                 .query()
-                .filterByStringAttr(StringFilter.lessThan("test"))
+                .filterByStringAttr(StringFilter.lessThan(STRING_1))
                 .execute();
 
         assertEquals(entity2.get__identifier(), lessThan.get(0).get__identifier());
 
         List<MyEntityWithOptionalFields> greaterThan = myEntityWithOptionalFieldsDao
                 .query()
-                .filterByStringAttr(StringFilter.greaterThan("Another"))
+                .filterByStringAttr(StringFilter.greaterThan(STRING_2))
                 .execute();
 
         assertEquals(entity1.get__identifier(), greaterThan.get(0).get__identifier());
 
         List<MyEntityWithOptionalFields> greaterOrEqualThan = myEntityWithOptionalFieldsDao
                 .query()
-                .filterByStringAttr(StringFilter.greaterOrEqualThan("Another"))
+                .filterByStringAttr(StringFilter.greaterOrEqualThan(STRING_2))
                 .execute();
 
         assertEquals(2, greaterOrEqualThan.size());
 
         List<MyEntityWithOptionalFields> lessOrEqualThan = myEntityWithOptionalFieldsDao
                 .query()
-                .filterByStringAttr(StringFilter.lessOrEqualThan("test"))
+                .filterByStringAttr(StringFilter.lessOrEqualThan(STRING_1))
                 .execute();
 
         assertEquals(2, lessOrEqualThan.size());
+    }
+
+    @Test
+    public void testBooleanFilter() {
+        List<MyEntityWithOptionalFields> list = myEntityWithOptionalFieldsDao.query().execute();
+
+        assertEquals(2, list.size());
+
+        MyEntityWithOptionalFields filteredByString = myEntityWithOptionalFieldsDao
+                .query()
+                .filterBy("this.boolAttr == true")
+                .execute()
+                .get(0);
+
+        assertEquals(entity1.get__identifier(), filteredByString.get__identifier());
+
+        MyEntityWithOptionalFields isTrue = myEntityWithOptionalFieldsDao
+                .query()
+                .filterByBoolAttr(BooleanFilter.isTrue())
+                .execute()
+                .get(0);
+
+        assertEquals(entity1.get__identifier(), isTrue.get__identifier());
+
+        MyEntityWithOptionalFields isFalse = myEntityWithOptionalFieldsDao
+                .query()
+                .filterByBoolAttr(BooleanFilter.isFalse())
+                .execute()
+                .get(0);
+
+        assertEquals(entity2.get__identifier(), isFalse.get__identifier());
     }
 }
