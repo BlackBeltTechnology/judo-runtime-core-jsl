@@ -11,6 +11,7 @@ import hu.blackbelt.judo.runtime.core.jsl.itest.primitives.guice.primitives.Prim
 import hu.blackbelt.judo.runtime.core.jsl.itest.primitives.sdk.primitives.primitives.MyEntityWithOptionalFields;
 import hu.blackbelt.judo.runtime.core.jsl.itest.primitives.sdk.primitives.primitives.MyEnum;
 import hu.blackbelt.judo.sdk.query.BooleanFilter;
+import hu.blackbelt.judo.sdk.query.DateFilter;
 import hu.blackbelt.judo.sdk.query.NumberFilter;
 import hu.blackbelt.judo.sdk.query.StringFilter;
 import lombok.extern.slf4j.Slf4j;
@@ -332,5 +333,56 @@ public class FiltersTest {
                 .get(0);
 
         assertEquals(entity2.get__identifier(), isFalse.get__identifier());
+    }
+
+    @Test
+    public void testDateFilter() {
+        List<MyEntityWithOptionalFields> list = myEntityWithOptionalFieldsDao.query().execute();
+
+        assertEquals(2, list.size());
+
+        MyEntityWithOptionalFields equalTo = myEntityWithOptionalFieldsDao
+                .query()
+                .filterByDateAttr(DateFilter.equalTo(DATE_1))
+                .execute()
+                .get(0);
+
+        assertEquals(entity1.get__identifier(), equalTo.get__identifier());
+
+        MyEntityWithOptionalFields notEqualTo = myEntityWithOptionalFieldsDao
+                .query()
+                .filterByDateAttr(DateFilter.notEqualTo(DATE_1))
+                .execute()
+                .get(0);
+
+        assertEquals(entity2.get__identifier(), notEqualTo.get__identifier());
+
+        List<MyEntityWithOptionalFields> greaterOrEqual = myEntityWithOptionalFieldsDao
+                .query()
+                .filterByDateAttr(DateFilter.greaterOrEqualThan(DATE_2))
+                .execute();
+
+        assertEquals(2, greaterOrEqual.size());
+
+        List<MyEntityWithOptionalFields> lessOrEqual = myEntityWithOptionalFieldsDao
+                .query()
+                .filterByDateAttr(DateFilter.lessOrEqualThan(DATE_1))
+                .execute();
+
+        assertEquals(2, lessOrEqual.size());
+
+        List<MyEntityWithOptionalFields> greaterThan = myEntityWithOptionalFieldsDao
+                .query()
+                .filterByDateAttr(DateFilter.greaterThan(DATE_2))
+                .execute();
+
+        assertEquals(1, greaterThan.size());
+
+        List<MyEntityWithOptionalFields> lessThan = myEntityWithOptionalFieldsDao
+                .query()
+                .filterByDateAttr(DateFilter.lessThan(DATE_1))
+                .execute();
+
+        assertEquals(1, lessThan.size());
     }
 }
