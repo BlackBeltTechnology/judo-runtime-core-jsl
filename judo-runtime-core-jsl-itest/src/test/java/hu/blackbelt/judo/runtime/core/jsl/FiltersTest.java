@@ -489,4 +489,27 @@ public class FiltersTest {
 
         assertEquals(1, lessThan.size());
     }
+
+    @Test
+    public void testEnumFilter() {
+        List<MyEntityWithOptionalFields> list = myEntityWithOptionalFieldsDao.query().execute();
+
+        assertEquals(2, list.size());
+
+        MyEntityWithOptionalFields equalTo = myEntityWithOptionalFieldsDao
+                .query()
+                .filterByEnumAttr(EnumerationFilter.equalTo(MyEnum.Bombastic))
+                .execute()
+                .get(0);
+
+        assertEquals(entity1.get__identifier(), equalTo.get__identifier());
+
+        MyEntityWithOptionalFields notEqualTo = myEntityWithOptionalFieldsDao
+                .query()
+                .filterByEnumAttr(EnumerationFilter.notEqualTo(MyEnum.Bombastic))
+                .execute()
+                .get(0);
+
+        assertEquals(entity2.get__identifier(), notEqualTo.get__identifier());
+    }
 }
