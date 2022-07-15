@@ -138,12 +138,12 @@ public class QueryTest {
     }
 
     private void assertOrderByDescending(MyEntityWithOptionalFields.Attribute attribute, MyEntityWithOptionalFields firstEntity) {
-        MyEntityWithOptionalFields orderBy = myEntityWithOptionalFieldsDao
+        MyEntityWithOptionalFields orderByDescending = myEntityWithOptionalFieldsDao
                 .query()
                 .orderByDescending(attribute)
                 .execute()
                 .get(0);
 
-        assertEquals(firstEntity.get__identifier(), orderBy.get__identifier());
+        assertEquals(firstEntity.get__identifier(), orderByDescending.get__identifier());
     }
 }
