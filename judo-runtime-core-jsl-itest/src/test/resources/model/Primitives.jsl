@@ -11,17 +11,17 @@ type time Time
 type binary Binary
 
 enum MyEnum {
-	Atomic = 0
-	Bombastic = 1
-	Crazy = 2
+    Atomic = 0
+    Bombastic = 1
+    Crazy = 2
 }
 
 entity abstract AbstractEntityOptionalFields {
     field Integer integerAttr
     field Scaled scaledAttr
-	field String stringAttr
-	field PhoneNumber regexAttr
-	field Boolean boolAttr
+    field String stringAttr
+    field PhoneNumber regexAttr
+    field Boolean boolAttr
     field Date dateAttr
     field Timestamp timestampAttr
     field Time timeAttr
@@ -35,9 +35,9 @@ entity MyEntityWithOptionalFields extends AbstractEntityOptionalFields {
 entity EntityRequiredFields {
     field required Integer integerAttr
     field required Scaled scaledAttr
-	field required String stringAttr
-	field required PhoneNumber regexAttr
-	field required Boolean boolAttr
+    field required String stringAttr
+    field required PhoneNumber regexAttr
+    field required Boolean boolAttr
     field required Date dateAttr
     field required Timestamp timestampAttr
     field required Time timeAttr
@@ -60,9 +60,9 @@ entity EntityWithIdentifiers {
 entity EntityWithPrimitiveDefaults {
     field Integer integerAttr = 1
     field Scaled scaledAttr = 2.34
-	field String stringAttr = "test"
-	field PhoneNumber regexAttr = "+36-1-123-123"
-	field Boolean boolAttr = true
+    field String stringAttr = "test"
+    field PhoneNumber regexAttr = "+36-1-123-123"
+    field Boolean boolAttr = true
     field Date dateAttr = `2022-07-11`
     field Timestamp timestampAttr = `2022-07-11T19:09:33Z`
     field Time timeAttr = `23:59:59`
