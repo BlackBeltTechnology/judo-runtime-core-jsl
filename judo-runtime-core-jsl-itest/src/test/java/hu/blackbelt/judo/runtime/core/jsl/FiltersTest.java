@@ -10,15 +10,13 @@ import hu.blackbelt.judo.runtime.core.dao.rdbms.hsqldb.HsqldbDialect;
 import hu.blackbelt.judo.runtime.core.jsl.itest.primitives.guice.primitives.PrimitivesDaoModules;
 import hu.blackbelt.judo.runtime.core.jsl.itest.primitives.sdk.primitives.primitives.MyEntityWithOptionalFields;
 import hu.blackbelt.judo.runtime.core.jsl.itest.primitives.sdk.primitives.primitives.MyEnum;
-import hu.blackbelt.judo.sdk.query.BooleanFilter;
-import hu.blackbelt.judo.sdk.query.DateFilter;
-import hu.blackbelt.judo.sdk.query.NumberFilter;
-import hu.blackbelt.judo.sdk.query.StringFilter;
+import hu.blackbelt.judo.sdk.query.*;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -49,6 +47,8 @@ public class FiltersTest {
     static final LocalDate DATE_2 = LocalDate.of(1999, 9, 19);
     static final OffsetDateTime TIMESTAMP_1 = OffsetDateTime.parse("2022-07-11T19:09:33Z");
     static final OffsetDateTime TIMESTAMP_2 = OffsetDateTime.parse("1999-09-19T09:09:09Z");
+    static final LocalTime TIME_1 = LocalTime.parse("23:59:59");
+    static final LocalTime TIME_2 = LocalTime.parse("12:34:56");
     static final MyEnum ENUM_1 = MyEnum.Bombastic;
     static final MyEnum ENUM_2 = MyEnum.Atomic;
 
@@ -70,6 +70,7 @@ public class FiltersTest {
                 .withBoolAttr(BOOL_1)
                 .withDateAttr(DATE_1)
                 .withTimestampAttr(TIMESTAMP_1)
+                .withTimeAttr(TIME_1)
                 // FIXME JNG-3842
                 //      .withBinaryAttr(FileType.builder().fileName("test.txt").build())
                 .withEnumAttr(ENUM_1)
@@ -83,6 +84,7 @@ public class FiltersTest {
                 .withBoolAttr(BOOL_2)
                 .withDateAttr(DATE_2)
                 .withTimestampAttr(TIMESTAMP_2)
+                .withTimeAttr(TIME_2)
                 // FIXME JNG-3842
                 //      .withBinaryAttr(FileType.builder().fileName("test.txt").build())
                 .withEnumAttr(ENUM_2)
@@ -381,6 +383,57 @@ public class FiltersTest {
         List<MyEntityWithOptionalFields> lessThan = myEntityWithOptionalFieldsDao
                 .query()
                 .filterByDateAttr(DateFilter.lessThan(DATE_1))
+                .execute();
+
+        assertEquals(1, lessThan.size());
+    }
+
+    @Test
+    public void testTimestampFilter() {
+        List<MyEntityWithOptionalFields> list = myEntityWithOptionalFieldsDao.query().execute();
+
+        assertEquals(2, list.size());
+
+        MyEntityWithOptionalFields equalTo = myEntityWithOptionalFieldsDao
+                .query()
+                .filterByTimestampAttr(TimestampFilter.equalTo(TIMESTAMP_1))
+                .execute()
+                .get(0);
+
+        assertEquals(entity1.get__identifier(), equalTo.get__identifier());
+
+        MyEntityWithOptionalFields notEqualTo = myEntityWithOptionalFieldsDao
+                .query()
+                .filterByTimestampAttr(TimestampFilter.notEqualTo(TIMESTAMP_1))
+                .execute()
+                .get(0);
+
+        assertEquals(entity2.get__identifier(), notEqualTo.get__identifier());
+
+        List<MyEntityWithOptionalFields> greaterOrEqual = myEntityWithOptionalFieldsDao
+                .query()
+                .filterByTimestampAttr(TimestampFilter.greaterOrEqualThan(TIMESTAMP_2))
+                .execute();
+
+        assertEquals(2, greaterOrEqual.size());
+
+        List<MyEntityWithOptionalFields> lessOrEqual = myEntityWithOptionalFieldsDao
+                .query()
+                .filterByTimestampAttr(TimestampFilter.lessOrEqualThan(TIMESTAMP_1))
+                .execute();
+
+        assertEquals(2, lessOrEqual.size());
+
+        List<MyEntityWithOptionalFields> greaterThan = myEntityWithOptionalFieldsDao
+                .query()
+                .filterByTimestampAttr(TimestampFilter.greaterThan(TIMESTAMP_2))
+                .execute();
+
+        assertEquals(1, greaterThan.size());
+
+        List<MyEntityWithOptionalFields> lessThan = myEntityWithOptionalFieldsDao
+                .query()
+                .filterByTimestampAttr(TimestampFilter.lessThan(TIMESTAMP_1))
                 .execute();
 
         assertEquals(1, lessThan.size());
