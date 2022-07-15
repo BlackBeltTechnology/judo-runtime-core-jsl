@@ -52,6 +52,8 @@
                                 <source>${project.basedir}/target/test-classes/model/sdk/SalesModel2</source>
                                 <source>${project.basedir}/target/test-classes/model/sdk/SalesModel3</source>
                                 <source>${project.basedir}/target/test-classes/model/sdk/SalesModelContract</source>
+                                <source>${project.basedir}/target/test-classes/model/sdk/Primitives</source>
+                                <source>${project.basedir}/target/test-classes/model/sdk/AssociationRelationships</source>
                             </sources>
                         </configuration>
                     </execution>
