@@ -438,4 +438,55 @@ public class FiltersTest {
 
         assertEquals(1, lessThan.size());
     }
+
+    @Test
+    public void testTimeFilter() {
+        List<MyEntityWithOptionalFields> list = myEntityWithOptionalFieldsDao.query().execute();
+
+        assertEquals(2, list.size());
+
+        MyEntityWithOptionalFields equalTo = myEntityWithOptionalFieldsDao
+                .query()
+                .filterByTimeAttr(TimeFilter.equalTo(TIME_1))
+                .execute()
+                .get(0);
+
+        assertEquals(entity1.get__identifier(), equalTo.get__identifier());
+
+        MyEntityWithOptionalFields notEqualTo = myEntityWithOptionalFieldsDao
+                .query()
+                .filterByTimeAttr(TimeFilter.notEqualTo(TIME_1))
+                .execute()
+                .get(0);
+
+        assertEquals(entity2.get__identifier(), notEqualTo.get__identifier());
+
+        List<MyEntityWithOptionalFields> greaterOrEqual = myEntityWithOptionalFieldsDao
+                .query()
+                .filterByTimeAttr(TimeFilter.greaterOrEqualThan(TIME_2))
+                .execute();
+
+        assertEquals(2, greaterOrEqual.size());
+
+        List<MyEntityWithOptionalFields> lessOrEqual = myEntityWithOptionalFieldsDao
+                .query()
+                .filterByTimeAttr(TimeFilter.lessOrEqualThan(TIME_1))
+                .execute();
+
+        assertEquals(2, lessOrEqual.size());
+
+        List<MyEntityWithOptionalFields> greaterThan = myEntityWithOptionalFieldsDao
+                .query()
+                .filterByTimeAttr(TimeFilter.greaterThan(TIME_2))
+                .execute();
+
+        assertEquals(1, greaterThan.size());
+
+        List<MyEntityWithOptionalFields> lessThan = myEntityWithOptionalFieldsDao
+                .query()
+                .filterByTimeAttr(TimeFilter.lessThan(TIME_1))
+                .execute();
+
+        assertEquals(1, lessThan.size());
+    }
 }
