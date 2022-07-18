@@ -18,7 +18,8 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Slf4j
 public class AssociationRelationshipsTest {
@@ -80,6 +81,34 @@ public class AssociationRelationshipsTest {
         entityCDao.removeMultipleAonB(entityC, List.of(entityA));
 
         assertEquals(List.of(entityA2), entityCDao.getMultipleAonB(entityC));
+    }
+
+    @Test
+    public void testRequiredRelationEnforced() {
+        IllegalArgumentException thrown = assertThrows(
+                IllegalArgumentException.class,
+                () -> entityADao.create(EntityA.builder().build())
+        );
+
+        assertTrue(thrown.getMessage().contains("missing mandatory attribute"));
+        assertTrue(thrown.getMessage().contains("name: singleRequiredConA"));
+
+        List<EntityA> list = entityADao.query().execute();
+
+        assertEquals(1, list.size()); // we are expecting 1, because the beforeEach() setup already created 1 element
+    }
+
+    @Test
+    public void testTraverse() {
+        EntityD entityD2 = entityDDao.create(EntityD.builder().build());
+
+        entityCDao.addMultipleDonC(entityC, List.of(entityD2));
+
+        EntityA startA = entityADao.getById(entityA.get__identifier());
+
+        EntityC entityC2 = entityADao.getSingleRequiredConA(startA);
+
+        assertEquals(entityC, entityC2);
     }
 
     private EntityA createA(EntityC entityC, List<EntityD> entityDs) {
