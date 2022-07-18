@@ -203,4 +203,16 @@ public class PrimitivesTest {
         // assertEquals("test.txt", entityWithDefaults.getBinaryAttr().get().getFileName());
         assertEquals(Optional.of(MyEnum.Bombastic), entityWithDefaults.getEnumAttr());
     }
+
+    // FIXME JNG-3849
+    @Disabled
+    public void testRegexValidatorFailsForInvalidInput() {
+        MyEntityWithOptionalFields myEntityWithOptionalFields = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
+                .withRegexAttr("hello-bello")
+                .build());
+
+        List<MyEntityWithOptionalFields> list = myEntityWithOptionalFieldsDao.query().execute();
+
+        assertEquals(1, list.size());
+    }
 }
