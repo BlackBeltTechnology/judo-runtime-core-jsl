@@ -109,6 +109,11 @@ public class AssociationRelationshipsTest {
         EntityC entityC2 = entityADao.getSingleRequiredConA(startA);
 
         assertEquals(entityC, entityC2);
+
+        List<EntityA> entityA2 = entityCDao.getTwoWayMultipleAonC(entityC2);
+
+        assertEquals(1, entityA2.size());
+        assertEquals(entityA, entityA2.get(0));
     }
 
     private EntityA createA(EntityC entityC, List<EntityD> entityDs) {
