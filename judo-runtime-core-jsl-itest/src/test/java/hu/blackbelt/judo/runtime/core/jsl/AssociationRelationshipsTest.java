@@ -13,6 +13,7 @@ import hu.blackbelt.judo.runtime.core.jsl.itest.associationrelationships.sdk.ass
 import hu.blackbelt.judo.runtime.core.jsl.itest.associationrelationships.sdk.associationrelationships.associationrelationships.EntityD;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -114,6 +115,36 @@ public class AssociationRelationshipsTest {
 
         assertEquals(1, entityA2.size());
         assertEquals(entityA, entityA2.get(0));
+    }
+
+    @Disabled
+    public void testNoUnsetOnRequired() {
+        EntityC entityC2 = entityADao.getSingleRequiredConA(entityA);
+
+        // FIXME: JNG-3857
+        entityADao.unsetSingleRequiredConA(entityA);
+
+        assertEquals(entityC, entityC2);
+    }
+
+    @Test
+    public void testDeletingRequiredRelationThrowsException() {
+        IllegalStateException thrown = assertThrows(
+                IllegalStateException.class,
+                () -> entityCDao.delete(entityC)
+        );
+
+        assertTrue(thrown.getMessage().contains("There is mandatory references which is not removable"));
+        assertTrue(thrown.getMessage().contains("#singleRequiredConA"));
+    }
+
+    @Test
+    public void testDeletingRelatedElementUnsetsRelationship() {
+        entityDDao.delete(entityD);
+
+        List<EntityD> ds = entityADao.getMultipleDonA(entityA);
+
+        assertEquals(0, ds.size());
     }
 
     private EntityA createA(EntityC entityC, List<EntityD> entityDs) {
