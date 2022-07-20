@@ -13,6 +13,7 @@ import hu.blackbelt.judo.runtime.core.jsl.itest.primitives.sdk.primitives.primit
 import hu.blackbelt.judo.sdk.query.StringFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -21,7 +22,7 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
 public class QueryTest {
@@ -81,6 +82,19 @@ public class QueryTest {
                 .execute();
 
         assertEquals(1, list.size());
+    }
+
+    @Disabled
+    public void testGetByIdThrowsForNonExistingElement() {
+        myEntityWithOptionalFieldsDao.delete(entity1);
+
+        // FIXME JNG-3860
+//        IllegalArgumentException thrown = assertThrows(
+//                IllegalArgumentException.class,
+//                () -> myEntityWithOptionalFieldsDao.getById(entity1.get__identifier())
+//        );
+//
+//        assertNotNull(thrown);
     }
 
     @Test

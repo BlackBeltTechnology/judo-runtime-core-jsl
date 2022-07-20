@@ -13,10 +13,12 @@ import hu.blackbelt.judo.runtime.core.jsl.itest.compositionrelationships.sdk.com
 import hu.blackbelt.judo.runtime.core.jsl.itest.compositionrelationships.sdk.compositionrelationships.compositionrelationships.EntityD;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -101,6 +103,22 @@ public class CompositionRelationshipsTest {
 
         assertEquals(Optional.empty(), entityADao.getSingleConA(entityA));
         assertEquals(1, entityCDao.query().execute().size());
+    }
+
+    @Disabled
+    void testDeleteRequiredRelationThrowsException() {
+        entityA.setSingleRequiredConA(null);
+        entityADao.update(entityA);
+        EntityA aaa = entityADao.getById(entityA.get__identifier());
+        assertNull(aaa.getSingleRequiredConA());
+//        IllegalArgumentException thrown = assertThrows(
+//                IllegalArgumentException.class,
+//                () -> entityADao.update(entityA)
+//        );
+        // FIXME JNG-3859
+
+//        assertTrue(thrown.getMessage().contains("missing mandatory attribute"));
+//        assertTrue(thrown.getMessage().contains("name: singleRequiredConA"));
     }
 
     @Test
