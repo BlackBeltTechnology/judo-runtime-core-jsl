@@ -1,0 +1,22 @@
+model CompositionRelationships
+
+type string String(max-length = 128)
+
+entity EntityA {
+    field String stringA
+    field EntityC singleConA
+    field required EntityC singleRequiredConA
+}
+
+entity abstract EntityB {
+    field String stringB
+    field EntityD[] multipleDonB
+}
+
+entity EntityC extends EntityB {
+    field String stringC
+}
+
+entity EntityD {
+    field String stringD
+}
