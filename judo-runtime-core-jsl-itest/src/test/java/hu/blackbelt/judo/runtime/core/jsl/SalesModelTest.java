@@ -109,7 +109,9 @@ class SalesModelTest {
         assertEquals(1, leadListOfQuery.size());
         assertEquals(Optional.of(100), leadListOfQuery.get(0).getValue());
 
-
+        // FIXME JNG-3863
+//        salesPersonDao.addLeads(createdSalesPerson, List.of(lead1, lead2));
+//        assertEquals(Optional.of(2), createdSalesPerson.getNumberOfLeads());
     }
 
     @Test
