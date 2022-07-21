@@ -38,7 +38,10 @@ entity abstract Person {
 entity SalesPerson extends Person {
 	relation Lead[] leads opposite salesPerson
 	query Lead[] leadsOver(Integer limit = 100) => self.leads!filter(lead | lead.value > limit)
+	query Lead[] leadsBetween(Integer min = 0, Integer max = 100) => \
+            SalesPerson.leads!filter(l | l.value > min and  l.value < max)
 	derived Lead[] leadsOver10 => self.leadsOver(limit = 10)
+	derived Integer numberOfLeads => self.leads!count()
 	relation SC::Contract[] contracts opposite-add salesPerson
 }
 
