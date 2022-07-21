@@ -105,4 +105,18 @@ class SalesModelTest {
 
 
     }
+
+    @Test
+    public void testDefaultValue() {
+        SalesPerson createdSalesPerson = salesPersonDao.create(SalesPerson.builder()
+                .withFirstName("Test")
+                .withLastName("Elek")
+                .build());
+
+        Lead lead = leadDao.create(Lead.builder()
+                .withSalesPerson(createdSalesPerson)
+                .build());
+
+        assertEquals(Optional.of(100000), lead.getValue());
+    }
 }
