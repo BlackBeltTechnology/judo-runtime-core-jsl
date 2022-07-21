@@ -16,9 +16,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import javax.transaction.NotSupportedException;
+import javax.transaction.SystemException;
+import javax.transaction.TransactionManager;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -34,6 +36,9 @@ public class CompositionRelationshipsTest {
 
     @Inject
     EntityD.EntityDDao entityDDao;
+
+    @Inject
+    TransactionManager userTransaction;
 
     EntityA entityA;
     EntityC singleConA;
@@ -172,5 +177,21 @@ public class CompositionRelationshipsTest {
         assertEquals(Optional.of("Hello!"), updatedA.getSingleRequiredConA().getStringB());
         assertEquals(Optional.of("NEW-B"), entityA2.getSingleConA().get().getStringB());
         assertEquals(Optional.of("NEW-C"), entityA2.getSingleConA().get().getStringC());
+    }
+
+    @Disabled
+    void testManualTransactionManagement() throws SystemException, NotSupportedException {
+        // FIXME JNG-3861
+        userTransaction.begin();
+
+        try {
+            entityA.setStringA("BLAAA");
+
+            throw new RuntimeException("Bamm!");
+        } catch (RuntimeException e) {
+            userTransaction.rollback();
+        }
+
+        assertEquals("asdas", entityADao.getById(entityA.get__identifier()).getStringA());
     }
 }
