@@ -78,6 +78,7 @@ class SalesModelTest {
 
         assertEquals(Optional.of("Masik"), createdPerson.getFirstName());
         assertEquals(Optional.of("Test"), createdPerson.getLastName());
+        assertEquals(Optional.of("Masik Test"), createdPerson.getFullName());
 
         Lead lead1 = leadDao.create(Lead.builder()
                 .withSalesPerson(createdSalesPerson)
