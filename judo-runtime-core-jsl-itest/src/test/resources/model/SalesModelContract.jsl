@@ -1,5 +1,8 @@
 model SalesModelContract
 
+type date Date
+
 entity Contract {
+    field Date creationDate
 }
 
