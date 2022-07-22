@@ -43,8 +43,8 @@
 
         <epsilon-runtime-version>1.4.0.20220629_123622_4279f257_develop</epsilon-runtime-version>
         <judo-tatami-core-version>1.1.0.20220629_124119_2b63ca1f_develop</judo-tatami-core-version>
-        <judo-tatami-jsl-version>1.1.0.20220707_225717_ef4d46de_feature_JNG_3814_OptionalTypeSupport</judo-tatami-jsl-version>
-        <judo-runtime-core-version>1.0.0.20220707_224057_bfd4ac27_feature_JNG_3814_OptionalTypeSupport</judo-runtime-core-version>
+        <judo-tatami-jsl-version>1.1.0.20220722_160234_2dfb075d_feature_JNG_3849_AddValidatorsToDAO</judo-tatami-jsl-version>
+        <judo-runtime-core-version>1.0.0.20220722_155910_4135df60_feature_JNG_3849_AddValidatorsToDAO</judo-runtime-core-version>
 
         <!-- Code Quality-->
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -213,6 +213,26 @@
                                         <ignore />
                                     </action>
                                 </pluginExecution>
+        						<pluginExecution>
+        							<pluginExecutionFilter>
+        								<groupId>
+        									hu.blackbelt.judo.tatami
+        								</groupId>
+        								<artifactId>
+        									judo-tatami-jsl-workflow-maven-plugin
+        								</artifactId>
+        								<versionRange>
+        									[1.0,)
+        								</versionRange>
+        								<goals>
+        									<goal>parser-workflow</goal>
+        								</goals>
+        							</pluginExecutionFilter>
+        							<action>
+        								<ignore></ignore>
+        							</action>
+        						</pluginExecution>
+
                             </pluginExecutions>
                         </lifecycleMappingMetadata>
                     </configuration>
@@ -415,7 +435,7 @@
         <dependency>
             <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest</artifactId>
-            <version>2.1</version>
+            <version>2.2</version>
             <scope>test</scope>
         </dependency>
 

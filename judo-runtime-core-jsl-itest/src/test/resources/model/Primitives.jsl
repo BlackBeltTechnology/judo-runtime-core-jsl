@@ -1,0 +1,86 @@
+model Primitives
+
+type numeric Integer(precision = 9, scale = 0)
+type numeric Scaled(precision = 9, scale = 2)
+type string String(max-length = 128)
+type string PhoneNumber(max-length = 32, regex = "^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]\\d{3}[\\s.-]\\d{4}$")   // escape sequencing does not work in regexp!!!!
+type boolean Boolean
+type date Date
+type timestamp Timestamp
+type time Time
+type binary Binary
+
+enum MyEnum {
+    Atomic = 0
+    Bombastic = 1
+    Crazy = 2
+}
+
+entity abstract AbstractEntityOptionalFields {
+    field Integer integerAttr
+    field Scaled scaledAttr
+    field String stringAttr
+    field PhoneNumber regexAttr
+    field Boolean boolAttr
+    field Date dateAttr
+    field Timestamp timestampAttr
+    field Time timeAttr
+    field Binary binaryAttr
+    field MyEnum enumAttr
+}
+
+entity MyEntityWithOptionalFields extends AbstractEntityOptionalFields {
+}
+
+entity EntityRequiredFields {
+    field required Integer integerAttr
+    field required Scaled scaledAttr
+    field required String stringAttr
+    field required PhoneNumber regexAttr
+    field required Boolean boolAttr
+    field required Date dateAttr
+    field required Timestamp timestampAttr
+    field required Time timeAttr
+    field required Binary binaryAttr
+    field required MyEnum enumAttr
+}
+
+entity EntityWithIdentifiers {
+    identifier Integer integerAttr
+    identifier Scaled scaledAttr
+    identifier String stringAttr
+    identifier PhoneNumber regexAttr
+    identifier Boolean boolAttr
+    identifier Date dateAttr
+    identifier Timestamp timestampAttr
+    identifier Binary binaryAttr
+    identifier MyEnum enumAttr
+}
+
+entity EntityWithPrimitiveDefaults {
+    field Integer integerAttr = 1
+    field Scaled scaledAttr = 2.34
+    field String stringAttr = "test"
+    field PhoneNumber regexAttr = "+36-1-123-123"
+    field Boolean boolAttr = true
+    field Date dateAttr = `2022-07-11`
+    field Timestamp timestampAttr = `2022-07-11T19:09:33Z`
+    field Time timeAttr = `23:59:59`
+    field Binary binaryAttr // There is no syntax for define default value for binary
+    field MyEnum enumAttr = MyEnum#Bombastic
+}
+// FIXME JNG-3864
+/*
+entity EntityWithPrimitiveDefaultExpressions {
+    field Integer integerAttr = 1.23!round()
+    field Scaled scaledAttr = 2.9!abs()
+    field String stringAttr = true!asString()
+    field PhoneNumber regexAttr = "+36-1-123-123"
+    field Boolean boolAttr = 2 > -1
+    field Date dateAttr = Date!now()
+    field Timestamp timestampAttr = Timestamp!now()
+    field Time timeAttr = Time!of(23,59,59)
+    field Binary binaryAttr
+    field MyEnum enumAttr = MyEnum#Bombastic
+}
+*/
