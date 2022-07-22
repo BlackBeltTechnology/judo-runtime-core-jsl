@@ -8,6 +8,7 @@ import hu.blackbelt.judo.runtime.core.bootstrap.JudoDefaultModule;
 import hu.blackbelt.judo.runtime.core.bootstrap.JudoModelLoader;
 import hu.blackbelt.judo.runtime.core.bootstrap.dao.rdbms.hsqldb.JudoHsqldbModules;
 import hu.blackbelt.judo.runtime.core.dao.rdbms.hsqldb.HsqldbDialect;
+import hu.blackbelt.judo.runtime.core.exception.ValidationException;
 import hu.blackbelt.judo.runtime.core.jsl.itest.primitives.guice.primitives.PrimitivesDaoModules;
 import hu.blackbelt.judo.runtime.core.jsl.itest.primitives.sdk.primitives.primitives.*;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +23,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
 
 @Slf4j
 public class PrimitivesTest {
@@ -57,7 +60,6 @@ public class PrimitivesTest {
         List<MyEntityWithOptionalFields> list = myEntityWithOptionalFieldsDao.query().execute();
 
         assertEquals(1, list.size());
-
         assertEquals(Optional.empty(), myEntityWithOptionalFields.getIntegerAttr());
         assertEquals(Optional.empty(), myEntityWithOptionalFields.getScaledAttr());
         assertEquals(Optional.empty(), myEntityWithOptionalFields.getStringAttr());
@@ -76,7 +78,7 @@ public class PrimitivesTest {
                         .withIntegerAttr(1)
                         .withScaledAttr(1.23)
                         .withStringAttr("test")
-                        .withRegexAttr("+36-1-123-123")
+                        .withRegexAttr("+36 333-333-3333")
                         .withBoolAttr(true)
                         .withDateAttr(LocalDate.of(2022, 7, 11))
                         .withTimestampAttr(OffsetDateTime.parse("2022-07-11T19:09:33Z"))
@@ -93,7 +95,7 @@ public class PrimitivesTest {
         assertEquals(Optional.of(1), myEntityWithOptionalFields.getIntegerAttr());
         assertEquals(Optional.of(1.23), myEntityWithOptionalFields.getScaledAttr());
         assertEquals(Optional.of("test"), myEntityWithOptionalFields.getStringAttr());
-        assertEquals(Optional.of("+36-1-123-123"), myEntityWithOptionalFields.getRegexAttr());
+        assertEquals(Optional.of("+36 333-333-3333"), myEntityWithOptionalFields.getRegexAttr());
         assertEquals(Optional.of(true), myEntityWithOptionalFields.getBoolAttr());
         assertEquals(Optional.of(LocalDate.of(2022, 7, 11)), myEntityWithOptionalFields.getDateAttr());
         assertEquals(Optional.of(OffsetDateTime.parse("2022-07-11T19:09:33Z")), myEntityWithOptionalFields.getTimestampAttr());
@@ -105,29 +107,36 @@ public class PrimitivesTest {
 
     @Test()
     public void testMissingRequiredFieldsThrowExceptions() {
-        IllegalArgumentException thrown = assertThrows(
-            IllegalArgumentException.class,
+        ValidationException thrown = assertThrows(
+            ValidationException.class,
             () -> entityRequiredFieldsDao.create(EntityRequiredFields.builder().build())
         );
 
-        assertTrue(thrown.getMessage().contains("missing mandatory attribute"));
-        assertTrue(thrown.getMessage().contains("name: integerAttr"));
-        assertTrue(thrown.getMessage().contains("name: scaledAttr"));
-        assertTrue(thrown.getMessage().contains("name: stringAttr"));
-        assertTrue(thrown.getMessage().contains("name: regexAttr"));
-        assertTrue(thrown.getMessage().contains("name: boolAttr"));
-        assertTrue(thrown.getMessage().contains("name: dateAttr"));
-        assertTrue(thrown.getMessage().contains("name: timestampAttr"));
-        assertTrue(thrown.getMessage().contains("name: timeAttr"));
-        assertTrue(thrown.getMessage().contains("name: binaryAttr"));
-        assertTrue(thrown.getMessage().contains("name: enumAttr"));
-
+        assertThat(thrown.getValidationResults(), containsInAnyOrder(
+                matchMissingAttribute("integerAttr"),
+                matchMissingAttribute("scaledAttr"),
+                matchMissingAttribute("stringAttr"),
+                matchMissingAttribute("regexAttr"),
+                matchMissingAttribute("boolAttr"),
+                matchMissingAttribute("dateAttr"),
+                matchMissingAttribute("timestampAttr"),
+                matchMissingAttribute("timeAttr"),
+                matchMissingAttribute("binaryAttr"),
+                matchMissingAttribute("enumAttr")
+        ));
         List<EntityRequiredFields> list = entityRequiredFieldsDao.query().execute();
 
         assertEquals(0, list.size());
     }
 
+    private org.hamcrest.Matcher matchMissingAttribute(String attrName) {
+        return allOf(
+                hasProperty("code", equalTo("MISSING_REQUIRED_ATTRIBUTE")),
+                hasProperty("location", equalTo(attrName)));
+    }
+
     // FIXME JNG-3841
+    @Test
     @Disabled
     public void testIdentifierFieldsAreUnique() {
         EntityWithIdentifiers ent1 = entityWithIdentifiersDao.create(EntityWithIdentifiers.builder().withIntegerAttr(1).build());
@@ -159,7 +168,7 @@ public class PrimitivesTest {
         myEntityWithOptionalFields.setIntegerAttr(1);
         myEntityWithOptionalFields.setScaledAttr(1.23);
         myEntityWithOptionalFields.setStringAttr("test");
-        myEntityWithOptionalFields.setRegexAttr("+36-1-123-123");
+        myEntityWithOptionalFields.setRegexAttr("+36 333-333-3333");
         myEntityWithOptionalFields.setBoolAttr(true);
         myEntityWithOptionalFields.setDateAttr(LocalDate.of(2022, 7, 11));
         myEntityWithOptionalFields.setTimestampAttr(OffsetDateTime.parse("2022-07-11T19:09:33Z"));
@@ -173,7 +182,7 @@ public class PrimitivesTest {
         assertEquals(Optional.of(1), myEntityWithOptionalFields.getIntegerAttr());
         assertEquals(Optional.of(1.23), myEntityWithOptionalFields.getScaledAttr());
         assertEquals(Optional.of("test"), myEntityWithOptionalFields.getStringAttr());
-        assertEquals(Optional.of("+36-1-123-123"), myEntityWithOptionalFields.getRegexAttr());
+        assertEquals(Optional.of("+36 333-333-3333"), myEntityWithOptionalFields.getRegexAttr());
         assertEquals(Optional.of(true), myEntityWithOptionalFields.getBoolAttr());
         assertEquals(Optional.of(LocalDate.of(2022, 7, 11)), myEntityWithOptionalFields.getDateAttr());
         assertEquals(Optional.of(OffsetDateTime.parse("2022-07-11T19:09:33Z")), myEntityWithOptionalFields.getTimestampAttr());
@@ -203,15 +212,13 @@ public class PrimitivesTest {
         assertEquals(Optional.of(MyEnum.Bombastic), entityWithDefaults.getEnumAttr());
     }
 
-    // FIXME JNG-3849
-    @Disabled
+    @Test
     public void testRegexValidatorFailsForInvalidInput() {
-        MyEntityWithOptionalFields myEntityWithOptionalFields = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
-                .withRegexAttr("hello-bello")
-                .build());
+        ValidationException thrown = assertThrows(
+                ValidationException.class,
+                () -> myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
+                        .withRegexAttr("hello-bello")
+                        .build()));
 
-        List<MyEntityWithOptionalFields> list = myEntityWithOptionalFieldsDao.query().execute();
-
-        assertEquals(1, list.size());
     }
 }

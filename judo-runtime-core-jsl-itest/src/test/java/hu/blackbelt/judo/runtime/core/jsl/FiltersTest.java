@@ -40,8 +40,8 @@ public class FiltersTest {
     static final double SCALED_2 = 2.34;
     static final String STRING_1 = "test";
     static final String STRING_2 = "Another";
-    static final String REGEX_1 = "+36-1-123-123";
-    static final String REGEX_2 = "+36-80-111-222";
+    static final String REGEX_1 = "+36 333-333-3333";
+    static final String REGEX_2 = "+36 333-333-3334";
     static final boolean BOOL_1 = true;
     static final boolean BOOL_2 = false;
     static final LocalDate DATE_1 = LocalDate.of(2022, 7, 11);

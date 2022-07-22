@@ -7,6 +7,7 @@ import hu.blackbelt.judo.runtime.core.bootstrap.JudoDefaultModule;
 import hu.blackbelt.judo.runtime.core.bootstrap.JudoModelLoader;
 import hu.blackbelt.judo.runtime.core.bootstrap.dao.rdbms.hsqldb.JudoHsqldbModules;
 import hu.blackbelt.judo.runtime.core.dao.rdbms.hsqldb.HsqldbDialect;
+import hu.blackbelt.judo.runtime.core.exception.ValidationException;
 import hu.blackbelt.judo.runtime.core.jsl.itest.compositionrelationships.guice.compositionrelationships.CompositionRelationshipsDaoModules;
 import hu.blackbelt.judo.runtime.core.jsl.itest.compositionrelationships.sdk.compositionrelationships.compositionrelationships.EntityA;
 import hu.blackbelt.judo.runtime.core.jsl.itest.compositionrelationships.sdk.compositionrelationships.compositionrelationships.EntityC;
@@ -23,6 +24,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
 
 @Slf4j
 public class CompositionRelationshipsTest {
@@ -76,13 +79,15 @@ public class CompositionRelationshipsTest {
 
     @Test
     void testMissingRequiredRelationshipThrowsException() {
-        IllegalArgumentException thrown = assertThrows(
-                IllegalArgumentException.class,
+        ValidationException thrown = assertThrows(
+                ValidationException.class,
                 () -> entityADao.create(EntityA.builder().build())
         );
 
-        assertTrue(thrown.getMessage().contains("missing mandatory attribute"));
-        assertTrue(thrown.getMessage().contains("name: singleRequiredConA"));
+        assertThat(thrown.getValidationResults(), containsInAnyOrder(allOf(
+                hasProperty("code", equalTo("MISSING_REQUIRED_RELATION")),
+                hasProperty("location", equalTo("singleRequiredConA")))
+        ));
     }
 
     @Test
