@@ -88,13 +88,12 @@ public class QueryTest {
     public void testGetByIdThrowsForNonExistingElement() {
         myEntityWithOptionalFieldsDao.delete(entity1);
 
-        // FIXME JNG-3860
-//        IllegalArgumentException thrown = assertThrows(
-//                IllegalArgumentException.class,
-//                () -> myEntityWithOptionalFieldsDao.getById(entity1.get__identifier())
-//        );
-//
-//        assertNotNull(thrown);
+        IllegalArgumentException thrown = assertThrows(
+                IllegalArgumentException.class,
+                () -> myEntityWithOptionalFieldsDao.getById(entity1.get__identifier())
+        );
+
+        assertNotNull(thrown);
     }
 
     @Test
