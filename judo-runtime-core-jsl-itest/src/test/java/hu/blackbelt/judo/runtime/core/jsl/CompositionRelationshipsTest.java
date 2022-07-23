@@ -119,8 +119,8 @@ public class CompositionRelationshipsTest {
     void testDeleteRequiredRelationThrowsException() {
         entityA.setSingleRequiredConA(null);
         entityADao.update(entityA);
-        EntityA aaa = entityADao.getById(entityA.get__identifier());
-        assertNull(aaa.getSingleRequiredConA());
+        Optional<EntityA> aaa = entityADao.getById(entityA.get__identifier());
+        assertNull(aaa.get().getSingleRequiredConA());
 //        IllegalArgumentException thrown = assertThrows(
 //                IllegalArgumentException.class,
 //                () -> entityADao.update(entityA)
@@ -197,6 +197,6 @@ public class CompositionRelationshipsTest {
             userTransaction.rollback();
         }
 
-        assertEquals("asdas", entityADao.getById(entityA.get__identifier()).getStringA());
+        assertEquals("asdas", entityADao.getById(entityA.get__identifier()).get().getStringA());
     }
 }
