@@ -38,13 +38,12 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
-                <version>3.3.0</version>
                 <executions>
                     <execution>
                         <id>add-source</id>
                         <phase>generate-sources</phase>
                         <goals>
-                            <goal>add-source</goal>
+                            <goal>add-test-source</goal>
                         </goals>
                         <configuration>
                             <sources>
@@ -52,9 +51,28 @@
                                 <source>${project.basedir}/target/test-classes/model/sdk/SalesModel2</source>
                                 <source>${project.basedir}/target/test-classes/model/sdk/SalesModel3</source>
                                 <source>${project.basedir}/target/test-classes/model/sdk/SalesModelContract</source>
+                                <source>${project.basedir}/target/test-classes/model/sdk/Primitives</source>
+                                <source>${project.basedir}/target/test-classes/model/sdk/AssociationRelationships</source>
+                                <source>${project.basedir}/target/test-classes/model/sdk/CompositionRelationships</source>
                             </sources>
+                        </configuration> 
+                   </execution>
+                    <execution>
+                        <id>add-resource</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>add-resource</goal>
+                        </goals>
+                        <configuration>
+                            <resources>
+                                <resource>
+                                    <directory>${project.basedir}/target/model</directory>
+                                    <targetPath>model</targetPath>
+                                </resource>
+                            </resources>
                         </configuration>
                     </execution>
+
                 </executions>
             </plugin>
             <!--
