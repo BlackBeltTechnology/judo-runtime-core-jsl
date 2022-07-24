@@ -196,6 +196,6 @@ public class CompositionRelationshipsTest {
             userTransaction.rollback();
         }
 
-        assertEquals("asdas", entityADao.getById(entityA.get__identifier()).getStringA());
+        assertEquals("asdas", entityADao.getById(entityA.get__identifier()).get().getStringA());
     }
 }

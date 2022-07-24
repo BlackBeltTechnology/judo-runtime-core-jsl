@@ -105,7 +105,7 @@ public class AssociationRelationshipsTest {
 
         entityCDao.addMultipleDonC(entityC, List.of(entityD2));
 
-        EntityA startA = entityADao.getById(entityA.get__identifier());
+        EntityA startA = entityADao.getById(entityA.get__identifier()).get();
 
         EntityC entityC2 = entityADao.getSingleRequiredConA(startA);
 
