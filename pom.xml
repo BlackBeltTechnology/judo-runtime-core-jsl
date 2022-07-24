@@ -43,8 +43,8 @@
 
         <epsilon-runtime-version>1.4.0.20220629_123622_4279f257_develop</epsilon-runtime-version>
         <judo-tatami-core-version>1.1.0.20220629_124119_2b63ca1f_develop</judo-tatami-core-version>
-        <judo-tatami-jsl-version>1.1.0.20220724_103051_b916d7dc_feature_JNG_3857_MandatoryRelationsDoesNotAllowToUnset</judo-tatami-jsl-version>
-        <judo-runtime-core-version>1.0.0.20220724_103438_b3972250_feature_JNG_3857_MandatoryRelationsDoesNotAllowToUnset</judo-runtime-core-version>
+        <judo-tatami-jsl-version>1.1.0.20220724_143947_efe8f5d7_develop</judo-tatami-jsl-version>
+        <judo-runtime-core-version>1.0.0.20220724_142847_0809ec09_develop</judo-runtime-core-version>
 
         <!-- Code Quality-->
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>

@@ -115,20 +115,19 @@ public class CompositionRelationshipsTest {
         assertEquals(1, entityCDao.query().execute().size());
     }
 
-    @Disabled
+    @Test
     void testDeleteRequiredRelationThrowsException() {
         entityA.setSingleRequiredConA(null);
-        entityADao.update(entityA);
-        EntityA aaa = entityADao.getById(entityA.get__identifier());
-        assertNull(aaa.getSingleRequiredConA());
-//        IllegalArgumentException thrown = assertThrows(
-//                IllegalArgumentException.class,
-//                () -> entityADao.update(entityA)
-//        );
-        // FIXME JNG-3859
 
-//        assertTrue(thrown.getMessage().contains("missing mandatory attribute"));
-//        assertTrue(thrown.getMessage().contains("name: singleRequiredConA"));
+        ValidationException thrown = assertThrows(
+                ValidationException.class,
+                () -> entityADao.update(entityA)
+        );
+
+        assertThat(thrown.getValidationResults(), containsInAnyOrder(allOf(
+                hasProperty("code", equalTo("MISSING_REQUIRED_RELATION")),
+                hasProperty("location", equalTo("singleRequiredConA")))
+        ));
     }
 
     @Test
