@@ -118,7 +118,6 @@ public class CompositionRelationshipsTest {
     @Test
     void testDeleteRequiredRelationThrowsException() {
         entityA.setSingleRequiredConA(null);
-
         ValidationException thrown = assertThrows(
                 ValidationException.class,
                 () -> entityADao.update(entityA)
