@@ -32,6 +32,7 @@
                     <sources>${basedir}/src/test/resources/model</sources>
                     <sdkPackagePrefix>hu.blackbelt.judo.runtime.core.jsl.itest</sdkPackagePrefix>
                     <generateSdkGuice>true</generateSdkGuice>
+                    <saveModels>true</saveModels>
                 </configuration>
             </plugin>
 
