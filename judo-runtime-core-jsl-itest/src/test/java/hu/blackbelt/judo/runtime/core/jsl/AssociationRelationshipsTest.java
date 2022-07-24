@@ -105,7 +105,7 @@ public class AssociationRelationshipsTest {
 
         entityCDao.addMultipleDonC(entityC, List.of(entityD2));
 
-        EntityA startA = entityADao.getById(entityA.get__identifier());
+        EntityA startA = entityADao.getById(entityA.get__identifier()).get();
 
         EntityC entityC2 = entityADao.getSingleRequiredConA(startA);
 
@@ -115,16 +115,6 @@ public class AssociationRelationshipsTest {
 
         assertEquals(1, entityA2.size());
         assertEquals(entityA, entityA2.get(0));
-    }
-
-    @Disabled
-    public void testNoUnsetOnRequired() {
-        EntityC entityC2 = entityADao.getSingleRequiredConA(entityA);
-
-        // FIXME: JNG-3857
-        entityADao.unsetSingleRequiredConA(entityA);
-
-        assertEquals(entityC, entityC2);
     }
 
     @Test
