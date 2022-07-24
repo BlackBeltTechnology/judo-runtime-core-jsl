@@ -42,6 +42,9 @@ public class PrimitivesTest {
     @Inject
     EntityWithPrimitiveDefaults.EntityWithPrimitiveDefaultsDao entityWithPrimitiveDefaultsDao;
 
+    @Inject
+    EntityWithPrimitiveDefaultExpressions.EntityWithPrimitiveDefaultExpressionsDao entityWithPrimitiveDefaultExpressionsDao;
+
     @BeforeEach
     void init() throws Exception {
         JudoModelLoader modelHolder = JudoModelLoader.
@@ -210,6 +213,25 @@ public class PrimitivesTest {
         // There is no way to define default value in JSL for binary
         // assertEquals("test.txt", entityWithDefaults.getBinaryAttr().get().getFileName());
         assertEquals(Optional.of(MyEnum.Bombastic), entityWithDefaults.getEnumAttr());
+    }
+
+    @Test
+    public void testEntityCreationWithPrimitiveDefaultExpressions() {
+        EntityWithPrimitiveDefaultExpressions entityWithDefaultExpressions = entityWithPrimitiveDefaultExpressionsDao.create(EntityWithPrimitiveDefaultExpressions.builder().build());
+
+        List<EntityWithPrimitiveDefaultExpressions> list = entityWithPrimitiveDefaultExpressionsDao.query().execute();
+
+        assertEquals(1, list.size());
+
+        assertEquals(Optional.of(1), entityWithDefaultExpressions.getIntegerAttr());
+        // assertEquals(Optional.of(2.34), entityWithDefaultExpressions.getScaledAttr());
+        assertEquals(Optional.of("TRUE"), entityWithDefaultExpressions.getStringAttr());
+        assertEquals(Optional.of("+36-1-123-123"), entityWithDefaultExpressions.getRegexAttr());
+        assertEquals(Optional.of(true), entityWithDefaultExpressions.getBoolAttr());
+        assertEquals(Optional.of(LocalDate.now()), entityWithDefaultExpressions.getDateAttr());
+        assertEquals(OffsetDateTime.now().toString().substring(1, 10),
+                entityWithDefaultExpressions.getTimestampAttr().get().toString().substring(1, 10));
+        // assertEquals(Optional.of(LocalTime.parse("23:59:59")), entityWithDefaultExpressions.getTimeAttr());
     }
 
     @Test
