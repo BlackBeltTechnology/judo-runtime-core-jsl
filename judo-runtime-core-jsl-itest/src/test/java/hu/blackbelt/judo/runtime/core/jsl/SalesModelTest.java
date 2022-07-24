@@ -113,9 +113,10 @@ class SalesModelTest {
 
         assertEquals(1, leadsBetween.size());
 
-        // FIXME JNG-3863
-//        salesPersonDao.addLeads(createdSalesPerson, List.of(lead1, lead2));
-//        assertEquals(Optional.of(2), createdSalesPerson.getNumberOfLeads());
+        salesPersonDao.addLeads(createdSalesPerson, List.of(lead1, lead2));
+
+        createdSalesPerson = salesPersonDao.getById(createdSalesPerson.get__identifier()).get();
+        assertEquals(Optional.of(2), createdSalesPerson.getNumberOfLeads());
     }
 
     @Test

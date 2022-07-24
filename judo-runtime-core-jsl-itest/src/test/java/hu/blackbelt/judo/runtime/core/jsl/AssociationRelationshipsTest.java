@@ -117,16 +117,6 @@ public class AssociationRelationshipsTest {
         assertEquals(entityA, entityA2.get(0));
     }
 
-    @Disabled
-    public void testNoUnsetOnRequired() {
-        EntityC entityC2 = entityADao.getSingleRequiredConA(entityA);
-
-        // FIXME: JNG-3857
-        entityADao.unsetSingleRequiredConA(entityA);
-
-        assertEquals(entityC, entityC2);
-    }
-
     @Test
     public void testDeletingRequiredRelationThrowsException() {
         IllegalStateException thrown = assertThrows(
