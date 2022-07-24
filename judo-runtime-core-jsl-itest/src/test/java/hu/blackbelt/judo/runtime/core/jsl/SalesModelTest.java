@@ -115,7 +115,7 @@ class SalesModelTest {
 
         salesPersonDao.addLeads(createdSalesPerson, List.of(lead1, lead2));
 
-        createdSalesPerson = salesPersonDao.getById(createdSalesPerson.get__identifier());
+        createdSalesPerson = salesPersonDao.getById(createdSalesPerson.get__identifier()).get();
         assertEquals(Optional.of(2), createdSalesPerson.getNumberOfLeads());
     }
 
