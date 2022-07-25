@@ -55,6 +55,7 @@
                                 <source>${project.basedir}/target/test-classes/model/sdk/Primitives</source>
                                 <source>${project.basedir}/target/test-classes/model/sdk/AssociationRelationships</source>
                                 <source>${project.basedir}/target/test-classes/model/sdk/CompositionRelationships</source>
+                                <source>${project.basedir}/target/test-classes/model/sdk/Operators</source>
                             </sources>
                         </configuration> 
                    </execution>
