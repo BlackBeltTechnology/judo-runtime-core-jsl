@@ -91,17 +91,28 @@ public class CompositionRelationshipsTest {
     }
 
     @Test
-    void testUnsetOptionalRelationRemovesNested() {
+    void testNullOutOptionalRelationRemovesNested() {
         assertEquals(Optional.of(singleConA), entityADao.getSingleConA(entityA));
         assertEquals(2, entityCDao.query().execute().size());
 
         entityA.setSingleConA(null);
         entityADao.update(entityA);
 
-        // entityADao.unsetSingleConA(entityA); FIXME: JNG-3858
+        assertEquals(Optional.empty(), entityADao.getSingleConA(entityA));
+        assertEquals(1, entityCDao.query().execute().size());
+        assertEquals(Optional.empty(), entityCDao.getById(singleConA.get__identifier()));
+    }
+
+    @Test
+    void testUnsetOptionalRelationRemovesNested() {
+        assertEquals(Optional.of(singleConA), entityADao.getSingleConA(entityA));
+        assertEquals(2, entityCDao.query().execute().size());
+
+        entityADao.unsetSingleConA(entityA);
 
         assertEquals(Optional.empty(), entityADao.getSingleConA(entityA));
         assertEquals(1, entityCDao.query().execute().size());
+        assertEquals(Optional.empty(), entityCDao.getById(singleConA.get__identifier()));
     }
 
     @Test
