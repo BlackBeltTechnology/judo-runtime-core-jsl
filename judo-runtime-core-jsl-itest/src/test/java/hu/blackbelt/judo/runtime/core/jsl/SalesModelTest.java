@@ -137,6 +137,10 @@ class SalesModelTest {
 
         createdSalesPerson = salesPersonDao.getById(createdSalesPerson.get__identifier()).get();
         assertEquals(Optional.of(2), createdSalesPerson.getNumberOfLeads());
+
+        List<Lead> leadsOver10 = salesPersonDao.getLeadsOver10(createdSalesPerson);
+
+        assertEquals(1, leadsOver10.size());
     }
 
     @Test
