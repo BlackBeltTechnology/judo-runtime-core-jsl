@@ -11,6 +11,7 @@ type binary Binary
 
 entity DefaultOperators {
     /* FIXME JNG-3877
+    field Integer rounded => 1.23!round()
     field Integer addition = 5 + 2
     field Integer subtraction = 5 - 2
     field Integer pow = 5 ^ 2
@@ -36,6 +37,34 @@ entity DefaultOperators {
     */
 }
 
-entity DerivedOperators {
+entity DerivedSource {
+    field String firstName = "John"
+    field String lastName = "Pro"
+    field Integer age = 35
+    field Scaled score = 98.75
+}
 
+entity DerivedOperators {
+    field required DerivedSource source
+    derived String stringConcat => self.source.firstName + " " + self.source.lastName
+    derived Integer firstNameLength => self.source.firstName!length()
+    derived Integer rounded => self.source.score!round()
+    derived Integer addition => self.source.age + 2
+    derived Integer subtraction => self.source.age - 2
+    // derived Integer pow => self.source.age ^ 2 FIXME JNG-3879
+    derived Integer multiplication => self.source.age * 2
+    derived Integer division => self.source.age / 2
+    derived Integer divisionWhole => self.source.age div 2
+    derived Integer modulo => self.source.age mod 2
+    derived Boolean lt => self.source.age < 5
+    derived Boolean lt2 => 2 < self.source.age
+    derived Boolean gt => self.source.age > 5
+    derived Boolean gt2 => self.source.age > 2
+    derived Boolean lte => self.source.age <= 5
+    derived Boolean lte2 => 2 <= self.source.age
+    derived Boolean gte => self.source.age >= 5
+    derived Boolean gte2 => self.source.age >= 2
+    derived Boolean eq => self.source.age == 2
+    derived Boolean neq => self.source.age != 2
+    // derived Boolean conditional => self.source.age > 2 ? true : false TODO: JNG-3878
 }
