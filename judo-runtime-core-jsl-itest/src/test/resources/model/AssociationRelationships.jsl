@@ -18,3 +18,10 @@ entity EntityC extends EntityB {
 entity EntityD {
     relation EntityA[] multipleAonD opposite multipleDonA
 }
+
+entity EntityE {
+    relation EntityF[] multipleFOnE opposite-add singleEAdded
+}
+
+entity EntityF {
+}
