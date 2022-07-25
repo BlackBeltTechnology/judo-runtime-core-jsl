@@ -28,11 +28,9 @@ import hu.blackbelt.judo.runtime.core.bootstrap.JudoModelLoader;
 import hu.blackbelt.judo.runtime.core.bootstrap.dao.rdbms.hsqldb.JudoHsqldbModules;
 import hu.blackbelt.judo.runtime.core.dao.rdbms.hsqldb.HsqldbDialect;
 import hu.blackbelt.judo.runtime.core.jsl.itest.salesmodel.guice.salesmodel.SalesModelDaoModules;
-import hu.blackbelt.judo.runtime.core.jsl.itest.salesmodel.sdk.salesmodel.salesmodel.Lead;
-import hu.blackbelt.judo.runtime.core.jsl.itest.salesmodel.sdk.salesmodel.salesmodel.Person;
-import hu.blackbelt.judo.runtime.core.jsl.itest.salesmodel.sdk.salesmodel.salesmodel.SalesPerson;
-import hu.blackbelt.judo.runtime.core.jsl.itest.salesmodel.sdk.salesmodel.salesmodel._SalesPerson_leadsOver_Parameters;
+import hu.blackbelt.judo.runtime.core.jsl.itest.salesmodel.sdk.salesmodel.salesmodel.*;
 import hu.blackbelt.judo.runtime.core.jsl.itest.salesmodel.sdk.salesmodel.salesmodelcontract.Contract;
+import hu.blackbelt.judo.runtime.core.jsl.itest.salesmodel.sdk.salesmodel.salesmodelcontract.ContractDetail;
 import hu.blackbelt.judo.sdk.query.NumberFilter;
 import hu.blackbelt.judo.sdk.query.StringFilter;
 import lombok.extern.slf4j.Slf4j;
@@ -40,6 +38,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -61,6 +60,9 @@ class SalesModelTest {
 
     @Inject
     Contract.ContractDao contractDao;
+
+    @Inject
+    ContractsAggregator.ContractsAggregatorDao contractsAggregatorDao;
 
     @BeforeEach
     void init() throws Exception {
@@ -169,5 +171,32 @@ class SalesModelTest {
         assertEquals(1, checkContracts.size());
         assertEquals(contract, checkContract);
         assertEquals(Optional.of(LocalDate.parse("2022-07-21")), checkContract.getCreationDate());
+    }
+
+    @Test
+    public void testNavigationOnStaticCollection() {
+        Contract contract1 = contractDao.create(Contract.builder()
+                .withCreationDate(LocalDate.parse("2022-07-21"))
+                .withDetail(ContractDetail.builder()
+                        .withDetails("Hello")
+                        .build())
+                .build()
+        );
+        Contract contract2 = contractDao.create(Contract.builder()
+                .withCreationDate(LocalDate.parse("2022-08-01"))
+                .build()
+        );
+
+        ContractsAggregator staticNavigationHost = contractsAggregatorDao.create(ContractsAggregator.builder()
+                .build());
+
+        Optional<ContractsAggregator> fetched = contractsAggregatorDao.getById(staticNavigationHost.get__identifier());
+
+        Collection<ContractDetail> details = fetched.get().getContractDetails();
+
+        assertEquals(Optional.of("Hello"), contract1.getDetail().get().getDetails());
+        assertEquals(Optional.empty(), contract2.getDetail());
+        assertEquals(2, staticNavigationHost.getContracts().size());
+        // assertEquals(1, details.size()); FIXME: JNG-3880
     }
 }

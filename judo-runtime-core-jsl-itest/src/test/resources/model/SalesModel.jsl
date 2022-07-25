@@ -59,3 +59,8 @@ entity Customer {
 
 	relation Lead lead opposite-add customer
 }
+
+entity ContractsAggregator {
+    derived SC::ContractDetail[] contractDetails => SC::Contract.detail
+    derived SC::Contract[] contracts => SC::Contract
+}
