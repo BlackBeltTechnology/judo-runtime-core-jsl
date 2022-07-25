@@ -57,6 +57,11 @@ entity EntityWithIdentifiers {
     identifier MyEnum enumAttr
 }
 
+entity EntityWithIdentifiersContainer {
+    field EntityWithIdentifiers[] entiiesWithIdentifiers
+}
+
+
 entity EntityWithPrimitiveDefaults {
     field Integer integerAttr = 1
     field Scaled scaledAttr = 2.34

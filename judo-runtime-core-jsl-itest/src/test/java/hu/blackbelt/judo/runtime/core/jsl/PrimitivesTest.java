@@ -1,5 +1,6 @@
 package hu.blackbelt.judo.runtime.core.jsl;
 
+import com.google.common.collect.ImmutableList;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
@@ -38,6 +39,9 @@ public class PrimitivesTest {
 
     @Inject
     EntityWithIdentifiers.EntityWithIdentifiersDao entityWithIdentifiersDao;
+
+    @Inject
+    EntityWithIdentifiersContainer.EntityWithIdentifiersContainerDao entityWithIdentifiersContainerDao;
 
     @Inject
     EntityWithPrimitiveDefaults.EntityWithPrimitiveDefaultsDao entityWithPrimitiveDefaultsDao;
@@ -168,6 +172,24 @@ public class PrimitivesTest {
         assertTrue(thrown.getMessage().contains("boolAttr=true"));
         assertTrue(thrown.getMessage().contains("dateAttr=2022-07-25"));
 
+
+        thrown = assertThrows(
+                IllegalStateException.class,
+                () ->
+                        entityWithIdentifiersContainerDao.create(
+                                EntityWithIdentifiersContainer.builder()
+                                        .withEntiiesWithIdentifiers(ImmutableList.of(
+                                                EntityWithIdentifiers.builder()
+                                                        .withIntegerAttr(2)
+                                                        .build(),
+                                                EntityWithIdentifiers.builder()
+                                                        .withIntegerAttr(2)
+                                                        .build()
+                                        ))
+                                        .build()));
+
+        assertTrue(thrown.getMessage().startsWith("Identifier uniqueness violation(s): "));
+        assertTrue(thrown.getMessage().contains("integerAttr=2"));
     }
 
     @Test
