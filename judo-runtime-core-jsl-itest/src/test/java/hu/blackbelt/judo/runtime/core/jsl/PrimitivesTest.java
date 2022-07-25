@@ -293,7 +293,7 @@ public class PrimitivesTest {
         assertEquals(Optional.of(true), entityWithDefaultExpressions.getBoolAttr());
         assertEquals(Optional.of(LocalDate.now()), entityWithDefaultExpressions.getDateAttr());
         assertEquals(OffsetDateTime.now().toString().substring(1, 10),
-                entityWithDefaultExpressions.getTimestampAttr().get().toString().substring(1, 10));
+        entityWithDefaultExpressions.getTimestampAttr().get().toString().substring(1, 10));
         // assertEquals(Optional.of(LocalTime.parse("23:59:59")), entityWithDefaultExpressions.getTimeAttr());
     }
 
@@ -305,5 +305,58 @@ public class PrimitivesTest {
                         .withRegexAttr("hello-bello")
                         .build()));
 
+        assertThat(thrown.getValidationResults(), containsInAnyOrder(allOf(
+                hasProperty("code", equalTo("PATTERN_VALIDATION_FAILED")),
+                hasProperty("location", equalTo("regexAttr")))
+        ));
+    }
+
+    @Test
+    public void testPrecisionValidatorFailsForInvalidInput() {
+        ValidationException thrown = assertThrows(
+                ValidationException.class,
+                () -> myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
+                        .withIntegerAttr(1234567890)
+                        .build()));
+
+        assertThat(thrown.getValidationResults(), containsInAnyOrder(allOf(
+                hasProperty("code", equalTo("PRECISION_VALIDATION_FAILED")),
+                hasProperty("location", equalTo("integerAttr")))
+        ));
+    }
+
+    @Test
+    public void testScaleValidatorFailsForInvalidInput() {
+        ValidationException thrown = assertThrows(
+                ValidationException.class,
+                () -> myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
+                        .withScaledAttr(123456.123)
+                        .build()));
+
+        assertThat(thrown.getValidationResults(), containsInAnyOrder(allOf(
+                hasProperty("code", equalTo("SCALE_VALIDATION_FAILED")),
+                hasProperty("location", equalTo("scaledAttr")))
+        ));
+    }
+
+    @Test
+    public void testMaxLengthValidatorFailsForInvalidInput() {
+        String lipsum = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." +
+                "Imperdiet sed euismod nisi porta lorem mollis." +
+                "Ac ut consequat semper viverra." +
+                "Ultrices mi tempus imperdiet nulla malesuada pellentesque elit." +
+                "Venenatis lectus magna fringilla urna porttitor rhoncus. In vitae turpis massa sed." +
+                "Congue mauris rhoncus aenean vel elit. ";
+
+        ValidationException thrown = assertThrows(
+                ValidationException.class,
+                () -> myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
+                        .withStringAttr(lipsum)
+                        .build()));
+
+        assertThat(thrown.getValidationResults(), containsInAnyOrder(allOf(
+                hasProperty("code", equalTo("MAX_LENGTH_VALIDATION_FAILED")),
+                hasProperty("location", equalTo("stringAttr")))
+        ));
     }
 }
