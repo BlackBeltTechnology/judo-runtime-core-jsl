@@ -1,5 +1,6 @@
 package hu.blackbelt.judo.runtime.core.jsl;
 
+import com.google.common.collect.ImmutableList;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
@@ -38,6 +39,9 @@ public class PrimitivesTest {
 
     @Inject
     EntityWithIdentifiers.EntityWithIdentifiersDao entityWithIdentifiersDao;
+
+    @Inject
+    EntityWithIdentifiersContainer.EntityWithIdentifiersContainerDao entityWithIdentifiersContainerDao;
 
     @Inject
     EntityWithPrimitiveDefaults.EntityWithPrimitiveDefaultsDao entityWithPrimitiveDefaultsDao;
@@ -138,15 +142,54 @@ public class PrimitivesTest {
                 hasProperty("location", equalTo(attrName)));
     }
 
-    // FIXME JNG-3841
     @Test
-    @Disabled
     public void testIdentifierFieldsAreUnique() {
-        EntityWithIdentifiers ent1 = entityWithIdentifiersDao.create(EntityWithIdentifiers.builder().withIntegerAttr(1).build());
-        EntityWithIdentifiers ent2 = entityWithIdentifiersDao.create(EntityWithIdentifiers.builder().withIntegerAttr(1).build());
+        LocalDate now = LocalDate.now();
+        EntityWithIdentifiers ent1 = entityWithIdentifiersDao.create(EntityWithIdentifiers.builder()
+                .withIntegerAttr(1)
+                .withBoolAttr(true)
+                .withDateAttr(now)
+                .withEnumAttr(MyEnum.Bombastic)
+                .withStringAttr("blabla")
+                .build());
 
         assertEquals(1, ent1.getIntegerAttr().get());
-        assertEquals(1, ent2.getIntegerAttr().get());
+
+        IllegalStateException thrown = assertThrows(
+                IllegalStateException.class,
+                () -> entityWithIdentifiersDao.create(EntityWithIdentifiers.builder()
+                        .withIntegerAttr(1)
+                        .withBoolAttr(true)
+                        .withDateAttr(now)
+                        .withEnumAttr(MyEnum.Bombastic)
+                        .withStringAttr("blabla")
+                        .build()));
+
+        assertTrue(thrown.getMessage().startsWith("Identifier uniqueness violation(s): "));
+        assertTrue(thrown.getMessage().contains("stringAttr=blabla"));
+        assertTrue(thrown.getMessage().contains("enumAttr=1"));
+        assertTrue(thrown.getMessage().contains("integerAttr=1"));
+        assertTrue(thrown.getMessage().contains("boolAttr=true"));
+        assertTrue(thrown.getMessage().contains("dateAttr=2022-07-25"));
+
+
+        thrown = assertThrows(
+                IllegalStateException.class,
+                () ->
+                        entityWithIdentifiersContainerDao.create(
+                                EntityWithIdentifiersContainer.builder()
+                                        .withEntiiesWithIdentifiers(ImmutableList.of(
+                                                EntityWithIdentifiers.builder()
+                                                        .withIntegerAttr(2)
+                                                        .build(),
+                                                EntityWithIdentifiers.builder()
+                                                        .withIntegerAttr(2)
+                                                        .build()
+                                        ))
+                                        .build()));
+
+        assertTrue(thrown.getMessage().startsWith("Identifier uniqueness violation(s): "));
+        assertTrue(thrown.getMessage().contains("integerAttr=2"));
     }
 
     @Test
