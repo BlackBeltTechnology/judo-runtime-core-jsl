@@ -170,7 +170,7 @@ public class PrimitivesTest {
         assertTrue(thrown.getMessage().contains("enumAttr=1"));
         assertTrue(thrown.getMessage().contains("integerAttr=1"));
         assertTrue(thrown.getMessage().contains("boolAttr=true"));
-        assertTrue(thrown.getMessage().contains("dateAttr=2022-07-25"));
+        assertTrue(thrown.getMessage().contains("dateAttr=" + now.toString()));
 
 
         thrown = assertThrows(
