@@ -1,6 +1,7 @@
 model Operators
 
 type numeric Integer(precision = 3, scale = 0)
+type numeric BigInteger(precision = 10, scale = 0)
 type numeric Scaled(precision = 6, scale = 3)
 type string String(max-length = 128)
 type boolean Boolean
@@ -13,7 +14,7 @@ entity DefaultOperators {
     field Integer rounded = 1.23!round()
     field Integer addition = 5 + 2
     field Integer subtraction = 5 - 2
-    // field Integer pow = 5 ^ 2 TODO: JNG-3879
+    field Integer pow = 5 ^ 2
     field Integer multiplication = 5 * 2
     field Scaled division = 5 / 2
     field Integer divisionWhole = 5 div 2
@@ -47,7 +48,7 @@ entity DerivedOperators {
     derived Integer rounded => self.source.score!round()
     derived Integer addition => self.source.age + 2
     derived Integer subtraction => self.source.age - 2
-    // derived Integer pow => self.source.age ^ 2 FIXME JNG-3879
+    derived BigInteger pow => self.source.age ^ 2
     derived Integer multiplication => self.source.age * 2
     derived Integer division => self.source.age / 2
     derived Integer divisionWhole => self.source.age div 2
