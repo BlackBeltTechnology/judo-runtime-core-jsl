@@ -8,10 +8,7 @@ import hu.blackbelt.judo.runtime.core.bootstrap.JudoModelLoader;
 import hu.blackbelt.judo.runtime.core.bootstrap.dao.rdbms.hsqldb.JudoHsqldbModules;
 import hu.blackbelt.judo.runtime.core.dao.rdbms.hsqldb.HsqldbDialect;
 import hu.blackbelt.judo.runtime.core.jsl.itest.functions.guice.functions.FunctionsDaoModules;
-import hu.blackbelt.judo.runtime.core.jsl.itest.functions.sdk.functions.functions.AnyTypeFunctions;
-import hu.blackbelt.judo.runtime.core.jsl.itest.functions.sdk.functions.functions.Entity;
-import hu.blackbelt.judo.runtime.core.jsl.itest.functions.sdk.functions.functions.EntityWithPrimitiveDefaults;
-import hu.blackbelt.judo.runtime.core.jsl.itest.functions.sdk.functions.functions.StringFunctions;
+import hu.blackbelt.judo.runtime.core.jsl.itest.functions.sdk.functions.functions.*;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -37,6 +34,12 @@ public class FunctionsTest {
 
     @Inject
     StringFunctions.StringFunctionsDao stringFunctionsDao;
+
+    @Inject
+    NumericFunctions.NumericFunctionsDao numericFunctionsDao;
+
+    @Inject
+    BooleanFunctions.BooleanFunctionsDao booleanFunctionsDao;
 
     @BeforeEach
     void init() throws Exception {
@@ -103,5 +106,25 @@ public class FunctionsTest {
 
         assertEquals(Optional.of(5), str.getLength());
         assertEquals(Optional.of("apple"), str.getTrim());
+    }
+
+    @Test
+    public void testNumerics() {
+        NumericFunctions num = numericFunctionsDao.create(NumericFunctions.builder().build());
+
+        // TODO: JNG-3898 add tests for round() once bugs are fixed
+        // TODO: JNG-3797 add tests for floor(), ceil(), abs() once bugs are fixed
+
+        assertEquals(Optional.of("1"), num.getIntAsString());
+        assertEquals(Optional.of("123456.789"), num.getScaledAsString());
+    }
+
+    @Test
+    public void testBooleans() {
+        BooleanFunctions bool = booleanFunctionsDao.create(BooleanFunctions.builder().build());
+
+        assertEquals(Optional.of("TRUE"), bool.getOwnBoolAsString());
+        assertEquals(Optional.of("TRUE"), bool.getTrueAsString());
+        assertEquals(Optional.of("FALSE"), bool.getFalseAsString());
     }
 }

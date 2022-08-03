@@ -94,3 +94,43 @@ entity StringFunctions {
     // derived String ltrim => " apple "!ltrim() FIXME: JNG-3897
     // derived String rtrim => " apple "!rtrim() FIXME: JNG-3897
 }
+
+entity NumericFunctions {
+    field Integer int = 1
+
+    /* FIXME: JNG-3898
+    derived Integer roundInt => self.int!round()
+    derived Integer roundInt => 1!round()
+    derived Integer roundScaled1 => 1.23!round()
+    derived Integer roundScaled2 => 7.89!round()
+    derived Integer roundScaled3 => 2.50!round()
+    derived Integer roundScaledNegative1 => -2.5!round()
+    derived Integer roundScaledNegative2 => -1.23!round()
+    derived Integer roundScaledNegative3 => -7.89!round()
+    */
+
+    /* FIXME: JNG-3797
+    derived Integer floorInt => 1!floor()
+    derived Integer floorScaled1 => 2.9!floor()
+    derived Integer floorScaled2 => -2.9!floor()
+
+    derived Integer ceilInt => 1!ceil()
+    derived Integer ceilScaled1 => 2.9!ceil()
+    derived Integer ceilScaled2 => -2.9!ceil()
+
+    derived Integer absInt => 1!abs()
+    derived Scaled absScaled1 => 2.9!abs()
+    derived Integer absScaled2 => -3!abs()
+    */
+
+    derived String intAsString => 1!asString()
+    derived String scaledAsString => 123456.789!asString()
+}
+
+entity BooleanFunctions {
+    field Boolean bool = true
+
+    derived String ownBoolAsString => self.bool!asString()
+    derived String trueAsString => true!asString()
+    derived String falseAsString => false!asString()
+}
