@@ -42,7 +42,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Slf4j
 class SalesModelTest {
@@ -198,6 +199,17 @@ class SalesModelTest {
         assertEquals(Optional.empty(), contract2.getDetail());
         assertEquals(2, staticNavigationHost.getContracts().size());
         // assertEquals(1, details.size()); FIXME: JNG-3880
+    }
+
+    // FIXME: JNG-3894
+    public void testErrorRequiredFieldValidation() {
+        IllegalArgumentException thrown = assertThrows(
+                IllegalArgumentException.class,
+                () -> MyError.builder().build()
+        );
+
+        assertTrue(thrown.getMessage().contains("missing mandatory attribute"));
+        assertTrue(thrown.getMessage().contains("name: code"));
     }
 
     @Test
