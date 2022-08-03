@@ -41,6 +41,9 @@ public class FunctionsTest {
     @Inject
     BooleanFunctions.BooleanFunctionsDao booleanFunctionsDao;
 
+    @Inject
+    DateFunctions.DateFunctionsDao dateFunctionsDao;
+
     @BeforeEach
     void init() throws Exception {
         JudoModelLoader modelHolder = JudoModelLoader.
@@ -126,5 +129,17 @@ public class FunctionsTest {
         assertEquals(Optional.of("TRUE"), bool.getOwnBoolAsString());
         assertEquals(Optional.of("TRUE"), bool.getTrueAsString());
         assertEquals(Optional.of("FALSE"), bool.getFalseAsString());
+    }
+
+    @Test
+    public void testDates() {
+        DateFunctions date = dateFunctionsDao.create(DateFunctions.builder().build());
+
+        assertEquals(Optional.of("2022-07-11"), date.getOwnDateAsString());
+        assertEquals(Optional.of("2021-03-02"), date.getDateAsString());
+        assertEquals(Optional.of(2021), date.getYear());
+        assertEquals(Optional.of(3), date.getMonth());
+        assertEquals(Optional.of(2), date.getDay());
+        // TODO: add missing test after JNG-3899 is fixed
     }
 }

@@ -134,3 +134,14 @@ entity BooleanFunctions {
     derived String trueAsString => true!asString()
     derived String falseAsString => false!asString()
 }
+
+entity DateFunctions {
+    field Date date = `2022-07-11`
+
+    derived String ownDateAsString => self.date!asString()
+    derived String dateAsString => `2021-03-02`!asString()
+    derived Integer year => `2021-03-02`!year()
+    derived Integer month => `2021-03-02`!month()
+    derived Integer day => `2021-03-02`!day()
+    // derived Date of => Date!of(2011,1,28) FIXME: JNG-3899
+}
