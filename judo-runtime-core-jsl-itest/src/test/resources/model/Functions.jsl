@@ -9,6 +9,12 @@ type timestamp Timestamp
 type time Time
 type binary Binary
 
+enum MyEnum {
+    Atomic = 0
+    Bombastic = 1
+    Crazy = 2
+}
+
 entity Entity {
     field Integer integerAttr
     field Scaled scaledAttr
@@ -180,4 +186,11 @@ entity TimestampFunctions {
     derived Timestamp plusMonths => `2019-07-18T01:11:12Z`!plusMonths(1)
     derived Timestamp plusYears => `2019-07-18T01:11:12Z`!plusYears(1)
     */
+}
+
+entity EnumFunctions {
+    field MyEnum enum = MyEnum#Atomic
+
+    derived String ownEnumAsString => self.enum!asString()
+    // derived String enumAsString => MyEnum#Atomic!asString() FIXME: JNG-3904
 }

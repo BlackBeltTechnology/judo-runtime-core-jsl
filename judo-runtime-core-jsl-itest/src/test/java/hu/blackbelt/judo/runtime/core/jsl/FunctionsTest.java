@@ -50,6 +50,9 @@ public class FunctionsTest {
     @Inject
     TimestampFunctions.TimestampFunctionsDao timestampFunctionsDao;
 
+    @Inject
+    EnumFunctions.EnumFunctionsDao enumFunctionsDao;
+
     @BeforeEach
     void init() throws Exception {
         JudoModelLoader modelHolder = JudoModelLoader.
@@ -169,5 +172,13 @@ public class FunctionsTest {
         // assertEquals(Optional.of("2019-07-18T01:11:12Z"), timestamp.getOwnTimestamp2AsString()); FIXME: JNG-3902
         // TODO: add missing test after JNG-3902 is fixed
         // TODO: add missing test after JNG-3903 is fixed
+    }
+
+    @Test
+    public void testEnum() {
+        EnumFunctions myEnum = enumFunctionsDao.create(EnumFunctions.builder().build());
+
+        // assertEquals(Optional.of("Atomic"), myEnum.getOwnEnumAsString()); FIXME: JNG-3905
+        // TODO: add missing test after JNG-3904 is fixed
     }
 }
