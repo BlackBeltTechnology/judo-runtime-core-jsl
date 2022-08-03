@@ -56,6 +56,7 @@
                                 <source>${project.basedir}/target/generated-sources/model/sdk/AssociationRelationships</source>
                                 <source>${project.basedir}/target/generated-sources/model/sdk/CompositionRelationships</source>
                                 <source>${project.basedir}/target/generated-sources/model/sdk/Operators</source>
+                                <source>${project.basedir}/target/generated-sources/model/sdk/Functions</source>
                             </sources>
                         </configuration> 
                    </execution>
