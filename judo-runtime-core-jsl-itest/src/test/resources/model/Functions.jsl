@@ -3,7 +3,6 @@ model Functions
 type numeric Integer(precision = 9, scale = 0)
 type numeric Scaled(precision = 9, scale = 2)
 type string String(max-length = 128)
-type string PhoneNumber(max-length = 32, regex = "^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]\\d{3}[\\s.-]\\d{4}$")   // escape sequencing does not work in regexp!!!!
 type boolean Boolean
 type date Date
 type timestamp Timestamp
@@ -14,17 +13,16 @@ entity Entity {
     field Integer integerAttr
     field Scaled scaledAttr
     field String stringAttr
-    field PhoneNumber regexAttr
     field Boolean boolAttr
     field Date dateAttr
     field Timestamp timestampAttr
+    field Time timeAttr
 }
 
 entity EntityWithPrimitiveDefaults {
     field Integer integerAttr = 1
     field Scaled scaledAttr = 2.34
     field String stringAttr = "test"
-    field PhoneNumber regexAttr = "+36-1-123-123"
     field Boolean boolAttr = true
     field Date dateAttr = `2022-07-11`
     field Timestamp timestampAttr = `2022-07-11T19:09:33Z`
@@ -41,8 +39,38 @@ entity AnyTypeFunctions {
     field Entity entity
     field EntityWithPrimitiveDefaults entityWithPrimitives
 
+    derived Boolean integerIsDefinedFalse => self.entity.integerAttr!isDefined()
+    derived Boolean integerIsDefinedTrue => self.entityWithPrimitives.integerAttr!isDefined()
+    derived Boolean integerIsUnDefinedTrue => self.entity.integerAttr!isUnDefined()
+    derived Boolean integerIsUnDefinedFalse => self.entityWithPrimitives.integerAttr!isUnDefined()
+
+    derived Boolean scaledIsDefinedFalse => self.entity.scaledAttr!isDefined()
+    derived Boolean scaledIsDefinedTrue => self.entityWithPrimitives.scaledAttr!isDefined()
+    derived Boolean scaledIsUnDefinedTrue => self.entity.scaledAttr!isUnDefined()
+    derived Boolean scaledIsUnDefinedFalse => self.entityWithPrimitives.scaledAttr!isUnDefined()
+
     derived Boolean stringIsDefinedFalse => self.entity.stringAttr!isDefined()
     derived Boolean stringIsDefinedTrue => self.entityWithPrimitives.stringAttr!isDefined()
-    derived Boolean stringIsUnDefinedTrue => self.entity.stringAttr!isDefined()
-    derived Boolean stringIsUnDefinedFalse => self.entityWithPrimitives.stringAttr!isDefined()
+    derived Boolean stringIsUnDefinedTrue => self.entity.stringAttr!isUnDefined()
+    derived Boolean stringIsUnDefinedFalse => self.entityWithPrimitives.stringAttr!isUnDefined()
+
+    derived Boolean boolIsDefinedFalse => self.entity.boolAttr!isDefined()
+    derived Boolean boolIsDefinedTrue => self.entityWithPrimitives.boolAttr!isDefined()
+    derived Boolean boolIsUnDefinedTrue => self.entity.boolAttr!isUnDefined()
+    derived Boolean boolIsUnDefinedFalse => self.entityWithPrimitives.boolAttr!isUnDefined()
+
+    derived Boolean dateIsDefinedFalse => self.entity.dateAttr!isDefined()
+    derived Boolean dateIsDefinedTrue => self.entityWithPrimitives.dateAttr!isDefined()
+    derived Boolean dateIsUnDefinedTrue => self.entity.dateAttr!isUnDefined()
+    derived Boolean dateIsUnDefinedFalse => self.entityWithPrimitives.dateAttr!isUnDefined()
+
+    derived Boolean timestampIsDefinedFalse => self.entity.timestampAttr!isDefined()
+    derived Boolean timestampIsDefinedTrue => self.entityWithPrimitives.timestampAttr!isDefined()
+    derived Boolean timestampIsUnDefinedTrue => self.entity.timestampAttr!isUnDefined()
+    derived Boolean timestampIsUnDefinedFalse => self.entityWithPrimitives.timestampAttr!isUnDefined()
+
+    derived Boolean timeIsDefinedFalse => self.entity.timeAttr!isDefined()
+    derived Boolean timeIsDefinedTrue => self.entityWithPrimitives.timeAttr!isDefined()
+    derived Boolean timeIsUnDefinedTrue => self.entity.timeAttr!isUnDefined()
+    derived Boolean timeIsUnDefinedFalse => self.entityWithPrimitives.timeAttr!isUnDefined()
 }
