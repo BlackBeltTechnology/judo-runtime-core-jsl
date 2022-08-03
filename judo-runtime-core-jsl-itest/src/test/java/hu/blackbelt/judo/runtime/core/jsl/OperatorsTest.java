@@ -44,7 +44,14 @@ public class OperatorsTest {
     void testOperatorsForDefaultValues() {
         DefaultOperators operators = defaultOperatorsDao.create(DefaultOperators.builder().build());
 
-        // TODO JNG-3877: add missing tests once bugs have been fixed
+        assertEquals(Optional.of(1), operators.getRounded());
+        assertEquals(Optional.of(7), operators.getAddition());
+        assertEquals(Optional.of(3), operators.getSubtraction());
+        assertEquals(Optional.of(25), operators.getPow());
+        assertEquals(Optional.of(10), operators.getMultiplication());
+        assertEquals(Optional.of(Float.valueOf("2.5")), operators.getDivision());
+        assertEquals(Optional.of(2), operators.getDivisionWhole());
+        assertEquals(Optional.of(1), operators.getModulo());
         assertEquals(Optional.of(false), operators.getLt());
         assertEquals(Optional.of(true), operators.getLt2());
         assertEquals(Optional.of(false), operators.getGt());
@@ -55,7 +62,9 @@ public class OperatorsTest {
         assertEquals(Optional.of(true), operators.getGte2());
         assertEquals(Optional.of(false), operators.getEq());
         assertEquals(Optional.of(true), operators.getNeq());
-        // TODO JNG-3876: add missing tests once bug has been fixed
+        assertEquals(Optional.of(1), operators.getConditional());
+        assertEquals(Optional.of(false), operators.getGroupAnd());
+        assertEquals(Optional.of(true), operators.getGroupOr());
     }
 
     @Test
@@ -83,5 +92,6 @@ public class OperatorsTest {
         assertEquals(Optional.of(true), operators.getGte2());
         assertEquals(Optional.of(false), operators.getEq());
         assertEquals(Optional.of(true), operators.getNeq());
+        assertEquals(Optional.of(1), operators.getConditional());
     }
 }
