@@ -44,6 +44,9 @@ public class FunctionsTest {
     @Inject
     DateFunctions.DateFunctionsDao dateFunctionsDao;
 
+    @Inject
+    TimeFunctions.TimeFunctionsDao timeFunctionsDao;
+
     @BeforeEach
     void init() throws Exception {
         JudoModelLoader modelHolder = JudoModelLoader.
@@ -141,5 +144,17 @@ public class FunctionsTest {
         assertEquals(Optional.of(3), date.getMonth());
         assertEquals(Optional.of(2), date.getDay());
         // TODO: add missing test after JNG-3899 is fixed
+    }
+
+    @Test
+    public void testTime() {
+        TimeFunctions time = timeFunctionsDao.create(TimeFunctions.builder().build());
+
+        // assertEquals(Optional.of("23:15:59"), time.getOwnTimeAsString()); FIXME: JNG-3900
+        // assertEquals(Optional.of("23:15:59"), time.getTimeAsString()); FIXME: JNG-3900
+        assertEquals(Optional.of(23), time.getHour());
+        assertEquals(Optional.of(15), time.getMinute());
+        assertEquals(Optional.of(59), time.getSecond());
+        // TODO: add missing test after JNG-3901 is fixed
     }
 }

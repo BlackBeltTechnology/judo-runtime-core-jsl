@@ -145,3 +145,14 @@ entity DateFunctions {
     derived Integer day => `2021-03-02`!day()
     // derived Date of => Date!of(2011,1,28) FIXME: JNG-3899
 }
+
+entity TimeFunctions {
+    field Time time = `23:15:59`
+
+    derived String ownTimeAsString => self.time!asString()
+    derived String timeAsString => `23:15:59`!asString()
+    derived Integer hour => `23:15:59`!hour()
+    derived Integer minute => `23:15:59`!minute()
+    derived Integer second => `23:15:59`!second()
+    // derived Time of => Time!of(13,45,00) FIXME: JNG-3901
+}
