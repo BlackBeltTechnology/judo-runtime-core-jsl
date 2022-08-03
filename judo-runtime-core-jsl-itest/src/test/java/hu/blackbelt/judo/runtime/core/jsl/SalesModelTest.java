@@ -199,4 +199,28 @@ class SalesModelTest {
         assertEquals(2, staticNavigationHost.getContracts().size());
         // assertEquals(1, details.size()); FIXME: JNG-3880
     }
+
+    @Test
+    public void testErrorInheritance() {
+        MyExtendedError error = MyExtendedError.builder()
+                .withCode(403)
+                .withExtra(101)
+                .withMsg("Hello")
+                .build();
+
+        assertEquals(403, error.getCode());
+        assertEquals(Optional.of(101), error.getExtra());
+        assertEquals(Optional.of("Hello"), error.getMsg());
+    }
+
+    // FIXME: JNG-3893
+    public void testErrorDefaultValue() {
+        MyExtendedError error = MyExtendedError.builder()
+                .withCode(403)
+                .build();
+
+        assertEquals(403, error.getCode());
+        assertEquals(Optional.of("Internal Server Error"), error.getMsg());
+        assertEquals(Optional.of(1), error.getExtra());
+    }
 }

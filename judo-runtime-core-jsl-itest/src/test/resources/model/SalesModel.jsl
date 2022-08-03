@@ -13,7 +13,7 @@ type binary Binary(mime-types = ["text/plain"], max-file-size=1 GB)
 
 error MyError {
 	field Integer code
-	field String msg
+	field String msg = "Internal Server Error"
 }
 
 error MyExtendedError extends MyError {
