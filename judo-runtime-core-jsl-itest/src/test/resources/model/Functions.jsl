@@ -74,3 +74,23 @@ entity AnyTypeFunctions {
     derived Boolean timeIsUnDefinedTrue => self.entity.timeAttr!isUnDefined()
     derived Boolean timeIsUnDefinedFalse => self.entityWithPrimitives.timeAttr!isUnDefined()
 }
+
+entity StringFunctions {
+    derived Integer length => "apple"!length()
+    // derived String first => "apple"!first(2) FIXME: JNG-3897
+    // derived String last => "apple"!last(1) FIXME: JNG-3897
+    // derived Integer position => "apple"!position("p") FIXME: JNG-3897
+    // derived String substring => "apple"!substring(2,3) FIXME: JNG-3897
+    // derived String lower => "ApPlE"!lower() FIXME: JNG-3897
+    // derived String lowerCase => "ApPlE"!lowerCase() FIXME: JNG-3897
+    // derived String upper => "ApPlE"!upper() FIXME: JNG-3897
+    // derived String upperCase => "ApPlE"!upperCase() FIXME: JNG-3897
+    // derived String capitalize => "apPlE"!capitalize() FIXME: JNG-3897
+    // derived Boolean matches => "apple"!matches(r".*pl.") FIXME: JNG-3897
+    // derived Boolean like => "apple"!like("%pl_") FIXME: JNG-3897
+    // derived Boolean ilike => "apPLe"!ilike("_pple") FIXME: JNG-3897
+    // derived String replace => "apple"!replace("le", "endix") FIXME: JNG-3897
+    derived String trim => " apple "!trim()
+    // derived String ltrim => " apple "!ltrim() FIXME: JNG-3897
+    // derived String rtrim => " apple "!rtrim() FIXME: JNG-3897
+}

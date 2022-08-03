@@ -11,7 +11,7 @@ import hu.blackbelt.judo.runtime.core.jsl.itest.functions.guice.functions.Functi
 import hu.blackbelt.judo.runtime.core.jsl.itest.functions.sdk.functions.functions.AnyTypeFunctions;
 import hu.blackbelt.judo.runtime.core.jsl.itest.functions.sdk.functions.functions.Entity;
 import hu.blackbelt.judo.runtime.core.jsl.itest.functions.sdk.functions.functions.EntityWithPrimitiveDefaults;
-import hu.blackbelt.judo.runtime.core.jsl.itest.primitives.guice.primitives.PrimitivesDaoModules;
+import hu.blackbelt.judo.runtime.core.jsl.itest.functions.sdk.functions.functions.StringFunctions;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,6 +34,9 @@ public class FunctionsTest {
     AnyTypeFunctions.AnyTypeFunctionsDao anyTypeFunctionsDao;
 
     AnyTypeFunctions anyTypeFunctions;
+
+    @Inject
+    StringFunctions.StringFunctionsDao stringFunctionsDao;
 
     @BeforeEach
     void init() throws Exception {
@@ -92,5 +95,13 @@ public class FunctionsTest {
         assertEquals(Optional.of(true), anyTypeFunctions.getTimeIsDefinedTrue());
         assertEquals(Optional.of(true), anyTypeFunctions.getTimeIsUnDefinedTrue());
         assertEquals(Optional.of(false), anyTypeFunctions.getTimeIsUnDefinedFalse());
+    }
+
+    @Test
+    public void testStrings() {
+        StringFunctions str = stringFunctionsDao.create(StringFunctions.builder().build());
+
+        assertEquals(Optional.of(5), str.getLength());
+        assertEquals(Optional.of("apple"), str.getTrim());
     }
 }
