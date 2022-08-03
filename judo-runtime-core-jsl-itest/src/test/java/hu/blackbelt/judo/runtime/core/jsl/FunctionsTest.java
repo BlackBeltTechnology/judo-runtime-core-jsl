@@ -47,6 +47,9 @@ public class FunctionsTest {
     @Inject
     TimeFunctions.TimeFunctionsDao timeFunctionsDao;
 
+    @Inject
+    TimestampFunctions.TimestampFunctionsDao timestampFunctionsDao;
+
     @BeforeEach
     void init() throws Exception {
         JudoModelLoader modelHolder = JudoModelLoader.
@@ -156,5 +159,15 @@ public class FunctionsTest {
         assertEquals(Optional.of(15), time.getMinute());
         assertEquals(Optional.of(59), time.getSecond());
         // TODO: add missing test after JNG-3901 is fixed
+    }
+
+    @Test
+    public void testTimestamp() {
+        TimestampFunctions timestamp = timestampFunctionsDao.create(TimestampFunctions.builder().build());
+
+        // assertEquals(Optional.of("2019-07-18T01:11:12+02:00"), timestamp.getOwnTimestamp1AsString()); FIXME: JNG-3902
+        // assertEquals(Optional.of("2019-07-18T01:11:12Z"), timestamp.getOwnTimestamp2AsString()); FIXME: JNG-3902
+        // TODO: add missing test after JNG-3902 is fixed
+        // TODO: add missing test after JNG-3903 is fixed
     }
 }
