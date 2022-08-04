@@ -57,6 +57,7 @@
                                 <source>${project.basedir}/target/generated-sources/model/sdk/CompositionRelationships</source>
                                 <source>${project.basedir}/target/generated-sources/model/sdk/Operators</source>
                                 <source>${project.basedir}/target/generated-sources/model/sdk/Functions</source>
+                                <source>${project.basedir}/target/generated-sources/model/sdk/FunctionsExternals</source>
                             </sources>
                         </configuration> 
                    </execution>

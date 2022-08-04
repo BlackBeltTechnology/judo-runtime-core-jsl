@@ -53,6 +53,15 @@ public class FunctionsTest {
     @Inject
     EnumFunctions.EnumFunctionsDao enumFunctionsDao;
 
+    @Inject
+    InstanceFunctions.InstanceFunctionsDao instanceFunctionsDao;
+
+    @Inject
+    Parent.ParentDao parentDao;
+
+    @Inject
+    Child.ChildDao childDao;
+
     @BeforeEach
     void init() throws Exception {
         JudoModelLoader modelHolder = JudoModelLoader.
@@ -180,5 +189,17 @@ public class FunctionsTest {
 
         // assertEquals(Optional.of("Atomic"), myEnum.getOwnEnumAsString()); FIXME: JNG-3905
         // TODO: add missing test after JNG-3904 is fixed
+    }
+
+    @Test
+    public void testInstance() {
+//        Parent parent1 = parentDao.create(Parent.builder().withName("James Webb").build());
+//        Child child1 = childDao.create(Child.builder().withName("Erika Young").withAge(11).build());
+//        InstanceFunctions instanceFunctions = instanceFunctionsDao.create(InstanceFunctions.builder()
+//                        .withParent(Parent.builder().withName("Another Person").build())
+//                        .withChild(Child.builder().withName("Another Child").withAge(31).build())
+//                        .build());
+
+
     }
 }

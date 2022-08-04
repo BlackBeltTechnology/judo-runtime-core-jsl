@@ -1,5 +1,7 @@
 model Functions
 
+import FunctionsExternals as FE
+
 type numeric Integer(precision = 9, scale = 0)
 type numeric Scaled(precision = 9, scale = 2)
 type string String(max-length = 128)
@@ -194,3 +196,47 @@ entity EnumFunctions {
     derived String ownEnumAsString => self.enum!asString()
     // derived String enumAsString => MyEnum#Atomic!asString() FIXME: JNG-3904
 }
+
+entity InstanceFunctions {
+    field String instanceField = "Hello"
+    // field FE::ExternalEntity external FIXME: JNG-3909
+    field Parent parent
+    field Child child
+
+    relation Parent[] parents
+    relation Child[] children
+
+    /* FIXME: JNG-3910
+    derived Boolean typeOfParent => self.parent!typeOf(Parent)
+    derived Boolean notTypeOfChild => self.parent!typeOf(Child)
+    derived Boolean notTypeOfOtherType => self.parent!typeOf(InstanceFunctions)
+
+    derived Boolean kindOfParent => self.parent!kindOf(Parent)
+    derived Boolean kindOfChild => self.parent!kindOf(Child)
+    derived Boolean notKindOfOtherType => self.parent!kindOf(InstanceFunctions)
+
+    derived Parent asParentType => self.parent!asType(Parent)
+    derived Child asChildType => self.parent!asType(Child)
+    derived InstanceFunctions asTypeReturnsUndefined => self.parent!asType(InstanceFunctions)
+
+    derived Boolean parentMemberOfParents => self.parent!memberOf(self.parents)
+    derived Boolean parentMemberOfChildren => self.parent!memberOf(self.children)
+    derived Boolean childMemberOfParents => self.child!memberOf(self.parents)
+    derived Boolean childMemberOfChildren => self.child!memberOf(self.children)
+    */
+}
+
+entity Parent {
+    field String name
+}
+
+entity Child extends Parent {
+    field Integer age
+    relation Parent mother
+}
+
+/* FIXME: JNG-3909
+entity ExternalChild extends FE::ExternalEntity {
+    field Integer age
+}
+*/
