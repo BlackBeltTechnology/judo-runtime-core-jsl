@@ -226,6 +226,22 @@ entity InstanceFunctions {
     */
 }
 
+entity CollectionFunctions {
+    field Parent[] parentsField
+    field Child[] childrenField
+
+    relation Parent[] parentsRelation
+    relation Child[] childrenRelation
+
+    /* TODO: JNG-3911 re-add after collection functions have been implemented
+    derived Parent[] headParentsField => self.parentsField!head(p | p.name)
+    derived Parent[] headParentsFieldDesc => self.parentsField!head(p | p.name DESC)
+
+    derived Parent[] headParentsRelation => self.parentsRelation!head(p | p.name)
+    derived Parent[] headParentsRelationDesc => self.parentsRelation!head(p | p.name DESC)
+    */
+}
+
 entity Parent {
     field String name
 }
