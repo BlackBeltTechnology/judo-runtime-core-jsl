@@ -6,6 +6,11 @@ image::https://github.com/BlackBeltTechnology/judo-runtime-core-jsl/actions/work
 
 Extends https://github.com/BlackBeltTechnology/judo-runtime-core[judo-runtime-core] by adding support for JSL input sources.
 
+== Context
+
+This project is a building block of the https://github.com/BlackBeltTechnology/judo-community[judo-community] aggregator
+project. In order to better understand how this module fits into our ecosystem, please check the corresponding documentation!
+
 == Contributing to the project
 
 Everyone is welcome to contribute to JUDO! As a starter, please read the corresponding link:CONTRIBUTING.adoc[CONTRIBUTING] guide for details!
