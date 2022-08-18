@@ -220,7 +220,7 @@ class SalesModelTest {
                 .withMsg("Hello")
                 .build();
 
-        assertEquals(403, error.getCode());
+        assertEquals(Optional.of(403), error.getCode());
         assertEquals(Optional.of(101), error.getExtra());
         assertEquals(Optional.of("Hello"), error.getMsg());
     }

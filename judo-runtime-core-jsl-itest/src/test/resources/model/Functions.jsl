@@ -44,42 +44,42 @@ entity Functions {
 
 FIXME: use "extends Functions" once bug is fixed */
 entity AnyTypeFunctions {
-    field Entity entity
+    field Entity `entity`
     field EntityWithPrimitiveDefaults entityWithPrimitives
 
-    derived Boolean integerIsDefinedFalse => self.entity.integerAttr!isDefined()
+    derived Boolean integerIsDefinedFalse => self.`entity`.integerAttr!isDefined()
     derived Boolean integerIsDefinedTrue => self.entityWithPrimitives.integerAttr!isDefined()
-    derived Boolean integerIsUnDefinedTrue => self.entity.integerAttr!isUnDefined()
+    derived Boolean integerIsUnDefinedTrue => self.`entity`.integerAttr!isUnDefined()
     derived Boolean integerIsUnDefinedFalse => self.entityWithPrimitives.integerAttr!isUnDefined()
 
-    derived Boolean scaledIsDefinedFalse => self.entity.scaledAttr!isDefined()
+    derived Boolean scaledIsDefinedFalse => self.`entity`.scaledAttr!isDefined()
     derived Boolean scaledIsDefinedTrue => self.entityWithPrimitives.scaledAttr!isDefined()
-    derived Boolean scaledIsUnDefinedTrue => self.entity.scaledAttr!isUnDefined()
+    derived Boolean scaledIsUnDefinedTrue => self.`entity`.scaledAttr!isUnDefined()
     derived Boolean scaledIsUnDefinedFalse => self.entityWithPrimitives.scaledAttr!isUnDefined()
 
-    derived Boolean stringIsDefinedFalse => self.entity.stringAttr!isDefined()
+    derived Boolean stringIsDefinedFalse => self.`entity`.stringAttr!isDefined()
     derived Boolean stringIsDefinedTrue => self.entityWithPrimitives.stringAttr!isDefined()
-    derived Boolean stringIsUnDefinedTrue => self.entity.stringAttr!isUnDefined()
+    derived Boolean stringIsUnDefinedTrue => self.`entity`.stringAttr!isUnDefined()
     derived Boolean stringIsUnDefinedFalse => self.entityWithPrimitives.stringAttr!isUnDefined()
 
-    derived Boolean boolIsDefinedFalse => self.entity.boolAttr!isDefined()
+    derived Boolean boolIsDefinedFalse => self.`entity`.boolAttr!isDefined()
     derived Boolean boolIsDefinedTrue => self.entityWithPrimitives.boolAttr!isDefined()
-    derived Boolean boolIsUnDefinedTrue => self.entity.boolAttr!isUnDefined()
+    derived Boolean boolIsUnDefinedTrue => self.`entity`.boolAttr!isUnDefined()
     derived Boolean boolIsUnDefinedFalse => self.entityWithPrimitives.boolAttr!isUnDefined()
 
-    derived Boolean dateIsDefinedFalse => self.entity.dateAttr!isDefined()
+    derived Boolean dateIsDefinedFalse => self.`entity`.dateAttr!isDefined()
     derived Boolean dateIsDefinedTrue => self.entityWithPrimitives.dateAttr!isDefined()
-    derived Boolean dateIsUnDefinedTrue => self.entity.dateAttr!isUnDefined()
+    derived Boolean dateIsUnDefinedTrue => self.`entity`.dateAttr!isUnDefined()
     derived Boolean dateIsUnDefinedFalse => self.entityWithPrimitives.dateAttr!isUnDefined()
 
-    derived Boolean timestampIsDefinedFalse => self.entity.timestampAttr!isDefined()
+    derived Boolean timestampIsDefinedFalse => self.`entity`.timestampAttr!isDefined()
     derived Boolean timestampIsDefinedTrue => self.entityWithPrimitives.timestampAttr!isDefined()
-    derived Boolean timestampIsUnDefinedTrue => self.entity.timestampAttr!isUnDefined()
+    derived Boolean timestampIsUnDefinedTrue => self.`entity`.timestampAttr!isUnDefined()
     derived Boolean timestampIsUnDefinedFalse => self.entityWithPrimitives.timestampAttr!isUnDefined()
 
-    derived Boolean timeIsDefinedFalse => self.entity.timeAttr!isDefined()
+    derived Boolean timeIsDefinedFalse => self.`entity`.timeAttr!isDefined()
     derived Boolean timeIsDefinedTrue => self.entityWithPrimitives.timeAttr!isDefined()
-    derived Boolean timeIsUnDefinedTrue => self.entity.timeAttr!isUnDefined()
+    derived Boolean timeIsUnDefinedTrue => self.`entity`.timeAttr!isUnDefined()
     derived Boolean timeIsUnDefinedFalse => self.entityWithPrimitives.timeAttr!isUnDefined()
 }
 
@@ -144,9 +144,9 @@ entity BooleanFunctions {
 }
 
 entity DateFunctions {
-    field Date date = `2022-07-11`
+    field Date `date` = `2022-07-11`
 
-    derived String ownDateAsString => self.date!asString()
+    derived String ownDateAsString => self.`date`!asString()
     derived String dateAsString => `2021-03-02`!asString()
     derived Integer year => `2021-03-02`!year()
     derived Integer month => `2021-03-02`!month()
@@ -155,9 +155,9 @@ entity DateFunctions {
 }
 
 entity TimeFunctions {
-    field Time time = `23:15:59`
+    field Time `time` = `23:15:59`
 
-    derived String ownTimeAsString => self.time!asString()
+    derived String ownTimeAsString => self.`time`!asString()
     derived String timeAsString => `23:15:59`!asString()
     derived Integer hour => `23:15:59`!hour()
     derived Integer minute => `23:15:59`!minute()
@@ -191,9 +191,9 @@ entity TimestampFunctions {
 }
 
 entity EnumFunctions {
-    field MyEnum enum = MyEnum#Atomic
+    field MyEnum `enum` = MyEnum#Atomic
 
-    derived String ownEnumAsString => self.enum!asString()
+    derived String ownEnumAsString => self.`enum`!asString()
     // derived String enumAsString => MyEnum#Atomic!asString() FIXME: JNG-3904
 }
 
