@@ -193,12 +193,17 @@ class SalesModelTest {
 
         Optional<ContractsAggregator> fetched = contractsAggregatorDao.getById(staticNavigationHost.get__identifier());
 
-        Collection<ContractDetail> details = fetched.get().getContractDetails();
+        // Collection<ContractDetail> details = fetched.get().getContractDetails() - derived relations are not embedded
+        Collection<ContractDetail> details = contractsAggregatorDao.getContractDetails(fetched.get());
 
         assertEquals(Optional.of("Hello"), contract1.getDetail().get().getDetails());
         assertEquals(Optional.empty(), contract2.getDetail());
-        assertEquals(2, staticNavigationHost.getContracts().size());
-        // assertEquals(1, details.size()); FIXME: JNG-3880
+
+        // Collection<Contract> contracts = contractsAggregatorDao.getContracts(fetched.get()) - derived relations are not embedded
+        Collection<Contract> contracts = contractsAggregatorDao.getContracts(fetched.get());
+
+        assertEquals(2, contracts.size());
+        assertEquals(1, details.size());
     }
 
     // FIXME: JNG-3894

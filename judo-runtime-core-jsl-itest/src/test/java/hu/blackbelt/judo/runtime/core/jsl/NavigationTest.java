@@ -70,10 +70,6 @@ class NavigationTest {
         List<C> cList = aDao.getClist(a);
         assertEquals(1, cList.size());
 
-        // The derived list is embedded by default in DTO
-        a = aDao.getById(a.get__identifier()).get();
-        assertEquals(1, a.getClist().size());
-
     }
 }
 
