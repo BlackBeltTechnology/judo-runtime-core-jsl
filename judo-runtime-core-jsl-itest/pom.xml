@@ -59,6 +59,7 @@
                                 <source>${project.basedir}/target/generated-sources/model/sdk/Functions</source>
                                 <source>${project.basedir}/target/generated-sources/model/sdk/FunctionsExternals</source>
                                 <source>${project.basedir}/target/generated-sources/model/sdk/NavigationTest</source>
+                                <source>${project.basedir}/target/generated-sources/model/sdk/ContainerDerived</source>
                             </sources>
                         </configuration> 
                    </execution>

@@ -1,0 +1,8 @@
+model test
+entity A {
+    field B b
+}
+
+entity B {
+    derived A a => self!container(A)
+}
