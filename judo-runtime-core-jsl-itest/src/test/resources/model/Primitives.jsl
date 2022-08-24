@@ -8,7 +8,7 @@ type boolean Boolean
 type date Date
 type timestamp Timestamp
 type time Time
-type binary Binary
+type binary Binary(mime-types = ["text/plain"], max-file-size=1 GB)
 
 enum MyEnum {
     Atomic = 0
