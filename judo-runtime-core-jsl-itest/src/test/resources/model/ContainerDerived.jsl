@@ -4,5 +4,5 @@ entity A {
 }
 
 entity B {
-    derived A a => self!container(A)
+//    derived A a => self!container(A)
 }
