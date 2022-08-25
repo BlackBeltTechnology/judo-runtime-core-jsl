@@ -1,0 +1,13 @@
+model NavigationTest
+
+entity A {
+    relation B[] blist
+    derived C[] clist => self.blist.c
+}
+
+entity B {
+    relation C c
+}
+
+entity C {
+}

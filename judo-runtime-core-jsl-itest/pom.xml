@@ -28,7 +28,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <destination>${basedir}/target/test-classes/model</destination>
+                    <destination>${basedir}/target/generated-sources/model</destination>
                     <sources>${basedir}/src/test/resources/model</sources>
                     <sdkPackagePrefix>hu.blackbelt.judo.runtime.core.jsl.itest</sdkPackagePrefix>
                     <generateSdkGuice>true</generateSdkGuice>
@@ -48,13 +48,18 @@
                         </goals>
                         <configuration>
                             <sources>
-                                <source>${project.basedir}/target/test-classes/model/sdk/SalesModel</source>
-                                <source>${project.basedir}/target/test-classes/model/sdk/SalesModel2</source>
-                                <source>${project.basedir}/target/test-classes/model/sdk/SalesModel3</source>
-                                <source>${project.basedir}/target/test-classes/model/sdk/SalesModelContract</source>
-                                <source>${project.basedir}/target/test-classes/model/sdk/Primitives</source>
-                                <source>${project.basedir}/target/test-classes/model/sdk/AssociationRelationships</source>
-                                <source>${project.basedir}/target/test-classes/model/sdk/CompositionRelationships</source>
+                                <source>${project.basedir}/target/generated-sources/model/sdk/SalesModel</source>
+                                <source>${project.basedir}/target/generated-sources/model/sdk/SalesModel2</source>
+                                <source>${project.basedir}/target/generated-sources/model/sdk/SalesModel3</source>
+                                <source>${project.basedir}/target/generated-sources/model/sdk/SalesModelContract</source>
+                                <source>${project.basedir}/target/generated-sources/model/sdk/Primitives</source>
+                                <source>${project.basedir}/target/generated-sources/model/sdk/AssociationRelationships</source>
+                                <source>${project.basedir}/target/generated-sources/model/sdk/CompositionRelationships</source>
+                                <source>${project.basedir}/target/generated-sources/model/sdk/Operators</source>
+                                <source>${project.basedir}/target/generated-sources/model/sdk/Functions</source>
+                                <source>${project.basedir}/target/generated-sources/model/sdk/FunctionsExternals</source>
+                                <source>${project.basedir}/target/generated-sources/model/sdk/NavigationTest</source>
+                                <source>${project.basedir}/target/generated-sources/model/sdk/ContainerDerived</source>
                             </sources>
                         </configuration> 
                    </execution>
@@ -67,7 +72,7 @@
                         <configuration>
                             <resources>
                                 <resource>
-                                    <directory>${project.basedir}/target/model</directory>
+                                    <directory>${project.basedir}/target/generated-sources/model</directory>
                                     <targetPath>model</targetPath>
                                 </resource>
                             </resources>
