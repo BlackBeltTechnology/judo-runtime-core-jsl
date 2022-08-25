@@ -28,11 +28,9 @@ import hu.blackbelt.judo.runtime.core.bootstrap.JudoModelLoader;
 import hu.blackbelt.judo.runtime.core.bootstrap.dao.rdbms.hsqldb.JudoHsqldbModules;
 import hu.blackbelt.judo.runtime.core.dao.rdbms.hsqldb.HsqldbDialect;
 import hu.blackbelt.judo.runtime.core.jsl.itest.salesmodel.guice.salesmodel.SalesModelDaoModules;
-import hu.blackbelt.judo.runtime.core.jsl.itest.salesmodel.sdk.salesmodel.salesmodel.Lead;
-import hu.blackbelt.judo.runtime.core.jsl.itest.salesmodel.sdk.salesmodel.salesmodel.Person;
-import hu.blackbelt.judo.runtime.core.jsl.itest.salesmodel.sdk.salesmodel.salesmodel.SalesPerson;
-import hu.blackbelt.judo.runtime.core.jsl.itest.salesmodel.sdk.salesmodel.salesmodel._SalesPerson_leadsOver_Parameters;
+import hu.blackbelt.judo.runtime.core.jsl.itest.salesmodel.sdk.salesmodel.salesmodel.*;
 import hu.blackbelt.judo.runtime.core.jsl.itest.salesmodel.sdk.salesmodel.salesmodelcontract.Contract;
+import hu.blackbelt.judo.runtime.core.jsl.itest.salesmodel.sdk.salesmodel.salesmodelcontract.ContractDetail;
 import hu.blackbelt.judo.sdk.query.NumberFilter;
 import hu.blackbelt.judo.sdk.query.StringFilter;
 import lombok.extern.slf4j.Slf4j;
@@ -40,10 +38,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Slf4j
 class SalesModelTest {
@@ -61,6 +61,9 @@ class SalesModelTest {
 
     @Inject
     Contract.ContractDao contractDao;
+
+    @Inject
+    ContractsAggregator.ContractsAggregatorDao contractsAggregatorDao;
 
     @BeforeEach
     void init() throws Exception {
@@ -137,6 +140,10 @@ class SalesModelTest {
 
         createdSalesPerson = salesPersonDao.getById(createdSalesPerson.get__identifier()).get();
         assertEquals(Optional.of(2), createdSalesPerson.getNumberOfLeads());
+
+        List<Lead> leadsOver10 = salesPersonDao.getLeadsOver10(createdSalesPerson);
+
+        assertEquals(1, leadsOver10.size());
     }
 
     @Test
@@ -165,5 +172,72 @@ class SalesModelTest {
         assertEquals(1, checkContracts.size());
         assertEquals(contract, checkContract);
         assertEquals(Optional.of(LocalDate.parse("2022-07-21")), checkContract.getCreationDate());
+    }
+
+    @Test
+    public void testNavigationOnStaticCollection() {
+        Contract contract1 = contractDao.create(Contract.builder()
+                .withCreationDate(LocalDate.parse("2022-07-21"))
+                .withDetail(ContractDetail.builder()
+                        .withDetails("Hello")
+                        .build())
+                .build()
+        );
+        Contract contract2 = contractDao.create(Contract.builder()
+                .withCreationDate(LocalDate.parse("2022-08-01"))
+                .build()
+        );
+
+        ContractsAggregator staticNavigationHost = contractsAggregatorDao.create(ContractsAggregator.builder()
+                .build());
+
+        Optional<ContractsAggregator> fetched = contractsAggregatorDao.getById(staticNavigationHost.get__identifier());
+
+        // Collection<ContractDetail> details = fetched.get().getContractDetails() - derived relations are not embedded
+        Collection<ContractDetail> details = contractsAggregatorDao.getContractDetails(fetched.get());
+
+        assertEquals(Optional.of("Hello"), contract1.getDetail().get().getDetails());
+        assertEquals(Optional.empty(), contract2.getDetail());
+
+        // Collection<Contract> contracts = contractsAggregatorDao.getContracts(fetched.get()) - derived relations are not embedded
+        Collection<Contract> contracts = contractsAggregatorDao.getContracts(fetched.get());
+
+        assertEquals(2, contracts.size());
+        assertEquals(1, details.size());
+    }
+
+    // FIXME: JNG-3894
+    public void testErrorRequiredFieldValidation() {
+        IllegalArgumentException thrown = assertThrows(
+                IllegalArgumentException.class,
+                () -> MyError.builder().build()
+        );
+
+        assertTrue(thrown.getMessage().contains("missing mandatory attribute"));
+        assertTrue(thrown.getMessage().contains("name: code"));
+    }
+
+    @Test
+    public void testErrorInheritance() {
+        MyExtendedError error = MyExtendedError.builder()
+                .withCode(403)
+                .withExtra(101)
+                .withMsg("Hello")
+                .build();
+
+        assertEquals(Optional.of(403), error.getCode());
+        assertEquals(Optional.of(101), error.getExtra());
+        assertEquals(Optional.of("Hello"), error.getMsg());
+    }
+
+    // FIXME: JNG-3893
+    public void testErrorDefaultValue() {
+        MyExtendedError error = MyExtendedError.builder()
+                .withCode(403)
+                .build();
+
+        assertEquals(403, error.getCode());
+        assertEquals(Optional.of("Internal Server Error"), error.getMsg());
+        assertEquals(Optional.of(1), error.getExtra());
     }
 }

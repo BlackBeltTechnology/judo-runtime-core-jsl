@@ -28,12 +28,9 @@ import hu.blackbelt.judo.runtime.core.bootstrap.JudoModelLoader;
 import hu.blackbelt.judo.runtime.core.bootstrap.dao.rdbms.hsqldb.JudoHsqldbModules;
 import hu.blackbelt.judo.runtime.core.dao.rdbms.hsqldb.HsqldbDialect;
 import hu.blackbelt.judo.runtime.core.jsl.itest.associationrelationships.guice.associationrelationships.AssociationRelationshipsDaoModules;
-import hu.blackbelt.judo.runtime.core.jsl.itest.associationrelationships.sdk.associationrelationships.associationrelationships.EntityA;
-import hu.blackbelt.judo.runtime.core.jsl.itest.associationrelationships.sdk.associationrelationships.associationrelationships.EntityC;
-import hu.blackbelt.judo.runtime.core.jsl.itest.associationrelationships.sdk.associationrelationships.associationrelationships.EntityD;
+import hu.blackbelt.judo.runtime.core.jsl.itest.associationrelationships.sdk.associationrelationships.associationrelationships.*;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -54,6 +51,12 @@ public class AssociationRelationshipsTest {
 
     @Inject
     EntityD.EntityDDao entityDDao;
+
+    @Inject
+    EntityE.EntityEDao entityEDao;
+
+    @Inject
+    EntityF.EntityFDao entityFDao;
 
     EntityD entityD;
     EntityC entityC;
@@ -155,6 +158,19 @@ public class AssociationRelationshipsTest {
         List<EntityD> ds = entityADao.getMultipleDonA(entityA);
 
         assertEquals(0, ds.size());
+    }
+
+    @Test
+    public void testOppositeAdd() {
+        EntityF entityF1 = entityFDao.create(EntityF.builder().build());
+        EntityF entityF2 = entityFDao.create(EntityF.builder().build());
+        EntityE entityE = entityEDao.create(EntityE.builder()
+                .withMultipleFOnE(List.of(entityF1, entityF2))
+                .build());
+
+        assertEquals(2, entityEDao.getMultipleFOnE(entityE).size());
+        assertEquals(Optional.of(entityE), entityFDao.getSingleEAdded(entityF1));
+        assertEquals(Optional.of(entityE), entityFDao.getSingleEAdded(entityF2));
     }
 
     private EntityA createA(EntityC entityC, List<EntityD> entityDs) {
