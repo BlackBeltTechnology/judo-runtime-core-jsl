@@ -206,23 +206,21 @@ entity InstanceFunctions {
     relation Parent[] parents
     relation Child[] children
 
-    /* FIXME: JNG-3910
-    derived Boolean typeOfParent => self.parent!typeOf(Parent)
-    derived Boolean notTypeOfChild => self.parent!typeOf(Child)
-    derived Boolean notTypeOfOtherType => self.parent!typeOf(InstanceFunctions)
+    derived Boolean typeOfParent => self.parent!typeOf(entityType = Parent)
+    derived Boolean notTypeOfChild => self.parent!typeOf(entityType = Child)
 
-    derived Boolean kindOfParent => self.parent!kindOf(Parent)
-    derived Boolean kindOfChild => self.parent!kindOf(Child)
-    derived Boolean notKindOfOtherType => self.parent!kindOf(InstanceFunctions)
+    derived Boolean kindOfParent => self.parent!kindOf(entityType = Parent)
+    derived Boolean kindOfChild => self.parent!kindOf(entityType = Child)
 
-    derived Parent asParentType => self.parent!asType(Parent)
-    derived Child asChildType => self.parent!asType(Child)
-    derived InstanceFunctions asTypeReturnsUndefined => self.parent!asType(InstanceFunctions)
+    derived Parent asParentType => self.child
+    derived Child asChildType => self.parent!asType(entityType = Child)
 
-    derived Boolean parentMemberOfParents => self.parent!memberOf(self.parents)
-    derived Boolean parentMemberOfChildren => self.parent!memberOf(self.children)
-    derived Boolean childMemberOfParents => self.child!memberOf(self.parents)
-    derived Boolean childMemberOfChildren => self.child!memberOf(self.children)
+
+    /* FIXME: JNG-3968 
+    derived Boolean parentMemberOfParents => self.parent!memberOf(instances = self.parents)
+    derived Boolean parentMemberOfChildren => self.parent!memberOf(instances = self.children)
+    derived Boolean childMemberOfParents => self.child!memberOf(instances = self.parents)
+    derived Boolean childMemberOfChildren => self.child!memberOf(instances = self.children)
     */
 }
 
