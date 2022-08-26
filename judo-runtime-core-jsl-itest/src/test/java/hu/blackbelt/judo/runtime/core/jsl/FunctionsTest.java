@@ -128,7 +128,22 @@ public class FunctionsTest {
         StringFunctions str = stringFunctionsDao.create(StringFunctions.builder().build());
 
         assertEquals(Optional.of(5), str.getLength());
+        assertEquals(Optional.of("ap"), str.getFirst());
+        assertEquals(Optional.of("e"), str.getLast());
+        //assertEquals(Optional.of(0), str.getPosition());
+        assertEquals(Optional.of("ppl"), str.getSubstring());
+        assertEquals(Optional.of("apple"), str.getLower());
+        assertEquals(Optional.of("apple"), str.getLowerCase());
+        assertEquals(Optional.of("APPLE"), str.getUpper());
+        assertEquals(Optional.of("APPLE"), str.getUpperCase());
+        //assertEquals(Optional.of("Apple"), str.getCapitalize());
+        assertEquals(Optional.of(true), str.getMatches());
+        assertEquals(Optional.of(true), str.getLike());
+        //assertEquals(Optional.of(true), str.getILike());
+        assertEquals(Optional.of("appendix"), str.getReplace());        
         assertEquals(Optional.of("apple"), str.getTrim());
+        //assertEquals(Optional.of("apple"), str.getLTrim());
+        //assertEquals(Optional.of("apple"), str.getRTrim());
     }
 
     @Test

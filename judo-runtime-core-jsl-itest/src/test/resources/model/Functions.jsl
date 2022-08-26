@@ -85,37 +85,36 @@ entity AnyTypeFunctions {
 
 entity StringFunctions {
     derived Integer length => "apple"!length()
-    // derived String first => "apple"!first(2) FIXME: JNG-3897
-    // derived String last => "apple"!last(1) FIXME: JNG-3897
-    // derived Integer position => "apple"!position("p") FIXME: JNG-3897
-    // derived String substring => "apple"!substring(2,3) FIXME: JNG-3897
-    // derived String lower => "ApPlE"!lower() FIXME: JNG-3897
-    // derived String lowerCase => "ApPlE"!lowerCase() FIXME: JNG-3897
-    // derived String upper => "ApPlE"!upper() FIXME: JNG-3897
-    // derived String upperCase => "ApPlE"!upperCase() FIXME: JNG-3897
-    // derived String capitalize => "apPlE"!capitalize() FIXME: JNG-3897
-    // derived Boolean matches => "apple"!matches(r".*pl.") FIXME: JNG-3897
-    // derived Boolean like => "apple"!like("%pl_") FIXME: JNG-3897
-    // derived Boolean ilike => "apPLe"!ilike("_pple") FIXME: JNG-3897
-    // derived String replace => "apple"!replace("le", "endix") FIXME: JNG-3897
+    derived String first => "apple"!first(count = 2)
+    derived String last => "apple"!last(count = 1)
+    // derived Integer position => "apple"!position(substring = "p") // FIXME: JNG-3897
+    derived String substring => "apple"!substring(count = 2, offset = 3)
+    derived String lower => "ApPlE"!lower()
+    derived String lowerCase => "ApPlE"!lowerCase()
+    derived String upper => "ApPlE"!upper()
+    derived String upperCase => "ApPlE"!upperCase()
+    // derived String capitalize => "apPlE"!capitalize()
+    derived Boolean matches => "apple"!matches(pattern = r".*pl.")
+    derived Boolean like => "apple"!like(pattern = "%pl_")
+    // derived Boolean ilike => "apPLe"!ilike(pattern = "_pple") // FIXME: JNG-3897
+    derived String replace => "apple"!replace(pattern = "le", replacement = "endix")
     derived String trim => " apple "!trim()
-    // derived String ltrim => " apple "!ltrim() FIXME: JNG-3897
-    // derived String rtrim => " apple "!rtrim() FIXME: JNG-3897
+    // derived String ltrim => " apple "!ltrim() // FIXME: JNG-3897
+    // derived String rtrim => " apple "!rtrim() // FIXME: JNG-3897
 }
 
 entity NumericFunctions {
     field Integer int = 1
 
-    /* FIXME: JNG-3898
-    derived Integer roundInt => self.int!round()
-    derived Integer roundInt => 1!round()
+    /* FIXME: JNG-3898 */
+    // derived Integer roundInt => self.int!round()
+    // derived Integer roundInt => 1!round()
     derived Integer roundScaled1 => 1.23!round()
     derived Integer roundScaled2 => 7.89!round()
     derived Integer roundScaled3 => 2.50!round()
     derived Integer roundScaledNegative1 => -2.5!round()
     derived Integer roundScaledNegative2 => -1.23!round()
     derived Integer roundScaledNegative3 => -7.89!round()
-    */
 
     /* FIXME: JNG-3797
     derived Integer floorInt => 1!floor()
