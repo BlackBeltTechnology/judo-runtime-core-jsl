@@ -1,8 +1,15 @@
-model test
+model ContainerDerived
+
 entity A {
-    field B b
+	field C[] cs	
 }
 
 entity B {
-//    derived A a => self!container(A)
+	field C[] cs
 }
+
+entity C {
+	derived C[] allCfromAPlainName => self!container(entityType = A)
+	derived C[] allCfromAFqName => self!container(entityType = ContainerDerived::A)
+}
+
