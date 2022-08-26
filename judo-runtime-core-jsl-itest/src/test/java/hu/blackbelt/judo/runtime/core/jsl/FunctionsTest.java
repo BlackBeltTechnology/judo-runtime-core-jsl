@@ -16,6 +16,8 @@ import org.junit.jupiter.api.Test;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Slf4j
 public class FunctionsTest {
@@ -193,13 +195,19 @@ public class FunctionsTest {
 
     @Test
     public void testInstance() {
-//        Parent parent1 = parentDao.create(Parent.builder().withName("James Webb").build());
-//        Child child1 = childDao.create(Child.builder().withName("Erika Young").withAge(11).build());
-//        InstanceFunctions instanceFunctions = instanceFunctionsDao.create(InstanceFunctions.builder()
-//                        .withParent(Parent.builder().withName("Another Person").build())
-//                        .withChild(Child.builder().withName("Another Child").withAge(31).build())
-//                        .build());
+        Parent parent1 = parentDao.create(Parent.builder().withName("James Webb").build());
+        Child child1 = childDao.create(Child.builder().withName("Erika Young").withAge(11).build());
 
+        InstanceFunctions instanceFunctions = instanceFunctionsDao.create(InstanceFunctions.builder()
+                        .withParent(Parent.builder().withName("Another Person").build())
+                        .withChild(Child.builder().withName("Another Child").withAge(31).build())
+                        .build());
+               
+        assertTrue(instanceFunctions.getTypeOfParent().get());
+        assertFalse(instanceFunctions.getKindOfChild().get());
+        assertTrue(instanceFunctions.getKindOfParent().get());
+        assertFalse(instanceFunctions.getNotTypeOfChild().get());
 
+        
     }
 }
