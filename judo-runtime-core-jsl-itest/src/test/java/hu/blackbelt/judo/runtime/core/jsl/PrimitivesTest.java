@@ -30,6 +30,7 @@ import hu.blackbelt.judo.runtime.core.bootstrap.JudoModelLoader;
 import hu.blackbelt.judo.runtime.core.bootstrap.dao.rdbms.hsqldb.JudoHsqldbModules;
 import hu.blackbelt.judo.runtime.core.dao.rdbms.hsqldb.HsqldbDialect;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
+import hu.blackbelt.judo.runtime.core.jsl.itest.functions.sdk.functions.functions.Entity;
 import hu.blackbelt.judo.runtime.core.jsl.itest.primitives.guice.primitives.PrimitivesDaoModules;
 import hu.blackbelt.judo.runtime.core.jsl.itest.primitives.sdk.primitives.primitives.*;
 import lombok.extern.slf4j.Slf4j;
@@ -210,6 +211,30 @@ public class PrimitivesTest {
 
         assertTrue(thrown.getMessage().startsWith("Identifier uniqueness violation(s): "));
         assertTrue(thrown.getMessage().contains("integerAttr=2"));
+    }
+
+    @Test
+    public void testFieldsAreNonUnique() {
+        LocalDate now = LocalDate.now();
+        MyEntityWithOptionalFields ent1 = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
+                .withIntegerAttr(1)
+                .withBoolAttr(true)
+                .withDateAttr(now)
+                .withEnumAttr(MyEnum.Bombastic)
+                .withStringAttr("blabla")
+                .build());
+
+        assertEquals(1, ent1.getIntegerAttr().get());
+
+        MyEntityWithOptionalFields ent2 = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
+                        .withIntegerAttr(1)
+                        .withBoolAttr(true)
+                        .withDateAttr(now)
+                        .withEnumAttr(MyEnum.Bombastic)
+                        .withStringAttr("blabla")
+                        .build());
+
+        assertEquals(1, ent2.getIntegerAttr().get());
     }
 
     @Test

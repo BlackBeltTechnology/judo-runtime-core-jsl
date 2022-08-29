@@ -16,6 +16,8 @@ import org.junit.jupiter.api.Test;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Slf4j
 public class FunctionsTest {
@@ -126,7 +128,22 @@ public class FunctionsTest {
         StringFunctions str = stringFunctionsDao.create(StringFunctions.builder().build());
 
         assertEquals(Optional.of(5), str.getLength());
+        assertEquals(Optional.of("ap"), str.getFirst());
+        assertEquals(Optional.of("e"), str.getLast());
+        //assertEquals(Optional.of(0), str.getPosition());
+        assertEquals(Optional.of("ppl"), str.getSubstring());
+        assertEquals(Optional.of("apple"), str.getLower());
+        assertEquals(Optional.of("apple"), str.getLowerCase());
+        assertEquals(Optional.of("APPLE"), str.getUpper());
+        assertEquals(Optional.of("APPLE"), str.getUpperCase());
+        //assertEquals(Optional.of("Apple"), str.getCapitalize());
+        assertEquals(Optional.of(true), str.getMatches());
+        assertEquals(Optional.of(true), str.getLike());
+        //assertEquals(Optional.of(true), str.getILike());
+        assertEquals(Optional.of("appendix"), str.getReplace());        
         assertEquals(Optional.of("apple"), str.getTrim());
+        //assertEquals(Optional.of("apple"), str.getLTrim());
+        //assertEquals(Optional.of("apple"), str.getRTrim());
     }
 
     @Test
@@ -193,13 +210,19 @@ public class FunctionsTest {
 
     @Test
     public void testInstance() {
-//        Parent parent1 = parentDao.create(Parent.builder().withName("James Webb").build());
-//        Child child1 = childDao.create(Child.builder().withName("Erika Young").withAge(11).build());
-//        InstanceFunctions instanceFunctions = instanceFunctionsDao.create(InstanceFunctions.builder()
-//                        .withParent(Parent.builder().withName("Another Person").build())
-//                        .withChild(Child.builder().withName("Another Child").withAge(31).build())
-//                        .build());
+        Parent parent1 = parentDao.create(Parent.builder().withName("James Webb").build());
+        Child child1 = childDao.create(Child.builder().withName("Erika Young").withAge(11).build());
 
+        InstanceFunctions instanceFunctions = instanceFunctionsDao.create(InstanceFunctions.builder()
+                        .withParent(Parent.builder().withName("Another Person").build())
+                        .withChild(Child.builder().withName("Another Child").withAge(31).build())
+                        .build());
+               
+        assertTrue(instanceFunctions.getTypeOfParent().get());
+        assertFalse(instanceFunctions.getKindOfChild().get());
+        assertTrue(instanceFunctions.getKindOfParent().get());
+        assertFalse(instanceFunctions.getNotTypeOfChild().get());
 
+        
     }
 }
