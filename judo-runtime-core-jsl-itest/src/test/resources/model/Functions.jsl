@@ -97,7 +97,7 @@ entity StringFunctions {
     derived Boolean matches => "apple"!matches(pattern = r".*pl.")
     derived Boolean like => "apple"!like(pattern = "%pl_")
     // derived Boolean ilike => "apPLe"!ilike(pattern = "_pple") // FIXME: JNG-3897
-    derived String replace => "apple"!replace(pattern = "le", replacement = "endix")
+    derived String replace => "apple"!replace(oldstring = "le", newstring = "endix")
     derived String trim => " apple "!trim()
     // derived String ltrim => " apple "!ltrim() // FIXME: JNG-3897
     // derived String rtrim => " apple "!rtrim() // FIXME: JNG-3897
@@ -214,6 +214,8 @@ entity InstanceFunctions {
     derived Parent asParentType => self.child
     derived Child asChildType => self.parent!asType(entityType = Child)
 
+    // FIXME: JNG-3911
+    // derived Child[] childAsCollection => self.child.asCollection(entityType = Child)
 
     /* FIXME: JNG-3968 
     derived Boolean parentMemberOfParents => self.parent!memberOf(instances = self.parents)
