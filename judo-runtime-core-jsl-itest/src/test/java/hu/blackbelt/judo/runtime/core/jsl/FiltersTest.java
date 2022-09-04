@@ -20,14 +20,9 @@ package hu.blackbelt.judo.runtime.core.jsl;
  * #L%
  */
 
-import com.google.inject.Guice;
 import com.google.inject.Inject;
-import com.google.inject.Injector;
+import com.google.inject.Module;
 import hu.blackbelt.judo.dispatcher.api.FileType;
-import hu.blackbelt.judo.runtime.core.bootstrap.JudoDefaultModule;
-import hu.blackbelt.judo.runtime.core.bootstrap.JudoModelLoader;
-import hu.blackbelt.judo.runtime.core.bootstrap.dao.rdbms.hsqldb.JudoHsqldbModules;
-import hu.blackbelt.judo.runtime.core.dao.rdbms.hsqldb.HsqldbDialect;
 import hu.blackbelt.judo.runtime.core.jsl.itest.primitives.guice.primitives.PrimitivesDaoModules;
 import hu.blackbelt.judo.runtime.core.jsl.itest.primitives.sdk.primitives.primitives.MyEntityWithOptionalFields;
 import hu.blackbelt.judo.runtime.core.jsl.itest.primitives.sdk.primitives.primitives.MyEnum;
@@ -44,9 +39,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Slf4j
-public class FiltersTest {
-    Injector injector;
-
+public class FiltersTest extends AbstractJslTest {
     @Inject
     MyEntityWithOptionalFields.MyEntityWithOptionalFieldsDao myEntityWithOptionalFieldsDao;
 
@@ -74,14 +67,8 @@ public class FiltersTest {
     static final MyEnum ENUM_2 = MyEnum.Atomic;
 
     @BeforeEach
-    void init() throws Exception {
-        JudoModelLoader modelHolder = JudoModelLoader.
-                loadFromClassloader("Primitives", PrimitivesTest.class.getClassLoader(), new HsqldbDialect(), true);
-
-        injector = Guice.createInjector(
-                JudoHsqldbModules.builder().build(),
-                new PrimitivesDaoModules(),
-                new JudoDefaultModule(this, modelHolder));
+    protected void init() throws Exception {
+        super.init();
 
         entity1 = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
                 .withIntegerAttr(INTEGER_1)
@@ -108,6 +95,16 @@ public class FiltersTest {
                 .withBinaryAttr(FileType.builder().fileName("test.txt").build())
                 .withEnumAttr(ENUM_2)
                 .build());
+    }
+
+    @Override
+    public Module getModelDaoModule() {
+        return new PrimitivesDaoModules();
+    }
+
+    @Override
+    public String getModelName() {
+        return "Primitives";
     }
 
     @Test

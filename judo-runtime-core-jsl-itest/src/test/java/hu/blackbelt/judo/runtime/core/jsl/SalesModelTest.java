@@ -20,13 +20,8 @@ package hu.blackbelt.judo.runtime.core.jsl;
  * #L%
  */
 
-import com.google.inject.Guice;
 import com.google.inject.Inject;
-import com.google.inject.Injector;
-import hu.blackbelt.judo.runtime.core.bootstrap.JudoDefaultModule;
-import hu.blackbelt.judo.runtime.core.bootstrap.JudoModelLoader;
-import hu.blackbelt.judo.runtime.core.bootstrap.dao.rdbms.hsqldb.JudoHsqldbModules;
-import hu.blackbelt.judo.runtime.core.dao.rdbms.hsqldb.HsqldbDialect;
+import com.google.inject.Module;
 import hu.blackbelt.judo.runtime.core.jsl.itest.salesmodel.guice.salesmodel.SalesModelDaoModules;
 import hu.blackbelt.judo.runtime.core.jsl.itest.salesmodel.sdk.salesmodel.salesmodel.*;
 import hu.blackbelt.judo.runtime.core.jsl.itest.salesmodel.sdk.salesmodel.salesmodelcontract.Contract;
@@ -34,7 +29,6 @@ import hu.blackbelt.judo.runtime.core.jsl.itest.salesmodel.sdk.salesmodel.salesm
 import hu.blackbelt.judo.sdk.query.NumberFilter;
 import hu.blackbelt.judo.sdk.query.StringFilter;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -46,10 +40,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Slf4j
-class SalesModelTest {
-
-    Injector injector;
-
+class SalesModelTest extends AbstractJslTest {
     @Inject
     SalesPerson.SalesPersonDao salesPersonDao;
 
@@ -65,16 +56,14 @@ class SalesModelTest {
     @Inject
     ContractsAggregator.ContractsAggregatorDao contractsAggregatorDao;
 
-    @BeforeEach
-    void init() throws Exception {
-        JudoModelLoader modelHolder = JudoModelLoader.
-                loadFromClassloader("SalesModel", SalesModelTest.class.getClassLoader(), new HsqldbDialect(), true);
+    @Override
+    public Module getModelDaoModule() {
+        return new SalesModelDaoModules();
+    }
 
-        injector = Guice.createInjector(
-                JudoHsqldbModules.builder().build(),
-                new SalesModelDaoModules(),
-                new JudoDefaultModule(this, modelHolder));
-
+    @Override
+    public String getModelName() {
+        return "SalesModel";
     }
 
     @Test

@@ -1,18 +1,12 @@
 package hu.blackbelt.judo.runtime.core.jsl;
 
-import com.google.inject.Guice;
 import com.google.inject.Inject;
-import com.google.inject.Injector;
-import hu.blackbelt.judo.runtime.core.bootstrap.JudoDefaultModule;
-import hu.blackbelt.judo.runtime.core.bootstrap.JudoModelLoader;
-import hu.blackbelt.judo.runtime.core.bootstrap.dao.rdbms.hsqldb.JudoHsqldbModules;
-import hu.blackbelt.judo.runtime.core.dao.rdbms.hsqldb.HsqldbDialect;
+import com.google.inject.Module;
 import hu.blackbelt.judo.runtime.core.jsl.itest.operators.guice.operators.OperatorsDaoModules;
 import hu.blackbelt.judo.runtime.core.jsl.itest.operators.sdk.operators.operators.DefaultOperators;
 import hu.blackbelt.judo.runtime.core.jsl.itest.operators.sdk.operators.operators.DerivedOperators;
 import hu.blackbelt.judo.runtime.core.jsl.itest.operators.sdk.operators.operators.DerivedSource;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
@@ -20,24 +14,21 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Slf4j
-public class OperatorsTest {
-    Injector injector;
-
+public class OperatorsTest extends AbstractJslTest {
     @Inject
     DefaultOperators.DefaultOperatorsDao defaultOperatorsDao;
 
     @Inject
     DerivedOperators.DerivedOperatorsDao derivedOperatorsDao;
 
-    @BeforeEach
-    void init() throws Exception {
-        JudoModelLoader modelHolder = JudoModelLoader.
-                loadFromClassloader("Operators", OperatorsTest.class.getClassLoader(), new HsqldbDialect(), true);
+    @Override
+    public Module getModelDaoModule() {
+        return new OperatorsDaoModules();
+    }
 
-        injector = Guice.createInjector(
-                JudoHsqldbModules.builder().build(),
-                new OperatorsDaoModules(),
-                new JudoDefaultModule(this, modelHolder));
+    @Override
+    public String getModelName() {
+        return "Operators";
     }
 
     @Test
