@@ -20,13 +20,8 @@ package hu.blackbelt.judo.runtime.core.jsl;
  * #L%
  */
 
-import com.google.inject.Guice;
 import com.google.inject.Inject;
-import com.google.inject.Injector;
-import hu.blackbelt.judo.runtime.core.bootstrap.JudoDefaultModule;
-import hu.blackbelt.judo.runtime.core.bootstrap.JudoModelLoader;
-import hu.blackbelt.judo.runtime.core.bootstrap.dao.rdbms.hsqldb.JudoHsqldbModules;
-import hu.blackbelt.judo.runtime.core.dao.rdbms.hsqldb.HsqldbDialect;
+import com.google.inject.Module;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
 import hu.blackbelt.judo.runtime.core.jsl.itest.compositionrelationships.guice.compositionrelationships.CompositionRelationshipsDaoModules;
 import hu.blackbelt.judo.runtime.core.jsl.itest.compositionrelationships.sdk.compositionrelationships.compositionrelationships.EntityA;
@@ -48,9 +43,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
 @Slf4j
-public class CompositionRelationshipsTest {
-    Injector injector;
-
+public class CompositionRelationshipsTest extends AbstractJslTest {
     @Inject
     EntityA.EntityADao entityADao;
 
@@ -71,14 +64,8 @@ public class CompositionRelationshipsTest {
 
 
     @BeforeEach
-    void init() throws Exception {
-        JudoModelLoader modelHolder = JudoModelLoader.
-                loadFromClassloader("CompositionRelationships", CompositionRelationshipsTest.class.getClassLoader(), new HsqldbDialect(), true);
-
-        injector = Guice.createInjector(
-                JudoHsqldbModules.builder().build(),
-                new CompositionRelationshipsDaoModules(),
-                new JudoDefaultModule(this, modelHolder));
+    protected void init() throws Exception {
+        super.init();
 
         entityD1 = entityDDao.create(EntityD.builder()
                 .build());
@@ -95,6 +82,16 @@ public class CompositionRelationshipsTest {
                 .withSingleRequiredConA(singleRequiredConA)
                 .withSingleConA(singleConA)
                 .build());
+    }
+
+    @Override
+    public Module getModelDaoModule() {
+        return new CompositionRelationshipsDaoModules();
+    }
+
+    @Override
+    public String getModelName() {
+        return "CompositionRelationships";
     }
 
     @Test

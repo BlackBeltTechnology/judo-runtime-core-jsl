@@ -1,12 +1,7 @@
 package hu.blackbelt.judo.runtime.core.jsl;
 
-import com.google.inject.Guice;
 import com.google.inject.Inject;
-import com.google.inject.Injector;
-import hu.blackbelt.judo.runtime.core.bootstrap.JudoDefaultModule;
-import hu.blackbelt.judo.runtime.core.bootstrap.JudoModelLoader;
-import hu.blackbelt.judo.runtime.core.bootstrap.dao.rdbms.hsqldb.JudoHsqldbModules;
-import hu.blackbelt.judo.runtime.core.dao.rdbms.hsqldb.HsqldbDialect;
+import com.google.inject.Module;
 import hu.blackbelt.judo.runtime.core.jsl.itest.functions.guice.functions.FunctionsDaoModules;
 import hu.blackbelt.judo.runtime.core.jsl.itest.functions.sdk.functions.functions.*;
 import lombok.extern.slf4j.Slf4j;
@@ -20,9 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Slf4j
-public class FunctionsTest {
-    Injector injector;
-
+public class FunctionsTest extends AbstractJslTest {
     @Inject
     Entity.EntityDao entityDao;
 
@@ -65,15 +58,8 @@ public class FunctionsTest {
     Child.ChildDao childDao;
 
     @BeforeEach
-    void init() throws Exception {
-        JudoModelLoader modelHolder = JudoModelLoader.
-                loadFromClassloader("Functions", FunctionsTest.class.getClassLoader(), new HsqldbDialect(), true);
-
-        injector = Guice.createInjector(
-                JudoHsqldbModules.builder().build(),
-                new FunctionsDaoModules(),
-                new JudoDefaultModule(this, modelHolder));
-
+    protected void init() throws Exception {
+        super.init();
         Entity entity = entityDao
                         .create(Entity.builder().build());
         EntityWithPrimitiveDefaults entityWithPrimitiveDefaults = entityWithPrimitiveDefaultsDao
@@ -83,6 +69,16 @@ public class FunctionsTest {
                         .withEntity(entity)
                         .withEntityWithPrimitives(entityWithPrimitiveDefaults)
                         .build());
+    }
+
+    @Override
+    public Module getModelDaoModule() {
+        return  new FunctionsDaoModules();
+    }
+
+    @Override
+    public String getModelName() {
+        return "Functions";
     }
 
     @Test
