@@ -75,6 +75,19 @@ entity EntityWithPrimitiveDefaults {
     field MyEnum enumAttr = MyEnum#Bombastic
 }
 
+entity EntityRequiredWithPrimitiveDefaults {
+    field required Integer integerAttr = 1
+    field required Scaled scaledAttr = 2.34
+    field required String stringAttr = "test"
+    field required PhoneNumber regexAttr = "+36-1-123-123"
+    field required Boolean boolAttr = true
+    field required Date dateAttr = `2022-07-11`
+    field required Timestamp timestampAttr = `2022-07-11T19:09:33Z`
+    field required Time timeAttr = `23:59:59`
+    // field required Binary binaryAttr // There is no syntax for define default value for binary
+    field required MyEnum enumAttr = MyEnum#Bombastic
+}
+
 entity EntityWithPrimitiveDefaultExpressions {
     field Integer integerAttr = 1.23!round()
     // field Scaled scaledAttr = 2.9!abs()

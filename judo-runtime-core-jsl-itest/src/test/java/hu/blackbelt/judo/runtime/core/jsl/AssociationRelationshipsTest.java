@@ -20,13 +20,8 @@ package hu.blackbelt.judo.runtime.core.jsl;
  * #L%
  */
 
-import com.google.inject.Guice;
 import com.google.inject.Inject;
-import com.google.inject.Injector;
-import hu.blackbelt.judo.runtime.core.bootstrap.JudoDefaultModule;
-import hu.blackbelt.judo.runtime.core.bootstrap.JudoModelLoader;
-import hu.blackbelt.judo.runtime.core.bootstrap.dao.rdbms.hsqldb.JudoHsqldbModules;
-import hu.blackbelt.judo.runtime.core.dao.rdbms.hsqldb.HsqldbDialect;
+import com.google.inject.Module;
 import hu.blackbelt.judo.runtime.core.jsl.itest.associationrelationships.guice.associationrelationships.AssociationRelationshipsDaoModules;
 import hu.blackbelt.judo.runtime.core.jsl.itest.associationrelationships.sdk.associationrelationships.associationrelationships.*;
 import lombok.extern.slf4j.Slf4j;
@@ -40,9 +35,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Slf4j
-public class AssociationRelationshipsTest {
-    Injector injector;
-
+public class AssociationRelationshipsTest extends AbstractJslTest {
     @Inject
     EntityA.EntityADao entityADao;
 
@@ -63,20 +56,23 @@ public class AssociationRelationshipsTest {
     EntityA entityA;
 
     @BeforeEach
-    void init() throws Exception {
-        JudoModelLoader modelHolder = JudoModelLoader.
-                loadFromClassloader("AssociationRelationships", AssociationRelationshipsTest.class.getClassLoader(), new HsqldbDialect(), true);
-
-        injector = Guice.createInjector(
-                JudoHsqldbModules.builder().build(),
-                new AssociationRelationshipsDaoModules(),
-                new JudoDefaultModule(this, modelHolder));
-
+    protected void init() throws Exception {
+        super.init();
         entityD = entityDDao.create(EntityD.builder()
                 .build());
         entityC = entityCDao.create(EntityC.builder()
                 .build());
         entityA = createA(entityC, List.of(entityD));
+    }
+
+    @Override
+    public Module getModelDaoModule() {
+        return new AssociationRelationshipsDaoModules();
+    }
+
+    @Override
+    public String getModelName() {
+        return "AssociationRelationships";
     }
 
     @Test

@@ -21,21 +21,13 @@ package hu.blackbelt.judo.runtime.core.jsl;
  */
 
 import com.google.common.collect.ImmutableList;
-import com.google.inject.Guice;
 import com.google.inject.Inject;
-import com.google.inject.Injector;
+import com.google.inject.Module;
 import hu.blackbelt.judo.dispatcher.api.FileType;
-import hu.blackbelt.judo.runtime.core.bootstrap.JudoDefaultModule;
-import hu.blackbelt.judo.runtime.core.bootstrap.JudoModelLoader;
-import hu.blackbelt.judo.runtime.core.bootstrap.dao.rdbms.hsqldb.JudoHsqldbModules;
-import hu.blackbelt.judo.runtime.core.dao.rdbms.hsqldb.HsqldbDialect;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
-import hu.blackbelt.judo.runtime.core.jsl.itest.functions.sdk.functions.functions.Entity;
 import hu.blackbelt.judo.runtime.core.jsl.itest.primitives.guice.primitives.PrimitivesDaoModules;
 import hu.blackbelt.judo.runtime.core.jsl.itest.primitives.sdk.primitives.primitives.*;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -49,9 +41,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
 @Slf4j
-public class PrimitivesTest {
-    Injector injector;
-
+public class PrimitivesTest extends AbstractJslTest {
     @Inject
     MyEntityWithOptionalFields.MyEntityWithOptionalFieldsDao myEntityWithOptionalFieldsDao;
 
@@ -70,15 +60,17 @@ public class PrimitivesTest {
     @Inject
     EntityWithPrimitiveDefaultExpressions.EntityWithPrimitiveDefaultExpressionsDao entityWithPrimitiveDefaultExpressionsDao;
 
-    @BeforeEach
-    void init() throws Exception {
-        JudoModelLoader modelHolder = JudoModelLoader.
-                loadFromClassloader("Primitives", PrimitivesTest.class.getClassLoader(), new HsqldbDialect(), true);
+    @Inject
+    EntityRequiredWithPrimitiveDefaults.EntityRequiredWithPrimitiveDefaultsDao entityRequiredWithPrimitiveDefaultsDao;
 
-        injector = Guice.createInjector(
-                JudoHsqldbModules.builder().build(),
-                new PrimitivesDaoModules(),
-                new JudoDefaultModule(this, modelHolder));
+    @Override
+    public Module getModelDaoModule() {
+        return new PrimitivesDaoModules();
+    }
+
+    @Override
+    public String getModelName() {
+        return "Primitives";
     }
 
     @Test
@@ -301,6 +293,27 @@ public class PrimitivesTest {
         // There is no way to define default value in JSL for binary
         // assertEquals("test.txt", entityWithDefaults.getBinaryAttr().get().getFileName());
         assertEquals(Optional.of(MyEnum.Bombastic), entityWithDefaults.getEnumAttr());
+    }
+
+    @Test
+    public void testEntityCreationRequiredWithPrimitiveDefaults() {
+        EntityRequiredWithPrimitiveDefaults entityRequiredWithDefaults = entityRequiredWithPrimitiveDefaultsDao.create(EntityRequiredWithPrimitiveDefaults.builder().build());
+
+        List<EntityRequiredWithPrimitiveDefaults> list = entityRequiredWithPrimitiveDefaultsDao.query().execute();
+
+        assertEquals(1, list.size());
+
+        assertEquals(1, entityRequiredWithDefaults.getIntegerAttr());
+        assertEquals(2.34, entityRequiredWithDefaults.getScaledAttr());
+        assertEquals("test", entityRequiredWithDefaults.getStringAttr());
+        assertEquals("+36-1-123-123", entityRequiredWithDefaults.getRegexAttr());
+        assertEquals(true, entityRequiredWithDefaults.getBoolAttr());
+        assertEquals(LocalDate.of(2022, 7, 11), entityRequiredWithDefaults.getDateAttr());
+        assertEquals(OffsetDateTime.parse("2022-07-11T19:09:33Z"), entityRequiredWithDefaults.getTimestampAttr());
+        assertEquals(LocalTime.parse("23:59:59"), entityRequiredWithDefaults.getTimeAttr());
+        // There is no way to define default value in JSL for binary
+        // assertEquals("test.txt", entityWithDefaults.getBinaryAttr().get().getFileName());
+        assertEquals(MyEnum.Bombastic, entityRequiredWithDefaults.getEnumAttr());
     }
 
     @Test
