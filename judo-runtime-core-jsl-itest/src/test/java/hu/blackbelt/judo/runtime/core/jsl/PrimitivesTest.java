@@ -378,6 +378,17 @@ public class PrimitivesTest extends AbstractJslTest {
     }
 
     @Test
+    public void testScaleValidatorPassesForValueWithoutScale() {
+        ValidationException thrown = assertThrows(
+                ValidationException.class,
+                () -> myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
+                        .withScaledAttr(123456789.0)
+                        .build()));
+
+        assertEquals(0, thrown.getValidationResults().size());
+    }
+
+    @Test
     public void testMaxLengthValidatorFailsForInvalidInput() {
         String lipsum = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." +
                 "Imperdiet sed euismod nisi porta lorem mollis." +
