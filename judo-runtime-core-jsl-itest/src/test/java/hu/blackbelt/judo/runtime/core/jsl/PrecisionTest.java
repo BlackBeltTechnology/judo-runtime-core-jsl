@@ -105,21 +105,10 @@ public class PrecisionTest extends AbstractJslTest {
     @Test
     public void testScaleValidatorPassesForValueWithoutScale() {
         MyEntityWithOptionalFields created = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
-                .withScaledAttr(1234567890.0)
+                .withScaledAttr(123456789.0)
                 .build());
 
-        assertThat(created.getScaledAttr(), equalTo(Optional.of(1234567890.0)));
+        assertThat(created.getScaledAttr(), equalTo(Optional.of(123456789.0)));
 
     }
-    /*
-
-    @Test
-    public void testScaleValidatorPassesForValueWithoutScale() {
-        MyEntityWithOptionalFields created = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
-                .withScaledAttr(1234567.0)
-                .build());
-
-        assertThat(created.getScaledAttr(), equalTo(Optional.of(1234567.0)));
-    } */
-
 }
