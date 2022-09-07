@@ -350,45 +350,6 @@ public class PrimitivesTest extends AbstractJslTest {
     }
 
     @Test
-    public void testPrecisionValidatorFailsForInvalidInput() {
-        ValidationException thrown = assertThrows(
-                ValidationException.class,
-                () -> myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
-                        .withIntegerAttr(1234567890)
-                        .build()));
-
-        assertThat(thrown.getValidationResults(), containsInAnyOrder(allOf(
-                hasProperty("code", equalTo("PRECISION_VALIDATION_FAILED")),
-                hasProperty("location", equalTo("integerAttr")))
-        ));
-    }
-
-    @Test
-    public void testScaleValidatorFailsForInvalidInput() {
-        ValidationException thrown = assertThrows(
-                ValidationException.class,
-                () -> myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
-                        .withScaledAttr(123456.123)
-                        .build()));
-
-        assertThat(thrown.getValidationResults(), containsInAnyOrder(allOf(
-                hasProperty("code", equalTo("SCALE_VALIDATION_FAILED")),
-                hasProperty("location", equalTo("scaledAttr")))
-        ));
-    }
-
-    @Test
-    public void testScaleValidatorPassesForValueWithoutScale() {
-        ValidationException thrown = assertThrows(
-                ValidationException.class,
-                () -> myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
-                        .withScaledAttr(123456789.0)
-                        .build()));
-
-        assertEquals(0, thrown.getValidationResults().size());
-    }
-
-    @Test
     public void testMaxLengthValidatorFailsForInvalidInput() {
         String lipsum = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." +
                 "Imperdiet sed euismod nisi porta lorem mollis." +

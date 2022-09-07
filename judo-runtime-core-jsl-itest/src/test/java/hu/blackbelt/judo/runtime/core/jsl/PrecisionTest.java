@@ -1,0 +1,125 @@
+package hu.blackbelt.judo.runtime.core.jsl;
+
+/*-
+ * #%L
+ * JUDO Runtime Core JSL :: Parent
+ * %%
+ * Copyright (C) 2018 - 2022 BlackBelt Technology
+ * %%
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ * 
+ * This Source Code may also be made available under the following Secondary
+ * Licenses when the conditions for such availability set forth in the Eclipse
+ * Public License, v. 2.0 are satisfied: GNU General Public License, version 2
+ * with the GNU Classpath Exception which is
+ * available at https://www.gnu.org/software/classpath/license.html.
+ * 
+ * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
+ * #L%
+ */
+
+import com.google.common.collect.ImmutableList;
+import com.google.inject.Inject;
+import com.google.inject.Module;
+import hu.blackbelt.judo.dispatcher.api.FileType;
+import hu.blackbelt.judo.runtime.core.exception.ValidationException;
+import hu.blackbelt.judo.runtime.core.jsl.itest.primitives.guice.primitives.PrimitivesDaoModules;
+import hu.blackbelt.judo.runtime.core.jsl.itest.primitives.sdk.primitives.primitives.*;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Test;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.OffsetDateTime;
+import java.util.List;
+import java.util.Optional;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+@Slf4j
+public class PrecisionTest extends AbstractJslTest {
+    @Inject
+    MyEntityWithOptionalFields.MyEntityWithOptionalFieldsDao myEntityWithOptionalFieldsDao;
+
+    @Override
+    public Module getModelDaoModule() {
+        return new PrimitivesDaoModules();
+    }
+
+    @Override
+    public String getModelName() {
+        return "Primitives";
+    }
+
+    @Test
+    public void testPrecisionValidatorFailsWithPrecisionOverflow() {
+        ValidationException thrown = assertThrows(
+                ValidationException.class,
+                () -> myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
+                        .withIntegerAttr(1234567890)
+                        .build()));
+
+        assertThat(thrown.getValidationResults(), containsInAnyOrder(allOf(
+                hasProperty("code", equalTo("PRECISION_VALIDATION_FAILED")),
+                hasProperty("location", equalTo("integerAttr")))
+        ));
+    }
+
+    @Test
+    public void testScaleValidatorFailsWithScaleOverflow() {
+        ValidationException thrown = assertThrows(
+                ValidationException.class,
+                () -> myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
+                        .withScaledAttr(123456.123)
+                        .build()));
+
+        assertThat(thrown.getValidationResults(), containsInAnyOrder(allOf(
+                hasProperty("code", equalTo("SCALE_VALIDATION_FAILED")),
+                hasProperty("location", equalTo("scaledAttr")))
+        ));
+    }
+
+    @Test
+    public void testValidateDoubleWithPrecisionAndScaleOverflow() {
+        ValidationException thrown = assertThrows(
+                ValidationException.class,
+                () -> myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
+                        .withScaledAttr(1234567.123)
+                        .build()));
+
+        assertThat(thrown.getValidationResults(), containsInAnyOrder(
+                allOf(
+                        hasProperty("code", equalTo("SCALE_VALIDATION_FAILED")),
+                        hasProperty("location", equalTo("scaledAttr"))),
+                allOf(
+                        hasProperty("code", equalTo("PRECISION_VALIDATION_FAILED")),
+                        hasProperty("location", equalTo("scaledAttr")))
+        ));
+
+    }
+
+    @Test
+    public void testScaleValidatorPassesForValueWithoutScale() {
+        MyEntityWithOptionalFields created = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
+                .withScaledAttr(1234567890.0)
+                .build());
+
+        assertThat(created.getScaledAttr(), equalTo(Optional.of(1234567890.0)));
+
+    }
+    /*
+
+    @Test
+    public void testScaleValidatorPassesForValueWithoutScale() {
+        MyEntityWithOptionalFields created = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
+                .withScaledAttr(1234567.0)
+                .build());
+
+        assertThat(created.getScaledAttr(), equalTo(Optional.of(1234567.0)));
+    } */
+
+}
