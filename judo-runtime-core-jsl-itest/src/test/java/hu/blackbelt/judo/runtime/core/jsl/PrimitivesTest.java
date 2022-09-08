@@ -168,8 +168,8 @@ public class PrimitivesTest extends AbstractJslTest {
 
         assertEquals(1, ent1.getIntegerAttr().get());
 
-        IllegalStateException thrown = assertThrows(
-                IllegalStateException.class,
+        ValidationException thrown = assertThrows(
+                ValidationException.class,
                 () -> entityWithIdentifiersDao.create(EntityWithIdentifiers.builder()
                         .withIntegerAttr(1)
                         .withBoolAttr(true)
@@ -178,16 +178,26 @@ public class PrimitivesTest extends AbstractJslTest {
                         .withStringAttr("blabla")
                         .build()));
 
-        assertTrue(thrown.getMessage().startsWith("Identifier uniqueness violation(s): "));
-        assertTrue(thrown.getMessage().contains("stringAttr=blabla"));
-        assertTrue(thrown.getMessage().contains("enumAttr=1"));
-        assertTrue(thrown.getMessage().contains("integerAttr=1"));
-        assertTrue(thrown.getMessage().contains("boolAttr=true"));
-        assertTrue(thrown.getMessage().contains("dateAttr=" + now.toString()));
-
+        assertThat(thrown.getValidationResults(), containsInAnyOrder(
+                allOf(
+                        hasProperty("code", equalTo("IDENTIFIER_ATTRIBUTE_UNIQUENESS_VIOLATION")),
+                        hasProperty("location", equalTo("stringAttr"))),
+                allOf(
+                        hasProperty("code", equalTo("IDENTIFIER_ATTRIBUTE_UNIQUENESS_VIOLATION")),
+                        hasProperty("location", equalTo("enumAttr"))),
+                allOf(
+                        hasProperty("code", equalTo("IDENTIFIER_ATTRIBUTE_UNIQUENESS_VIOLATION")),
+                        hasProperty("location", equalTo("integerAttr"))),
+                allOf(
+                        hasProperty("code", equalTo("IDENTIFIER_ATTRIBUTE_UNIQUENESS_VIOLATION")),
+                        hasProperty("location", equalTo("boolAttr"))),
+                allOf(
+                        hasProperty("code", equalTo("IDENTIFIER_ATTRIBUTE_UNIQUENESS_VIOLATION")),
+                        hasProperty("location", equalTo("dateAttr")))
+        ));
 
         thrown = assertThrows(
-                IllegalStateException.class,
+                ValidationException.class,
                 () ->
                         entityWithIdentifiersContainerDao.create(
                                 EntityWithIdentifiersContainer.builder()
@@ -201,8 +211,11 @@ public class PrimitivesTest extends AbstractJslTest {
                                         ))
                                         .build()));
 
-        assertTrue(thrown.getMessage().startsWith("Identifier uniqueness violation(s): "));
-        assertTrue(thrown.getMessage().contains("integerAttr=2"));
+        assertThat(thrown.getValidationResults(), containsInAnyOrder(
+                allOf(
+                        hasProperty("code", equalTo("IDENTIFIER_ATTRIBUTE_UNIQUENESS_VIOLATION")),
+                        hasProperty("location", equalTo("entiiesWithIdentifiers[1].integerAttr")))
+        ));
     }
 
     @Test
