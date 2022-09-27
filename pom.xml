@@ -25,9 +25,8 @@
 
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
-        <surefire-version>3.0.0-M5</surefire-version>
+        <surefire-version>3.0.0-M7</surefire-version>
         <slf4j-version>1.7.36</slf4j-version>
-        <jacoco.version>0.8.6</jacoco.version>
 
         <osgi-default-import>
             org.osgi.framework;version="[1.8,2.0)",
@@ -43,17 +42,16 @@
 
         <epsilon-runtime-version>1.5.0</epsilon-runtime-version>
         <judo-tatami-core-version>1.1.0</judo-tatami-core-version>
-        <judo-tatami-jsl-version>1.1.0</judo-tatami-jsl-version>
-        <judo-runtime-core-version>1.0.0</judo-runtime-core-version>
+        <judo-tatami-jsl-version>1.1.1</judo-tatami-jsl-version>
+        <judo-runtime-core-version>1.0.2</judo-runtime-core-version>
 
         <!-- Code Quality-->
+        <sonar-maven-plugin-version>3.9.1.2184</sonar-maven-plugin-version>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
         <sonar.language>java</sonar.language>
-        <sonar.java.source>${maven.compiler.source}</sonar.java.source>
-        <sonar.coverage.jacoco.xmlReportPaths>
-            ${project.basedir}/../judo-runtime-core-tests-aggregator/target/site/jacoco-aggregate/jacoco.xml
-        </sonar.coverage.jacoco.xmlReportPaths>
+        <sonar.java.source>${java.version}</sonar.java.source>
+        <jacoco.version>0.8.8</jacoco.version>
     </properties>
 
     <url>http://github.com/${project-repositoryId}</url>
@@ -353,6 +351,12 @@
         </dependency>
 
         <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <version>1.4.1</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.mattbertolini</groupId>
             <artifactId>liquibase-slf4j</artifactId>
             <version>4.1.0</version>
@@ -572,23 +576,109 @@
         </profile>
 
         <profile>
-            <id>coverage</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
+            <id>generate-github-asciidoc-diagrams</id>
+
+            <properties>
+                <asciidoctor.maven.plugin.version>2.2.2</asciidoctor.maven.plugin.version>
+                <asciidoctorj.version>2.5.6</asciidoctorj.version>
+                <asciidoctorj.diagram.version>2.2.3</asciidoctorj.diagram.version>
+                <jruby.version>9.3.4.0</jruby.version>
+            </properties>
+
             <build>
                 <plugins>
                     <plugin>
-                        <groupId>org.jacoco</groupId>
-                        <artifactId>jacoco-maven-plugin</artifactId>
+                        <groupId>org.asciidoctor</groupId>
+                        <artifactId>asciidoctor-maven-plugin</artifactId>
+                        <version>${asciidoctor.maven.plugin.version}</version>
+                        <dependencies>
+                            <!-- Comment this section to use the default jruby artifact provided by the plugin -->
+                            <dependency>
+                                <groupId>org.jruby</groupId>
+                                <artifactId>jruby-complete</artifactId>
+                                <version>${jruby.version}</version>
+                            </dependency>
+                            <!-- Comment this section to use the default AsciidoctorJ artifact provided by the plugin -->
+                            <dependency>
+                                <groupId>org.asciidoctor</groupId>
+                                <artifactId>asciidoctorj</artifactId>
+                                <version>${asciidoctorj.version}</version>
+                            </dependency>
+                            <dependency>
+                                <groupId>org.asciidoctor</groupId>
+                                <artifactId>asciidoctorj-diagram</artifactId>
+                                <version>${asciidoctorj.diagram.version}</version>
+                            </dependency>
+                            <!-- Since asciidoctorj-diagram v2.2.0, uncomment to use specific version of plantuml or ditaa -->
+                            <dependency>
+                                <groupId>org.asciidoctor</groupId>
+                                <artifactId>asciidoctorj-diagram-plantuml</artifactId>
+                                <version>1.2022.5</version>
+                            </dependency>
+                            <dependency>
+                                <groupId>org.asciidoctor</groupId>
+                                <artifactId>asciidoctorj-diagram-ditaamini</artifactId>
+                                <version>1.0.3</version>
+                            </dependency>
+                        </dependencies>
+                        <configuration>
+                            <sourceDirectory>./.github</sourceDirectory>
+                            <requires>
+                                <require>asciidoctor-diagram</require>
+                            </requires>
+                            <attributes>
+                                <!-- Example below shows how to specify in this pom instead of System's PATH, the location of dot command of Graphviz, required by PlantUML libraries -->
+                                <!-- Windows:
+                                    <graphvizdot>C:\Program Files (x86)\Graphviz2.38\bin\dot.exe</graphvizdot>
+                                -->
+                                <!-- *nix :
+                                    <graphvizdot>/usr/local/bin/dot</graphvizdot>
+                                -->
+                            </attributes>
+                        </configuration>
                         <executions>
                             <execution>
-                                <id>prepare-agent</id>
+                                <id>generate-html-doc</id>
+                                <phase>generate-resources</phase>
                                 <goals>
-                                    <goal>prepare-agent</goal>
+                                    <goal>process-asciidoc</goal>
                                 </goals>
                                 <configuration>
-                                    <propertyName>surefireArgLine</propertyName>
+                                    <backend>html5</backend>
+                                    <attributes>
+                                        <imagesdir>./images</imagesdir>
+                                        <toc>left</toc>
+                                        <icons>font</icons>
+                                        <sectanchors>true</sectanchors>
+                                        <idprefix/>
+                                        <idseparator>-</idseparator>
+                                    </attributes>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <version>3.3.0</version>
+                        <executions>
+                            <execution>
+                                <id>copy-generated-gitflow-diagrams</id>
+                                <phase>generate-resources</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+
+                                <configuration>
+                                    <outputDirectory>${basedir}/.github</outputDirectory>
+                                    <resources>
+                                        <resource>
+                                            <directory>${basedir}/target/generated-docs/images/</directory>
+                                            <includes>
+                                                <include>*.png</include>
+                                            </includes>
+                                        </resource>
+                                    </resources>
                                 </configuration>
                             </execution>
                         </executions>
@@ -621,13 +711,8 @@
                                 <configuration>
                                     <licenseName>epl_v2</licenseName>
                                     <roots>
-                                        <root>judo-runtime-core-bootstrap-jsl/src/main/java</root>
-                                        <root>judo-runtime-core-bootstrap-jsl/src/test/java</root>
-
-                                        <root>judo-runtime-core-jsl-itest/src/test/java</root>
-
-                                        <root>judo-runtime-core-jsl-spring-itest/src/main/java</root>
-                                        <root>judo-runtime-core-jsl-spring-itest/src/test/java</root>
+                                        <root>src/main/java</root>
+                                        <root>src/test</root>
                                     </roots>
                                 </configuration>
                             </execution>
