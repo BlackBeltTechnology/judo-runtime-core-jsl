@@ -20,6 +20,7 @@
         <timestamp>${maven.build.timestamp}</timestamp>
         <maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
         <src.dir>src/main</src.dir>
+
         <!--suppress UnresolvedMavenProperty -->
         <logback-test-config>${maven.multiModuleProjectDirectory}/logback-test.xml</logback-test-config>
 
@@ -296,10 +297,61 @@
                 </executions>
             </plugin>
 
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.4.1</version>
+                <configuration>
+                    <source>8</source>
+                    <doclint>none</doclint>
+                    <failOnError>false</failOnError>
+                    <detectJavaApiLink>false</detectJavaApiLink>
+                    <tags>
+                        <tag>
+                            <name>model</name>
+                            <placement>a</placement>
+                            <head>EMF Model</head>
+                        </tag>
+                        <tag>
+                            <name>generated</name>
+                            <placement>a</placement>
+                            <head>EMF Generated</head>
+                        </tag>
+                        <tag>
+                            <name>ordered</name>
+                            <placement>a</placement>
+                            <head>EMF Ordered</head>
+                        </tag>
+                        <tag>
+                            <name>param</name>
+                            <placement>a</placement>
+                            <head>EMF Param</head>
+                        </tag>
+
+                    </tags>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
     </build>
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>fr.jmini.ecentral</groupId>
+                <artifactId>eclipse-platform-dependencies</artifactId>
+                <version>4.22</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
             <dependency>
                 <groupId>hu.blackbelt.judo.runtime</groupId>
                 <artifactId>judo-runtime-core-dependencies</artifactId>
@@ -325,15 +377,6 @@
                 <artifactId>judo-tatami-jsl-workflow</artifactId>
                 <version>${judo-tatami-jsl-version}</version>
             </dependency>
-
-            <dependency>
-                <groupId>fr.jmini.ecentral</groupId>
-                <artifactId>eclipse-platform-dependencies</artifactId>
-                <version>4.22</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-
         </dependencies>
     </dependencyManagement>
 
@@ -378,22 +421,6 @@
             <groupId>hu.blackbelt.epsilon</groupId>
             <artifactId>epsilon-runtime-execution</artifactId>
             <version>${epsilon-runtime-version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.eclipse.emf</groupId>
-            <artifactId>org.eclipse.emf.ecore</artifactId>
-            <version>2.21.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.emf</groupId>
-            <artifactId>org.eclipse.emf.common</artifactId>
-            <version>2.21.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.emf</groupId>
-            <artifactId>org.eclipse.emf.ecore.xmi</artifactId>
-            <version>2.16.0</version>
         </dependency>
 
         <dependency>
@@ -485,6 +512,7 @@
                 <module>judo-runtime-core-jsl-spring-itest</module>
             </modules>
         </profile>
+
         <profile>
             <id>sign-artifacts</id>
             <build>
