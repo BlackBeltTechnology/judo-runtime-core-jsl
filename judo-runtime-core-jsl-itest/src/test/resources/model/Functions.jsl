@@ -1,0 +1,257 @@
+model Functions
+
+import FunctionsExternals as FE
+
+type numeric Integer(precision = 9, scale = 0)
+type numeric Scaled(precision = 9, scale = 2)
+type string String(max-length = 128)
+type boolean Boolean
+type date Date
+type timestamp Timestamp
+type time Time
+type binary Binary(mime-types = ["text/plain"], max-file-size=1 GB)
+
+enum MyEnum {
+    Atomic = 0
+    Bombastic = 1
+    Crazy = 2
+}
+
+entity Entity {
+    field Integer integerAttr
+    field Scaled scaledAttr
+    field String stringAttr
+    field Boolean boolAttr
+    field Date dateAttr
+    field Timestamp timestampAttr
+    field Time timeAttr
+}
+
+entity EntityWithPrimitiveDefaults {
+    field Integer integerAttr = 1
+    field Scaled scaledAttr = 2.34
+    field String stringAttr = "test"
+    field Boolean boolAttr = true
+    field Date dateAttr = `2022-07-11`
+    field Timestamp timestampAttr = `2022-07-11T19:09:33Z`
+    field Time timeAttr = `23:59:59`
+}
+/* FIXME: JNG-3896
+entity Functions {
+    field Entity entity
+    field EntityWithPrimitiveDefaults entityWithPrimitives
+}
+
+FIXME: use "extends Functions" once bug is fixed */
+entity AnyTypeFunctions {
+    field Entity `entity`
+    field EntityWithPrimitiveDefaults entityWithPrimitives
+
+    derived Boolean integerIsDefinedFalse => self.`entity`.integerAttr!isDefined()
+    derived Boolean integerIsDefinedTrue => self.entityWithPrimitives.integerAttr!isDefined()
+    derived Boolean integerIsUnDefinedTrue => self.`entity`.integerAttr!isUnDefined()
+    derived Boolean integerIsUnDefinedFalse => self.entityWithPrimitives.integerAttr!isUnDefined()
+
+    derived Boolean scaledIsDefinedFalse => self.`entity`.scaledAttr!isDefined()
+    derived Boolean scaledIsDefinedTrue => self.entityWithPrimitives.scaledAttr!isDefined()
+    derived Boolean scaledIsUnDefinedTrue => self.`entity`.scaledAttr!isUnDefined()
+    derived Boolean scaledIsUnDefinedFalse => self.entityWithPrimitives.scaledAttr!isUnDefined()
+
+    derived Boolean stringIsDefinedFalse => self.`entity`.stringAttr!isDefined()
+    derived Boolean stringIsDefinedTrue => self.entityWithPrimitives.stringAttr!isDefined()
+    derived Boolean stringIsUnDefinedTrue => self.`entity`.stringAttr!isUnDefined()
+    derived Boolean stringIsUnDefinedFalse => self.entityWithPrimitives.stringAttr!isUnDefined()
+
+    derived Boolean boolIsDefinedFalse => self.`entity`.boolAttr!isDefined()
+    derived Boolean boolIsDefinedTrue => self.entityWithPrimitives.boolAttr!isDefined()
+    derived Boolean boolIsUnDefinedTrue => self.`entity`.boolAttr!isUnDefined()
+    derived Boolean boolIsUnDefinedFalse => self.entityWithPrimitives.boolAttr!isUnDefined()
+
+    derived Boolean dateIsDefinedFalse => self.`entity`.dateAttr!isDefined()
+    derived Boolean dateIsDefinedTrue => self.entityWithPrimitives.dateAttr!isDefined()
+    derived Boolean dateIsUnDefinedTrue => self.`entity`.dateAttr!isUnDefined()
+    derived Boolean dateIsUnDefinedFalse => self.entityWithPrimitives.dateAttr!isUnDefined()
+
+    derived Boolean timestampIsDefinedFalse => self.`entity`.timestampAttr!isDefined()
+    derived Boolean timestampIsDefinedTrue => self.entityWithPrimitives.timestampAttr!isDefined()
+    derived Boolean timestampIsUnDefinedTrue => self.`entity`.timestampAttr!isUnDefined()
+    derived Boolean timestampIsUnDefinedFalse => self.entityWithPrimitives.timestampAttr!isUnDefined()
+
+    derived Boolean timeIsDefinedFalse => self.`entity`.timeAttr!isDefined()
+    derived Boolean timeIsDefinedTrue => self.entityWithPrimitives.timeAttr!isDefined()
+    derived Boolean timeIsUnDefinedTrue => self.`entity`.timeAttr!isUnDefined()
+    derived Boolean timeIsUnDefinedFalse => self.entityWithPrimitives.timeAttr!isUnDefined()
+}
+
+entity StringFunctions {
+    derived Integer length => "apple"!length()
+    derived String first => "apple"!first(count = 2)
+    derived String last => "apple"!last(count = 1)
+    // derived Integer position => "apple"!position(substring = "p") // FIXME: JNG-3897
+    derived String substring => "apple"!substring(count = 2, offset = 3)
+    derived String lower => "ApPlE"!lower()
+    derived String lowerCase => "ApPlE"!lowerCase()
+    derived String upper => "ApPlE"!upper()
+    derived String upperCase => "ApPlE"!upperCase()
+    // derived String capitalize => "apPlE"!capitalize()
+    derived Boolean matches => "apple"!matches(pattern = r".*pl.")
+    derived Boolean like => "apple"!like(pattern = "%pl_")
+    // derived Boolean ilike => "apPLe"!ilike(pattern = "_pple") // FIXME: JNG-3897
+    derived String replace => "apple"!replace(oldstring = "le", newstring = "endix")
+    derived String trim => " apple "!trim()
+    // derived String ltrim => " apple "!ltrim() // FIXME: JNG-3897
+    // derived String rtrim => " apple "!rtrim() // FIXME: JNG-3897
+}
+
+entity NumericFunctions {
+    field Integer int = 1
+
+    /* FIXME: JNG-3898 */
+    // derived Integer roundInt => self.int!round()
+    // derived Integer roundInt => 1!round()
+    derived Integer roundScaled1 => 1.23!round()
+    derived Integer roundScaled2 => 7.89!round()
+    derived Integer roundScaled3 => 2.50!round()
+    derived Integer roundScaledNegative1 => -2.5!round()
+    derived Integer roundScaledNegative2 => -1.23!round()
+    derived Integer roundScaledNegative3 => -7.89!round()
+
+    /* FIXME: JNG-3797
+    derived Integer floorInt => 1!floor()
+    derived Integer floorScaled1 => 2.9!floor()
+    derived Integer floorScaled2 => -2.9!floor()
+
+    derived Integer ceilInt => 1!ceil()
+    derived Integer ceilScaled1 => 2.9!ceil()
+    derived Integer ceilScaled2 => -2.9!ceil()
+
+    derived Integer absInt => 1!abs()
+    derived Scaled absScaled1 => 2.9!abs()
+    derived Integer absScaled2 => -3!abs()
+    */
+
+    derived String intAsString => 1!asString()
+    derived String scaledAsString => 123456.789!asString()
+}
+
+entity BooleanFunctions {
+    field Boolean bool = true
+
+    derived String ownBoolAsString => self.bool!asString()
+    derived String trueAsString => true!asString()
+    derived String falseAsString => false!asString()
+}
+
+entity DateFunctions {
+    field Date `date` = `2022-07-11`
+
+    derived String ownDateAsString => self.`date`!asString()
+    derived String dateAsString => `2021-03-02`!asString()
+    derived Integer year => `2021-03-02`!year()
+    derived Integer month => `2021-03-02`!month()
+    derived Integer day => `2021-03-02`!day()
+    // derived Date of => Date!of(2011,1,28) FIXME: JNG-3899
+}
+
+entity TimeFunctions {
+    field Time `time` = `23:15:59`
+
+    derived String ownTimeAsString => self.`time`!asString()
+    derived String timeAsString => `23:15:59`!asString()
+    derived Integer hour => `23:15:59`!hour()
+    derived Integer minute => `23:15:59`!minute()
+    derived Integer second => `23:15:59`!second()
+    // derived Time of => Time!of(13,45,00) FIXME: JNG-3901
+}
+
+entity TimestampFunctions {
+    field Timestamp timestamp1 = `2019-07-18T01:11:12+02:00`
+    field Timestamp timestamp2 = `2019-07-18T01:11:12Z`
+
+    derived String ownTimestamp1AsString => self.timestamp1!asString()
+    derived String ownTimestamp2AsString => self.timestamp2!asString()
+    /* FIXME: JNG-3903
+    derived Date dateZ => `2019-07-18T01:11:12Z`!date()
+    derived Date datePlus => `2019-07-18T01:11:12+02:00`!date()
+    derived Time timeZ => `2019-07-18T01:11:12Z`!time()
+    derived Time timePlus => `2019-07-18T01:11:12+02:00`!time()
+    derived Timestamp ofDate => Timestamp!of(`2021-02-28`)
+    derived Timestamp ofDateAndTime => Timestamp!of(`2021-02-28`,`10:30:01`)
+    derived Integer asMilliseconds => `1970-01-01T00:01:00Z`!asMilliseconds()
+    derived Timestamp fromMilliseconds => Timestamp!fromMilliseconds(60000)
+    derived Timestamp plusMilliseconds => `2019-07-18T01:11:12Z`!plusMilliseconds(60000)
+    derived Timestamp plusSeconds => `2019-07-18T01:11:12Z`!plusSeconds(60)
+    derived Timestamp plusMinutes => `2019-07-18T01:11:12Z`!plusSeconds(1)
+    derived Timestamp plusHours => `2019-07-18T01:11:12Z`!plusHours(1)
+    derived Timestamp plusDays => `2019-07-18T01:11:12Z`!plusDays(1)
+    derived Timestamp plusMonths => `2019-07-18T01:11:12Z`!plusMonths(1)
+    derived Timestamp plusYears => `2019-07-18T01:11:12Z`!plusYears(1)
+    */
+}
+
+entity EnumFunctions {
+    field MyEnum `enum` = MyEnum#Atomic
+
+    derived String ownEnumAsString => self.`enum`!asString()
+    // derived String enumAsString => MyEnum#Atomic!asString() FIXME: JNG-3904
+}
+
+entity InstanceFunctions {
+    field String instanceField = "Hello"
+    // field FE::ExternalEntity external FIXME: JNG-3909
+    field Parent parent
+    field Child child
+
+    relation Parent[] parents
+    relation Child[] children
+
+    derived Boolean typeOfParent => self.parent!typeOf(entityType = Parent)
+    derived Boolean notTypeOfChild => self.parent!typeOf(entityType = Child)
+
+    derived Boolean kindOfParent => self.parent!kindOf(entityType = Parent)
+    derived Boolean kindOfChild => self.parent!kindOf(entityType = Child)
+
+    derived Parent asParentType => self.child
+    derived Child asChildType => self.parent!asType(entityType = Child)
+
+    // FIXME: JNG-3911
+    // derived Child[] childAsCollection => self.child.asCollection(entityType = Child)
+
+    /* FIXME: JNG-3968 
+    derived Boolean parentMemberOfParents => self.parent!memberOf(instances = self.parents)
+    derived Boolean parentMemberOfChildren => self.parent!memberOf(instances = self.children)
+    derived Boolean childMemberOfParents => self.child!memberOf(instances = self.parents)
+    derived Boolean childMemberOfChildren => self.child!memberOf(instances = self.children)
+    */
+}
+
+entity CollectionFunctions {
+    field Parent[] parentsField
+    field Child[] childrenField
+
+    relation Parent[] parentsRelation
+    relation Child[] childrenRelation
+
+    /* TODO: JNG-3911 re-add after collection functions have been implemented
+    derived Parent[] headParentsField => self.parentsField!head(p | p.name)
+    derived Parent[] headParentsFieldDesc => self.parentsField!head(p | p.name DESC)
+
+    derived Parent[] headParentsRelation => self.parentsRelation!head(p | p.name)
+    derived Parent[] headParentsRelationDesc => self.parentsRelation!head(p | p.name DESC)
+    */
+}
+
+entity Parent {
+    field String name
+}
+
+entity Child extends Parent {
+    field Integer age
+    relation Parent mother
+}
+
+/* FIXME: JNG-3909
+entity ExternalChild extends FE::ExternalEntity {
+    field Integer age
+}
+*/
