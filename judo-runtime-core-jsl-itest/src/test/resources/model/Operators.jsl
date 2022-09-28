@@ -44,7 +44,7 @@ entity DerivedSource {
 entity DerivedOperators {
     field required DerivedSource source;
     derived String stringConcat => self.source.firstName + " " + self.source.lastName;
-    derived Integer firstNameLength => self.source.firstName!length();
+    // derived Integer firstNameLength => self.source.firstName!size();  // FIXME: JNG-4080
     derived Integer rounded => self.source.score!round();
     derived Integer addition => self.source.age + 2;
     derived Integer subtraction => self.source.age - 2;

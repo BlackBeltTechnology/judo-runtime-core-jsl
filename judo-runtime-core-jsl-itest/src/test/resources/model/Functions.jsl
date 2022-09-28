@@ -4,7 +4,7 @@ import FunctionsExternals as FE;
 
 type numeric Integer(precision = 9, scale = 0);
 type numeric Scaled(precision = 9, scale = 2);
-type string String(max-length = 128);
+type string String(min-size = 0, max-size = 128);
 type boolean Boolean;
 type date Date;
 type timestamp Timestamp;
@@ -84,7 +84,7 @@ entity AnyTypeFunctions {
 }
 
 entity StringFunctions {
-    derived Integer length => "apple"!length();
+    // derived Integer length => "apple"!size(); // FIXME: JNG-4080
     derived String first => "apple"!first(count = 2);
     derived String last => "apple"!last(count = 1);
     // derived Integer position => "apple"!position(substring = "p"); // FIXME: JNG-3897

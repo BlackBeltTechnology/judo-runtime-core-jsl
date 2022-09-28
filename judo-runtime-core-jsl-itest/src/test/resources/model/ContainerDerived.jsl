@@ -1,4 +1,4 @@
-model ContainerDerived
+model ContainerDerived;
 
 entity A {
 	field C[] cs;
