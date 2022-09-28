@@ -1,0 +1,14 @@
+model SalesModelContract
+
+type date Date
+type string String(max-length = 128)
+
+entity ContractDetail {
+    field String details
+}
+
+entity Contract {
+    field Date creationDate
+    field ContractDetail detail
+}
+

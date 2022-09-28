@@ -1,0 +1,27 @@
+model AssociationRelationships
+
+entity EntityA {
+    relation EntityC singleConA
+    relation required EntityC singleRequiredConA opposite twoWayMultipleAonC
+    relation EntityD[] multipleDonA opposite multipleAonD
+}
+
+entity abstract EntityB {
+    relation EntityA[] multipleAonB
+}
+
+entity EntityC extends EntityB {
+    relation EntityD[] multipleDonC
+    relation EntityA[] twoWayMultipleAonC opposite singleRequiredConA
+}
+
+entity EntityD {
+    relation EntityA[] multipleAonD opposite multipleDonA
+}
+
+entity EntityE {
+    relation EntityF[] multipleFOnE opposite-add singleEAdded
+}
+
+entity EntityF {
+}

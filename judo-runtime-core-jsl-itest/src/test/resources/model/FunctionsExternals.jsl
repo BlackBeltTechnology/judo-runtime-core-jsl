@@ -1,0 +1,7 @@
+model FunctionsExternals
+
+type string String(max-length = 128)
+
+entity ExternalEntity {
+    field String name = "John Doe"
+}

@@ -1,7 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!--
   #%L
-  JUDO Runtime Core :: JUDO Language Specification DSL bootstrap
+  JUDO Runtime Core JSL :: Parent
   %%
   Copyright (C) 2018 - 2022 BlackBelt Technology
   %%
@@ -18,8 +17,8 @@
   SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
   #L%
   -->
-
 <configuration>
+
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <layout class="ch.qos.logback.classic.PatternLayout">
             <Pattern>
@@ -28,11 +27,8 @@
         </layout>
     </appender>
 
-    <root level="warn">
+    <root level="error">
         <appender-ref ref="CONSOLE"/>
     </root>
 
-    <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
-        <resetJUL>true</resetJUL>
-    </contextListener>
 </configuration>
