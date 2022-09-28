@@ -181,7 +181,7 @@ entity TimestampFunctions {
     */
     derived Timestamp fromMilliseconds => Timestamp!fromMilliseconds(milliseconds = 60000);
     /*
-    derived Timestamp plusMilliseconds => Timestamp!of(date = `2021-02-28`)!plus(milliseconds = 60000);
+    derived Timestamp plusMilliseconds => `2019-07-18T01:11:12Z`!plus(milliseconds = 60000);
     derived Timestamp plusSeconds => `2019-07-18T01:11:12Z`!plus(seconds = 60);
     derived Timestamp plusMinutes => `2019-07-18T01:11:12Z`!plus(minutes = 1);
     derived Timestamp plusHours => `2019-07-18T01:11:12Z`!plus(hours = 1);
