@@ -149,13 +149,53 @@ public class FunctionsTest extends AbstractJslTest {
 
     @Test
     public void testNumerics() {
-        NumericFunctions num = numericFunctionsDao.create(NumericFunctions.builder().build());
+        NumericFunctions numericFunctions = numericFunctionsDao.create(NumericFunctions.builder().build());
 
-        // TODO: JNG-3898 add tests for round() once bugs are fixed
-        // TODO: JNG-3797 add tests for floor(), ceil(), abs() once bugs are fixed
+        Long roundInt = numericFunctions.getRoundInt().orElseThrow();
+        assertEquals(1, roundInt);
+        Long roundInt2 = numericFunctions.getRoundInt2().orElseThrow();
+        assertEquals(1, roundInt2);
+        Long roundScaled1 = numericFunctions.getRoundScaled1().orElseThrow();
+        assertEquals(1, roundScaled1);
+        Long roundScaled2 = numericFunctions.getRoundScaled2().orElseThrow();
+        assertEquals(8, roundScaled2);
+        Long roundScaled3 = numericFunctions.getRoundScaled3().orElseThrow();
+        assertEquals(3, roundScaled3);
+        // TODO: uncomment once parenthesized expression is available
+//        Long roundScaledNegative1 = numericFunctions.getRoundScaledNegative1().orElseThrow();
+//        assertEquals(-3, roundScaledNegative1);
+//        Long roundScaledNegative2 = numericFunctions.getRoundScaledNegative2().orElseThrow();
+//        assertEquals(-1, roundScaledNegative2);
+//        Long roundScaledNegative3 = numericFunctions.getRoundScaledNegative3().orElseThrow();
+//        assertEquals(-8, roundScaledNegative3);
 
-        assertEquals(Optional.of("1"), num.getIntAsString());
-        assertEquals(Optional.of("123456.789"), num.getScaledAsString());
+        Long floorInt = numericFunctions.getFloorInt().orElseThrow();
+        assertEquals(1, floorInt);
+        Long floorScaled1 = numericFunctions.getFloorScaled1().orElseThrow();
+        assertEquals(2, floorScaled1);
+//        Long floorScaled2 = numericFunctions.getFloorScaled2().orElseThrow();
+//        assertEquals(-2, floorScaled2);
+
+        Long ceilInt = numericFunctions.getCeilInt().orElseThrow();
+        assertEquals(1, ceilInt);
+        Long ceilScaled1 = numericFunctions.getCeilScaled1().orElseThrow();
+        assertEquals(3, ceilScaled1);
+//        Long ceilScaled2 = numericFunctions.getCeilScaled2().orElseThrow();
+//        assertEquals(-3, ceilScaled2);
+
+        Long absInt = numericFunctions.getAbsInt().orElseThrow();
+        assertEquals(1, absInt);
+//        Long absInt2 = numericFunctions.getAbsInt2().orElseThrow();
+//        assertEquals(3, absInt2);
+        Double absScaled1 = numericFunctions.getAbsScaled1().orElseThrow();
+        assertEquals(2.9, absScaled1);
+//        Double absScaled2 = numericFunctions.getAbsScaled2().orElseThrow();
+//        assertEquals(2.9, absScaled2);
+
+        String intAsString = numericFunctions.getIntAsString().orElseThrow();
+        assertEquals("1", intAsString);
+        String scaledAsString = numericFunctions.getScaledAsString().orElseThrow();
+        assertEquals("123456.789", scaledAsString);
     }
 
     @Test
