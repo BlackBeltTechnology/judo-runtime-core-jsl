@@ -2,8 +2,8 @@ model Functions;
 
 import FunctionsExternals as FE;
 
-type numeric Integer(precision = 9, scale = 0);
-type numeric Scaled(precision = 9, scale = 2);
+type numeric Integer(precision = 15, scale = 0);
+type numeric Scaled(precision = 15, scale = 2);
 type string String(min-size = 0, max-size = 128);
 type boolean Boolean;
 type date Date;
@@ -176,11 +176,8 @@ entity TimestampFunctions {
     derived Time timePlus => `2019-07-18T01:11:12+02:00`!time();
     derived Timestamp ofDate => Timestamp!of(date = `2021-02-28`);
     derived Timestamp ofDateAndTime => Timestamp!of(date = `2021-02-28`, time = `10:30:01`);
-    /*
     derived Integer asMilliseconds => Timestamp!of(date = `2021-02-28`)!asMilliseconds();
-    */
-    derived Timestamp fromMilliseconds => Timestamp!fromMilliseconds(milliseconds = 60000);
-    /*
+    derived Timestamp fromMilliseconds => Timestamp!fromMilliseconds(milliseconds = 999999999);
     derived Timestamp plusMilliseconds => `2019-07-18T01:11:12Z`!plus(milliseconds = 60000);
     derived Timestamp plusSeconds => `2019-07-18T01:11:12Z`!plus(seconds = 60);
     derived Timestamp plusMinutes => `2019-07-18T01:11:12Z`!plus(minutes = 1);
@@ -188,7 +185,6 @@ entity TimestampFunctions {
     derived Timestamp plusDays => `2019-07-18T01:11:12Z`!plus(days = 1);
     derived Timestamp plusMonths => `2019-07-18T01:11:12Z`!plus(months = 1);
     derived Timestamp plusYears => `2019-07-18T01:11:12Z`!plus(years = 1);
-    */
 }
 
 entity EnumFunctions {

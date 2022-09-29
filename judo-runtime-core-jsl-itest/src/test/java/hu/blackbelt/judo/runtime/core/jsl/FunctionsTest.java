@@ -172,9 +172,9 @@ public class FunctionsTest extends AbstractJslTest {
 
         assertEquals(Optional.of("2022-07-11"), date.getOwnDateAsString());
         assertEquals(Optional.of("2021-03-02"), date.getDateAsString());
-        assertEquals(Optional.of(2021), date.getYear());
-        assertEquals(Optional.of(3), date.getMonth());
-        assertEquals(Optional.of(2), date.getDay());
+        assertEquals(Optional.of(2021L), date.getYear());
+        assertEquals(Optional.of(3L), date.getMonth());
+        assertEquals(Optional.of(2L), date.getDay());
         // TODO: add missing test after JNG-3899 is fixed
     }
 
@@ -184,9 +184,9 @@ public class FunctionsTest extends AbstractJslTest {
 
         // assertEquals(Optional.of("23:15:59"), time.getOwnTimeAsString()); FIXME: JNG-3900
         // assertEquals(Optional.of("23:15:59"), time.getTimeAsString()); FIXME: JNG-3900
-        assertEquals(Optional.of(23), time.getHour());
-        assertEquals(Optional.of(15), time.getMinute());
-        assertEquals(Optional.of(59), time.getSecond());
+        assertEquals(Optional.of(23L), time.getHour());
+        assertEquals(Optional.of(15L), time.getMinute());
+        assertEquals(Optional.of(59L), time.getSecond());
         // TODO: add missing test after JNG-3901 is fixed
     }
 
@@ -211,11 +211,11 @@ public class FunctionsTest extends AbstractJslTest {
     @Test
     public void testInstance() {
         Parent parent1 = parentDao.create(Parent.builder().withName("James Webb").build());
-        Child child1 = childDao.create(Child.builder().withName("Erika Young").withAge(11).build());
+        Child child1 = childDao.create(Child.builder().withName("Erika Young").withAge(11L).build());
 
         InstanceFunctions instanceFunctions = instanceFunctionsDao.create(InstanceFunctions.builder()
                         .withParent(Parent.builder().withName("Another Person").build())
-                        .withChild(Child.builder().withName("Another Child").withAge(31).build())
+                        .withChild(Child.builder().withName("Another Child").withAge(31L).build())
                         .build());
                
         assertTrue(instanceFunctions.getTypeOfParent().get());
