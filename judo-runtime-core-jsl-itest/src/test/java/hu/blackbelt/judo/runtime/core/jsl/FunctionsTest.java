@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.*;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -148,13 +149,53 @@ public class FunctionsTest extends AbstractJslTest {
 
     @Test
     public void testNumerics() {
-        NumericFunctions num = numericFunctionsDao.create(NumericFunctions.builder().build());
+        NumericFunctions numericFunctions = numericFunctionsDao.create(NumericFunctions.builder().build());
 
-        // TODO: JNG-3898 add tests for round() once bugs are fixed
-        // TODO: JNG-3797 add tests for floor(), ceil(), abs() once bugs are fixed
+        Long roundInt = numericFunctions.getRoundInt().orElseThrow();
+        assertEquals(1, roundInt);
+        Long roundInt2 = numericFunctions.getRoundInt2().orElseThrow();
+        assertEquals(1, roundInt2);
+        Long roundScaled1 = numericFunctions.getRoundScaled1().orElseThrow();
+        assertEquals(1, roundScaled1);
+        Long roundScaled2 = numericFunctions.getRoundScaled2().orElseThrow();
+        assertEquals(8, roundScaled2);
+        Long roundScaled3 = numericFunctions.getRoundScaled3().orElseThrow();
+        assertEquals(3, roundScaled3);
+        // TODO: uncomment once parenthesized expression is available
+//        Long roundScaledNegative1 = numericFunctions.getRoundScaledNegative1().orElseThrow();
+//        assertEquals(-3, roundScaledNegative1);
+//        Long roundScaledNegative2 = numericFunctions.getRoundScaledNegative2().orElseThrow();
+//        assertEquals(-1, roundScaledNegative2);
+//        Long roundScaledNegative3 = numericFunctions.getRoundScaledNegative3().orElseThrow();
+//        assertEquals(-8, roundScaledNegative3);
 
-        assertEquals(Optional.of("1"), num.getIntAsString());
-        assertEquals(Optional.of("123456.789"), num.getScaledAsString());
+        Long floorInt = numericFunctions.getFloorInt().orElseThrow();
+        assertEquals(1, floorInt);
+        Long floorScaled1 = numericFunctions.getFloorScaled1().orElseThrow();
+        assertEquals(2, floorScaled1);
+//        Long floorScaled2 = numericFunctions.getFloorScaled2().orElseThrow();
+//        assertEquals(-2, floorScaled2);
+
+        Long ceilInt = numericFunctions.getCeilInt().orElseThrow();
+        assertEquals(1, ceilInt);
+        Long ceilScaled1 = numericFunctions.getCeilScaled1().orElseThrow();
+        assertEquals(3, ceilScaled1);
+//        Long ceilScaled2 = numericFunctions.getCeilScaled2().orElseThrow();
+//        assertEquals(-3, ceilScaled2);
+
+        Long absInt = numericFunctions.getAbsInt().orElseThrow();
+        assertEquals(1, absInt);
+//        Long absInt2 = numericFunctions.getAbsInt2().orElseThrow();
+//        assertEquals(3, absInt2);
+        Double absScaled1 = numericFunctions.getAbsScaled1().orElseThrow();
+        assertEquals(2.9, absScaled1);
+//        Double absScaled2 = numericFunctions.getAbsScaled2().orElseThrow();
+//        assertEquals(2.9, absScaled2);
+
+        String intAsString = numericFunctions.getIntAsString().orElseThrow();
+        assertEquals("1", intAsString);
+        String scaledAsString = numericFunctions.getScaledAsString().orElseThrow();
+        assertEquals("123456.789", scaledAsString);
     }
 
     @Test
@@ -172,9 +213,9 @@ public class FunctionsTest extends AbstractJslTest {
 
         assertEquals(Optional.of("2022-07-11"), date.getOwnDateAsString());
         assertEquals(Optional.of("2021-03-02"), date.getDateAsString());
-        assertEquals(Optional.of(2021), date.getYear());
-        assertEquals(Optional.of(3), date.getMonth());
-        assertEquals(Optional.of(2), date.getDay());
+        assertEquals(Optional.of(2021L), date.getYear());
+        assertEquals(Optional.of(3L), date.getMonth());
+        assertEquals(Optional.of(2L), date.getDay());
         // TODO: add missing test after JNG-3899 is fixed
     }
 
@@ -184,20 +225,45 @@ public class FunctionsTest extends AbstractJslTest {
 
         // assertEquals(Optional.of("23:15:59"), time.getOwnTimeAsString()); FIXME: JNG-3900
         // assertEquals(Optional.of("23:15:59"), time.getTimeAsString()); FIXME: JNG-3900
-        assertEquals(Optional.of(23), time.getHour());
-        assertEquals(Optional.of(15), time.getMinute());
-        assertEquals(Optional.of(59), time.getSecond());
+        assertEquals(Optional.of(23L), time.getHour());
+        assertEquals(Optional.of(15L), time.getMinute());
+        assertEquals(Optional.of(59L), time.getSecond());
         // TODO: add missing test after JNG-3901 is fixed
     }
 
     @Test
     public void testTimestamp() {
-        TimestampFunctions timestamp = timestampFunctionsDao.create(TimestampFunctions.builder().build());
+        // TODO: add tests after JNG-1586, JNG-3681
+        TimestampFunctions timestampFunctions = timestampFunctionsDao.create(TimestampFunctions.builder().build());
 
-        // assertEquals(Optional.of("2019-07-18T01:11:12+02:00"), timestamp.getOwnTimestamp1AsString()); FIXME: JNG-3902
-        // assertEquals(Optional.of("2019-07-18T01:11:12Z"), timestamp.getOwnTimestamp2AsString()); FIXME: JNG-3902
-        // TODO: add missing test after JNG-3902 is fixed
-        // TODO: add missing test after JNG-3903 is fixed
+        OffsetDateTime timestampOfDate = timestampFunctions.getTimestampOfDate().orElseThrow();
+        OffsetDateTime timestampOfDateAndTime = timestampFunctions.getTimestampOfDateAndTime().orElseThrow();
+
+        LocalDate dateOfTimestampWithDate = timestampFunctions.getDateOfTimestampWithDate().orElseThrow();
+        LocalDate dateOfTimestampWithDateAndTime = timestampFunctions.getDateOfTimestampWithDateAndTime().orElseThrow();
+        LocalTime timeOfTimestampWithDate = timestampFunctions.getTimeOfTimestampWithDate().orElseThrow();
+        LocalTime timeOfTimestampWithDateAndTime = timestampFunctions.getTimeOfTimestampWithDateAndTime().orElseThrow();
+
+        long asMilliseconds = timestampFunctions.getAsMilliseconds().orElseThrow();
+        long asMilliseconds2 = timestampFunctions.getAsMilliseconds2().orElseThrow();
+
+        OffsetDateTime fromMilliseconds = timestampFunctions.getFromMilliseconds().orElseThrow();
+
+        OffsetDateTime plusAll = timestampFunctions.getPlusAll().orElseThrow();
+        OffsetDateTime plusDate = timestampFunctions.getPlusDate().orElseThrow();
+
+        OffsetDateTime plusAllReversed = timestampFunctions.getPlusAllReversed().orElseThrow();
+        OffsetDateTime plusDateReversed = timestampFunctions.getPlusDateReversed().orElseThrow();
+
+        OffsetDateTime plusMilliseconds = timestampFunctions.getPlusMilliseconds().orElseThrow();
+
+        OffsetDateTime minusAll = timestampFunctions.getMinusAll().orElseThrow();
+        OffsetDateTime minusDate = timestampFunctions.getMinusDate().orElseThrow();
+
+        OffsetDateTime minusAllReversed = timestampFunctions.getMinusAllReversed().orElseThrow();
+        OffsetDateTime minusDateReversed = timestampFunctions.getMinusDateReversed().orElseThrow();
+
+        OffsetDateTime minusMilliseconds = timestampFunctions.getMinusMilliseconds().orElseThrow();
     }
 
     @Test
@@ -211,11 +277,11 @@ public class FunctionsTest extends AbstractJslTest {
     @Test
     public void testInstance() {
         Parent parent1 = parentDao.create(Parent.builder().withName("James Webb").build());
-        Child child1 = childDao.create(Child.builder().withName("Erika Young").withAge(11).build());
+        Child child1 = childDao.create(Child.builder().withName("Erika Young").withAge(11L).build());
 
         InstanceFunctions instanceFunctions = instanceFunctionsDao.create(InstanceFunctions.builder()
                         .withParent(Parent.builder().withName("Another Person").build())
-                        .withChild(Child.builder().withName("Another Child").withAge(31).build())
+                        .withChild(Child.builder().withName("Another Child").withAge(31L).build())
                         .build());
                
         assertTrue(instanceFunctions.getTypeOfParent().get());
