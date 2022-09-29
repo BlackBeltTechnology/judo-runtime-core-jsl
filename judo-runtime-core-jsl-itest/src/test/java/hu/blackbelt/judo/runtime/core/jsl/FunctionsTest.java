@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.*;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -192,12 +193,37 @@ public class FunctionsTest extends AbstractJslTest {
 
     @Test
     public void testTimestamp() {
-        TimestampFunctions timestamp = timestampFunctionsDao.create(TimestampFunctions.builder().build());
+        // TODO: add tests after JNG-1586, JNG-3681
+        TimestampFunctions timestampFunctions = timestampFunctionsDao.create(TimestampFunctions.builder().build());
 
-        // assertEquals(Optional.of("2019-07-18T01:11:12+02:00"), timestamp.getOwnTimestamp1AsString()); FIXME: JNG-3902
-        // assertEquals(Optional.of("2019-07-18T01:11:12Z"), timestamp.getOwnTimestamp2AsString()); FIXME: JNG-3902
-        // TODO: add missing test after JNG-3902 is fixed
-        // TODO: add missing test after JNG-3903 is fixed
+        OffsetDateTime timestampOfDate = timestampFunctions.getTimestampOfDate().orElseThrow();
+        OffsetDateTime timestampOfDateAndTime = timestampFunctions.getTimestampOfDateAndTime().orElseThrow();
+
+        LocalDate dateOfTimestampWithDate = timestampFunctions.getDateOfTimestampWithDate().orElseThrow();
+        LocalDate dateOfTimestampWithDateAndTime = timestampFunctions.getDateOfTimestampWithDateAndTime().orElseThrow();
+        LocalTime timeOfTimestampWithDate = timestampFunctions.getTimeOfTimestampWithDate().orElseThrow();
+        LocalTime timeOfTimestampWithDateAndTime = timestampFunctions.getTimeOfTimestampWithDateAndTime().orElseThrow();
+
+        long asMilliseconds = timestampFunctions.getAsMilliseconds().orElseThrow();
+        long asMilliseconds2 = timestampFunctions.getAsMilliseconds2().orElseThrow();
+
+        OffsetDateTime fromMilliseconds = timestampFunctions.getFromMilliseconds().orElseThrow();
+
+        OffsetDateTime plusAll = timestampFunctions.getPlusAll().orElseThrow();
+        OffsetDateTime plusDate = timestampFunctions.getPlusDate().orElseThrow();
+
+        OffsetDateTime plusAllReversed = timestampFunctions.getPlusAllReversed().orElseThrow();
+        OffsetDateTime plusDateReversed = timestampFunctions.getPlusDateReversed().orElseThrow();
+
+        OffsetDateTime plusMilliseconds = timestampFunctions.getPlusMilliseconds().orElseThrow();
+
+        OffsetDateTime minusAll = timestampFunctions.getMinusAll().orElseThrow();
+        OffsetDateTime minusDate = timestampFunctions.getMinusDate().orElseThrow();
+
+        OffsetDateTime minusAllReversed = timestampFunctions.getMinusAllReversed().orElseThrow();
+        OffsetDateTime minusDateReversed = timestampFunctions.getMinusDateReversed().orElseThrow();
+
+        OffsetDateTime minusMilliseconds = timestampFunctions.getMinusMilliseconds().orElseThrow();
     }
 
     @Test
