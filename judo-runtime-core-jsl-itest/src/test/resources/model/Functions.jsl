@@ -2,8 +2,8 @@ model Functions;
 
 import FunctionsExternals as FE;
 
-type numeric Integer(precision = 9, scale = 0);
-type numeric Scaled(precision = 9, scale = 2);
+type numeric Integer(precision = 15, scale = 0);
+type numeric Scaled(precision = 15, scale = 2);
 type string String(min-size = 0, max-size = 128);
 type boolean Boolean;
 type date Date;
@@ -105,30 +105,33 @@ entity StringFunctions {
 
 entity NumericFunctions {
     field Integer int = 1;
+    field Scaled neg = -2.5;
+    field Scaled neg1 = -1.23;
+    field Scaled neg2 = -7.89;
+    field Scaled neg3 = -2.9;
+    field Integer neg4 = -3;
 
-    /* FIXME: JNG-3898 */
-    // derived Integer roundInt => self.int!round()
-    // derived Integer roundInt => 1!round()
+    derived Integer roundInt => self.int!round();
+    derived Integer roundInt2 => 1!round();
     derived Integer roundScaled1 => 1.23!round();
     derived Integer roundScaled2 => 7.89!round();
     derived Integer roundScaled3 => 2.50!round();
-    derived Integer roundScaledNegative1 => -2.5!round();
-    derived Integer roundScaledNegative2 => -1.23!round();
-    derived Integer roundScaledNegative3 => -7.89!round();
+    derived Integer roundScaledNegative1 => self.neg!round();
+    derived Integer roundScaledNegative2 => self.neg1!round();
+    derived Integer roundScaledNegative3 => self.neg2!round();
 
-    /* FIXME: JNG-3797
-    derived Integer floorInt => 1!floor()
-    derived Integer floorScaled1 => 2.9!floor()
-    derived Integer floorScaled2 => -2.9!floor()
+    derived Integer floorInt => 1!floor();
+    derived Integer floorScaled1 => 2.9!floor();
+    derived Integer floorScaled2 => self.neg3!floor();
 
-    derived Integer ceilInt => 1!ceil()
-    derived Integer ceilScaled1 => 2.9!ceil()
-    derived Integer ceilScaled2 => -2.9!ceil()
+    derived Integer ceilInt => 1!ceil();
+    derived Integer ceilScaled1 => 2.9!ceil();
+    derived Integer ceilScaled2 => self.neg3!ceil();
 
-    derived Integer absInt => 1!abs()
-    derived Scaled absScaled1 => 2.9!abs()
-    derived Integer absScaled2 => -3!abs()
-    */
+    derived Integer absInt => 1!abs();
+    derived Integer absInt2 => self.neg4!abs();
+    derived Scaled absScaled1 => 2.9!abs();
+    derived Scaled absScaled2 => self.neg3!abs();
 
     derived String intAsString => 1!asString();
     derived String scaledAsString => 123456.789!asString();
@@ -170,23 +173,35 @@ entity TimestampFunctions {
 
     derived String ownTimestamp1AsString => self.timestamp1!asString();
     derived String ownTimestamp2AsString => self.timestamp2!asString();
-    /* FIXME: JNG-3903
-    derived Date dateZ => `2019-07-18T01:11:12Z`!date();
-    derived Date datePlus => `2019-07-18T01:11:12+02:00`!date();
-    derived Time timeZ => `2019-07-18T01:11:12Z`!time();
-    derived Time timePlus => `2019-07-18T01:11:12+02:00`!time();
-    derived Timestamp ofDate => Timestamp!of(`2021-02-28`);
-    derived Timestamp ofDateAndTime => Timestamp!of(`2021-02-28`,`10:30:01`);
-    derived Integer asMilliseconds => `1970-01-01T00:01:00Z`!asMilliseconds();
-    derived Timestamp fromMilliseconds => Timestamp!fromMilliseconds(60000);
-    derived Timestamp plusMilliseconds => `2019-07-18T01:11:12Z`!plusMilliseconds(60000);
-    derived Timestamp plusSeconds => `2019-07-18T01:11:12Z`!plusSeconds(60);
-    derived Timestamp plusMinutes => `2019-07-18T01:11:12Z`!plusSeconds(1);
-    derived Timestamp plusHours => `2019-07-18T01:11:12Z`!plusHours(1);
-    derived Timestamp plusDays => `2019-07-18T01:11:12Z`!plusDays(1);
-    derived Timestamp plusMonths => `2019-07-18T01:11:12Z`!plusMonths(1);
-    derived Timestamp plusYears => `2019-07-18T01:11:12Z`!plusYears(1);
-    */
+
+    derived Timestamp timestampOfDate => Timestamp!of(date = `2022-09-29`);
+    derived Timestamp timestampOfDateAndTime => Timestamp!of(date = `2022-09-29`, time = `11:11:11`);
+
+    derived Date dateOfTimestampWithDate => Timestamp!of(date = `2022-09-29`)!date();
+    derived Date dateOfTimestampWithDateAndTime => Timestamp!of(date = `2022-09-29`, time = `11:11:11`)!date();
+    derived Time timeOfTimestampWithDate => Timestamp!of(date = `2022-09-29`)!time();
+    derived Time timeOfTimestampWithDateAndTime => Timestamp!of(date = `2022-09-29`, time =`11:11:11`)!time();
+
+    derived Integer asMilliseconds => Timestamp!of(date = `2022-09-29`)!asMilliseconds();
+    derived Integer asMilliseconds2 => Timestamp!of(date = `2022-09-29`, time = `11:11:11`)!asMilliseconds();
+
+    derived Timestamp fromMilliseconds => Timestamp!fromMilliseconds(milliseconds = 1664449871000);
+
+    derived Timestamp plusAll => Timestamp!of(date = `2022-09-29`, time = `11:11:11`)!plus(years = 1, months = 1, days = 1, hours = 1, minutes = 1, seconds = 1, milliseconds = 1);
+    derived Timestamp plusDate => Timestamp!of(date = `2022-09-29`, time = `11:11:11`)!plus(years = 1, months = 1, days = 1);
+
+    derived Timestamp plusAllReversed => Timestamp!of(date = `2022-09-29`, time = `11:11:11`)!plus(milliseconds = 1, seconds = 1, hours = 1, days = 1, months = 1, minutes = 1, years = 1);
+    derived Timestamp plusDateReversed => Timestamp!of(date = `2022-09-29`, time = `11:11:11`)!plus(days = 1, months = 1, minutes = 1, years = 1);
+
+    derived Timestamp plusMilliseconds => Timestamp!of(date = `2022-09-29`, time = `11:11:11`)!plus(milliseconds = 1);
+
+    derived Timestamp minusAll => Timestamp!of(date = `2022-09-29`, time = `11:11:11`)!plus(years = -1, months = -1, days = -1, hours = -1, minutes = -1, seconds = -1, milliseconds = -1);
+    derived Timestamp minusDate => Timestamp!of(date = `2022-09-29`, time = `11:11:11`)!plus(years = -1, months = -1, days = -1);
+
+    derived Timestamp minusAllReversed => Timestamp!of(date = `2022-09-29`, time = `11:11:11`)!plus(milliseconds = -1, seconds = -1, hours = -1, days = -1, months = -1, minutes = -1, years = -1);
+    derived Timestamp minusDateReversed => Timestamp!of(date = `2022-09-29`, time = `11:11:11`)!plus(days = -1, months = -1, minutes = -1, years = -1);
+
+    derived Timestamp minusMilliseconds => Timestamp!of(date = `2022-09-29`, time = `11:11:11`)!plus(milliseconds = -1);
 }
 
 entity EnumFunctions {
