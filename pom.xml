@@ -43,8 +43,8 @@
 
         <epsilon-runtime-version>1.4.0.20220629_123622_4279f257_develop</epsilon-runtime-version>
         <judo-tatami-core-version>1.1.0.20220901_121006_b2120b4c_develop</judo-tatami-core-version>
-        <judo-tatami-jsl-version>1.1.1.20220929_105239_085a75d6_feature_JNG_4082_Connect_JSL</judo-tatami-jsl-version>
-        <judo-runtime-core-version>1.0.3.20220929_110242_4943778f_feature_JNG_4082_Connect_JSL</judo-runtime-core-version>
+        <judo-tatami-jsl-version>1.1.2.20220930_115648_19591430_feature_JNG_4030_semicolon_is_a_must</judo-tatami-jsl-version>
+        <judo-runtime-core-version>1.0.3.20220930_121822_751e6407_develop</judo-runtime-core-version>
 
         <!-- Code Quality-->
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
