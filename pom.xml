@@ -43,8 +43,8 @@
 
         <epsilon-runtime-version>1.5.0</epsilon-runtime-version>
         <judo-tatami-core-version>1.1.0</judo-tatami-core-version>
-        <judo-tatami-jsl-version>1.1.1</judo-tatami-jsl-version>
-        <judo-runtime-core-version>1.0.2</judo-runtime-core-version>
+        <judo-tatami-jsl-version>1.1.2.20220930_160912_fc3ce61b_develop</judo-tatami-jsl-version>
+        <judo-runtime-core-version>1.0.3.20220930_121822_751e6407_develop</judo-runtime-core-version>
 
         <!-- Code Quality-->
         <sonar-maven-plugin-version>3.9.1.2184</sonar-maven-plugin-version>

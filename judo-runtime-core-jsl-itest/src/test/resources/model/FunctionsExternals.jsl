@@ -1,7 +1,7 @@
-model FunctionsExternals
+model FunctionsExternals;
 
-type string String(max-length = 128)
+type string String(min-size = 0, max-size = 128);
 
 entity ExternalEntity {
-    field String name = "John Doe"
+    field String name = "John Doe";
 }
