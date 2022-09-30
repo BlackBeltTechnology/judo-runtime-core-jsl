@@ -145,7 +145,6 @@ public class FunctionsTest extends AbstractJslTest {
         StringFunctions str = stringFunctionsDao.create(StringFunctions.builder().build());
 
         // FIXME: JNG-4080 
-        /*
         assertEquals(Optional.of(5), str.getLength());
         assertEquals(Optional.of("ap"), str.getFirst());
         assertEquals(Optional.of("e"), str.getLast());
@@ -163,8 +162,6 @@ public class FunctionsTest extends AbstractJslTest {
         assertEquals(Optional.of("apple"), str.getTrim());
         //assertEquals(Optional.of("apple"), str.getLTrim());
         //assertEquals(Optional.of("apple"), str.getRTrim());
-         * 
-         */
     }
 
     @Test
