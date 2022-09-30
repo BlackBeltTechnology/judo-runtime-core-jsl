@@ -1,14 +1,14 @@
-model SalesModelContract
+model SalesModelContract;
 
-type date Date
-type string String(max-length = 128)
+type date Date;
+type string String(min-size = 0, max-size = 128);
 
 entity ContractDetail {
-    field String details
+    field String details;
 }
 
 entity Contract {
-    field Date creationDate
-    field ContractDetail detail
+    field Date creationDate;
+    field ContractDetail detail;
 }
 
