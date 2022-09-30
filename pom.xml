@@ -43,7 +43,7 @@
 
         <epsilon-runtime-version>1.5.0</epsilon-runtime-version>
         <judo-tatami-core-version>1.1.0</judo-tatami-core-version>
-        <judo-tatami-jsl-version>1.1.2.20220930_115648_19591430_feature_JNG_4030_semicolon_is_a_must</judo-tatami-jsl-version>
+        <judo-tatami-jsl-version>1.1.2.20220930_160912_fc3ce61b_develop</judo-tatami-jsl-version>
         <judo-runtime-core-version>1.0.3.20220930_121822_751e6407_develop</judo-runtime-core-version>
 
         <!-- Code Quality-->
