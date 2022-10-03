@@ -93,10 +93,10 @@ entity StringFunctions {
     derived String lowerCase => "ApPlE"!lowerCase();
     derived String upper => "ApPlE"!upper();
     derived String upperCase => "ApPlE"!upperCase();
-    // derived String capitalize => "apPlE"!capitalize();
+    derived String capitalize => "apPlE"!capitalize();
     derived Boolean matches => "apple"!matches(pattern = r".*pl.");
     derived Boolean like => "apple"!like(pattern = "%pl_");
-    derived Boolean ilike => "apPLe"!ilike(pattern = "_pple"); // FIXME: JNG-3897
+    // derived Boolean ilike => "apPLe"!ilike(pattern = "_pple"); // FIXME: JNG-3897
     derived String replace => "apple"!replace(oldstring = "le", newstring = "endix");
     derived String trim => " apple "!trim();
     derived String ltrim => " apple "!ltrim();
