@@ -41,10 +41,10 @@
         </osgi-transaction-import>
 
 
-        <epsilon-runtime-version>1.5.0</epsilon-runtime-version>
-        <judo-tatami-core-version>1.1.0</judo-tatami-core-version>
-        <judo-tatami-jsl-version>1.1.2.20221003_135812_d594b969_feature_JNG_4086_missing_in_unary_operators_wrong_number_terminal</judo-tatami-jsl-version>
-        <judo-runtime-core-version>1.0.3.20221003_134009_666573dd_feature_JNG_4086_missing_in_unary_operators_wrong_number_terminal</judo-runtime-core-version>
+        <epsilon-runtime-version>1.5.1.20220915_170323_044ded18_develop</epsilon-runtime-version>
+        <judo-tatami-core-version>1.1.1.20221002_212035_77939a62_develop</judo-tatami-core-version>
+        <judo-tatami-jsl-version>1.1.2.20221005_131119_1d94fb00_feature_JNG_3795_Support_capitalize_on_strings</judo-tatami-jsl-version>
+        <judo-runtime-core-version>1.0.3.20221005_125205_418c0828_feature_JNG_3795_Support_capitalize_on_strings</judo-runtime-core-version>
 
         <!-- Code Quality-->
         <sonar-maven-plugin-version>3.9.1.2184</sonar-maven-plugin-version>
@@ -668,7 +668,7 @@
                                         <toc>left</toc>
                                         <icons>font</icons>
                                         <sectanchors>true</sectanchors>
-                                        <idprefix/>
+                                        <idprefix />
                                         <idseparator>-</idseparator>
                                     </attributes>
                                 </configuration>
