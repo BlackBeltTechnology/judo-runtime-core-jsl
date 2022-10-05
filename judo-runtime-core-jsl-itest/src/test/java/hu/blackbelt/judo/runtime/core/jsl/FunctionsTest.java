@@ -144,27 +144,38 @@ public class FunctionsTest extends AbstractJslTest {
     public void testStrings() {
         StringFunctions str = stringFunctionsDao.create(StringFunctions.builder().build());
 
-        // FIXME: JNG-4080 
-        /*
-        assertEquals(Optional.of(5), str.getLength());
-        assertEquals(Optional.of("ap"), str.getFirst());
-        assertEquals(Optional.of("e"), str.getLast());
-        //assertEquals(Optional.of(0), str.getPosition());
-        assertEquals(Optional.of("ppl"), str.getSubstring());
-        assertEquals(Optional.of("apple"), str.getLower());
-        assertEquals(Optional.of("apple"), str.getLowerCase());
-        assertEquals(Optional.of("APPLE"), str.getUpper());
-        assertEquals(Optional.of("APPLE"), str.getUpperCase());
-        //assertEquals(Optional.of("Apple"), str.getCapitalize());
-        assertEquals(Optional.of(true), str.getMatches());
-        assertEquals(Optional.of(true), str.getLike());
-        //assertEquals(Optional.of(true), str.getILike());
-        assertEquals(Optional.of("appendix"), str.getReplace());        
-        assertEquals(Optional.of("apple"), str.getTrim());
-        //assertEquals(Optional.of("apple"), str.getLTrim());
-        //assertEquals(Optional.of("apple"), str.getRTrim());
-         * 
-         */
+        // var length = str.getLength().orElseThrow();
+        String first = str.getFirst().orElseThrow();
+        assertEquals("ap", first);
+        String last = str.getLast().orElseThrow();
+        assertEquals("e", last);
+        Long position = str.getPosition().orElseThrow();
+        assertEquals(2, position);
+        String substring = str.getSubstring().orElseThrow();
+        assertEquals("ppl", substring);
+        String lower = str.getLower().orElseThrow();
+        assertEquals("apple", lower);
+        String lowerCase = str.getLowerCase().orElseThrow();
+        assertEquals("apple", lowerCase);
+        String upper = str.getUpper().orElseThrow();
+        assertEquals("APPLE", upper);
+        String upperCase = str.getUpperCase().orElseThrow();
+        assertEquals("APPLE", upperCase);
+        String capitalize = str.getCapitalize().orElseThrow();
+        assertEquals("Apple", capitalize);
+        Boolean matches = str.getMatches().orElseThrow();
+        assertTrue(matches);
+        Boolean like = str.getLike().orElseThrow();
+        assertTrue(like);
+        // var ilike = str.getIlike().orElseThrow();
+        String replace = str.getReplace().orElseThrow();
+        assertEquals("appendix", replace);
+        String trim = str.getTrim().orElseThrow();
+        assertEquals("apple", trim);
+        String ltrim = str.getLtrim().orElseThrow();
+        assertEquals("apple ", ltrim);
+        String rtrim = str.getRtrim().orElseThrow();
+        assertEquals(" apple", rtrim);
     }
 
     @Test
