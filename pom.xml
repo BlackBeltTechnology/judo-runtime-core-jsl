@@ -42,9 +42,9 @@
 
 
         <epsilon-runtime-version>1.5.1.20220915_170323_044ded18_develop</epsilon-runtime-version>
-        <judo-tatami-core-version>1.1.1.20221002_212035_77939a62_develop</judo-tatami-core-version>
-        <judo-tatami-jsl-version>1.1.2.20221005_131119_1d94fb00_feature_JNG_3795_Support_capitalize_on_strings</judo-tatami-jsl-version>
-        <judo-runtime-core-version>1.0.3.20221005_125205_418c0828_feature_JNG_3795_Support_capitalize_on_strings</judo-runtime-core-version>
+        <judo-tatami-core-version>1.0.3.20221005_140854_d97f243b_develop</judo-tatami-core-version>
+        <judo-tatami-jsl-version>1.1.2.20221005_140845_89bbd747_develop</judo-tatami-jsl-version>
+        <judo-runtime-core-version>1.1.0.20220505_184754_783f6b83_develop</judo-runtime-core-version>
 
         <!-- Code Quality-->
         <sonar-maven-plugin-version>3.9.1.2184</sonar-maven-plugin-version>
