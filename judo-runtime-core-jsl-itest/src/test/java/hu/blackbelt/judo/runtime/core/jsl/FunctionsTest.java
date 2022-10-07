@@ -176,6 +176,20 @@ public class FunctionsTest extends AbstractJslTest {
         assertEquals("apple ", ltrim);
         String rtrim = str.getRtrim().orElseThrow();
         assertEquals(" apple", rtrim);
+
+        assertEquals("     apple", str.getLpad().orElseThrow());
+        assertEquals("*****apple", str.getLpad1().orElseThrow());
+        assertEquals("le", str.getLpad2().orElseThrow());
+        assertEquals("le", str.getLpad3().orElseThrow());
+        assertEquals("apple     ", str.getRpad().orElseThrow());
+        assertEquals("apple*****", str.getRpad1().orElseThrow());
+        assertEquals("ap", str.getRpad2().orElseThrow());
+        assertEquals("ap", str.getRpad3().orElseThrow());
+
+        assertTrue(str.getLpadUndefined().isEmpty());
+        assertTrue(str.getLpadUndefined1().isEmpty());
+        assertTrue(str.getRpadUndefined().isEmpty());
+        assertTrue(str.getRpadUndefined1().isEmpty());
     }
 
     @Test
@@ -198,6 +212,15 @@ public class FunctionsTest extends AbstractJslTest {
         assertEquals(-1, roundScaledNegative2);
         Long roundScaledNegative3 = numericFunctions.getRoundScaledNegative3().orElseThrow();
         assertEquals(-8, roundScaledNegative3);
+
+        assertEquals(1.0, numericFunctions.getRoundIntScaled().orElseThrow());
+        assertEquals(1.0, numericFunctions.getRoundInt2Scaled().orElseThrow());
+        assertEquals(1.2, numericFunctions.getRoundScaled1Scaled().orElseThrow());
+        assertEquals(7.9, numericFunctions.getRoundScaled2Scaled().orElseThrow());
+        assertEquals(2.5, numericFunctions.getRoundScaled3Scaled().orElseThrow());
+        assertEquals(-2.5, numericFunctions.getRoundScaledNegative1Scaled().orElseThrow());
+        assertEquals(-1.2, numericFunctions.getRoundScaledNegative2Scaled().orElseThrow());
+        assertEquals(-7.9, numericFunctions.getRoundScaledNegative3Scaled().orElseThrow());
 
         Long floorInt = numericFunctions.getFloorInt().orElseThrow();
         assertEquals(1, floorInt);
@@ -246,7 +269,20 @@ public class FunctionsTest extends AbstractJslTest {
         assertEquals(Optional.of(2021L), date.getYear());
         assertEquals(Optional.of(3L), date.getMonth());
         assertEquals(Optional.of(2L), date.getDay());
-        // TODO: add missing test after JNG-3899 is fixed
+
+        assertEquals(LocalDate.of(2011, 1, 28), date.getOf().orElseThrow());
+
+        assertEquals(280L, date.getDayOfYear().orElseThrow());
+//        assertEquals(1L, date.getDayOfWeekMonday().orElseThrow());
+//        assertEquals(2L, date.getDayOfWeekTuesday().orElseThrow());
+//        assertEquals(3L, date.getDayOfWeekWednesday().orElseThrow());
+//        assertEquals(4L, date.getDayOfWeekThursday().orElseThrow());
+//        assertEquals(5L, date.getDayOfWeekFriday().orElseThrow());
+//        assertEquals(6L, date.getDayOfWeekSaturday().orElseThrow());
+//        assertEquals(7L, date.getDayOfWeekSunday().orElseThrow());
+
+        assertTrue(date.getDayOfYearUndefined().isEmpty());
+        assertTrue(date.getDayOfWeekUndefined().isEmpty());
     }
 
     @Test
@@ -258,7 +294,14 @@ public class FunctionsTest extends AbstractJslTest {
         assertEquals(Optional.of(23L), time.getHour());
         assertEquals(Optional.of(15L), time.getMinute());
         assertEquals(Optional.of(59L), time.getSecond());
-        // TODO: add missing test after JNG-3901 is fixed
+        assertEquals(LocalTime.of(13, 45, 0), time.getOf().orElseThrow());
+
+        assertEquals(LocalTime.of(11, 11, 11), time.getTimeFromSeconds().orElseThrow());
+        assertEquals(40271L, time.getTimeAsSeconds().orElseThrow());
+        assertEquals(40271L, time.getTimeAsSeconds1().orElseThrow());
+
+        assertTrue(time.getUndefinedFromSeconds().isEmpty());
+        assertTrue(time.getUndefinedAsSeconds().isEmpty());
     }
 
     @Test

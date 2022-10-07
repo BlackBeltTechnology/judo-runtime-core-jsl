@@ -84,6 +84,8 @@ entity AnyTypeFunctions {
 }
 
 entity StringFunctions {
+    field String undefined;
+
     // derived Integer length => "apple"!size(); // FIXME: JNG-4080
     derived String first => "apple"!first(count = 2);
     derived String last => "apple"!last(count = 1);
@@ -101,6 +103,20 @@ entity StringFunctions {
     derived String trim => " apple "!trim();
     derived String ltrim => " apple "!ltrim();
     derived String rtrim => " apple "!rtrim();
+
+    derived String lpad => "apple"!lpad(size = 10);
+    derived String lpad1 => "apple"!lpad(size = 10, padstring = "*");
+    derived String lpad2 => "apple"!lpad(size = 2);
+    derived String lpad3 => "apple"!lpad(size = 2, padstring = "*");
+    derived String rpad => "apple"!rpad(size = 10);
+    derived String rpad1 => "apple"!rpad(size = 10, padstring = "*");
+    derived String rpad2 => "apple"!rpad(size = 2);
+    derived String rpad3 => "apple"!rpad(size = 2, padstring = "*");
+
+    derived String lpadUndefined => self.undefined!lpad(size = 10);
+    derived String lpadUndefined1 => self.undefined!lpad(size = 10, padstring = "*");
+    derived String rpadUndefined => self.undefined!rpad(size = 10);
+    derived String rpadUndefined1 => self.undefined!rpad(size = 10, padstring = "*");
 }
 
 entity NumericFunctions {
@@ -119,6 +135,15 @@ entity NumericFunctions {
     derived Integer roundScaledNegative1 => self.neg!round();
     derived Integer roundScaledNegative2 => self.neg1!round();
     derived Integer roundScaledNegative3 => self.neg2!round();
+
+    derived Scaled roundIntScaled => self.int!round(scale = 1);
+    derived Scaled roundInt2Scaled => 1!round(scale = 1);
+    derived Scaled roundScaled1Scaled => 1.23!round(scale = 1);
+    derived Scaled roundScaled2Scaled => 7.89!round(scale = 1);
+    derived Scaled roundScaled3Scaled => 2.50!round(scale = 1);
+    derived Scaled roundScaledNegative1Scaled => self.neg!round(scale = 1);
+    derived Scaled roundScaledNegative2Scaled => self.neg1!round(scale = 1);
+    derived Scaled roundScaledNegative3Scaled => self.neg2!round(scale = 1);
 
     derived Integer floorInt => 1!floor();
     derived Integer floorScaled1 => 2.9!floor();
@@ -147,24 +172,47 @@ entity BooleanFunctions {
 
 entity DateFunctions {
     field Date `date` = `2022-07-11`;
+    field Date undefined;
 
     derived String ownDateAsString => self.`date`!asString();
     derived String dateAsString => `2021-03-02`!asString();
     derived Integer year => `2021-03-02`!year();
     derived Integer month => `2021-03-02`!month();
     derived Integer day => `2021-03-02`!day();
-    // derived Date of => Date!of(2011,1,28); FIXME: JNG-3899
+    derived Date of => Date!of(year = 2011, month = 1, day = 28);
+
+    derived Integer dayOfYear => `2022-10-07`!dayOfYear();
+    derived Integer dayOfWeekMonday => `2022-10-03`!dayOfWeek();
+    derived Integer dayOfWeekTuesday => `2022-10-04`!dayOfWeek();
+    derived Integer dayOfWeekWednesday => `2022-10-05`!dayOfWeek();
+    derived Integer dayOfWeekThursday => `2022-10-06`!dayOfWeek();
+    derived Integer dayOfWeekFriday => `2022-10-07`!dayOfWeek();
+    derived Integer dayOfWeekSaturday => `2022-10-08`!dayOfWeek();
+    derived Integer dayOfWeekSunday => `2022-10-09`!dayOfWeek();
+
+    derived Integer dayOfYearUndefined => self.undefined!dayOfYear();
+    derived Integer dayOfWeekUndefined => self.undefined!dayOfWeek();
 }
 
 entity TimeFunctions {
     field Time `time` = `23:15:59`;
+
+    field Time undefinedTime;
+    field Integer undefinedInteger;
 
     derived String ownTimeAsString => self.`time`!asString();
     derived String timeAsString => `23:15:59`!asString();
     derived Integer hour => `23:15:59`!hour();
     derived Integer minute => `23:15:59`!minute();
     derived Integer second => `23:15:59`!second();
-    // derived Time of => Time!of(13,45,00); FIXME: JNG-3901
+    derived Time of => Time!of(hour = 13, minute = 45, second = 0);
+
+    derived Time timeFromSeconds => Time!fromSeconds(seconds = 40271);
+    derived Integer timeAsSeconds => Time!fromSeconds(seconds = 40271)!asSeconds();
+    derived Integer timeAsSeconds1 => `11:11:11`!asSeconds();
+
+    derived Time undefinedFromSeconds => Time!fromSeconds(seconds = self.undefinedInteger);
+    derived Integer undefinedAsSeconds => self.undefinedTime!asSeconds();
 }
 
 entity TimestampFunctions {
