@@ -87,20 +87,20 @@ entity StringFunctions {
     derived Integer length => "apple"!size(); // FIXME: JNG-4080
     derived String first => "apple"!first(count = 2);
     derived String last => "apple"!last(count = 1);
-    // derived Integer position => "apple"!position(substring = "p"); // FIXME: JNG-3897
+    derived Integer position => "apple"!position(substring = "p");
     derived String substring => "apple"!substring(count = 2, offset = 3);
     derived String lower => "ApPlE"!lower();
     derived String lowerCase => "ApPlE"!lowerCase();
     derived String upper => "ApPlE"!upper();
     derived String upperCase => "ApPlE"!upperCase();
-    // derived String capitalize => "apPlE"!capitalize();
+    derived String capitalize => "apPlE"!capitalize();
     derived Boolean matches => "apple"!matches(pattern = r".*pl.");
     derived Boolean like => "apple"!like(pattern = "%pl_");
     // derived Boolean ilike => "apPLe"!ilike(pattern = "_pple"); // FIXME: JNG-3897
     derived String replace => "apple"!replace(oldstring = "le", newstring = "endix");
     derived String trim => " apple "!trim();
-    // derived String ltrim => " apple "!ltrim(); // FIXME: JNG-3897
-    // derived String rtrim => " apple "!rtrim(); // FIXME: JNG-3897
+    derived String ltrim => " apple "!ltrim();
+    derived String rtrim => " apple "!rtrim();
 }
 
 entity NumericFunctions {

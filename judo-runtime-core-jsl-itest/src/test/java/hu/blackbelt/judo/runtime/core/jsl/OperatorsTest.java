@@ -56,6 +56,8 @@ public class OperatorsTest extends AbstractJslTest {
         DefaultOperators operators = defaultOperatorsDao.create(DefaultOperators.builder().build());
 
         assertEquals(Optional.of(1), operators.getRounded());
+        assertEquals(Optional.of(10), operators.getUnary());
+        assertEquals(Optional.of(-2), operators.getAbs());
         assertEquals(Optional.of(7), operators.getAddition());
         assertEquals(Optional.of(3), operators.getSubtraction());
         assertEquals(Optional.of(25), operators.getPow());
