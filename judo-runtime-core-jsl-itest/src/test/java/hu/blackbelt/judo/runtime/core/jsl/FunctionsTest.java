@@ -273,13 +273,13 @@ public class FunctionsTest extends AbstractJslTest {
         assertEquals(LocalDate.of(2011, 1, 28), date.getOf().orElseThrow());
 
         assertEquals(280L, date.getDayOfYear().orElseThrow());
-//        assertEquals(1L, date.getDayOfWeekMonday().orElseThrow());
-//        assertEquals(2L, date.getDayOfWeekTuesday().orElseThrow());
-//        assertEquals(3L, date.getDayOfWeekWednesday().orElseThrow());
-//        assertEquals(4L, date.getDayOfWeekThursday().orElseThrow());
-//        assertEquals(5L, date.getDayOfWeekFriday().orElseThrow());
-//        assertEquals(6L, date.getDayOfWeekSaturday().orElseThrow());
-//        assertEquals(7L, date.getDayOfWeekSunday().orElseThrow());
+        assertEquals(1L, date.getDayOfWeekMonday().orElseThrow());
+        assertEquals(2L, date.getDayOfWeekTuesday().orElseThrow());
+        assertEquals(3L, date.getDayOfWeekWednesday().orElseThrow());
+        assertEquals(4L, date.getDayOfWeekThursday().orElseThrow());
+        assertEquals(5L, date.getDayOfWeekFriday().orElseThrow());
+        assertEquals(6L, date.getDayOfWeekSaturday().orElseThrow());
+        assertEquals(7L, date.getDayOfWeekSunday().orElseThrow());
 
         assertTrue(date.getDayOfYearUndefined().isEmpty());
         assertTrue(date.getDayOfWeekUndefined().isEmpty());
