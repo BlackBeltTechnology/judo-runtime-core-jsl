@@ -84,7 +84,7 @@ entity AnyTypeFunctions {
 }
 
 entity StringFunctions {
-    // derived Integer length => "apple"!size(); // FIXME: JNG-4080
+    derived Integer length => "apple"!size();
     derived String first => "apple"!first(count = 2);
     derived String last => "apple"!last(count = 1);
     derived Integer position => "apple"!position(substring = "p");
