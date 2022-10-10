@@ -1,0 +1,105 @@
+@startuml AssociationRelationships
+'!pragma layout smetana
+'left to right direction
+
+skinparam nodesep 50
+skinparam ranksep 100
+
+hide circle
+hide stereotype
+
+skinparam padding 2
+skinparam roundCorner 8
+skinparam linetype ortho
+
+skinparam class {
+	BackgroundColor #moccasin
+	BorderColor #grey
+	ArrowColor #black
+
+	FontSize 13
+	FontStyle bold
+
+	BackgroundColor<< Abstract >> white|#cfe3e8
+	HeaderBackgroundColor<< Abstract >> #cee2e6/#bed8df
+	FontStyle<< Abstract >> italic
+
+	BackgroundColor<< Entity >> white|#cfe3e8
+	HeaderBackgroundColor<< Entity >> #cee2e6/#bed8df
+
+	BackgroundColor<< Enumeration >> white|#d6e6c8
+	HeaderBackgroundColor<< Enumeration >> #d6e6c8/#c8e0be
+
+	BackgroundColor<< Error >> white|#e69987
+	HeaderBackgroundColor<< Error >> #d69080
+	FontStyle<< Error >> normal
+
+	BackgroundColor<< numeric >> white|#d6e6c8
+	HeaderBackgroundColor<< numeric >> #d6e6c8/#c8e0be
+
+	BackgroundColor<< string >> white|#d6e6c8
+	HeaderBackgroundColor<< string >> #d6e6c8/#c8e0be
+
+	BackgroundColor<< date >> white|#d6e6c8
+	HeaderBackgroundColor<< date >> #d6e6c8/#c8e0be
+
+	BackgroundColor<< timestamp >> white|#d6e6c8
+	HeaderBackgroundColor<< timestamp >> #d6e6c8/#c8e0be
+
+	BackgroundColor<< time >> white|#d6e6c8
+	HeaderBackgroundColor<< time >> #d6e6c8/#c8e0be
+
+	BackgroundColor<< binary >> white|#d6e6c8
+	HeaderBackgroundColor<< binary >> #d6e6c8/#c8e0be
+
+	BackgroundColor<< boolean >> white|#d6e6c8
+	HeaderBackgroundColor<< boolean >> #d6e6c8/#c8e0be
+
+	BackgroundColor<< External >> white|#efefef
+	HeaderBackgroundColor<< External >> #dedede/#d7d7d7
+	FontColor<< External >> #7f7f7f
+	AttributeFontColor<< External >> #7f7f7f		
+}
+
+skinparam package<<DataTypes>> {
+	borderColor Transparent
+	backgroundColor Transparent
+	fontColor Transparent
+	stereotypeFontColor Transparent
+}	
+
+package AssociationRelationships {
+
+together {
+
+}
+
+together {
+}
+
+together {
+	class EntityA << Entity >>  {
+	}
+	class EntityB <<  Abstract >>   {
+	}
+	class EntityC << Entity >> extends EntityB {
+	}
+	class EntityD << Entity >>  {
+	}
+	class EntityE << Entity >>  {
+	}
+	class EntityF << Entity >>  {
+	}
+	
+
+	EntityA  -->  "singleConA\n[0..1]" EntityC
+	EntityA  "twoWayMultipleAonC\n[0..*]" --   "singleRequiredConA\n[1..1]" EntityC
+	EntityA  "multipleAonD\n[0..*]" --   "multipleDonA\n[0..*]" EntityD
+	EntityB  -->  "multipleAonB\n[0..*]" EntityA
+	EntityC  -->  "multipleDonC\n[0..*]" EntityD
+	EntityE  "singleEAdded\n[0..1]" --   "multipleFOnE\n[0..*]" EntityF
+
+
+}
+
+@enduml
