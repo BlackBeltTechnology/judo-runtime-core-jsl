@@ -144,7 +144,7 @@ public class FunctionsTest extends AbstractJslTest {
     public void testStrings() {
         StringFunctions str = stringFunctionsDao.create(StringFunctions.builder().build());
 
-        assertEquals(11, str.getLength().orElseThrow());
+        assertEquals(5, str.getLength().orElseThrow());
         String first = str.getFirst().orElseThrow();
         assertEquals("ap", first);
         String last = str.getLast().orElseThrow();
