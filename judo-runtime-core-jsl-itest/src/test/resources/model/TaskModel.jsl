@@ -1,0 +1,52 @@
+model TaskModel;
+
+type boolean Boolean;
+type date Date;
+type time Time;
+type timestamp Timestamp;
+type numeric Integer(precision = 5, scale = 0);
+type string String(min-size = 1,max-size = 4000); //át kell írni
+
+
+enum  Behaviours{
+    NATURAL=1;
+    AGRESSIVE=2;
+    FRIENDLY=3;
+}
+
+entity Person {
+	field String firstName;
+	field String lastName;
+	derived	String fullName => self.firstName + " "+ self.lastName ;
+    relation Workplace workplace opposite persons;
+    relation Task[] tasks;
+
+    derived Integer allTaskLong => self.tasks!sum(l|l.taskTimeInDay);
+}
+entity Workplace{
+    relation Person[] persons opposite workplace;
+    field required String name;
+    identifier String addres;
+
+
+    //ERROR WHEN THIS COMPILED
+    derived Integer allTime => self.persons!sum(p| p.allTaskLong);
+
+}
+entity Task {
+    field required String name;
+    field required Integer taskTimeInDay;
+}
+
+entity SalerPerson{
+    field Integer num;
+    relation MarketPlace workplace opposite salerpersons;
+    derived Integer allTaskLong => 1;
+}
+
+entity MarketPlace{
+    relation SalerPerson[] salerpersons opposite workplace;
+    //Compield Error
+    derived Integer allTime => self.salerpersons!sum(p| p.allTaskLong);
+}
+
