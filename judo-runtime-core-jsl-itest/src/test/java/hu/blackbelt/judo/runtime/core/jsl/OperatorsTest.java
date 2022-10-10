@@ -87,7 +87,7 @@ public class OperatorsTest extends AbstractJslTest {
                 .build());
 
         assertEquals(Optional.of("John Pro"), operators.getStringConcat());
-        // assertEquals(Optional.of(4), operators.getFirstNameLength());  // FIXME: JNG-4080
+        assertEquals(Optional.of(4), operators.getFirstNameLength());
         assertEquals(Optional.of(99), operators.getRounded());
         assertEquals(Optional.of(37), operators.getAddition());
         assertEquals(Optional.of(33), operators.getSubtraction());

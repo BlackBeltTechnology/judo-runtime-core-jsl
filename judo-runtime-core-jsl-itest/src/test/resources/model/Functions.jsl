@@ -49,42 +49,42 @@ entity AnyTypeFunctions {
 
     derived Boolean integerIsDefinedFalse => self.`entity`.integerAttr!isDefined();
     derived Boolean integerIsDefinedTrue => self.entityWithPrimitives.integerAttr!isDefined();
-    derived Boolean integerIsUnDefinedTrue => self.`entity`.integerAttr!isUnDefined();
-    derived Boolean integerIsUnDefinedFalse => self.entityWithPrimitives.integerAttr!isUnDefined();
+    derived Boolean integerIsUndefinedTrue => self.`entity`.integerAttr!isUndefined();
+    derived Boolean integerIsUndefinedFalse => self.entityWithPrimitives.integerAttr!isUndefined();
 
     derived Boolean scaledIsDefinedFalse => self.`entity`.scaledAttr!isDefined();
     derived Boolean scaledIsDefinedTrue => self.entityWithPrimitives.scaledAttr!isDefined();
-    derived Boolean scaledIsUnDefinedTrue => self.`entity`.scaledAttr!isUnDefined();
-    derived Boolean scaledIsUnDefinedFalse => self.entityWithPrimitives.scaledAttr!isUnDefined();
+    derived Boolean scaledIsUndefinedTrue => self.`entity`.scaledAttr!isUndefined();
+    derived Boolean scaledIsUndefinedFalse => self.entityWithPrimitives.scaledAttr!isUndefined();
 
     derived Boolean stringIsDefinedFalse => self.`entity`.stringAttr!isDefined();
     derived Boolean stringIsDefinedTrue => self.entityWithPrimitives.stringAttr!isDefined();
-    derived Boolean stringIsUnDefinedTrue => self.`entity`.stringAttr!isUnDefined();
-    derived Boolean stringIsUnDefinedFalse => self.entityWithPrimitives.stringAttr!isUnDefined();
+    derived Boolean stringIsUndefinedTrue => self.`entity`.stringAttr!isUndefined();
+    derived Boolean stringIsUndefinedFalse => self.entityWithPrimitives.stringAttr!isUndefined();
 
     derived Boolean boolIsDefinedFalse => self.`entity`.boolAttr!isDefined();
     derived Boolean boolIsDefinedTrue => self.entityWithPrimitives.boolAttr!isDefined();
-    derived Boolean boolIsUnDefinedTrue => self.`entity`.boolAttr!isUnDefined();
-    derived Boolean boolIsUnDefinedFalse => self.entityWithPrimitives.boolAttr!isUnDefined();
+    derived Boolean boolIsUndefinedTrue => self.`entity`.boolAttr!isUndefined();
+    derived Boolean boolIsUndefinedFalse => self.entityWithPrimitives.boolAttr!isUndefined();
 
     derived Boolean dateIsDefinedFalse => self.`entity`.dateAttr!isDefined();
     derived Boolean dateIsDefinedTrue => self.entityWithPrimitives.dateAttr!isDefined();
-    derived Boolean dateIsUnDefinedTrue => self.`entity`.dateAttr!isUnDefined();
-    derived Boolean dateIsUnDefinedFalse => self.entityWithPrimitives.dateAttr!isUnDefined();
+    derived Boolean dateIsUndefinedTrue => self.`entity`.dateAttr!isUndefined();
+    derived Boolean dateIsUndefinedFalse => self.entityWithPrimitives.dateAttr!isUndefined();
 
     derived Boolean timestampIsDefinedFalse => self.`entity`.timestampAttr!isDefined();
     derived Boolean timestampIsDefinedTrue => self.entityWithPrimitives.timestampAttr!isDefined();
-    derived Boolean timestampIsUnDefinedTrue => self.`entity`.timestampAttr!isUnDefined();
-    derived Boolean timestampIsUnDefinedFalse => self.entityWithPrimitives.timestampAttr!isUnDefined();
+    derived Boolean timestampIsUndefinedTrue => self.`entity`.timestampAttr!isUndefined();
+    derived Boolean timestampIsUndefinedFalse => self.entityWithPrimitives.timestampAttr!isUndefined();
 
     derived Boolean timeIsDefinedFalse => self.`entity`.timeAttr!isDefined();
     derived Boolean timeIsDefinedTrue => self.entityWithPrimitives.timeAttr!isDefined();
-    derived Boolean timeIsUnDefinedTrue => self.`entity`.timeAttr!isUnDefined();
-    derived Boolean timeIsUnDefinedFalse => self.entityWithPrimitives.timeAttr!isUnDefined();
+    derived Boolean timeIsUndefinedTrue => self.`entity`.timeAttr!isUndefined();
+    derived Boolean timeIsUndefinedFalse => self.entityWithPrimitives.timeAttr!isUndefined();
 }
 
 entity StringFunctions {
-    // derived Integer length => "apple"!size(); // FIXME: JNG-4080
+    derived Integer length => "apple"!size();
     derived String first => "apple"!first(count = 2);
     derived String last => "apple"!last(count = 1);
     derived Integer position => "apple"!position(substring = "p");
