@@ -106,45 +106,45 @@ public class FunctionsTest extends AbstractJslTest {
     public void testAnyType() {
         assertEquals(Optional.of(false), anyTypeFunctions.getIntegerIsDefinedFalse());
         assertEquals(Optional.of(true), anyTypeFunctions.getIntegerIsDefinedTrue());
-        assertEquals(Optional.of(true), anyTypeFunctions.getIntegerIsUnDefinedTrue());
-        assertEquals(Optional.of(false), anyTypeFunctions.getIntegerIsUnDefinedFalse());
+        assertEquals(Optional.of(true), anyTypeFunctions.getIntegerIsUndefinedTrue());
+        assertEquals(Optional.of(false), anyTypeFunctions.getIntegerIsUndefinedFalse());
 
         assertEquals(Optional.of(false), anyTypeFunctions.getScaledIsDefinedFalse());
         assertEquals(Optional.of(true), anyTypeFunctions.getScaledIsDefinedTrue());
-        assertEquals(Optional.of(true), anyTypeFunctions.getScaledIsUnDefinedTrue());
-        assertEquals(Optional.of(false), anyTypeFunctions.getScaledIsUnDefinedFalse());
+        assertEquals(Optional.of(true), anyTypeFunctions.getScaledIsUndefinedTrue());
+        assertEquals(Optional.of(false), anyTypeFunctions.getScaledIsUndefinedFalse());
 
         assertEquals(Optional.of(false), anyTypeFunctions.getStringIsDefinedFalse());
         assertEquals(Optional.of(true), anyTypeFunctions.getStringIsDefinedTrue());
-        assertEquals(Optional.of(true), anyTypeFunctions.getStringIsUnDefinedTrue());
-        assertEquals(Optional.of(false), anyTypeFunctions.getStringIsUnDefinedFalse());
+        assertEquals(Optional.of(true), anyTypeFunctions.getStringIsUndefinedTrue());
+        assertEquals(Optional.of(false), anyTypeFunctions.getStringIsUndefinedFalse());
 
         assertEquals(Optional.of(false), anyTypeFunctions.getBoolIsDefinedFalse());
         assertEquals(Optional.of(true), anyTypeFunctions.getBoolIsDefinedTrue());
-        assertEquals(Optional.of(true), anyTypeFunctions.getBoolIsUnDefinedTrue());
-        assertEquals(Optional.of(false), anyTypeFunctions.getBoolIsUnDefinedFalse());
+        assertEquals(Optional.of(true), anyTypeFunctions.getBoolIsUndefinedTrue());
+        assertEquals(Optional.of(false), anyTypeFunctions.getBoolIsUndefinedFalse());
 
         assertEquals(Optional.of(false), anyTypeFunctions.getDateIsDefinedFalse());
         assertEquals(Optional.of(true), anyTypeFunctions.getDateIsDefinedTrue());
-        assertEquals(Optional.of(true), anyTypeFunctions.getDateIsUnDefinedTrue());
-        assertEquals(Optional.of(false), anyTypeFunctions.getDateIsUnDefinedFalse());
+        assertEquals(Optional.of(true), anyTypeFunctions.getDateIsUndefinedTrue());
+        assertEquals(Optional.of(false), anyTypeFunctions.getDateIsUndefinedFalse());
 
         assertEquals(Optional.of(false), anyTypeFunctions.getTimestampIsDefinedFalse());
         assertEquals(Optional.of(true), anyTypeFunctions.getTimestampIsDefinedTrue());
-        assertEquals(Optional.of(true), anyTypeFunctions.getTimestampIsUnDefinedTrue());
-        assertEquals(Optional.of(false), anyTypeFunctions.getTimestampIsUnDefinedFalse());
+        assertEquals(Optional.of(true), anyTypeFunctions.getTimestampIsUndefinedTrue());
+        assertEquals(Optional.of(false), anyTypeFunctions.getTimestampIsUndefinedFalse());
 
         assertEquals(Optional.of(false), anyTypeFunctions.getTimeIsDefinedFalse());
         assertEquals(Optional.of(true), anyTypeFunctions.getTimeIsDefinedTrue());
-        assertEquals(Optional.of(true), anyTypeFunctions.getTimeIsUnDefinedTrue());
-        assertEquals(Optional.of(false), anyTypeFunctions.getTimeIsUnDefinedFalse());
+        assertEquals(Optional.of(true), anyTypeFunctions.getTimeIsUndefinedTrue());
+        assertEquals(Optional.of(false), anyTypeFunctions.getTimeIsUndefinedFalse());
     }
 
     @Test
     public void testStrings() {
         StringFunctions str = stringFunctionsDao.create(StringFunctions.builder().build());
 
-        // var length = str.getLength().orElseThrow();
+        assertEquals(5, str.getLength().orElseThrow());
         String first = str.getFirst().orElseThrow();
         assertEquals("ap", first);
         String last = str.getLast().orElseThrow();
