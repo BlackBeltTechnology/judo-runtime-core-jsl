@@ -117,6 +117,8 @@ entity StringFunctions {
     derived String lpadUndefined1 => self.undefined!lpad(size = 10, padstring = "*");
     derived String rpadUndefined => self.undefined!rpad(size = 10);
     derived String rpadUndefined1 => self.undefined!rpad(size = 10, padstring = "*");
+
+    derived String parenthizedAsString => (12 + 14)!asString();
 }
 
 entity NumericFunctions {
@@ -162,12 +164,73 @@ entity NumericFunctions {
     derived String scaledAsString => 123456.789!asString();
 }
 
+
+/*
+|=============================================================================================
+|`p`            |`q`            |`p or q`       |`p and q`      |`p xor q`      |`p implies q`
+|`true`	        |`true`	        |`true` 	    |`true`	        |`false`        |`true`
+|`true`	        |`false`	    |`true`         |`false`	    |`true`         |`false`
+|`true`	        |`undefined`	|`true`	        |`undefined`	|`undefined`    |`undefined`
+|`false`	    |`true`	        |`true`	        |`false`	    |`true`         |`true`
+|`false`	    |`false`	    |`false`	    |`false`	    |`false`        |`true`
+|`false`	    |`undefined`	|`undefined`	|`false`	    |`undefined`    |`true`
+|`undefined`	|`true`	        |`true`	        |`undefined`	|`undefined`    |`true`
+|`undefined`	|`false`	    |`undefined`	|`false`	    |`undefined`    |`undefined`
+|`undefined`	|`undefined`	|`undefined`	|`undefined`	|`undefined`    |`undefined`
+|=============================================================================================
+ */
+entity Kleene {
+	field Boolean undefined;
+	field Boolean bool = true;
+	
+	derived Boolean trueOrTrue => (true or true);
+	derived Boolean trueOrFalse => (true or false);
+	derived Boolean trueOrUndefined => (true or self.undefined);
+	derived Boolean falseOrTrue => (false or true);
+	derived Boolean falseOrFalse => (false or false);
+	derived Boolean falseOrUndefined => (false or self.undefined);
+	derived Boolean undefinedOrTrue => (self.undefined or true);
+	derived Boolean undefinedOrFalse => (self.undefined or false);
+	derived Boolean undefinedOrUndefined => (self.undefined or self.undefined);
+
+	derived Boolean trueAndTrue => (true and true);
+	derived Boolean trueAndFalse => (true and false);
+	derived Boolean trueAndUndefined => (true and self.undefined);
+	derived Boolean falseAndTrue => (false and true);
+	derived Boolean falseAndFalse => (false and false);
+	derived Boolean falseAndUndefined => (false and self.undefined);
+	derived Boolean undefinedAndTrue => (self.undefined and true);
+	derived Boolean undefinedAndFalse => (self.undefined and false);
+	derived Boolean undefinedAndUndefined => (self.undefined and self.undefined);
+
+	derived Boolean trueXorTrue => (true xor true);
+	derived Boolean trueXorFalse => (true xor false);
+	derived Boolean trueXorUndefined => (true xor self.undefined);
+	derived Boolean falseXorTrue => (false xor true);
+	derived Boolean falseXorFalse => (false xor false);
+	derived Boolean falseXorUndefined => (false xor self.undefined);
+	derived Boolean undefinedXorTrue => (self.undefined xor true);
+	derived Boolean undefinedXorFalse => (self.undefined xor false);
+	derived Boolean undefinedXorUndefined => (self.undefined xor self.undefined);
+
+	derived Boolean trueImpliesTrue => (true implies true);
+	derived Boolean trueImpliesFalse => (true implies false);
+	derived Boolean trueImpliesUndefined => (true implies self.undefined);
+	derived Boolean falseImpliesTrue => (false implies true);
+	derived Boolean falseImpliesFalse => (false implies false);
+	derived Boolean falseImpliesUndefined => (false implies self.undefined);
+	derived Boolean undefinedImpliesTrue => (self.undefined implies true);
+	derived Boolean undefinedImpliesFalse => (self.undefined implies false);
+	derived Boolean undefinedImpliesUndefined => (self.undefined implies self.undefined);
+}
+
 entity BooleanFunctions {
     field Boolean bool = true;
 
     derived String ownBoolAsString => self.bool!asString();
     derived String trueAsString => true!asString();
     derived String falseAsString => false!asString();
+    derived String logicalExpressionAsString => (true or true)!asString();
 }
 
 entity DateFunctions {
