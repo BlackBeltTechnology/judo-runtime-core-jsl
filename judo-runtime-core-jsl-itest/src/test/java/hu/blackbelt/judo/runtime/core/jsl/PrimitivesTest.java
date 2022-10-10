@@ -338,14 +338,14 @@ public class PrimitivesTest extends AbstractJslTest {
         assertEquals(1, list.size());
 
         assertEquals(Optional.of(1), entityWithDefaultExpressions.getIntegerAttr());
-        // assertEquals(Optional.of(2.34), entityWithDefaultExpressions.getScaledAttr());
+        assertEquals(Optional.of(2.9), entityWithDefaultExpressions.getScaledAttr());
         assertEquals(Optional.of("TRUE"), entityWithDefaultExpressions.getStringAttr());
         assertEquals(Optional.of("+36-1-123-123"), entityWithDefaultExpressions.getRegexAttr());
         assertEquals(Optional.of(true), entityWithDefaultExpressions.getBoolAttr());
         assertEquals(Optional.of(LocalDate.now()), entityWithDefaultExpressions.getDateAttr());
         assertEquals(OffsetDateTime.now().toString().substring(1, 10),
         entityWithDefaultExpressions.getTimestampAttr().get().toString().substring(1, 10));
-        // assertEquals(Optional.of(LocalTime.parse("23:59:59")), entityWithDefaultExpressions.getTimeAttr());
+        assertEquals(Optional.of(LocalTime.parse("23:59:59")), entityWithDefaultExpressions.getTimeAttr());
     }
 
     @Test
