@@ -31,8 +31,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
 public class OperatorsTest extends AbstractJslTest {
@@ -101,12 +100,20 @@ public class OperatorsTest extends AbstractJslTest {
         assertEquals(Optional.of(4), operators.getFirstNameLength());
         assertEquals(Optional.of(99), operators.getRounded());
         assertEquals(Optional.of(37), operators.getAddition());
+        assertTrue(operators.getAdditionTrue().orElseThrow());
+        assertFalse(operators.getAdditionFalse().orElseThrow());
+        assertTrue(operators.getAdditionUndefinedTrue().orElseThrow());
+        assertFalse(operators.getAdditionUndefinedFalse().orElseThrow());
         assertEquals(Optional.of(33), operators.getSubtraction());
         assertEquals(Optional.of(70), operators.getMultiplication());
         assertEquals(Optional.of(17), operators.getDivision());
         assertEquals(Optional.of(17), operators.getDivisionWhole());
         assertEquals(Optional.of(1), operators.getModulo());
         assertEquals(Optional.of(false), operators.getLt());
+        assertTrue(operators.getLtTrue().orElseThrow());
+        assertFalse(operators.getLtFalse().orElseThrow());
+        assertTrue(operators.getLtUndefinedTrue().orElseThrow());
+        assertFalse(operators.getLtUndefinedFalse().orElseThrow());
         assertEquals(Optional.of(true), operators.getLt2());
         assertEquals(Optional.of(true), operators.getGt());
         assertEquals(Optional.of(true), operators.getGt2());
@@ -117,5 +124,9 @@ public class OperatorsTest extends AbstractJslTest {
         assertEquals(Optional.of(false), operators.getEq());
         assertEquals(Optional.of(true), operators.getNeq());
         assertEquals(Optional.of(1), operators.getConditional());
+        assertTrue(operators.getConditionalTrue().orElseThrow());
+        assertFalse(operators.getConditionalFalse().orElseThrow());
+        assertTrue(operators.getConditionalUndefinedTrue().orElseThrow());
+        assertFalse(operators.getConditionalUndefinedFalse().orElseThrow());
     }
 }

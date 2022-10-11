@@ -54,10 +54,15 @@ entity DerivedSource {
 
 entity DerivedOperators {
     field required DerivedSource source;
+    field DerivedSource undefined;
     derived String stringConcat => self.source.firstName + " " + self.source.lastName;
     derived Integer firstNameLength => self.source.firstName!size();
     derived Integer rounded => self.source.score!round();
     derived Integer addition => self.source.age + 2;
+    derived Boolean additionTrue => (self.source.age + 2)!isDefined();
+    derived Boolean additionFalse => (self.source.age + 2)!isUndefined();
+    derived Boolean additionUndefinedFalse => (self.undefined.age + 2)!isDefined();
+    derived Boolean additionUndefinedTrue => (self.undefined.age + 2)!isUndefined();
     derived Integer subtraction => self.source.age - 2;
     derived BigInteger pow => self.source.age ^ 2;
     derived Integer multiplication => self.source.age * 2;
@@ -65,6 +70,10 @@ entity DerivedOperators {
     derived Integer divisionWhole => self.source.age div 2;
     derived Integer modulo => self.source.age mod 2;
     derived Boolean lt => self.source.age < 5;
+    derived Boolean ltTrue => (self.source.age < 5)!isDefined();
+    derived Boolean ltFalse => (self.source.age < 5)!isUndefined();
+    derived Boolean ltUndefinedFalse => (self.undefined.age < 5)!isDefined();
+    derived Boolean ltUndefinedTrue => (self.undefined.age < 5)!isUndefined();
     derived Boolean lt2 => 2 < self.source.age;
     derived Boolean gt => self.source.age > 5;
     derived Boolean gt2 => self.source.age > 2;
@@ -75,4 +84,8 @@ entity DerivedOperators {
     derived Boolean eq => self.source.age == 2;
     derived Boolean neq => self.source.age != 2;
     derived Integer conditional => self.source.age > 2 ? 1 : 2;
+    derived Boolean conditionalTrue => (self.source.age > 2 ? 1 : 2)!isDefined();
+    derived Boolean conditionalFalse => (self.source.age > 2 ? 1 : 2)!isUndefined();
+    derived Boolean conditionalUndefinedTrue => (self.undefined.age > 2 ? 1 : 2)!isDefined();
+    derived Boolean conditionalUndefinedFalse => (self.undefined.age > 2 ? 1 : 2)!isUndefined();
 }
