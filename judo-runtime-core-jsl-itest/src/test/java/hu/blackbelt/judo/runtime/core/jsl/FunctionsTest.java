@@ -181,6 +181,8 @@ public class FunctionsTest extends AbstractJslTest {
         assertEquals(" apple", rtrim);
 
         assertEquals("     apple", str.getLpad().orElseThrow());
+        assertTrue(str.getLpadTrue().orElseThrow());
+        assertFalse(str.getLpadFalse().orElseThrow());
         assertEquals("*****apple", str.getLpad1().orElseThrow());
         assertEquals("le", str.getLpad2().orElseThrow());
         assertEquals("le", str.getLpad3().orElseThrow());
@@ -190,6 +192,8 @@ public class FunctionsTest extends AbstractJslTest {
         assertEquals("ap", str.getRpad3().orElseThrow());
 
         assertTrue(str.getLpadUndefined().isEmpty());
+        assertFalse(str.getLpadUndefinedFalse().orElseThrow());
+        assertTrue(str.getLpadUndefinedTrue().orElseThrow());
         assertTrue(str.getLpadUndefined1().isEmpty());
         assertTrue(str.getRpadUndefined().isEmpty());
         assertTrue(str.getRpadUndefined1().isEmpty());
