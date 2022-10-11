@@ -32,6 +32,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Slf4j
 public class OperatorsTest extends AbstractJslTest {
@@ -78,6 +79,16 @@ public class OperatorsTest extends AbstractJslTest {
         assertEquals(Optional.of(1), operators.getConditional());
         assertEquals(Optional.of(false), operators.getGroupAnd());
         assertEquals(Optional.of(true), operators.getGroupOr());
+
+        assertEquals(0, operators.getOneModOne().orElseThrow());
+        assertEquals(1.0f, operators.getOneModOnePointNine().orElseThrow());
+        assertEquals(0.0f, operators.getOnePointNineModOnePointNine().orElseThrow());
+        assertEquals(0.9f, operators.getOnePointNineModOne().orElseThrow());
+        assertEquals(1, operators.getOneDivOne().orElseThrow());
+        assertTrue(0.526 <= (double) operators.getOneDivOnePointNine().orElseThrow());
+        assertTrue((double) operators.getOneDivOnePointNine().orElseThrow() < 0.527);
+        assertEquals(1.0f, operators.getOnePointNineDivOnePointNine().orElseThrow());
+        assertEquals(1.9f, operators.getOnePointNineDivOne().orElseThrow());
     }
 
     @Test
