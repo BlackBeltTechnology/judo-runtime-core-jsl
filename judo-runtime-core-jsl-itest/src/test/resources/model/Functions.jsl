@@ -105,6 +105,8 @@ entity StringFunctions {
     derived String rtrim => " apple "!rtrim();
 
     derived String lpad => "apple"!lpad(size = 10);
+    derived Boolean lpadTrue => "apple"!lpad(size = 10)!isDefined();
+    derived Boolean lpadFalse => "apple"!lpad(size = 10)!isUndefined();
     derived String lpad1 => "apple"!lpad(size = 10, padstring = "*");
     derived String lpad2 => "apple"!lpad(size = 2);
     derived String lpad3 => "apple"!lpad(size = 2, padstring = "*");
@@ -114,6 +116,8 @@ entity StringFunctions {
     derived String rpad3 => "apple"!rpad(size = 2, padstring = "*");
 
     derived String lpadUndefined => self.undefined!lpad(size = 10);
+    derived Boolean lpadUndefinedFalse => self.undefined!lpad(size = 10)!isDefined();
+    derived Boolean lpadUndefinedTrue => self.undefined!lpad(size = 10)!isUndefined();
     derived String lpadUndefined1 => self.undefined!lpad(size = 10, padstring = "*");
     derived String rpadUndefined => self.undefined!rpad(size = 10);
     derived String rpadUndefined1 => self.undefined!rpad(size = 10, padstring = "*");
