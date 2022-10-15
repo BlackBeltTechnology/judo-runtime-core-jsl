@@ -1,0 +1,17 @@
+model QueryModel;
+
+type numeric Integer(precision = 9, scale = 0);
+
+
+query Lead[] rootAllLeadsBetween(Integer min = 0, Integer max = 100) => Lead!filter(l | l.value > min and  l.value < max);
+query Integer rootCountAllLeadsBetween(Integer min = 0, Integer max = 100) => Lead!filter(l | l.value > min and  l.value < max)!size();
+
+entity Queries {
+	query Lead[] queriesAllLeadsBetween(Integer min = 0, Integer max = 100) => Lead!filter(l | l.value > min and  l.value < max);
+	query Integer queriesCountAllLeadsBetween(Integer min = 0, Integer max = 100) => Lead!filter(l | l.value > min and  l.value < max)!size();	
+}
+
+entity Lead {
+	field Integer value;
+}
+

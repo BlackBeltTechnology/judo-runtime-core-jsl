@@ -35,8 +35,15 @@ entity abstract Person {
 		+ self.lastName ;
 }
 
-query Lead[] allLeadsBetween(Integer min = 0, Integer max = 100) => Lead!filter(l | l.value > min and  l.value < max);
-query Integer countAllLeadsBetween(Integer min = 0, Integer max = 100) => Lead!filter(l | l.value > min and  l.value < max)!size();
+/*
+query Lead[] rootAllLeadsBetween(Integer min = 0, Integer max = 100) => Lead!filter(l | l.value > min and  l.value < max);
+query Integer rootCountAllLeadsBetween(Integer min = 0, Integer max = 100) => Lead!filter(l | l.value > min and  l.value < max)!size();
+
+entity Queries {
+	query Lead[] queriesAllLeadsBetween(Integer min = 0, Integer max = 100) => Lead!filter(l | l.value > min and  l.value < max);
+	query Integer queriesCountAllLeadsBetween(Integer min = 0, Integer max = 100) => Lead!filter(l | l.value > min and  l.value < max)!size();	
+}
+*/
 
 entity SalesPerson extends Person {
 	relation Lead[] leads opposite salesPerson;
