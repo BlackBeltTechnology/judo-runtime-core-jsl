@@ -5,10 +5,14 @@ type numeric Integer(precision = 9, scale = 0);
 
 query Lead[] rootAllLeadsBetween(Integer min = 0, Integer max = 100) => Lead!filter(l | l.value > min and  l.value < max);
 query Integer rootCountAllLeadsBetween(Integer min = 0, Integer max = 100) => Lead!filter(l | l.value > min and  l.value < max)!size();
+query Lead[] rootAllLeads() => Lead;
+query Lead rootOneLead() => Lead!any();
 
 entity Queries {
 	query Lead[] queriesAllLeadsBetween(Integer min = 0, Integer max = 100) => Lead!filter(l | l.value > min and  l.value < max);
-	query Integer queriesCountAllLeadsBetween(Integer min = 0, Integer max = 100) => Lead!filter(l | l.value > min and  l.value < max)!size();	
+	query Integer queriesCountAllLeadsBetween(Integer min = 0, Integer max = 100) => Lead!filter(l | l.value > min and  l.value < max)!size();
+    query Lead[] queriesAllLeads() => Lead;
+    query Lead queriesOneLead() => Lead!any();
 }
 
 entity Lead {
