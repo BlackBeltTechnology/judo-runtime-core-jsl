@@ -62,6 +62,7 @@
                                 <source>${project.basedir}/target/generated-sources/model/sdk/ContainerDerived</source>
                                 <source>${project.basedir}/target/generated-sources/model/sdk/TaskModel</source>
                                 <source>${project.basedir}/target/generated-sources/model/sdk/OrderManagement</source>
+                                <source>${project.basedir}/target/generated-sources/model/sdk/QueryModel</source>
                             </sources>
                         </configuration> 
                    </execution>
