@@ -29,6 +29,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.*;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -69,6 +70,9 @@ public class FunctionsTest extends AbstractJslTest {
 
     @Inject
     InstanceFunctions.InstanceFunctionsDao instanceFunctionsDao;
+
+    @Inject
+    CollectionFunctions.CollectionFunctionsDao collectionFunctionsDao;
 
     @Inject
     Parent.ParentDao parentDao;
@@ -439,6 +443,120 @@ public class FunctionsTest extends AbstractJslTest {
         assertFalse(instanceFunctions.getNotTypeOfChild().get());
 
         
+    }
+
+    @Test
+    public void testCollection() {
+        CollectionFunctions collectionFunctions = collectionFunctionsDao.create(CollectionFunctions.builder()
+                .withParentsField(
+                        List.of(
+                                Parent.builder().withName("Person").build(),
+                                Parent.builder().withName("Another Person").build()
+                        )
+                )
+                .withParentsRelation(
+                        List.of(
+                                Parent.builder().withName("Someone Else").build()
+                        )
+                )
+                .withChildrenField(
+                        List.of(
+                                Child.builder().withName("Cindy").withAge(23L).build(),
+                                Child.builder().withName("Rebecca").withAge(46L).build()
+                        )
+                )
+                .withChildrenRelation(
+                        List.of(
+                                Child.builder().withName("Mark").withAge(33L).build(),
+                                Child.builder().withName("John").build()
+                        )
+                )
+                .build());
+
+        // TODO: JNG-3911, JNG-4162: add missing test types
+
+        assertEquals(2, collectionFunctions.getSizeParentsField().get());
+        assertEquals(1, collectionFunctions.getSizeParentsRelation().get());
+
+        // FIXME: JNG-4172 add tests
+        // FIXME: JNG-4176 add tests
+
+    }
+
+    @Test
+    public void testCollection() {
+        CollectionFunctions collectionFunctions = collectionFunctionsDao.create(CollectionFunctions.builder()
+                .withParentsField(
+                        List.of(
+                                Parent.builder().withName("Person").build(),
+                                Parent.builder().withName("Another Person").build()
+                        )
+                )
+                .withParentsRelation(
+                        List.of(
+                                Parent.builder().withName("Someone Else").build()
+                        )
+                )
+                .withChildrenField(
+                        List.of(
+                                Child.builder().withName("Cindy").withAge(23L).build(),
+                                Child.builder().withName("Rebecca").withAge(46L).build()
+                        )
+                )
+                .withChildrenRelation(
+                        List.of(
+                                Child.builder().withName("Mark").withAge(33L).build(),
+                                Child.builder().withName("John").build()
+                        )
+                )
+                .build());
+
+        // TODO: JNG-3911, JNG-4162: add missing test types
+
+        assertEquals(2, collectionFunctions.getSizeParentsField().get());
+        assertEquals(1, collectionFunctions.getSizeParentsRelation().get());
+
+        // FIXME: JNG-4172 add tests
+        // FIXME: JNG-4176 add tests
+
+    }
+
+    @Test
+    public void testCollection() {
+        CollectionFunctions collectionFunctions = collectionFunctionsDao.create(CollectionFunctions.builder()
+                .withParentsField(
+                        List.of(
+                                Parent.builder().withName("Person").build(),
+                                Parent.builder().withName("Another Person").build()
+                        )
+                )
+                .withParentsRelation(
+                        List.of(
+                                Parent.builder().withName("Someone Else").build()
+                        )
+                )
+                .withChildrenField(
+                        List.of(
+                                Child.builder().withName("Cindy").withAge(23L).build(),
+                                Child.builder().withName("Rebecca").withAge(46L).build()
+                        )
+                )
+                .withChildrenRelation(
+                        List.of(
+                                Child.builder().withName("Mark").withAge(33L).build(),
+                                Child.builder().withName("John").build()
+                        )
+                )
+                .build());
+
+        // TODO: JNG-3911, JNG-4162: add missing test types
+
+        assertEquals(2, collectionFunctions.getSizeParentsField().get());
+        assertEquals(1, collectionFunctions.getSizeParentsRelation().get());
+
+        // FIXME: JNG-4172 add tests
+        // FIXME: JNG-4176 add tests
+
     }
 
     @Test
