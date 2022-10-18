@@ -303,6 +303,7 @@ public class PrimitivesTest extends AbstractJslTest {
         assertEquals(Optional.of(LocalDate.of(2022, 7, 11)), entityWithDefaults.getDateAttr());
         assertEquals(Optional.of(OffsetDateTime.parse("2022-07-11T19:09:33Z")), entityWithDefaults.getTimestampAttr());
         assertEquals(Optional.of(LocalTime.parse("23:59:59")), entityWithDefaults.getTimeAttr());
+        assertEquals(Optional.of(LocalTime.parse("23:59")), entityWithDefaults.getShortTimeAttr());
         // There is no way to define default value in JSL for binary
         // assertEquals("test.txt", entityWithDefaults.getBinaryAttr().get().getFileName());
         assertEquals(Optional.of(MyEnum.Bombastic), entityWithDefaults.getEnumAttr());
@@ -380,6 +381,34 @@ public class PrimitivesTest extends AbstractJslTest {
         assertThat(thrown.getValidationResults(), containsInAnyOrder(allOf(
                 hasProperty("code", equalTo("MAX_LENGTH_VALIDATION_FAILED")),
                 hasProperty("location", equalTo("stringAttr")))
+        ));
+    }
+
+    @Test
+    public void testPrecisionValidation() {
+        ValidationException thrown = assertThrows(
+                ValidationException.class,
+                () -> myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
+                        .withIntegerAttr(1234567890)
+                        .build()));
+
+        assertThat(thrown.getValidationResults(), containsInAnyOrder(allOf(
+                hasProperty("code", equalTo("PRECISION_VALIDATION_FAILED")),
+                hasProperty("location", equalTo("integerAttr")))
+        ));
+    }
+
+    @Test
+    public void testScaleValidation() {
+        ValidationException thrown = assertThrows(
+                ValidationException.class,
+                () -> myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
+                        .withScaledAttr(123456.789)
+                        .build()));
+
+        assertThat(thrown.getValidationResults(), containsInAnyOrder(allOf(
+                hasProperty("code", equalTo("SCALE_VALIDATION_FAILED")),
+                hasProperty("location", equalTo("scaledAttr")))
         ));
     }
 }
