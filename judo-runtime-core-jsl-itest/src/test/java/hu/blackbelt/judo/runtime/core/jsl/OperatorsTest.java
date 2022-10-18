@@ -88,6 +88,27 @@ public class OperatorsTest extends AbstractJslTest {
         assertTrue((double) operators.getOneDivOnePointNine().orElseThrow() < 0.527);
         assertEquals(1.0f, operators.getOnePointNineDivOnePointNine().orElseThrow());
         assertEquals(1.9f, operators.getOnePointNineDivOne().orElseThrow());
+
+        assertEquals(Optional.of(true), operators.getDateLt());
+        assertEquals(Optional.of(true), operators.getDateLte());
+        assertEquals(Optional.of(true), operators.getDateLte2());
+        assertEquals(Optional.of(true), operators.getDateGt());
+        assertEquals(Optional.of(true), operators.getDateGte());
+        assertEquals(Optional.of(true), operators.getDateGte2());
+        assertEquals(Optional.of(true), operators.getDateEq());
+        assertEquals(Optional.of(true), operators.getDateNeq());
+
+        assertEquals(Optional.of(true), operators.getTimeLt());
+        assertEquals(Optional.of(true), operators.getTimeLte());
+        assertEquals(Optional.of(true), operators.getTimeLte2());
+        assertEquals(Optional.of(true), operators.getTimeGt());
+        assertEquals(Optional.of(true), operators.getTimeGte());
+        assertEquals(Optional.of(true), operators.getTimeGte2());
+        assertEquals(Optional.of(true), operators.getTimeEq());
+        assertEquals(Optional.of(true), operators.getTimeNeq());
+
+        assertEquals(Optional.of(true), operators.getTimeStampEq());
+        assertEquals(Optional.of(true), operators.getTimeStampNeq());
     }
 
     @Test
