@@ -81,6 +81,12 @@ entity AnyTypeFunctions {
     derived Boolean timeIsDefinedTrue => self.entityWithPrimitives.timeAttr!isDefined();
     derived Boolean timeIsUndefinedTrue => self.`entity`.timeAttr!isUndefined();
     derived Boolean timeIsUndefinedFalse => self.entityWithPrimitives.timeAttr!isUndefined();
+
+    /* FIXME: JNG-4078
+    derived String stringOrElse => "apple"!orElse(value = "grape");
+    derived Integer numberOrElse => 2!orElse(value = 1);
+    derived Integer stringOrElse3 => self.`entity`.integerAttr!orElse(value = 3);
+    */
 }
 
 entity StringFunctions {
@@ -98,7 +104,7 @@ entity StringFunctions {
     derived String capitalize => "apPlE"!capitalize();
     derived Boolean matches => "apple"!matches(pattern = r".*pl.");
     derived Boolean like => "apple"!like(pattern = "%pl_");
-    // derived Boolean ilike => "apPLe"!ilike(pattern = "_pple"); // FIXME: JNG-3897
+    // derived Boolean ilike => "apPLe"!like(pattern = "_pple", exact = false); FIXME: JNG-4169
     derived String replace => "apple"!replace(oldstring = "le", newstring = "endix");
     derived String trim => " apple "!trim();
     derived String ltrim => " apple "!ltrim();
@@ -344,9 +350,6 @@ entity InstanceFunctions {
     derived Parent asParentType => self.child;
     derived Child asChildType => self.parent!asType(entityType = Child);
 
-    // FIXME: JNG-3911
-    // derived Child[] childAsCollection => self.child.asCollection(entityType = Child);
-
     /* FIXME: JNG-3968 
     derived Boolean parentMemberOfParents => self.parent!memberOf(instances = self.parents);
     derived Boolean parentMemberOfChildren => self.parent!memberOf(instances = self.children);
@@ -362,12 +365,60 @@ entity CollectionFunctions {
     relation Parent[] parentsRelation;
     relation Child[] childrenRelation;
 
-    /* TODO: JNG-3911 re-add after collection functions have been implemented
-    derived Parent[] headParentsField => self.parentsField!head(p | p.name);
-    derived Parent[] headParentsFieldDesc => self.parentsField!head(p | p.name DESC);
+    /* TODO: JNG-3911, JNG-4162 re-add after collection functions have been implemented
+    derived Parent[] headParentsField => self.parentsField!head(field = name);
+    derived Parent[] headParentsFieldDesc => self.parentsField!head(field = name, reverse = true);
 
-    derived Parent[] headParentsRelation => self.parentsRelation!head(p | p.name);
-    derived Parent[] headParentsRelationDesc => self.parentsRelation!head(p | p.name DESC);
+    derived Parent[] tailParentsField => self.parentsField!tail(field = name);
+    derived Parent[] tailParentsFieldDesc => self.parentsField!tail(field = name, reverse = true);
+
+    derived Parent[] headParentsRelation => self.parentsRelation!head(field = name);
+    derived Parent[] headParentsRelationDesc => self.parentsRelation!head(field = name, reverse = true);
+
+    derived Parent[] tailParentsRelation => self.parentsRelation!tail(field = name);
+    derived Parent[] tailParentsRelationDesc => self.parentsRelation!tail(field = name, reverse = true);
+    */
+
+    /* FIXME JNG-4175
+    derived Parent anyParentsField => self.parentsField!any();
+    derived Parent anyParentsRelation => self.parentsRelation!any();
+    */
+
+    derived Integer sizeParentsField => self.parentsField!size();
+    derived Integer sizeParentsRelation => self.parentsRelation!size();
+
+    /* FIXME: JNG-4172
+    derived Parent[] asCollectionChildrenParentField => self.parentsField!asCollection(entityType = Parent);
+    derived Parent[] asCollectionChildrenParentRelation => self.parentsRelation!asCollection(entityType = Parent);
+    derived Child[] asCollectionChildrenChildField => self.parentsField!asCollection(entityType = Child);
+    derived Child[] asCollectionChildrenChildRelation => self.parentsRelation!asCollection(entityType = Child);
+    */
+
+    // derived Parent containsParent => self.parentsField!contains(instance = Parent!filter(p | p.name == "John")!any()); FIXME JNG-4174
+
+    derived Parent[] filterParentsField => self.parentsField!filter(p | p.name == "John");
+    derived Parent[] filterParentsRelation => self.parentsRelation!filter(p | p.name == "Mark");
+    derived Child[] filterChildrenField => self.childrenField!filter(p | p.name == "Cindy");
+    derived Child[] filterChildrenRelation => self.childrenRelation!filter(p | p.name == "Anna");
+
+    /* TODO JNG-4177
+    derived Boolean anyTrueChildrenField => self.childrenField!anyTrue(p | p.age  > 25);
+    derived Boolean anyTrueChildrenRelation => self.childrenRelation!anyTrue(p | p.age  > 25);
+    */
+
+    /* TODO JNG-4178
+    derived Boolean allTrueChildrenField => self.childrenField!allTrue(p | p.age  > 25);
+    derived Boolean allTrueChildrenRelation => self.childrenRelation!allTrue(p | p.age  > 25);
+    */
+
+    /* TODO JNG-4148
+    derived Boolean anyFalseChildrenField => self.childrenField!anyFalse(p | p.age  > 25);
+    derived Boolean anyFalseChildrenRelation => self.childrenRelation!anyFalse(p | p.age  > 25);
+    */
+
+    /*
+    derived Integer minChildrenField => self.childrenField!min(field = age);
+    derived Integer minChildrenRelation => self.childrenRelation!min(field = age);
     */
 }
 

@@ -43,6 +43,27 @@ entity DefaultOperators {
     field Scaled oneDivOnePointNine = 1 div 1.9;
     field Scaled onePointNineDivOnePointNine = 1.9 div 1.9;
     field Scaled onePointNineDivOne = 1.9 div 1;
+
+    field Boolean dateLt = `2022-07-07` < `2022-07-08`;
+    field Boolean dateLte = `2022-07-07` <= `2022-07-07`;
+    field Boolean dateLte2 = `2022-07-07` <= `2022-07-08`;
+    field Boolean dateGt = `2022-07-09` > `2022-07-08`;
+    field Boolean dateGte = `2022-07-08` >= `2022-07-08`;
+    field Boolean dateGte2 = `2022-07-09` >= `2022-07-08`;
+    field Boolean dateEq = `2022-07-09` == `2022-07-09`;
+    field Boolean dateNeq = `2022-07-10` != `2022-07-09`;
+
+    field Boolean timeLt = `11:29` < `11:30`;
+    field Boolean timeLte = `11:30` <= `11:30`;
+    field Boolean timeLte2 = `11:29` <= `11:30`;
+    field Boolean timeGt = `11:30` > `11:29`;
+    field Boolean timeGte = `11:29` >= `11:29`;
+    field Boolean timeGte2 = `11:30` >= `11:29`;
+    field Boolean timeEq = `11:30` == `11:30`;
+    field Boolean timeNeq = `11:30` != `11:29`;
+
+    field Boolean timeStampEq = `2020-02-18T09:11:12Z` == `2020-02-18T10:11:12+01:00`;
+    field Boolean timeStampNeq = `2020-02-18T10:11:12Z` != `2020-02-18T00:00:00Z`;
 }
 
 entity DerivedSource {
