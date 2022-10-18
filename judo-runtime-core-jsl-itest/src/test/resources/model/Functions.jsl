@@ -358,6 +358,17 @@ entity InstanceFunctions {
     */
 }
 
+entity Booler {
+    field Boolean b;
+}
+
+entity BoolerTester {
+    derived Boolean anyTrue => Booler!anyTrue(b | b.b);
+    derived Boolean allTrue => Booler!allTrue(b | b.b);
+    derived Boolean anyFalse => Booler!anyFalse(b | b.b);
+    derived Boolean allFalse => Booler!allFalse(b | b.b);
+}
+
 entity CollectionFunctions {
     field Parent[] parentsField;
     field Child[] childrenField;
