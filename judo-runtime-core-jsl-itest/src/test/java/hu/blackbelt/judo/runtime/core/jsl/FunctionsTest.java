@@ -450,20 +450,20 @@ public class FunctionsTest extends AbstractJslTest {
         CollectionFunctions collectionFunctions = collectionFunctionsDao.create(CollectionFunctions.builder()
                 .withParentsField(
                         List.of(
-                                Parent.builder().withName("Person").build(),
+                                Parent.builder().withName("John").build(),
                                 Parent.builder().withName("Another Person").build()
                         )
                 )
                 .withParentsRelation(
                         List.of(
-                                Parent.builder().withName("Someone Else").build(),
+                                Parent.builder().withName("Mark").build(),
                                 Parent.builder().withName("Billy").build()
                         )
                 )
                 .withChildrenField(
                         List.of(
-                                Child.builder().withName("Cindy").withAge(23L).build(),
                                 Child.builder().withName("Rebecca").withAge(33L).build(),
+                                Child.builder().withName("Cindy").withAge(23L).build(),
                                 Child.builder().withName("Monica").withAge(23L).build(),
                                 Child.builder().withName("Peter").withAge(46L).build(),
                                 Child.builder().withName("Andrew").withAge(46L).build()
@@ -473,8 +473,8 @@ public class FunctionsTest extends AbstractJslTest {
                         List.of(
                                 Child.builder().withName("Mark").withAge(33L).build(),
                                 Child.builder().withName("Stacey").withAge(16L).build(),
-                                Child.builder().withName("Ruby").withAge(33L).build(),
-                                Child.builder().withName("Teresa").withAge(34L).build(),
+                                Child.builder().withName("Ruby").withAge(16L).build(),
+                                Child.builder().withName("Anna").withAge(34L).build(),
                                 Child.builder().withName("Clark").withAge(34L).build(),
                                 Child.builder().withName("John").build()
                         )
@@ -499,10 +499,10 @@ public class FunctionsTest extends AbstractJslTest {
         assertEquals(Optional.of(34L), collectionFunctions.getMaxChildrenRelation());
 
         assertEquals(Optional.of(171L), collectionFunctions.getSumChildrenField());
-        assertEquals(Optional.of(150L), collectionFunctions.getSumChildrenRelation());
+        assertEquals(Optional.of(133L), collectionFunctions.getSumChildrenRelation());
 
         assertEquals(Optional.of(34L), collectionFunctions.getAvgChildrenField());
-        assertEquals(Optional.of(30L), collectionFunctions.getAvgChildrenRelation());
+        assertEquals(Optional.of(26L), collectionFunctions.getAvgChildrenRelation());
 
         /* FIXME JNG-4180
         assertEquals(Optional.of(34.5), collectionFunctions.getAvgScaledChildrenField());
@@ -515,6 +515,20 @@ public class FunctionsTest extends AbstractJslTest {
         assertEquals(2, collectionFunctionsDao.getFirstChildrenField(collectionFunctions).size());
         assertEquals(2, collectionFunctionsDao.getFirstChildrenRelation(collectionFunctions).size());
 
+        assertEquals(2, collectionFunctionsDao.getLastChildrenField(collectionFunctions).size());
+        assertEquals(2, collectionFunctionsDao.getLastChildrenRelation(collectionFunctions).size());
+
+        assertEquals(2, collectionFunctionsDao.getFrontChildrenField(collectionFunctions).size());
+        assertEquals(2, collectionFunctionsDao.getFrontChildrenRelation(collectionFunctions).size());
+
+        assertEquals(2, collectionFunctionsDao.getBackChildrenField(collectionFunctions).size());
+        assertEquals(2, collectionFunctionsDao.getBackChildrenRelation(collectionFunctions).size());
+
+        assertEquals(1, collectionFunctionsDao.getFilterParentsField(collectionFunctions).size());
+        assertEquals(1, collectionFunctionsDao.getFilterParentsRelation(collectionFunctions).size());
+
+        assertEquals(1, collectionFunctionsDao.getFilterChildrenField(collectionFunctions).size());
+        assertEquals(1, collectionFunctionsDao.getFilterChildrenRelation(collectionFunctions).size());
     }
 
     @Test
