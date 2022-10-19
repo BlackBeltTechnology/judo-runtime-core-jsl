@@ -442,7 +442,7 @@ public class FunctionsTest extends AbstractJslTest {
         assertTrue(instanceFunctions.getKindOfParent().get());
         assertFalse(instanceFunctions.getNotTypeOfChild().get());
 
-        
+        assertTrue(instanceFunctionsDao.getAsParentType(instanceFunctions).get() instanceof Parent);
     }
 
     @Test
@@ -481,8 +481,6 @@ public class FunctionsTest extends AbstractJslTest {
                 )
                 .build());
 
-        // TODO: JNG-3911, JNG-4162: add missing test types
-
         assertEquals(2, collectionFunctions.getSizeParentsField().get());
         assertEquals(2, collectionFunctions.getSizeParentsRelation().get());
 
@@ -490,7 +488,6 @@ public class FunctionsTest extends AbstractJslTest {
         assertNotNull(collectionFunctionsDao.getAnyParentsRelation(collectionFunctions));
 
         // FIXME: JNG-4172 add tests
-        // FIXME: JNG-4176 add tests
 
         assertEquals(Optional.of(23L), collectionFunctions.getMinChildrenField());
         assertEquals(Optional.of(16L), collectionFunctions.getMinChildrenRelation());
@@ -529,6 +526,18 @@ public class FunctionsTest extends AbstractJslTest {
 
         assertEquals(1, collectionFunctionsDao.getFilterChildrenField(collectionFunctions).size());
         assertEquals(1, collectionFunctionsDao.getFilterChildrenRelation(collectionFunctions).size());
+
+        assertEquals(Optional.of(true), collectionFunctions.getAnyTrueChildrenField());
+        assertEquals(Optional.of(false), collectionFunctions.getAnyTrueChildrenRelation());
+
+        assertEquals(Optional.of(true), collectionFunctions.getAllTrueChildrenField());
+        assertEquals(Optional.of(false), collectionFunctions.getAllTrueChildrenRelation());
+
+        assertEquals(Optional.of(false), collectionFunctions.getAnyFalseChildrenField());
+        assertEquals(Optional.of(true), collectionFunctions.getAnyFalseChildrenRelation());
+
+        assertEquals(Optional.of(false), collectionFunctions.getAllFalseChildrenField());
+        assertEquals(Optional.of(true), collectionFunctions.getAllFalseChildrenRelation());
     }
 
     @Test

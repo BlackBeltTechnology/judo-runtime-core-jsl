@@ -348,7 +348,9 @@ entity InstanceFunctions {
     derived Boolean kindOfChild => self.parent!kindOf(entityType = Child);
 
     derived Parent asParentType => self.child;
+    /* TODO JNG-4181
     derived Child asChildType => self.parent!asType(entityType = Child);
+    */
 
     /* FIXME: JNG-3968 
     derived Boolean parentMemberOfParents => self.parent!memberOf(instances = self.parents);
@@ -376,20 +378,6 @@ entity CollectionFunctions {
     relation Parent[] parentsRelation;
     relation Child[] childrenRelation;
 
-    /* TODO: JNG-3911, JNG-4162 re-add after collection functions have been implemented
-    derived Parent[] headParentsField => self.parentsField!head(field = name);
-    derived Parent[] headParentsFieldDesc => self.parentsField!head(field = name, reverse = true);
-
-    derived Parent[] tailParentsField => self.parentsField!tail(field = name);
-    derived Parent[] tailParentsFieldDesc => self.parentsField!tail(field = name, reverse = true);
-
-    derived Parent[] headParentsRelation => self.parentsRelation!head(field = name);
-    derived Parent[] headParentsRelationDesc => self.parentsRelation!head(field = name, reverse = true);
-
-    derived Parent[] tailParentsRelation => self.parentsRelation!tail(field = name);
-    derived Parent[] tailParentsRelationDesc => self.parentsRelation!tail(field = name, reverse = true);
-    */
-
     derived Parent anyParentsField => self.parentsField!any();
     derived Parent anyParentsRelation => self.parentsRelation!any();
 
@@ -410,20 +398,17 @@ entity CollectionFunctions {
     derived Child[] filterChildrenField => self.childrenField!filter(p | p.name == "Cindy");
     derived Child[] filterChildrenRelation => self.childrenRelation!filter(p | p.name == "Anna");
 
-    /* TODO JNG-4177
-    derived Boolean anyTrueChildrenField => self.childrenField!anyTrue(p | p.age  > 25);
-    derived Boolean anyTrueChildrenRelation => self.childrenRelation!anyTrue(p | p.age  > 25);
-    */
+    derived Boolean anyTrueChildrenField => self.childrenField!anyTrue(p | p.age  > 40);
+    derived Boolean anyTrueChildrenRelation => self.childrenRelation!anyTrue(p | p.age  > 40);
 
-    /* TODO JNG-4178
-    derived Boolean allTrueChildrenField => self.childrenField!allTrue(p | p.age  > 25);
-    derived Boolean allTrueChildrenRelation => self.childrenRelation!allTrue(p | p.age  > 25);
-    */
+    derived Boolean allTrueChildrenField => self.childrenField!allTrue(p | p.age  > 16);
+    derived Boolean allTrueChildrenRelation => self.childrenRelation!allTrue(p | p.age  > 16);
 
-    /* TODO JNG-4148
-    derived Boolean anyFalseChildrenField => self.childrenField!anyFalse(p | p.age  > 25);
-    derived Boolean anyFalseChildrenRelation => self.childrenRelation!anyFalse(p | p.age  > 25);
-    */
+    derived Boolean anyFalseChildrenField => self.childrenField!anyFalse(p | p.age  > 16);
+    derived Boolean anyFalseChildrenRelation => self.childrenRelation!anyFalse(p | p.age  > 16);
+
+    derived Boolean allFalseChildrenField => self.childrenField!allFalse(p | p.age  > 16);
+    derived Boolean allFalseChildrenRelation => self.childrenRelation!allFalse(p | p.age  > 16);
 
     derived Integer minChildrenField => self.childrenField!min(f | f.age);
     derived Integer minChildrenRelation => self.childrenRelation!min(f | f.age);
