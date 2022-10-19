@@ -427,9 +427,34 @@ entity CollectionFunctions {
     derived Boolean anyFalseChildrenRelation => self.childrenRelation!anyFalse(p | p.age  > 25);
     */
 
+    derived Integer minChildrenField => self.childrenField!min(f | f.age);
+    derived Integer minChildrenRelation => self.childrenRelation!min(f | f.age);
+
+    derived Integer maxChildrenField => self.childrenField!max(f | f.age);
+    derived Integer maxChildrenRelation => self.childrenRelation!max(f | f.age);
+
+    derived Integer sumChildrenField => self.childrenField!sum(f | f.age);
+    derived Integer sumChildrenRelation => self.childrenRelation!sum(f | f.age);
+
+    derived Integer avgChildrenField => self.childrenField!avg(f | f.age);
+    derived Integer avgChildrenRelation => self.childrenRelation!avg(f | f.age);
+    derived Scaled avgScaledChildrenField => self.childrenField!avg(f | f.age);
+    derived Scaled avgScaledChildrenRelation => self.childrenRelation!avg(f | f.age);
+    derived Integer divisionConst => 69 / 2;
+    derived Integer roundConst => (69 / 2)!round();
+
     /*
-    derived Integer minChildrenField => self.childrenField!min(field = age);
-    derived Integer minChildrenRelation => self.childrenRelation!min(field = age);
+    derived Child[] firstChildrenField => self.childrenField!first(f | f.age);
+    derived Child[] firstChildrenRelation => self.childrenRelation!first(f | f.age);
+
+    derived Child[] lastChildrenField => self.childrenField!last(f | f.age);
+    derived Child[] lastChildrenRelation => self.childrenRelation!last(f | f.age);
+
+    derived Child[] frontChildrenField => self.childrenField!front(f | f.age);
+    derived Child[] frontChildrenRelation => self.childrenRelation!front(f | f.age);
+
+    derived Child[] backChildrenField => self.childrenField!back(f | f.age);
+    derived Child[] backChildrenRelation => self.childrenRelation!back(f | f.age);
     */
 }
 
