@@ -93,8 +93,8 @@ entity StringFunctions {
     field String undefined;
 
     derived Integer length => "apple"!size();
-    derived String first => "apple"!first(count = 2);
-    derived String last => "apple"!last(count = 1);
+    derived String first => "apple"!left(count = 2);
+    derived String last => "apple"!right(count = 1);
     derived Integer position => "apple"!position(substring = "p");
     derived String substring => "apple"!substring(count = 2, offset = 3);
     derived String lower => "ApPlE"!lower();
@@ -390,10 +390,8 @@ entity CollectionFunctions {
     derived Parent[] tailParentsRelationDesc => self.parentsRelation!tail(field = name, reverse = true);
     */
 
-    /* FIXME JNG-4175
     derived Parent anyParentsField => self.parentsField!any();
     derived Parent anyParentsRelation => self.parentsRelation!any();
-    */
 
     derived Integer sizeParentsField => self.parentsField!size();
     derived Integer sizeParentsRelation => self.parentsRelation!size();
@@ -443,7 +441,6 @@ entity CollectionFunctions {
     derived Integer divisionConst => 69 / 2;
     derived Integer roundConst => (69 / 2)!round();
 
-    /*
     derived Child[] firstChildrenField => self.childrenField!first(f | f.age);
     derived Child[] firstChildrenRelation => self.childrenRelation!first(f | f.age);
 
@@ -455,7 +452,7 @@ entity CollectionFunctions {
 
     derived Child[] backChildrenField => self.childrenField!back(f | f.age);
     derived Child[] backChildrenRelation => self.childrenRelation!back(f | f.age);
-    */
+
 }
 
 entity Parent {

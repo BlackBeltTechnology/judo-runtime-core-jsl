@@ -456,18 +456,26 @@ public class FunctionsTest extends AbstractJslTest {
                 )
                 .withParentsRelation(
                         List.of(
-                                Parent.builder().withName("Someone Else").build()
+                                Parent.builder().withName("Someone Else").build(),
+                                Parent.builder().withName("Billy").build()
                         )
                 )
                 .withChildrenField(
                         List.of(
                                 Child.builder().withName("Cindy").withAge(23L).build(),
-                                Child.builder().withName("Rebecca").withAge(46L).build()
+                                Child.builder().withName("Rebecca").withAge(33L).build(),
+                                Child.builder().withName("Monica").withAge(23L).build(),
+                                Child.builder().withName("Peter").withAge(46L).build(),
+                                Child.builder().withName("Andrew").withAge(46L).build()
                         )
                 )
                 .withChildrenRelation(
                         List.of(
                                 Child.builder().withName("Mark").withAge(33L).build(),
+                                Child.builder().withName("Stacey").withAge(16L).build(),
+                                Child.builder().withName("Ruby").withAge(33L).build(),
+                                Child.builder().withName("Teresa").withAge(34L).build(),
+                                Child.builder().withName("Clark").withAge(34L).build(),
                                 Child.builder().withName("John").build()
                         )
                 )
@@ -476,26 +484,37 @@ public class FunctionsTest extends AbstractJslTest {
         // TODO: JNG-3911, JNG-4162: add missing test types
 
         assertEquals(2, collectionFunctions.getSizeParentsField().get());
-        assertEquals(1, collectionFunctions.getSizeParentsRelation().get());
+        assertEquals(2, collectionFunctions.getSizeParentsRelation().get());
+
+        assertNotNull(collectionFunctionsDao.getAnyParentsField(collectionFunctions));
+        assertNotNull(collectionFunctionsDao.getAnyParentsRelation(collectionFunctions));
 
         // FIXME: JNG-4172 add tests
         // FIXME: JNG-4176 add tests
 
         assertEquals(Optional.of(23L), collectionFunctions.getMinChildrenField());
-        assertEquals(Optional.of(33L), collectionFunctions.getMinChildrenRelation());
+        assertEquals(Optional.of(16L), collectionFunctions.getMinChildrenRelation());
 
         assertEquals(Optional.of(46L), collectionFunctions.getMaxChildrenField());
-        assertEquals(Optional.of(33L), collectionFunctions.getMaxChildrenRelation());
+        assertEquals(Optional.of(34L), collectionFunctions.getMaxChildrenRelation());
 
-        assertEquals(Optional.of(69L), collectionFunctions.getSumChildrenField());
-        assertEquals(Optional.of(33L), collectionFunctions.getSumChildrenRelation());
+        assertEquals(Optional.of(171L), collectionFunctions.getSumChildrenField());
+        assertEquals(Optional.of(150L), collectionFunctions.getSumChildrenRelation());
 
         assertEquals(Optional.of(34L), collectionFunctions.getAvgChildrenField());
-        assertEquals(Optional.of(33L), collectionFunctions.getAvgChildrenRelation());
+        assertEquals(Optional.of(30L), collectionFunctions.getAvgChildrenRelation());
+
+        /* FIXME JNG-4180
         assertEquals(Optional.of(34.5), collectionFunctions.getAvgScaledChildrenField());
         assertEquals(Optional.of(33.5), collectionFunctions.getAvgScaledChildrenRelation());
+        */
+
         assertEquals(Optional.of(34L), collectionFunctions.getDivisionConst());
         assertEquals(Optional.of(35L), collectionFunctions.getRoundConst());
+
+        assertEquals(2, collectionFunctionsDao.getFirstChildrenField(collectionFunctions).size());
+        assertEquals(2, collectionFunctionsDao.getFirstChildrenRelation(collectionFunctions).size());
+
     }
 
     @Test
