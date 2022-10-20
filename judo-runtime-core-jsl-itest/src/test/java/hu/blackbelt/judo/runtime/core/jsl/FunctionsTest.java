@@ -181,16 +181,10 @@ public class FunctionsTest extends AbstractJslTest {
         assertFalse(str.getLikeFalse().orElseThrow());
         assertTrue(str.getLikeWithUndefined().isEmpty());
         assertTrue(str.getLikeOnUndefined().isEmpty());
-        assertTrue(str.getLike1().orElseThrow());
-        assertFalse(str.getLikeFalse1().orElseThrow());
-        assertTrue(str.getLikeWithUndefined1().isEmpty());
-        assertTrue(str.getLikeOnUndefined1().isEmpty());
-        assertTrue(str.getLike1WithUndefinedExact().orElseThrow());
         assertTrue(str.getIlike().orElseThrow());
         assertFalse(str.getIlikeFalse().orElseThrow());
         assertTrue(str.getIlikeWithUndefined().isEmpty());
         assertTrue(str.getIlikeOnUndefined().isEmpty());
-        assertFalse(str.getIlikeWithUndefinedExact().orElseThrow());
 
         String replace = str.getReplace().orElseThrow();
         assertEquals("appendix", replace);
