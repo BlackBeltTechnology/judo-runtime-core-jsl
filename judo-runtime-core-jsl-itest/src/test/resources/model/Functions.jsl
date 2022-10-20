@@ -408,7 +408,7 @@ entity CollectionFunctions {
     derived Boolean anyFalseChildrenRelation => self.childrenRelation!anyFalse(p | p.age  > 16);
 
     derived Boolean allFalseChildrenField => self.childrenField!allFalse(p | p.age  > 16);
-    derived Boolean allFalseChildrenRelation => self.childrenRelation!allFalse(p | p.age  > 16);
+    derived Boolean allFalseChildrenRelation => self.childrenRelation!allFalse(p | p.age  < 2);
 
     derived Integer minChildrenField => self.childrenField!min(f | f.age);
     derived Integer minChildrenRelation => self.childrenRelation!min(f | f.age);
