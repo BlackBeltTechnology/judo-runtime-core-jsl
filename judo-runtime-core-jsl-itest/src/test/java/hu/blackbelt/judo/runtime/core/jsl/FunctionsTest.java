@@ -179,11 +179,9 @@ public class FunctionsTest extends AbstractJslTest {
 
         assertTrue(str.getLike().orElseThrow());
         assertFalse(str.getLikeFalse().orElseThrow());
-        assertTrue(str.getLikeWithUndefined().isEmpty());
         assertTrue(str.getLikeOnUndefined().isEmpty());
         assertTrue(str.getIlike().orElseThrow());
         assertFalse(str.getIlikeFalse().orElseThrow());
-        assertTrue(str.getIlikeWithUndefined().isEmpty());
         assertTrue(str.getIlikeOnUndefined().isEmpty());
 
         String replace = str.getReplace().orElseThrow();
