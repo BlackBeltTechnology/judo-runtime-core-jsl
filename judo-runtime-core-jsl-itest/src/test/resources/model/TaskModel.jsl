@@ -5,12 +5,11 @@ type date Date;
 type time Time;
 type timestamp Timestamp;
 type numeric Integer(precision = 5, scale = 0);
-type string String(min-size = 1,max-size = 4000); //át kell írni
+type string String(min-size = 1,max-size = 4000);
 
-
-enum  Behaviours{
+enum Behaviours {
     NATURAL=1;
-    AGRESSIVE=2;
+    AGGRESSIVE=2;
     FRIENDLY=3;
 }
 
@@ -23,30 +22,29 @@ entity Person {
 
     derived Integer allTaskLong => self.tasks!sum(l|l.taskTimeInDay);
 }
-entity Workplace{
+
+entity Workplace {
     relation Person[] persons opposite workplace;
     field required String name;
-    identifier String addres;
-
+    identifier String address;
 
     //ERROR WHEN THIS COMPILED
-    derived Integer allTime => self.persons!sum(p| p.allTaskLong);
-
+    derived Integer allTime => self.persons!sum(p | p.allTaskLong);
 }
+
 entity Task {
     field required String name;
     field required Integer taskTimeInDay;
 }
 
-entity SalerPerson{
+entity SalesPerson{
     field Integer num;
-    relation MarketPlace workplace opposite salerpersons;
+    relation MarketPlace workplace opposite salesPersons;
     derived Integer allTaskLong => 1;
 }
 
 entity MarketPlace{
-    relation SalerPerson[] salerpersons opposite workplace;
-    //Compield Error
-    derived Integer allTime => self.salerpersons!sum(p| p.allTaskLong);
+    relation SalesPerson[] salesPersons opposite workplace;
+    // Compile Error
+    derived Integer allTime => self.salesPersons!sum(p| p.allTaskLong);
 }
-

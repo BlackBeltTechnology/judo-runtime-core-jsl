@@ -442,7 +442,7 @@ public class FunctionsTest extends AbstractJslTest {
         assertTrue(instanceFunctions.getKindOfParent().get());
         assertFalse(instanceFunctions.getNotTypeOfChild().get());
 
-        
+        assertTrue(instanceFunctionsDao.getAsParentType(instanceFunctions).get() instanceof Parent);
     }
 
     @Test
@@ -450,37 +450,94 @@ public class FunctionsTest extends AbstractJslTest {
         CollectionFunctions collectionFunctions = collectionFunctionsDao.create(CollectionFunctions.builder()
                 .withParentsField(
                         List.of(
-                                Parent.builder().withName("Person").build(),
+                                Parent.builder().withName("John").build(),
                                 Parent.builder().withName("Another Person").build()
                         )
                 )
                 .withParentsRelation(
                         List.of(
-                                Parent.builder().withName("Someone Else").build()
+                                Parent.builder().withName("Mark").build(),
+                                Parent.builder().withName("Billy").build()
                         )
                 )
                 .withChildrenField(
                         List.of(
+                                Child.builder().withName("Rebecca").withAge(33L).build(),
                                 Child.builder().withName("Cindy").withAge(23L).build(),
-                                Child.builder().withName("Rebecca").withAge(46L).build()
+                                Child.builder().withName("Monica").withAge(23L).build(),
+                                Child.builder().withName("Peter").withAge(46L).build(),
+                                Child.builder().withName("Andrew").withAge(46L).build()
                         )
                 )
                 .withChildrenRelation(
                         List.of(
                                 Child.builder().withName("Mark").withAge(33L).build(),
+                                Child.builder().withName("Stacey").withAge(16L).build(),
+                                Child.builder().withName("Ruby").withAge(16L).build(),
+                                Child.builder().withName("Anna").withAge(34L).build(),
+                                Child.builder().withName("Clark").withAge(34L).build(),
                                 Child.builder().withName("John").build()
                         )
                 )
                 .build());
 
-        // TODO: JNG-3911, JNG-4162: add missing test types
-
         assertEquals(2, collectionFunctions.getSizeParentsField().get());
-        assertEquals(1, collectionFunctions.getSizeParentsRelation().get());
+        assertEquals(2, collectionFunctions.getSizeParentsRelation().get());
+
+        assertNotNull(collectionFunctionsDao.getAnyParentsField(collectionFunctions));
+        assertNotNull(collectionFunctionsDao.getAnyParentsRelation(collectionFunctions));
 
         // FIXME: JNG-4172 add tests
-        // FIXME: JNG-4176 add tests
 
+        assertEquals(Optional.of(23L), collectionFunctions.getMinChildrenField());
+        assertEquals(Optional.of(16L), collectionFunctions.getMinChildrenRelation());
+
+        assertEquals(Optional.of(46L), collectionFunctions.getMaxChildrenField());
+        assertEquals(Optional.of(34L), collectionFunctions.getMaxChildrenRelation());
+
+        assertEquals(Optional.of(171L), collectionFunctions.getSumChildrenField());
+        assertEquals(Optional.of(133L), collectionFunctions.getSumChildrenRelation());
+
+        assertEquals(Optional.of(34L), collectionFunctions.getAvgChildrenField());
+        assertEquals(Optional.of(26L), collectionFunctions.getAvgChildrenRelation());
+
+        /* FIXME JNG-4180
+        assertEquals(Optional.of(34.5), collectionFunctions.getAvgScaledChildrenField());
+        assertEquals(Optional.of(33.5), collectionFunctions.getAvgScaledChildrenRelation());
+        */
+
+        assertEquals(Optional.of(34L), collectionFunctions.getDivisionConst());
+        assertEquals(Optional.of(35L), collectionFunctions.getRoundConst());
+
+        assertEquals(2, collectionFunctionsDao.getFirstChildrenField(collectionFunctions).size());
+        assertEquals(2, collectionFunctionsDao.getFirstChildrenRelation(collectionFunctions).size());
+
+        assertEquals(2, collectionFunctionsDao.getLastChildrenField(collectionFunctions).size());
+        assertEquals(2, collectionFunctionsDao.getLastChildrenRelation(collectionFunctions).size());
+
+        assertEquals(2, collectionFunctionsDao.getFrontChildrenField(collectionFunctions).size());
+        assertEquals(2, collectionFunctionsDao.getFrontChildrenRelation(collectionFunctions).size());
+
+        assertEquals(2, collectionFunctionsDao.getBackChildrenField(collectionFunctions).size());
+        assertEquals(2, collectionFunctionsDao.getBackChildrenRelation(collectionFunctions).size());
+
+        assertEquals(1, collectionFunctionsDao.getFilterParentsField(collectionFunctions).size());
+        assertEquals(1, collectionFunctionsDao.getFilterParentsRelation(collectionFunctions).size());
+
+        assertEquals(1, collectionFunctionsDao.getFilterChildrenField(collectionFunctions).size());
+        assertEquals(1, collectionFunctionsDao.getFilterChildrenRelation(collectionFunctions).size());
+
+        assertEquals(Optional.of(true), collectionFunctions.getAnyTrueChildrenField());
+        assertEquals(Optional.of(false), collectionFunctions.getAnyTrueChildrenRelation());
+
+        assertEquals(Optional.of(true), collectionFunctions.getAllTrueChildrenField());
+        assertEquals(Optional.of(false), collectionFunctions.getAllTrueChildrenRelation());
+
+        assertEquals(Optional.of(false), collectionFunctions.getAnyFalseChildrenField());
+        assertEquals(Optional.of(true), collectionFunctions.getAnyFalseChildrenRelation());
+
+        assertEquals(Optional.of(false), collectionFunctions.getAllFalseChildrenField());
+        // assertEquals(Optional.of(true), collectionFunctions.getAllFalseChildrenRelation()); TODO:Norbi JNG-4179
     }
 
     @Test

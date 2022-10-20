@@ -22,13 +22,10 @@ public class TaskModelTest extends AbstractJslTest {
     Person.PersonDao personDao;
 
     @Inject
-    Workplace.WorkplaceDao workplaceDao;
-
-    @Inject
     Task.TaskDao taskDao;
 
     @Inject
-    SalerPerson.SalerPersonDao salerPersonDao;
+    SalesPerson.SalesPersonDao salesPersonDao;
 
     @Inject
     MarketPlace.MarketPlaceDao marketPlaceDao;
@@ -49,14 +46,14 @@ public class TaskModelTest extends AbstractJslTest {
 
         MarketPlace marketPlace = marketPlaceDao.create(MarketPlace.builder().build());
 
-        SalerPerson person1 = salerPersonDao.create(SalerPerson.builder().build());
-        SalerPerson person2 = salerPersonDao.create(SalerPerson.builder().build());
+        SalesPerson person1 = salesPersonDao.create(SalesPerson.builder().build());
+        SalesPerson person2 = salesPersonDao.create(SalesPerson.builder().build());
 
-        List<SalerPerson> list = new ArrayList<>(Arrays.asList(person1, person2));
+        List<SalesPerson> list = new ArrayList<>(Arrays.asList(person1, person2));
 
-        marketPlaceDao.addSalerpersons(marketPlace, list);
-        salerPersonDao.setWorkplace(person1, marketPlace);
-        salerPersonDao.setWorkplace(person2, marketPlace);
+        marketPlaceDao.addSalesPersons(marketPlace, list);
+        salesPersonDao.setWorkplace(person1, marketPlace);
+        salesPersonDao.setWorkplace(person2, marketPlace);
 
         marketPlace = marketPlaceDao.getById(marketPlace.get__identifier()).orElseThrow();
 
@@ -70,7 +67,7 @@ public class TaskModelTest extends AbstractJslTest {
     public void testSumDirivedInSumDirived() {
 
         Person person1 = personDao.create(Person.builder().withFirstName("Adam").build());
-        Workplace blackbelt = personDao.createWorkplace(person1, Workplace.builder().withName("Blackbelt").withAddres("Ganz utca 2").build());
+        Workplace blackbelt = personDao.createWorkplace(person1, Workplace.builder().withName("Blackbelt").withAddress("Ganz utca 2").build());
         Person person2 = personDao.create(Person.builder().withFirstName("Patrik").withWorkplace(blackbelt).build());
 
         personDao.createTasks(person1, new ArrayList<>(Arrays.asList(
