@@ -91,7 +91,6 @@ entity AnyTypeFunctions {
 
 entity StringFunctions {
     field String undefined;
-    field Boolean boolUndefined;
 
     derived Integer length => "apple"!size();
     derived String first => "apple"!left(count = 2);
