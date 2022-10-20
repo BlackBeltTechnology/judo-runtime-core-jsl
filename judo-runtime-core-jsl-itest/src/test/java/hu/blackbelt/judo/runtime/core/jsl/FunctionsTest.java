@@ -32,9 +32,7 @@ import java.time.*;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
 public class FunctionsTest extends AbstractJslTest {
@@ -84,6 +82,12 @@ public class FunctionsTest extends AbstractJslTest {
     
     @Inject
     Kleene.KleeneDao kleeneDao;
+
+    @Inject
+    Booler.BoolerDao boolerDao;
+
+    @Inject
+    BoolerTester.BoolerTesterDao boolerTesterDao;
 
     @BeforeEach
     protected void init() throws Exception {
@@ -478,4 +482,121 @@ public class FunctionsTest extends AbstractJslTest {
         // FIXME: JNG-4176 add tests
 
     }
+
+    @Test
+    public void testBooleanAggregatorFunctions() {
+        /*
+
+        |--------------------------------------------|
+        | T || 3 | 2 | 2 | 1 | 1 | 1 | 0 | 0 | 0 | 0 |
+        | F || 0 | 1 | 0 | 2 | 1 | 0 | 3 | 2 | 1 | 0 |
+        | U || 0 | 0 | 1 | 0 | 1 | 2 | 0 | 1 | 2 | 3 |
+        |--------------------------------------------|
+
+        |------------------------------------------------------|
+        | A | B | C || anyTrue | allTrue | anyFalse | allFalse |
+        | - | - | - ||    F    |    T    |    F     |    T     |
+        | U | - | - ||    F    |    F    |    F     |    F     |
+        | T | - | - ||    T    |    T    |    F     |    F     |
+        | F | - | - ||    F    |    F    |    T     |    T     |
+        | T | T | T ||    T    |    T    |    F     |    F     |
+        | T | T | F ||    T    |    F    |    T     |    F     |
+        | T | T | U ||    T    |    F    |    F     |    F     |
+        | T | F | F ||    T    |    F    |    T     |    F     |
+        | T | F | U ||    T    |    F    |    T     |    F     |
+        | T | U | U ||    T    |    F    |    F     |    F     |
+        | F | F | F ||    F    |    F    |    T     |    T     |
+        | F | F | U ||    F    |    F    |    T     |    F     |
+        | F | U | U ||    F    |    F    |    T     |    F     |
+        | U | U | U ||    F    |    F    |    F     |    F     |
+        |------------------------------------------------------|
+
+        */
+
+        boolerTesterDao.create(BoolerTester.builder().build());
+
+        // | - | - | - ||    F    |    T    |    F     |    T     |
+        assertBoolers(false, true, false, true);
+
+        // | U | - | - ||    F    |    F    |    F     |    F     |
+        Booler a = createBooler(null);
+        assertBoolers(false, false, false, false);
+
+        // | T | - | - ||    T    |    T    |    F     |    F     |
+        a = updateBooler(a, true);
+        assertBoolers(true, true, false, false);
+
+        // | F | - | - ||    F    |    F    |    T     |    T     |
+        a = updateBooler(a, false);
+        assertBoolers(false, false, true, true);
+
+        // | T | T | T ||    T    |    T    |    F     |    F     |
+        a = updateBooler(a, true);
+        Booler b = createBooler(true);
+        Booler c = createBooler(true);
+        assertBoolers(true, true, false, false);
+
+        // | T | T | F ||    T    |    F    |    T     |    F     |
+        c = updateBooler(c, false);
+        assertBoolers(true, false, true, false);
+
+        // | T | T | U ||    T    |    F    |    F     |    F     |
+        c = updateBooler(c, null);
+        assertBoolers(true, false, false, false);
+
+        // | T | F | F ||    T    |    F    |    T     |    F     |
+        b = updateBooler(b, false);
+        c = updateBooler(c, false);
+        assertBoolers(true, false, true, false);
+
+        // | T | F | U ||    T    |    F    |    T     |    F     |
+        c = updateBooler(c, null);
+        assertBoolers(true, false, true, false);
+
+        // | T | U | U ||    T    |    F    |    F     |    F     |
+        b = updateBooler(b, null);
+        assertBoolers(true, false, false, false);
+
+        // | F | F | F ||    F    |    F    |    T     |    T     |
+        a = updateBooler(a, false);
+        b = updateBooler(b, false);
+        c = updateBooler(c, false);
+        assertBoolers(false, false, true, true);
+
+        // | F | F | U ||    F    |    F    |    T     |    F     |
+        c = updateBooler(c, null);
+        assertBoolers(false, false, true, false);
+
+        // | F | U | U ||    F    |    F    |    T     |    F     |
+        b = updateBooler(b, null);
+        assertBoolers(false, false, true, false);
+
+        // | U | U | U ||    F    |    F    |    F     |    F     |
+        a = updateBooler(a, null);
+        assertBoolers(false, false, false, false);
+    }
+
+    private void assertBoolers(Boolean anyTrue, Boolean allTrue, Boolean anyFalse, Boolean allFalse) {
+        Optional<BoolerTester> testerOptional = boolerTesterDao.query().execute().stream().findAny();
+        assertTrue(testerOptional.isPresent());
+        BoolerTester tester = testerOptional.get();
+        Boolean anyTrueGot = tester.getAnyTrue().orElseThrow();
+        assertEquals(anyTrue, anyTrueGot, String.format("anyTrue should be %s, but is %s", anyTrue, anyTrueGot));
+        Boolean allTrueGot =  tester.getAllTrue().orElseThrow();
+        assertEquals(allTrue, allTrueGot, String.format("allTrue should be %s, but is %s", allTrue, allTrueGot));
+        Boolean anyFalseGot =  tester.getAnyFalse().orElseThrow();
+        assertEquals(anyFalse, anyFalseGot, String.format("anyFalse should be %s, but is %s", anyFalse, anyFalseGot));
+        Boolean allFalseGot = tester.getAllFalse().orElseThrow();
+        assertEquals(allFalse, allFalseGot, String.format("allFalse should be %s, but is %s", allFalse, allFalseGot));
+    }
+
+    private Booler createBooler(Boolean b) {
+        return boolerDao.create(Booler.builder().withB(b).build());
+    }
+
+    private Booler updateBooler(Booler booler, Boolean b) {
+        booler.setB(b);
+        return boolerDao.update(booler);
+    }
+
 }
