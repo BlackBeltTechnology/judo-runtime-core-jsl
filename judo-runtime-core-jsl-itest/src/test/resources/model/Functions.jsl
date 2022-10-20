@@ -91,6 +91,7 @@ entity AnyTypeFunctions {
 
 entity StringFunctions {
     field String undefined;
+    field Boolean boolUndefined;
 
     derived Integer length => "apple"!size();
     derived String first => "apple"!first(count = 2);
@@ -103,8 +104,22 @@ entity StringFunctions {
     derived String upperCase => "ApPlE"!upperCase();
     derived String capitalize => "apPlE"!capitalize();
     derived Boolean matches => "apple"!matches(pattern = r".*pl.");
+
     derived Boolean like => "apple"!like(pattern = "%pl_");
-    // derived Boolean ilike => "apPLe"!like(pattern = "_pple", exact = false); FIXME: JNG-4169
+    derived Boolean likeFalse => "apple"!like(pattern = "%qwe%");
+    derived Boolean likeWithUndefined => "apple"!like(pattern = self.undefined);
+    derived Boolean likeOnUndefined => self.undefined!like(pattern = "%qwe%");
+    derived Boolean like1 => "apple"!like(pattern = "%pl_", exact = true);
+    derived Boolean likeFalse1 => "apple"!like(pattern = "%qwe%", exact = true);
+    derived Boolean likeWithUndefined1 => "apple"!like(pattern = self.undefined, exact = true);
+    derived Boolean likeOnUndefined1 => self.undefined!like(pattern = "%qwe%", exact = true);
+    derived Boolean like1WithUndefinedExact => "apple"!like(pattern = "%pl_", exact = self.boolUndefined);
+    derived Boolean ilike => "apple"!like(pattern = "%pL_", exact = false);
+    derived Boolean ilikeFalse => "apple"!like(pattern = "%qWE%", exact = false);
+    derived Boolean ilikeWithUndefined => "apple"!like(pattern = self.undefined, exact = false);
+    derived Boolean ilikeOnUndefined => self.undefined!like(pattern = "%qWE%", exact = false);
+    derived Boolean ilikeWithUndefinedExact => "apple"!like(pattern = "%pL_", exact = self.boolUndefined);
+
     derived String replace => "apple"!replace(oldstring = "le", newstring = "endix");
     derived String trim => " apple "!trim();
     derived String ltrim => " apple "!ltrim();
