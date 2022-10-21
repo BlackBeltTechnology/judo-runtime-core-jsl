@@ -176,9 +176,14 @@ public class FunctionsTest extends AbstractJslTest {
         assertEquals("Apple", capitalize);
         Boolean matches = str.getMatches().orElseThrow();
         assertTrue(matches);
-        Boolean like = str.getLike().orElseThrow();
-        assertTrue(like);
-        // var ilike = str.getIlike().orElseThrow();
+
+        assertTrue(str.getLike().orElseThrow());
+        assertFalse(str.getLikeFalse().orElseThrow());
+        assertTrue(str.getLikeOnUndefined().isEmpty());
+        assertTrue(str.getIlike().orElseThrow());
+        assertFalse(str.getIlikeFalse().orElseThrow());
+        assertTrue(str.getIlikeOnUndefined().isEmpty());
+
         String replace = str.getReplace().orElseThrow();
         assertEquals("appendix", replace);
         String trim = str.getTrim().orElseThrow();

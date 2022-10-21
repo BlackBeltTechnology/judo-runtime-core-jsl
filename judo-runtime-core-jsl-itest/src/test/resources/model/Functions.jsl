@@ -103,8 +103,14 @@ entity StringFunctions {
     derived String upperCase => "ApPlE"!upperCase();
     derived String capitalize => "apPlE"!capitalize();
     derived Boolean matches => "apple"!matches(pattern = r".*pl.");
+
     derived Boolean like => "apple"!like(pattern = "%pl_");
-    // derived Boolean ilike => "apPLe"!like(pattern = "_pple", exact = false); FIXME: JNG-4169
+    derived Boolean likeFalse => "apple"!like(pattern = "%qwe%");
+    derived Boolean likeOnUndefined => self.undefined!like(pattern = "%qwe%");
+    derived Boolean ilike => "apple"!ilike(pattern = "%pL_");
+    derived Boolean ilikeFalse => "apple"!ilike(pattern = "%qWE%");
+    derived Boolean ilikeOnUndefined => self.undefined!ilike(pattern = "%qWE%");
+
     derived String replace => "apple"!replace(oldstring = "le", newstring = "endix");
     derived String trim => " apple "!trim();
     derived String ltrim => " apple "!ltrim();
