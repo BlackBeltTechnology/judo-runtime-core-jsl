@@ -31,6 +31,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import javax.transaction.NotSupportedException;
 import javax.transaction.SystemException;
@@ -54,7 +57,7 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
     EntityD.EntityDDao entityDDao;
 
     @Inject
-    TransactionManager userTransaction;
+    PlatformTransactionManager transactionManager;
 
     EntityA entityA;
     EntityC singleConA;
@@ -210,19 +213,24 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
         assertEquals(Optional.of("NEW-C"), entityA2.getSingleConA().get().getStringC());
     }
 
-    @Disabled
-    void testManualTransactionManagement() throws SystemException, NotSupportedException {
-        // FIXME JNG-3861
-        userTransaction.begin();
-
-        try {
-            entityA.setStringA("BLAAA");
-
-            throw new RuntimeException("Bamm!");
-        } catch (RuntimeException e) {
-            userTransaction.rollback();
-        }
-
-        assertEquals("asdas", entityADao.getById(entityA.get__identifier()).get().getStringA());
+    @Test
+    void testManualTransactionManagementRollback() throws SystemException, NotSupportedException {
+        TransactionStatus transactionStatus = transactionManager.getTransaction(new DefaultTransactionDefinition());
+        assertEquals(Optional.of("TEST-A"), entityADao.getById(entityA.get__identifier()).get().getStringA());
+        entityA.setStringA("BLAAA");
+        entityADao.update(entityA);
+        transactionManager.rollback(transactionStatus);
+        assertEquals(Optional.of("TEST-A"), entityADao.getById(entityA.get__identifier()).get().getStringA());
     }
+
+    @Test
+    void testManualTransactionManagementCommit() throws SystemException, NotSupportedException {
+        TransactionStatus transactionStatus = transactionManager.getTransaction(new DefaultTransactionDefinition());
+        assertEquals(Optional.of("TEST-A"), entityADao.getById(entityA.get__identifier()).get().getStringA());
+        entityA.setStringA("BLAAA");
+        entityADao.update(entityA);
+        transactionManager.commit(transactionStatus);
+        assertEquals(Optional.of("BLAAA"), entityADao.getById(entityA.get__identifier()).get().getStringA());
+    }
+
 }
