@@ -374,8 +374,8 @@ public class FunctionsTest extends AbstractJslTest {
     public void testTime() {
         TimeFunctions time = timeFunctionsDao.create(TimeFunctions.builder().build());
 
-        // assertEquals(Optional.of("23:15:59"), time.getOwnTimeAsString()); FIXME: JNG-3900
-        // assertEquals(Optional.of("23:15:59"), time.getTimeAsString()); FIXME: JNG-3900
+        assertEquals(Optional.of("23:15:59"), time.getOwnTimeAsString());
+        assertEquals(Optional.of("23:15:59"), time.getTimeAsString());
         assertEquals(Optional.of(23L), time.getHour());
         assertEquals(Optional.of(15L), time.getMinute());
         assertEquals(Optional.of(59L), time.getSecond());
