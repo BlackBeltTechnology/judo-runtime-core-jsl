@@ -29,11 +29,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.*;
+import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
 public class FunctionsTest extends AbstractJslTest {
@@ -73,6 +72,9 @@ public class FunctionsTest extends AbstractJslTest {
     InstanceFunctions.InstanceFunctionsDao instanceFunctionsDao;
 
     @Inject
+    CollectionFunctions.CollectionFunctionsDao collectionFunctionsDao;
+
+    @Inject
     Parent.ParentDao parentDao;
 
     @Inject
@@ -80,6 +82,12 @@ public class FunctionsTest extends AbstractJslTest {
     
     @Inject
     Kleene.KleeneDao kleeneDao;
+
+    @Inject
+    Booler.BoolerDao boolerDao;
+
+    @Inject
+    BoolerTester.BoolerTesterDao boolerTesterDao;
 
     @BeforeEach
     protected void init() throws Exception {
@@ -168,9 +176,14 @@ public class FunctionsTest extends AbstractJslTest {
         assertEquals("Apple", capitalize);
         Boolean matches = str.getMatches().orElseThrow();
         assertTrue(matches);
-        Boolean like = str.getLike().orElseThrow();
-        assertTrue(like);
-        // var ilike = str.getIlike().orElseThrow();
+
+        assertTrue(str.getLike().orElseThrow());
+        assertFalse(str.getLikeFalse().orElseThrow());
+        assertTrue(str.getLikeOnUndefined().isEmpty());
+        assertTrue(str.getIlike().orElseThrow());
+        assertFalse(str.getIlikeFalse().orElseThrow());
+        assertTrue(str.getIlikeOnUndefined().isEmpty());
+
         String replace = str.getReplace().orElseThrow();
         assertEquals("appendix", replace);
         String trim = str.getTrim().orElseThrow();
@@ -434,6 +447,218 @@ public class FunctionsTest extends AbstractJslTest {
         assertTrue(instanceFunctions.getKindOfParent().get());
         assertFalse(instanceFunctions.getNotTypeOfChild().get());
 
-        
+        assertTrue(instanceFunctionsDao.getAsParentType(instanceFunctions).get() instanceof Parent);
     }
+
+    @Test
+    public void testCollection() {
+        CollectionFunctions collectionFunctions = collectionFunctionsDao.create(CollectionFunctions.builder()
+                .withParentsField(
+                        List.of(
+                                Parent.builder().withName("John").build(),
+                                Parent.builder().withName("Another Person").build()
+                        )
+                )
+                .withParentsRelation(
+                        List.of(
+                                Parent.builder().withName("Mark").build(),
+                                Parent.builder().withName("Billy").build()
+                        )
+                )
+                .withChildrenField(
+                        List.of(
+                                Child.builder().withName("Rebecca").withAge(33L).build(),
+                                Child.builder().withName("Cindy").withAge(23L).build(),
+                                Child.builder().withName("Monica").withAge(23L).build(),
+                                Child.builder().withName("Peter").withAge(46L).build(),
+                                Child.builder().withName("Andrew").withAge(46L).build()
+                        )
+                )
+                .withChildrenRelation(
+                        List.of(
+                                Child.builder().withName("Mark").withAge(33L).build(),
+                                Child.builder().withName("Stacey").withAge(16L).build(),
+                                Child.builder().withName("Ruby").withAge(16L).build(),
+                                Child.builder().withName("Anna").withAge(34L).build(),
+                                Child.builder().withName("Clark").withAge(34L).build(),
+                                Child.builder().withName("John").build()
+                        )
+                )
+                .build());
+
+        assertEquals(2, collectionFunctions.getSizeParentsField().get());
+        assertEquals(2, collectionFunctions.getSizeParentsRelation().get());
+
+        assertNotNull(collectionFunctionsDao.getAnyParentsField(collectionFunctions));
+        assertNotNull(collectionFunctionsDao.getAnyParentsRelation(collectionFunctions));
+
+        // FIXME: JNG-4172 add tests
+
+        assertEquals(Optional.of(23L), collectionFunctions.getMinChildrenField());
+        assertEquals(Optional.of(16L), collectionFunctions.getMinChildrenRelation());
+
+        assertEquals(Optional.of(46L), collectionFunctions.getMaxChildrenField());
+        assertEquals(Optional.of(34L), collectionFunctions.getMaxChildrenRelation());
+
+        assertEquals(Optional.of(171L), collectionFunctions.getSumChildrenField());
+        assertEquals(Optional.of(133L), collectionFunctions.getSumChildrenRelation());
+
+        assertEquals(Optional.of(34L), collectionFunctions.getAvgChildrenField());
+        assertEquals(Optional.of(26L), collectionFunctions.getAvgChildrenRelation());
+
+        /* FIXME JNG-4180
+        assertEquals(Optional.of(34.5), collectionFunctions.getAvgScaledChildrenField());
+        assertEquals(Optional.of(33.5), collectionFunctions.getAvgScaledChildrenRelation());
+        */
+
+        assertEquals(Optional.of(34L), collectionFunctions.getDivisionConst());
+        assertEquals(Optional.of(35L), collectionFunctions.getRoundConst());
+
+        assertEquals(2, collectionFunctionsDao.getFirstChildrenField(collectionFunctions).size());
+        assertEquals(2, collectionFunctionsDao.getFirstChildrenRelation(collectionFunctions).size());
+
+        assertEquals(2, collectionFunctionsDao.getLastChildrenField(collectionFunctions).size());
+        assertEquals(2, collectionFunctionsDao.getLastChildrenRelation(collectionFunctions).size());
+
+        assertEquals(2, collectionFunctionsDao.getFrontChildrenField(collectionFunctions).size());
+        assertEquals(2, collectionFunctionsDao.getFrontChildrenRelation(collectionFunctions).size());
+
+        assertEquals(2, collectionFunctionsDao.getBackChildrenField(collectionFunctions).size());
+        assertEquals(2, collectionFunctionsDao.getBackChildrenRelation(collectionFunctions).size());
+
+        assertEquals(1, collectionFunctionsDao.getFilterParentsField(collectionFunctions).size());
+        assertEquals(1, collectionFunctionsDao.getFilterParentsRelation(collectionFunctions).size());
+
+        assertEquals(1, collectionFunctionsDao.getFilterChildrenField(collectionFunctions).size());
+        assertEquals(1, collectionFunctionsDao.getFilterChildrenRelation(collectionFunctions).size());
+
+        assertEquals(Optional.of(true), collectionFunctions.getAnyTrueChildrenField());
+        assertEquals(Optional.of(false), collectionFunctions.getAnyTrueChildrenRelation());
+
+        assertEquals(Optional.of(true), collectionFunctions.getAllTrueChildrenField());
+        assertEquals(Optional.of(false), collectionFunctions.getAllTrueChildrenRelation());
+
+        assertEquals(Optional.of(false), collectionFunctions.getAnyFalseChildrenField());
+        assertEquals(Optional.of(true), collectionFunctions.getAnyFalseChildrenRelation());
+
+        assertEquals(Optional.of(false), collectionFunctions.getAllFalseChildrenField());
+        // assertEquals(Optional.of(true), collectionFunctions.getAllFalseChildrenRelation()); TODO:Norbi JNG-4179
+    }
+
+    @Test
+    public void testBooleanAggregatorFunctions() {
+        /*
+
+        |--------------------------------------------|
+        | T || 3 | 2 | 2 | 1 | 1 | 1 | 0 | 0 | 0 | 0 |
+        | F || 0 | 1 | 0 | 2 | 1 | 0 | 3 | 2 | 1 | 0 |
+        | U || 0 | 0 | 1 | 0 | 1 | 2 | 0 | 1 | 2 | 3 |
+        |--------------------------------------------|
+
+        |------------------------------------------------------|
+        | A | B | C || anyTrue | allTrue | anyFalse | allFalse |
+        | - | - | - ||    F    |    T    |    F     |    T     |
+        | U | - | - ||    F    |    F    |    F     |    F     |
+        | T | - | - ||    T    |    T    |    F     |    F     |
+        | F | - | - ||    F    |    F    |    T     |    T     |
+        | T | T | T ||    T    |    T    |    F     |    F     |
+        | T | T | F ||    T    |    F    |    T     |    F     |
+        | T | T | U ||    T    |    F    |    F     |    F     |
+        | T | F | F ||    T    |    F    |    T     |    F     |
+        | T | F | U ||    T    |    F    |    T     |    F     |
+        | T | U | U ||    T    |    F    |    F     |    F     |
+        | F | F | F ||    F    |    F    |    T     |    T     |
+        | F | F | U ||    F    |    F    |    T     |    F     |
+        | F | U | U ||    F    |    F    |    T     |    F     |
+        | U | U | U ||    F    |    F    |    F     |    F     |
+        |------------------------------------------------------|
+
+        */
+
+        boolerTesterDao.create(BoolerTester.builder().build());
+
+        // | - | - | - ||    F    |    T    |    F     |    T     |
+        assertBoolers(false, true, false, true);
+
+        // | U | - | - ||    F    |    F    |    F     |    F     |
+        Booler a = createBooler(null);
+        assertBoolers(false, false, false, false);
+
+        // | T | - | - ||    T    |    T    |    F     |    F     |
+        a = updateBooler(a, true);
+        assertBoolers(true, true, false, false);
+
+        // | F | - | - ||    F    |    F    |    T     |    T     |
+        a = updateBooler(a, false);
+        assertBoolers(false, false, true, true);
+
+        // | T | T | T ||    T    |    T    |    F     |    F     |
+        a = updateBooler(a, true);
+        Booler b = createBooler(true);
+        Booler c = createBooler(true);
+        assertBoolers(true, true, false, false);
+
+        // | T | T | F ||    T    |    F    |    T     |    F     |
+        c = updateBooler(c, false);
+        assertBoolers(true, false, true, false);
+
+        // | T | T | U ||    T    |    F    |    F     |    F     |
+        c = updateBooler(c, null);
+        assertBoolers(true, false, false, false);
+
+        // | T | F | F ||    T    |    F    |    T     |    F     |
+        b = updateBooler(b, false);
+        c = updateBooler(c, false);
+        assertBoolers(true, false, true, false);
+
+        // | T | F | U ||    T    |    F    |    T     |    F     |
+        c = updateBooler(c, null);
+        assertBoolers(true, false, true, false);
+
+        // | T | U | U ||    T    |    F    |    F     |    F     |
+        b = updateBooler(b, null);
+        assertBoolers(true, false, false, false);
+
+        // | F | F | F ||    F    |    F    |    T     |    T     |
+        a = updateBooler(a, false);
+        b = updateBooler(b, false);
+        c = updateBooler(c, false);
+        assertBoolers(false, false, true, true);
+
+        // | F | F | U ||    F    |    F    |    T     |    F     |
+        c = updateBooler(c, null);
+        assertBoolers(false, false, true, false);
+
+        // | F | U | U ||    F    |    F    |    T     |    F     |
+        b = updateBooler(b, null);
+        assertBoolers(false, false, true, false);
+
+        // | U | U | U ||    F    |    F    |    F     |    F     |
+        a = updateBooler(a, null);
+        assertBoolers(false, false, false, false);
+    }
+
+    private void assertBoolers(Boolean anyTrue, Boolean allTrue, Boolean anyFalse, Boolean allFalse) {
+        Optional<BoolerTester> testerOptional = boolerTesterDao.query().execute().stream().findAny();
+        assertTrue(testerOptional.isPresent());
+        BoolerTester tester = testerOptional.get();
+        Boolean anyTrueGot = tester.getAnyTrue().orElseThrow();
+        assertEquals(anyTrue, anyTrueGot, String.format("anyTrue should be %s, but is %s", anyTrue, anyTrueGot));
+        Boolean allTrueGot =  tester.getAllTrue().orElseThrow();
+        assertEquals(allTrue, allTrueGot, String.format("allTrue should be %s, but is %s", allTrue, allTrueGot));
+        Boolean anyFalseGot =  tester.getAnyFalse().orElseThrow();
+        assertEquals(anyFalse, anyFalseGot, String.format("anyFalse should be %s, but is %s", anyFalse, anyFalseGot));
+        Boolean allFalseGot = tester.getAllFalse().orElseThrow();
+        assertEquals(allFalse, allFalseGot, String.format("allFalse should be %s, but is %s", allFalse, allFalseGot));
+    }
+
+    private Booler createBooler(Boolean b) {
+        return boolerDao.create(Booler.builder().withB(b).build());
+    }
+
+    private Booler updateBooler(Booler booler, Boolean b) {
+        booler.setB(b);
+        return boolerDao.update(booler);
+    }
+
 }
