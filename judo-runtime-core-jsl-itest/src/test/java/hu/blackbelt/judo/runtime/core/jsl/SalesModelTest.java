@@ -188,18 +188,6 @@ class SalesModelTest extends AbstractJslTest {
     }
 
     @Test
-    @Disabled // FIXME: JNG-3894
-    public void testErrorRequiredFieldValidation() {
-        IllegalArgumentException thrown = assertThrows(
-                IllegalArgumentException.class,
-                () -> MyError.builder().build()
-        );
-
-        assertTrue(thrown.getMessage().contains("missing mandatory attribute"));
-        assertTrue(thrown.getMessage().contains("name: code"));
-    }
-
-    @Test
     public void testErrorInheritance() {
         MyExtendedError error = MyExtendedError.builder()
                 .withCode(403)
