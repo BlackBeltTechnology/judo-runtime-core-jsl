@@ -1,0 +1,7 @@
+model AbstractModel;
+
+type string String(min-size = 0, max-size = 128);
+
+entity abstract Person {
+    field String name;
+}
