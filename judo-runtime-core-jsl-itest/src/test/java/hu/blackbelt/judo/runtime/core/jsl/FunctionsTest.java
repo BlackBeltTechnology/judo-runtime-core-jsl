@@ -428,7 +428,7 @@ public class FunctionsTest extends AbstractJslTest {
     public void testEnum() {
         EnumFunctions myEnum = enumFunctionsDao.create(EnumFunctions.builder().build());
 
-        // assertEquals(Optional.of("Atomic"), myEnum.getOwnEnumAsString()); FIXME: JNG-3905
+        assertEquals(Optional.of("Atomic"), myEnum.getOwnEnumAsString());
         // TODO: add missing test after JNG-3904 is fixed
     }
 
