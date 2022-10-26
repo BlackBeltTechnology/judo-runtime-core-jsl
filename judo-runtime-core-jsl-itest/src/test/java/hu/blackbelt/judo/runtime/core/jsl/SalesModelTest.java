@@ -84,15 +84,6 @@ class SalesModelTest extends AbstractJslTest {
 
         assertEquals(1, personList.size());
 
-//        Person createdPerson = personDao.create(Person.builder()
-//                .withFirstName("Masik")
-//                .withLastName("Test")
-//                .build());
-//
-//        assertEquals(Optional.of("Masik"), createdPerson.getFirstName());
-//        assertEquals(Optional.of("Test"), createdPerson.getLastName());
-//        assertEquals(Optional.of("Masik Test"), createdPerson.getFullName());
-
         Lead lead1 = leadDao.create(Lead.builder()
                 .withSalesPerson(createdSalesPerson)
                 .withValue(100)
