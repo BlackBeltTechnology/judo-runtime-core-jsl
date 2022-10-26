@@ -335,7 +335,7 @@ entity EnumFunctions {
     field MyEnum `enum` = MyEnum#Atomic;
 
     derived String ownEnumAsString => self.`enum`!asString();
-    // derived String enumAsString => MyEnum#Atomic!asString(); FIXME: JNG-3904
+    derived String enumAsString => (MyEnum#Atomic)!asString();
 }
 
 entity InstanceFunctions {
