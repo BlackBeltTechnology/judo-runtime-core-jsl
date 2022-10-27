@@ -1,15 +1,15 @@
-model ContainerDerived
+model ContainerDerived;
 
 entity A {
-	field C[] cs	
+	field C[] cs;
 }
 
 entity B {
-	field C[] cs
+	field C[] cs;
 }
 
 entity C {
-	derived C[] allCfromAPlainName => self!container(entityType = A)
-	derived C[] allCfromAFqName => self!container(entityType = ContainerDerived::A)
+	derived C[] allCfromAPlainName => self!container(entityType = A);
+	derived C[] allCfromAFqName => self!container(entityType = ContainerDerived::A);
 }
 

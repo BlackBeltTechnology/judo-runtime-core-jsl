@@ -1,40 +1,40 @@
-model Functions
+model Functions;
 
-import FunctionsExternals as FE
+import FunctionsExternals as FE;
 
-type numeric Integer(precision = 9, scale = 0)
-type numeric Scaled(precision = 9, scale = 2)
-type string String(max-length = 128)
-type boolean Boolean
-type date Date
-type timestamp Timestamp
-type time Time
-type binary Binary(mime-types = ["text/plain"], max-file-size=1 GB)
+type numeric Integer(precision = 15, scale = 0);
+type numeric Scaled(precision = 15, scale = 2);
+type string String(min-size = 0, max-size = 128);
+type boolean Boolean;
+type date Date;
+type timestamp Timestamp;
+type time Time;
+type binary Binary(mime-types = ["text/plain"], max-file-size=1 GB);
 
 enum MyEnum {
-    Atomic = 0
-    Bombastic = 1
-    Crazy = 2
+    Atomic = 0;
+    Bombastic = 1;
+    Crazy = 2;
 }
 
 entity Entity {
-    field Integer integerAttr
-    field Scaled scaledAttr
-    field String stringAttr
-    field Boolean boolAttr
-    field Date dateAttr
-    field Timestamp timestampAttr
-    field Time timeAttr
+    field Integer integerAttr;
+    field Scaled scaledAttr;
+    field String stringAttr;
+    field Boolean boolAttr;
+    field Date dateAttr;
+    field Timestamp timestampAttr;
+    field Time timeAttr;
 }
 
 entity EntityWithPrimitiveDefaults {
-    field Integer integerAttr = 1
-    field Scaled scaledAttr = 2.34
-    field String stringAttr = "test"
-    field Boolean boolAttr = true
-    field Date dateAttr = `2022-07-11`
-    field Timestamp timestampAttr = `2022-07-11T19:09:33Z`
-    field Time timeAttr = `23:59:59`
+    field Integer integerAttr = 1;
+    field Scaled scaledAttr = 2.34;
+    field String stringAttr = "test";
+    field Boolean boolAttr = true;
+    field Date dateAttr = `2022-07-11`;
+    field Timestamp timestampAttr = `2022-07-11T19:09:33Z`;
+    field Time timeAttr = `23:59:59`;
 }
 /* FIXME: JNG-3896
 entity Functions {
@@ -44,210 +44,415 @@ entity Functions {
 
 FIXME: use "extends Functions" once bug is fixed */
 entity AnyTypeFunctions {
-    field Entity `entity`
-    field EntityWithPrimitiveDefaults entityWithPrimitives
+    field Entity `entity`;
+    field EntityWithPrimitiveDefaults entityWithPrimitives;
 
-    derived Boolean integerIsDefinedFalse => self.`entity`.integerAttr!isDefined()
-    derived Boolean integerIsDefinedTrue => self.entityWithPrimitives.integerAttr!isDefined()
-    derived Boolean integerIsUnDefinedTrue => self.`entity`.integerAttr!isUnDefined()
-    derived Boolean integerIsUnDefinedFalse => self.entityWithPrimitives.integerAttr!isUnDefined()
+    derived Boolean integerIsDefinedFalse => self.`entity`.integerAttr!isDefined();
+    derived Boolean integerIsDefinedTrue => self.entityWithPrimitives.integerAttr!isDefined();
+    derived Boolean integerIsUndefinedTrue => self.`entity`.integerAttr!isUndefined();
+    derived Boolean integerIsUndefinedFalse => self.entityWithPrimitives.integerAttr!isUndefined();
 
-    derived Boolean scaledIsDefinedFalse => self.`entity`.scaledAttr!isDefined()
-    derived Boolean scaledIsDefinedTrue => self.entityWithPrimitives.scaledAttr!isDefined()
-    derived Boolean scaledIsUnDefinedTrue => self.`entity`.scaledAttr!isUnDefined()
-    derived Boolean scaledIsUnDefinedFalse => self.entityWithPrimitives.scaledAttr!isUnDefined()
+    derived Boolean scaledIsDefinedFalse => self.`entity`.scaledAttr!isDefined();
+    derived Boolean scaledIsDefinedTrue => self.entityWithPrimitives.scaledAttr!isDefined();
+    derived Boolean scaledIsUndefinedTrue => self.`entity`.scaledAttr!isUndefined();
+    derived Boolean scaledIsUndefinedFalse => self.entityWithPrimitives.scaledAttr!isUndefined();
 
-    derived Boolean stringIsDefinedFalse => self.`entity`.stringAttr!isDefined()
-    derived Boolean stringIsDefinedTrue => self.entityWithPrimitives.stringAttr!isDefined()
-    derived Boolean stringIsUnDefinedTrue => self.`entity`.stringAttr!isUnDefined()
-    derived Boolean stringIsUnDefinedFalse => self.entityWithPrimitives.stringAttr!isUnDefined()
+    derived Boolean stringIsDefinedFalse => self.`entity`.stringAttr!isDefined();
+    derived Boolean stringIsDefinedTrue => self.entityWithPrimitives.stringAttr!isDefined();
+    derived Boolean stringIsUndefinedTrue => self.`entity`.stringAttr!isUndefined();
+    derived Boolean stringIsUndefinedFalse => self.entityWithPrimitives.stringAttr!isUndefined();
 
-    derived Boolean boolIsDefinedFalse => self.`entity`.boolAttr!isDefined()
-    derived Boolean boolIsDefinedTrue => self.entityWithPrimitives.boolAttr!isDefined()
-    derived Boolean boolIsUnDefinedTrue => self.`entity`.boolAttr!isUnDefined()
-    derived Boolean boolIsUnDefinedFalse => self.entityWithPrimitives.boolAttr!isUnDefined()
+    derived Boolean boolIsDefinedFalse => self.`entity`.boolAttr!isDefined();
+    derived Boolean boolIsDefinedTrue => self.entityWithPrimitives.boolAttr!isDefined();
+    derived Boolean boolIsUndefinedTrue => self.`entity`.boolAttr!isUndefined();
+    derived Boolean boolIsUndefinedFalse => self.entityWithPrimitives.boolAttr!isUndefined();
 
-    derived Boolean dateIsDefinedFalse => self.`entity`.dateAttr!isDefined()
-    derived Boolean dateIsDefinedTrue => self.entityWithPrimitives.dateAttr!isDefined()
-    derived Boolean dateIsUnDefinedTrue => self.`entity`.dateAttr!isUnDefined()
-    derived Boolean dateIsUnDefinedFalse => self.entityWithPrimitives.dateAttr!isUnDefined()
+    derived Boolean dateIsDefinedFalse => self.`entity`.dateAttr!isDefined();
+    derived Boolean dateIsDefinedTrue => self.entityWithPrimitives.dateAttr!isDefined();
+    derived Boolean dateIsUndefinedTrue => self.`entity`.dateAttr!isUndefined();
+    derived Boolean dateIsUndefinedFalse => self.entityWithPrimitives.dateAttr!isUndefined();
 
-    derived Boolean timestampIsDefinedFalse => self.`entity`.timestampAttr!isDefined()
-    derived Boolean timestampIsDefinedTrue => self.entityWithPrimitives.timestampAttr!isDefined()
-    derived Boolean timestampIsUnDefinedTrue => self.`entity`.timestampAttr!isUnDefined()
-    derived Boolean timestampIsUnDefinedFalse => self.entityWithPrimitives.timestampAttr!isUnDefined()
+    derived Boolean timestampIsDefinedFalse => self.`entity`.timestampAttr!isDefined();
+    derived Boolean timestampIsDefinedTrue => self.entityWithPrimitives.timestampAttr!isDefined();
+    derived Boolean timestampIsUndefinedTrue => self.`entity`.timestampAttr!isUndefined();
+    derived Boolean timestampIsUndefinedFalse => self.entityWithPrimitives.timestampAttr!isUndefined();
 
-    derived Boolean timeIsDefinedFalse => self.`entity`.timeAttr!isDefined()
-    derived Boolean timeIsDefinedTrue => self.entityWithPrimitives.timeAttr!isDefined()
-    derived Boolean timeIsUnDefinedTrue => self.`entity`.timeAttr!isUnDefined()
-    derived Boolean timeIsUnDefinedFalse => self.entityWithPrimitives.timeAttr!isUnDefined()
+    derived Boolean timeIsDefinedFalse => self.`entity`.timeAttr!isDefined();
+    derived Boolean timeIsDefinedTrue => self.entityWithPrimitives.timeAttr!isDefined();
+    derived Boolean timeIsUndefinedTrue => self.`entity`.timeAttr!isUndefined();
+    derived Boolean timeIsUndefinedFalse => self.entityWithPrimitives.timeAttr!isUndefined();
+
+    /* FIXME: JNG-4078
+    derived String stringOrElse => "apple"!orElse(value = "grape");
+    derived Integer numberOrElse => 2!orElse(value = 1);
+    derived Integer stringOrElse3 => self.`entity`.integerAttr!orElse(value = 3);
+    */
 }
 
 entity StringFunctions {
-    derived Integer length => "apple"!length()
-    derived String first => "apple"!first(count = 2)
-    derived String last => "apple"!last(count = 1)
-    // derived Integer position => "apple"!position(substring = "p") // FIXME: JNG-3897
-    derived String substring => "apple"!substring(count = 2, offset = 3)
-    derived String lower => "ApPlE"!lower()
-    derived String lowerCase => "ApPlE"!lowerCase()
-    derived String upper => "ApPlE"!upper()
-    derived String upperCase => "ApPlE"!upperCase()
-    // derived String capitalize => "apPlE"!capitalize()
-    derived Boolean matches => "apple"!matches(pattern = r".*pl.")
-    derived Boolean like => "apple"!like(pattern = "%pl_")
-    // derived Boolean ilike => "apPLe"!ilike(pattern = "_pple") // FIXME: JNG-3897
-    derived String replace => "apple"!replace(oldstring = "le", newstring = "endix")
-    derived String trim => " apple "!trim()
-    // derived String ltrim => " apple "!ltrim() // FIXME: JNG-3897
-    // derived String rtrim => " apple "!rtrim() // FIXME: JNG-3897
+    field String undefined;
+
+    derived Integer length => "apple"!size();
+    derived String first => "apple"!left(count = 2);
+    derived String last => "apple"!right(count = 1);
+    derived Integer position => "apple"!position(substring = "p");
+    derived String substring => "apple"!substring(count = 2, offset = 3);
+    derived String lower => "ApPlE"!lower();
+    derived String lowerCase => "ApPlE"!lowerCase();
+    derived String upper => "ApPlE"!upper();
+    derived String upperCase => "ApPlE"!upperCase();
+    derived String capitalize => "apPlE"!capitalize();
+    derived Boolean matches => "apple"!matches(pattern = r".*pl.");
+
+    derived Boolean like => "apple"!like(pattern = "%pl_");
+    derived Boolean likeFalse => "apple"!like(pattern = "%qwe%");
+    derived Boolean likeOnUndefined => self.undefined!like(pattern = "%qwe%");
+    derived Boolean ilike => "apple"!ilike(pattern = "%pL_");
+    derived Boolean ilikeFalse => "apple"!ilike(pattern = "%qWE%");
+    derived Boolean ilikeOnUndefined => self.undefined!ilike(pattern = "%qWE%");
+
+    derived String replace => "apple"!replace(oldstring = "le", newstring = "endix");
+    derived String trim => " apple "!trim();
+    derived String ltrim => " apple "!ltrim();
+    derived String rtrim => " apple "!rtrim();
+
+    derived String lpad => "apple"!lpad(size = 10);
+    derived Boolean lpadTrue => "apple"!lpad(size = 10)!isDefined();
+    derived Boolean lpadFalse => "apple"!lpad(size = 10)!isUndefined();
+    derived String lpad1 => "apple"!lpad(size = 10, padstring = "*");
+    derived String lpad2 => "apple"!lpad(size = 2);
+    derived String lpad3 => "apple"!lpad(size = 2, padstring = "*");
+    derived String rpad => "apple"!rpad(size = 10);
+    derived String rpad1 => "apple"!rpad(size = 10, padstring = "*");
+    derived String rpad2 => "apple"!rpad(size = 2);
+    derived String rpad3 => "apple"!rpad(size = 2, padstring = "*");
+
+    derived String lpadUndefined => self.undefined!lpad(size = 10);
+    derived Boolean lpadUndefinedFalse => self.undefined!lpad(size = 10)!isDefined();
+    derived Boolean lpadUndefinedTrue => self.undefined!lpad(size = 10)!isUndefined();
+    derived String lpadUndefined1 => self.undefined!lpad(size = 10, padstring = "*");
+    derived String rpadUndefined => self.undefined!rpad(size = 10);
+    derived String rpadUndefined1 => self.undefined!rpad(size = 10, padstring = "*");
+
+    derived String parenthizedAsString => (12 + 14)!asString();
 }
 
 entity NumericFunctions {
-    field Integer int = 1
+    field Integer int = 1;
+    field Scaled neg = -2.5;
+    field Scaled neg1 = -1.23;
+    field Scaled neg2 = -7.89;
+    field Scaled neg3 = -2.9;
+    field Integer neg4 = -3;
 
-    /* FIXME: JNG-3898 */
-    // derived Integer roundInt => self.int!round()
-    // derived Integer roundInt => 1!round()
-    derived Integer roundScaled1 => 1.23!round()
-    derived Integer roundScaled2 => 7.89!round()
-    derived Integer roundScaled3 => 2.50!round()
-    derived Integer roundScaledNegative1 => -2.5!round()
-    derived Integer roundScaledNegative2 => -1.23!round()
-    derived Integer roundScaledNegative3 => -7.89!round()
+    derived Integer roundInt => self.int!round();
+    derived Integer roundInt2 => 1!round();
+    derived Integer roundScaled1 => 1.23!round();
+    derived Integer roundScaled2 => 7.89!round();
+    derived Integer roundScaled3 => 2.50!round();
+    derived Integer roundScaledNegative1 => self.neg!round();
+    derived Integer roundScaledNegative2 => self.neg1!round();
+    derived Integer roundScaledNegative3 => self.neg2!round();
 
-    /* FIXME: JNG-3797
-    derived Integer floorInt => 1!floor()
-    derived Integer floorScaled1 => 2.9!floor()
-    derived Integer floorScaled2 => -2.9!floor()
+    derived Scaled roundIntScaled => self.int!round(scale = 1);
+    derived Scaled roundInt2Scaled => 1!round(scale = 1);
+    derived Scaled roundScaled1Scaled => 1.23!round(scale = 1);
+    derived Scaled roundScaled2Scaled => 7.89!round(scale = 1);
+    derived Scaled roundScaled3Scaled => 2.50!round(scale = 1);
+    derived Scaled roundScaledNegative1Scaled => self.neg!round(scale = 1);
+    derived Scaled roundScaledNegative2Scaled => self.neg1!round(scale = 1);
+    derived Scaled roundScaledNegative3Scaled => self.neg2!round(scale = 1);
 
-    derived Integer ceilInt => 1!ceil()
-    derived Integer ceilScaled1 => 2.9!ceil()
-    derived Integer ceilScaled2 => -2.9!ceil()
+    derived Integer floorInt => 1!floor();
+    derived Integer floorScaled1 => 2.9!floor();
+    derived Integer floorScaled2 => self.neg3!floor();
 
-    derived Integer absInt => 1!abs()
-    derived Scaled absScaled1 => 2.9!abs()
-    derived Integer absScaled2 => -3!abs()
-    */
+    derived Integer ceilInt => 1!ceil();
+    derived Integer ceilScaled1 => 2.9!ceil();
+    derived Integer ceilScaled2 => self.neg3!ceil();
 
-    derived String intAsString => 1!asString()
-    derived String scaledAsString => 123456.789!asString()
+    derived Integer absInt => 1!abs();
+    derived Integer absInt2 => self.neg4!abs();
+    derived Scaled absScaled1 => 2.9!abs();
+    derived Scaled absScaled2 => self.neg3!abs();
+
+    derived String intAsString => 1!asString();
+    derived String scaledAsString => 123456.789!asString();
+}
+
+
+/*
+|=============================================================================================
+|`p`            |`q`            |`p or q`       |`p and q`      |`p xor q`      |`p implies q`
+|`true`	        |`true`	        |`true` 	    |`true`	        |`false`        |`true`
+|`true`	        |`false`	    |`true`         |`false`	    |`true`         |`false`
+|`true`	        |`undefined`	|`true`	        |`undefined`	|`undefined`    |`undefined`
+|`false`	    |`true`	        |`true`	        |`false`	    |`true`         |`true`
+|`false`	    |`false`	    |`false`	    |`false`	    |`false`        |`true`
+|`false`	    |`undefined`	|`undefined`	|`false`	    |`undefined`    |`true`
+|`undefined`	|`true`	        |`true`	        |`undefined`	|`undefined`    |`true`
+|`undefined`	|`false`	    |`undefined`	|`false`	    |`undefined`    |`undefined`
+|`undefined`	|`undefined`	|`undefined`	|`undefined`	|`undefined`    |`undefined`
+|=============================================================================================
+ */
+entity Kleene {
+	field Boolean undefined;
+	field Boolean bool = true;
+	
+	derived Boolean trueOrTrue => (true or true);
+	derived Boolean trueOrFalse => (true or false);
+	derived Boolean trueOrUndefined => (true or self.undefined);
+	derived Boolean falseOrTrue => (false or true);
+	derived Boolean falseOrFalse => (false or false);
+	derived Boolean falseOrUndefined => (false or self.undefined);
+	derived Boolean undefinedOrTrue => (self.undefined or true);
+	derived Boolean undefinedOrFalse => (self.undefined or false);
+	derived Boolean undefinedOrUndefined => (self.undefined or self.undefined);
+
+	derived Boolean trueAndTrue => (true and true);
+	derived Boolean trueAndFalse => (true and false);
+	derived Boolean trueAndUndefined => (true and self.undefined);
+	derived Boolean falseAndTrue => (false and true);
+	derived Boolean falseAndFalse => (false and false);
+	derived Boolean falseAndUndefined => (false and self.undefined);
+	derived Boolean undefinedAndTrue => (self.undefined and true);
+	derived Boolean undefinedAndFalse => (self.undefined and false);
+	derived Boolean undefinedAndUndefined => (self.undefined and self.undefined);
+
+	derived Boolean trueXorTrue => (true xor true);
+	derived Boolean trueXorFalse => (true xor false);
+	derived Boolean trueXorUndefined => (true xor self.undefined);
+	derived Boolean falseXorTrue => (false xor true);
+	derived Boolean falseXorFalse => (false xor false);
+	derived Boolean falseXorUndefined => (false xor self.undefined);
+	derived Boolean undefinedXorTrue => (self.undefined xor true);
+	derived Boolean undefinedXorFalse => (self.undefined xor false);
+	derived Boolean undefinedXorUndefined => (self.undefined xor self.undefined);
+
+	derived Boolean trueImpliesTrue => (true implies true);
+	derived Boolean trueImpliesFalse => (true implies false);
+	derived Boolean trueImpliesUndefined => (true implies self.undefined);
+	derived Boolean falseImpliesTrue => (false implies true);
+	derived Boolean falseImpliesFalse => (false implies false);
+	derived Boolean falseImpliesUndefined => (false implies self.undefined);
+	derived Boolean undefinedImpliesTrue => (self.undefined implies true);
+	derived Boolean undefinedImpliesFalse => (self.undefined implies false);
+	derived Boolean undefinedImpliesUndefined => (self.undefined implies self.undefined);
 }
 
 entity BooleanFunctions {
-    field Boolean bool = true
+    field Boolean bool = true;
 
-    derived String ownBoolAsString => self.bool!asString()
-    derived String trueAsString => true!asString()
-    derived String falseAsString => false!asString()
+    derived String ownBoolAsString => self.bool!asString();
+    derived String trueAsString => true!asString();
+    derived String falseAsString => false!asString();
+    derived String logicalExpressionAsString => (true or true)!asString();
 }
 
 entity DateFunctions {
-    field Date `date` = `2022-07-11`
+    field Date `date` = `2022-07-11`;
+    field Date undefined;
 
-    derived String ownDateAsString => self.`date`!asString()
-    derived String dateAsString => `2021-03-02`!asString()
-    derived Integer year => `2021-03-02`!year()
-    derived Integer month => `2021-03-02`!month()
-    derived Integer day => `2021-03-02`!day()
-    // derived Date of => Date!of(2011,1,28) FIXME: JNG-3899
+    derived String ownDateAsString => self.`date`!asString();
+    derived String dateAsString => `2021-03-02`!asString();
+    derived Integer year => `2021-03-02`!year();
+    derived Integer month => `2021-03-02`!month();
+    derived Integer day => `2021-03-02`!day();
+    derived Date of => Date!of(year = 2011, month = 1, day = 28);
+
+    derived Integer dayOfYear => `2022-10-07`!dayOfYear();
+    derived Integer dayOfWeekMonday => `2022-10-03`!dayOfWeek();
+    derived Integer dayOfWeekTuesday => `2022-10-04`!dayOfWeek();
+    derived Integer dayOfWeekWednesday => `2022-10-05`!dayOfWeek();
+    derived Integer dayOfWeekThursday => `2022-10-06`!dayOfWeek();
+    derived Integer dayOfWeekFriday => `2022-10-07`!dayOfWeek();
+    derived Integer dayOfWeekSaturday => `2022-10-08`!dayOfWeek();
+    derived Integer dayOfWeekSunday => `2022-10-09`!dayOfWeek();
+
+    derived Integer dayOfYearUndefined => self.undefined!dayOfYear();
+    derived Integer dayOfWeekUndefined => self.undefined!dayOfWeek();
 }
 
 entity TimeFunctions {
-    field Time `time` = `23:15:59`
+    field Time `time` = `23:15:59`;
 
-    derived String ownTimeAsString => self.`time`!asString()
-    derived String timeAsString => `23:15:59`!asString()
-    derived Integer hour => `23:15:59`!hour()
-    derived Integer minute => `23:15:59`!minute()
-    derived Integer second => `23:15:59`!second()
-    // derived Time of => Time!of(13,45,00) FIXME: JNG-3901
+    field Time undefinedTime;
+    field Integer undefinedInteger;
+
+    derived String ownTimeAsString => self.`time`!asString();
+    derived String timeAsString => `23:15:59`!asString();
+    derived Integer hour => `23:15:59`!hour();
+    derived Integer minute => `23:15:59`!minute();
+    derived Integer second => `23:15:59`!second();
+    derived Time of => Time!of(hour = 13, minute = 45, second = 0);
+
+    derived Time timeFromSeconds => Time!fromSeconds(seconds = 40271);
+    derived Integer timeAsSeconds => Time!fromSeconds(seconds = 40271)!asSeconds();
+    derived Integer timeAsSeconds1 => `11:11:11`!asSeconds();
+
+    derived Time undefinedFromSeconds => Time!fromSeconds(seconds = self.undefinedInteger);
+    derived Integer undefinedAsSeconds => self.undefinedTime!asSeconds();
 }
 
 entity TimestampFunctions {
-    field Timestamp timestamp1 = `2019-07-18T01:11:12+02:00`
-    field Timestamp timestamp2 = `2019-07-18T01:11:12Z`
+    field Timestamp timestamp1 = `2019-07-18T01:11:12+02:00`;
+    field Timestamp timestamp2 = `2019-07-18T01:11:12Z`;
 
-    derived String ownTimestamp1AsString => self.timestamp1!asString()
-    derived String ownTimestamp2AsString => self.timestamp2!asString()
-    /* FIXME: JNG-3903
-    derived Date dateZ => `2019-07-18T01:11:12Z`!date()
-    derived Date datePlus => `2019-07-18T01:11:12+02:00`!date()
-    derived Time timeZ => `2019-07-18T01:11:12Z`!time()
-    derived Time timePlus => `2019-07-18T01:11:12+02:00`!time()
-    derived Timestamp ofDate => Timestamp!of(`2021-02-28`)
-    derived Timestamp ofDateAndTime => Timestamp!of(`2021-02-28`,`10:30:01`)
-    derived Integer asMilliseconds => `1970-01-01T00:01:00Z`!asMilliseconds()
-    derived Timestamp fromMilliseconds => Timestamp!fromMilliseconds(60000)
-    derived Timestamp plusMilliseconds => `2019-07-18T01:11:12Z`!plusMilliseconds(60000)
-    derived Timestamp plusSeconds => `2019-07-18T01:11:12Z`!plusSeconds(60)
-    derived Timestamp plusMinutes => `2019-07-18T01:11:12Z`!plusSeconds(1)
-    derived Timestamp plusHours => `2019-07-18T01:11:12Z`!plusHours(1)
-    derived Timestamp plusDays => `2019-07-18T01:11:12Z`!plusDays(1)
-    derived Timestamp plusMonths => `2019-07-18T01:11:12Z`!plusMonths(1)
-    derived Timestamp plusYears => `2019-07-18T01:11:12Z`!plusYears(1)
-    */
+    derived String ownTimestamp1AsString => self.timestamp1!asString();
+    derived String ownTimestamp2AsString => self.timestamp2!asString();
+
+    derived Timestamp timestampOfDate => Timestamp!of(date = `2022-09-29`);
+    derived Timestamp timestampOfDateAndTime => Timestamp!of(date = `2022-09-29`, time = `11:11:11`);
+
+    derived Date dateOfTimestampWithDate => Timestamp!of(date = `2022-09-29`)!date();
+    derived Date dateOfTimestampWithDateAndTime => Timestamp!of(date = `2022-09-29`, time = `11:11:11`)!date();
+    derived Time timeOfTimestampWithDate => Timestamp!of(date = `2022-09-29`)!time();
+    derived Time timeOfTimestampWithDateAndTime => Timestamp!of(date = `2022-09-29`, time =`11:11:11`)!time();
+
+    derived Integer asMilliseconds => Timestamp!of(date = `2022-09-29`)!asMilliseconds();
+    derived Integer asMilliseconds2 => Timestamp!of(date = `2022-09-29`, time = `11:11:11`)!asMilliseconds();
+
+    derived Timestamp fromMilliseconds => Timestamp!fromMilliseconds(milliseconds = 1664449871000);
+
+    derived Timestamp plusAll => Timestamp!of(date = `2022-09-29`, time = `11:11:11`)!plus(years = 1, months = 1, days = 1, hours = 1, minutes = 1, seconds = 1, milliseconds = 1);
+    derived Timestamp plusDate => Timestamp!of(date = `2022-09-29`, time = `11:11:11`)!plus(years = 1, months = 1, days = 1);
+
+    derived Timestamp plusAllReversed => Timestamp!of(date = `2022-09-29`, time = `11:11:11`)!plus(milliseconds = 1, seconds = 1, hours = 1, days = 1, months = 1, minutes = 1, years = 1);
+    derived Timestamp plusDateReversed => Timestamp!of(date = `2022-09-29`, time = `11:11:11`)!plus(days = 1, months = 1, minutes = 1, years = 1);
+
+    derived Timestamp plusMilliseconds => Timestamp!of(date = `2022-09-29`, time = `11:11:11`)!plus(milliseconds = 1);
+
+    derived Timestamp minusAll => Timestamp!of(date = `2022-09-29`, time = `11:11:11`)!plus(years = -1, months = -1, days = -1, hours = -1, minutes = -1, seconds = -1, milliseconds = -1);
+    derived Timestamp minusDate => Timestamp!of(date = `2022-09-29`, time = `11:11:11`)!plus(years = -1, months = -1, days = -1);
+
+    derived Timestamp minusAllReversed => Timestamp!of(date = `2022-09-29`, time = `11:11:11`)!plus(milliseconds = -1, seconds = -1, hours = -1, days = -1, months = -1, minutes = -1, years = -1);
+    derived Timestamp minusDateReversed => Timestamp!of(date = `2022-09-29`, time = `11:11:11`)!plus(days = -1, months = -1, minutes = -1, years = -1);
+
+    derived Timestamp minusMilliseconds => Timestamp!of(date = `2022-09-29`, time = `11:11:11`)!plus(milliseconds = -1);
 }
 
 entity EnumFunctions {
-    field MyEnum `enum` = MyEnum#Atomic
+    field MyEnum `enum` = MyEnum#Atomic;
 
-    derived String ownEnumAsString => self.`enum`!asString()
-    // derived String enumAsString => MyEnum#Atomic!asString() FIXME: JNG-3904
+    derived String ownEnumAsString => self.`enum`!asString();
+    derived String enumAsString => (MyEnum#Atomic)!asString();
 }
 
 entity InstanceFunctions {
-    field String instanceField = "Hello"
+    field String instanceField = "Hello";
     // field FE::ExternalEntity external FIXME: JNG-3909
-    field Parent parent
-    field Child child
+    field Parent parent;
+    field Child child;
 
-    relation Parent[] parents
-    relation Child[] children
+    relation Parent[] parents;
+    relation Child[] children;
 
-    derived Boolean typeOfParent => self.parent!typeOf(entityType = Parent)
-    derived Boolean notTypeOfChild => self.parent!typeOf(entityType = Child)
+    derived Boolean typeOfParent => self.parent!typeOf(entityType = Parent);
+    derived Boolean notTypeOfChild => self.parent!typeOf(entityType = Child);
 
-    derived Boolean kindOfParent => self.parent!kindOf(entityType = Parent)
-    derived Boolean kindOfChild => self.parent!kindOf(entityType = Child)
+    derived Boolean kindOfParent => self.parent!kindOf(entityType = Parent);
+    derived Boolean kindOfChild => self.parent!kindOf(entityType = Child);
 
-    derived Parent asParentType => self.child
-    derived Child asChildType => self.parent!asType(entityType = Child)
-
-    // FIXME: JNG-3911
-    // derived Child[] childAsCollection => self.child.asCollection(entityType = Child)
+    derived Parent asParentType => self.child;
+    /* TODO JNG-4181
+    derived Child asChildType => self.parent!asType(entityType = Child);
+    */
 
     /* FIXME: JNG-3968 
-    derived Boolean parentMemberOfParents => self.parent!memberOf(instances = self.parents)
-    derived Boolean parentMemberOfChildren => self.parent!memberOf(instances = self.children)
-    derived Boolean childMemberOfParents => self.child!memberOf(instances = self.parents)
-    derived Boolean childMemberOfChildren => self.child!memberOf(instances = self.children)
+    derived Boolean parentMemberOfParents => self.parent!memberOf(instances = self.parents);
+    derived Boolean parentMemberOfChildren => self.parent!memberOf(instances = self.children);
+    derived Boolean childMemberOfParents => self.child!memberOf(instances = self.parents);
+    derived Boolean childMemberOfChildren => self.child!memberOf(instances = self.children);
     */
+}
+
+entity Booler {
+    field Boolean b;
+}
+
+entity BoolerTester {
+    derived Boolean anyTrue => Booler!anyTrue(b | b.b);
+    derived Boolean allTrue => Booler!allTrue(b | b.b);
+    derived Boolean anyFalse => Booler!anyFalse(b | b.b);
+    derived Boolean allFalse => Booler!allFalse(b | b.b);
 }
 
 entity CollectionFunctions {
-    field Parent[] parentsField
-    field Child[] childrenField
+    field Parent[] parentsField;
+    field Child[] childrenField;
 
-    relation Parent[] parentsRelation
-    relation Child[] childrenRelation
+    relation Parent[] parentsRelation;
+    relation Child[] childrenRelation;
 
-    /* TODO: JNG-3911 re-add after collection functions have been implemented
-    derived Parent[] headParentsField => self.parentsField!head(p | p.name)
-    derived Parent[] headParentsFieldDesc => self.parentsField!head(p | p.name DESC)
+    derived Parent anyParentsField => self.parentsField!any();
+    derived Parent anyParentsRelation => self.parentsRelation!any();
 
-    derived Parent[] headParentsRelation => self.parentsRelation!head(p | p.name)
-    derived Parent[] headParentsRelationDesc => self.parentsRelation!head(p | p.name DESC)
+    derived Integer sizeParentsField => self.parentsField!size();
+    derived Integer sizeParentsRelation => self.parentsRelation!size();
+
+    /* FIXME: JNG-4172
+    derived Parent[] asCollectionChildrenParentField => self.parentsField!asCollection(entityType = Parent);
+    derived Parent[] asCollectionChildrenParentRelation => self.parentsRelation!asCollection(entityType = Parent);
+    derived Child[] asCollectionChildrenChildField => self.parentsField!asCollection(entityType = Child);
+    derived Child[] asCollectionChildrenChildRelation => self.parentsRelation!asCollection(entityType = Child);
     */
+
+    // derived Parent containsParent => self.parentsField!contains(instance = Parent!filter(p | p.name == "John")!any()); FIXME JNG-4174
+
+    derived Parent[] filterParentsField => self.parentsField!filter(p | p.name == "John");
+    derived Parent[] filterParentsRelation => self.parentsRelation!filter(p | p.name == "Mark");
+    derived Child[] filterChildrenField => self.childrenField!filter(p | p.name == "Cindy");
+    derived Child[] filterChildrenRelation => self.childrenRelation!filter(p | p.name == "Anna");
+
+    derived Boolean anyTrueChildrenField => self.childrenField!anyTrue(p | p.age  > 40);
+    derived Boolean anyTrueChildrenRelation => self.childrenRelation!anyTrue(p | p.age  > 40);
+
+    derived Boolean allTrueChildrenField => self.childrenField!allTrue(p | p.age  > 16);
+    derived Boolean allTrueChildrenRelation => self.childrenRelation!allTrue(p | p.age  > 16);
+
+    derived Boolean anyFalseChildrenField => self.childrenField!anyFalse(p | p.age  > 16);
+    derived Boolean anyFalseChildrenRelation => self.childrenRelation!anyFalse(p | p.age  > 16);
+
+    derived Boolean allFalseChildrenField => self.childrenField!allFalse(p | p.age  > 16);
+    derived Boolean allFalseChildrenRelation => self.childrenRelation!allFalse(p | p.age  < 2);
+
+    derived Integer minChildrenField => self.childrenField!min(f | f.age);
+    derived Integer minChildrenRelation => self.childrenRelation!min(f | f.age);
+
+    derived Integer maxChildrenField => self.childrenField!max(f | f.age);
+    derived Integer maxChildrenRelation => self.childrenRelation!max(f | f.age);
+
+    derived Integer sumChildrenField => self.childrenField!sum(f | f.age);
+    derived Integer sumChildrenRelation => self.childrenRelation!sum(f | f.age);
+
+    derived Integer avgChildrenField => self.childrenField!avg(f | f.age);
+    derived Integer avgChildrenRelation => self.childrenRelation!avg(f | f.age);
+    derived Scaled avgScaledChildrenField => self.childrenField!avg(f | f.age);
+    derived Scaled avgScaledChildrenRelation => self.childrenRelation!avg(f | f.age);
+    derived Integer divisionConst => 69 / 2;
+    derived Integer roundConst => (69 / 2)!round();
+
+    derived Child[] firstChildrenField => self.childrenField!first(f | f.age);
+    derived Child[] firstChildrenRelation => self.childrenRelation!first(f | f.age);
+
+    derived Child[] lastChildrenField => self.childrenField!last(f | f.age);
+    derived Child[] lastChildrenRelation => self.childrenRelation!last(f | f.age);
+
+    derived Child[] frontChildrenField => self.childrenField!front(f | f.age);
+    derived Child[] frontChildrenRelation => self.childrenRelation!front(f | f.age);
+
+    derived Child[] backChildrenField => self.childrenField!back(f | f.age);
+    derived Child[] backChildrenRelation => self.childrenRelation!back(f | f.age);
+
 }
 
 entity Parent {
-    field String name
+    field String name;
 }
 
 entity Child extends Parent {
-    field Integer age
-    relation Parent mother
+    field Integer age;
+    relation Parent mother;
 }
 
 /* FIXME: JNG-3909

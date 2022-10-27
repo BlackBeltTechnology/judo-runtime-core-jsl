@@ -31,7 +31,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
 public class OperatorsTest extends AbstractJslTest {
@@ -56,6 +56,8 @@ public class OperatorsTest extends AbstractJslTest {
         DefaultOperators operators = defaultOperatorsDao.create(DefaultOperators.builder().build());
 
         assertEquals(Optional.of(1), operators.getRounded());
+        assertEquals(Optional.of(10), operators.getUnary());
+        assertEquals(Optional.of(-2), operators.getAbs());
         assertEquals(Optional.of(7), operators.getAddition());
         assertEquals(Optional.of(3), operators.getSubtraction());
         assertEquals(Optional.of(25), operators.getPow());
@@ -76,6 +78,37 @@ public class OperatorsTest extends AbstractJslTest {
         assertEquals(Optional.of(1), operators.getConditional());
         assertEquals(Optional.of(false), operators.getGroupAnd());
         assertEquals(Optional.of(true), operators.getGroupOr());
+
+        assertEquals(0, operators.getOneModOne().orElseThrow());
+        assertEquals(1.0f, operators.getOneModOnePointNine().orElseThrow());
+        assertEquals(0.0f, operators.getOnePointNineModOnePointNine().orElseThrow());
+        assertEquals(0.9f, operators.getOnePointNineModOne().orElseThrow());
+        assertEquals(1, operators.getOneDivOne().orElseThrow());
+        assertTrue(0.526 <= (double) operators.getOneDivOnePointNine().orElseThrow());
+        assertTrue((double) operators.getOneDivOnePointNine().orElseThrow() < 0.527);
+        assertEquals(1.0f, operators.getOnePointNineDivOnePointNine().orElseThrow());
+        assertEquals(1.9f, operators.getOnePointNineDivOne().orElseThrow());
+
+        assertEquals(Optional.of(true), operators.getDateLt());
+        assertEquals(Optional.of(true), operators.getDateLte());
+        assertEquals(Optional.of(true), operators.getDateLte2());
+        assertEquals(Optional.of(true), operators.getDateGt());
+        assertEquals(Optional.of(true), operators.getDateGte());
+        assertEquals(Optional.of(true), operators.getDateGte2());
+        assertEquals(Optional.of(true), operators.getDateEq());
+        assertEquals(Optional.of(true), operators.getDateNeq());
+
+        assertEquals(Optional.of(true), operators.getTimeLt());
+        assertEquals(Optional.of(true), operators.getTimeLte());
+        assertEquals(Optional.of(true), operators.getTimeLte2());
+        assertEquals(Optional.of(true), operators.getTimeGt());
+        assertEquals(Optional.of(true), operators.getTimeGte());
+        assertEquals(Optional.of(true), operators.getTimeGte2());
+        assertEquals(Optional.of(true), operators.getTimeEq());
+        assertEquals(Optional.of(true), operators.getTimeNeq());
+
+        assertEquals(Optional.of(true), operators.getTimeStampEq());
+        assertEquals(Optional.of(true), operators.getTimeStampNeq());
     }
 
     @Test
@@ -88,12 +121,20 @@ public class OperatorsTest extends AbstractJslTest {
         assertEquals(Optional.of(4), operators.getFirstNameLength());
         assertEquals(Optional.of(99), operators.getRounded());
         assertEquals(Optional.of(37), operators.getAddition());
+        assertTrue(operators.getAdditionTrue().orElseThrow());
+        assertFalse(operators.getAdditionFalse().orElseThrow());
+        assertTrue(operators.getAdditionUndefinedTrue().orElseThrow());
+        assertFalse(operators.getAdditionUndefinedFalse().orElseThrow());
         assertEquals(Optional.of(33), operators.getSubtraction());
         assertEquals(Optional.of(70), operators.getMultiplication());
         assertEquals(Optional.of(17), operators.getDivision());
         assertEquals(Optional.of(17), operators.getDivisionWhole());
         assertEquals(Optional.of(1), operators.getModulo());
         assertEquals(Optional.of(false), operators.getLt());
+        assertTrue(operators.getLtTrue().orElseThrow());
+        assertFalse(operators.getLtFalse().orElseThrow());
+        assertTrue(operators.getLtUndefinedTrue().orElseThrow());
+        assertFalse(operators.getLtUndefinedFalse().orElseThrow());
         assertEquals(Optional.of(true), operators.getLt2());
         assertEquals(Optional.of(true), operators.getGt());
         assertEquals(Optional.of(true), operators.getGt2());
@@ -104,5 +145,9 @@ public class OperatorsTest extends AbstractJslTest {
         assertEquals(Optional.of(false), operators.getEq());
         assertEquals(Optional.of(true), operators.getNeq());
         assertEquals(Optional.of(1), operators.getConditional());
+        assertTrue(operators.getConditionalTrue().orElseThrow());
+        assertFalse(operators.getConditionalFalse().orElseThrow());
+        assertTrue(operators.getConditionalUndefinedTrue().orElseThrow());
+        assertFalse(operators.getConditionalUndefinedFalse().orElseThrow());
     }
 }

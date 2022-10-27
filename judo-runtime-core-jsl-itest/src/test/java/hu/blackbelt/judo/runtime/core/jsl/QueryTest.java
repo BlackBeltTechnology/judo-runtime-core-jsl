@@ -22,13 +22,13 @@ package hu.blackbelt.judo.runtime.core.jsl;
 
 import com.google.inject.Inject;
 import com.google.inject.Module;
+import hu.blackbelt.judo.dispatcher.api.FileType;
 import hu.blackbelt.judo.runtime.core.jsl.itest.primitives.guice.primitives.PrimitivesDaoModules;
 import hu.blackbelt.judo.runtime.core.jsl.itest.primitives.sdk.primitives.primitives.MyEntityWithOptionalFields;
 import hu.blackbelt.judo.runtime.core.jsl.itest.primitives.sdk.primitives.primitives.MyEnum;
 import hu.blackbelt.judo.sdk.query.StringFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -61,8 +61,7 @@ public class QueryTest extends AbstractJslTest {
                 .withDateAttr(LocalDate.of(2022, 7, 11))
                 .withTimestampAttr(OffsetDateTime.parse("2022-07-11T19:09:33Z"))
                 .withTimeAttr(LocalTime.parse("23:59:59"))
-                // FIXME JNG-3842
-                //      .withBinaryAttr(FileType.builder().fileName("test.txt").build())
+                .withBinaryAttr(FileType.builder().fileName("test.txt").build())
                 .withEnumAttr(MyEnum.Bombastic)
                 .build());
 
@@ -75,8 +74,7 @@ public class QueryTest extends AbstractJslTest {
                 .withDateAttr(LocalDate.of(1999, 9, 19))
                 .withTimestampAttr(OffsetDateTime.parse("1999-09-19T09:09:09Z"))
                 .withTimeAttr(LocalTime.parse("12:34:56"))
-                // FIXME JNG-3842
-                //      .withBinaryAttr(FileType.builder().fileName("test.txt").build())
+                .withBinaryAttr(FileType.builder().fileName("test.txt").build())
                 .withEnumAttr(MyEnum.Atomic)
                 .build());
     }
@@ -99,18 +97,6 @@ public class QueryTest extends AbstractJslTest {
                 .execute();
 
         assertEquals(1, list.size());
-    }
-
-    @Disabled
-    public void testGetByIdThrowsForNonExistingElement() {
-        myEntityWithOptionalFieldsDao.delete(entity1);
-
-        IllegalArgumentException thrown = assertThrows(
-                IllegalArgumentException.class,
-                () -> myEntityWithOptionalFieldsDao.getById(entity1.get__identifier())
-        );
-
-        assertNotNull(thrown);
     }
 
     @Test

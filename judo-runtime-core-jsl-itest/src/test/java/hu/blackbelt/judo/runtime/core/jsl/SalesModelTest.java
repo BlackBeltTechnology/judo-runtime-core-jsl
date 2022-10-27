@@ -29,6 +29,7 @@ import hu.blackbelt.judo.runtime.core.jsl.itest.salesmodel.sdk.salesmodel.salesm
 import hu.blackbelt.judo.sdk.query.NumberFilter;
 import hu.blackbelt.judo.sdk.query.StringFilter;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -82,15 +83,6 @@ class SalesModelTest extends AbstractJslTest {
                 .execute();
 
         assertEquals(1, personList.size());
-
-        Person createdPerson = personDao.create(Person.builder()
-                .withFirstName("Masik")
-                .withLastName("Test")
-                .build());
-
-        assertEquals(Optional.of("Masik"), createdPerson.getFirstName());
-        assertEquals(Optional.of("Test"), createdPerson.getLastName());
-        assertEquals(Optional.of("Masik Test"), createdPerson.getFullName());
 
         Lead lead1 = leadDao.create(Lead.builder()
                 .withSalesPerson(createdSalesPerson)
@@ -195,17 +187,6 @@ class SalesModelTest extends AbstractJslTest {
         assertEquals(1, details.size());
     }
 
-    // FIXME: JNG-3894
-    public void testErrorRequiredFieldValidation() {
-        IllegalArgumentException thrown = assertThrows(
-                IllegalArgumentException.class,
-                () -> MyError.builder().build()
-        );
-
-        assertTrue(thrown.getMessage().contains("missing mandatory attribute"));
-        assertTrue(thrown.getMessage().contains("name: code"));
-    }
-
     @Test
     public void testErrorInheritance() {
         MyExtendedError error = MyExtendedError.builder()
@@ -219,7 +200,8 @@ class SalesModelTest extends AbstractJslTest {
         assertEquals(Optional.of("Hello"), error.getMsg());
     }
 
-    // FIXME: JNG-3893
+    @Test
+    @Disabled // FIXME: JNG-3893
     public void testErrorDefaultValue() {
         MyExtendedError error = MyExtendedError.builder()
                 .withCode(403)
