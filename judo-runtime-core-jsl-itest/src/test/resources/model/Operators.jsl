@@ -1,67 +1,112 @@
-model Operators
+model Operators;
 
-type numeric Integer(precision = 3, scale = 0)
-type numeric BigInteger(precision = 10, scale = 0)
-type numeric Scaled(precision = 6, scale = 3)
-type string String(max-length = 128)
-type boolean Boolean
-type date Date
-type timestamp Timestamp
-type time Time
-type binary Binary(mime-types = ["text/plain"], max-file-size=1 GB)
+type numeric Integer(precision = 3, scale = 0);
+type numeric BigInteger(precision = 10, scale = 0);
+type numeric Scaled(precision = 6, scale = 3);
+type string String(min-size = 0, max-size = 128);
+type boolean Boolean;
+type date Date;
+type timestamp Timestamp;
+type time Time;
+type binary Binary(mime-types = ["text/plain"], max-file-size=1 GB);
 
 entity DefaultOperators {
-    field Integer rounded = 1.23!round()
-    field Integer addition = 5 + 2
-    field Integer subtraction = 5 - 2
-    field Integer pow = 5 ^ 2
-    field Integer multiplication = 5 * 2
-    field Scaled division = 5 / 2
-    field Integer divisionWhole = 5 div 2
-    field Integer modulo = 5 mod 2
-    field Boolean lt = 5 < 5
-    field Boolean lt2 = 2 < 5
-    field Boolean gt = 5 > 5
-    field Boolean gt2 = 5 > 2
-    field Boolean lte = 5 <= 5
-    field Boolean lte2 = 2 <= 5
-    field Boolean gte = 5 >= 5
-    field Boolean gte2 = 5 >= 2
-    field Boolean eq = 5 == 2
-    field Boolean neq = 5 != 2
-    field Integer conditional = 5 > 2 ? 1 : 2
-    field Boolean groupAnd = (5 - 2 < 2 and 5 + 2 > 2)
-    field Boolean groupOr = (5 - 2 > 2 or 5 + 2 < 2)
+    field Integer rounded = 1.23!round();
+    field Integer unary = -+--1 -(---1 + -2) + - ++(11---+19); // 10
+    field Integer abs = -2!abs();
+    field Integer addition = 5 + 2;
+    field Integer subtraction = 5 - 2;
+    field Integer pow = 5 ^ 2;
+    field Integer multiplication = 5 * 2;
+    field Scaled division = 5 / 2;
+    field Integer divisionWhole = 5 div 2;
+    field Integer modulo = 5 mod 2;
+    field Boolean lt = 5 < 5;
+    field Boolean lt2 = 2 < 5;
+    field Boolean gt = 5 > 5;
+    field Boolean gt2 = 5 > 2;
+    field Boolean lte = 5 <= 5;
+    field Boolean lte2 = 2 <= 5;
+    field Boolean gte = 5 >= 5;
+    field Boolean gte2 = 5 >= 2;
+    field Boolean eq = 5 == 2;
+    field Boolean neq = 5 != 2;
+    field Integer conditional = 5 > 2 ? 1 : 2;
+    field Boolean groupAnd = (5 - 2 < 2 and 5 + 2 > 2);
+    field Boolean groupOr = (5 - 2 > 2 or 5 + 2 < 2);
+
+    field Integer oneModOne = 1 mod 1;
+    field Scaled oneModOnePointNine = 1 mod 1.9;
+    field Scaled onePointNineModOnePointNine = 1.9 mod 1.9;
+    field Scaled onePointNineModOne = 1.9 mod 1;
+    field Integer oneDivOne = 1 div 1;
+    field Scaled oneDivOnePointNine = 1 div 1.9;
+    field Scaled onePointNineDivOnePointNine = 1.9 div 1.9;
+    field Scaled onePointNineDivOne = 1.9 div 1;
+
+    field Boolean dateLt = `2022-07-07` < `2022-07-08`;
+    field Boolean dateLte = `2022-07-07` <= `2022-07-07`;
+    field Boolean dateLte2 = `2022-07-07` <= `2022-07-08`;
+    field Boolean dateGt = `2022-07-09` > `2022-07-08`;
+    field Boolean dateGte = `2022-07-08` >= `2022-07-08`;
+    field Boolean dateGte2 = `2022-07-09` >= `2022-07-08`;
+    field Boolean dateEq = `2022-07-09` == `2022-07-09`;
+    field Boolean dateNeq = `2022-07-10` != `2022-07-09`;
+
+    field Boolean timeLt = `11:29` < `11:30`;
+    field Boolean timeLte = `11:30` <= `11:30`;
+    field Boolean timeLte2 = `11:29` <= `11:30`;
+    field Boolean timeGt = `11:30` > `11:29`;
+    field Boolean timeGte = `11:29` >= `11:29`;
+    field Boolean timeGte2 = `11:30` >= `11:29`;
+    field Boolean timeEq = `11:30` == `11:30`;
+    field Boolean timeNeq = `11:30` != `11:29`;
+
+    field Boolean timeStampEq = `2020-02-18T09:11:12Z` == `2020-02-18T10:11:12+01:00`;
+    field Boolean timeStampNeq = `2020-02-18T10:11:12Z` != `2020-02-18T00:00:00Z`;
 }
 
 entity DerivedSource {
-    field String firstName = "John"
-    field String lastName = "Pro"
-    field Integer age = 35
-    field Scaled score = 98.75
+    field String firstName = "John";
+    field String lastName = "Pro";
+    field Integer age = 35;
+    field Scaled score = 98.75;
 }
 
 entity DerivedOperators {
-    field required DerivedSource source
-    derived String stringConcat => self.source.firstName + " " + self.source.lastName
-    derived Integer firstNameLength => self.source.firstName!length()
-    derived Integer rounded => self.source.score!round()
-    derived Integer addition => self.source.age + 2
-    derived Integer subtraction => self.source.age - 2
-    derived BigInteger pow => self.source.age ^ 2
-    derived Integer multiplication => self.source.age * 2
-    derived Integer division => self.source.age / 2
-    derived Integer divisionWhole => self.source.age div 2
-    derived Integer modulo => self.source.age mod 2
-    derived Boolean lt => self.source.age < 5
-    derived Boolean lt2 => 2 < self.source.age
-    derived Boolean gt => self.source.age > 5
-    derived Boolean gt2 => self.source.age > 2
-    derived Boolean lte => self.source.age <= 5
-    derived Boolean lte2 => 2 <= self.source.age
-    derived Boolean gte => self.source.age >= 5
-    derived Boolean gte2 => self.source.age >= 2
-    derived Boolean eq => self.source.age == 2
-    derived Boolean neq => self.source.age != 2
-    derived Integer conditional => self.source.age > 2 ? 1 : 2
+    field required DerivedSource source;
+    field DerivedSource undefined;
+    derived String stringConcat => self.source.firstName + " " + self.source.lastName;
+    derived Integer firstNameLength => self.source.firstName!size();
+    derived Integer rounded => self.source.score!round();
+    derived Integer addition => self.source.age + 2;
+    derived Boolean additionTrue => (self.source.age + 2)!isDefined();
+    derived Boolean additionFalse => (self.source.age + 2)!isUndefined();
+    derived Boolean additionUndefinedFalse => (self.undefined.age + 2)!isDefined();
+    derived Boolean additionUndefinedTrue => (self.undefined.age + 2)!isUndefined();
+    derived Integer subtraction => self.source.age - 2;
+    derived BigInteger pow => self.source.age ^ 2;
+    derived Integer multiplication => self.source.age * 2;
+    derived Integer division => self.source.age / 2;
+    derived Integer divisionWhole => self.source.age div 2;
+    derived Integer modulo => self.source.age mod 2;
+    derived Boolean lt => self.source.age < 5;
+    derived Boolean ltTrue => (self.source.age < 5)!isDefined();
+    derived Boolean ltFalse => (self.source.age < 5)!isUndefined();
+    derived Boolean ltUndefinedFalse => (self.undefined.age < 5)!isDefined();
+    derived Boolean ltUndefinedTrue => (self.undefined.age < 5)!isUndefined();
+    derived Boolean lt2 => 2 < self.source.age;
+    derived Boolean gt => self.source.age > 5;
+    derived Boolean gt2 => self.source.age > 2;
+    derived Boolean lte => self.source.age <= 5;
+    derived Boolean lte2 => 2 <= self.source.age;
+    derived Boolean gte => self.source.age >= 5;
+    derived Boolean gte2 => self.source.age >= 2;
+    derived Boolean eq => self.source.age == 2;
+    derived Boolean neq => self.source.age != 2;
+    derived Integer conditional => self.source.age > 2 ? 1 : 2;
+    derived Boolean conditionalTrue => (self.source.age > 2 ? 1 : 2)!isDefined();
+    derived Boolean conditionalFalse => (self.source.age > 2 ? 1 : 2)!isUndefined();
+    derived Boolean conditionalUndefinedTrue => (self.undefined.age > 2 ? 1 : 2)!isDefined();
+    derived Boolean conditionalUndefinedFalse => (self.undefined.age > 2 ? 1 : 2)!isUndefined();
 }

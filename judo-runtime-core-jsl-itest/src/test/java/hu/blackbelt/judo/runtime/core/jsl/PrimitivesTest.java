@@ -103,7 +103,6 @@ public class PrimitivesTest extends AbstractJslTest {
                         .withDateAttr(LocalDate.of(2022, 7, 11))
                         .withTimestampAttr(OffsetDateTime.parse("2022-07-11T19:09:33Z"))
                         .withTimeAttr(LocalTime.parse("23:59:59"))
-                // FIXME JNG-3842
                         .withBinaryAttr(FileType.builder().fileName("test.txt").build())
                         .withEnumAttr(MyEnum.Bombastic)
                         .build());
@@ -120,9 +119,8 @@ public class PrimitivesTest extends AbstractJslTest {
         assertEquals(Optional.of(LocalDate.of(2022, 7, 11)), myEntityWithOptionalFields.getDateAttr());
         assertEquals(Optional.of(OffsetDateTime.parse("2022-07-11T19:09:33Z")), myEntityWithOptionalFields.getTimestampAttr());
         assertEquals(Optional.of(LocalTime.parse("23:59:59")), myEntityWithOptionalFields.getTimeAttr());
-        // FIXME JNG-3842
-        // assertEquals("test.txt", myEntityWithOptionalFields.getBinaryAttr().get().getFileName());
-         assertEquals(Optional.of(MyEnum.Bombastic), myEntityWithOptionalFields.getEnumAttr());
+        assertEquals("test.txt", myEntityWithOptionalFields.getBinaryAttr().orElseThrow().getFileName());
+        assertEquals(Optional.of(MyEnum.Bombastic), myEntityWithOptionalFields.getEnumAttr());
     }
 
     @Test()
@@ -269,7 +267,6 @@ public class PrimitivesTest extends AbstractJslTest {
         myEntityWithOptionalFields.setDateAttr(LocalDate.of(2022, 7, 11));
         myEntityWithOptionalFields.setTimestampAttr(OffsetDateTime.parse("2022-07-11T19:09:33Z"));
         myEntityWithOptionalFields.setTimeAttr(LocalTime.parse("23:59:59"));
-        // FIXME JNG-3842
         myEntityWithOptionalFields.setBinaryAttr(FileType.builder().fileName("test.txt").build());
         myEntityWithOptionalFields.setEnumAttr(MyEnum.Bombastic);
 
@@ -303,6 +300,7 @@ public class PrimitivesTest extends AbstractJslTest {
         assertEquals(Optional.of(LocalDate.of(2022, 7, 11)), entityWithDefaults.getDateAttr());
         assertEquals(Optional.of(OffsetDateTime.parse("2022-07-11T19:09:33Z")), entityWithDefaults.getTimestampAttr());
         assertEquals(Optional.of(LocalTime.parse("23:59:59")), entityWithDefaults.getTimeAttr());
+        assertEquals(Optional.of(LocalTime.parse("23:59")), entityWithDefaults.getShortTimeAttr());
         // There is no way to define default value in JSL for binary
         // assertEquals("test.txt", entityWithDefaults.getBinaryAttr().get().getFileName());
         assertEquals(Optional.of(MyEnum.Bombastic), entityWithDefaults.getEnumAttr());
@@ -338,14 +336,14 @@ public class PrimitivesTest extends AbstractJslTest {
         assertEquals(1, list.size());
 
         assertEquals(Optional.of(1), entityWithDefaultExpressions.getIntegerAttr());
-        // assertEquals(Optional.of(2.34), entityWithDefaultExpressions.getScaledAttr());
+        assertEquals(Optional.of(2.9), entityWithDefaultExpressions.getScaledAttr());
         assertEquals(Optional.of("TRUE"), entityWithDefaultExpressions.getStringAttr());
         assertEquals(Optional.of("+36-1-123-123"), entityWithDefaultExpressions.getRegexAttr());
         assertEquals(Optional.of(true), entityWithDefaultExpressions.getBoolAttr());
         assertEquals(Optional.of(LocalDate.now()), entityWithDefaultExpressions.getDateAttr());
         assertEquals(OffsetDateTime.now().toString().substring(1, 10),
         entityWithDefaultExpressions.getTimestampAttr().get().toString().substring(1, 10));
-        // assertEquals(Optional.of(LocalTime.parse("23:59:59")), entityWithDefaultExpressions.getTimeAttr());
+        assertEquals(Optional.of(LocalTime.parse("23:59:59")), entityWithDefaultExpressions.getTimeAttr());
     }
 
     @Test
@@ -380,6 +378,34 @@ public class PrimitivesTest extends AbstractJslTest {
         assertThat(thrown.getValidationResults(), containsInAnyOrder(allOf(
                 hasProperty("code", equalTo("MAX_LENGTH_VALIDATION_FAILED")),
                 hasProperty("location", equalTo("stringAttr")))
+        ));
+    }
+
+    @Test
+    public void testPrecisionValidation() {
+        ValidationException thrown = assertThrows(
+                ValidationException.class,
+                () -> myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
+                        .withIntegerAttr(1234567890)
+                        .build()));
+
+        assertThat(thrown.getValidationResults(), containsInAnyOrder(allOf(
+                hasProperty("code", equalTo("PRECISION_VALIDATION_FAILED")),
+                hasProperty("location", equalTo("integerAttr")))
+        ));
+    }
+
+    @Test
+    public void testScaleValidation() {
+        ValidationException thrown = assertThrows(
+                ValidationException.class,
+                () -> myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
+                        .withScaledAttr(123456.789)
+                        .build()));
+
+        assertThat(thrown.getValidationResults(), containsInAnyOrder(allOf(
+                hasProperty("code", equalTo("SCALE_VALIDATION_FAILED")),
+                hasProperty("location", equalTo("scaledAttr")))
         ));
     }
 }

@@ -29,6 +29,7 @@ import hu.blackbelt.judo.sdk.query.StringFilter;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.util.List;
 import java.util.Optional;
@@ -36,6 +37,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
+@EnableTransactionManagement
 class JudoRuntimeCoreSpringApplicationTests {
 
 
@@ -64,14 +66,6 @@ class JudoRuntimeCoreSpringApplicationTests {
 				.execute();
 
 		assertEquals(1, personList.size());
-
-		Person createdPerson = personDao.create(Person.builder()
-				.withFirstName("Masik")
-				.withLastName("Test")
-				.build());
-
-		assertEquals(Optional.of("Masik"), createdPerson.getFirstName());
-		assertEquals(Optional.of("Test"), createdPerson.getLastName());
 
 		Lead lead1 = leadDao.create(Lead.builder()
 				.withSalesPerson(createdSalesPerson)
