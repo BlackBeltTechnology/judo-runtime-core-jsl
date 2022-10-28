@@ -15,8 +15,8 @@ entity AAA {
     derived String ts5 => false ? self.name : "false";
     derived String ts6 => false ? "true  " : "!!false!!";
     derived String ts7 => false ? self.name : self.name1;
-    // derived BBB tb => TernaryTest::CCC!size() == 1 ? TernaryTest::CCC!any() : TernaryTest::DDD!any();
-    // derived BBB[] tb1 => TernaryTest::BBB!size() == 1 ? TernaryTest::CCC : TernaryTest::DDD;
+    // derived BBB tb => TernaryTest::CCC!size() == 1 ? TernaryTest::CCC!any() : TernaryTest::DDD!any(); // TODO: JNG-3839
+    // derived BBB[] tb1 => TernaryTest::BBB!size() == 1 ? TernaryTest::CCC : TernaryTest::DDD; // TODO: JNG-3839
 }
 
 entity BBB {

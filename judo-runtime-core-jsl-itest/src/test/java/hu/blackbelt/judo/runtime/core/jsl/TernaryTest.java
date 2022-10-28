@@ -57,6 +57,7 @@ public class TernaryTest extends AbstractJslTest {
         assertEquals("!!false!!", a.getTs6().orElseThrow());
         assertEquals("  aaa", a.getTs7().orElseThrow());
 
+        // TODO: JNG-3839
 //        Optional<BBB> t2 = aDao.getT2(a);
 //        assertTrue(t2.isEmpty());
 //        List<BBB> t3 = aDao.getT3(a);
