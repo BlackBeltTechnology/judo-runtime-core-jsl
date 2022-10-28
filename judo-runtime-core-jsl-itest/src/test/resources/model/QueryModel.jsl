@@ -7,6 +7,7 @@ query Lead[] rootAllLeadsBetween(Integer min = 0, Integer max = 100) => Lead!fil
 query Integer rootCountAllLeadsBetween(Integer min = 0, Integer max = 100) => Lead!filter(l | l.value > min and  l.value < max)!size();
 query Lead[] rootAllLeads() => Lead;
 query Lead rootOneLead() => Lead!any();
+query Integer totalNumberOfLeads() => Lead!size();
 
 entity Queries {
 	query Lead[] queriesAllLeadsBetween(Integer min = 0, Integer max = 100) => Lead!filter(l | l.value > min and  l.value < max);
