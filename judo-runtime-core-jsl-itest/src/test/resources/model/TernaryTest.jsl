@@ -1,0 +1,27 @@
+model TernaryTest;
+
+type string String(min-size = 0, max-size = 255);
+type boolean Boolean;
+
+entity AAA {
+    field String name = "aaa";
+    field String name1 = "  aaa";
+
+    derived String ts => true ? "true" : "false";
+    derived String ts1 => true ? self.name : "false";
+    derived String ts2 => true ? "true  " : "!!false!!";
+    derived String ts3 => true ? self.name : self.name;
+    derived String ts4 => false ? "true" : "false";
+    derived String ts5 => false ? self.name : "false";
+    derived String ts6 => false ? "true  " : "!!false!!";
+    derived String ts7 => false ? self.name : self.name1;
+    // derived BBB tb => TernaryTest::CCC!size() == 1 ? TernaryTest::CCC!any() : TernaryTest::DDD!any();
+    // derived BBB[] tb1 => TernaryTest::BBB!size() == 1 ? TernaryTest::CCC : TernaryTest::DDD;
+}
+
+entity BBB {
+    field String name;
+}
+
+entity CCC extends BBB {}
+entity DDD extends BBB {}
