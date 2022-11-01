@@ -20,10 +20,7 @@ package hu.blackbelt.judo.runtime.core.jsl.spring;
  * #L%
  */
 
-import hu.blackbelt.judo.runtime.core.jsl.spring.test.salesmodel.sdk.salesmodel.salesmodel.Lead;
-import hu.blackbelt.judo.runtime.core.jsl.spring.test.salesmodel.sdk.salesmodel.salesmodel.Person;
-import hu.blackbelt.judo.runtime.core.jsl.spring.test.salesmodel.sdk.salesmodel.salesmodel.SalesPerson;
-import hu.blackbelt.judo.runtime.core.jsl.spring.test.salesmodel.sdk.salesmodel.salesmodel._SalesPerson_leadsOver_Parameters;
+import hu.blackbelt.judo.runtime.core.jsl.spring.test.salesmodel.sdk.salesmodel.salesmodel.*;
 import hu.blackbelt.judo.sdk.query.NumberFilter;
 import hu.blackbelt.judo.sdk.query.StringFilter;
 import org.junit.jupiter.api.Test;
@@ -35,6 +32,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 @EnableTransactionManagement
@@ -49,6 +47,15 @@ class JudoRuntimeCoreSpringApplicationTests {
 
 	@Autowired
 	Lead.LeadDao leadDao;
+
+	@Autowired
+	RootAllLeads.RootAllLeadsDao rootAllLeadsDao;
+
+	@Autowired
+	RootOneLead.RootOneLeadDao rootOneLeadDao;
+
+	@Autowired
+	TotalNumberOfLeads.TotalNumberOfLeadsDao totalNumberOfLeadsDao;
 
 	@Test
 	void testDaoFunctions() {
@@ -95,6 +102,9 @@ class JudoRuntimeCoreSpringApplicationTests {
 		assertEquals(1, leadListOfQuery.size());
 		assertEquals(Optional.of(100000), leadListOfQuery.get(0).getValue());
 
+		assertEquals(2, totalNumberOfLeadsDao.getTotalNumberOfLeads());
+		assertEquals(2, rootAllLeadsDao.getRootAllLeads().size());
+		assertNotNull(rootOneLeadDao.getRootOneLead());
 	}
 
 }
