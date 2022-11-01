@@ -27,6 +27,9 @@ import hu.blackbelt.judo.runtime.core.jsl.itest.querymodel.sdk.querymodel.querym
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
@@ -44,6 +47,9 @@ public class QueryTest extends AbstractJslTest {
     RootAllLeadsBetween.RootAllLeadsBetweenDao rootAllLeadsBetweenDao;
 
     @Inject
+    RootCountAllLeadsBetween.RootCountAllLeadsBetweenDao rootCountAllLeadsBetweenDao;
+
+    @Inject
     Lead.LeadDao leadDao;
 
     @Override
@@ -57,12 +63,29 @@ public class QueryTest extends AbstractJslTest {
     }
 
     @Test
-    public void testStaticWithoutParameters() {
+    public void testStaticQuery() {
         leadDao.create(Lead.builder().withValue(50).build());
         leadDao.create(Lead.builder().withValue(175).build());
 
         assertEquals(2, totalNumberOfLeadsDao.getTotalNumberOfLeads());
         assertEquals(2, rootAllLeadsDao.getRootAllLeads().size());
         assertNotNull(rootOneLeadDao.getRootOneLead());
+
+        List<Lead> rootAllLeadsBetween = rootAllLeadsBetweenDao.searchRootAllLeadsBetween()
+                .execute(_QueryModel_rootAllLeadsBetween_Parameters.builder()
+                        .withMax(80)
+                        .withMin(10)
+                        .build()
+                );
+        assertEquals(1, rootAllLeadsBetween.size());
+        assertEquals(Optional.of(50), rootAllLeadsBetween.get(0).getValue());
+
+        Integer rootCountAllLeadsBetween = rootCountAllLeadsBetweenDao.getRootCountAllLeadsBetween(_QueryModel_rootCountAllLeadsBetween_Parameters.builder()
+                .withMin(10)
+                .withMax(80)
+                .build()
+        );
+
+        assertEquals(1, rootCountAllLeadsBetween);
     }
 }
