@@ -56,3 +56,7 @@ entity Customer {
 
 	relation Lead lead opposite-add customer;
 }
+
+query Lead[] rootAllLeads() => Lead;
+query Lead rootOneLead() => Lead!any();
+query Integer totalNumberOfLeads() => Lead!size();
