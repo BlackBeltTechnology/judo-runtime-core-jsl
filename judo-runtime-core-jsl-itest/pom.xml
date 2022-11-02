@@ -65,6 +65,7 @@
                                 <source>${project.basedir}/target/generated-sources/model/sdk/QueryModel</source>
                                 <source>${project.basedir}/target/generated-sources/model/sdk/Abstract</source>
                                 <source>${project.basedir}/target/generated-sources/model/sdk/TernaryTest</source>
+                                <source>${project.basedir}/target/generated-sources/model/sdk/ContainsTest</source>
                             </sources>
                         </configuration> 
                    </execution>
