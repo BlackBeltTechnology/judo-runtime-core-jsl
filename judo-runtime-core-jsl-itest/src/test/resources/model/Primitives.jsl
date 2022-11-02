@@ -1,13 +1,9 @@
 model Primitives;
 
-type numeric Integer(precision = 9, scale = 0);
+import judo::types;
+
 type numeric Scaled(precision = 9, scale = 2);
-type string String(min-size = 0, max-size = 128);
 type string PhoneNumber(min-size = 0, max-size = 32, regex = "^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]\\d{3}[\\s.-]\\d{4}$");   // escape sequencing does not work in regexp!!!!
-type boolean Boolean;
-type date Date;
-type timestamp Timestamp;
-type time Time;
 type binary Binary(mime-types = ["text/plain"], max-file-size=1 GB);
 
 enum MyEnum {
