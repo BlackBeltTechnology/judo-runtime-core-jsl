@@ -59,9 +59,10 @@ public class ContainsTest extends AbstractJslTest {
         assertFalse(a.getContainsTest1().orElseThrow());
 
         B b = bDao.create(B.builder().withName("test").build());
+        B b1 = bDao.create(B.builder().withName("not test").build());
         A a1 = aDao.create(A.builder()
                             .withB(b)
-                            .withBs(List.of(b))
+                            .withBs(List.of(b, b1))
                             .build());
         assertTrue(a1.getContainsTest().orElseThrow());
         assertTrue(a1.getContainsTest1().orElseThrow());
