@@ -339,7 +339,7 @@ entity EnumFunctions {
 
 entity InstanceFunctions {
     field String instanceField = "Hello";
-    // field FE::ExternalEntity external FIXME: JNG-3909
+    field FE::ExternalEntity external;
     field Parent parent;
     field Child child;
 
@@ -454,8 +454,7 @@ entity Child extends Parent {
     relation Parent mother;
 }
 
-/* FIXME: JNG-3909
 entity ExternalChild extends FE::ExternalEntity {
-    field Integer age
+    field Integer age;
 }
-*/
+
