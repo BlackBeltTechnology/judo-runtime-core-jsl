@@ -526,6 +526,8 @@ public class FunctionsTest extends AbstractJslTest {
         assertEquals(2, collectionFunctionsDao.getBackChildrenField(collectionFunctions).size());
         assertEquals(2, collectionFunctionsDao.getBackChildrenRelation(collectionFunctions).size());
 
+        assertTrue(collectionFunctions.getContainsParent().orElseThrow());
+
         assertEquals(1, collectionFunctionsDao.getFilterParentsField(collectionFunctions).size());
         assertEquals(1, collectionFunctionsDao.getFilterParentsRelation(collectionFunctions).size());
 
