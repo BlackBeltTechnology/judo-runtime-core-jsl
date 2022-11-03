@@ -149,6 +149,11 @@ public class FunctionsTest extends AbstractJslTest {
         assertEquals(Optional.of(true), anyTypeFunctions.getTimeIsDefinedTrue());
         assertEquals(Optional.of(true), anyTypeFunctions.getTimeIsUndefinedTrue());
         assertEquals(Optional.of(false), anyTypeFunctions.getTimeIsUndefinedFalse());
+
+        assertEquals(Optional.of("apple"), anyTypeFunctions.getStringOrElse());
+        assertEquals(2, anyTypeFunctions.getNumberOrElse().get());
+        assertEquals(3, anyTypeFunctions.getNumberOrElse2().get());
+        assertEquals(4, anyTypeFunctions.getNumberOrElse3().get());
     }
 
     @Test
