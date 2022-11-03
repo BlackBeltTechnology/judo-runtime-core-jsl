@@ -1,0 +1,15 @@
+model ContainsModel;
+
+type string String(min-size = 0, max-size = 255);
+type boolean Boolean;
+
+entity A {
+    relation B[] bs;
+    relation B b;
+    derived Boolean containsTest => self.bs!contains(instance = self.b);
+    derived Boolean containsTest1 => self.bs!contains(instance = B!filter(b | b.name == "test")!any());
+}
+
+entity B {
+    field String name;
+}

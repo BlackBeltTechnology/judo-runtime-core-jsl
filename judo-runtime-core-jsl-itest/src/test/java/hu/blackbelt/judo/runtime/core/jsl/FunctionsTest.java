@@ -481,12 +481,12 @@ public class FunctionsTest extends AbstractJslTest {
                 )
                 .withChildrenRelation(
                         List.of(
-                                Child.builder().withName("Mark").withAge(33L).build(),
+                                Child.builder().withName("Mario").withAge(33L).build(),
                                 Child.builder().withName("Stacey").withAge(16L).build(),
                                 Child.builder().withName("Ruby").withAge(16L).build(),
                                 Child.builder().withName("Anna").withAge(34L).build(),
                                 Child.builder().withName("Clark").withAge(34L).build(),
-                                Child.builder().withName("John").build()
+                                Child.builder().withName("Daniel").build()
                         )
                 )
                 .build());
@@ -530,6 +530,8 @@ public class FunctionsTest extends AbstractJslTest {
 
         assertEquals(2, collectionFunctionsDao.getBackChildrenField(collectionFunctions).size());
         assertEquals(2, collectionFunctionsDao.getBackChildrenRelation(collectionFunctions).size());
+
+        assertTrue(collectionFunctions.getContainsParent().orElseThrow());
 
         assertEquals(1, collectionFunctionsDao.getFilterParentsField(collectionFunctions).size());
         assertEquals(1, collectionFunctionsDao.getFilterParentsRelation(collectionFunctions).size());

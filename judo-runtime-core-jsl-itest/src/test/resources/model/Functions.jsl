@@ -392,7 +392,7 @@ entity CollectionFunctions {
     derived Child[] asCollectionChildrenChildRelation => self.parentsRelation!asCollection(entityType = Child);
     */
 
-    // derived Parent containsParent => self.parentsField!contains(instance = Parent!filter(p | p.name == "John")!any()); FIXME JNG-4174
+    derived Boolean containsParent => self.parentsField!contains(instance = Parent!filter(p | p.name == "John")!any());
 
     derived Parent[] filterParentsField => self.parentsField!filter(p | p.name == "John");
     derived Parent[] filterParentsRelation => self.parentsRelation!filter(p | p.name == "Mark");
