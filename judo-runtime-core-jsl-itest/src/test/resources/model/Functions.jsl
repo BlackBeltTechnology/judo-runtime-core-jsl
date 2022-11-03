@@ -36,16 +36,12 @@ entity EntityWithPrimitiveDefaults {
     field Timestamp timestampAttr = `2022-07-11T19:09:33Z`;
     field Time timeAttr = `23:59:59`;
 }
-/* FIXME: JNG-3896
 entity Functions {
-    field Entity entity
-    field EntityWithPrimitiveDefaults entityWithPrimitives
-}
-
-FIXME: use "extends Functions" once bug is fixed */
-entity AnyTypeFunctions {
     field Entity `entity`;
     field EntityWithPrimitiveDefaults entityWithPrimitives;
+}
+
+entity AnyTypeFunctions extends Functions {
 
     derived Boolean integerIsDefinedFalse => self.`entity`.integerAttr!isDefined();
     derived Boolean integerIsDefinedTrue => self.entityWithPrimitives.integerAttr!isDefined();
@@ -339,7 +335,7 @@ entity EnumFunctions {
 
 entity InstanceFunctions {
     field String instanceField = "Hello";
-    // field FE::ExternalEntity external FIXME: JNG-3909
+    field FE::ExternalEntity external;
     field Parent parent;
     field Child child;
 
@@ -454,8 +450,7 @@ entity Child extends Parent {
     relation Parent mother;
 }
 
-/* FIXME: JNG-3909
 entity ExternalChild extends FE::ExternalEntity {
-    field Integer age
+    field Integer age;
 }
-*/
+
