@@ -476,12 +476,12 @@ public class FunctionsTest extends AbstractJslTest {
                 )
                 .withChildrenRelation(
                         List.of(
-                                Child.builder().withName("Mark").withAge(33L).build(),
+                                Child.builder().withName("Mario").withAge(33L).build(),
                                 Child.builder().withName("Stacey").withAge(16L).build(),
                                 Child.builder().withName("Ruby").withAge(16L).build(),
                                 Child.builder().withName("Anna").withAge(34L).build(),
                                 Child.builder().withName("Clark").withAge(34L).build(),
-                                Child.builder().withName("John").build()
+                                Child.builder().withName("Daniel").build()
                         )
                 )
                 .build());
