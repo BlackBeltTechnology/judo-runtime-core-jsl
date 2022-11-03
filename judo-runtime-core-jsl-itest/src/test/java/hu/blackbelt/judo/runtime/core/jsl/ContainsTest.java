@@ -30,6 +30,7 @@ import org.junit.jupiter.api.*;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Slf4j
@@ -52,17 +53,18 @@ public class ContainsTest extends AbstractJslTest {
     }
 
     @Test
-    @Disabled
     public void testContains() {
+        A a = aDao.create(A.builder().build());
+        assertFalse(a.getContainsTest().orElseThrow());
+        assertFalse(a.getContainsTest1().orElseThrow());
+
         B b = bDao.create(B.builder().withName("test").build());
-
-        A a = aDao.create(A.builder()
-                           .withB(b)
-                           .withBs(List.of(b))
-                           .build());
-
-        assertTrue(a.getContainsTest().orElseThrow());
-        assertTrue(a.getContainsTest1().orElseThrow());
+        A a1 = aDao.create(A.builder()
+                            .withB(b)
+                            .withBs(List.of(b))
+                            .build());
+        assertTrue(a1.getContainsTest().orElseThrow());
+        assertTrue(a1.getContainsTest1().orElseThrow());
     }
 
 }
