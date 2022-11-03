@@ -82,11 +82,10 @@ entity AnyTypeFunctions {
     derived Boolean timeIsUndefinedTrue => self.`entity`.timeAttr!isUndefined();
     derived Boolean timeIsUndefinedFalse => self.entityWithPrimitives.timeAttr!isUndefined();
 
-    /* FIXME: JNG-4078
     derived String stringOrElse => "apple"!orElse(value = "grape");
     derived Integer numberOrElse => 2!orElse(value = 1);
-    derived Integer stringOrElse3 => self.`entity`.integerAttr!orElse(value = 3);
-    */
+    derived Integer numberOrElse2 => self.`entity`.integerAttr!orElse(value = 3);
+    derived Integer numberOrElse3 => self.`entity`.integerAttr!orElse(value = (-4.9))!abs()!orElse(value = 0!abs())!floor();
 }
 
 entity StringFunctions {
