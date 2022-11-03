@@ -36,16 +36,12 @@ entity EntityWithPrimitiveDefaults {
     field Timestamp timestampAttr = `2022-07-11T19:09:33Z`;
     field Time timeAttr = `23:59:59`;
 }
-/* FIXME: JNG-3896
 entity Functions {
-    field Entity entity
-    field EntityWithPrimitiveDefaults entityWithPrimitives
-}
-
-FIXME: use "extends Functions" once bug is fixed */
-entity AnyTypeFunctions {
     field Entity `entity`;
     field EntityWithPrimitiveDefaults entityWithPrimitives;
+}
+
+entity AnyTypeFunctions extends Functions {
 
     derived Boolean integerIsDefinedFalse => self.`entity`.integerAttr!isDefined();
     derived Boolean integerIsDefinedTrue => self.entityWithPrimitives.integerAttr!isDefined();
