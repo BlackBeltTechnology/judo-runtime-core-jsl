@@ -1,0 +1,37 @@
+model DefaultRequiredValue;
+
+type string String(min-size=0,max-size=128);
+type numeric Integer(precision = 9, scale = 0);
+type timestamp TimeStamp;
+
+entity referenceEntity {
+    field String stringAtt="Hello there";
+    field Integer intAtt = 3;
+    derived Integer intDer => self.intAtt + 1;
+}
+
+entity defaultRequiredEntity {
+    //Cases
+    // field required primitive = default;
+    // field required Complex = default;
+    // field Complex[] = default; //collection is not required
+    // relation required Complex = Complex;
+    // relation required Complex[] = Complex[];
+    // identifier required primitive = default; //have any sense?
+
+    //TODO JNG-4242
+    //relation required referenceEntity singleRelation = referenceEntity!any();
+    //relation required referenceEntity[] multiRelation = referenceEntity;
+
+    //TODO JNG-4197
+    //field required String referenceName = referenceEntity!any().stringValue;
+    //field required Integer addOne = referenceEntity!any().plusOne;
+
+    //TODO JNG-3721 Add new referenceEntity
+    //field required referenceEntity oneReferenceEntity = referenceEntity!any();
+    //field referenceEntity[] manyReferenceEntity = referenceEntity;
+
+    identifier required TimeStamp createDate = TimeStamp!now();
+    field required Integer sumEntitiesIntegerValue = referenceEntity!sum(e|e.intAtt);
+
+}
