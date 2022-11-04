@@ -81,7 +81,7 @@ entity AnyTypeFunctions extends Functions {
     derived String stringOrElse => "apple"!orElse(value = "grape");
     derived Integer numberOrElse => 2!orElse(value = 1);
     derived Integer numberOrElse2 => self.`entity`.integerAttr!orElse(value = 3);
-    derived Integer numberOrElse3 => self.`entity`.integerAttr!orElse(value = (-4.9))!abs()!orElse(value = 0!abs())!floor();
+    derived Integer numberOrElse3 => self.`entity`.integerAttr!orElse(value = -4.9)!abs()!orElse(value = 0!abs())!floor();
 }
 
 entity StringFunctions {
