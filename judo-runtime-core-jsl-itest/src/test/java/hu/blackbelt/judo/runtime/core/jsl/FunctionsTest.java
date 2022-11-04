@@ -1,5 +1,8 @@
 package hu.blackbelt.judo.runtime.core.jsl;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+
 /*-
  * #%L
  * JUDO Runtime Core :: JUDO Language Specification DSL Integration Tests
@@ -149,6 +152,11 @@ public class FunctionsTest extends AbstractJslTest {
         assertEquals(Optional.of(true), anyTypeFunctions.getTimeIsDefinedTrue());
         assertEquals(Optional.of(true), anyTypeFunctions.getTimeIsUndefinedTrue());
         assertEquals(Optional.of(false), anyTypeFunctions.getTimeIsUndefinedFalse());
+
+        assertEquals(Optional.of("apple"), anyTypeFunctions.getStringOrElse());
+        assertEquals(2, anyTypeFunctions.getNumberOrElse().get());
+        assertEquals(3, anyTypeFunctions.getNumberOrElse2().get());
+        assertEquals(4, anyTypeFunctions.getNumberOrElse3().get());
     }
 
     @Test
@@ -448,6 +456,15 @@ public class FunctionsTest extends AbstractJslTest {
         assertFalse(instanceFunctions.getNotTypeOfChild().get());
 
         assertTrue(instanceFunctionsDao.getAsParentType(instanceFunctions).get() instanceof Parent);
+
+        
+        instanceFunctionsDao.addParents(instanceFunctions, ImmutableList.of(parent1));
+        
+        instanceFunctions = instanceFunctionsDao.getById(instanceFunctions.get__identifier()).orElseThrow();
+        
+        assertEquals(10, instanceFunctions.getNavigationWithCalls().get());
+
+
     }
 
     @Test
@@ -476,12 +493,12 @@ public class FunctionsTest extends AbstractJslTest {
                 )
                 .withChildrenRelation(
                         List.of(
-                                Child.builder().withName("Mark").withAge(33L).build(),
+                                Child.builder().withName("Mario").withAge(33L).build(),
                                 Child.builder().withName("Stacey").withAge(16L).build(),
                                 Child.builder().withName("Ruby").withAge(16L).build(),
                                 Child.builder().withName("Anna").withAge(34L).build(),
                                 Child.builder().withName("Clark").withAge(34L).build(),
-                                Child.builder().withName("John").build()
+                                Child.builder().withName("Daniel").build()
                         )
                 )
                 .build());
@@ -525,6 +542,8 @@ public class FunctionsTest extends AbstractJslTest {
 
         assertEquals(2, collectionFunctionsDao.getBackChildrenField(collectionFunctions).size());
         assertEquals(2, collectionFunctionsDao.getBackChildrenRelation(collectionFunctions).size());
+
+        assertTrue(collectionFunctions.getContainsParent().orElseThrow());
 
         assertEquals(1, collectionFunctionsDao.getFilterParentsField(collectionFunctions).size());
         assertEquals(1, collectionFunctionsDao.getFilterParentsRelation(collectionFunctions).size());
