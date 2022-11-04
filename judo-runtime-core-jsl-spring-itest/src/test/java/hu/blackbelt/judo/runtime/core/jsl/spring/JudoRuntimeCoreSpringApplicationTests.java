@@ -23,21 +23,38 @@ package hu.blackbelt.judo.runtime.core.jsl.spring;
 import hu.blackbelt.judo.runtime.core.jsl.spring.test.salesmodel.sdk.salesmodel.salesmodel.*;
 import hu.blackbelt.judo.sdk.query.NumberFilter;
 import hu.blackbelt.judo.sdk.query.StringFilter;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
+import org.springframework.transaction.interceptor.TransactionInterceptor;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
+import org.springframework.transaction.support.TransactionSynchronization;
+import org.springframework.transaction.support.TransactionSynchronizationAdapter;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
+import javax.transaction.NotSupportedException;
+import javax.transaction.SystemException;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @EnableTransactionManagement
+@Slf4j
 class JudoRuntimeCoreSpringApplicationTests {
 
+	@Autowired
+	PlatformTransactionManager transactionManager;
 
 	@Autowired
 	Person.PersonDao personDao;
@@ -56,6 +73,7 @@ class JudoRuntimeCoreSpringApplicationTests {
 
 	@Autowired
 	TotalNumberOfLeads.TotalNumberOfLeadsDao totalNumberOfLeadsDao;
+
 
 	@Test
 	void testDaoFunctions() {
@@ -107,4 +125,93 @@ class JudoRuntimeCoreSpringApplicationTests {
 		assertNotNull(rootOneLeadDao.getRootOneLead());
 	}
 
+
+	@Test
+	void testManualTransactionManagementRollback() throws SystemException, NotSupportedException {
+		assertFalse(TransactionSynchronizationManager.isActualTransactionActive());
+
+		DefaultTransactionDefinition defaultTransactionDefinition = new DefaultTransactionDefinition();
+		TransactionStatus transactionStatus = transactionManager.getTransaction(defaultTransactionDefinition);
+
+		addTransactionPrintListener();
+
+		// Create and commit a salesperson
+		SalesPerson salesPerson = salesPersonDao.create(SalesPerson.builder()
+				.withFirstName("Test")
+				.withLastName("Elek")
+				.build());
+
+		UUID uuid = salesPerson.get__identifier();
+
+		transactionManager.commit(transactionStatus);
+
+		// Create test transaction
+		transactionStatus = transactionManager.getTransaction(defaultTransactionDefinition);
+
+		assertEquals(Optional.of("Test"), salesPersonDao.getById(uuid).get().getFirstName());
+		salesPerson.setFirstName("BLAAA");
+		salesPersonDao.update(salesPerson);
+		transactionManager.rollback(transactionStatus);
+		assertEquals(Optional.of("Test"), salesPersonDao.getById(uuid).get().getFirstName());
+
+		// Delete created person to avoid collosion with other tests
+		transactionStatus = transactionManager.getTransaction(defaultTransactionDefinition);
+		salesPersonDao.delete(salesPerson);
+		transactionManager.commit(transactionStatus);
+	}
+
+	private void addTransactionPrintListener() {
+		TransactionSynchronizationManager.clear();
+		TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
+
+			@Override
+			public void afterCommit() {
+				log.info("here");
+			}
+
+			@Override
+			public void afterCompletion(int status) {
+				System.out.println(
+						status == TransactionSynchronization.STATUS_COMMITTED ? "committed" : "rolled back");
+			}
+
+		});
+	}
+
+	@Test
+	void testManualTransactionManagementCommit() {
+		assertFalse(TransactionSynchronizationManager.isActualTransactionActive());
+
+		DefaultTransactionDefinition defaultTransactionDefinition = new DefaultTransactionDefinition();
+		TransactionStatus transactionStatus = transactionManager.getTransaction(defaultTransactionDefinition);
+
+		addTransactionPrintListener();
+
+		// Create and commit a salesperson
+		SalesPerson salesPerson = salesPersonDao.create(SalesPerson.builder()
+				.withFirstName("Test")
+				.withLastName("Elek")
+				.build());
+
+		transactionManager.commit(transactionStatus);
+		transactionStatus = transactionManager.getTransaction(defaultTransactionDefinition);
+
+		// Create test transaction
+		assertEquals(Optional.of("Test"), salesPersonDao.getById(salesPerson.get__identifier()).get().getFirstName());
+		salesPerson.setFirstName("BLAAA");
+		salesPersonDao.update(salesPerson);
+		transactionManager.commit(transactionStatus);
+		assertEquals(Optional.of("BLAAA"), salesPersonDao.getById(salesPerson.get__identifier()).get().getFirstName());
+
+		// Delete created person to avoid collosion with other tests
+		transactionStatus = transactionManager.getTransaction(defaultTransactionDefinition);
+		salesPersonDao.delete(salesPerson);
+		transactionManager.commit(transactionStatus);
+	}
+
+	@Test
+	@Transactional
+	public void testTransactionalAnnotationIsEffective() {
+		assertTrue(TransactionSynchronizationManager.isActualTransactionActive());
+	}
 }
