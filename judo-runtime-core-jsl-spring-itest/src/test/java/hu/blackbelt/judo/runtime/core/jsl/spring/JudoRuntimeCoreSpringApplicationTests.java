@@ -24,20 +24,15 @@ import hu.blackbelt.judo.runtime.core.jsl.spring.test.salesmodel.sdk.salesmodel.
 import hu.blackbelt.judo.sdk.query.NumberFilter;
 import hu.blackbelt.judo.sdk.query.StringFilter;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.interceptor.TransactionAspectSupport;
-import org.springframework.transaction.interceptor.TransactionInterceptor;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.transaction.support.TransactionSynchronization;
-import org.springframework.transaction.support.TransactionSynchronizationAdapter;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import javax.transaction.NotSupportedException;
@@ -127,7 +122,7 @@ class JudoRuntimeCoreSpringApplicationTests {
 
 
 	@Test
-	void testManualTransactionManagementRollback() throws SystemException, NotSupportedException {
+	void testManualTransactionManagementRollback()  {
 		assertFalse(TransactionSynchronizationManager.isActualTransactionActive());
 
 		DefaultTransactionDefinition defaultTransactionDefinition = new DefaultTransactionDefinition();
@@ -208,7 +203,7 @@ class JudoRuntimeCoreSpringApplicationTests {
 
 			@Override
 			public void afterCompletion(int status) {
-				System.out.println(
+				log.info(
 						status == TransactionSynchronization.STATUS_COMMITTED ? "committed" : "rolled back");
 			}
 
