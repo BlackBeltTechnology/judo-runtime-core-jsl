@@ -12,7 +12,7 @@ type binary Binary(mime-types = ["text/plain"], max-file-size=1 GB);
 
 entity DefaultOperators {
     field Integer rounded = 1.23!round();
-    field Integer unary = -+--1 -(---1 + -2) + - ++(11---+19); // 10
+    field Integer unary = -1 -(-1 + -2) + (11-19); // -6
     field Integer abs = -2!abs();
     field Integer addition = 5 + 2;
     field Integer subtraction = 5 - 2;
