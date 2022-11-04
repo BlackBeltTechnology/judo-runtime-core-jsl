@@ -11,6 +11,7 @@ entity referenceEntity {
 }
 
 entity defaultRequiredEntity {
+
     //Cases
     // field required primitive = default;
     // field required Complex = default;
