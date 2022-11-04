@@ -1,5 +1,8 @@
 package hu.blackbelt.judo.runtime.core.jsl;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+
 /*-
  * #%L
  * JUDO Runtime Core :: JUDO Language Specification DSL Integration Tests
@@ -453,6 +456,15 @@ public class FunctionsTest extends AbstractJslTest {
         assertFalse(instanceFunctions.getNotTypeOfChild().get());
 
         assertTrue(instanceFunctionsDao.getAsParentType(instanceFunctions).get() instanceof Parent);
+
+        
+        instanceFunctionsDao.addParents(instanceFunctions, ImmutableList.of(parent1));
+        
+        instanceFunctions = instanceFunctionsDao.getById(instanceFunctions.get__identifier()).orElseThrow();
+        
+        assertEquals(10, instanceFunctions.getNavigationWithCalls().get());
+
+
     }
 
     @Test
