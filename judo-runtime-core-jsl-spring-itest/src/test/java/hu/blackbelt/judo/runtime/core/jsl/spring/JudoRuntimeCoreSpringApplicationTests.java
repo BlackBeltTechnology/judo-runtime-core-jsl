@@ -128,8 +128,6 @@ class JudoRuntimeCoreSpringApplicationTests {
 		DefaultTransactionDefinition defaultTransactionDefinition = new DefaultTransactionDefinition();
 		TransactionStatus transactionStatus = transactionManager.getTransaction(defaultTransactionDefinition);
 
-		addTransactionPrintListener();
-
 		// Create and commit a salesperson
 		SalesPerson salesPerson = salesPersonDao.create(SalesPerson.builder()
 				.withFirstName("Test")
@@ -162,8 +160,6 @@ class JudoRuntimeCoreSpringApplicationTests {
 		DefaultTransactionDefinition defaultTransactionDefinition = new DefaultTransactionDefinition();
 		TransactionStatus transactionStatus = transactionManager.getTransaction(defaultTransactionDefinition);
 
-		addTransactionPrintListener();
-
 		// Create and commit a salesperson
 		SalesPerson salesPerson = salesPersonDao.create(SalesPerson.builder()
 				.withFirstName("Test")
@@ -190,24 +186,6 @@ class JudoRuntimeCoreSpringApplicationTests {
 	@Transactional
 	public void testTransactionalAnnotationIsEffective() {
 		assertTrue(TransactionSynchronizationManager.isActualTransactionActive());
-	}
-
-	private void addTransactionPrintListener() {
-		TransactionSynchronizationManager.clear();
-		TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
-
-			@Override
-			public void afterCommit() {
-				log.info("here");
-			}
-
-			@Override
-			public void afterCompletion(int status) {
-				log.info(
-						status == TransactionSynchronization.STATUS_COMMITTED ? "committed" : "rolled back");
-			}
-
-		});
 	}
 
 }
