@@ -160,24 +160,6 @@ class JudoRuntimeCoreSpringApplicationTests {
 		transactionManager.commit(transactionStatus);
 	}
 
-	private void addTransactionPrintListener() {
-		TransactionSynchronizationManager.clear();
-		TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
-
-			@Override
-			public void afterCommit() {
-				log.info("here");
-			}
-
-			@Override
-			public void afterCompletion(int status) {
-				System.out.println(
-						status == TransactionSynchronization.STATUS_COMMITTED ? "committed" : "rolled back");
-			}
-
-		});
-	}
-
 	@Test
 	void testManualTransactionManagementCommit() {
 		assertFalse(TransactionSynchronizationManager.isActualTransactionActive());
@@ -214,4 +196,23 @@ class JudoRuntimeCoreSpringApplicationTests {
 	public void testTransactionalAnnotationIsEffective() {
 		assertTrue(TransactionSynchronizationManager.isActualTransactionActive());
 	}
+
+	private void addTransactionPrintListener() {
+		TransactionSynchronizationManager.clear();
+		TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
+
+			@Override
+			public void afterCommit() {
+				log.info("here");
+			}
+
+			@Override
+			public void afterCompletion(int status) {
+				System.out.println(
+						status == TransactionSynchronization.STATUS_COMMITTED ? "committed" : "rolled back");
+			}
+
+		});
+	}
+
 }
