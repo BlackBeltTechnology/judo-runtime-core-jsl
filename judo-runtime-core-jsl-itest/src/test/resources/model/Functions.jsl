@@ -359,6 +359,8 @@ entity InstanceFunctions {
     derived Boolean childMemberOfParents => self.child!memberOf(instances = self.parents);
     derived Boolean childMemberOfChildren => self.child!memberOf(instances = self.children);
     */
+
+	derived Integer navigationWithCalls => self.parents!any().name!size();
 }
 
 entity Booler {
