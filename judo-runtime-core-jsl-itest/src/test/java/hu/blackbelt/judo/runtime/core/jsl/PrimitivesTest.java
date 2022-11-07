@@ -63,6 +63,11 @@ public class PrimitivesTest extends AbstractJslTest {
     @Inject
     EntityRequiredWithPrimitiveDefaults.EntityRequiredWithPrimitiveDefaultsDao entityRequiredWithPrimitiveDefaultsDao;
 
+    @Inject
+    ReferenceEntity.ReferenceEntityDao referenceEntityDao;
+
+    @Inject
+    DefaultRequiredEntity.DefaultRequiredEntityDao defaultRequiredEntityDao;
     @Override
     public Module getModelDaoModule() {
         return new PrimitivesDaoModules();
@@ -408,4 +413,28 @@ public class PrimitivesTest extends AbstractJslTest {
                 hasProperty("location", equalTo("scaledAttr")))
         ));
     }
+
+    @Test
+    public void testDefaultRequieredValuesInEntity() {
+
+        referenceEntityDao.create(ReferenceEntity.builder().build());
+        referenceEntityDao.create(ReferenceEntity.builder().build());
+
+        DefaultRequiredEntity defaultEntity = defaultRequiredEntityDao.create(DefaultRequiredEntity.builder().build());
+
+        assertEquals(6, defaultEntity.getSumEntitiesIntegerValue());
+        assertEquals(LocalDate.of(2022, 11, 4), defaultEntity.getCreateDate());
+        assertThrows(ValidationException.class, () -> defaultRequiredEntityDao.create(DefaultRequiredEntity.builder()
+                .withCreateDate(LocalDate.of(2022, 11, 4))
+                .build()));
+
+        DefaultRequiredEntity defaultEntity1 = defaultRequiredEntityDao.create(DefaultRequiredEntity.builder()
+                .withCreateDate(LocalDate.of(2022, 11, 5))
+                .withSumEntitiesIntegerValue(5)
+                .build());
+
+        assertEquals(5, defaultEntity1.getSumEntitiesIntegerValue());
+        assertEquals(LocalDate.of(2022, 11, 5), defaultEntity1.getCreateDate());
+    }
+
 }
