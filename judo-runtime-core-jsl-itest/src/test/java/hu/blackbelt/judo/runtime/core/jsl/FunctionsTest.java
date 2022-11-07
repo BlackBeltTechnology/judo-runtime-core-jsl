@@ -449,15 +449,21 @@ public class FunctionsTest extends AbstractJslTest {
                         .withParent(Parent.builder().withName("Another Person").build())
                         .withChild(Child.builder().withName("Another Child").withAge(31L).build())
                         .build());
+
+        InstanceFunctions instanceFunctions1 = instanceFunctionsDao.create(InstanceFunctions.builder()
+                        .withParent(parentDao.getById(child1.get__identifier()).orElseThrow())
+                        .build());
                
         assertTrue(instanceFunctions.getTypeOfParent().get());
         assertFalse(instanceFunctions.getKindOfChild().get());
         assertTrue(instanceFunctions.getKindOfParent().get());
         assertFalse(instanceFunctions.getNotTypeOfChild().get());
 
-        assertTrue(instanceFunctionsDao.getAsParentType(instanceFunctions).get() instanceof Parent);
+        String parentName = instanceFunctionsDao.getAsParentType(instanceFunctions).orElseThrow().getName().orElseThrow();
+        assertEquals("Another Child", parentName);
+        String childName = instanceFunctionsDao.getAsChildType(instanceFunctions1).orElseThrow().getName().orElseThrow();
+        assertEquals("Erika Young", childName);
 
-        
         instanceFunctionsDao.addParents(instanceFunctions, ImmutableList.of(parent1));
         
         instanceFunctions = instanceFunctionsDao.getById(instanceFunctions.get__identifier()).orElseThrow();
