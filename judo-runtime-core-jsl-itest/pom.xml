@@ -66,7 +66,6 @@
                                 <source>${project.basedir}/target/generated-sources/model/sdk/Abstract</source>
                                 <source>${project.basedir}/target/generated-sources/model/sdk/TernaryTest</source>
                                 <source>${project.basedir}/target/generated-sources/model/sdk/ContainsModel</source>
-                                <source>${project.basedir}/target/generated-sources/model/sdk/DefaultRequiredValue</source>
                             </sources>
                         </configuration> 
                    </execution>
