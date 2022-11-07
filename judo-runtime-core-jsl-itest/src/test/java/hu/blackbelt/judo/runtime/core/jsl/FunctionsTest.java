@@ -449,15 +449,21 @@ public class FunctionsTest extends AbstractJslTest {
                         .withParent(Parent.builder().withName("Another Person").build())
                         .withChild(Child.builder().withName("Another Child").withAge(31L).build())
                         .build());
+
+        InstanceFunctions instanceFunctions1 = instanceFunctionsDao.create(InstanceFunctions.builder()
+                        .withParent(parentDao.getById(child1.get__identifier()).orElseThrow())
+                        .build());
                
         assertTrue(instanceFunctions.getTypeOfParent().get());
         assertFalse(instanceFunctions.getKindOfChild().get());
         assertTrue(instanceFunctions.getKindOfParent().get());
         assertFalse(instanceFunctions.getNotTypeOfChild().get());
 
-        assertTrue(instanceFunctionsDao.getAsParentType(instanceFunctions).get() instanceof Parent);
+        String parentName = instanceFunctionsDao.getAsParentType(instanceFunctions).orElseThrow().getName().orElseThrow();
+        assertEquals("Another Child", parentName);
+        String childName = instanceFunctionsDao.getAsChildType(instanceFunctions1).orElseThrow().getName().orElseThrow();
+        assertEquals("Erika Young", childName);
 
-        
         instanceFunctionsDao.addParents(instanceFunctions, ImmutableList.of(parent1));
         
         instanceFunctions = instanceFunctionsDao.getById(instanceFunctions.get__identifier()).orElseThrow();
@@ -509,7 +515,21 @@ public class FunctionsTest extends AbstractJslTest {
         assertNotNull(collectionFunctionsDao.getAnyParentsField(collectionFunctions));
         assertNotNull(collectionFunctionsDao.getAnyParentsRelation(collectionFunctions));
 
-        // FIXME: JNG-4172 add tests
+        List<Parent> asCollectionChildrenParentField = collectionFunctionsDao.getAsCollectionChildrenParentField(collectionFunctions);
+        assertEquals(2, asCollectionChildrenParentField.size());
+        assertTrue(asCollectionChildrenParentField.stream().anyMatch(p -> p.getName().orElseThrow().equals("John")));
+        assertTrue(asCollectionChildrenParentField.stream().anyMatch(p -> p.getName().orElseThrow().equals("Another Person")));
+
+        List<Parent> asCollectionChildrenParentRelation = collectionFunctionsDao.getAsCollectionChildrenParentRelation(collectionFunctions);
+        assertEquals(2, asCollectionChildrenParentRelation.size());
+        assertTrue(asCollectionChildrenParentRelation.stream().anyMatch(p -> p.getName().orElseThrow().equals("Mark")));
+        assertTrue(asCollectionChildrenParentRelation.stream().anyMatch(p -> p.getName().orElseThrow().equals("Billy")));
+
+        List<Child> asCollectionChildrenChildField = collectionFunctionsDao.getAsCollectionChildrenChildField(collectionFunctions);
+        assertEquals(0, asCollectionChildrenChildField.size());
+
+        List<Child> asCollectionChildrenChildRelation = collectionFunctionsDao.getAsCollectionChildrenChildRelation(collectionFunctions);
+        assertEquals(0, asCollectionChildrenChildRelation.size());
 
         assertEquals(Optional.of(23L), collectionFunctions.getMinChildrenField());
         assertEquals(Optional.of(16L), collectionFunctions.getMinChildrenRelation());
