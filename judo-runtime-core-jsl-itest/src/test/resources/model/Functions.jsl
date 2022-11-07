@@ -385,12 +385,10 @@ entity CollectionFunctions {
     derived Integer sizeParentsField => self.parentsField!size();
     derived Integer sizeParentsRelation => self.parentsRelation!size();
 
-    /* FIXME: JNG-4172
     derived Parent[] asCollectionChildrenParentField => self.parentsField!asCollection(entityType = Parent);
     derived Parent[] asCollectionChildrenParentRelation => self.parentsRelation!asCollection(entityType = Parent);
     derived Child[] asCollectionChildrenChildField => self.parentsField!asCollection(entityType = Child);
     derived Child[] asCollectionChildrenChildRelation => self.parentsRelation!asCollection(entityType = Child);
-    */
 
     derived Boolean containsParent => self.parentsField!contains(instance = Parent!filter(p | p.name == "John")!any());
 
