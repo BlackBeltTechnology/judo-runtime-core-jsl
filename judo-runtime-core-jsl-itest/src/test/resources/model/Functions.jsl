@@ -349,9 +349,7 @@ entity InstanceFunctions {
     derived Boolean kindOfChild => self.parent!kindOf(entityType = Child);
 
     derived Parent asParentType => self.child;
-    /* TODO JNG-4181
     derived Child asChildType => self.parent!asType(entityType = Child);
-    */
 
     /* FIXME: JNG-3968 
     derived Boolean parentMemberOfParents => self.parent!memberOf(instances = self.parents);
