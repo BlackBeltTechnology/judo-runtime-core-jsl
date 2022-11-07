@@ -96,3 +96,17 @@ entity EntityWithPrimitiveDefaultExpressions {
     field Timestamp timestampAttr = Timestamp!now();
     field Time timeAttr = Time!of(hour = 23, minute = 59, second = 59);
 }
+
+entity ReferenceEntity {
+    field Integer intAtt = 3;
+}
+
+entity DefaultRequiredEntity {
+
+    //TODO JNG-4242
+    //TODO JNG-3721
+
+    identifier required Date createDate = Date!of(year = 2022, month = 11, day = 4);
+    field required Integer sumEntitiesIntegerValue = ReferenceEntity!sum(e | e.intAtt);
+
+}
