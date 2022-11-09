@@ -28,6 +28,7 @@ import hu.blackbelt.judo.runtime.core.jsl.itest.castingfunctionsmodel.sdk.castin
 import hu.blackbelt.judo.runtime.core.jsl.itest.castingfunctionsmodel.sdk.castingfunctionsmodel.castingfunctionsmodel.CA.CADao;
 import hu.blackbelt.judo.runtime.core.jsl.itest.castingfunctionsmodel.sdk.castingfunctionsmodel.castingfunctionsmodel.Tester.TesterDao;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -41,6 +42,8 @@ public class CastingFunctionsTest extends AbstractJslTest {
     @Inject CADao caDao;
     @Inject TesterDao testerDao;
 
+    private Tester tester;
+
     @Override
     public Module getModelDaoModule() {
         return new CastingFunctionsModelDaoModules();
@@ -51,8 +54,10 @@ public class CastingFunctionsTest extends AbstractJslTest {
         return "CastingFunctionsModel";
     }
 
-    @Test
-    public void test() {
+    @Override
+    @BeforeEach
+    protected void init() throws Exception {
+        super.init();
         CA ca = caDao.create(CA.builder().withNameA("aca1").withNameB("bca1").withNameCA("ca1").build());
         CA ca1 = caDao.create(CA.builder().withNameA("aca2").withNameB("bca2").withNameCA("ca2").build());
         CA ca2 = caDao.create(CA.builder().withNameA("aca3").withNameB("bca3").withNameCA("ca3").build());
@@ -60,31 +65,37 @@ public class CastingFunctionsTest extends AbstractJslTest {
         B caAsB1 = bDao.getById(ca1.get__identifier()).orElseThrow();
         B caAsB2 = bDao.getById(ca2.get__identifier()).orElseThrow();
 
-        Tester tester = testerDao.create(Tester.builder()
-                                               .withB(bDao.create(B.builder().withNameA("ab").withNameB("b").build()))
-                                               .withBs(List.of(
-                                                       bDao.create(B.builder().withNameA("ab1").withNameB("b1").build()),
-                                                       bDao.create(B.builder().withNameA("ab2").withNameB("b2").build())
-                                               ))
-                                               .withCaAsB(caAsB)
-                                               .withCaAsBs(List.of(caAsB1, caAsB2))
-                                               .build());
+        tester = testerDao.create(Tester.builder()
+                                        .withB(bDao.create(B.builder().withNameA("ab").withNameB("b").build()))
+                                        .withBs(List.of(
+                                                bDao.create(B.builder().withNameA("ab1").withNameB("b1").build()),
+                                                bDao.create(B.builder().withNameA("ab2").withNameB("b2").build())
+                                        ))
+                                        .withCaAsB(caAsB)
+                                        .withCaAsBs(List.of(caAsB1, caAsB2))
+                                        .build());
+    }
 
-        // kind of
+    @Test
+    public void testKindOf() {
         assertTrue(tester.getKindOfA().orElseThrow());
         assertTrue(tester.getKindOfB().orElseThrow());
         assertFalse(tester.getKindOfCA().orElseThrow());
         assertTrue(tester.getKindOfCA1().orElseThrow());
         assertFalse(tester.getKindOfCB().orElseThrow());
+    }
 
-        // type of
+    @Test
+    public void testTypeOf() {
         assertFalse(tester.getTypeOfA().orElseThrow());
         assertTrue(tester.getTypeOfB().orElseThrow());
         assertFalse(tester.getTypeOfCA().orElseThrow());
         assertTrue(tester.getTypeOfCA1().orElseThrow());
         assertFalse(tester.getTypeOfCB().orElseThrow());
+    }
 
-        // as type
+    @Test
+    public void testAsType() {
         assertEquals("ab", testerDao.getAsTypeA(tester).orElseThrow().getNameA().orElseThrow());
 
         B b = testerDao.getAsTypeB(tester).orElseThrow();
@@ -99,8 +110,10 @@ public class CastingFunctionsTest extends AbstractJslTest {
         assertEquals("ca1", caFromT.getNameCA().orElseThrow());
 
         assertTrue(testerDao.getAsTypeCB(tester).isEmpty());
+    }
 
-        // as collection
+    @Test
+    public void testAsCollection() {
         List<A> asCollectionA = testerDao.getAsCollectionA(tester);
         assertEquals(2, asCollectionA.size());
         assertTrue(asCollectionA.stream().anyMatch(a -> a.getNameA().orElseThrow().equals("ab1")));
