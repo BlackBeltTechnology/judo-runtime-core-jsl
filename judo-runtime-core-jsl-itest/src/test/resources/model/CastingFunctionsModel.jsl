@@ -44,7 +44,7 @@ entity Tester {
     derived B asTypeB => self.b!asType(entityType = B);         // B
     derived CA asTypeCA => self.b!asType(entityType = CA);      // undefined
     derived CA asTypeCA1 => self.caAsB!asType(entityType = CA); // CA
-    derived CB asTypeCB => self.b!asType(entityType = CB);      // null
+    derived CB asTypeCB => self.b!asType(entityType = CB);      // undefined
 
     // as collection
     derived A[] asCollectionA => self.bs!asCollection(entityType = A);         // B-s
