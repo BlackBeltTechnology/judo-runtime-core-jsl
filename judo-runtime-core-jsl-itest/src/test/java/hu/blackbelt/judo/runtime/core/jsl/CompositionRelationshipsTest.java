@@ -27,6 +27,7 @@ import hu.blackbelt.judo.runtime.core.jsl.itest.compositionrelationships.guice.c
 import hu.blackbelt.judo.runtime.core.jsl.itest.compositionrelationships.sdk.compositionrelationships.compositionrelationships.EntityA;
 import hu.blackbelt.judo.runtime.core.jsl.itest.compositionrelationships.sdk.compositionrelationships.compositionrelationships.EntityC;
 import hu.blackbelt.judo.runtime.core.jsl.itest.compositionrelationships.sdk.compositionrelationships.compositionrelationships.EntityD;
+import hu.blackbelt.judo.runtime.core.jsl.itest.compositionrelationships.sdk.compositionrelationships.compositionrelationships.EntityE;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -37,7 +38,6 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import javax.transaction.NotSupportedException;
 import javax.transaction.SystemException;
-import javax.transaction.TransactionManager;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,6 +55,9 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
 
     @Inject
     EntityD.EntityDDao entityDDao;
+
+    @Inject
+    EntityE.EntityEDao entityEDao;
 
     @Inject
     PlatformTransactionManager transactionManager;
@@ -233,4 +236,19 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
         assertEquals(Optional.of("BLAAA"), entityADao.getById(entityA.get__identifier()).get().getStringA());
     }
 
+    @Test
+    @Disabled
+    void testMultipleInheritance() {
+        // FIXME: JNG-4260
+        EntityE entityE = entityEDao.create(EntityE.builder()
+                .withStringB("B")
+                .withStringC("C")
+                .withStringD("D")
+                .build()
+        );
+
+        assertEquals(Optional.of("B"), entityE.getStringB());
+        assertEquals(Optional.of("C"), entityE.getStringC());
+        assertEquals(Optional.of("D"), entityE.getStringD());
+    }
 }
