@@ -92,6 +92,12 @@ public class FunctionsTest extends AbstractJslTest {
     @Inject
     BoolerTester.BoolerTesterDao boolerTesterDao;
 
+    @Inject
+    Member.MemberDao memberDao;
+
+    @Inject
+    Tester.TesterDao testerDao;
+
     @BeforeEach
     protected void init() throws Exception {
         super.init();
@@ -470,6 +476,23 @@ public class FunctionsTest extends AbstractJslTest {
         
         assertEquals(10, instanceFunctions.getNavigationWithCalls().get());
 
+        InstanceFunctions instanceFunctions2 = instanceFunctionsDao.create(InstanceFunctions.builder()
+                                                                                            .withParent(Parent.builder().withName("P1").build())
+                                                                                            .withChild(Child.builder().withName("C1").build())
+                                                                                            .build());
+        Parent p1 = parentDao.getAll().stream().filter(p -> p.getName().orElseThrow().equals("P1")).findAny().orElseThrow();
+        Child c1 = childDao.getAll().stream().filter(c -> c.getName().orElseThrow().equals("C1")).findAny().orElseThrow();
+
+        instanceFunctionsDao.addParents(instanceFunctions2, List.of(p1));
+        instanceFunctionsDao.addChildren(instanceFunctions2, List.of(c1));
+
+        instanceFunctions2 = instanceFunctionsDao.getById(instanceFunctions2.get__identifier()).orElseThrow();
+
+        assertTrue(instanceFunctions2.getParentMemberOfParents().orElseThrow());
+        assertTrue(instanceFunctions2.getParentMemberOfParentsExtra().orElseThrow());
+        assertFalse(instanceFunctions2.getParentMemberOfChildren().orElseThrow());
+        assertFalse(instanceFunctions2.getChildMemberOfParents().orElseThrow());
+        assertTrue(instanceFunctions2.getChildMemberOfChildren().orElseThrow());
 
     }
 
@@ -698,6 +721,19 @@ public class FunctionsTest extends AbstractJslTest {
     private Booler updateBooler(Booler booler, Boolean b) {
         booler.setB(b);
         return boolerDao.update(booler);
+    }
+
+    @Test
+    public void testMember() {
+        Member m1 = memberDao.create(Member.builder().withName("M1").build());
+        Member m2 = memberDao.create(Member.builder().withName("M2").build());
+        Member m3 = memberDao.create(Member.builder().withName("M3").build());
+
+        Tester tester = testerDao.create(Tester.builder()
+                                               .withMember(m1)
+                                               .withMembers(List.of(m1, m2, m3))
+                                               .build());
+        assertTrue(tester.getMemberMemberOfMembers().orElseThrow());
     }
 
 }
