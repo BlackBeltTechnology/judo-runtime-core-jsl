@@ -1,9 +1,12 @@
 model AssociationRelationships;
 
+import judo::types;
+
 entity EntityA {
     relation EntityC singleConA;
     relation required EntityC singleRequiredConA opposite twoWayMultipleAonC;
     relation EntityD[] multipleDonA opposite multipleAonD;
+    derived Integer countD => self.multipleDonA!size();
 }
 
 entity abstract EntityB {
@@ -17,6 +20,7 @@ entity EntityC extends EntityB {
 
 entity EntityD {
     relation EntityA[] multipleAonD opposite multipleDonA;
+    derived Integer countA => self.multipleAonD!size();
 }
 
 entity EntityE {
