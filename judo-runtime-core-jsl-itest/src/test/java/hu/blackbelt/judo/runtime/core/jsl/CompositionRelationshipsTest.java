@@ -24,10 +24,7 @@ import com.google.inject.Inject;
 import com.google.inject.Module;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
 import hu.blackbelt.judo.runtime.core.jsl.itest.compositionrelationships.guice.compositionrelationships.CompositionRelationshipsDaoModules;
-import hu.blackbelt.judo.runtime.core.jsl.itest.compositionrelationships.sdk.compositionrelationships.compositionrelationships.EntityA;
-import hu.blackbelt.judo.runtime.core.jsl.itest.compositionrelationships.sdk.compositionrelationships.compositionrelationships.EntityC;
-import hu.blackbelt.judo.runtime.core.jsl.itest.compositionrelationships.sdk.compositionrelationships.compositionrelationships.EntityD;
-import hu.blackbelt.judo.runtime.core.jsl.itest.compositionrelationships.sdk.compositionrelationships.compositionrelationships.EntityE;
+import hu.blackbelt.judo.runtime.core.jsl.itest.compositionrelationships.sdk.compositionrelationships.compositionrelationships.*;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -49,6 +46,9 @@ import static org.hamcrest.Matchers.*;
 public class CompositionRelationshipsTest extends AbstractJslTest {
     @Inject
     EntityA.EntityADao entityADao;
+
+    @Inject
+    EntityB.EntityBDao entityBDao;
 
     @Inject
     EntityC.EntityCDao entityCDao;
@@ -250,5 +250,27 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
         assertEquals(Optional.of("B"), entityE.getStringB());
         assertEquals(Optional.of("C"), entityE.getStringC());
         assertEquals(Optional.of("D"), entityE.getStringD());
+    }
+
+    @Test
+    void testAbstractDAOOperations() {
+        EntityC entityC = entityCDao.create(EntityC.builder().build());
+
+        assertEquals(Optional.empty(), entityC.getStringB());
+        assertEquals(Optional.empty(), entityC.getStringC());
+
+        Optional<EntityB> entityB = entityBDao.getById(entityC.get__identifier());
+
+        assertTrue(entityB.isPresent());
+
+        entityC.setStringB("B");
+
+        EntityC updatedC = entityCDao.update(entityC);
+
+        assertEquals(Optional.of("B"), updatedC.getStringB());
+
+        Optional<EntityB> updatedB = entityBDao.getById(entityC.get__identifier());
+
+        assertEquals(Optional.of("B"), updatedB.get().getStringB());
     }
 }
