@@ -169,17 +169,6 @@ public class AssociationRelationshipsTest extends AbstractJslTest {
         assertEquals(Optional.of(entityE), entityFDao.getSingleEAdded(entityF2));
     }
 
-    @Test
-    public void testNavigateTwoWay() {
-        EntityA entityA1 = createA(entityC, List.of());
-        EntityA entityA2 = createA(entityC, List.of());
-        EntityA entityA3 = createA(entityC, List.of());
-        EntityD entityD1 = entityDDao.create(EntityD.builder().withMultipleAonD(List.of(entityA1, entityA2, entityA3)).build());
-
-        assertEquals(3, entityDDao.getMultipleAonD(entityD1).size());
-        assertEquals(1, entityADao.getMultipleDonA(entityA1).size());
-    }
-
     private EntityA createA(EntityC entityC, List<EntityD> entityDs) {
         return entityADao.create(EntityA.builder()
                 .withSingleRequiredConA(entityC)

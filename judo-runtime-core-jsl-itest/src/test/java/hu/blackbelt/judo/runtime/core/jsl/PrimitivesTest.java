@@ -158,18 +158,6 @@ public class PrimitivesTest extends AbstractJslTest {
                 hasProperty("location", equalTo(attrName)));
     }
 
-    private org.hamcrest.Matcher matchPrecisionValidationForAttribute(String attrName) {
-        return allOf(
-                hasProperty("code", equalTo("PRECISION_VALIDATION_FAILED")),
-                hasProperty("location", equalTo(attrName)));
-    }
-
-    private org.hamcrest.Matcher matchScaleValidationForAttribute(String attrName) {
-        return allOf(
-                hasProperty("code", equalTo("SCALE_VALIDATION_FAILED")),
-                hasProperty("location", equalTo(attrName)));
-    }
-
     @Test
     public void testIdentifierFieldsAreUnique() {
         LocalDate now = LocalDate.now();
@@ -413,45 +401,6 @@ public class PrimitivesTest extends AbstractJslTest {
     }
 
     @Test
-    public void testMaxPrecision() {
-        // FIXME: JNG-4262
-//        ValidationException thrown = assertThrows(
-//                ValidationException.class,
-//                () -> myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
-//                        .withScaledAttr(12345678.0)
-//                        .build())
-//        );
-//
-//        assertThat(thrown.getValidationResults(), containsInAnyOrder(
-//                matchPrecisionValidationForAttribute("scaledAttr")
-//        ));
-
-        MyEntityWithOptionalFields e1 = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
-                .withScaledAttr(1234567.0)
-                .build());
-
-        assertEquals(Optional.of(1234567.0), e1.getScaledAttr());
-
-        MyEntityWithOptionalFields e2 = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
-                .withScaledAttr(1234567.1)
-                .build());
-
-        assertEquals(Optional.of(1234567.1), e2.getScaledAttr());
-
-        MyEntityWithOptionalFields e3 = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
-                .withScaledAttr(1234567.12)
-                .build());
-
-        assertEquals(Optional.of(1234567.12), e3.getScaledAttr());
-
-        MyEntityWithOptionalFields e4 = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
-                .withScaledAttr(1234567.1200)
-                .build());
-
-        assertEquals(Optional.of(1234567.12), e4.getScaledAttr());
-    }
-
-    @Test
     public void testScaleValidation() {
         ValidationException thrown = assertThrows(
                 ValidationException.class,
@@ -459,8 +408,9 @@ public class PrimitivesTest extends AbstractJslTest {
                         .withScaledAttr(123456.789)
                         .build()));
 
-        assertThat(thrown.getValidationResults(), containsInAnyOrder(
-                matchScaleValidationForAttribute("scaledAttr")
+        assertThat(thrown.getValidationResults(), containsInAnyOrder(allOf(
+                hasProperty("code", equalTo("SCALE_VALIDATION_FAILED")),
+                hasProperty("location", equalTo("scaledAttr")))
         ));
     }
 
