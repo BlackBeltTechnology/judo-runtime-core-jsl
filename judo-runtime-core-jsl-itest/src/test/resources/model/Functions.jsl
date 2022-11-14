@@ -351,12 +351,11 @@ entity InstanceFunctions {
     derived Parent asParentType => self.child;
     derived Child asChildType => self.parent!asType(entityType = Child);
 
-    /* FIXME: JNG-3968 
     derived Boolean parentMemberOfParents => self.parent!memberOf(instances = self.parents);
+    derived Boolean parentMemberOfParentsExtra => self.parent!memberOf(instances = self.parents!filter(p | p!memberOf(instances = Parent)));
     derived Boolean parentMemberOfChildren => self.parent!memberOf(instances = self.children);
     derived Boolean childMemberOfParents => self.child!memberOf(instances = self.parents);
     derived Boolean childMemberOfChildren => self.child!memberOf(instances = self.children);
-    */
 
 	derived Integer navigationWithCalls => self.parents!any().name!size();
 }
@@ -452,3 +451,13 @@ entity ExternalChild extends FE::ExternalEntity {
     field Integer age;
 }
 
+entity Member {
+    field String name;
+}
+
+entity Tester {
+    relation Member member;
+    relation Member[] members;
+
+    derived Boolean memberMemberOfMembers => self.member!memberOf(instances = self.members);
+}
