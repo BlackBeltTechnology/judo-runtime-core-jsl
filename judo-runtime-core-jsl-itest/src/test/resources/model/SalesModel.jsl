@@ -71,6 +71,8 @@ entity Customer {
 }
 
 entity ContractsAggregator {
+	
     derived SC::ContractDetail[] contractDetails => SC::Contract.detail;
+
     derived SC::Contract[] contracts => SC::Contract;
 }
