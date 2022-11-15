@@ -9,7 +9,7 @@ entity B {
 }
 
 entity C {
-	derived C[] allCfromAPlainName => self!container(entityType = A);
-	derived C[] allCfromAFqName => self!container(entityType = ContainerDerived::A);
+	derived A allCfromAPlainName => self!container(entityType = A);
+	derived A allCfromAFqName => self!container(entityType = ContainerDerived::A);
 }
 
