@@ -22,6 +22,7 @@ package hu.blackbelt.judo.runtime.core.jsl;
 
 import com.google.inject.Inject;
 import com.google.inject.Module;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.RdbmsDatasourceFixture;
 import hu.blackbelt.judo.runtime.core.jsl.itest.associationrelationships.guice.associationrelationships.AssociationRelationshipsDaoModules;
 import hu.blackbelt.judo.runtime.core.jsl.itest.associationrelationships.sdk.associationrelationships.associationrelationships.*;
 import lombok.extern.slf4j.Slf4j;
@@ -56,8 +57,8 @@ public class AssociationRelationshipsTest extends AbstractJslTest {
     EntityA entityA;
 
     @BeforeEach
-    protected void init() throws Exception {
-        super.init();
+    protected void init(RdbmsDatasourceFixture datasource) throws Exception {
+        super.init(datasource);
         entityD = entityDDao.create(EntityD.builder()
                 .build());
         entityC = entityCDao.create(EntityC.builder()

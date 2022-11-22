@@ -22,6 +22,7 @@ package hu.blackbelt.judo.runtime.core.jsl;
 
 import com.google.inject.Inject;
 import com.google.inject.Module;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.RdbmsDatasourceFixture;
 import hu.blackbelt.judo.runtime.core.jsl.itest.castingfunctionsmodel.guice.castingfunctionsmodel.CastingFunctionsModelDaoModules;
 import hu.blackbelt.judo.runtime.core.jsl.itest.castingfunctionsmodel.sdk.castingfunctionsmodel.castingfunctionsmodel.*;
 import hu.blackbelt.judo.runtime.core.jsl.itest.castingfunctionsmodel.sdk.castingfunctionsmodel.castingfunctionsmodel.B.BDao;
@@ -56,8 +57,8 @@ public class CastingFunctionsTest extends AbstractJslTest {
 
     @Override
     @BeforeEach
-    protected void init() throws Exception {
-        super.init();
+    protected void init(RdbmsDatasourceFixture datasource) throws Exception {
+        super.init(datasource);
         CA ca = caDao.create(CA.builder().withNameA("aca1").withNameB("bca1").withNameCA("ca1").build());
         CA ca1 = caDao.create(CA.builder().withNameA("aca2").withNameB("bca2").withNameCA("ca2").build());
         CA ca2 = caDao.create(CA.builder().withNameA("aca3").withNameB("bca3").withNameCA("ca3").build());

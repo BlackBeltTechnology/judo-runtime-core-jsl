@@ -25,6 +25,7 @@ import com.google.common.collect.Lists;
 
 import com.google.inject.Inject;
 import com.google.inject.Module;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.RdbmsDatasourceFixture;
 import hu.blackbelt.judo.runtime.core.jsl.itest.functions.guice.functions.FunctionsDaoModules;
 import hu.blackbelt.judo.runtime.core.jsl.itest.functions.sdk.functions.functions.*;
 import lombok.extern.slf4j.Slf4j;
@@ -93,8 +94,8 @@ public class FunctionsTest extends AbstractJslTest {
     BoolerTester.BoolerTesterDao boolerTesterDao;
 
     @BeforeEach
-    protected void init() throws Exception {
-        super.init();
+    protected void init(RdbmsDatasourceFixture datasource) throws Exception {
+        super.init(datasource);
         Entity entity = entityDao
                         .create(Entity.builder().build());
         EntityWithPrimitiveDefaults entityWithPrimitiveDefaults = entityWithPrimitiveDefaultsDao
@@ -205,7 +206,7 @@ public class FunctionsTest extends AbstractJslTest {
         assertTrue(str.getLpadTrue().orElseThrow());
         assertFalse(str.getLpadFalse().orElseThrow());
         assertEquals("*****apple", str.getLpad1().orElseThrow());
-        assertEquals("le", str.getLpad2().orElseThrow());
+        assertEquals("le", str.getLpad2().orElseThrow()); // FIXME JNG-4293
         assertEquals("le", str.getLpad3().orElseThrow());
         assertEquals("apple     ", str.getRpad().orElseThrow());
         assertEquals("apple*****", str.getRpad1().orElseThrow());
@@ -226,7 +227,7 @@ public class FunctionsTest extends AbstractJslTest {
 
     @Test
     public void testNumerics() {
-        NumericFunctions numericFunctions = numericFunctionsDao.create(NumericFunctions.builder().build());
+        NumericFunctions numericFunctions = numericFunctionsDao.create(NumericFunctions.builder().build()); // FIXME JNG-4292
 
         Long roundInt = numericFunctions.getRoundInt().orElseThrow();
         assertEquals(1, roundInt);
@@ -355,7 +356,7 @@ public class FunctionsTest extends AbstractJslTest {
 
     @Test
     public void testDates() {
-        DateFunctions date = dateFunctionsDao.create(DateFunctions.builder().build());
+        DateFunctions date = dateFunctionsDao.create(DateFunctions.builder().build()); // FIXME JNG-4291
 
         assertEquals(Optional.of("2022-07-11"), date.getOwnDateAsString());
         assertEquals(Optional.of("2021-03-02"), date.getDateAsString());

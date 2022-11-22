@@ -23,6 +23,7 @@ package hu.blackbelt.judo.runtime.core.jsl;
 import com.google.inject.Inject;
 import com.google.inject.Module;
 import hu.blackbelt.judo.dispatcher.api.FileType;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.RdbmsDatasourceFixture;
 import hu.blackbelt.judo.runtime.core.jsl.itest.primitives.guice.primitives.PrimitivesDaoModules;
 import hu.blackbelt.judo.runtime.core.jsl.itest.primitives.sdk.primitives.primitives.MyEntityWithOptionalFields;
 import hu.blackbelt.judo.runtime.core.jsl.itest.primitives.sdk.primitives.primitives.MyEnum;
@@ -67,8 +68,8 @@ public class FiltersTest extends AbstractJslTest {
     static final MyEnum ENUM_2 = MyEnum.Atomic;
 
     @BeforeEach
-    protected void init() throws Exception {
-        super.init();
+    protected void init(RdbmsDatasourceFixture datasource) throws Exception {
+        super.init(datasource);
 
         entity1 = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
                 .withIntegerAttr(INTEGER_1)

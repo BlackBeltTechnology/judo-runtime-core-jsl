@@ -23,6 +23,7 @@ package hu.blackbelt.judo.runtime.core.jsl;
 import com.google.inject.Inject;
 import com.google.inject.Module;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.RdbmsDatasourceFixture;
 import hu.blackbelt.judo.runtime.core.jsl.itest.compositionrelationships.guice.compositionrelationships.CompositionRelationshipsDaoModules;
 import hu.blackbelt.judo.runtime.core.jsl.itest.compositionrelationships.sdk.compositionrelationships.compositionrelationships.*;
 import lombok.extern.slf4j.Slf4j;
@@ -70,8 +71,8 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
 
 
     @BeforeEach
-    protected void init() throws Exception {
-        super.init();
+    protected void init(RdbmsDatasourceFixture datasource) throws Exception {
+        super.init(datasource);
 
         entityD1 = entityDDao.create(EntityD.builder()
                 .build());
