@@ -293,12 +293,12 @@ public class FunctionsTest extends AbstractJslTest {
     public void testBooleans() {
         BooleanFunctions bool = booleanFunctionsDao.create(BooleanFunctions.builder().build());
 
-        assertEquals(Optional.of("TRUE"), bool.getOwnBoolAsString());
-        assertEquals(Optional.of("TRUE"), bool.getTrueAsString());
-        assertEquals(Optional.of("FALSE"), bool.getFalseAsString());
-        assertEquals(Optional.of("TRUE"), bool.getLogicalExpressionAsString());
+        assertEquals(Optional.of("true"), bool.getOwnBoolAsString());
+        assertEquals(Optional.of("true"), bool.getTrueAsString());
+        assertEquals(Optional.of("false"), bool.getFalseAsString());
+        assertEquals(Optional.of("true"), bool.getLogicalExpressionAsString());
     }
-    
+
     @Test
     public void testKleene() {
     	Kleene kleene = kleeneDao.create(Kleene.builder().build());
