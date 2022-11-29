@@ -354,7 +354,7 @@ public class PrimitivesTest extends AbstractJslTest {
 
         assertEquals(Optional.of(1), entityWithDefaultExpressions.getIntegerAttr());
         assertEquals(Optional.of(2.9), entityWithDefaultExpressions.getScaledAttr());
-        assertEquals(Optional.of("TRUE"), entityWithDefaultExpressions.getStringAttr());
+        assertEquals(Optional.of("true"), entityWithDefaultExpressions.getStringAttr());
         assertEquals(Optional.of("+36-1-123-123"), entityWithDefaultExpressions.getRegexAttr());
         assertEquals(Optional.of(true), entityWithDefaultExpressions.getBoolAttr());
         assertEquals(Optional.of(LocalDate.now()), entityWithDefaultExpressions.getDateAttr());
