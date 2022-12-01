@@ -79,6 +79,7 @@ public class PrimitivesTest extends AbstractJslTest {
     }
 
     @Test
+    @TestDefinition(testDefs={"TCD-008"})
     public void testPlainOptionalEntityCreationWithoutValues() {
         MyEntityWithOptionalFields myEntityWithOptionalFields = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder().build());
 
@@ -98,6 +99,7 @@ public class PrimitivesTest extends AbstractJslTest {
     }
 
     @Test
+    @TestDefinition(testDefs={"TCD-009"})
     public void testPlainOptionalEntityCreationWithValues() {
         MyEntityWithOptionalFields myEntityWithOptionalFields = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
                         .withIntegerAttr(1)
