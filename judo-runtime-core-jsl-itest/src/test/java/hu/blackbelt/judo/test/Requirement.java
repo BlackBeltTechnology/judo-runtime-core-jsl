@@ -1,4 +1,4 @@
-package hu.blackbelt.judo.runtime.core.jsl;
+package hu.blackbelt.judo.test;
 
 /*-
  * #%L
@@ -28,5 +28,5 @@ import java.lang.annotation.Target;
 @Retention( RetentionPolicy.SOURCE )
 @Target( value = { ElementType.METHOD, ElementType.TYPE })
 public @interface Requirement {
-    String[] keys();
+    String[] reqs();
 }
