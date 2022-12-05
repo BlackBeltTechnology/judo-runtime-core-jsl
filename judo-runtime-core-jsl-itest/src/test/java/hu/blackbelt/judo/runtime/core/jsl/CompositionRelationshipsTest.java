@@ -37,6 +37,8 @@ import javax.transaction.NotSupportedException;
 import javax.transaction.SystemException;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -272,5 +274,19 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
         Optional<EntityB> updatedB = entityBDao.getById(entityC.get__identifier());
 
         assertEquals(Optional.of("B"), updatedB.get().getStringB());
+    }
+
+    @Test
+    @Disabled
+    void testDeepCopyConstructor() {
+        //When we add a composition Entity we must copy it, because that comp entity belong the created entity
+
+        //TODO-JNG-4317
+
+        assertNotEquals(entityA.getSingleRequiredConA().get__identifier(),singleRequiredConA.get__identifier());
+        List<UUID> collect = singleRequiredConA.getMultipleDonB().stream().map(c -> c.get__identifier()).collect(Collectors.toList());
+        assertFalse(collect.contains(entityD1.get__identifier()));
+        assertFalse(collect.contains(entityD2.get__identifier()));
+
     }
 }
