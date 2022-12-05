@@ -26,6 +26,7 @@ import hu.blackbelt.judo.runtime.core.jsl.itest.operators.guice.operators.Operat
 import hu.blackbelt.judo.runtime.core.jsl.itest.operators.sdk.operators.operators.DefaultOperators;
 import hu.blackbelt.judo.runtime.core.jsl.itest.operators.sdk.operators.operators.DerivedOperators;
 import hu.blackbelt.judo.runtime.core.jsl.itest.operators.sdk.operators.operators.DerivedSource;
+import hu.blackbelt.judo.test.Requirement;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
@@ -52,6 +53,10 @@ public class OperatorsTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-EXPR-002",
+            "REQ-EXPR-006"
+    })
     void testOperatorsForDefaultValues() {
         DefaultOperators operators = defaultOperatorsDao.create(DefaultOperators.builder().build());
 
@@ -112,6 +117,13 @@ public class OperatorsTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-EXPR-002",
+            "REQ-EXPR-003",
+            "REQ-EXPR-004",
+            "REQ-EXPR-006",
+            "REQ-EXPR-010"
+    })
     void testOperatorsForDerivedFields() {
         DerivedOperators operators = derivedOperatorsDao.create(DerivedOperators.builder()
                 .withSource(DerivedSource.builder().build())
