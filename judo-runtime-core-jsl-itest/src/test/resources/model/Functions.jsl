@@ -36,16 +36,12 @@ entity EntityWithPrimitiveDefaults {
     field Timestamp timestampAttr = `2022-07-11T19:09:33Z`;
     field Time timeAttr = `23:59:59`;
 }
-/* FIXME: JNG-3896
 entity Functions {
-    field Entity entity
-    field EntityWithPrimitiveDefaults entityWithPrimitives
-}
-
-FIXME: use "extends Functions" once bug is fixed */
-entity AnyTypeFunctions {
     field Entity `entity`;
     field EntityWithPrimitiveDefaults entityWithPrimitives;
+}
+
+entity AnyTypeFunctions extends Functions {
 
     derived Boolean integerIsDefinedFalse => self.`entity`.integerAttr!isDefined();
     derived Boolean integerIsDefinedTrue => self.entityWithPrimitives.integerAttr!isDefined();
@@ -82,11 +78,10 @@ entity AnyTypeFunctions {
     derived Boolean timeIsUndefinedTrue => self.`entity`.timeAttr!isUndefined();
     derived Boolean timeIsUndefinedFalse => self.entityWithPrimitives.timeAttr!isUndefined();
 
-    /* FIXME: JNG-4078
     derived String stringOrElse => "apple"!orElse(value = "grape");
     derived Integer numberOrElse => 2!orElse(value = 1);
-    derived Integer stringOrElse3 => self.`entity`.integerAttr!orElse(value = 3);
-    */
+    derived Integer numberOrElse2 => self.`entity`.integerAttr!orElse(value = 3);
+    derived Integer numberOrElse3 => self.`entity`.integerAttr!orElse(value = -4.9)!abs()!orElse(value = 0!abs())!floor();
 }
 
 entity StringFunctions {
@@ -340,7 +335,7 @@ entity EnumFunctions {
 
 entity InstanceFunctions {
     field String instanceField = "Hello";
-    // field FE::ExternalEntity external FIXME: JNG-3909
+    field FE::ExternalEntity external;
     field Parent parent;
     field Child child;
 
@@ -354,16 +349,15 @@ entity InstanceFunctions {
     derived Boolean kindOfChild => self.parent!kindOf(entityType = Child);
 
     derived Parent asParentType => self.child;
-    /* TODO JNG-4181
     derived Child asChildType => self.parent!asType(entityType = Child);
-    */
 
-    /* FIXME: JNG-3968 
     derived Boolean parentMemberOfParents => self.parent!memberOf(instances = self.parents);
+    derived Boolean parentMemberOfParentsExtra => self.parent!memberOf(instances = self.parents!filter(p | p!memberOf(instances = Parent)));
     derived Boolean parentMemberOfChildren => self.parent!memberOf(instances = self.children);
     derived Boolean childMemberOfParents => self.child!memberOf(instances = self.parents);
     derived Boolean childMemberOfChildren => self.child!memberOf(instances = self.children);
-    */
+
+	derived Integer navigationWithCalls => self.parents!any().name!size();
 }
 
 entity Booler {
@@ -390,14 +384,12 @@ entity CollectionFunctions {
     derived Integer sizeParentsField => self.parentsField!size();
     derived Integer sizeParentsRelation => self.parentsRelation!size();
 
-    /* FIXME: JNG-4172
     derived Parent[] asCollectionChildrenParentField => self.parentsField!asCollection(entityType = Parent);
     derived Parent[] asCollectionChildrenParentRelation => self.parentsRelation!asCollection(entityType = Parent);
     derived Child[] asCollectionChildrenChildField => self.parentsField!asCollection(entityType = Child);
     derived Child[] asCollectionChildrenChildRelation => self.parentsRelation!asCollection(entityType = Child);
-    */
 
-    // derived Parent containsParent => self.parentsField!contains(instance = Parent!filter(p | p.name == "John")!any()); FIXME JNG-4174
+    derived Boolean containsParent => self.parentsField!contains(instance = Parent!filter(p | p.name == "John")!any());
 
     derived Parent[] filterParentsField => self.parentsField!filter(p | p.name == "John");
     derived Parent[] filterParentsRelation => self.parentsRelation!filter(p | p.name == "Mark");
@@ -455,8 +447,17 @@ entity Child extends Parent {
     relation Parent mother;
 }
 
-/* FIXME: JNG-3909
 entity ExternalChild extends FE::ExternalEntity {
-    field Integer age
+    field Integer age;
 }
-*/
+
+entity Member {
+    field String name;
+}
+
+entity Tester {
+    relation Member member;
+    relation Member[] members;
+
+    derived Boolean memberMemberOfMembers => self.member!memberOf(instances = self.members);
+}

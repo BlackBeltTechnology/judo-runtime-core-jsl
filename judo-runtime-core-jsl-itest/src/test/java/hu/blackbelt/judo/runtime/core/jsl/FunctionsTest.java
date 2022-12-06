@@ -1,5 +1,8 @@
 package hu.blackbelt.judo.runtime.core.jsl;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+
 /*-
  * #%L
  * JUDO Runtime Core :: JUDO Language Specification DSL Integration Tests
@@ -89,6 +92,12 @@ public class FunctionsTest extends AbstractJslTest {
     @Inject
     BoolerTester.BoolerTesterDao boolerTesterDao;
 
+    @Inject
+    Member.MemberDao memberDao;
+
+    @Inject
+    Tester.TesterDao testerDao;
+
     @BeforeEach
     protected void init() throws Exception {
         super.init();
@@ -149,6 +158,11 @@ public class FunctionsTest extends AbstractJslTest {
         assertEquals(Optional.of(true), anyTypeFunctions.getTimeIsDefinedTrue());
         assertEquals(Optional.of(true), anyTypeFunctions.getTimeIsUndefinedTrue());
         assertEquals(Optional.of(false), anyTypeFunctions.getTimeIsUndefinedFalse());
+
+        assertEquals(Optional.of("apple"), anyTypeFunctions.getStringOrElse());
+        assertEquals(2, anyTypeFunctions.getNumberOrElse().get());
+        assertEquals(3, anyTypeFunctions.getNumberOrElse2().get());
+        assertEquals(4, anyTypeFunctions.getNumberOrElse3().get());
     }
 
     @Test
@@ -279,12 +293,12 @@ public class FunctionsTest extends AbstractJslTest {
     public void testBooleans() {
         BooleanFunctions bool = booleanFunctionsDao.create(BooleanFunctions.builder().build());
 
-        assertEquals(Optional.of("TRUE"), bool.getOwnBoolAsString());
-        assertEquals(Optional.of("TRUE"), bool.getTrueAsString());
-        assertEquals(Optional.of("FALSE"), bool.getFalseAsString());
-        assertEquals(Optional.of("TRUE"), bool.getLogicalExpressionAsString());
+        assertEquals(Optional.of("true"), bool.getOwnBoolAsString());
+        assertEquals(Optional.of("true"), bool.getTrueAsString());
+        assertEquals(Optional.of("false"), bool.getFalseAsString());
+        assertEquals(Optional.of("true"), bool.getLogicalExpressionAsString());
     }
-    
+
     @Test
     public void testKleene() {
     	Kleene kleene = kleeneDao.create(Kleene.builder().build());
@@ -441,13 +455,45 @@ public class FunctionsTest extends AbstractJslTest {
                         .withParent(Parent.builder().withName("Another Person").build())
                         .withChild(Child.builder().withName("Another Child").withAge(31L).build())
                         .build());
+
+        InstanceFunctions instanceFunctions1 = instanceFunctionsDao.create(InstanceFunctions.builder()
+                        .withParent(parentDao.getById(child1.get__identifier()).orElseThrow())
+                        .build());
                
         assertTrue(instanceFunctions.getTypeOfParent().get());
         assertFalse(instanceFunctions.getKindOfChild().get());
         assertTrue(instanceFunctions.getKindOfParent().get());
         assertFalse(instanceFunctions.getNotTypeOfChild().get());
 
-        assertTrue(instanceFunctionsDao.getAsParentType(instanceFunctions).get() instanceof Parent);
+        String parentName = instanceFunctionsDao.getAsParentType(instanceFunctions).orElseThrow().getName().orElseThrow();
+        assertEquals("Another Child", parentName);
+        String childName = instanceFunctionsDao.getAsChildType(instanceFunctions1).orElseThrow().getName().orElseThrow();
+        assertEquals("Erika Young", childName);
+
+        instanceFunctionsDao.addParents(instanceFunctions, ImmutableList.of(parent1));
+        
+        instanceFunctions = instanceFunctionsDao.getById(instanceFunctions.get__identifier()).orElseThrow();
+        
+        assertEquals(10, instanceFunctions.getNavigationWithCalls().get());
+
+        InstanceFunctions instanceFunctions2 = instanceFunctionsDao.create(InstanceFunctions.builder()
+                                                                                            .withParent(Parent.builder().withName("P1").build())
+                                                                                            .withChild(Child.builder().withName("C1").build())
+                                                                                            .build());
+        Parent p1 = parentDao.getAll().stream().filter(p -> p.getName().orElseThrow().equals("P1")).findAny().orElseThrow();
+        Child c1 = childDao.getAll().stream().filter(c -> c.getName().orElseThrow().equals("C1")).findAny().orElseThrow();
+
+        instanceFunctionsDao.addParents(instanceFunctions2, List.of(p1));
+        instanceFunctionsDao.addChildren(instanceFunctions2, List.of(c1));
+
+        instanceFunctions2 = instanceFunctionsDao.getById(instanceFunctions2.get__identifier()).orElseThrow();
+
+        assertTrue(instanceFunctions2.getParentMemberOfParents().orElseThrow());
+        assertTrue(instanceFunctions2.getParentMemberOfParentsExtra().orElseThrow());
+        assertFalse(instanceFunctions2.getParentMemberOfChildren().orElseThrow());
+        assertFalse(instanceFunctions2.getChildMemberOfParents().orElseThrow());
+        assertTrue(instanceFunctions2.getChildMemberOfChildren().orElseThrow());
+
     }
 
     @Test
@@ -476,12 +522,12 @@ public class FunctionsTest extends AbstractJslTest {
                 )
                 .withChildrenRelation(
                         List.of(
-                                Child.builder().withName("Mark").withAge(33L).build(),
+                                Child.builder().withName("Mario").withAge(33L).build(),
                                 Child.builder().withName("Stacey").withAge(16L).build(),
                                 Child.builder().withName("Ruby").withAge(16L).build(),
                                 Child.builder().withName("Anna").withAge(34L).build(),
                                 Child.builder().withName("Clark").withAge(34L).build(),
-                                Child.builder().withName("John").build()
+                                Child.builder().withName("Daniel").build()
                         )
                 )
                 .build());
@@ -492,7 +538,21 @@ public class FunctionsTest extends AbstractJslTest {
         assertNotNull(collectionFunctionsDao.getAnyParentsField(collectionFunctions));
         assertNotNull(collectionFunctionsDao.getAnyParentsRelation(collectionFunctions));
 
-        // FIXME: JNG-4172 add tests
+        List<Parent> asCollectionChildrenParentField = collectionFunctionsDao.getAsCollectionChildrenParentField(collectionFunctions);
+        assertEquals(2, asCollectionChildrenParentField.size());
+        assertTrue(asCollectionChildrenParentField.stream().anyMatch(p -> p.getName().orElseThrow().equals("John")));
+        assertTrue(asCollectionChildrenParentField.stream().anyMatch(p -> p.getName().orElseThrow().equals("Another Person")));
+
+        List<Parent> asCollectionChildrenParentRelation = collectionFunctionsDao.getAsCollectionChildrenParentRelation(collectionFunctions);
+        assertEquals(2, asCollectionChildrenParentRelation.size());
+        assertTrue(asCollectionChildrenParentRelation.stream().anyMatch(p -> p.getName().orElseThrow().equals("Mark")));
+        assertTrue(asCollectionChildrenParentRelation.stream().anyMatch(p -> p.getName().orElseThrow().equals("Billy")));
+
+        List<Child> asCollectionChildrenChildField = collectionFunctionsDao.getAsCollectionChildrenChildField(collectionFunctions);
+        assertEquals(0, asCollectionChildrenChildField.size());
+
+        List<Child> asCollectionChildrenChildRelation = collectionFunctionsDao.getAsCollectionChildrenChildRelation(collectionFunctions);
+        assertEquals(0, asCollectionChildrenChildRelation.size());
 
         assertEquals(Optional.of(23L), collectionFunctions.getMinChildrenField());
         assertEquals(Optional.of(16L), collectionFunctions.getMinChildrenRelation());
@@ -525,6 +585,8 @@ public class FunctionsTest extends AbstractJslTest {
 
         assertEquals(2, collectionFunctionsDao.getBackChildrenField(collectionFunctions).size());
         assertEquals(2, collectionFunctionsDao.getBackChildrenRelation(collectionFunctions).size());
+
+        assertTrue(collectionFunctions.getContainsParent().orElseThrow());
 
         assertEquals(1, collectionFunctionsDao.getFilterParentsField(collectionFunctions).size());
         assertEquals(1, collectionFunctionsDao.getFilterParentsRelation(collectionFunctions).size());
@@ -659,6 +721,19 @@ public class FunctionsTest extends AbstractJslTest {
     private Booler updateBooler(Booler booler, Boolean b) {
         booler.setB(b);
         return boolerDao.update(booler);
+    }
+
+    @Test
+    public void testMember() {
+        Member m1 = memberDao.create(Member.builder().withName("M1").build());
+        Member m2 = memberDao.create(Member.builder().withName("M2").build());
+        Member m3 = memberDao.create(Member.builder().withName("M3").build());
+
+        Tester tester = testerDao.create(Tester.builder()
+                                               .withMember(m1)
+                                               .withMembers(List.of(m1, m2, m3))
+                                               .build());
+        assertTrue(tester.getMemberMemberOfMembers().orElseThrow());
     }
 
 }
