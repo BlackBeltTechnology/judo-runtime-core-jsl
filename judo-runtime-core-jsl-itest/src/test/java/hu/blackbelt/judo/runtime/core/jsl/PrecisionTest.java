@@ -27,6 +27,7 @@ import hu.blackbelt.judo.dispatcher.api.FileType;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
 import hu.blackbelt.judo.runtime.core.jsl.itest.primitives.guice.primitives.PrimitivesDaoModules;
 import hu.blackbelt.judo.runtime.core.jsl.itest.primitives.sdk.primitives.primitives.*;
+import hu.blackbelt.judo.test.Requirement;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
@@ -56,6 +57,11 @@ public class PrecisionTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-005",
+            "REQ-ENT-012"
+    })
     public void testPrecisionValidatorFailsWithPrecisionOverflow() {
         ValidationException thrown = assertThrows(
                 ValidationException.class,
@@ -70,6 +76,11 @@ public class PrecisionTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-005",
+            "REQ-ENT-012"
+    })
     public void testScaleValidatorFailsWithScaleOverflow() {
         ValidationException thrown = assertThrows(
                 ValidationException.class,
@@ -84,6 +95,11 @@ public class PrecisionTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-005",
+            "REQ-ENT-012"
+    })
     public void testValidateDoubleWithPrecisionAndScaleOverflow() {
         ValidationException thrown = assertThrows(
                 ValidationException.class,
@@ -103,6 +119,11 @@ public class PrecisionTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-005",
+            "REQ-ENT-012"
+    })
     public void testScaleValidatorPassesForValueWithoutScale() {
         MyEntityWithOptionalFields created = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
                 .withScaledAttr(123456789.0)
