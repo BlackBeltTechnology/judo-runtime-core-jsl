@@ -1,14 +1,11 @@
 model Primitives;
 
-type numeric Integer(precision = 9, scale = 0);
+import judo::types;
+
 type numeric Scaled(precision = 9, scale = 2);
-type string String(min-size = 0, max-size = 128);
 type string PhoneNumber(min-size = 0, max-size = 32, regex = "^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]\\d{3}[\\s.-]\\d{4}$");   // escape sequencing does not work in regexp!!!!
-type boolean Boolean;
-type date Date;
-type timestamp Timestamp;
-type time Time;
 type binary Binary(mime-types = ["text/plain"], max-file-size=1 GB);
+type string SmallString(min-size = 0, max-size = 128);
 
 enum MyEnum {
     Atomic = 0;
@@ -19,7 +16,7 @@ enum MyEnum {
 entity abstract AbstractEntityOptionalFields {
     field Integer integerAttr;
     field Scaled scaledAttr;
-    field String stringAttr;
+    field SmallString stringAttr;
     field PhoneNumber regexAttr;
     field Boolean boolAttr;
     field Date dateAttr;
@@ -98,4 +95,18 @@ entity EntityWithPrimitiveDefaultExpressions {
     field Date dateAttr = Date!now();
     field Timestamp timestampAttr = Timestamp!now();
     field Time timeAttr = Time!of(hour = 23, minute = 59, second = 59);
+}
+
+entity ReferenceEntity {
+    field Integer intAtt = 3;
+}
+
+entity DefaultRequiredEntity {
+
+    //TODO JNG-4242
+    //TODO JNG-3721
+
+    identifier required Date createDate = Date!of(year = 2022, month = 11, day = 4);
+    field required Integer sumEntitiesIntegerValue = ReferenceEntity!sum(e | e.intAtt);
+
 }

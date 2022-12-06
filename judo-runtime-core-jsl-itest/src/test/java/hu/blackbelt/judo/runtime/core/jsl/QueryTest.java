@@ -22,18 +22,11 @@ package hu.blackbelt.judo.runtime.core.jsl;
 
 import com.google.inject.Inject;
 import com.google.inject.Module;
-import hu.blackbelt.judo.dispatcher.api.FileType;
-import hu.blackbelt.judo.runtime.core.jsl.itest.primitives.guice.primitives.PrimitivesDaoModules;
-import hu.blackbelt.judo.runtime.core.jsl.itest.primitives.sdk.primitives.primitives.MyEntityWithOptionalFields;
-import hu.blackbelt.judo.runtime.core.jsl.itest.primitives.sdk.primitives.primitives.MyEnum;
-import hu.blackbelt.judo.sdk.query.StringFilter;
+import hu.blackbelt.judo.runtime.core.jsl.itest.querymodel.guice.querymodel.QueryModelDaoModules;
+import hu.blackbelt.judo.runtime.core.jsl.itest.querymodel.sdk.querymodel.querymodel.*;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,124 +35,57 @@ import static org.junit.jupiter.api.Assertions.*;
 @Slf4j
 public class QueryTest extends AbstractJslTest {
     @Inject
-    MyEntityWithOptionalFields.MyEntityWithOptionalFieldsDao myEntityWithOptionalFieldsDao;
+    TotalNumberOfLeads.TotalNumberOfLeadsDao totalNumberOfLeadsDao;
 
-    MyEntityWithOptionalFields entity1;
+    @Inject
+    RootOneLead.RootOneLeadDao rootOneLeadDao;
 
-    MyEntityWithOptionalFields entity2;
+    @Inject
+    RootAllLeads.RootAllLeadsDao rootAllLeadsDao;
 
-    @BeforeEach
-    protected void init() throws Exception {
-        super.init();
+    @Inject
+    RootAllLeadsBetween.RootAllLeadsBetweenDao rootAllLeadsBetweenDao;
 
-        entity1 = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
-                .withIntegerAttr(2)
-                .withScaledAttr(2.34)
-                .withStringAttr("test")
-                .withRegexAttr("+36 333-333-3333")
-                .withBoolAttr(true)
-                .withDateAttr(LocalDate.of(2022, 7, 11))
-                .withTimestampAttr(OffsetDateTime.parse("2022-07-11T19:09:33Z"))
-                .withTimeAttr(LocalTime.parse("23:59:59"))
-                .withBinaryAttr(FileType.builder().fileName("test.txt").build())
-                .withEnumAttr(MyEnum.Bombastic)
-                .build());
+    @Inject
+    RootCountAllLeadsBetween.RootCountAllLeadsBetweenDao rootCountAllLeadsBetweenDao;
 
-        entity2 = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
-                .withIntegerAttr(1)
-                .withScaledAttr(1.23)
-                .withStringAttr("Another")
-                .withRegexAttr("+36 333-333-3331")
-                .withBoolAttr(false)
-                .withDateAttr(LocalDate.of(1999, 9, 19))
-                .withTimestampAttr(OffsetDateTime.parse("1999-09-19T09:09:09Z"))
-                .withTimeAttr(LocalTime.parse("12:34:56"))
-                .withBinaryAttr(FileType.builder().fileName("test.txt").build())
-                .withEnumAttr(MyEnum.Atomic)
-                .build());
-    }
+    @Inject
+    Lead.LeadDao leadDao;
 
     @Override
     public Module getModelDaoModule() {
-        return new PrimitivesDaoModules();
+        return new QueryModelDaoModules();
     }
 
     @Override
     public String getModelName() {
-        return "Primitives";
+        return "QueryModel";
     }
 
     @Test
-    public void testLimit() {
-        List<MyEntityWithOptionalFields> list = myEntityWithOptionalFieldsDao
-                .query()
-                .limit(1)
-                .execute();
+    public void testStaticQuery() {
+        leadDao.create(Lead.builder().withValue(50).build());
+        leadDao.create(Lead.builder().withValue(175).build());
 
-        assertEquals(1, list.size());
-    }
+        assertEquals(2, totalNumberOfLeadsDao.getTotalNumberOfLeads());
+        assertEquals(2, rootAllLeadsDao.getRootAllLeads().size());
+        assertNotNull(rootOneLeadDao.getRootOneLead());
 
-    @Test
-    public void testOrderBy() {
-        assertOrderBy(MyEntityWithOptionalFields.Attribute.INTEGER_ATTR, entity2);
-        assertOrderBy(MyEntityWithOptionalFields.Attribute.SCALED_ATTR, entity2);
-        assertOrderBy(MyEntityWithOptionalFields.Attribute.STRING_ATTR, entity2);
-        assertOrderBy(MyEntityWithOptionalFields.Attribute.REGEX_ATTR, entity2);
-        assertOrderBy(MyEntityWithOptionalFields.Attribute.BOOL_ATTR, entity2);
-        assertOrderBy(MyEntityWithOptionalFields.Attribute.DATE_ATTR, entity2);
-        assertOrderBy(MyEntityWithOptionalFields.Attribute.TIMESTAMP_ATTR, entity2);
-        assertOrderBy(MyEntityWithOptionalFields.Attribute.TIME_ATTR, entity2);
-        assertOrderBy(MyEntityWithOptionalFields.Attribute.ENUM_ATTR, entity2);
-    }
+        List<Lead> rootAllLeadsBetween = rootAllLeadsBetweenDao.searchRootAllLeadsBetween()
+                .execute(_QueryModel_rootAllLeadsBetween_Parameters.builder()
+                        .withMax(80)
+                        .withMin(10)
+                        .build()
+                );
+        assertEquals(1, rootAllLeadsBetween.size());
+        assertEquals(Optional.of(50), rootAllLeadsBetween.get(0).getValue());
 
-    @Test
-    public void testOrderByDescending() {
-        assertOrderByDescending(MyEntityWithOptionalFields.Attribute.INTEGER_ATTR, entity1);
-        assertOrderByDescending(MyEntityWithOptionalFields.Attribute.SCALED_ATTR, entity1);
-        assertOrderByDescending(MyEntityWithOptionalFields.Attribute.STRING_ATTR, entity1);
-        assertOrderByDescending(MyEntityWithOptionalFields.Attribute.REGEX_ATTR, entity1);
-        assertOrderByDescending(MyEntityWithOptionalFields.Attribute.BOOL_ATTR, entity1);
-        assertOrderByDescending(MyEntityWithOptionalFields.Attribute.DATE_ATTR, entity1);
-        assertOrderByDescending(MyEntityWithOptionalFields.Attribute.TIMESTAMP_ATTR, entity1);
-        assertOrderByDescending(MyEntityWithOptionalFields.Attribute.TIME_ATTR, entity1);
-        assertOrderByDescending(MyEntityWithOptionalFields.Attribute.ENUM_ATTR, entity1);
-    }
+        Integer rootCountAllLeadsBetween = rootCountAllLeadsBetweenDao.getRootCountAllLeadsBetween(_QueryModel_rootCountAllLeadsBetween_Parameters.builder()
+                .withMin(10)
+                .withMax(80)
+                .build()
+        );
 
-    @Test
-    public void testMask() {
-        MyEntityWithOptionalFields maskedResult = myEntityWithOptionalFieldsDao
-                .query()
-                .maskedBy(MyEntityWithOptionalFields.MyEntityWithOptionalFieldsDao.Mask.myEntityWithOptionalFieldsMask()
-                        .withStringAttr()
-                        .withIntegerAttr())
-                .filterByStringAttr(StringFilter.equalTo("test"))
-                .execute()
-                .get(0);
-
-        assertEquals(entity1.get__identifier(), maskedResult.get__identifier());
-        assertEquals(entity1.getIntegerAttr(), maskedResult.getIntegerAttr());
-        assertEquals(Optional.empty(), maskedResult.getScaledAttr());
-        assertEquals(entity1.getStringAttr(), maskedResult.getStringAttr());
-        assertEquals(Optional.empty(), maskedResult.getRegexAttr());
-    }
-
-    private void assertOrderBy(MyEntityWithOptionalFields.Attribute attribute, MyEntityWithOptionalFields firstEntity) {
-        MyEntityWithOptionalFields orderBy = myEntityWithOptionalFieldsDao
-                .query()
-                .orderBy(attribute)
-                .execute()
-                .get(0);
-
-        assertEquals(firstEntity.get__identifier(), orderBy.get__identifier());
-    }
-
-    private void assertOrderByDescending(MyEntityWithOptionalFields.Attribute attribute, MyEntityWithOptionalFields firstEntity) {
-        MyEntityWithOptionalFields orderByDescending = myEntityWithOptionalFieldsDao
-                .query()
-                .orderByDescending(attribute)
-                .execute()
-                .get(0);
-
-        assertEquals(firstEntity.get__identifier(), orderByDescending.get__identifier());
+        assertEquals(1, rootCountAllLeadsBetween);
     }
 }

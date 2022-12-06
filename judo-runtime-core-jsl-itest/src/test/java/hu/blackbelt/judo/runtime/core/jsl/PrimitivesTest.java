@@ -63,6 +63,11 @@ public class PrimitivesTest extends AbstractJslTest {
     @Inject
     EntityRequiredWithPrimitiveDefaults.EntityRequiredWithPrimitiveDefaultsDao entityRequiredWithPrimitiveDefaultsDao;
 
+    @Inject
+    ReferenceEntity.ReferenceEntityDao referenceEntityDao;
+
+    @Inject
+    DefaultRequiredEntity.DefaultRequiredEntityDao defaultRequiredEntityDao;
     @Override
     public Module getModelDaoModule() {
         return new PrimitivesDaoModules();
@@ -150,6 +155,18 @@ public class PrimitivesTest extends AbstractJslTest {
     private org.hamcrest.Matcher matchMissingAttribute(String attrName) {
         return allOf(
                 hasProperty("code", equalTo("MISSING_REQUIRED_ATTRIBUTE")),
+                hasProperty("location", equalTo(attrName)));
+    }
+
+    private org.hamcrest.Matcher matchPrecisionValidationForAttribute(String attrName) {
+        return allOf(
+                hasProperty("code", equalTo("PRECISION_VALIDATION_FAILED")),
+                hasProperty("location", equalTo(attrName)));
+    }
+
+    private org.hamcrest.Matcher matchScaleValidationForAttribute(String attrName) {
+        return allOf(
+                hasProperty("code", equalTo("SCALE_VALIDATION_FAILED")),
                 hasProperty("location", equalTo(attrName)));
     }
 
@@ -337,7 +354,7 @@ public class PrimitivesTest extends AbstractJslTest {
 
         assertEquals(Optional.of(1), entityWithDefaultExpressions.getIntegerAttr());
         assertEquals(Optional.of(2.9), entityWithDefaultExpressions.getScaledAttr());
-        assertEquals(Optional.of("TRUE"), entityWithDefaultExpressions.getStringAttr());
+        assertEquals(Optional.of("true"), entityWithDefaultExpressions.getStringAttr());
         assertEquals(Optional.of("+36-1-123-123"), entityWithDefaultExpressions.getRegexAttr());
         assertEquals(Optional.of(true), entityWithDefaultExpressions.getBoolAttr());
         assertEquals(Optional.of(LocalDate.now()), entityWithDefaultExpressions.getDateAttr());
@@ -396,6 +413,45 @@ public class PrimitivesTest extends AbstractJslTest {
     }
 
     @Test
+    public void testMaxPrecision() {
+        // FIXME: JNG-4262
+//        ValidationException thrown = assertThrows(
+//                ValidationException.class,
+//                () -> myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
+//                        .withScaledAttr(12345678.0)
+//                        .build())
+//        );
+//
+//        assertThat(thrown.getValidationResults(), containsInAnyOrder(
+//                matchPrecisionValidationForAttribute("scaledAttr")
+//        ));
+
+        MyEntityWithOptionalFields e1 = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
+                .withScaledAttr(1234567.0)
+                .build());
+
+        assertEquals(Optional.of(1234567.0), e1.getScaledAttr());
+
+        MyEntityWithOptionalFields e2 = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
+                .withScaledAttr(1234567.1)
+                .build());
+
+        assertEquals(Optional.of(1234567.1), e2.getScaledAttr());
+
+        MyEntityWithOptionalFields e3 = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
+                .withScaledAttr(1234567.12)
+                .build());
+
+        assertEquals(Optional.of(1234567.12), e3.getScaledAttr());
+
+        MyEntityWithOptionalFields e4 = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
+                .withScaledAttr(1234567.1200)
+                .build());
+
+        assertEquals(Optional.of(1234567.12), e4.getScaledAttr());
+    }
+
+    @Test
     public void testScaleValidation() {
         ValidationException thrown = assertThrows(
                 ValidationException.class,
@@ -403,9 +459,32 @@ public class PrimitivesTest extends AbstractJslTest {
                         .withScaledAttr(123456.789)
                         .build()));
 
-        assertThat(thrown.getValidationResults(), containsInAnyOrder(allOf(
-                hasProperty("code", equalTo("SCALE_VALIDATION_FAILED")),
-                hasProperty("location", equalTo("scaledAttr")))
+        assertThat(thrown.getValidationResults(), containsInAnyOrder(
+                matchScaleValidationForAttribute("scaledAttr")
         ));
     }
+
+    @Test
+    public void testDefaultRequieredValuesInEntity() {
+
+        referenceEntityDao.create(ReferenceEntity.builder().build());
+        referenceEntityDao.create(ReferenceEntity.builder().build());
+
+        DefaultRequiredEntity defaultEntity = defaultRequiredEntityDao.create(DefaultRequiredEntity.builder().build());
+
+        assertEquals(6, defaultEntity.getSumEntitiesIntegerValue());
+        assertEquals(LocalDate.of(2022, 11, 4), defaultEntity.getCreateDate());
+        assertThrows(ValidationException.class, () -> defaultRequiredEntityDao.create(DefaultRequiredEntity.builder()
+                .withCreateDate(LocalDate.of(2022, 11, 4))
+                .build()));
+
+        DefaultRequiredEntity defaultEntity1 = defaultRequiredEntityDao.create(DefaultRequiredEntity.builder()
+                .withCreateDate(LocalDate.of(2022, 11, 5))
+                .withSumEntitiesIntegerValue(5)
+                .build());
+
+        assertEquals(5, defaultEntity1.getSumEntitiesIntegerValue());
+        assertEquals(LocalDate.of(2022, 11, 5), defaultEntity1.getCreateDate());
+    }
+
 }

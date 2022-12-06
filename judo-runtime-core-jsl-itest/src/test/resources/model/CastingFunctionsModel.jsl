@@ -1,0 +1,55 @@
+model CastingFunctionsModel;
+
+type string String(min-size = 0, max-size = 255);
+type boolean Boolean;
+
+entity A {
+    field String nameA;
+}
+
+entity B extends A {
+    field String nameB;
+}
+
+entity CA extends B {
+    field String nameCA;
+}
+
+entity CB extends B {
+    field String nameCB;
+}
+
+entity Tester {
+    relation B b;
+    relation B[] bs;
+    relation B caAsB;
+    relation B[] caAsBs;
+
+    // kind of
+    derived Boolean kindOfA => self.b!kindOf(entityType = A);        // true
+    derived Boolean kindOfB => self.b!kindOf(entityType = B);        // true
+    derived Boolean kindOfCA => self.b!kindOf(entityType = CA);      // false
+    derived Boolean kindOfCA1 => self.caAsB!kindOf(entityType = CA); // true
+    derived Boolean kindOfCB => self.b!kindOf(entityType = CB);      // false
+
+    // type of
+    derived Boolean typeOfA => self.b!typeOf(entityType = A);        // false
+    derived Boolean typeOfB => self.b!typeOf(entityType = B);        // true
+    derived Boolean typeOfCA => self.b!typeOf(entityType = CA);      // false
+    derived Boolean typeOfCA1 => self.caAsB!typeOf(entityType = CA); // true
+    derived Boolean typeOfCB => self.b!typeOf(entityType = CB);      // false
+
+    // as type
+    derived A asTypeA => self.b!asType(entityType = A);         // B
+    derived B asTypeB => self.b!asType(entityType = B);         // B
+    derived CA asTypeCA => self.b!asType(entityType = CA);      // undefined
+    derived CA asTypeCA1 => self.caAsB!asType(entityType = CA); // CA
+    derived CB asTypeCB => self.b!asType(entityType = CB);      // undefined
+
+    // as collection
+    derived A[] asCollectionA => self.bs!asCollection(entityType = A);         // B-s
+    derived B[] asCollectionB => self.bs!asCollection(entityType = B);         // B-s
+    derived CA[] asCollectionCA => self.bs!asCollection(entityType = CA);      // empty
+    derived CA[] asCollectionCA1 => self.caAsBs!asCollection(entityType = CA); // CA-s
+    derived CB[] asCollectionCB => self.bs!asCollection(entityType = CB);      // empty
+}

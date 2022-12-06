@@ -20,3 +20,7 @@ entity EntityC extends EntityB {
 entity EntityD {
     field String stringD;
 }
+
+entity EntityE extends EntityD, EntityC {
+    field String stringE;
+}
