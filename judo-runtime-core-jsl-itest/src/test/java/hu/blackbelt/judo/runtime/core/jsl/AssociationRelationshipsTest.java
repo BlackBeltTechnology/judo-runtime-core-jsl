@@ -24,6 +24,7 @@ import com.google.inject.Inject;
 import com.google.inject.Module;
 import hu.blackbelt.judo.runtime.core.jsl.itest.associationrelationships.guice.associationrelationships.AssociationRelationshipsDaoModules;
 import hu.blackbelt.judo.runtime.core.jsl.itest.associationrelationships.sdk.associationrelationships.associationrelationships.*;
+import hu.blackbelt.judo.test.Requirement;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -76,6 +77,11 @@ public class AssociationRelationshipsTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-ENT-001",
+            "REQ-ENT-005",
+            "REQ-ENT-012"
+    })
     public void testSetUnsetSingleRelation() {
         assertEquals(Optional.empty(), entityADao.getSingleConA(entityA));
 
@@ -89,6 +95,11 @@ public class AssociationRelationshipsTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-ENT-001",
+            "REQ-ENT-005",
+            "REQ-ENT-012"
+    })
     public void testAddRemoveMultipleRelations() {
         assertEquals(List.of(), entityCDao.getMultipleAonB(entityC));
 
@@ -104,6 +115,11 @@ public class AssociationRelationshipsTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-ENT-001",
+            "REQ-ENT-005",
+            "REQ-ENT-012"
+    })
     public void testRequiredRelationEnforced() {
         IllegalArgumentException thrown = assertThrows(
                 IllegalArgumentException.class,
@@ -119,6 +135,12 @@ public class AssociationRelationshipsTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-ENT-001",
+            "REQ-ENT-005",
+            "REQ-ENT-006",
+            "REQ-ENT-012"
+    })
     public void testTraverse() {
         EntityD entityD2 = entityDDao.create(EntityD.builder().build());
 
@@ -137,6 +159,11 @@ public class AssociationRelationshipsTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-ENT-001",
+            "REQ-ENT-005",
+            "REQ-ENT-012"
+    })
     public void testDeletingRequiredRelationThrowsException() {
         IllegalStateException thrown = assertThrows(
                 IllegalStateException.class,
@@ -148,6 +175,11 @@ public class AssociationRelationshipsTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-ENT-001",
+            "REQ-ENT-005",
+            "REQ-ENT-012"
+    })
     public void testDeletingRelatedElementUnsetsRelationship() {
         entityDDao.delete(entityD);
 
@@ -157,6 +189,12 @@ public class AssociationRelationshipsTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-ENT-001",
+            "REQ-ENT-005",
+            "REQ-ENT-006",
+            "REQ-ENT-012"
+    })
     public void testOppositeAdd() {
         EntityF entityF1 = entityFDao.create(EntityF.builder().build());
         EntityF entityF2 = entityFDao.create(EntityF.builder().build());
@@ -170,6 +208,12 @@ public class AssociationRelationshipsTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-ENT-001",
+            "REQ-ENT-005",
+            "REQ-ENT-006",
+            "REQ-ENT-012"
+    })
     public void testNavigateTwoWay() {
         EntityA entityA1 = createA(entityC, List.of());
         EntityA entityA2 = createA(entityC, List.of());
