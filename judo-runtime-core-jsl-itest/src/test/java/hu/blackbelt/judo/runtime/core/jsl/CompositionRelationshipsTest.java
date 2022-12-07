@@ -281,9 +281,23 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
     void testDeepCopyConstructor() {
         //When we add a composition Entity we must copy it, because that comp entity belong the created entity
 
+        //Build entities for the test
+        entityD1 = entityDDao.create(EntityD.builder()
+                .build());
+        entityD2 = entityDDao.create(EntityD.builder()
+                .build());
+        singleRequiredConA = entityCDao.create(EntityC.builder()
+                .withStringC("C")
+                .withMultipleDonB(List.of(entityD1, entityD2))
+                .build());
+        entityA = entityADao.create(EntityA.builder()
+                .withStringA("A")
+                .withSingleRequiredConA(singleRequiredConA)
+                .build());
+
         //TODO-JNG-4317
 
-        assertNotEquals(entityA.getSingleRequiredConA().get__identifier(),singleRequiredConA.get__identifier());
+        assertNotEquals(entityA.getSingleRequiredConA().get__identifier(), singleRequiredConA.get__identifier());
         List<UUID> collect = singleRequiredConA.getMultipleDonB().stream().map(c -> c.get__identifier()).collect(Collectors.toList());
         assertFalse(collect.contains(entityD1.get__identifier()));
         assertFalse(collect.contains(entityD2.get__identifier()));
