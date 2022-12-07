@@ -11,7 +11,6 @@ type date Date;
 type timestamp Timestamp;
 type binary Binary(mime-types = ["text/plain"], max-file-size=1 GB);
 
-/*
 error MyError {
 	field Integer code;
 	field String msg = "Internal Server Error";
@@ -20,7 +19,6 @@ error MyError {
 error MyExtendedError extends MyError {
 	field Integer extra = 0;
 }
-*/
 
 enum LeadStatus {
 	OPPORTUNITY = 0;

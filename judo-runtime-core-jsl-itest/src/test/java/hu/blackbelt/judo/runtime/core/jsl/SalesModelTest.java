@@ -240,7 +240,6 @@ class SalesModelTest extends AbstractJslTest {
     }
 
     @Test
-
     public void testErrorInheritance() {
         MyExtendedError error = MyExtendedError.builder()
                 .withCode(403)
