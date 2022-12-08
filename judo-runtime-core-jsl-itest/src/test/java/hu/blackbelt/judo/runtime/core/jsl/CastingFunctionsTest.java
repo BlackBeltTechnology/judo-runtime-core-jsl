@@ -138,4 +138,11 @@ public class CastingFunctionsTest extends AbstractJslTest {
                                                             lca.getNameCA().orElseThrow().equals("ca3")));
     }
 
+    @Test
+    public void testContainerFunction(){
+
+
+
+    }
+
 }

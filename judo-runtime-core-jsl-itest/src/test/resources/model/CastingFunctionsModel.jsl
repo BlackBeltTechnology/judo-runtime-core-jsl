@@ -52,4 +52,9 @@ entity Tester {
     derived CA[] asCollectionCA => self.bs!asCollection(entityType = CA);      // empty
     derived CA[] asCollectionCA1 => self.caAsBs!asCollection(entityType = CA); // CA-s
     derived CB[] asCollectionCB => self.bs!asCollection(entityType = CB);      // empty
+
+    // container
+
+    derived A[] containerCollectedA => self!container(entityType = CastingFunctionsModel::A);         // check the cast
+
 }
