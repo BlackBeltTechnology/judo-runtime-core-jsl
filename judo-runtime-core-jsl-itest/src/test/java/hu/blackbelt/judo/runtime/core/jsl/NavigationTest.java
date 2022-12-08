@@ -55,8 +55,10 @@ class NavigationTest extends AbstractJslTest {
 
     @Test
     @Requirement(reqs = {
+            "REQ-ENT-001",
             "REQ-ENT-004",
             "REQ-ENT-005",
+            "REQ-ENT-008",
             "REQ-EXPR-003"
     })
     public void test() {

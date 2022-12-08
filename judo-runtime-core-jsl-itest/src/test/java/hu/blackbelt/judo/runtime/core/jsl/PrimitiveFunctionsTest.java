@@ -91,9 +91,6 @@ public class PrimitiveFunctionsTest extends AbstractJslTest {
     }
 
     @Test
-    @Requirement(reqs = {
-            "TODO: SDK"
-    })
     public void testLimit() {
         List<MyEntityWithOptionalFields> list = myEntityWithOptionalFieldsDao
                 .query()
@@ -104,9 +101,6 @@ public class PrimitiveFunctionsTest extends AbstractJslTest {
     }
 
     @Test
-    @Requirement(reqs = {
-            "TODO: SDK"
-    })
     public void testOrderBy() {
         assertOrderBy(MyEntityWithOptionalFields.Attribute.INTEGER_ATTR, entity2);
         assertOrderBy(MyEntityWithOptionalFields.Attribute.SCALED_ATTR, entity2);
@@ -120,9 +114,6 @@ public class PrimitiveFunctionsTest extends AbstractJslTest {
     }
 
     @Test
-    @Requirement(reqs = {
-            "TODO: SDK"
-    })
     public void testOrderByDescending() {
         assertOrderByDescending(MyEntityWithOptionalFields.Attribute.INTEGER_ATTR, entity1);
         assertOrderByDescending(MyEntityWithOptionalFields.Attribute.SCALED_ATTR, entity1);
@@ -136,9 +127,6 @@ public class PrimitiveFunctionsTest extends AbstractJslTest {
     }
 
     @Test
-    @Requirement(reqs = {
-            "TODO: SDK"
-    })
     public void testMask() {
         MyEntityWithOptionalFields maskedResult = myEntityWithOptionalFieldsDao
                 .query()

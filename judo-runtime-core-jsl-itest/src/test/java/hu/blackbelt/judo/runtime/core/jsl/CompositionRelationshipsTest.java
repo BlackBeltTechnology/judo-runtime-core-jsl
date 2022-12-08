@@ -103,8 +103,8 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
 
     @Test
     @Requirement(reqs = {
-            "REQ-ENT-007",
-            "REQ-ENT-012"
+            "REQ-ENT-001",
+            "REQ-ENT-007"
     })
     void testMissingRequiredRelationshipThrowsException() {
         ValidationException thrown = assertThrows(
@@ -120,6 +120,7 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
 
     @Test
     @Requirement(reqs = {
+            "REQ-ENT-001",
             "REQ-ENT-007",
             "REQ-ENT-012"
     })
@@ -137,6 +138,7 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
 
     @Test
     @Requirement(reqs = {
+            "REQ-ENT-001",
             "REQ-ENT-007",
             "REQ-ENT-012"
     })
@@ -153,6 +155,7 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
 
     @Test
     @Requirement(reqs = {
+            "REQ-ENT-001",
             "REQ-ENT-007",
             "REQ-ENT-012"
     })
@@ -168,6 +171,7 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
 
     @Test
     @Requirement(reqs = {
+            "REQ-ENT-001",
             "REQ-ENT-007",
             "REQ-ENT-012"
     })
@@ -186,6 +190,10 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
 
     @Test
     @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
             "REQ-ENT-007",
             "REQ-ENT-012"
     })
@@ -206,6 +214,10 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
 
     @Test
     @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
             "REQ-ENT-007",
             "REQ-ENT-012"
     })
@@ -225,6 +237,10 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
 
     @Test
     @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
             "REQ-ENT-007",
             "REQ-ENT-012"
     })
@@ -251,6 +267,9 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
 
     @Test
     @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-ENT-001",
             "REQ-ENT-002"
     })
     void testManualTransactionManagementRollback() throws SystemException, NotSupportedException {
@@ -264,6 +283,9 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
 
     @Test
     @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-ENT-001",
             "REQ-ENT-002"
     })
     void testManualTransactionManagementCommit() throws SystemException, NotSupportedException {
@@ -277,7 +299,9 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
 
     @Test
     @Disabled
-    @Requirement(reqs = {
+    @Requirement(reqs = {"REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-ENT-001",
             "REQ-ENT-002",
             "REQ-ENT-012"
     })
@@ -296,7 +320,9 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
     }
 
     @Test
-    @Requirement(reqs = {
+    @Requirement(reqs = {"REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-ENT-001",
             "REQ-ENT-002",
             "REQ-ENT-012"
     })

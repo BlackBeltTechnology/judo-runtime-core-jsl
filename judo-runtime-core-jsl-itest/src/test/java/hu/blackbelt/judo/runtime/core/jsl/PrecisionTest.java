@@ -60,6 +60,7 @@ public class PrecisionTest extends AbstractJslTest {
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-TYPE-005",
+            "REQ-ENT-001",
             "REQ-ENT-012"
     })
     public void testPrecisionValidatorFailsWithPrecisionOverflow() {
@@ -79,6 +80,7 @@ public class PrecisionTest extends AbstractJslTest {
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-TYPE-005",
+            "REQ-ENT-001",
             "REQ-ENT-012"
     })
     public void testScaleValidatorFailsWithScaleOverflow() {
@@ -98,6 +100,7 @@ public class PrecisionTest extends AbstractJslTest {
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-TYPE-005",
+            "REQ-ENT-001",
             "REQ-ENT-012"
     })
     public void testValidateDoubleWithPrecisionAndScaleOverflow() {
@@ -122,6 +125,7 @@ public class PrecisionTest extends AbstractJslTest {
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-TYPE-005",
+            "REQ-ENT-001",
             "REQ-ENT-012"
     })
     public void testScaleValidatorPassesForValueWithoutScale() {

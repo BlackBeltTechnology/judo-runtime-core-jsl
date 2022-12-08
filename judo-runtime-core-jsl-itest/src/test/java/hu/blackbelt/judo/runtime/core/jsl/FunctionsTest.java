@@ -126,7 +126,18 @@ public class FunctionsTest extends AbstractJslTest {
     @Test
     @Requirement(reqs = {
             "REQ-MDL-001",
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-007",
             "REQ-ENT-008",
+            "REQ-ENT-012",
             "REQ-EXPR-003",
             "REQ-EXPR-010"
     })
@@ -174,6 +185,16 @@ public class FunctionsTest extends AbstractJslTest {
 
     @Test
     @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-008",
+            "REQ-EXPR-004",
+            "REQ-EXPR-006",
+            "REQ-EXPR-010",
             "REQ-EXPR-013",
             "REQ-EXPR-014"
     })
@@ -243,6 +264,13 @@ public class FunctionsTest extends AbstractJslTest {
 
     @Test
     @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-005",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-008",
+            "REQ-EXPR-004",
+            "REQ-EXPR-006",
             "REQ-EXPR-014"
     })
     public void testNumerics() {

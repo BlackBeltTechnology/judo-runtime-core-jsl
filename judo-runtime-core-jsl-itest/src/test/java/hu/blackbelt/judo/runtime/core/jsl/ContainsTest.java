@@ -55,7 +55,11 @@ public class ContainsTest extends AbstractJslTest {
 
     @Test
     @Requirement(reqs = {
-            "REQ-EXPR-022"
+            "REQ-ENT-001",
+            "REQ-ENT-004",
+            "REQ-ENT-008",
+            "REQ-EXPR-004",
+            "REQ-EXPR-022",
     })
     public void testContains() {
         A a = aDao.create(A.builder().build());

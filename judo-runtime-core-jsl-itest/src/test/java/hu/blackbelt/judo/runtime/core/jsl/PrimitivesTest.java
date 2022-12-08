@@ -83,6 +83,7 @@ public class PrimitivesTest extends AbstractJslTest {
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-TYPE-002",
+            "REQ-ENT-001",
             "REQ-ENT-002"
     })
     public void testPlainOptionalEntityCreationWithoutValues() {
@@ -114,6 +115,7 @@ public class PrimitivesTest extends AbstractJslTest {
             "REQ-TYPE-008",
             "REQ-TYPE-009",
             "REQ-TYPE-010",
+            "REQ-ENT-001",
             "REQ-ENT-002"
     })
     public void testPlainOptionalEntityCreationWithValues() {
@@ -150,6 +152,7 @@ public class PrimitivesTest extends AbstractJslTest {
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-TYPE-002",
+            "REQ-ENT-001",
             "REQ-ENT-002"
     })
     public void testMissingRequiredFieldsThrowExceptions() {
@@ -203,6 +206,7 @@ public class PrimitivesTest extends AbstractJslTest {
             "REQ-TYPE-007",
             "REQ-TYPE-009",
             "REQ-TYPE-010",
+            "REQ-ENT-001",
             "REQ-ENT-002",
             "REQ-ENT-003"
     })
@@ -276,6 +280,7 @@ public class PrimitivesTest extends AbstractJslTest {
             "REQ-TYPE-005",
             "REQ-TYPE-006",
             "REQ-TYPE-007",
+            "REQ-ENT-001",
             "REQ-ENT-002"
     })
     public void testFieldsAreNonUnique() {
@@ -312,7 +317,9 @@ public class PrimitivesTest extends AbstractJslTest {
             "REQ-TYPE-008",
             "REQ-TYPE-009",
             "REQ-TYPE-010",
-            "REQ-ENT-002"
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-012"
     })
     public void testUpdateOptionalEntityAfterCreation() {
         MyEntityWithOptionalFields myEntityWithOptionalFields = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder().build());
@@ -367,6 +374,7 @@ public class PrimitivesTest extends AbstractJslTest {
             "REQ-TYPE-007",
             "REQ-TYPE-008",
             "REQ-TYPE-009",
+            "REQ-ENT-001",
             "REQ-ENT-002"
     })
     public void testEntityCreationWithPrimitiveDefaults() {
@@ -400,6 +408,7 @@ public class PrimitivesTest extends AbstractJslTest {
             "REQ-TYPE-007",
             "REQ-TYPE-008",
             "REQ-TYPE-009",
+            "REQ-ENT-001",
             "REQ-ENT-002"
     })
     public void testEntityCreationRequiredWithPrimitiveDefaults() {
@@ -436,6 +445,7 @@ public class PrimitivesTest extends AbstractJslTest {
             "REQ-EXPR-015",
             "REQ-EXPR-002",
             "REQ-EXPR-009",
+            "REQ-ENT-001",
             "REQ-EXPR-017"
     })
     public void testEntityCreationWithPrimitiveDefaultExpressions() {
@@ -460,6 +470,7 @@ public class PrimitivesTest extends AbstractJslTest {
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-TYPE-004",
+            "REQ-ENT-001",
             "REQ-ENT-002"
     })
     public void testRegexValidatorFailsForInvalidInput() {
@@ -479,6 +490,7 @@ public class PrimitivesTest extends AbstractJslTest {
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-TYPE-004",
+            "REQ-ENT-001",
             "REQ-ENT-002"
     })
     public void testMaxLengthValidatorFailsForInvalidInput() {
@@ -505,6 +517,7 @@ public class PrimitivesTest extends AbstractJslTest {
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-TYPE-005",
+            "REQ-ENT-001",
             "REQ-ENT-002"
     })
     public void testPrecisionValidation() {
@@ -524,6 +537,7 @@ public class PrimitivesTest extends AbstractJslTest {
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-TYPE-005",
+            "REQ-ENT-001",
             "REQ-ENT-002"
     })
     public void testMaxPrecision() {
@@ -568,6 +582,7 @@ public class PrimitivesTest extends AbstractJslTest {
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-TYPE-005",
+            "REQ-ENT-001",
             "REQ-ENT-002"
     })
     public void testScaleValidation() {
@@ -587,6 +602,7 @@ public class PrimitivesTest extends AbstractJslTest {
             "REQ-TYPE-001",
             "REQ-TYPE-005",
             "REQ-TYPE-007",
+            "REQ-ENT-001",
             "REQ-ENT-002",
             "REQ-EXPR-016",
             "REQ-EXPR-022"
