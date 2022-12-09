@@ -27,6 +27,7 @@ import hu.blackbelt.judo.dispatcher.api.FileType;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
 import hu.blackbelt.judo.runtime.core.jsl.itest.primitives.guice.primitives.PrimitivesDaoModules;
 import hu.blackbelt.judo.runtime.core.jsl.itest.primitives.sdk.primitives.primitives.*;
+import hu.blackbelt.judo.test.Requirement;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
@@ -79,6 +80,12 @@ public class PrimitivesTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-ENT-001",
+            "REQ-ENT-002"
+    })
     public void testPlainOptionalEntityCreationWithoutValues() {
         MyEntityWithOptionalFields myEntityWithOptionalFields = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder().build());
 
@@ -98,6 +105,19 @@ public class PrimitivesTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-TYPE-010",
+            "REQ-ENT-001",
+            "REQ-ENT-002"
+    })
     public void testPlainOptionalEntityCreationWithValues() {
         MyEntityWithOptionalFields myEntityWithOptionalFields = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
                         .withIntegerAttr(1)
@@ -129,6 +149,12 @@ public class PrimitivesTest extends AbstractJslTest {
     }
 
     @Test()
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-ENT-001",
+            "REQ-ENT-002"
+    })
     public void testMissingRequiredFieldsThrowExceptions() {
         ValidationException thrown = assertThrows(
             ValidationException.class,
@@ -171,6 +197,19 @@ public class PrimitivesTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-009",
+            "REQ-TYPE-010",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-003"
+    })
     public void testIdentifierFieldsAreUnique() {
         LocalDate now = LocalDate.now();
         EntityWithIdentifiers ent1 = entityWithIdentifiersDao.create(EntityWithIdentifiers.builder()
@@ -234,6 +273,16 @@ public class PrimitivesTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-ENT-001",
+            "REQ-ENT-002"
+    })
     public void testFieldsAreNonUnique() {
         LocalDate now = LocalDate.now();
         MyEntityWithOptionalFields ent1 = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
@@ -258,6 +307,20 @@ public class PrimitivesTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-TYPE-010",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-012"
+    })
     public void testUpdateOptionalEntityAfterCreation() {
         MyEntityWithOptionalFields myEntityWithOptionalFields = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder().build());
 
@@ -302,6 +365,18 @@ public class PrimitivesTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-ENT-001",
+            "REQ-ENT-002"
+    })
     public void testEntityCreationWithPrimitiveDefaults() {
         EntityWithPrimitiveDefaults entityWithDefaults = entityWithPrimitiveDefaultsDao.create(EntityWithPrimitiveDefaults.builder().build());
 
@@ -324,6 +399,18 @@ public class PrimitivesTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-ENT-001",
+            "REQ-ENT-002"
+    })
     public void testEntityCreationRequiredWithPrimitiveDefaults() {
         EntityRequiredWithPrimitiveDefaults entityRequiredWithDefaults = entityRequiredWithPrimitiveDefaultsDao.create(EntityRequiredWithPrimitiveDefaults.builder().build());
 
@@ -345,6 +432,22 @@ public class PrimitivesTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-ENT-002",
+            "REQ-EXPR-014",
+            "REQ-EXPR-015",
+            "REQ-EXPR-002",
+            "REQ-EXPR-009",
+            "REQ-ENT-001",
+            "REQ-EXPR-017"
+    })
     public void testEntityCreationWithPrimitiveDefaultExpressions() {
         EntityWithPrimitiveDefaultExpressions entityWithDefaultExpressions = entityWithPrimitiveDefaultExpressionsDao.create(EntityWithPrimitiveDefaultExpressions.builder().build());
 
@@ -364,6 +467,12 @@ public class PrimitivesTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-ENT-001",
+            "REQ-ENT-002"
+    })
     public void testRegexValidatorFailsForInvalidInput() {
         ValidationException thrown = assertThrows(
                 ValidationException.class,
@@ -378,6 +487,12 @@ public class PrimitivesTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-ENT-001",
+            "REQ-ENT-002"
+    })
     public void testMaxLengthValidatorFailsForInvalidInput() {
         String lipsum = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." +
                 "Imperdiet sed euismod nisi porta lorem mollis." +
@@ -399,6 +514,12 @@ public class PrimitivesTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-005",
+            "REQ-ENT-001",
+            "REQ-ENT-002"
+    })
     public void testPrecisionValidation() {
         ValidationException thrown = assertThrows(
                 ValidationException.class,
@@ -413,6 +534,12 @@ public class PrimitivesTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-005",
+            "REQ-ENT-001",
+            "REQ-ENT-002"
+    })
     public void testMaxPrecision() {
         // FIXME: JNG-4262
 //        ValidationException thrown = assertThrows(
@@ -452,6 +579,12 @@ public class PrimitivesTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-005",
+            "REQ-ENT-001",
+            "REQ-ENT-002"
+    })
     public void testScaleValidation() {
         ValidationException thrown = assertThrows(
                 ValidationException.class,
@@ -465,6 +598,15 @@ public class PrimitivesTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-005",
+            "REQ-TYPE-007",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-EXPR-016",
+            "REQ-EXPR-022"
+    })
     public void testDefaultRequieredValuesInEntity() {
 
         referenceEntityDao.create(ReferenceEntity.builder().build());
@@ -486,5 +628,4 @@ public class PrimitivesTest extends AbstractJslTest {
         assertEquals(5, defaultEntity1.getSumEntitiesIntegerValue());
         assertEquals(LocalDate.of(2022, 11, 5), defaultEntity1.getCreateDate());
     }
-
 }
