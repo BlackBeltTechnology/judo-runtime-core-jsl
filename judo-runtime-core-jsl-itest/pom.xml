@@ -67,6 +67,7 @@
                                 <source>${project.basedir}/target/generated-sources/model/sdk/TernaryTest</source>
                                 <source>${project.basedir}/target/generated-sources/model/sdk/ContainsModel</source>
                                 <source>${project.basedir}/target/generated-sources/model/sdk/CastingFunctionsModel</source>
+                                <source>${project.basedir}/target/generated-sources/model/sdk/ContainerTest</source>
                             </sources>
                         </configuration> 
                    </execution>

@@ -1,0 +1,22 @@
+model ContainerTest;
+
+type string String(min-size=0,max-size=128);
+
+entity A {
+    field String nameA;
+    field D DonA;
+}
+
+entity B extends A {
+    field String nameB;
+}
+
+entity C extends A {
+    field String nameC;
+}
+
+entity D {
+    derived A containerA => self!container(entityType = A);
+    derived B containerBonA => self!container(entityType = B);
+    derived C containerConA => self!container(entityType = C);
+}
