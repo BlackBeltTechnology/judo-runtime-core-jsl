@@ -28,6 +28,7 @@ import hu.blackbelt.judo.runtime.core.jsl.itest.salesmodel.sdk.salesmodel.salesm
 import hu.blackbelt.judo.runtime.core.jsl.itest.salesmodel.sdk.salesmodel.salesmodelcontract.ContractDetail;
 import hu.blackbelt.judo.sdk.query.NumberFilter;
 import hu.blackbelt.judo.sdk.query.StringFilter;
+import hu.blackbelt.judo.test.Requirement;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -68,6 +69,25 @@ class SalesModelTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-009",
+            "REQ-ENT-004",
+            "REQ-ENT-006",
+            "REQ-ENT-008",
+            "REQ-ENT-009",
+            "REQ-ENT-010",
+            "REQ-ENT-012",
+            "REQ-EXPR-003",
+            "REQ-EXPR-004",
+            "REQ-EXPR-006",
+            "REQ-EXPR-008",
+            "REQ-EXPR-022"
+    })
     public void test() {
 
         SalesPerson createdSalesPerson = salesPersonDao.create(SalesPerson.builder()
@@ -128,6 +148,15 @@ class SalesModelTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-005",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-006",
+            "REQ-EXPR-001"
+    })
     public void testDefaultValue() {
         SalesPerson createdSalesPerson = salesPersonDao.create(SalesPerson.builder()
                 .build());
@@ -140,6 +169,15 @@ class SalesModelTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-MDL-003",
+            "REQ-TYPE-001",
+            "REQ-TYPE-007",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-006"
+    })
     public void testImportedEntityType() {
         Contract contract = contractDao.create(Contract.builder().withCreationDate(LocalDate.parse("2022-07-21")).build());
 
@@ -156,6 +194,20 @@ class SalesModelTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-MDL-003",
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-TYPE-007",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-006",
+            "REQ-ENT-007",
+            "REQ-ENT-008",
+            "REQ-EXPR-001",
+            "REQ-EXPR-003"
+    })
     public void testNavigationOnStaticCollection() {
         Contract contract1 = contractDao.create(Contract.builder()
                 .withCreationDate(LocalDate.parse("2022-07-21"))

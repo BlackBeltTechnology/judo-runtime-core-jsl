@@ -27,6 +27,7 @@ import hu.blackbelt.judo.runtime.core.jsl.itest.castingfunctionsmodel.sdk.castin
 import hu.blackbelt.judo.runtime.core.jsl.itest.castingfunctionsmodel.sdk.castingfunctionsmodel.castingfunctionsmodel.B.BDao;
 import hu.blackbelt.judo.runtime.core.jsl.itest.castingfunctionsmodel.sdk.castingfunctionsmodel.castingfunctionsmodel.CA.CADao;
 import hu.blackbelt.judo.runtime.core.jsl.itest.castingfunctionsmodel.sdk.castingfunctionsmodel.castingfunctionsmodel.Tester.TesterDao;
+import hu.blackbelt.judo.test.Requirement;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -77,6 +78,18 @@ public class CastingFunctionsTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-TYPE-006",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-ENT-008",
+            "REQ-EXPR-003",
+            "REQ-EXPR-021"
+    })
     public void testKindOf() {
         assertTrue(tester.getKindOfA().orElseThrow());
         assertTrue(tester.getKindOfB().orElseThrow());
@@ -86,6 +99,18 @@ public class CastingFunctionsTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-TYPE-006",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-ENT-008",
+            "REQ-EXPR-003",
+            "REQ-EXPR-021"
+    })
     public void testTypeOf() {
         assertFalse(tester.getTypeOfA().orElseThrow());
         assertTrue(tester.getTypeOfB().orElseThrow());
@@ -95,6 +120,18 @@ public class CastingFunctionsTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-TYPE-006",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-ENT-008",
+            "REQ-EXPR-003",
+            "REQ-EXPR-021"
+    })
     public void testAsType() {
         assertEquals("ab", testerDao.getAsTypeA(tester).orElseThrow().getNameA().orElseThrow());
 
@@ -113,6 +150,18 @@ public class CastingFunctionsTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-TYPE-006",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-ENT-008",
+            "REQ-EXPR-003",
+            "REQ-EXPR-022"
+    })
     public void testAsCollection() {
         List<A> asCollectionA = testerDao.getAsCollectionA(tester);
         assertEquals(2, asCollectionA.size());

@@ -27,6 +27,7 @@ import hu.blackbelt.judo.runtime.core.jsl.itest.primitives.guice.primitives.Prim
 import hu.blackbelt.judo.runtime.core.jsl.itest.primitives.sdk.primitives.primitives.MyEntityWithOptionalFields;
 import hu.blackbelt.judo.runtime.core.jsl.itest.primitives.sdk.primitives.primitives.MyEnum;
 import hu.blackbelt.judo.sdk.query.StringFilter;
+import hu.blackbelt.judo.test.Requirement;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
