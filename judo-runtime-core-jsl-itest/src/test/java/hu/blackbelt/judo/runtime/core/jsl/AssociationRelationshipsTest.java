@@ -79,6 +79,7 @@ public class AssociationRelationshipsTest extends AbstractJslTest {
     @Test
     @Requirement(reqs = {
             "REQ-ENT-001",
+            "REQ-ENT-004",
             "REQ-ENT-005",
             "REQ-ENT-012"
     })
@@ -97,6 +98,7 @@ public class AssociationRelationshipsTest extends AbstractJslTest {
     @Test
     @Requirement(reqs = {
             "REQ-ENT-001",
+            "REQ-ENT-004",
             "REQ-ENT-005",
             "REQ-ENT-012"
     })
@@ -117,6 +119,7 @@ public class AssociationRelationshipsTest extends AbstractJslTest {
     @Test
     @Requirement(reqs = {
             "REQ-ENT-001",
+            "REQ-ENT-004",
             "REQ-ENT-005",
             "REQ-ENT-012"
     })
@@ -137,6 +140,7 @@ public class AssociationRelationshipsTest extends AbstractJslTest {
     @Test
     @Requirement(reqs = {
             "REQ-ENT-001",
+            "REQ-ENT-004",
             "REQ-ENT-005",
             "REQ-ENT-006",
             "REQ-ENT-012"
@@ -161,6 +165,7 @@ public class AssociationRelationshipsTest extends AbstractJslTest {
     @Test
     @Requirement(reqs = {
             "REQ-ENT-001",
+            "REQ-ENT-004",
             "REQ-ENT-005",
             "REQ-ENT-012"
     })
@@ -177,6 +182,7 @@ public class AssociationRelationshipsTest extends AbstractJslTest {
     @Test
     @Requirement(reqs = {
             "REQ-ENT-001",
+            "REQ-ENT-004",
             "REQ-ENT-005",
             "REQ-ENT-012"
     })
@@ -191,6 +197,7 @@ public class AssociationRelationshipsTest extends AbstractJslTest {
     @Test
     @Requirement(reqs = {
             "REQ-ENT-001",
+            "REQ-ENT-004",
             "REQ-ENT-005",
             "REQ-ENT-006",
             "REQ-ENT-012"
@@ -210,6 +217,7 @@ public class AssociationRelationshipsTest extends AbstractJslTest {
     @Test
     @Requirement(reqs = {
             "REQ-ENT-001",
+            "REQ-ENT-004",
             "REQ-ENT-005",
             "REQ-ENT-006",
             "REQ-ENT-012"

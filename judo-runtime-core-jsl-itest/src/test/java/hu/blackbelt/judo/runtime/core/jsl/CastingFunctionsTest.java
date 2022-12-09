@@ -79,11 +79,15 @@ public class CastingFunctionsTest extends AbstractJslTest {
 
     @Test
     @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-TYPE-006",
             "REQ-ENT-001",
             "REQ-ENT-002",
             "REQ-ENT-004",
             "REQ-ENT-005",
             "REQ-ENT-008",
+            "REQ-EXPR-003",
             "REQ-EXPR-021"
     })
     public void testKindOf() {
@@ -96,11 +100,15 @@ public class CastingFunctionsTest extends AbstractJslTest {
 
     @Test
     @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-TYPE-006",
             "REQ-ENT-001",
             "REQ-ENT-002",
             "REQ-ENT-004",
             "REQ-ENT-005",
             "REQ-ENT-008",
+            "REQ-EXPR-003",
             "REQ-EXPR-021"
     })
     public void testTypeOf() {
@@ -113,11 +121,15 @@ public class CastingFunctionsTest extends AbstractJslTest {
 
     @Test
     @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-TYPE-006",
             "REQ-ENT-001",
             "REQ-ENT-002",
             "REQ-ENT-004",
             "REQ-ENT-005",
             "REQ-ENT-008",
+            "REQ-EXPR-003",
             "REQ-EXPR-021"
     })
     public void testAsType() {
@@ -139,11 +151,15 @@ public class CastingFunctionsTest extends AbstractJslTest {
 
     @Test
     @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-TYPE-006",
             "REQ-ENT-001",
             "REQ-ENT-002",
             "REQ-ENT-004",
             "REQ-ENT-005",
             "REQ-ENT-008",
+            "REQ-EXPR-003",
             "REQ-EXPR-022"
     })
     public void testAsCollection() {
