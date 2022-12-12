@@ -27,6 +27,7 @@ import hu.blackbelt.judo.runtime.core.jsl.itest.primitives.guice.primitives.Prim
 import hu.blackbelt.judo.runtime.core.jsl.itest.primitives.sdk.primitives.primitives.MyEntityWithOptionalFields;
 import hu.blackbelt.judo.runtime.core.jsl.itest.primitives.sdk.primitives.primitives.MyEnum;
 import hu.blackbelt.judo.sdk.query.*;
+import hu.blackbelt.judo.test.Requirement;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -108,6 +109,20 @@ public class FiltersTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-TYPE-010",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-012"
+    })
     public void testFilterWithMultipleFilters() {
         List<MyEntityWithOptionalFields> list = myEntityWithOptionalFieldsDao.query().execute();
 
@@ -126,6 +141,20 @@ public class FiltersTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-TYPE-010",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-012"
+    })
     public void testIntegerNumberFilter() {
         List<MyEntityWithOptionalFields> list = myEntityWithOptionalFieldsDao.query().execute();
 
@@ -187,6 +216,20 @@ public class FiltersTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-TYPE-010",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-012"
+    })
     public void testScaledNumberFilter() {
         List<MyEntityWithOptionalFields> list = myEntityWithOptionalFieldsDao.query().execute();
 
@@ -248,6 +291,20 @@ public class FiltersTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-TYPE-010",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-012"
+    })
     public void testStringFilter() {
         List<MyEntityWithOptionalFields> list = myEntityWithOptionalFieldsDao.query().execute();
 
@@ -323,6 +380,20 @@ public class FiltersTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-TYPE-010",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-012"
+    })
     public void testBooleanFilter() {
         List<MyEntityWithOptionalFields> list = myEntityWithOptionalFieldsDao.query().execute();
 
@@ -354,6 +425,20 @@ public class FiltersTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-TYPE-010",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-012"
+    })
     public void testDateFilter() {
         List<MyEntityWithOptionalFields> list = myEntityWithOptionalFieldsDao.query().execute();
 
@@ -405,6 +490,20 @@ public class FiltersTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-TYPE-010",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-012"
+    })
     public void testTimestampFilter() {
         List<MyEntityWithOptionalFields> list = myEntityWithOptionalFieldsDao.query().execute();
 
@@ -456,6 +555,20 @@ public class FiltersTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-TYPE-010",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-012"
+    })
     public void testTimeFilter() {
         List<MyEntityWithOptionalFields> list = myEntityWithOptionalFieldsDao.query().execute();
 
@@ -507,6 +620,20 @@ public class FiltersTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-TYPE-010",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-012"
+    })
     public void testEnumFilter() {
         List<MyEntityWithOptionalFields> list = myEntityWithOptionalFieldsDao.query().execute();
 
