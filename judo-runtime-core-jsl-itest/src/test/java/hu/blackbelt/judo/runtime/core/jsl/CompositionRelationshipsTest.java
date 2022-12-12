@@ -299,7 +299,8 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
 
     @Test
     @Disabled
-    @Requirement(reqs = {"REQ-TYPE-001",
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
             "REQ-TYPE-004",
             "REQ-ENT-001",
             "REQ-ENT-002",
@@ -320,7 +321,8 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
     }
 
     @Test
-    @Requirement(reqs = {"REQ-TYPE-001",
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
             "REQ-TYPE-004",
             "REQ-ENT-001",
             "REQ-ENT-002",
