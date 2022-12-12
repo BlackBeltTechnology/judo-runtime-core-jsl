@@ -27,6 +27,7 @@ import com.google.inject.Inject;
 import com.google.inject.Module;
 import hu.blackbelt.judo.runtime.core.jsl.itest.functions.guice.functions.FunctionsDaoModules;
 import hu.blackbelt.judo.runtime.core.jsl.itest.functions.sdk.functions.functions.*;
+import hu.blackbelt.judo.test.Requirement;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -123,6 +124,23 @@ public class FunctionsTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-MDL-001",
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-007",
+            "REQ-ENT-008",
+            "REQ-ENT-012",
+            "REQ-EXPR-003",
+            "REQ-EXPR-010"
+    })
     public void testAnyType() {
         assertEquals(Optional.of(false), anyTypeFunctions.getIntegerIsDefinedFalse());
         assertEquals(Optional.of(true), anyTypeFunctions.getIntegerIsDefinedTrue());
@@ -166,6 +184,20 @@ public class FunctionsTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-008",
+            "REQ-EXPR-004",
+            "REQ-EXPR-006",
+            "REQ-EXPR-010",
+            "REQ-EXPR-013",
+            "REQ-EXPR-014"
+    })
     public void testStrings() {
         StringFunctions str = stringFunctionsDao.create(StringFunctions.builder().build());
 
@@ -231,6 +263,16 @@ public class FunctionsTest extends AbstractJslTest {
     
 
     @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-005",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-008",
+            "REQ-EXPR-004",
+            "REQ-EXPR-006",
+            "REQ-EXPR-014"
+    })
     public void testNumerics() {
         NumericFunctions numericFunctions = numericFunctionsDao.create(NumericFunctions.builder().build());
 
@@ -290,6 +332,9 @@ public class FunctionsTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-EXPR-015"
+    })
     public void testBooleans() {
         BooleanFunctions bool = booleanFunctionsDao.create(BooleanFunctions.builder().build());
 
@@ -300,9 +345,13 @@ public class FunctionsTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-006"
+    })
     public void testKleene() {
     	Kleene kleene = kleeneDao.create(Kleene.builder().build());
-    	
+
     	/*
     	|=============================================================================================
     	|`p`            |`q`            |`p or q`       |`p and q`      |`p xor q`      |`p implies q`
@@ -317,7 +366,7 @@ public class FunctionsTest extends AbstractJslTest {
     	|`undefined`	|`undefined`	|`undefined`	|`undefined`	|`undefined`    |`undefined`
     	|=============================================================================================
     		*/
-    	
+
 	   	assertEquals(Optional.of(true), kleene.getTrueOrTrue());
 	   	assertEquals(Optional.of(true), kleene.getTrueOrFalse());
 	   	assertEquals(Optional.of(true), kleene.getTrueOrUndefined());
@@ -327,7 +376,7 @@ public class FunctionsTest extends AbstractJslTest {
 	   	assertEquals(Optional.of(true), kleene.getUndefinedOrTrue());
 	   	assertEquals(Optional.empty(), kleene.getUndefinedOrFalse());
 	   	assertEquals(Optional.empty(), kleene.getUndefinedOrUndefined());
-	
+
 	   	assertEquals(Optional.of(true), kleene.getTrueAndTrue());
 	   	assertEquals(Optional.of(false), kleene.getTrueAndFalse());
 	   	assertEquals(Optional.empty(), kleene.getTrueAndUndefined());
@@ -337,7 +386,7 @@ public class FunctionsTest extends AbstractJslTest {
 	   	assertEquals(Optional.empty(), kleene.getUndefinedAndTrue());
 	   	assertEquals(Optional.of(false), kleene.getUndefinedAndFalse());
 	   	assertEquals(Optional.empty(), kleene.getUndefinedAndUndefined());
-	
+
 	   	assertEquals(Optional.of(false), kleene.getTrueXorTrue());
 	   	assertEquals(Optional.of(true), kleene.getTrueXorFalse());
 	   	assertEquals(Optional.empty(), kleene.getTrueXorUndefined());
@@ -347,7 +396,7 @@ public class FunctionsTest extends AbstractJslTest {
 	   	assertEquals(Optional.empty(), kleene.getUndefinedXorTrue());
 	   	assertEquals(Optional.empty(), kleene.getUndefinedXorFalse());
 	   	assertEquals(Optional.empty(), kleene.getUndefinedXorUndefined());
-	   	 
+
 	   	assertEquals(Optional.of(true), kleene.getTrueImpliesTrue());
 	   	assertEquals(Optional.of(false), kleene.getTrueImpliesFalse());
 	   	assertEquals(Optional.empty(), kleene.getTrueImpliesUndefined());
@@ -360,6 +409,10 @@ public class FunctionsTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-EXPR-010",
+            "REQ-EXPR-016"
+    })
     public void testDates() {
         DateFunctions date = dateFunctionsDao.create(DateFunctions.builder().build());
 
@@ -385,6 +438,10 @@ public class FunctionsTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-EXPR-010",
+            "REQ-EXPR-017"
+    })
     public void testTime() {
         TimeFunctions time = timeFunctionsDao.create(TimeFunctions.builder().build());
 
@@ -404,6 +461,10 @@ public class FunctionsTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-EXPR-010",
+            "REQ-EXPR-018"
+    })
     public void testTimestamp() {
         // TODO: add tests after JNG-1586, JNG-3681
         TimestampFunctions timestampFunctions = timestampFunctionsDao.create(TimestampFunctions.builder().build());
@@ -439,14 +500,25 @@ public class FunctionsTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-MDL-001",
+            "REQ-EXPR-020"
+    })
     public void testEnum() {
         EnumFunctions myEnum = enumFunctionsDao.create(EnumFunctions.builder().build());
 
         assertEquals(Optional.of("Atomic"), myEnum.getOwnEnumAsString());
-        // TODO: add missing test after JNG-3904 is fixed
+        assertEquals(Optional.of("Atomic"), myEnum.getEnumAsString());
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-MDL-003",
+            "REQ-ENT-004",
+            "REQ-ENT-007",
+            "REQ-EXPR-021",
+            "REQ-EXPR-022"
+    })
     public void testInstance() {
         Parent parent1 = parentDao.create(Parent.builder().withName("James Webb").build());
         Child child1 = childDao.create(Child.builder().withName("Erika Young").withAge(11L).build());
@@ -497,6 +569,9 @@ public class FunctionsTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-EXPR-022"
+    })
     public void testCollection() {
         CollectionFunctions collectionFunctions = collectionFunctionsDao.create(CollectionFunctions.builder()
                 .withParentsField(
@@ -608,6 +683,9 @@ public class FunctionsTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-EXPR-022"
+    })
     public void testBooleanAggregatorFunctions() {
         /*
 
@@ -724,6 +802,9 @@ public class FunctionsTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-EXPR-021"
+    })
     public void testMember() {
         Member m1 = memberDao.create(Member.builder().withName("M1").build());
         Member m2 = memberDao.create(Member.builder().withName("M2").build());

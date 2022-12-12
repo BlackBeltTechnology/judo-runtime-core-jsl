@@ -25,6 +25,7 @@ import com.google.inject.Module;
 import hu.blackbelt.judo.runtime.core.jsl.itest.containsmodel.guice.containsmodel.ContainsModelDaoModules;
 import hu.blackbelt.judo.runtime.core.jsl.itest.containsmodel.sdk.containsmodel.containsmodel.A;
 import hu.blackbelt.judo.runtime.core.jsl.itest.containsmodel.sdk.containsmodel.containsmodel.B;
+import hu.blackbelt.judo.test.Requirement;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
 
@@ -53,6 +54,13 @@ public class ContainsTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-ENT-001",
+            "REQ-ENT-004",
+            "REQ-ENT-008",
+            "REQ-EXPR-004",
+            "REQ-EXPR-022",
+    })
     public void testContains() {
         A a = aDao.create(A.builder().build());
         assertFalse(a.getContainsTest().orElseThrow());
