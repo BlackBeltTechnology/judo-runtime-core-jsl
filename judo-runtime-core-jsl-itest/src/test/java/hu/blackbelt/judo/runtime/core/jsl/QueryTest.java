@@ -24,6 +24,7 @@ import com.google.inject.Inject;
 import com.google.inject.Module;
 import hu.blackbelt.judo.runtime.core.jsl.itest.querymodel.guice.querymodel.QueryModelDaoModules;
 import hu.blackbelt.judo.runtime.core.jsl.itest.querymodel.sdk.querymodel.querymodel.*;
+import hu.blackbelt.judo.test.Requirement;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
@@ -63,6 +64,14 @@ public class QueryTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-ENT-001",
+            "REQ-ENT-009",
+            "REQ-ENT-010",
+            "REQ-ENT-011",
+            "REQ-EXPR-008",
+            "REQ-EXPR-022"
+    })
     public void testStaticQuery() {
         leadDao.create(Lead.builder().withValue(50).build());
         leadDao.create(Lead.builder().withValue(175).build());

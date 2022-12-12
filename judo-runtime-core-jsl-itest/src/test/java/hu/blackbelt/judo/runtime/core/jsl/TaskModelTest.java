@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import com.google.inject.Module;
 import hu.blackbelt.judo.runtime.core.jsl.itest.taskmodel.guice.taskmodel.TaskModelDaoModules;
 import hu.blackbelt.judo.runtime.core.jsl.itest.taskmodel.sdk.taskmodel.taskmodel.*;
+import hu.blackbelt.judo.test.Requirement;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -42,6 +43,18 @@ public class TaskModelTest extends AbstractJslTest {
 
     @Test
     @Disabled("JNG-4150")
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-005",
+            "REQ-ENT-004",
+            "REQ-ENT-006",
+            "REQ-ENT-008",
+            "REQ-EXPR-001",
+            "REQ-EXPR-003",
+            "REQ-EXPR-006",
+            "REQ-EXPR-008",
+            "REQ-EXPR-022"
+    })
     public void testSumDirivedWithOtherDirived() {
 
         MarketPlace marketPlace = marketPlaceDao.create(MarketPlace.builder().build());
@@ -64,6 +77,19 @@ public class TaskModelTest extends AbstractJslTest {
 
     @Test
     @Disabled("JNG-4150")
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-ENT-004",
+            "REQ-ENT-006",
+            "REQ-ENT-008",
+            "REQ-EXPR-001",
+            "REQ-EXPR-003",
+            "REQ-EXPR-006",
+            "REQ-EXPR-008",
+            "REQ-EXPR-022"
+    })
     public void testSumDirivedInSumDirived() {
 
         Person person1 = personDao.create(Person.builder().withFirstName("Adam").build());
