@@ -20,14 +20,12 @@ package hu.blackbelt.judo.runtime.core.jsl;
  * #L%
  */
 
-
 import com.google.inject.Inject;
 import com.google.inject.Module;
 import hu.blackbelt.judo.runtime.core.jsl.itest.containertest.guice.containertest.ContainerTestDaoModules;
 import hu.blackbelt.judo.runtime.core.jsl.itest.containertest.sdk.containertest.containertest.*;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
-
 
 @Slf4j
 public class ContainerTest extends AbstractJslTest {
@@ -52,20 +50,17 @@ public class ContainerTest extends AbstractJslTest {
     }
 
     @Test
-    public void testContainerFunction(){
-
+    public void testContainerFunction() {
         C c = cDao.create(C.builder()
-                .withNameA("ConA")
-                .withNameC("C")
-                .withDonA(dDao.create(D.builder().build()))
-                .build());
+                           .withNameC("C")
+                           .withNameA("AonC")
+                           .withDonA(D.builder().build())
+                           .build());
         B b = bDao.create(B.builder()
-                .withNameA("BonA")
-                .withDonA(dDao.create(D.builder().build()))
-                .withNameB("B")
-                .build());
-
-
+                           .withNameB("B")
+                           .withNameA("AonB")
+                           .withDonA(D.builder().build())
+                           .build());
     }
 
 }
