@@ -24,20 +24,20 @@ import com.google.inject.Inject;
 import com.google.inject.Module;
 import hu.blackbelt.judo.runtime.core.jsl.itest.containertest.guice.containertest.ContainerTestDaoModules;
 import hu.blackbelt.judo.runtime.core.jsl.itest.containertest.sdk.containertest.containertest.*;
+import hu.blackbelt.judo.runtime.core.jsl.itest.containertest.sdk.containertest.containertest.B.BDao;
+import hu.blackbelt.judo.runtime.core.jsl.itest.containertest.sdk.containertest.containertest.C.CDao;
+import hu.blackbelt.judo.runtime.core.jsl.itest.containertest.sdk.containertest.containertest.D.DDao;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Slf4j
 public class ContainerTest extends AbstractJslTest {
 
-    @Inject
-    A.ADao aDao;
-    @Inject
-    B.BDao bDao;
-    @Inject
-    C.CDao cDao;
-    @Inject
-    D.DDao dDao;
+    @Inject BDao bDao;
+    @Inject CDao cDao;
+    @Inject DDao dDao;
 
     @Override
     public Module getModelDaoModule() {
@@ -51,16 +51,19 @@ public class ContainerTest extends AbstractJslTest {
 
     @Test
     public void testContainerFunction() {
-        C c = cDao.create(C.builder()
-                           .withNameC("C")
-                           .withNameA("AonC")
-                           .withDonA(D.builder().build())
-                           .build());
-        B b = bDao.create(B.builder()
-                           .withNameB("B")
-                           .withNameA("AonB")
-                           .withDonA(D.builder().build())
-                           .build());
+        B b = bDao.create(B.builder().withConA(C.builder().build()).build());
+        C c = b.getConA();
+        A cA = cDao.getContainerA(c).orElseThrow();
+        B cB = cDao.getContainerB(c).orElseThrow();
+        assertEquals(b.get__identifier(), cA.get__identifier());
+        assertEquals(b.get__identifier(), cB.get__identifier());
+
+        B b1 = bDao.create(B.builder().withDonB(D.builder().build()).build());
+        D d = b1.getDonB();
+        A dA = dDao.getContainerA(d).orElseThrow();
+        B dB = dDao.getContainerB(d).orElseThrow();
+        assertEquals(b1.get__identifier(), dA.get__identifier());
+        assertEquals(b1.get__identifier(), dB.get__identifier());
     }
 
 }
