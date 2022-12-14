@@ -51,14 +51,20 @@ public class ContainerTest extends AbstractJslTest {
 
     @Test
     public void testContainerFunction() {
-        B b = bDao.create(B.builder().withConA(C.builder().build()).build());
+        B b = bDao.create(B.builder()
+                           .withConA(C.builder().build())
+                           .withDonB(D.builder().build())
+                           .build());
         C c = b.getConA();
         A cA = cDao.getContainerA(c).orElseThrow();
         B cB = cDao.getContainerB(c).orElseThrow();
         assertEquals(b.get__identifier(), cA.get__identifier());
         assertEquals(b.get__identifier(), cB.get__identifier());
 
-        B b1 = bDao.create(B.builder().withDonB(D.builder().build()).build());
+        B b1 = bDao.create(B.builder()
+                            .withConA(C.builder().build())
+                            .withDonB(D.builder().build())
+                            .build());
         D d = b1.getDonB();
         A dA = dDao.getContainerA(d).orElseThrow();
         B dB = dDao.getContainerB(d).orElseThrow();
