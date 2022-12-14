@@ -25,8 +25,45 @@ import com.google.common.collect.Lists;
 
 import com.google.inject.Inject;
 import com.google.inject.Module;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.anytypefunctions.AnyTypeFunctions;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.anytypefunctions.AnyTypeFunctionsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.booleanfunctions.BooleanFunctions;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.booleanfunctions.BooleanFunctionsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.booler.Booler;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.booler.BoolerDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.boolertester.BoolerTester;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.boolertester.BoolerTesterDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.child.Child;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.child.ChildDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.collectionfunctions.CollectionFunctions;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.collectionfunctions.CollectionFunctionsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.datefunctions.DateFunctions;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.datefunctions.DateFunctionsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.entity.Entity;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.entity.EntityDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.entitywithprimitivedefaults.EntityWithPrimitiveDefaults;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.entitywithprimitivedefaults.EntityWithPrimitiveDefaultsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.enumfunctions.EnumFunctions;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.enumfunctions.EnumFunctionsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.instancefunctions.InstanceFunctions;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.instancefunctions.InstanceFunctionsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.kleene.Kleene;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.kleene.KleeneDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.member.Member;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.member.MemberDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.numericfunctions.NumericFunctions;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.numericfunctions.NumericFunctionsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.parent.Parent;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.parent.ParentDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.stringfunctions.StringFunctions;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.stringfunctions.StringFunctionsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.tester.Tester;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.tester.TesterDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.timefunctions.TimeFunctions;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.timefunctions.TimeFunctionsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.timestampfunctions.TimestampFunctions;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.timestampfunctions.TimestampFunctionsDao;
 import hu.blackbelt.judo.runtime.core.jsl.itest.functions.guice.functions.FunctionsDaoModules;
-import hu.blackbelt.judo.runtime.core.jsl.itest.functions.sdk.functions.functions.*;
 import hu.blackbelt.judo.test.Requirement;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,63 +78,63 @@ import static org.junit.jupiter.api.Assertions.*;
 @Slf4j
 public class FunctionsTest extends AbstractJslTest {
     @Inject
-    Entity.EntityDao entityDao;
+    EntityDao entityDao;
 
     @Inject
-    EntityWithPrimitiveDefaults.EntityWithPrimitiveDefaultsDao entityWithPrimitiveDefaultsDao;
+    EntityWithPrimitiveDefaultsDao entityWithPrimitiveDefaultsDao;
 
     @Inject
-    AnyTypeFunctions.AnyTypeFunctionsDao anyTypeFunctionsDao;
+    AnyTypeFunctionsDao anyTypeFunctionsDao;
 
     AnyTypeFunctions anyTypeFunctions;
 
     @Inject
-    StringFunctions.StringFunctionsDao stringFunctionsDao;
+    StringFunctionsDao stringFunctionsDao;
 
     @Inject
-    NumericFunctions.NumericFunctionsDao numericFunctionsDao;
+    NumericFunctionsDao numericFunctionsDao;
 
     @Inject
-    BooleanFunctions.BooleanFunctionsDao booleanFunctionsDao;
+    BooleanFunctionsDao booleanFunctionsDao;
 
     @Inject
-    DateFunctions.DateFunctionsDao dateFunctionsDao;
+    DateFunctionsDao dateFunctionsDao;
 
     @Inject
-    TimeFunctions.TimeFunctionsDao timeFunctionsDao;
+    TimeFunctionsDao timeFunctionsDao;
 
     @Inject
-    TimestampFunctions.TimestampFunctionsDao timestampFunctionsDao;
+    TimestampFunctionsDao timestampFunctionsDao;
 
     @Inject
-    EnumFunctions.EnumFunctionsDao enumFunctionsDao;
+    EnumFunctionsDao enumFunctionsDao;
 
     @Inject
-    InstanceFunctions.InstanceFunctionsDao instanceFunctionsDao;
+    InstanceFunctionsDao instanceFunctionsDao;
 
     @Inject
-    CollectionFunctions.CollectionFunctionsDao collectionFunctionsDao;
+    CollectionFunctionsDao collectionFunctionsDao;
 
     @Inject
-    Parent.ParentDao parentDao;
+    ParentDao parentDao;
 
     @Inject
-    Child.ChildDao childDao;
+    ChildDao childDao;
     
     @Inject
-    Kleene.KleeneDao kleeneDao;
+    KleeneDao kleeneDao;
 
     @Inject
-    Booler.BoolerDao boolerDao;
+    BoolerDao boolerDao;
 
     @Inject
-    BoolerTester.BoolerTesterDao boolerTesterDao;
+    BoolerTesterDao boolerTesterDao;
 
     @Inject
-    Member.MemberDao memberDao;
+    MemberDao memberDao;
 
     @Inject
-    Tester.TesterDao testerDao;
+    TesterDao testerDao;
 
     @BeforeEach
     protected void init() throws Exception {
@@ -537,9 +574,9 @@ public class FunctionsTest extends AbstractJslTest {
         assertTrue(instanceFunctions.getKindOfParent().get());
         assertFalse(instanceFunctions.getNotTypeOfChild().get());
 
-        String parentName = instanceFunctionsDao.getAsParentType(instanceFunctions).orElseThrow().getName().orElseThrow();
+        String parentName = instanceFunctionsDao.queryAsParentType(instanceFunctions).orElseThrow().getName().orElseThrow();
         assertEquals("Another Child", parentName);
-        String childName = instanceFunctionsDao.getAsChildType(instanceFunctions1).orElseThrow().getName().orElseThrow();
+        String childName = instanceFunctionsDao.queryAsChildType(instanceFunctions1).orElseThrow().getName().orElseThrow();
         assertEquals("Erika Young", childName);
 
         instanceFunctionsDao.addParents(instanceFunctions, ImmutableList.of(parent1));
@@ -610,23 +647,27 @@ public class FunctionsTest extends AbstractJslTest {
         assertEquals(2, collectionFunctions.getSizeParentsField().get());
         assertEquals(2, collectionFunctions.getSizeParentsRelation().get());
 
-        assertNotNull(collectionFunctionsDao.getAnyParentsField(collectionFunctions));
-        assertNotNull(collectionFunctionsDao.getAnyParentsRelation(collectionFunctions));
+        assertNotNull(collectionFunctionsDao.queryAnyParentsField(collectionFunctions));
+        assertNotNull(collectionFunctionsDao.queryAnyParentsRelation(collectionFunctions));
 
-        List<Parent> asCollectionChildrenParentField = collectionFunctionsDao.getAsCollectionChildrenParentField(collectionFunctions);
+        List<Parent> asCollectionChildrenParentField = collectionFunctionsDao
+                .queryAsCollectionChildrenParentField(collectionFunctions).execute();
         assertEquals(2, asCollectionChildrenParentField.size());
         assertTrue(asCollectionChildrenParentField.stream().anyMatch(p -> p.getName().orElseThrow().equals("John")));
         assertTrue(asCollectionChildrenParentField.stream().anyMatch(p -> p.getName().orElseThrow().equals("Another Person")));
 
-        List<Parent> asCollectionChildrenParentRelation = collectionFunctionsDao.getAsCollectionChildrenParentRelation(collectionFunctions);
+        List<Parent> asCollectionChildrenParentRelation = collectionFunctionsDao
+                .queryAsCollectionChildrenParentRelation(collectionFunctions).execute();
         assertEquals(2, asCollectionChildrenParentRelation.size());
         assertTrue(asCollectionChildrenParentRelation.stream().anyMatch(p -> p.getName().orElseThrow().equals("Mark")));
         assertTrue(asCollectionChildrenParentRelation.stream().anyMatch(p -> p.getName().orElseThrow().equals("Billy")));
 
-        List<Child> asCollectionChildrenChildField = collectionFunctionsDao.getAsCollectionChildrenChildField(collectionFunctions);
+        List<Child> asCollectionChildrenChildField = collectionFunctionsDao
+                .queryAsCollectionChildrenChildField(collectionFunctions).execute();
         assertEquals(0, asCollectionChildrenChildField.size());
 
-        List<Child> asCollectionChildrenChildRelation = collectionFunctionsDao.getAsCollectionChildrenChildRelation(collectionFunctions);
+        List<Child> asCollectionChildrenChildRelation = collectionFunctionsDao
+                .queryAsCollectionChildrenChildRelation(collectionFunctions).execute();
         assertEquals(0, asCollectionChildrenChildRelation.size());
 
         assertEquals(Optional.of(23L), collectionFunctions.getMinChildrenField());
@@ -649,25 +690,25 @@ public class FunctionsTest extends AbstractJslTest {
         assertEquals(Optional.of(34L), collectionFunctions.getDivisionConst());
         assertEquals(Optional.of(35L), collectionFunctions.getRoundConst());
 
-        assertEquals(2, collectionFunctionsDao.getFirstChildrenField(collectionFunctions).size());
-        assertEquals(2, collectionFunctionsDao.getFirstChildrenRelation(collectionFunctions).size());
+        assertEquals(2, collectionFunctionsDao.queryFirstChildrenField(collectionFunctions).execute().size());
+        assertEquals(2, collectionFunctionsDao.queryFirstChildrenRelation(collectionFunctions).execute().size());
 
-        assertEquals(2, collectionFunctionsDao.getLastChildrenField(collectionFunctions).size());
-        assertEquals(2, collectionFunctionsDao.getLastChildrenRelation(collectionFunctions).size());
+        assertEquals(2, collectionFunctionsDao.queryLastChildrenField(collectionFunctions).execute().size());
+        assertEquals(2, collectionFunctionsDao.queryLastChildrenRelation(collectionFunctions).execute().size());
 
-        assertEquals(2, collectionFunctionsDao.getFrontChildrenField(collectionFunctions).size());
-        assertEquals(2, collectionFunctionsDao.getFrontChildrenRelation(collectionFunctions).size());
+        assertEquals(2, collectionFunctionsDao.queryFrontChildrenField(collectionFunctions).execute().size());
+        assertEquals(2, collectionFunctionsDao.queryFrontChildrenRelation(collectionFunctions).execute().size());
 
-        assertEquals(2, collectionFunctionsDao.getBackChildrenField(collectionFunctions).size());
-        assertEquals(2, collectionFunctionsDao.getBackChildrenRelation(collectionFunctions).size());
+        assertEquals(2, collectionFunctionsDao.queryBackChildrenField(collectionFunctions).execute().size());
+        assertEquals(2, collectionFunctionsDao.queryBackChildrenRelation(collectionFunctions).execute().size());
 
         assertTrue(collectionFunctions.getContainsParent().orElseThrow());
 
-        assertEquals(1, collectionFunctionsDao.getFilterParentsField(collectionFunctions).size());
-        assertEquals(1, collectionFunctionsDao.getFilterParentsRelation(collectionFunctions).size());
+        assertEquals(1, collectionFunctionsDao.queryFilterParentsField(collectionFunctions).execute().size());
+        assertEquals(1, collectionFunctionsDao.queryFilterParentsRelation(collectionFunctions).execute().size());
 
-        assertEquals(1, collectionFunctionsDao.getFilterChildrenField(collectionFunctions).size());
-        assertEquals(1, collectionFunctionsDao.getFilterChildrenRelation(collectionFunctions).size());
+        assertEquals(1, collectionFunctionsDao.queryFilterChildrenField(collectionFunctions).execute().size());
+        assertEquals(1, collectionFunctionsDao.queryFilterChildrenRelation(collectionFunctions).execute().size());
 
         assertEquals(Optional.of(true), collectionFunctions.getAnyTrueChildrenField());
         assertEquals(Optional.of(false), collectionFunctions.getAnyTrueChildrenRelation());

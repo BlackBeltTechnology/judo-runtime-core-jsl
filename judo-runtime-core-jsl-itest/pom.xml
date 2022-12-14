@@ -13,6 +13,67 @@
     <name>JUDO Runtime Core :: JUDO Language Specification DSL Integration Tests</name>
 
     <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>hu.blackbelt.judo.generator</groupId>
+                    <artifactId>judo-psm-generator-maven-plugin</artifactId>
+                    <version>${judo-psm-generator-version}</version>
+                    <configuration>
+                        <uris>
+                            <uri>mvn:hu.blackbelt.judo.generator:judo-psm-generator-sdk-core-api:${judo-psm-generator-sdk-core-version}</uri>
+                            <uri>mvn:hu.blackbelt.judo.generator:judo-psm-generator-sdk-core-impl:${judo-psm-generator-sdk-core-version}</uri>
+                            <uri>mvn:hu.blackbelt.judo.generator:judo-psm-generator-sdk-core-guice:${judo-psm-generator-sdk-core-version}</uri>
+                        </uris>
+                        <helpers>
+                            <helper>hu.blackbelt.judo.psm.generator.sdk.core.api.ModelHelper</helper>
+                            <helper>hu.blackbelt.judo.psm.generator.sdk.core.api.StoredVariableHelper</helper>
+                            <helper>hu.blackbelt.judo.psm.generator.sdk.core.api.StringHelper</helper>
+                            <helper>hu.blackbelt.judo.psm.generator.sdk.core.api.JavaNamespaceHelper</helper>
+                            <helper>hu.blackbelt.judo.psm.generator.sdk.core.api.JavaApiHelper</helper>
+                            <helper>hu.blackbelt.judo.psm.generator.sdk.core.api.AttributeHelper</helper>
+                            <helper>hu.blackbelt.judo.psm.generator.sdk.core.api.RelationHelper</helper>
+                            <helper>hu.blackbelt.judo.psm.generator.sdk.core.api.ObjectTypeHelper</helper>
+                            <helper>hu.blackbelt.judo.psm.generator.sdk.core.api.OperationHelper</helper>
+                            <helper>hu.blackbelt.judo.psm.generator.sdk.core.api.StaticNavigationHelper</helper>
+                            <helper>hu.blackbelt.judo.psm.generator.sdk.core.api.StaticDataHelper</helper>
+                            <helper>hu.blackbelt.judo.psm.generator.sdk.core.impl.JavaImplHelper</helper>
+                            <helper>hu.blackbelt.judo.psm.generator.sdk.core.guice.GuiceHelper</helper>
+                        </helpers>
+
+                        <type>psm-sdk-core</type>
+                        <contextAccessor>hu.blackbelt.judo.psm.generator.sdk.core.api.StoredVariableHelper</contextAccessor>
+                        <templateParameters>
+                            <apiPrefix>hu.blackbelt.judo.psm.generator.sdk.core.test.api</apiPrefix>
+                            <implPrefix>hu.blackbelt.judo.psm.generator.sdk.core.test.impl</implPrefix>
+                            <guicePrefix>hu.blackbelt.judo.psm.generator.sdk.core.test.guice</guicePrefix>
+                            <springPrefix>hu.blackbelt.judo.psm.generator.sdk.core.test.spring</springPrefix>
+
+                            <generateOptionalTypes>true</generateOptionalTypes>
+                            <generatePayloadValidator>true</generatePayloadValidator>
+                        </templateParameters>
+                    </configuration>
+                    <dependencies>
+                        <dependency>
+                            <groupId>hu.blackbelt.judo.generator</groupId>
+                            <artifactId>judo-psm-generator-sdk-core-api</artifactId>
+                            <version>${judo-psm-generator-sdk-core-version}</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>hu.blackbelt.judo.generator</groupId>
+                            <artifactId>judo-psm-generator-sdk-core-impl</artifactId>
+                            <version>${judo-psm-generator-sdk-core-version}</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>hu.blackbelt.judo.generator</groupId>
+                            <artifactId>judo-psm-generator-sdk-core-guice</artifactId>
+                            <version>${judo-psm-generator-sdk-core-version}</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
         <plugins>
             <plugin>
                 <groupId>hu.blackbelt.judo.tatami</groupId>
@@ -24,16 +85,277 @@
                         <goals>
                             <goal>parser-workflow</goal>
                         </goals>
-                        <phase>generate-sources</phase>
+                        <phase>generate-test-sources</phase>
                     </execution>
                 </executions>
                 <configuration>
-                    <destination>${basedir}/target/generated-sources/model</destination>
+                    <destination>${basedir}/target/generated-test-sources/model</destination>
                     <sources>${basedir}/src/test/resources/model</sources>
                     <sdkPackagePrefix>hu.blackbelt.judo.runtime.core.jsl.itest</sdkPackagePrefix>
+                    <generateSdk>false</generateSdk>
                     <generateSdkGuice>true</generateSdkGuice>
                     <saveModels>true</saveModels>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>hu.blackbelt.judo.generator</groupId>
+                <artifactId>judo-psm-generator-maven-plugin</artifactId>
+                <executions>
+
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-AbstractModel</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/AbstractModel-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/psm/sdk-core/AbstractModel</destination>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-AssociationRelationships</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/AssociationRelationships-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/psm/sdk-core/AssociationRelationships</destination>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-CompositionRelationships</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/CompositionRelationships-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/psm/sdk-core/CompositionRelationships</destination>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-ContainerDerived</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/ContainerDerived-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/psm/sdk-core/ContainerDerived</destination>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-ContainsModel</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/ContainsModel-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/psm/sdk-core/ContainsModel</destination>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-Functions</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/Functions-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/psm/sdk-core/Functions</destination>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-FunctionsExternals</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/FunctionsExternals-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/psm/sdk-core/FunctionsExternals</destination>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-NavigationTest</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/NavigationTest-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/psm/sdk-core/NavigationTest</destination>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-Operators</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/Operators-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/psm/sdk-core/Operators</destination>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-Primitives</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/Primitives-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/psm/sdk-core/Primitives</destination>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-QueryModel</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/QueryModel-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/psm/sdk-core/QueryModel</destination>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-SalesModel</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/SalesModel-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/psm/sdk-core/SalesModel</destination>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-SalesModel2</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/SalesModel2-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/psm/sdk-core/SalesModel2</destination>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-SalesModel3</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/SalesModel3-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/psm/sdk-core/SalesModel3</destination>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-SalesModelContract</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/SalesModelContract-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/psm/sdk-core/SalesModelContract</destination>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-TaskModel</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/TaskModel-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/psm/sdk-core/TaskModel</destination>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-TernaryTest</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/TernaryTest-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/psm/sdk-core/TernaryTest</destination>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-CastingFunctionsModel</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/CastingFunctionsModel-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/psm/sdk-core/CastingFunctionsModel</destination>
+                        </configuration>
+                    </execution>
+
+                </executions>
             </plugin>
 
             <plugin>
@@ -42,50 +364,51 @@
                 <executions>
                     <execution>
                         <id>add-source</id>
-                        <phase>generate-sources</phase>
+                        <phase>generate-test-sources</phase>
                         <goals>
                             <goal>add-test-source</goal>
                         </goals>
                         <configuration>
                             <sources>
-                                <source>${project.basedir}/target/generated-sources/model/sdk/SalesModel</source>
-                                <source>${project.basedir}/target/generated-sources/model/sdk/SalesModel2</source>
-                                <source>${project.basedir}/target/generated-sources/model/sdk/SalesModel3</source>
-                                <source>${project.basedir}/target/generated-sources/model/sdk/SalesModelContract</source>
-                                <source>${project.basedir}/target/generated-sources/model/sdk/Primitives</source>
-                                <source>${project.basedir}/target/generated-sources/model/sdk/AssociationRelationships</source>
-                                <source>${project.basedir}/target/generated-sources/model/sdk/CompositionRelationships</source>
-                                <source>${project.basedir}/target/generated-sources/model/sdk/Operators</source>
-                                <source>${project.basedir}/target/generated-sources/model/sdk/Functions</source>
-                                <source>${project.basedir}/target/generated-sources/model/sdk/FunctionsExternals</source>
-                                <source>${project.basedir}/target/generated-sources/model/sdk/NavigationTest</source>
-                                <source>${project.basedir}/target/generated-sources/model/sdk/ContainerDerived</source>
-                                <source>${project.basedir}/target/generated-sources/model/sdk/TaskModel</source>
-                                <source>${project.basedir}/target/generated-sources/model/sdk/OrderManagement</source>
-                                <source>${project.basedir}/target/generated-sources/model/sdk/QueryModel</source>
-                                <source>${project.basedir}/target/generated-sources/model/sdk/Abstract</source>
-                                <source>${project.basedir}/target/generated-sources/model/sdk/TernaryTest</source>
-                                <source>${project.basedir}/target/generated-sources/model/sdk/ContainsModel</source>
-                                <source>${project.basedir}/target/generated-sources/model/sdk/CastingFunctionsModel</source>
+                                <source>${project.basedir}/target/generated-test-sources/model/sdk-core/SalesModel</source>
+                                <source>${project.basedir}/target/generated-test-sources/model/sdk-core/SalesModel2</source>
+                                <source>${project.basedir}/target/generated-test-sources/model/sdk-core/SalesModel3</source>
+                                <source>${project.basedir}/target/generated-test-sources/model/sdk-core/SalesModelContract</source>
+                                <source>${project.basedir}/target/generated-test-sources/model/sdk-core/Primitives</source>
+                                <source>${project.basedir}/target/generated-test-sources/model/sdk-core/AssociationRelationships</source>
+                                <source>${project.basedir}/target/generated-test-sources/model/sdk-core/CompositionRelationships</source>
+                                <source>${project.basedir}/target/generated-test-sources/model/sdk-core/Operators</source>
+                                <source>${project.basedir}/target/generated-test-sources/model/sdk-core/Functions</source>
+                                <source>${project.basedir}/target/generated-test-sources/model/sdk-core/FunctionsExternals</source>
+                                <source>${project.basedir}/target/generated-test-sources/model/sdk-core/NavigationTest</source>
+                                <source>${project.basedir}/target/generated-test-sources/model/sdk-core/ContainerDerived</source>
+                                <source>${project.basedir}/target/generated-test-sources/model/sdk-core/TaskModel</source>
+                                <source>${project.basedir}/target/generated-test-sources/model/sdk-core/OrderManagement</source>
+                                <source>${project.basedir}/target/generated-test-sources/model/sdk-core/QueryModel</source>
+                                <source>${project.basedir}/target/generated-test-sources/model/sdk-core/Abstract</source>
+                                <source>${project.basedir}/target/generated-test-sources/model/sdk-core/TernaryTest</source>
+                                <source>${project.basedir}/target/generated-test-sources/model/sdk-core/ContainsModel</source>
+                                <source>${project.basedir}/target/generated-test-sources/model/sdk-core/CastingFunctionsModel</source>
                             </sources>
                         </configuration> 
                    </execution>
+                    <!--
                     <execution>
                         <id>add-resource</id>
                         <phase>generate-resources</phase>
                         <goals>
-                            <goal>add-resource</goal>
+                            <goal>add-test-resource</goal>
                         </goals>
                         <configuration>
                             <resources>
                                 <resource>
-                                    <directory>${project.basedir}/target/generated-sources/model</directory>
+                                    <directory>${project.basedir}/target/generated-test-sources/model</directory>
                                     <targetPath>model</targetPath>
                                 </resource>
                             </resources>
                         </configuration>
                     </execution>
-
+                    -->
                 </executions>
             </plugin>
             <!--
