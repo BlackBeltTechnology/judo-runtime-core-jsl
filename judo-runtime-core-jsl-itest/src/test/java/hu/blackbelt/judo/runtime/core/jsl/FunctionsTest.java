@@ -36,6 +36,8 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.boo
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.child.Child;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.child.ChildDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.collectionfunctions.CollectionFunctions;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.collectionfunctions.CollectionFunctionsAttachedRelationsForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.collectionfunctions.CollectionFunctionsAttachedRelationsForCreateBuilder;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.collectionfunctions.CollectionFunctionsDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.datefunctions.DateFunctions;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.datefunctions.DateFunctionsDao;
@@ -617,12 +619,6 @@ public class FunctionsTest extends AbstractJslTest {
                                 Parent.builder().withName("Another Person").build()
                         )
                 )
-                .withParentsRelation(
-                        List.of(
-                                Parent.builder().withName("Mark").build(),
-                                Parent.builder().withName("Billy").build()
-                        )
-                )
                 .withChildrenField(
                         List.of(
                                 Child.builder().withName("Rebecca").withAge(33L).build(),
@@ -630,6 +626,13 @@ public class FunctionsTest extends AbstractJslTest {
                                 Child.builder().withName("Monica").withAge(23L).build(),
                                 Child.builder().withName("Peter").withAge(46L).build(),
                                 Child.builder().withName("Andrew").withAge(46L).build()
+                        )
+                )
+                .build(), CollectionFunctionsAttachedRelationsForCreate.builder()
+                .withParentsRelation(
+                        List.of(
+                                Parent.builder().withName("Mark").build(),
+                                Parent.builder().withName("Billy").build()
                         )
                 )
                 .withChildrenRelation(
@@ -642,7 +645,8 @@ public class FunctionsTest extends AbstractJslTest {
                                 Child.builder().withName("Daniel").build()
                         )
                 )
-                .build());
+                .build()
+                );
 
         assertEquals(2, collectionFunctions.getSizeParentsField().get());
         assertEquals(2, collectionFunctions.getSizeParentsRelation().get());
@@ -852,9 +856,10 @@ public class FunctionsTest extends AbstractJslTest {
         Member m3 = memberDao.create(Member.builder().withName("M3").build());
 
         Tester tester = testerDao.create(Tester.builder()
-                                               .withMember(m1)
-                                               .withMembers(List.of(m1, m2, m3))
                                                .build());
+        testerDao.setMember(tester, m1);
+        testerDao.addMembers(tester, List.of(m1, m2, m3));
+        tester = testerDao.getById(tester.get__identifier()).orElseThrow();
         assertTrue(tester.getMemberMemberOfMembers().orElseThrow());
     }
 
