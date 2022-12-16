@@ -22,9 +22,12 @@ package hu.blackbelt.judo.runtime.core.jsl;
 
 import com.google.inject.Inject;
 import com.google.inject.Module;
-import hu.blackbelt.judo.runtime.core.jsl.itest.containsmodel.guice.containsmodel.ContainsModelDaoModules;
-import hu.blackbelt.judo.runtime.core.jsl.itest.containsmodel.sdk.containsmodel.containsmodel.A;
-import hu.blackbelt.judo.runtime.core.jsl.itest.containsmodel.sdk.containsmodel.containsmodel.B;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containsmodel.containsmodel.a.AAttachedRelationsForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containsmodel.containsmodel.b.BDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containsmodel.containsmodel.a.A;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containsmodel.containsmodel.a.ADao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containsmodel.containsmodel.b.B;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.ContainsModelDaoModules;
 import hu.blackbelt.judo.test.Requirement;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
@@ -38,10 +41,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class ContainsTest extends AbstractJslTest {
 
     @Inject
-    A.ADao aDao;
+    ADao aDao;
 
     @Inject
-    B.BDao bDao;
+    BDao bDao;
 
     @Override
     public Module getModelDaoModule() {
@@ -69,6 +72,7 @@ public class ContainsTest extends AbstractJslTest {
         B b = bDao.create(B.builder().withName("test").build());
         B b1 = bDao.create(B.builder().withName("not test").build());
         A a1 = aDao.create(A.builder()
+                            .build(), AAttachedRelationsForCreate.builder()
                             .withB(b)
                             .withBs(List.of(b, b1))
                             .build());
