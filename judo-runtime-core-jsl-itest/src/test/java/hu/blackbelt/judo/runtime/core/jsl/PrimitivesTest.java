@@ -24,9 +24,27 @@ import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
 import com.google.inject.Module;
 import hu.blackbelt.judo.dispatcher.api.FileType;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.defaultrequiredentity.DefaultRequiredEntity;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.entityrequiredwithprimitivedefaults.EntityRequiredWithPrimitiveDefaults;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.entitywithprimitivedefaultexpressions.EntityWithPrimitiveDefaultExpressions;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.entitywithprimitivedefaults.EntityWithPrimitiveDefaults;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.entitywithprimitivedefaults.EntityWithPrimitiveDefaultsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.defaultrequiredentity.DefaultRequiredEntityDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.entityrequiredfields.EntityRequiredFields;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.entityrequiredfields.EntityRequiredFieldsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.entityrequiredwithprimitivedefaults.EntityRequiredWithPrimitiveDefaultsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.entitywithidentifiers.EntityWithIdentifiers;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.entitywithidentifiers.EntityWithIdentifiersDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.entitywithidentifierscontainer.EntityWithIdentifiersContainer;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.entitywithidentifierscontainer.EntityWithIdentifiersContainerDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.entitywithprimitivedefaultexpressions.EntityWithPrimitiveDefaultExpressionsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.myentitywithoptionalfields.MyEntityWithOptionalFields;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.myentitywithoptionalfields.MyEntityWithOptionalFieldsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.myenum.MyEnum;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.referenceentity.ReferenceEntity;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.referenceentity.ReferenceEntityDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.PrimitivesDaoModules;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
-import hu.blackbelt.judo.runtime.core.jsl.itest.primitives.guice.primitives.PrimitivesDaoModules;
-import hu.blackbelt.judo.runtime.core.jsl.itest.primitives.sdk.primitives.primitives.*;
 import hu.blackbelt.judo.test.Requirement;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -44,31 +62,31 @@ import static org.hamcrest.Matchers.*;
 @Slf4j
 public class PrimitivesTest extends AbstractJslTest {
     @Inject
-    MyEntityWithOptionalFields.MyEntityWithOptionalFieldsDao myEntityWithOptionalFieldsDao;
+    MyEntityWithOptionalFieldsDao myEntityWithOptionalFieldsDao;
 
     @Inject
-    EntityRequiredFields.EntityRequiredFieldsDao entityRequiredFieldsDao;
+    EntityRequiredFieldsDao entityRequiredFieldsDao;
 
     @Inject
-    EntityWithIdentifiers.EntityWithIdentifiersDao entityWithIdentifiersDao;
+    EntityWithIdentifiersDao entityWithIdentifiersDao;
 
     @Inject
-    EntityWithIdentifiersContainer.EntityWithIdentifiersContainerDao entityWithIdentifiersContainerDao;
+    EntityWithIdentifiersContainerDao entityWithIdentifiersContainerDao;
 
     @Inject
-    EntityWithPrimitiveDefaults.EntityWithPrimitiveDefaultsDao entityWithPrimitiveDefaultsDao;
+    EntityWithPrimitiveDefaultsDao entityWithPrimitiveDefaultsDao;
 
     @Inject
-    EntityWithPrimitiveDefaultExpressions.EntityWithPrimitiveDefaultExpressionsDao entityWithPrimitiveDefaultExpressionsDao;
+    EntityWithPrimitiveDefaultExpressionsDao entityWithPrimitiveDefaultExpressionsDao;
 
     @Inject
-    EntityRequiredWithPrimitiveDefaults.EntityRequiredWithPrimitiveDefaultsDao entityRequiredWithPrimitiveDefaultsDao;
+    EntityRequiredWithPrimitiveDefaultsDao entityRequiredWithPrimitiveDefaultsDao;
 
     @Inject
-    ReferenceEntity.ReferenceEntityDao referenceEntityDao;
+    ReferenceEntityDao referenceEntityDao;
 
     @Inject
-    DefaultRequiredEntity.DefaultRequiredEntityDao defaultRequiredEntityDao;
+    DefaultRequiredEntityDao defaultRequiredEntityDao;
     @Override
     public Module getModelDaoModule() {
         return new PrimitivesDaoModules();
