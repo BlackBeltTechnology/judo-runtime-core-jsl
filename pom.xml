@@ -41,10 +41,10 @@
         </osgi-transaction-import>
 
 
-        <judo-tatami-jsl-version>1.1.4.20221216_013550_a2d18952_feature_JNG_4256_AddPsm2SdkCoreTemplates</judo-tatami-jsl-version>
-        <judo-runtime-core-version>1.0.6.20221209_042130_d63f3a72_develop</judo-runtime-core-version>
-        <judo-psm-generator-version>1.0.0.20221216_132628_8d8aef8c_feature_JNG_4256_AddPsm2SdkCoreTemplates</judo-psm-generator-version>
-        <judo-psm-generator-sdk-core-version>1.0.0.20221216_140411_8d64fe7d_feature_JNG_4256_AddPsm2SdkCoreTemplates</judo-psm-generator-sdk-core-version>
+        <judo-tatami-jsl-version>1.1.4.20221216_181102_e669c1d8_feature_JNG_4256_AddPsm2SdkCoreTemplates</judo-tatami-jsl-version>
+        <judo-runtime-core-version>1.0.5</judo-runtime-core-version>
+        <judo-psm-generator-version>1.0.0.20221216_182450_8f04d308_feature_JNG_4256_AddPsm2SdkCoreTemplates</judo-psm-generator-version>
+        <judo-psm-generator-sdk-core-version>1.0.0.20221216_181031_8d64fe7d_feature_JNG_4256_AddPsm2SdkCoreTemplates</judo-psm-generator-sdk-core-version>
 
         <!-- Code Quality-->
         <sonar-maven-plugin-version>3.9.1.2184</sonar-maven-plugin-version>
