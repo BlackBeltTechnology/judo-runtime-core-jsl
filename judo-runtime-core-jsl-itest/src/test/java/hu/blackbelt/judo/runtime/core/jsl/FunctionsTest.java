@@ -60,12 +60,13 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.par
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.stringfunctions.StringFunctions;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.stringfunctions.StringFunctionsDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.tester.Tester;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.tester.TesterAttachedRelationsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.tester.TesterDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.timefunctions.TimeFunctions;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.timefunctions.TimeFunctionsDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.timestampfunctions.TimestampFunctions;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.timestampfunctions.TimestampFunctionsDao;
-import hu.blackbelt.judo.runtime.core.jsl.itest.functions.guice.functions.FunctionsDaoModules;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.FunctionsDaoModules;
 import hu.blackbelt.judo.test.Requirement;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
@@ -855,10 +856,12 @@ public class FunctionsTest extends AbstractJslTest {
         Member m2 = memberDao.create(Member.builder().withName("M2").build());
         Member m3 = memberDao.create(Member.builder().withName("M3").build());
 
-        Tester tester = testerDao.create(Tester.builder()
-                                               .build());
-        testerDao.setMember(tester, m1);
-        testerDao.addMembers(tester, List.of(m1, m2, m3));
+        Tester tester = testerDao.create(
+                Tester.builder().build(),
+                TesterAttachedRelationsForCreate.builder()
+                            .withMember(m1)
+                            .withMembers(List.of(m1, m2, m3))
+                            .build());
         tester = testerDao.getById(tester.get__identifier()).orElseThrow();
         assertTrue(tester.getMemberMemberOfMembers().orElseThrow());
     }
