@@ -131,7 +131,6 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
         ));
     }
 
-/*
     @Test
     @Requirement(reqs = {
             "REQ-ENT-001",
@@ -182,7 +181,7 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
         assertEquals(Optional.empty(), entityADao.querySingleConA(entityA));
         assertEquals(1, entityCDao.query().execute().size());
     }
-*/
+
     @Test
     @Requirement(reqs = {
             "REQ-ENT-001",
