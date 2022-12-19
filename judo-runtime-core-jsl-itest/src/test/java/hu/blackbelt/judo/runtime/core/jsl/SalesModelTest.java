@@ -155,7 +155,7 @@ class SalesModelTest extends AbstractJslTest {
         createdSalesPerson = salesPersonDao.getById(createdSalesPerson.get__identifier()).get();
         assertEquals(Optional.of(2), createdSalesPerson.getNumberOfLeads());
 
-        List<Lead> leadsOver10 = salesPersonDao.getLeadsOver10(createdSalesPerson);
+        List<Lead> leadsOver10 = salesPersonDao.queryLeadsOver10(createdSalesPerson).execute();
 
         assertEquals(1, leadsOver10.size());
     }
@@ -200,7 +200,7 @@ class SalesModelTest extends AbstractJslTest {
                 .withContracts(List.of(contract))
                 .build());
 
-        List<Contract> checkContracts = salesPersonDao.getContracts(createdSalesPerson);
+        List<Contract> checkContracts = salesPersonDao.queryContracts(createdSalesPerson).execute();
         Contract checkContract = checkContracts.get(0);
 
         assertEquals(1, checkContracts.size());
@@ -242,13 +242,13 @@ class SalesModelTest extends AbstractJslTest {
         Optional<ContractsAggregator> fetched = contractsAggregatorDao.getById(staticNavigationHost.get__identifier());
 
         // Collection<ContractDetail> details = fetched.get().getContractDetails() - derived relations are not embedded
-        Collection<ContractDetail> details = contractsAggregatorDao.getContractDetails(fetched.get());
+        Collection<ContractDetail> details = contractsAggregatorDao.queryContractDetails(fetched.get()).execute();
 
         assertEquals(Optional.of("Hello"), contract1.getDetail().get().getDetails());
         assertEquals(Optional.empty(), contract2.getDetail());
 
         // Collection<Contract> contracts = contractsAggregatorDao.getContracts(fetched.get()) - derived relations are not embedded
-        Collection<Contract> contracts = contractsAggregatorDao.getContracts(fetched.get());
+        Collection<Contract> contracts = contractsAggregatorDao.queryContracts(fetched.get()).execute();
 
         assertEquals(2, contracts.size());
         assertEquals(1, details.size());
