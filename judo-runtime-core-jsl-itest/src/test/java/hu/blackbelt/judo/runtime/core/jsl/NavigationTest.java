@@ -73,7 +73,7 @@ class NavigationTest extends AbstractJslTest {
         bDao.setC(b, c);
 
         // Read derived list over DAO call
-        List<C> cList = aDao.getClist(a);
+        List<C> cList = aDao.queryClist(a).execute();
         assertEquals(1, cList.size());
 
     }

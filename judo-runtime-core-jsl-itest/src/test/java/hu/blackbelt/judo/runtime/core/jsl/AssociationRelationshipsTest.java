@@ -115,17 +115,17 @@ public class AssociationRelationshipsTest extends AbstractJslTest {
             "REQ-ENT-012"
     })
     public void testAddRemoveMultipleRelations() {
-        assertEquals(List.of(), entityCDao.getMultipleAonB(entityC));
+        assertEquals(List.of(), entityCDao.queryMultipleAonB(entityC).execute());
 
         EntityA entityA2 = createA(entityC, List.of(entityD));
 
         entityCDao.addMultipleAonB(entityC, List.of(entityA, entityA2));
 
-        assertEquals(2, entityCDao.getMultipleAonB(entityC).size());
+        assertEquals(2, entityCDao.queryMultipleAonB(entityC).execute().size());
 
         entityCDao.removeMultipleAonB(entityC, List.of(entityA));
 
-        assertEquals(List.of(entityA2), entityCDao.getMultipleAonB(entityC));
+        assertEquals(List.of(entityA2), entityCDao.queryMultipleAonB(entityC).execute());
     }
 
     @Test
@@ -168,7 +168,7 @@ public class AssociationRelationshipsTest extends AbstractJslTest {
 
         assertEquals(entityC, entityC2);
 
-        List<EntityA> entityA2 = entityCDao.getTwoWayMultipleAonC(entityC2);
+        List<EntityA> entityA2 = entityCDao.queryTwoWayMultipleAonC(entityC2).execute();
 
         assertEquals(1, entityA2.size());
         assertEquals(entityA, entityA2.get(0));
@@ -201,7 +201,7 @@ public class AssociationRelationshipsTest extends AbstractJslTest {
     public void testDeletingRelatedElementUnsetsRelationship() {
         entityDDao.delete(entityD);
 
-        List<EntityD> ds = entityADao.getMultipleDonA(entityA);
+        List<EntityD> ds = entityADao.queryMultipleDonA(entityA).execute();
 
         assertEquals(0, ds.size());
     }
@@ -225,7 +225,7 @@ public class AssociationRelationshipsTest extends AbstractJslTest {
                 .build()
                 );
 
-        assertEquals(2, entityEDao.getMultipleFOnE(entityE).size());
+        assertEquals(2, entityEDao.queryMultipleFOnE(entityE).execute().size());
         assertEquals(Optional.of(entityE), entityFDao.querySingleEAdded(entityF1));
         assertEquals(Optional.of(entityE), entityFDao.querySingleEAdded(entityF2));
     }
@@ -246,8 +246,8 @@ public class AssociationRelationshipsTest extends AbstractJslTest {
                 .withMultipleAonD(List.of(entityA1, entityA2, entityA3))
                 .build());
 
-        assertEquals(3, entityDDao.getMultipleAonD(entityD1).size());
-        assertEquals(1, entityADao.getMultipleDonA(entityA1).size());
+        assertEquals(3, entityDDao.queryMultipleAonD(entityD1).execute().size());
+        assertEquals(1, entityADao.queryMultipleDonA(entityA1).execute().size());
     }
 
     private EntityA createA(EntityC entityC, List<EntityD> entityDs) {
