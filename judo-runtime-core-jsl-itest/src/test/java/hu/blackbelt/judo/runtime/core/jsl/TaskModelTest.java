@@ -4,7 +4,7 @@ import com.google.inject.Inject;
 import com.google.inject.Module;
 import hu.blackbelt.judo.runtime.core.jsl.itest.taskmodel.guice.taskmodel.TaskModelDaoModules;
 import hu.blackbelt.judo.runtime.core.jsl.itest.taskmodel.sdk.taskmodel.taskmodel.*;
-import hu.blackbelt.judo.test.Requirement;
+import hu.blackbelt.judo.annotation.Requirement;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
