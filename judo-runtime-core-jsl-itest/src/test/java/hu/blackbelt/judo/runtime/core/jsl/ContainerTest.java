@@ -22,11 +22,14 @@ package hu.blackbelt.judo.runtime.core.jsl;
 
 import com.google.inject.Inject;
 import com.google.inject.Module;
-import hu.blackbelt.judo.runtime.core.jsl.itest.containertest.guice.containertest.ContainerTestDaoModules;
-import hu.blackbelt.judo.runtime.core.jsl.itest.containertest.sdk.containertest.containertest.*;
-import hu.blackbelt.judo.runtime.core.jsl.itest.containertest.sdk.containertest.containertest.B.BDao;
-import hu.blackbelt.judo.runtime.core.jsl.itest.containertest.sdk.containertest.containertest.C.CDao;
-import hu.blackbelt.judo.runtime.core.jsl.itest.containertest.sdk.containertest.containertest.D.DDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.a.A;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.b.B;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.b.BDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.c.C;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.c.CDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.d.D;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.d.DDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.ContainerTestDaoModules;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
@@ -56,8 +59,8 @@ public class ContainerTest extends AbstractJslTest {
                            .withDonB(D.builder().build())
                            .build());
         C c = b.getConA();
-        A cA = cDao.getContainerA(c).orElseThrow();
-        B cB = cDao.getContainerB(c).orElseThrow();
+        A cA = cDao.queryContainerA(c).orElseThrow();
+        B cB = cDao.queryContainerB(c).orElseThrow();
         assertEquals(b.get__identifier(), cA.get__identifier());
         assertEquals(b.get__identifier(), cB.get__identifier());
 
@@ -66,8 +69,8 @@ public class ContainerTest extends AbstractJslTest {
                             .withDonB(D.builder().build())
                             .build());
         D d = b1.getDonB();
-        A dA = dDao.getContainerA(d).orElseThrow();
-        B dB = dDao.getContainerB(d).orElseThrow();
+        A dA = dDao.queryContainerA(d).orElseThrow();
+        B dB = dDao.queryContainerB(d).orElseThrow();
         assertEquals(b1.get__identifier(), dA.get__identifier());
         assertEquals(b1.get__identifier(), dB.get__identifier());
     }
