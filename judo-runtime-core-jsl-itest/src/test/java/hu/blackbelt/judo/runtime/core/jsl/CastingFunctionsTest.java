@@ -27,7 +27,7 @@ import hu.blackbelt.judo.runtime.core.jsl.itest.castingfunctionsmodel.sdk.castin
 import hu.blackbelt.judo.runtime.core.jsl.itest.castingfunctionsmodel.sdk.castingfunctionsmodel.castingfunctionsmodel.B.BDao;
 import hu.blackbelt.judo.runtime.core.jsl.itest.castingfunctionsmodel.sdk.castingfunctionsmodel.castingfunctionsmodel.CA.CADao;
 import hu.blackbelt.judo.runtime.core.jsl.itest.castingfunctionsmodel.sdk.castingfunctionsmodel.castingfunctionsmodel.Tester.TesterDao;
-import hu.blackbelt.judo.annotation.Requirement;
+import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

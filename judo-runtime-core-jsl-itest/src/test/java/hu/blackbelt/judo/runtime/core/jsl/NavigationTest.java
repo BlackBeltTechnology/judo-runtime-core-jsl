@@ -26,7 +26,7 @@ import hu.blackbelt.judo.runtime.core.jsl.itest.navigationtest.guice.navigationt
 import hu.blackbelt.judo.runtime.core.jsl.itest.navigationtest.sdk.navigationtest.navigationtest.A;
 import hu.blackbelt.judo.runtime.core.jsl.itest.navigationtest.sdk.navigationtest.navigationtest.B;
 import hu.blackbelt.judo.runtime.core.jsl.itest.navigationtest.sdk.navigationtest.navigationtest.C;
-import hu.blackbelt.judo.annotation.Requirement;
+import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import java.util.List;

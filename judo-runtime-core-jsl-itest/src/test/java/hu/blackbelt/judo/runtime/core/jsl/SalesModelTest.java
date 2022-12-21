@@ -28,7 +28,7 @@ import hu.blackbelt.judo.runtime.core.jsl.itest.salesmodel.sdk.salesmodel.salesm
 import hu.blackbelt.judo.runtime.core.jsl.itest.salesmodel.sdk.salesmodel.salesmodelcontract.ContractDetail;
 import hu.blackbelt.judo.sdk.query.NumberFilter;
 import hu.blackbelt.judo.sdk.query.StringFilter;
-import hu.blackbelt.judo.annotation.Requirement;
+import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
