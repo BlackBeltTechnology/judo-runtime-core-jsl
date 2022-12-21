@@ -107,6 +107,6 @@ entity DefaultRequiredEntity {
     //TODO JNG-3721
 
     identifier required Date createDate = Date!of(year = 2022, month = 11, day = 4);
-    field required Integer sumEntitiesIntegerValue = ReferenceEntity!sum(e | e.intAtt);
+    field required Integer sumEntitiesIntegerValue = ReferenceEntity!all()!sum(e | e.intAtt);
 
 }
