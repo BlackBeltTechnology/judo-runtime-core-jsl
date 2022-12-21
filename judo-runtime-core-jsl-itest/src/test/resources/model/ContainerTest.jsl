@@ -18,6 +18,6 @@ entity C {
 
 entity D {
     derived A containerA => self!container(entityType = B)!asType(entityType = A);
-    derived B containerB => self!container(entityType = B);
     derived A containerA1 => self!container(entityType = A);
+    derived B containerB => self!container(entityType = B);
 }
