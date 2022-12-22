@@ -22,9 +22,21 @@ package hu.blackbelt.judo.runtime.core.jsl;
 
 import com.google.inject.Inject;
 import com.google.inject.Module;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entitya.EntityA;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entitya.EntityADao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entitya.EntityAMask;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityb.EntityB;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityb.EntityBDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityc.EntityC;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityc.EntityCDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityc.EntityCMask;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityd.EntityD;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityd.EntityDDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entitye.EntityE;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entitye.EntityEDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.CompositionRelationshipsDaoModules;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
-import hu.blackbelt.judo.runtime.core.jsl.itest.compositionrelationships.guice.compositionrelationships.CompositionRelationshipsDaoModules;
-import hu.blackbelt.judo.runtime.core.jsl.itest.compositionrelationships.sdk.compositionrelationships.compositionrelationships.*;
+import hu.blackbelt.judo.test.Requirement;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -37,6 +49,8 @@ import javax.transaction.NotSupportedException;
 import javax.transaction.SystemException;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -45,19 +59,19 @@ import static org.hamcrest.Matchers.*;
 @Slf4j
 public class CompositionRelationshipsTest extends AbstractJslTest {
     @Inject
-    EntityA.EntityADao entityADao;
+    EntityADao entityADao;
 
     @Inject
-    EntityB.EntityBDao entityBDao;
+    EntityBDao entityBDao;
 
     @Inject
-    EntityC.EntityCDao entityCDao;
+    EntityCDao entityCDao;
 
     @Inject
-    EntityD.EntityDDao entityDDao;
+    EntityDDao entityDDao;
 
     @Inject
-    EntityE.EntityEDao entityEDao;
+    EntityEDao entityEDao;
 
     @Inject
     PlatformTransactionManager transactionManager;
@@ -101,6 +115,10 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-ENT-001",
+            "REQ-ENT-007"
+    })
     void testMissingRequiredRelationshipThrowsException() {
         ValidationException thrown = assertThrows(
                 ValidationException.class,
@@ -114,42 +132,62 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-ENT-001",
+            "REQ-ENT-007",
+            "REQ-ENT-012"
+    })
     void testNullOutOptionalRelationRemovesNested() {
-        assertEquals(Optional.of(singleConA), entityADao.getSingleConA(entityA));
+        assertEquals(Optional.of(singleConA), entityADao.querySingleConA(entityA));
         assertEquals(2, entityCDao.query().execute().size());
 
         entityA.setSingleConA(null);
         entityADao.update(entityA);
 
-        assertEquals(Optional.empty(), entityADao.getSingleConA(entityA));
+        assertEquals(Optional.empty(), entityADao.querySingleConA(entityA));
         assertEquals(1, entityCDao.query().execute().size());
         assertEquals(Optional.empty(), entityCDao.getById(singleConA.get__identifier()));
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-ENT-001",
+            "REQ-ENT-007",
+            "REQ-ENT-012"
+    })
     void testUnsetOptionalRelationRemovesNested() {
-        assertEquals(Optional.of(singleConA), entityADao.getSingleConA(entityA));
+        assertEquals(Optional.of(singleConA), entityADao.querySingleConA(entityA));
         assertEquals(2, entityCDao.query().execute().size());
 
         entityADao.unsetSingleConA(entityA);
 
-        assertEquals(Optional.empty(), entityADao.getSingleConA(entityA));
+        assertEquals(Optional.empty(), entityADao.querySingleConA(entityA));
         assertEquals(1, entityCDao.query().execute().size());
         assertEquals(Optional.empty(), entityCDao.getById(singleConA.get__identifier()));
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-ENT-001",
+            "REQ-ENT-007",
+            "REQ-ENT-012"
+    })
     void testDeleteOptionalRelation() {
-        assertEquals(Optional.of(singleConA), entityADao.getSingleConA(entityA));
+        assertEquals(Optional.of(singleConA), entityADao.querySingleConA(entityA));
         assertEquals(2, entityCDao.query().execute().size());
 
         entityCDao.delete(singleConA);
 
-        assertEquals(Optional.empty(), entityADao.getSingleConA(entityA));
+        assertEquals(Optional.empty(), entityADao.querySingleConA(entityA));
         assertEquals(1, entityCDao.query().execute().size());
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-ENT-001",
+            "REQ-ENT-007",
+            "REQ-ENT-012"
+    })
     void testDeleteRequiredRelationThrowsException() {
         entityA.setSingleRequiredConA(null);
         ValidationException thrown = assertThrows(
@@ -164,6 +202,14 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-007",
+            "REQ-ENT-012"
+    })
     void testTraverse() {
         List<EntityA> maskedAs = entityADao.query().execute();
         EntityA maskedA = maskedAs.get(0);
@@ -180,8 +226,16 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-007",
+            "REQ-ENT-012"
+    })
     void testMask() {
-        List<EntityA> maskedAs = entityADao.query().maskedBy(EntityA.EntityADao.Mask.entityAMask().withSingleRequiredConA(EntityC.EntityCDao.Mask.entityCMask().withStringC())).execute();
+        List<EntityA> maskedAs = entityADao.query().maskedBy(EntityAMask.entityAMask().withSingleRequiredConA(EntityCMask.entityCMask().withStringC())).execute();
 
         EntityA maskedA = maskedAs.get(0);
         EntityC requiredC = maskedA.getSingleRequiredConA();
@@ -195,6 +249,14 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-007",
+            "REQ-ENT-012"
+    })
     void testUpdateRootUpdatesInterimElement() {
         EntityA entityA2 = entityADao.query().execute().get(0);
         EntityC requiredC = entityA2.getSingleRequiredConA();
@@ -217,6 +279,12 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-ENT-001",
+            "REQ-ENT-002"
+    })
     void testManualTransactionManagementRollback() throws SystemException, NotSupportedException {
         TransactionStatus transactionStatus = transactionManager.getTransaction(new DefaultTransactionDefinition());
         assertEquals(Optional.of("TEST-A"), entityADao.getById(entityA.get__identifier()).get().getStringA());
@@ -227,6 +295,12 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-ENT-001",
+            "REQ-ENT-002"
+    })
     void testManualTransactionManagementCommit() throws SystemException, NotSupportedException {
         TransactionStatus transactionStatus = transactionManager.getTransaction(new DefaultTransactionDefinition());
         assertEquals(Optional.of("TEST-A"), entityADao.getById(entityA.get__identifier()).get().getStringA());
@@ -238,6 +312,13 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
 
     @Test
     @Disabled
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-012"
+    })
     void testMultipleInheritance() {
         // FIXME: JNG-4260
         EntityE entityE = entityEDao.create(EntityE.builder()
@@ -253,6 +334,13 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-012"
+    })
     void testAbstractDAOOperations() {
         EntityC entityC = entityCDao.create(EntityC.builder().build());
 
@@ -272,5 +360,33 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
         Optional<EntityB> updatedB = entityBDao.getById(entityC.get__identifier());
 
         assertEquals(Optional.of("B"), updatedB.get().getStringB());
+    }
+
+    @Test
+    @Disabled
+    void testDeepCopyConstructor() {
+        //When we add a composition Entity we must copy it, because that comp entity belong the created entity
+
+        //Build entities for the test
+        entityD1 = entityDDao.create(EntityD.builder()
+                .build());
+        entityD2 = entityDDao.create(EntityD.builder()
+                .build());
+        singleRequiredConA = entityCDao.create(EntityC.builder()
+                .withStringC("C")
+                .withMultipleDonB(List.of(entityD1, entityD2))
+                .build());
+        entityA = entityADao.create(EntityA.builder()
+                .withStringA("A")
+                .withSingleRequiredConA(singleRequiredConA)
+                .build());
+
+        //TODO-JNG-4317
+
+        assertNotEquals(entityA.getSingleRequiredConA().get__identifier(), singleRequiredConA.get__identifier());
+        List<UUID> collect = singleRequiredConA.getMultipleDonB().stream().map(c -> c.get__identifier()).collect(Collectors.toList());
+        assertFalse(collect.contains(entityD1.get__identifier()));
+        assertFalse(collect.contains(entityD2.get__identifier()));
+
     }
 }

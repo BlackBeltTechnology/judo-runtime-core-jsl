@@ -14,15 +14,15 @@ enum MyEnum {
 }
 
 entity abstract AbstractEntityOptionalFields {
+    field Boolean boolAttr;
+    field Binary binaryAttr;
     field Integer integerAttr;
-    field Scaled scaledAttr;
     field SmallString stringAttr;
     field PhoneNumber regexAttr;
-    field Boolean boolAttr;
+    field Scaled scaledAttr;
     field Date dateAttr;
-    field Timestamp timestampAttr;
     field Time timeAttr;
-    field Binary binaryAttr;
+    field Timestamp timestampAttr;
     field MyEnum enumAttr;
 }
 

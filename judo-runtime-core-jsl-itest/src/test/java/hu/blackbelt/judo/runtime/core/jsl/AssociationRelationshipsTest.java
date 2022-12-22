@@ -22,8 +22,21 @@ package hu.blackbelt.judo.runtime.core.jsl;
 
 import com.google.inject.Inject;
 import com.google.inject.Module;
-import hu.blackbelt.judo.runtime.core.jsl.itest.associationrelationships.guice.associationrelationships.AssociationRelationshipsDaoModules;
-import hu.blackbelt.judo.runtime.core.jsl.itest.associationrelationships.sdk.associationrelationships.associationrelationships.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entitya.EntityA;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entitya.EntityAAttachedRelationsForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entitya.EntityADao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entityc.EntityC;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entityc.EntityCDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entityd.EntityD;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entityd.EntityDAttachedRelationsForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entityd.EntityDDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entitye.EntityE;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entitye.EntityEAttachedRelationsForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entitye.EntityEDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entityf.EntityF;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entityf.EntityFDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.AssociationRelationshipsDaoModules;
+import hu.blackbelt.judo.test.Requirement;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -37,19 +50,19 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Slf4j
 public class AssociationRelationshipsTest extends AbstractJslTest {
     @Inject
-    EntityA.EntityADao entityADao;
+    EntityADao entityADao;
 
     @Inject
-    EntityC.EntityCDao entityCDao;
+    EntityCDao entityCDao;
 
     @Inject
-    EntityD.EntityDDao entityDDao;
+    EntityDDao entityDDao;
 
     @Inject
-    EntityE.EntityEDao entityEDao;
+    EntityEDao entityEDao;
 
     @Inject
-    EntityF.EntityFDao entityFDao;
+    EntityFDao entityFDao;
 
     EntityD entityD;
     EntityC entityC;
@@ -76,34 +89,52 @@ public class AssociationRelationshipsTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-ENT-001",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-ENT-012"
+    })
     public void testSetUnsetSingleRelation() {
-        assertEquals(Optional.empty(), entityADao.getSingleConA(entityA));
+        assertEquals(Optional.empty(), entityADao.querySingleConA(entityA));
 
         entityADao.setSingleConA(entityA, entityC);
 
-        assertEquals(Optional.of(entityC), entityADao.getSingleConA(entityA));
+        assertEquals(Optional.of(entityC), entityADao.querySingleConA(entityA));
 
         entityADao.unsetSingleConA(entityA);
 
-        assertEquals(Optional.empty(), entityADao.getSingleConA(entityA));
+        assertEquals(Optional.empty(), entityADao.querySingleConA(entityA));
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-ENT-001",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-ENT-012"
+    })
     public void testAddRemoveMultipleRelations() {
-        assertEquals(List.of(), entityCDao.getMultipleAonB(entityC));
+        assertEquals(List.of(), entityCDao.queryMultipleAonB(entityC).execute());
 
         EntityA entityA2 = createA(entityC, List.of(entityD));
 
         entityCDao.addMultipleAonB(entityC, List.of(entityA, entityA2));
 
-        assertEquals(2, entityCDao.getMultipleAonB(entityC).size());
+        assertEquals(2, entityCDao.queryMultipleAonB(entityC).execute().size());
 
         entityCDao.removeMultipleAonB(entityC, List.of(entityA));
 
-        assertEquals(List.of(entityA2), entityCDao.getMultipleAonB(entityC));
+        assertEquals(List.of(entityA2), entityCDao.queryMultipleAonB(entityC).execute());
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-ENT-001",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-ENT-012"
+    })
     public void testRequiredRelationEnforced() {
         IllegalArgumentException thrown = assertThrows(
                 IllegalArgumentException.class,
@@ -119,6 +150,13 @@ public class AssociationRelationshipsTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-ENT-001",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-ENT-006",
+            "REQ-ENT-012"
+    })
     public void testTraverse() {
         EntityD entityD2 = entityDDao.create(EntityD.builder().build());
 
@@ -126,17 +164,23 @@ public class AssociationRelationshipsTest extends AbstractJslTest {
 
         Optional<EntityA> startA = entityADao.getById(entityA.get__identifier());
 
-        EntityC entityC2 = entityADao.getSingleRequiredConA(startA.get());
+        EntityC entityC2 = entityADao.querySingleRequiredConA(startA.get());
 
         assertEquals(entityC, entityC2);
 
-        List<EntityA> entityA2 = entityCDao.getTwoWayMultipleAonC(entityC2);
+        List<EntityA> entityA2 = entityCDao.queryTwoWayMultipleAonC(entityC2).execute();
 
         assertEquals(1, entityA2.size());
         assertEquals(entityA, entityA2.get(0));
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-ENT-001",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-ENT-012"
+    })
     public void testDeletingRequiredRelationThrowsException() {
         IllegalStateException thrown = assertThrows(
                 IllegalStateException.class,
@@ -148,42 +192,69 @@ public class AssociationRelationshipsTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-ENT-001",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-ENT-012"
+    })
     public void testDeletingRelatedElementUnsetsRelationship() {
         entityDDao.delete(entityD);
 
-        List<EntityD> ds = entityADao.getMultipleDonA(entityA);
+        List<EntityD> ds = entityADao.queryMultipleDonA(entityA).execute();
 
         assertEquals(0, ds.size());
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-ENT-001",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-ENT-006",
+            "REQ-ENT-012"
+    })
     public void testOppositeAdd() {
         EntityF entityF1 = entityFDao.create(EntityF.builder().build());
         EntityF entityF2 = entityFDao.create(EntityF.builder().build());
         EntityE entityE = entityEDao.create(EntityE.builder()
+                .build(),
+                EntityEAttachedRelationsForCreate
+                .builder()
                 .withMultipleFOnE(List.of(entityF1, entityF2))
-                .build());
+                .build()
+                );
 
-        assertEquals(2, entityEDao.getMultipleFOnE(entityE).size());
-        assertEquals(Optional.of(entityE), entityFDao.getSingleEAdded(entityF1));
-        assertEquals(Optional.of(entityE), entityFDao.getSingleEAdded(entityF2));
+        assertEquals(2, entityEDao.queryMultipleFOnE(entityE).execute().size());
+        assertEquals(Optional.of(entityE), entityFDao.querySingleEAdded(entityF1));
+        assertEquals(Optional.of(entityE), entityFDao.querySingleEAdded(entityF2));
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-ENT-001",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-ENT-006",
+            "REQ-ENT-012"
+    })
     public void testNavigateTwoWay() {
         EntityA entityA1 = createA(entityC, List.of());
         EntityA entityA2 = createA(entityC, List.of());
         EntityA entityA3 = createA(entityC, List.of());
-        EntityD entityD1 = entityDDao.create(EntityD.builder().withMultipleAonD(List.of(entityA1, entityA2, entityA3)).build());
+        EntityD entityD1 = entityDDao.create(EntityD.builder().build(), EntityDAttachedRelationsForCreate.builder()
+                .withMultipleAonD(List.of(entityA1, entityA2, entityA3))
+                .build());
 
-        assertEquals(3, entityDDao.getMultipleAonD(entityD1).size());
-        assertEquals(1, entityADao.getMultipleDonA(entityA1).size());
+        assertEquals(3, entityDDao.queryMultipleAonD(entityD1).execute().size());
+        assertEquals(1, entityADao.queryMultipleDonA(entityA1).execute().size());
     }
 
     private EntityA createA(EntityC entityC, List<EntityD> entityDs) {
-        return entityADao.create(EntityA.builder()
-                .withSingleRequiredConA(entityC)
+        return entityADao.create(EntityA.builder().build(),
+                EntityAAttachedRelationsForCreate.builder()
                 .withMultipleDonA(entityDs)
+                .withSingleRequiredConA(entityC)
                 .build());
     }
 }

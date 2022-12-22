@@ -23,10 +23,11 @@ package hu.blackbelt.judo.runtime.core.jsl;
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
 import com.google.inject.Module;
-import hu.blackbelt.judo.dispatcher.api.FileType;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.myentitywithoptionalfields.MyEntityWithOptionalFields;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.myentitywithoptionalfields.MyEntityWithOptionalFieldsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.PrimitivesDaoModules;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
-import hu.blackbelt.judo.runtime.core.jsl.itest.primitives.guice.primitives.PrimitivesDaoModules;
-import hu.blackbelt.judo.runtime.core.jsl.itest.primitives.sdk.primitives.primitives.*;
+import hu.blackbelt.judo.test.Requirement;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
@@ -43,7 +44,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @Slf4j
 public class PrecisionTest extends AbstractJslTest {
     @Inject
-    MyEntityWithOptionalFields.MyEntityWithOptionalFieldsDao myEntityWithOptionalFieldsDao;
+    MyEntityWithOptionalFieldsDao myEntityWithOptionalFieldsDao;
 
     @Override
     public Module getModelDaoModule() {
@@ -56,6 +57,12 @@ public class PrecisionTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-005",
+            "REQ-ENT-001",
+            "REQ-ENT-012"
+    })
     public void testPrecisionValidatorFailsWithPrecisionOverflow() {
         ValidationException thrown = assertThrows(
                 ValidationException.class,
@@ -70,6 +77,12 @@ public class PrecisionTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-005",
+            "REQ-ENT-001",
+            "REQ-ENT-012"
+    })
     public void testScaleValidatorFailsWithScaleOverflow() {
         ValidationException thrown = assertThrows(
                 ValidationException.class,
@@ -84,6 +97,12 @@ public class PrecisionTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-005",
+            "REQ-ENT-001",
+            "REQ-ENT-012"
+    })
     public void testValidateDoubleWithPrecisionAndScaleOverflow() {
         ValidationException thrown = assertThrows(
                 ValidationException.class,
@@ -103,6 +122,12 @@ public class PrecisionTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-005",
+            "REQ-ENT-001",
+            "REQ-ENT-012"
+    })
     public void testScaleValidatorPassesForValueWithoutScale() {
         MyEntityWithOptionalFields created = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
                 .withScaledAttr(123456789.0)
