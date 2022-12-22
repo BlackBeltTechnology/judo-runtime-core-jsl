@@ -48,7 +48,7 @@ entity Lead {
 	relation required SalesPerson salesPerson opposite leads;
 	relation SC::Contract contract opposite-add lead;
 
-	constraint ValueMoreThan10 self.value > 10 onerror MyError(code = 10, msg = "Error message");
+	//constraint ValueMoreThan10 self.value > 10 onerror MyError(code = 10, msg = "Error message");
 }
 
 entity Customer {
@@ -57,6 +57,6 @@ entity Customer {
 	relation Lead lead opposite-add customer;
 }
 
-query Lead[] rootAllLeads() => Lead;
+query Lead[] rootAllLeads() => Lead!all();
 query Lead rootOneLead() => Lead!any();
-query Integer totalNumberOfLeads() => Lead!size();
+query Integer totalNumberOfLeads() => Lead!all()!size();
