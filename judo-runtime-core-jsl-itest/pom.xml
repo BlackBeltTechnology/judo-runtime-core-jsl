@@ -354,6 +354,20 @@
                         </configuration>
                     </execution>
 
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-ContainerTest</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/ContainerTest-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/sdk-core/ContainerTest</destination>
+                        </configuration>
+                    </execution>
+
                 </executions>
             </plugin>
 
@@ -388,6 +402,7 @@
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/TernaryTest</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/ContainsModel</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/CastingFunctionsModel</source>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/ContainerTest</source>
                             </sources>
                         </configuration>
                    </execution>
