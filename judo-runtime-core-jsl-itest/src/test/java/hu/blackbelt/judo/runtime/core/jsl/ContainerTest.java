@@ -30,6 +30,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.container
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.d.D;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.d.DDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.ContainerTestDaoModules;
+import hu.blackbelt.judo.test.Requirement;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
@@ -53,6 +54,24 @@ public class ContainerTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-ENT-001",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-ENT-007",
+            "REQ-ENT-008",
+            "REQ-ENT-012",
+            "REQ-EXPR-001",
+            "REQ-EXPR-003",
+            "REQ-EXPR-004",
+            "REQ-EXPR-006",
+            "REQ-EXPR-021",
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-SYNT-001",
+            "REQ-SYNT-002",
+            "REQ-SYNT-003"
+    })
     public void testContainerFunction() {
         B b = bDao.create(B.builder()
                            .withConA(C.builder().build())
