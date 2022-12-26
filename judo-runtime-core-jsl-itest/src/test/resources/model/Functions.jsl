@@ -93,9 +93,9 @@ entity StringFunctions {
     derived Integer position => "apple"!position(substring = "p");
     derived String substring => "apple"!substring(count = 2, offset = 3);
     derived String lower => "ApPlE"!lower();
-    derived String lowerCase => "ApPlE"!lowerCase();
+    derived String lowerCase => "ApPlE"!lower();
     derived String upper => "ApPlE"!upper();
-    derived String upperCase => "ApPlE"!upperCase();
+    derived String upperCase => "ApPlE"!upper();
     derived String capitalize => "apPlE"!capitalize();
     derived Boolean matches => "apple"!matches(pattern = r".*pl.");
 
@@ -352,7 +352,7 @@ entity InstanceFunctions {
     derived Child asChildType => self.parent!asType(entityType = Child);
 
     derived Boolean parentMemberOfParents => self.parent!memberOf(instances = self.parents);
-    derived Boolean parentMemberOfParentsExtra => self.parent!memberOf(instances = self.parents!filter(p | p!memberOf(instances = Parent)));
+    derived Boolean parentMemberOfParentsExtra => self.parent!memberOf(instances = self.parents!filter(p | p!memberOf(instances = Parent!all())));
     derived Boolean parentMemberOfChildren => self.parent!memberOf(instances = self.children);
     derived Boolean childMemberOfParents => self.child!memberOf(instances = self.parents);
     derived Boolean childMemberOfChildren => self.child!memberOf(instances = self.children);
@@ -365,10 +365,10 @@ entity Booler {
 }
 
 entity BoolerTester {
-    derived Boolean anyTrue => Booler!anyTrue(b | b.b);
-    derived Boolean allTrue => Booler!allTrue(b | b.b);
-    derived Boolean anyFalse => Booler!anyFalse(b | b.b);
-    derived Boolean allFalse => Booler!allFalse(b | b.b);
+    derived Boolean anyTrue => Booler!all()!anyTrue(b | b.b);
+    derived Boolean allTrue => Booler!all()!allTrue(b | b.b);
+    derived Boolean anyFalse => Booler!all()!anyFalse(b | b.b);
+    derived Boolean allFalse => Booler!all()!allFalse(b | b.b);
 }
 
 entity CollectionFunctions {
@@ -389,7 +389,7 @@ entity CollectionFunctions {
     derived Child[] asCollectionChildrenChildField => self.parentsField!asCollection(entityType = Child);
     derived Child[] asCollectionChildrenChildRelation => self.parentsRelation!asCollection(entityType = Child);
 
-    derived Boolean containsParent => self.parentsField!contains(instance = Parent!filter(p | p.name == "John")!any());
+    derived Boolean containsParent => self.parentsField!contains(instance = Parent!all()!filter(p | p.name == "John")!any());
 
     derived Parent[] filterParentsField => self.parentsField!filter(p | p.name == "John");
     derived Parent[] filterParentsRelation => self.parentsRelation!filter(p | p.name == "Mark");
