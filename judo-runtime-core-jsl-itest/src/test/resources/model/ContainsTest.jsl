@@ -7,7 +7,7 @@ entity A {
     relation B[] bs;
     relation B b;
     derived Boolean containsTest => self.bs!contains(instance = self.b);
-    derived Boolean containsTest1 => self.bs!contains(instance = B!filter(b | b.name == "test")!any());
+    derived Boolean containsTest1 => self.bs!contains(instance = B!all()!filter(b | b.name == "test")!any());
 }
 
 entity B {
