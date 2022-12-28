@@ -66,12 +66,15 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.tim
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.timefunctions.TimeFunctionsDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.timestampfunctions.TimestampFunctions;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.timestampfunctions.TimestampFunctionsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.simple.Simple;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.simple.SimpleDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.FunctionsDaoModules;
 import hu.blackbelt.judo.test.Requirement;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
 import java.time.*;
 import java.util.List;
 import java.util.Optional;
@@ -138,6 +141,9 @@ public class FunctionsTest extends AbstractJslTest {
 
     @Inject
     TesterDao testerDao;
+
+    @Inject
+    SimpleDao simpleDao;
 
     @BeforeEach
     protected void init() throws Exception {
@@ -866,4 +872,13 @@ public class FunctionsTest extends AbstractJslTest {
         assertTrue(tester.getMemberMemberOfMembers().orElseThrow());
     }
 
+    @Test
+    public void testFirst() {
+    	Simple s1 = simpleDao.create(Simple.builder().withStringAttr("A").build());
+    	Simple s2 = simpleDao.create(Simple.builder().withStringAttr("a").build());
+    	Simple s3 = simpleDao.create(Simple.builder().withStringAttr("b").build());
+    	s1 = simpleDao.update(s1);
+    	assertEquals(Optional.of(Long.valueOf(1)), s1.getFirstNum());
+    }
+    
 }
