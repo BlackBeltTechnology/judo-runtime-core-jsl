@@ -17,6 +17,11 @@ enum MyEnum {
     Crazy = 2;
 }
 
+entity Simple {
+	field String stringAttr;
+	derived Integer firstNum => Simple!all()!first(s | s.stringAttr)!size();
+}
+
 entity Entity {
     field Integer integerAttr;
     field Scaled scaledAttr;

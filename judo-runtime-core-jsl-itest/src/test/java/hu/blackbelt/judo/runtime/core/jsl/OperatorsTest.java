@@ -121,7 +121,26 @@ public class OperatorsTest extends AbstractJslTest {
 
         assertEquals(Optional.of(true), operators.getTimeStampEq());
         assertEquals(Optional.of(true), operators.getTimeStampNeq());
-    }
+
+        assertEquals(Optional.of(true), operators.getStringLt());
+        assertEquals(Optional.of(true), operators.getStringLte());
+        assertEquals(Optional.of(true), operators.getStringLte2());
+        assertEquals(Optional.of(true), operators.getStringGt());
+        assertEquals(Optional.of(true), operators.getStringGte());
+        assertEquals(Optional.of(true), operators.getStringGte2());
+        assertEquals(Optional.of(true), operators.getStringEq());
+        assertEquals(Optional.of(true), operators.getStringNeq());
+
+        assertEquals(Optional.of(true), operators.getCsStringLt());
+        assertEquals(Optional.of(true), operators.getCsStringLte());
+        assertEquals(Optional.of(true), operators.getCsStringLte2());
+        assertEquals(Optional.of(true), operators.getCsStringGt());
+        assertEquals(Optional.of(true), operators.getCsStringGte());
+        assertEquals(Optional.of(true), operators.getCsStringGte2());
+        assertEquals(Optional.of(true), operators.getCsStringEq());
+        assertEquals(Optional.of(false), operators.getCsStringEqFalse());
+        assertEquals(Optional.of(true), operators.getCsStringNeq());
+}
 
     @Test
     @Requirement(reqs = {
