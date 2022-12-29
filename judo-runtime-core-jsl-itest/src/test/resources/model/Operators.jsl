@@ -64,6 +64,25 @@ entity DefaultOperators {
 
     field Boolean timeStampEq = `2020-02-18T09:11:12Z` == `2020-02-18T10:11:12+01:00`;
     field Boolean timeStampNeq = `2020-02-18T10:11:12Z` != `2020-02-18T00:00:00Z`;
+
+    field Boolean stringLt = "abc" < "bcd";
+    field Boolean stringLte = "abc" <= "abc";
+    field Boolean stringLte2 = "abc" <= "bcd";
+    field Boolean stringGt = "abc" > "ab";
+    field Boolean stringGte = "abc" >= "abc";
+    field Boolean stringGte2 = "abc" >= "ab";
+    field Boolean stringEq = "abc" == "abc";
+    field Boolean stringNeq = "abc" != "ab";
+
+    field Boolean csStringLt = "aBc" < "abc";
+    field Boolean csStringLte = "aBc" <= "aBc";
+    field Boolean csStringLte2 = "aBc" <= "abc";
+    field Boolean csStringGt = "abc" > "aBc";
+    field Boolean csStringGte = "aBc" >= "aBc";
+    field Boolean csStringGte2 = "abc" >= "aBc";
+    field Boolean csStringEq = "ABC" == "ABC";
+    field Boolean csStringEqFalse = "ABC" == "abc";
+    field Boolean csStringNeq = "ABC" != "abc";
 }
 
 entity DerivedSource {
