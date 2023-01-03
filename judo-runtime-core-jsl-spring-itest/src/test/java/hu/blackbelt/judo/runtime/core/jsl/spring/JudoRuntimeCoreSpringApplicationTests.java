@@ -20,7 +20,16 @@ package hu.blackbelt.judo.runtime.core.jsl.spring;
  * #L%
  */
 
-import hu.blackbelt.judo.runtime.core.jsl.spring.test.salesmodel.sdk.salesmodel.salesmodel.*;
+import hu.blackbelt.judo.runtime.core.jsl.spring.test.api.salesmodel.salesmodel.lead.Lead;
+import hu.blackbelt.judo.runtime.core.jsl.spring.test.api.salesmodel.salesmodel.lead.LeadAttachedRelationsForCreate;
+import hu.blackbelt.judo.runtime.core.jsl.spring.test.api.salesmodel.salesmodel.lead.LeadDao;
+import hu.blackbelt.judo.runtime.core.jsl.spring.test.api.salesmodel.salesmodel.leadsover.LeadsOverParameter;
+import hu.blackbelt.judo.runtime.core.jsl.spring.test.api.salesmodel.salesmodel.person.PersonDao;
+import hu.blackbelt.judo.runtime.core.jsl.spring.test.api.salesmodel.salesmodel.rootallleads.RootAllLeadsDao;
+import hu.blackbelt.judo.runtime.core.jsl.spring.test.api.salesmodel.salesmodel.rootonelead.RootOneLeadDao;
+import hu.blackbelt.judo.runtime.core.jsl.spring.test.api.salesmodel.salesmodel.salesperson.SalesPerson;
+import hu.blackbelt.judo.runtime.core.jsl.spring.test.api.salesmodel.salesmodel.salesperson.SalesPersonDao;
+import hu.blackbelt.judo.runtime.core.jsl.spring.test.api.salesmodel.salesmodel.totalnumberofleads.TotalNumberOfLeadsDao;
 import hu.blackbelt.judo.sdk.query.NumberFilter;
 import hu.blackbelt.judo.sdk.query.StringFilter;
 import lombok.extern.slf4j.Slf4j;
@@ -52,22 +61,22 @@ class JudoRuntimeCoreSpringApplicationTests {
 	PlatformTransactionManager transactionManager;
 
 	@Autowired
-	Person.PersonDao personDao;
+	PersonDao personDao;
 
 	@Autowired
-	SalesPerson.SalesPersonDao salesPersonDao;
+	SalesPersonDao salesPersonDao;
 
 	@Autowired
-	Lead.LeadDao leadDao;
+	LeadDao leadDao;
 
 	@Autowired
-	RootAllLeads.RootAllLeadsDao rootAllLeadsDao;
+	RootAllLeadsDao rootAllLeadsDao;
 
 	@Autowired
-	RootOneLead.RootOneLeadDao rootOneLeadDao;
+	RootOneLeadDao rootOneLeadDao;
 
 	@Autowired
-	TotalNumberOfLeads.TotalNumberOfLeadsDao totalNumberOfLeadsDao;
+	TotalNumberOfLeadsDao totalNumberOfLeadsDao;
 
 
 	@Test
@@ -87,21 +96,27 @@ class JudoRuntimeCoreSpringApplicationTests {
 
 		assertEquals(1, personList.size());
 
-		Lead lead1 = leadDao.create(Lead.builder()
-				.withSalesPerson(createdSalesPerson)
-				.build());
-		assertEquals(Optional.of(100000), lead1.getValue());
-		assertEquals(Optional.of("Test"), leadDao.getSalesPerson(lead1).getFirstName());
+		Lead lead1 = leadDao.create(Lead.builder().build(),
+				LeadAttachedRelationsForCreate.builder()
+						.withSalesPerson(createdSalesPerson)
+						.build());
 
-		Lead lead2 = leadDao.create(Lead.builder()
-				.withSalesPerson(createdSalesPerson)
-				.withValue(9)
-				.build());
+		assertEquals(Optional.of(100000), lead1.getValue());
+		assertEquals(Optional.of("Test"), leadDao.querySalesPerson(lead1).getFirstName());
+
+		Lead lead2 = leadDao.create(
+				Lead.builder()
+						.withValue(9)
+						.build(),
+				LeadAttachedRelationsForCreate.builder()
+						.withSalesPerson(createdSalesPerson)
+						.build()
+				);
 		assertEquals(Optional.of(9), lead2.getValue());
-		assertEquals(Optional.of("Test"), leadDao.getSalesPerson(lead2).getFirstName());
+		assertEquals(Optional.of("Test"), leadDao.querySalesPerson(lead2).getFirstName());
 
 		List<Lead> leadListOfQuery = salesPersonDao
-				.queryLeadsOver(createdSalesPerson, _SalesPerson_leadsOver_Parameters.builder()
+				.queryLeadsOver(createdSalesPerson, LeadsOverParameter.builder()
 						.withLimit(10)
 						.build())
 				.execute();
@@ -115,9 +130,9 @@ class JudoRuntimeCoreSpringApplicationTests {
 		assertEquals(1, leadListOfQuery.size());
 		assertEquals(Optional.of(100000), leadListOfQuery.get(0).getValue());
 
-		assertEquals(2, totalNumberOfLeadsDao.getTotalNumberOfLeads());
-		assertEquals(2, rootAllLeadsDao.getRootAllLeads().size());
-		assertNotNull(rootOneLeadDao.getRootOneLead());
+		assertEquals(2, totalNumberOfLeadsDao.execute());
+		assertEquals(2, rootAllLeadsDao.query().execute().size());
+		assertNotNull(rootOneLeadDao.query().execute());
 	}
 
 

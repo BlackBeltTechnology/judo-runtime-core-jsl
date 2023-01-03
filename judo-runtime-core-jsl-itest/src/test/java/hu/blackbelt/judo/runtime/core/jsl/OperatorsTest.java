@@ -27,6 +27,12 @@ import hu.blackbelt.judo.runtime.core.jsl.itest.operators.sdk.operators.operator
 import hu.blackbelt.judo.runtime.core.jsl.itest.operators.sdk.operators.operators.DerivedOperators;
 import hu.blackbelt.judo.runtime.core.jsl.itest.operators.sdk.operators.operators.DerivedSource;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.defaultoperators.DefaultOperators;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.defaultoperators.DefaultOperatorsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.derivedoperators.DerivedOperators;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.derivedoperators.DerivedOperatorsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.derivedsource.DerivedSource;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.OperatorsDaoModules;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
@@ -37,10 +43,10 @@ import static org.junit.jupiter.api.Assertions.*;
 @Slf4j
 public class OperatorsTest extends AbstractJslTest {
     @Inject
-    DefaultOperators.DefaultOperatorsDao defaultOperatorsDao;
+    DefaultOperatorsDao defaultOperatorsDao;
 
     @Inject
-    DerivedOperators.DerivedOperatorsDao derivedOperatorsDao;
+    DerivedOperatorsDao derivedOperatorsDao;
 
     @Override
     public Module getModelDaoModule() {
@@ -119,7 +125,26 @@ public class OperatorsTest extends AbstractJslTest {
 
         assertEquals(Optional.of(true), operators.getTimeStampEq());
         assertEquals(Optional.of(true), operators.getTimeStampNeq());
-    }
+
+        assertEquals(Optional.of(true), operators.getStringLt());
+        assertEquals(Optional.of(true), operators.getStringLte());
+        assertEquals(Optional.of(true), operators.getStringLte2());
+        assertEquals(Optional.of(true), operators.getStringGt());
+        assertEquals(Optional.of(true), operators.getStringGte());
+        assertEquals(Optional.of(true), operators.getStringGte2());
+        assertEquals(Optional.of(true), operators.getStringEq());
+        assertEquals(Optional.of(true), operators.getStringNeq());
+
+        assertEquals(Optional.of(true), operators.getCsStringLt());
+        assertEquals(Optional.of(true), operators.getCsStringLte());
+        assertEquals(Optional.of(true), operators.getCsStringLte2());
+        assertEquals(Optional.of(true), operators.getCsStringGt());
+        assertEquals(Optional.of(true), operators.getCsStringGte());
+        assertEquals(Optional.of(true), operators.getCsStringGte2());
+        assertEquals(Optional.of(true), operators.getCsStringEq());
+        assertEquals(Optional.of(false), operators.getCsStringEqFalse());
+        assertEquals(Optional.of(true), operators.getCsStringNeq());
+}
 
     @Test
     @Requirement(reqs = {

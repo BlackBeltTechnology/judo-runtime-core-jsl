@@ -27,6 +27,13 @@ import hu.blackbelt.judo.runtime.core.jsl.itest.navigationtest.sdk.navigationtes
 import hu.blackbelt.judo.runtime.core.jsl.itest.navigationtest.sdk.navigationtest.navigationtest.B;
 import hu.blackbelt.judo.runtime.core.jsl.itest.navigationtest.sdk.navigationtest.navigationtest.C;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.b.BDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.a.ADao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.a.A;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.b.B;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.c.CDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.c.C;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.NavigationTestDaoModules;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import java.util.List;
@@ -35,13 +42,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @Slf4j
 class NavigationTest extends AbstractJslTest {
     @Inject
-    A.ADao aDao;
+    ADao aDao;
 
     @Inject
-    B.BDao bDao;
+    BDao bDao;
 
     @Inject
-    C.CDao cDao;
+    CDao cDao;
 
     @Override
     public Module getModelDaoModule() {
@@ -70,7 +77,7 @@ class NavigationTest extends AbstractJslTest {
         bDao.setC(b, c);
 
         // Read derived list over DAO call
-        List<C> cList = aDao.getClist(a);
+        List<C> cList = aDao.queryClist(a).execute();
         assertEquals(1, cList.size());
 
     }

@@ -5,6 +5,17 @@ import com.google.inject.Module;
 import hu.blackbelt.judo.runtime.core.jsl.itest.taskmodel.guice.taskmodel.TaskModelDaoModules;
 import hu.blackbelt.judo.runtime.core.jsl.itest.taskmodel.sdk.taskmodel.taskmodel.*;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.taskmodel.taskmodel.marketplace.MarketPlace;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.taskmodel.taskmodel.marketplace.MarketPlaceDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.taskmodel.taskmodel.person.Person;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.taskmodel.taskmodel.person.PersonAttachedRelationsForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.taskmodel.taskmodel.person.PersonDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.taskmodel.taskmodel.salesperson.SalesPerson;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.taskmodel.taskmodel.salesperson.SalesPersonDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.taskmodel.taskmodel.task.Task;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.taskmodel.taskmodel.task.TaskDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.taskmodel.taskmodel.workplace.Workplace;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.TaskModelDaoModules;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -20,16 +31,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class TaskModelTest extends AbstractJslTest {
 
     @Inject
-    Person.PersonDao personDao;
+    PersonDao personDao;
 
     @Inject
-    Task.TaskDao taskDao;
+    TaskDao taskDao;
 
     @Inject
-    SalesPerson.SalesPersonDao salesPersonDao;
+    SalesPersonDao salesPersonDao;
 
     @Inject
-    MarketPlace.MarketPlaceDao marketPlaceDao;
+    MarketPlaceDao marketPlaceDao;
 
     @Override
     public Module getModelDaoModule() {
@@ -94,7 +105,9 @@ public class TaskModelTest extends AbstractJslTest {
 
         Person person1 = personDao.create(Person.builder().withFirstName("Adam").build());
         Workplace blackbelt = personDao.createWorkplace(person1, Workplace.builder().withName("Blackbelt").withAddress("Ganz utca 2").build());
-        Person person2 = personDao.create(Person.builder().withFirstName("Patrik").withWorkplace(blackbelt).build());
+        Person person2 = personDao.create(Person.builder().withFirstName("Patrik").build(), PersonAttachedRelationsForCreate.builder()
+                .withWorkplace(blackbelt)
+                .build());
 
         personDao.createTasks(person1, new ArrayList<>(Arrays.asList(
                 taskDao.create(Task.builder().withName("Build").withTaskTimeInDay(2).build()),

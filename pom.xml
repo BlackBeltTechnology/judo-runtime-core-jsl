@@ -39,13 +39,10 @@
             javax.transaction.xa;version=!,
             javax.resource;version="[1.6,2)"
         </osgi-transaction-import>
-
-
-        <epsilon-runtime-version>1.5.0</epsilon-runtime-version>
-        <judo-tatami-core-version>1.1.3</judo-tatami-core-version>
-
-        <judo-tatami-jsl-version>1.1.4.20221209_042621_87107c7c_develop</judo-tatami-jsl-version>
-        <judo-runtime-core-version>1.0.6.20221209_042130_d63f3a72_develop</judo-runtime-core-version>
+        <judo-tatami-jsl-version>1.1.4.20230103_040723_4ccf9b5c_develop</judo-tatami-jsl-version>
+        <judo-runtime-core-version>1.0.6.20230102_144708_219d21b6_develop</judo-runtime-core-version>
+        <judo-psm-generator-version>1.0.0.20221223_171440_1c2a7612_develop</judo-psm-generator-version>
+        <judo-psm-generator-sdk-core-version>1.0.0.20221224_041425_420df8c5_develop</judo-psm-generator-sdk-core-version>
 
         <!-- Code Quality-->
         <sonar-maven-plugin-version>3.9.1.2184</sonar-maven-plugin-version>
@@ -430,12 +427,6 @@
             <groupId>uk.org.lidalia</groupId>
             <artifactId>sysout-over-slf4j</artifactId>
             <version>1.0.2</version>
-        </dependency>
-
-        <dependency>
-            <groupId>hu.blackbelt.epsilon</groupId>
-            <artifactId>epsilon-runtime-execution</artifactId>
-            <version>${epsilon-runtime-version}</version>
         </dependency>
 
         <dependency>
