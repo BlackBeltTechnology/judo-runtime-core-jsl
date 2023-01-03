@@ -30,7 +30,6 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.container
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.d.D;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.d.DDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.ContainerTestDaoModules;
-import hu.blackbelt.judo.test.Requirement;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 

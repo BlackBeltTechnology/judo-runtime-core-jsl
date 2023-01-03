@@ -37,7 +37,6 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctionsmodel.c
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctionsmodel.castingfunctionsmodel.tester.TesterAttachedRelationsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctionsmodel.castingfunctionsmodel.tester.TesterDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.CastingFunctionsModelDaoModules;
-import hu.blackbelt.judo.test.Requirement;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
