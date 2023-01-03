@@ -1,33 +1,8 @@
 package hu.blackbelt.judo.runtime.core.jsl;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
-
-/*-
- * #%L
- * JUDO Runtime Core :: JUDO Language Specification DSL Integration Tests
- * %%
- * Copyright (C) 2018 - 2022 BlackBelt Technology
- * %%
- * This program and the accompanying materials are made available under the
- * terms of the Eclipse Public License 2.0 which is available at
- * http://www.eclipse.org/legal/epl-2.0.
- * 
- * This Source Code may also be made available under the following Secondary
- * Licenses when the conditions for such availability set forth in the Eclipse
- * Public License, v. 2.0 are satisfied: GNU General Public License, version 2
- * with the GNU Classpath Exception which is
- * available at https://www.gnu.org/software/classpath/license.html.
- * 
- * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
- * #L%
- */
-
 import com.google.inject.Inject;
 import com.google.inject.Module;
-import hu.blackbelt.judo.runtime.core.jsl.itest.functions.guice.functions.FunctionsDaoModules;
-import hu.blackbelt.judo.runtime.core.jsl.itest.functions.sdk.functions.functions.*;
-import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.anytypefunctions.AnyTypeFunctions;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.anytypefunctions.AnyTypeFunctionsDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.booleanfunctions.BooleanFunctions;
@@ -40,7 +15,6 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.chi
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.child.ChildDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.collectionfunctions.CollectionFunctions;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.collectionfunctions.CollectionFunctionsAttachedRelationsForCreate;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.collectionfunctions.CollectionFunctionsAttachedRelationsForCreateBuilder;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.collectionfunctions.CollectionFunctionsDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.datefunctions.DateFunctions;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.datefunctions.DateFunctionsDao;
@@ -72,12 +46,14 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.tim
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.simple.Simple;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.simple.SimpleDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.FunctionsDaoModules;
+import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.math.BigDecimal;
-import java.time.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 

@@ -22,12 +22,6 @@ package hu.blackbelt.judo.runtime.core.jsl;
 
 import com.google.inject.Inject;
 import com.google.inject.Module;
-import hu.blackbelt.judo.runtime.core.jsl.itest.castingfunctionsmodel.guice.castingfunctionsmodel.CastingFunctionsModelDaoModules;
-import hu.blackbelt.judo.runtime.core.jsl.itest.castingfunctionsmodel.sdk.castingfunctionsmodel.castingfunctionsmodel.*;
-import hu.blackbelt.judo.runtime.core.jsl.itest.castingfunctionsmodel.sdk.castingfunctionsmodel.castingfunctionsmodel.B.BDao;
-import hu.blackbelt.judo.runtime.core.jsl.itest.castingfunctionsmodel.sdk.castingfunctionsmodel.castingfunctionsmodel.CA.CADao;
-import hu.blackbelt.judo.runtime.core.jsl.itest.castingfunctionsmodel.sdk.castingfunctionsmodel.castingfunctionsmodel.Tester.TesterDao;
-import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctionsmodel.castingfunctionsmodel.a.A;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctionsmodel.castingfunctionsmodel.b.B;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctionsmodel.castingfunctionsmodel.b.BDao;
@@ -37,6 +31,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctionsmodel.c
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctionsmodel.castingfunctionsmodel.tester.TesterAttachedRelationsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctionsmodel.castingfunctionsmodel.tester.TesterDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.CastingFunctionsModelDaoModules;
+import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

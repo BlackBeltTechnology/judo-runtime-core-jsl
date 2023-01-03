@@ -22,18 +22,15 @@ package hu.blackbelt.judo.runtime.core.jsl;
 
 import com.google.inject.Inject;
 import com.google.inject.Module;
-import hu.blackbelt.judo.runtime.core.jsl.itest.containsmodel.guice.containsmodel.ContainsModelDaoModules;
-import hu.blackbelt.judo.runtime.core.jsl.itest.containsmodel.sdk.containsmodel.containsmodel.A;
-import hu.blackbelt.judo.runtime.core.jsl.itest.containsmodel.sdk.containsmodel.containsmodel.B;
-import hu.blackbelt.judo.requirement.report.annotation.Requirement;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containsmodel.containsmodel.a.AAttachedRelationsForCreate;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containsmodel.containsmodel.b.BDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containsmodel.containsmodel.a.A;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containsmodel.containsmodel.a.AAttachedRelationsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containsmodel.containsmodel.a.ADao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containsmodel.containsmodel.b.B;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containsmodel.containsmodel.b.BDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.ContainsModelDaoModules;
+import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 

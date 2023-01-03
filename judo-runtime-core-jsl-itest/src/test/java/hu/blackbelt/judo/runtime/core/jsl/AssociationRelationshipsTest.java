@@ -22,9 +22,6 @@ package hu.blackbelt.judo.runtime.core.jsl;
 
 import com.google.inject.Inject;
 import com.google.inject.Module;
-import hu.blackbelt.judo.runtime.core.jsl.itest.associationrelationships.guice.associationrelationships.AssociationRelationshipsDaoModules;
-import hu.blackbelt.judo.runtime.core.jsl.itest.associationrelationships.sdk.associationrelationships.associationrelationships.*;
-import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entitya.EntityA;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entitya.EntityAAttachedRelationsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entitya.EntityADao;
@@ -39,6 +36,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationship
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entityf.EntityF;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entityf.EntityFDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.AssociationRelationshipsDaoModules;
+import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -47,7 +45,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Slf4j
 public class AssociationRelationshipsTest extends AbstractJslTest {
