@@ -13,7 +13,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.taskmodel.taskmodel.tas
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.taskmodel.taskmodel.task.TaskDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.taskmodel.taskmodel.workplace.Workplace;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.TaskModelDaoModules;
-import hu.blackbelt.judo.test.Requirement;
+import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
