@@ -425,6 +425,17 @@
                     -->
                 </executions>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <compilerArgs>
+                        <arg>-AreportPath=${basedir}/target/classes/requirements-report.csv</arg>
+                    </compilerArgs>
+                </configuration>
+            </plugin>
+
             <!--
             <plugin>
                 <groupId>org.apache.felix</groupId>
@@ -487,6 +498,16 @@
         <dependency>
             <groupId>hu.blackbelt.judo</groupId>
             <artifactId>judo-sdk-common</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>hu.blackbelt.judo</groupId>
+            <artifactId>judo-requirement-report-annotation</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>hu.blackbelt.judo</groupId>
+            <artifactId>judo-requirement-report-processor</artifactId>
         </dependency>
     </dependencies>
 </project>
