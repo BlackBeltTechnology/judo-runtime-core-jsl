@@ -37,9 +37,9 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.salesmodel.salesmodelco
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.salesmodel.salesmodelcontract.contract.ContractDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.salesmodel.salesmodelcontract.contractdetail.ContractDetail;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.SalesModelDaoModules;
+import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.sdk.query.NumberFilter;
 import hu.blackbelt.judo.sdk.query.StringFilter;
-import hu.blackbelt.judo.test.Requirement;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -49,8 +49,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Slf4j
 class SalesModelTest extends AbstractJslTest {
