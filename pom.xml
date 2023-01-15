@@ -39,10 +39,10 @@
             javax.transaction.xa;version=!,
             javax.resource;version="[1.6,2)"
         </osgi-transaction-import>
-        <judo-tatami-jsl-version>1.1.4.20230111_041636_dbaa0814_develop</judo-tatami-jsl-version>
-        <judo-runtime-core-version>1.0.6.20230105_084216_1a3d56a5_develop</judo-runtime-core-version>
-        <judo-psm-generator-version>1.0.0.20230104_101636_f2c55f5e_develop</judo-psm-generator-version>
-        <judo-psm-generator-sdk-core-version>1.0.0.20230104_101749_cbb4e235_develop</judo-psm-generator-sdk-core-version>
+        <judo-tatami-jsl-version>1.1.4.20230115_195443_6dffd65e_develop</judo-tatami-jsl-version>
+        <judo-runtime-core-version>1.0.6.20230115_194934_6bef201b_develop</judo-runtime-core-version>
+        <judo-psm-generator-version>1.0.0.20230115_193814_e9507d35_develop</judo-psm-generator-version>
+        <judo-psm-generator-sdk-core-version>1.0.0.20230115_193955_2072cdb6_develop</judo-psm-generator-sdk-core-version>
 
         <!-- Code Quality-->
         <sonar-maven-plugin-version>3.9.1.2184</sonar-maven-plugin-version>
@@ -51,7 +51,7 @@
         <sonar.language>java</sonar.language>
         <sonar.java.source>${java.version}</sonar.java.source>
         <jacoco.version>0.8.8</jacoco.version>
-        <judo-requirement-report-version>1.0.0.20230109_180207_a567f86d_feature_JNG_4297_Creating_Judo_test_methodology</judo-requirement-report-version>
+        <judo-requirement-report-version>1.0.0.20230110_205404_5d3c243c_develop</judo-requirement-report-version>
     </properties>
 
     <url>http://github.com/${project-repositoryId}</url>
