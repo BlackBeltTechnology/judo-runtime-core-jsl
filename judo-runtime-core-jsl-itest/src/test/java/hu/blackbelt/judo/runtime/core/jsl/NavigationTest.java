@@ -30,10 +30,15 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigati
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.NavigationTestDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import lombok.extern.slf4j.Slf4j;
+import org.hamcrest.CoreMatchers;
+import org.hamcrest.Matcher;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
+import static org.hamcrest.CoreMatchers.anyOf;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
@@ -96,6 +101,24 @@ class NavigationTest extends AbstractJslTest {
     public void testStaticNavigation() {
         A a = aDao.create(A.builder().build());
 
+        assertEmptyBAndC(a);
+
+        C c = cDao.create(C.builder().withName("c").build());
+        UUID cId = c.get__identifier();
+        B b = bDao.create(B.builder().withName("b").build(), BAttachedRelationsForCreate.builder().withC(c).build());
+        UUID bId = b.get__identifier();
+
+        assertAttributesAndRelations(aDao.getById(a.get__identifier()).orElseThrow(), List.of(bId), List.of(cId));
+
+        C c2 = cDao.create(C.builder().withName("c").build());
+        UUID c2Id = c2.get__identifier();
+        B b2 = bDao.create(B.builder().withName("b").build(), BAttachedRelationsForCreate.builder().withC(c).build());
+        UUID b2Id = b2.get__identifier();
+
+        assertAttributesAndRelations(aDao.getById(a.get__identifier()).orElseThrow(), List.of(bId, b2Id), List.of(cId, c2Id));
+    }
+
+    private void assertEmptyBAndC(A a) {
         assertEmpty(aDao.queryBAll(a).execute());
         assertEmpty(aDao.queryBAny(a));
 
@@ -117,35 +140,41 @@ class NavigationTest extends AbstractJslTest {
         assertEmpty(aDao.queryBAllC(a).execute());
         assertEmpty(aDao.queryBAllCAny(a));
         assertEmpty(a.getBbAllCAnyName());
+    }
 
-        C c = cDao.create(C.builder().withName("c").build());
-        UUID cId = c.get__identifier();
-        UUID bId = bDao.create(B.builder().withName("b").build(),
-                               BAttachedRelationsForCreate.builder().withC(c).build()).get__identifier();
-
-        a = aDao.getById(a.get__identifier()).orElseThrow();
-
-        assertIsB(bId, aDao.queryBAll(a).execute());
-        assertEquals(bId, aDao.queryBAny(a).orElseThrow().get__identifier());
+    @SuppressWarnings("unchecked")
+    private void assertAttributesAndRelations(A a, Collection<UUID> bIds, Collection<UUID> cIds) {
+        assertThat(aDao.queryBAll(a).execute().stream().map(B::get__identifier).collect(Collectors.toList()), anyOf(toHasItems(bIds)));
+        assertThat(aDao.queryBAny(a).orElseThrow().get__identifier(), anyOf(toIss(bIds)));
 
         assertEquals("b", a.getBbAnyName().orElseThrow());
         assertEquals("b", a.getSelfBName().orElseThrow());
 
-        assertIsB(bId, aDao.queryBAllFilter(a).execute());
-        assertEquals(bId, aDao.queryBAllFilterAny(a).orElseThrow().get__identifier());
-        assertEquals(bId, aDao.queryBAllFilterAny1(a).orElseThrow().get__identifier());
+        assertThat(aDao.queryBAllFilter(a).execute().stream().map(B::get__identifier).collect(Collectors.toList()), anyOf(toHasItems(bIds)));
+        assertThat(aDao.queryBAllFilterAny(a).orElseThrow().get__identifier(), anyOf(toIss(bIds)));
+        assertThat(aDao.queryBAllFilterAny1(a).orElseThrow().get__identifier(), anyOf(toIss(bIds)));
 
         assertEquals("b", a.getBbAllFilterAnyName().orElseThrow());
         assertEquals("b", a.getBbAllFilterAnyName1().orElseThrow());
         assertEquals("b", a.getBbAllFilterAnyName2().orElseThrow());
 
-        assertIsC(cId, aDao.querySelfbAllC(a).execute());
-        assertEquals(cId, aDao.querySelfbAllCAny(a).orElseThrow().get__identifier());
+        assertThat(aDao.querySelfbAllC(a).execute().stream().map(C::get__identifier).collect(Collectors.toList()), anyOf(toHasItems(cIds)));
+        assertThat(aDao.querySelfbAllCAny(a).orElseThrow().get__identifier(), anyOf(toIss(cIds)));
         assertEquals("c", a.getSelfbAllCAnyName().orElseThrow());
 
-        assertIsC(cId, aDao.queryBAllC(a).execute());
-        assertEquals(cId, aDao.queryBAllCAny(a).orElseThrow().get__identifier());
+        assertThat(aDao.queryBAllC(a).execute().stream().map(C::get__identifier).collect(Collectors.toList()), anyOf(toHasItems(cIds)));
+        assertThat(aDao.queryBAllCAny(a).orElseThrow().get__identifier(), anyOf(toIss(cIds)));
         assertEquals("c", a.getBbAllCAnyName().orElseThrow());
+    }
+
+    @SuppressWarnings("rawtypes")
+    private static Matcher[] toHasItems(Collection<UUID> ids) {
+        return ids.stream().map(CoreMatchers::hasItem).collect(Collectors.toList()).toArray(Matcher[]::new);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private static Matcher[] toIss(Collection<UUID> ids) {
+        return ids.stream().map(CoreMatchers::is).collect(Collectors.toList()).toArray(Matcher[]::new);
     }
 
     @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
@@ -157,20 +186,6 @@ class NavigationTest extends AbstractJslTest {
     private static void assertEmpty(Collection<?> collection) {
         assertNotNull(collection);
         assertTrue(collection.isEmpty());
-    }
-
-    private static void assertIsB(UUID bId, List<B> bs) {
-        assertNotNull(bId);
-        assertNotNull(bs);
-        assertEquals(1, bs.size());
-        assertEquals(bId, bs.get(0).get__identifier());
-    }
-
-    private static void assertIsC(UUID cId, List<C> cs) {
-        assertNotNull(cId);
-        assertNotNull(cs);
-        assertEquals(1, cs.size());
-        assertEquals(cId, cs.get(0).get__identifier());
     }
 
 }
