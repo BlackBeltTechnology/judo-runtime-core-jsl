@@ -39,8 +39,8 @@
             javax.transaction.xa;version=!,
             javax.resource;version="[1.6,2)"
         </osgi-transaction-import>
-        <judo-tatami-jsl-version>1.1.4.20230115_195443_6dffd65e_develop</judo-tatami-jsl-version>
-        <judo-runtime-core-version>1.0.6.20230115_194934_6bef201b_develop</judo-runtime-core-version>
+        <judo-tatami-jsl-version>1.1.4.20230119_154752_a1a690e0_feature_JNG_4184_Static_navigation_causes_SQL_exception_in_derived_attribute</judo-tatami-jsl-version>
+        <judo-runtime-core-version>1.0.6.20230119_154136_52588b52_feature_JNG_4184_Static_navigation_causes_SQL_exception_in_derived_attribute</judo-runtime-core-version>
         <judo-psm-generator-version>1.0.0.20230115_193814_e9507d35_develop</judo-psm-generator-version>
         <judo-psm-generator-sdk-core-version>1.0.0.20230115_193955_2072cdb6_develop</judo-psm-generator-sdk-core-version>
 
@@ -51,7 +51,7 @@
         <sonar.language>java</sonar.language>
         <sonar.java.source>${java.version}</sonar.java.source>
         <jacoco.version>0.8.8</jacoco.version>
-        <judo-requirement-report-version>1.0.0.20230110_205404_5d3c243c_develop</judo-requirement-report-version>
+        <judo-requirement-report-version>1.0.0.20230117_094835_78d7b9dc_develop</judo-requirement-report-version>
     </properties>
 
     <url>http://github.com/${project-repositoryId}</url>
