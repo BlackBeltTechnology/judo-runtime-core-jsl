@@ -1,13 +1,39 @@
 model NavigationTest;
 
+type string String(min-size = 0, max-size = 255);
+
 entity A {
-    relation B[] blist;
-    derived C[] clist => self.blist.c;
+    relation B[]    blist;
+    derived  C[]    clist               => self.blist.c;
+
+    derived  B[]    bAll                => B!all();
+    derived  B      bAny                => B!any();
+
+    derived  String bbAnyName           => B!any().name;
+    derived  String selfBName           => self.bAny.name;
+
+    derived  B[]    bAllFilter          => B!all()!filter(b | b.name == "b");
+    derived  B      bAllFilterAny       => B!all()!filter(b | b.name == "b")!any();
+    derived  B      bAllFilterAny1      => self.bAllFilter!any();
+
+    derived  String bbAllFilterAnyName  => B!all()!filter(b | b.name == "b")!any().name;
+    derived  String bbAllFilterAnyName1 => self.bAllFilter!any().name;
+    derived  String bbAllFilterAnyName2 => self.bAllFilterAny1.name;
+
+    derived  C[]    selfbAllC           => self.bAll.c;
+    derived  C      selfbAllCAny        => self.bAll.c!any();
+    derived  String selfbAllCAnyName    => self.bAll.c!any().name;
+
+    derived  C[]    bAllC               => B!all().c;
+    derived  C      bAllCAny            => B!all().c!any();
+    derived  String bbAllCAnyName       => B!all().c!any().name;
 }
 
 entity B {
+    field String name;
     relation C c;
 }
 
 entity C {
+    field String name;
 }
