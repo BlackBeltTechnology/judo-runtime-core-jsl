@@ -16,33 +16,16 @@
         <pluginManagement>
             <plugins>
                 <plugin>
-                    <groupId>hu.blackbelt.judo.generator</groupId>
+                    <groupId>hu.blackbelt.judo.meta</groupId>
                     <artifactId>judo-psm-generator-maven-plugin</artifactId>
-                    <version>${judo-psm-generator-version}</version>
+                    <version>${judo-meta-psm-version}</version>
                     <configuration>
                         <uris>
                             <uri>mvn:hu.blackbelt.judo.generator:judo-psm-generator-sdk-core-api:${judo-psm-generator-sdk-core-version}</uri>
                             <uri>mvn:hu.blackbelt.judo.generator:judo-psm-generator-sdk-core-impl:${judo-psm-generator-sdk-core-version}</uri>
                             <uri>mvn:hu.blackbelt.judo.generator:judo-psm-generator-sdk-core-guice:${judo-psm-generator-sdk-core-version}</uri>
                         </uris>
-                        <helpers>
-                            <helper>hu.blackbelt.judo.psm.generator.sdk.core.api.ModelHelper</helper>
-                            <helper>hu.blackbelt.judo.psm.generator.sdk.core.api.StoredVariableHelper</helper>
-                            <helper>hu.blackbelt.judo.psm.generator.sdk.core.api.StringHelper</helper>
-                            <helper>hu.blackbelt.judo.psm.generator.sdk.core.api.JavaNamespaceHelper</helper>
-                            <helper>hu.blackbelt.judo.psm.generator.sdk.core.api.JavaApiHelper</helper>
-                            <helper>hu.blackbelt.judo.psm.generator.sdk.core.api.AttributeHelper</helper>
-                            <helper>hu.blackbelt.judo.psm.generator.sdk.core.api.RelationHelper</helper>
-                            <helper>hu.blackbelt.judo.psm.generator.sdk.core.api.ObjectTypeHelper</helper>
-                            <helper>hu.blackbelt.judo.psm.generator.sdk.core.api.OperationHelper</helper>
-                            <helper>hu.blackbelt.judo.psm.generator.sdk.core.api.StaticNavigationHelper</helper>
-                            <helper>hu.blackbelt.judo.psm.generator.sdk.core.api.StaticDataHelper</helper>
-                            <helper>hu.blackbelt.judo.psm.generator.sdk.core.impl.JavaImplHelper</helper>
-                            <helper>hu.blackbelt.judo.psm.generator.sdk.core.guice.GuiceHelper</helper>
-                        </helpers>
-
                         <type>psm-sdk-core</type>
-                        <contextAccessor>hu.blackbelt.judo.psm.generator.sdk.core.api.StoredVariableHelper</contextAccessor>
                         <templateParameters>
                             <apiPrefix>hu.blackbelt.judo.psm.generator.sdk.core.test.api</apiPrefix>
                             <implPrefix>hu.blackbelt.judo.psm.generator.sdk.core.test.impl</implPrefix>
@@ -98,8 +81,9 @@
             </plugin>
 
             <plugin>
-                <groupId>hu.blackbelt.judo.generator</groupId>
+                <groupId>hu.blackbelt.judo.meta</groupId>
                 <artifactId>judo-psm-generator-maven-plugin</artifactId>
+                <version>${judo-meta-psm-version}</version>
                 <executions>
 
                     <execution>
