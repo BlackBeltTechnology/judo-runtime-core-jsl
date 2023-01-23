@@ -1,0 +1,23 @@
+model ContainerTest;
+
+type string String(min-size = 0, max-size = 255);
+
+entity A {
+    field required C conA;
+}
+
+entity B extends A {
+    field required D donB;
+}
+
+entity C {
+    derived A containerA => self!container(entityType = A);
+    derived B containerB => self!container(entityType = A)!asType(entityType = B);
+    derived B containerB1 => self!container(entityType = B);
+}
+
+entity D {
+    derived A containerA => self!container(entityType = B)!asType(entityType = A);
+    derived A containerA1 => self!container(entityType = A);
+    derived B containerB => self!container(entityType = B);
+}

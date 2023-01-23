@@ -22,35 +22,45 @@ package hu.blackbelt.judo.runtime.core.jsl;
 
 import com.google.inject.Inject;
 import com.google.inject.Module;
-import hu.blackbelt.judo.runtime.core.jsl.itest.querymodel.guice.querymodel.QueryModelDaoModules;
-import hu.blackbelt.judo.runtime.core.jsl.itest.querymodel.sdk.querymodel.querymodel.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.querymodel.querymodel.lead.Lead;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.querymodel.querymodel.lead.LeadDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.querymodel.querymodel.rootallleads.RootAllLeadsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.querymodel.querymodel.rootallleadsbetween.RootAllLeadsBetweenDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.querymodel.querymodel.rootallleadsbetween.RootAllLeadsBetweenParameter;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.querymodel.querymodel.rootcountallleadsbetween.RootCountAllLeadsBetweenDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.querymodel.querymodel.rootcountallleadsbetween.RootCountAllLeadsBetweenParameter;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.querymodel.querymodel.rootonelead.RootOneLeadDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.querymodel.querymodel.totalnumberofleads.TotalNumberOfLeadsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.QueryModelDaoModules;
+import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @Slf4j
 public class QueryTest extends AbstractJslTest {
     @Inject
-    TotalNumberOfLeads.TotalNumberOfLeadsDao totalNumberOfLeadsDao;
+    TotalNumberOfLeadsDao totalNumberOfLeadsDao;
 
     @Inject
-    RootOneLead.RootOneLeadDao rootOneLeadDao;
+    RootOneLeadDao rootOneLeadDao;
 
     @Inject
-    RootAllLeads.RootAllLeadsDao rootAllLeadsDao;
+    RootAllLeadsDao rootAllLeadsDao;
 
     @Inject
-    RootAllLeadsBetween.RootAllLeadsBetweenDao rootAllLeadsBetweenDao;
+    RootAllLeadsBetweenDao rootAllLeadsBetweenDao;
 
     @Inject
-    RootCountAllLeadsBetween.RootCountAllLeadsBetweenDao rootCountAllLeadsBetweenDao;
+    RootCountAllLeadsBetweenDao rootCountAllLeadsBetweenDao;
 
     @Inject
-    Lead.LeadDao leadDao;
+    LeadDao leadDao;
 
     @Override
     public Module getModelDaoModule() {
@@ -63,16 +73,24 @@ public class QueryTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-ENT-001",
+            "REQ-ENT-009",
+            "REQ-ENT-010",
+            "REQ-ENT-011",
+            "REQ-EXPR-008",
+            "REQ-EXPR-022"
+    })
     public void testStaticQuery() {
         leadDao.create(Lead.builder().withValue(50).build());
         leadDao.create(Lead.builder().withValue(175).build());
 
-        assertEquals(2, totalNumberOfLeadsDao.getTotalNumberOfLeads());
-        assertEquals(2, rootAllLeadsDao.getRootAllLeads().size());
-        assertNotNull(rootOneLeadDao.getRootOneLead());
+        assertEquals(2, totalNumberOfLeadsDao.execute());
+        assertEquals(2, rootAllLeadsDao.query().execute().size());
+        assertNotNull(rootOneLeadDao.query().execute());
 
-        List<Lead> rootAllLeadsBetween = rootAllLeadsBetweenDao.searchRootAllLeadsBetween()
-                .execute(_QueryModel_rootAllLeadsBetween_Parameters.builder()
+        List<Lead> rootAllLeadsBetween = rootAllLeadsBetweenDao.query()
+                .execute(RootAllLeadsBetweenParameter.builder()
                         .withMax(80)
                         .withMin(10)
                         .build()
@@ -80,11 +98,11 @@ public class QueryTest extends AbstractJslTest {
         assertEquals(1, rootAllLeadsBetween.size());
         assertEquals(Optional.of(50), rootAllLeadsBetween.get(0).getValue());
 
-        Integer rootCountAllLeadsBetween = rootCountAllLeadsBetweenDao.getRootCountAllLeadsBetween(_QueryModel_rootCountAllLeadsBetween_Parameters.builder()
-                .withMin(10)
-                .withMax(80)
-                .build()
-        );
+        Integer rootCountAllLeadsBetween = rootCountAllLeadsBetweenDao
+                .execute(RootCountAllLeadsBetweenParameter.builder()
+                        .withMin(10)
+                        .withMax(80)
+                        .build());
 
         assertEquals(1, rootCountAllLeadsBetween);
     }

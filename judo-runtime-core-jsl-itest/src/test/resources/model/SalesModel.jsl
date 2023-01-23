@@ -61,7 +61,7 @@ entity Lead {
 	relation required SalesPerson salesPerson opposite leads;
 	relation SC::Contract contract opposite-add lead;
 
-	constraint ValueMoreThan10 self.value > 10 onerror MyError(code = 10, msg = "Error message");
+	//constraint ValueMoreThan10 self.value > 10 onerror MyError(code = 10, msg = "Error message");
 }
 
 entity Customer {
@@ -71,6 +71,8 @@ entity Customer {
 }
 
 entity ContractsAggregator {
-    derived SC::ContractDetail[] contractDetails => SC::Contract.detail;
-    derived SC::Contract[] contracts => SC::Contract;
+	
+    derived SC::ContractDetail[] contractDetails => SC::Contract!all().detail;
+
+    derived SC::Contract[] contracts => SC::Contract!all();
 }
