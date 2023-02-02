@@ -39,8 +39,8 @@
             javax.transaction.xa;version=!,
             javax.resource;version="[1.6,2)"
         </osgi-transaction-import>
-        <judo-tatami-jsl-version>1.1.4.20230201_043241_330c9e4b_develop</judo-tatami-jsl-version>
-        <judo-runtime-core-version>1.0.6.20230201_042625_f8b14621_develop</judo-runtime-core-version>
+        <judo-tatami-jsl-version>1.1.4.20230202_152720_e3135b06_feature_JNG_4342_Invalid_sql_select_with_derived_aggregation</judo-tatami-jsl-version>
+        <judo-runtime-core-version>1.0.6.20230202_152012_8348732a_feature_JNG_4342_Invalid_sql_select_with_derived_aggregation</judo-runtime-core-version>
         <judo-psm-generator-sdk-core-version>1.0.0.20230131_042045_f2a53794_develop</judo-psm-generator-sdk-core-version>
         <judo-meta-psm-version>1.2.4.20230131_041716_92193b26_develop</judo-meta-psm-version>
 
