@@ -311,7 +311,6 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
     }
 
     @Test
-    @Disabled
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-TYPE-004",
@@ -320,17 +319,37 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
             "REQ-ENT-012"
     })
     void testMultipleInheritance() {
-        // FIXME: JNG-4260
         EntityE entityE = entityEDao.create(EntityE.builder()
-                .withStringB("B")
-                .withStringC("C")
-                .withStringD("D")
-                .build()
+                                                   .withStringB("B")
+                                                   .withStringC("C")
+                                                   .withStringD("D")
+                                                   .build()
         );
 
         assertEquals(Optional.of("B"), entityE.getStringB());
         assertEquals(Optional.of("C"), entityE.getStringC());
         assertEquals(Optional.of("D"), entityE.getStringD());
+        List<EntityD> multipleDonB = entityE.getMultipleDonB();
+        assertNotNull(multipleDonB);
+        assertTrue(multipleDonB.isEmpty());
+
+        EntityE entityE2 = entityEDao.create(EntityE.builder()
+                                                    .withStringB("B2")
+                                                    .withStringC("C2")
+                                                    .withStringD("D2")
+                                                    .withMultipleDonB(List.of(EntityD.builder().withStringD("D1").build(),
+                                                                              EntityD.builder().withStringD("D2").build()))
+                                                    .build()
+        );
+
+        assertEquals(Optional.of("B2"), entityE2.getStringB());
+        assertEquals(Optional.of("C2"), entityE2.getStringC());
+        assertEquals(Optional.of("D2"), entityE2.getStringD());
+        List<EntityD> multipleDonB2 = entityE2.getMultipleDonB();
+        assertNotNull(multipleDonB2);
+        assertEquals(2, multipleDonB2.size());
+        assertTrue(multipleDonB2.stream().anyMatch(d -> "D1".equals(d.getStringD().orElse(null))));
+        assertTrue(multipleDonB2.stream().anyMatch(d -> "D2".equals(d.getStringD().orElse(null))));
     }
 
     @Test
