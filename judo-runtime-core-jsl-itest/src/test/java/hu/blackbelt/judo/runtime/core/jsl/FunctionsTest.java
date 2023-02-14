@@ -329,7 +329,7 @@ public class FunctionsTest extends AbstractJslTest {
         Long roundScaled3 = numericFunctions.getRoundScaled3().orElseThrow();
         assertEquals(3, roundScaled3);
         Long roundScaledNegative1 = numericFunctions.getRoundScaledNegative1().orElseThrow();
-        assertEquals(-2, roundScaledNegative1);
+        assertEquals(-3, roundScaledNegative1);
         Long roundScaledNegative2 = numericFunctions.getRoundScaledNegative2().orElseThrow();
         assertEquals(-1, roundScaledNegative2);
         Long roundScaledNegative3 = numericFunctions.getRoundScaledNegative3().orElseThrow();
