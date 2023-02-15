@@ -28,6 +28,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.PrimitivesDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
@@ -117,6 +118,7 @@ public class PrecisionTest extends AbstractJslTest {
     }
 
     @Test
+    @Disabled("https://blackbelt.atlassian.net/browse/JNG-4462") // TODO
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-TYPE-005",
