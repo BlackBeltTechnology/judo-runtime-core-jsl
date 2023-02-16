@@ -118,7 +118,6 @@ public class PrecisionTest extends AbstractJslTest {
     }
 
     @Test
-    @Disabled("https://blackbelt.atlassian.net/browse/JNG-4462") // TODO
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-TYPE-005",
