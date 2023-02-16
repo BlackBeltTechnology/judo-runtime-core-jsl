@@ -689,10 +689,8 @@ public class FunctionsTest extends AbstractJslTest {
         assertEquals(Optional.of(34L), collectionFunctions.getAvgChildrenField());
         assertEquals(Optional.of(26L), collectionFunctions.getAvgChildrenRelation());
 
-        /* FIXME JNG-4180
-        assertEquals(Optional.of(34.5), collectionFunctions.getAvgScaledChildrenField());
-        assertEquals(Optional.of(33.5), collectionFunctions.getAvgScaledChildrenRelation());
-        */
+        assertEquals(Optional.of(34.2), collectionFunctions.getAvgScaledChildrenField());
+        assertEquals(Optional.of(26.6), collectionFunctions.getAvgScaledChildrenRelation());
 
         assertEquals(Optional.of(34L), collectionFunctions.getDivisionConst());
         assertEquals(Optional.of(35L), collectionFunctions.getRoundConst());
