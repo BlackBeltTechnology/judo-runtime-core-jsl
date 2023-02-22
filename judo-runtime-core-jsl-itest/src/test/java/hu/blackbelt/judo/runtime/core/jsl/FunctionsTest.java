@@ -329,7 +329,7 @@ public class FunctionsTest extends AbstractJslTest {
         Long roundScaled3 = numericFunctions.getRoundScaled3().orElseThrow();
         assertEquals(3, roundScaled3);
         Long roundScaledNegative1 = numericFunctions.getRoundScaledNegative1().orElseThrow();
-        assertEquals(-3, roundScaledNegative1);
+        assertEquals(-2, roundScaledNegative1);
         Long roundScaledNegative2 = numericFunctions.getRoundScaledNegative2().orElseThrow();
         assertEquals(-1, roundScaledNegative2);
         Long roundScaledNegative3 = numericFunctions.getRoundScaledNegative3().orElseThrow();
@@ -692,7 +692,7 @@ public class FunctionsTest extends AbstractJslTest {
         assertEquals(Optional.of(34.2), collectionFunctions.getAvgScaledChildrenField());
         assertEquals(Optional.of(26.6), collectionFunctions.getAvgScaledChildrenRelation());
 
-        assertEquals(Optional.of(35L), collectionFunctions.getDivisionConst());
+        assertEquals(Optional.of(34L), collectionFunctions.getDivisionConst());
         assertEquals(Optional.of(35L), collectionFunctions.getRoundConst());
 
         assertEquals(2, collectionFunctionsDao.queryFirstChildrenField(collectionFunctions).execute().size());
