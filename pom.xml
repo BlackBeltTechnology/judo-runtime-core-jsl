@@ -39,10 +39,10 @@
             javax.transaction.xa;version=!,
             javax.resource;version="[1.6,2)"
         </osgi-transaction-import>
-        <judo-tatami-jsl-version>1.1.4.20230222_170542_c497c038_feature_JNG_4289_Division_on_derived_returns_different_value_for_PSQL_vs_HSQL</judo-tatami-jsl-version>
-        <judo-runtime-core-version>1.0.6.20230222_165430_c069cc4b_feature_JNG_4289_Division_on_derived_returns_different_value_for_PSQL_vs_HSQL</judo-runtime-core-version>
-        <judo-psm-generator-sdk-core-version>1.0.0.20230207_042651_68b72227_develop</judo-psm-generator-sdk-core-version>
-        <judo-meta-psm-version>1.2.4.20230207_042332_0fff9a62_develop</judo-meta-psm-version>
+        <judo-tatami-jsl-version>1.1.4.20230224_023233_5c5aeff9_feature_JNG_4269_SemiAutomaticSchemaUpgrade</judo-tatami-jsl-version>
+        <judo-runtime-core-version>1.0.6.20230224_021621_bb0ef329_feature_JNG_4269_SemiAutomaticSchemaUpgrade</judo-runtime-core-version>
+        <judo-psm-generator-sdk-core-version>1.0.0.20230224_005648_753e9b61_feature_JNG_4269_SemiAutomaticSchemaUpgrade</judo-psm-generator-sdk-core-version>
+        <judo-meta-psm-version>1.3.0.20230224_005034_464a1dc3_feature_JNG_4269_SemiAutomaticSchemaUpgrade</judo-meta-psm-version>
 
         <!-- Code Quality-->
         <sonar-maven-plugin-version>3.9.1.2184</sonar-maven-plugin-version>
