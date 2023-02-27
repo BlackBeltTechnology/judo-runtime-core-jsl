@@ -2,8 +2,6 @@ package hu.blackbelt.judo.runtime.core.jsl.fixture;
 
 import org.junit.jupiter.api.extension.*;
 
-import javax.transaction.Status;
-
 public class RdbmsDatasourceSingetonExtension implements BeforeAllCallback, AfterAllCallback, BeforeEachCallback, AfterEachCallback, ParameterResolver {
 
     private static RdbmsDatasourceFixture rdbmsDatasourceFixture = new RdbmsDatasourceFixture();

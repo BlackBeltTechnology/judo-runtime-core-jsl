@@ -2,9 +2,6 @@ package hu.blackbelt.judo.runtime.core.jsl.fixture;
 
 import org.junit.jupiter.api.extension.*;
 import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.DefaultTransactionDefinition;
-
-import javax.transaction.Status;
 
 public class RdbmsDatasourceByClassExtension implements BeforeAllCallback, AfterAllCallback, AfterEachCallback, ParameterResolver, BeforeEachCallback {
 
