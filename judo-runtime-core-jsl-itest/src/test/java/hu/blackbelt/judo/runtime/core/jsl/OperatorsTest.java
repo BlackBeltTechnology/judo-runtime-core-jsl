@@ -175,7 +175,7 @@ public class OperatorsTest extends AbstractJslTest {
         assertFalse(operators.getAdditionUndefinedFalse().orElseThrow());
         assertEquals(Optional.of(33), operators.getSubtraction());
         assertEquals(Optional.of(70), operators.getMultiplication());
-        assertEquals(Optional.of(17), operators.getDivision());
+        assertEquals(Optional.of(17), operators.getDivision()); // FIXME JNG-4289
         assertEquals(Optional.of(17), operators.getDivisionWhole());
         assertEquals(Optional.of(1), operators.getModulo());
         assertEquals(Optional.of(false), operators.getLt());
