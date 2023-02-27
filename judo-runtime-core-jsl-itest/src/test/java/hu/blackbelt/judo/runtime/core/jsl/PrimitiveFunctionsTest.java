@@ -23,10 +23,13 @@ package hu.blackbelt.judo.runtime.core.jsl;
 import com.google.inject.Inject;
 import com.google.inject.Module;
 import hu.blackbelt.judo.dispatcher.api.FileType;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.myentitywithoptionalfields.MyEntityWithOptionalFields;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.myentitywithoptionalfields.MyEntityWithOptionalFieldsAttribute;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.myentitywithoptionalfields.MyEntityWithOptionalFieldsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.myentitywithoptionalfields.MyEntityWithOptionalFieldsMask;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.myenum.MyEnum;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.PrimitivesDaoModules;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.RdbmsDatasourceFixture;
-import hu.blackbelt.judo.runtime.core.jsl.itest.primitives.guice.primitives.PrimitivesDaoModules;
-import hu.blackbelt.judo.runtime.core.jsl.itest.primitives.sdk.primitives.primitives.MyEntityWithOptionalFields;
-import hu.blackbelt.judo.runtime.core.jsl.itest.primitives.sdk.primitives.primitives.MyEnum;
 import hu.blackbelt.judo.sdk.query.StringFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
@@ -43,7 +46,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @Slf4j
 public class PrimitiveFunctionsTest extends AbstractJslTest {
     @Inject
-    MyEntityWithOptionalFields.MyEntityWithOptionalFieldsDao myEntityWithOptionalFieldsDao;
+    MyEntityWithOptionalFieldsDao myEntityWithOptionalFieldsDao;
 
     MyEntityWithOptionalFields entity1;
 
@@ -102,35 +105,35 @@ public class PrimitiveFunctionsTest extends AbstractJslTest {
 
     @Test
     public void testOrderBy() {
-        assertOrderBy(MyEntityWithOptionalFields.Attribute.INTEGER_ATTR, entity2);
-        assertOrderBy(MyEntityWithOptionalFields.Attribute.SCALED_ATTR, entity2);
-        assertOrderBy(MyEntityWithOptionalFields.Attribute.STRING_ATTR, entity2);
-        assertOrderBy(MyEntityWithOptionalFields.Attribute.REGEX_ATTR, entity2);
-        assertOrderBy(MyEntityWithOptionalFields.Attribute.BOOL_ATTR, entity2);
-        assertOrderBy(MyEntityWithOptionalFields.Attribute.DATE_ATTR, entity2);
-        assertOrderBy(MyEntityWithOptionalFields.Attribute.TIMESTAMP_ATTR, entity2);
-        assertOrderBy(MyEntityWithOptionalFields.Attribute.TIME_ATTR, entity2);
-        assertOrderBy(MyEntityWithOptionalFields.Attribute.ENUM_ATTR, entity2);
+        assertOrderBy(MyEntityWithOptionalFieldsAttribute.INTEGER_ATTR, entity2);
+        assertOrderBy(MyEntityWithOptionalFieldsAttribute.SCALED_ATTR, entity2);
+        assertOrderBy(MyEntityWithOptionalFieldsAttribute.STRING_ATTR, entity2);
+        assertOrderBy(MyEntityWithOptionalFieldsAttribute.REGEX_ATTR, entity2);
+        assertOrderBy(MyEntityWithOptionalFieldsAttribute.BOOL_ATTR, entity2);
+        assertOrderBy(MyEntityWithOptionalFieldsAttribute.DATE_ATTR, entity2);
+        assertOrderBy(MyEntityWithOptionalFieldsAttribute.TIMESTAMP_ATTR, entity2);
+        assertOrderBy(MyEntityWithOptionalFieldsAttribute.TIME_ATTR, entity2);
+        assertOrderBy(MyEntityWithOptionalFieldsAttribute.ENUM_ATTR, entity2);
     }
 
     @Test
     public void testOrderByDescending() {
-        assertOrderByDescending(MyEntityWithOptionalFields.Attribute.INTEGER_ATTR, entity1);
-        assertOrderByDescending(MyEntityWithOptionalFields.Attribute.SCALED_ATTR, entity1);
-        assertOrderByDescending(MyEntityWithOptionalFields.Attribute.STRING_ATTR, entity1);
-        assertOrderByDescending(MyEntityWithOptionalFields.Attribute.REGEX_ATTR, entity1);
-        assertOrderByDescending(MyEntityWithOptionalFields.Attribute.BOOL_ATTR, entity1);
-        assertOrderByDescending(MyEntityWithOptionalFields.Attribute.DATE_ATTR, entity1);
-        assertOrderByDescending(MyEntityWithOptionalFields.Attribute.TIMESTAMP_ATTR, entity1);
-        assertOrderByDescending(MyEntityWithOptionalFields.Attribute.TIME_ATTR, entity1);
-        assertOrderByDescending(MyEntityWithOptionalFields.Attribute.ENUM_ATTR, entity1);
+        assertOrderByDescending(MyEntityWithOptionalFieldsAttribute.INTEGER_ATTR, entity1);
+        assertOrderByDescending(MyEntityWithOptionalFieldsAttribute.SCALED_ATTR, entity1);
+        assertOrderByDescending(MyEntityWithOptionalFieldsAttribute.STRING_ATTR, entity1);
+        assertOrderByDescending(MyEntityWithOptionalFieldsAttribute.REGEX_ATTR, entity1);
+        assertOrderByDescending(MyEntityWithOptionalFieldsAttribute.BOOL_ATTR, entity1);
+        assertOrderByDescending(MyEntityWithOptionalFieldsAttribute.DATE_ATTR, entity1);
+        assertOrderByDescending(MyEntityWithOptionalFieldsAttribute.TIMESTAMP_ATTR, entity1);
+        assertOrderByDescending(MyEntityWithOptionalFieldsAttribute.TIME_ATTR, entity1);
+        assertOrderByDescending(MyEntityWithOptionalFieldsAttribute.ENUM_ATTR, entity1);
     }
 
     @Test
     public void testMask() {
         MyEntityWithOptionalFields maskedResult = myEntityWithOptionalFieldsDao
                 .query()
-                .maskedBy(MyEntityWithOptionalFields.MyEntityWithOptionalFieldsDao.Mask.myEntityWithOptionalFieldsMask()
+                .maskedBy(MyEntityWithOptionalFieldsMask.myEntityWithOptionalFieldsMask()
                         .withStringAttr()
                         .withIntegerAttr())
                 .filterByStringAttr(StringFilter.equalTo("test"))
@@ -144,7 +147,7 @@ public class PrimitiveFunctionsTest extends AbstractJslTest {
         assertEquals(Optional.empty(), maskedResult.getRegexAttr());
     }
 
-    private void assertOrderBy(MyEntityWithOptionalFields.Attribute attribute, MyEntityWithOptionalFields firstEntity) {
+    private void assertOrderBy(MyEntityWithOptionalFieldsAttribute attribute, MyEntityWithOptionalFields firstEntity) {
         MyEntityWithOptionalFields orderBy = myEntityWithOptionalFieldsDao
                 .query()
                 .orderBy(attribute)
@@ -154,7 +157,7 @@ public class PrimitiveFunctionsTest extends AbstractJslTest {
         assertEquals(firstEntity.get__identifier(), orderBy.get__identifier());
     }
 
-    private void assertOrderByDescending(MyEntityWithOptionalFields.Attribute attribute, MyEntityWithOptionalFields firstEntity) {
+    private void assertOrderByDescending(MyEntityWithOptionalFieldsAttribute attribute, MyEntityWithOptionalFields firstEntity) {
         MyEntityWithOptionalFields orderByDescending = myEntityWithOptionalFieldsDao
                 .query()
                 .orderByDescending(attribute)

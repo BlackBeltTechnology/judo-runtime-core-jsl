@@ -57,7 +57,8 @@ public class RdbmsDatasourceFixture {
     @Getter
     protected Database liquibaseDb;
 
-    public JdbcDatabaseContainer sqlContainer;
+    @Getter
+    protected JdbcDatabaseContainer sqlContainer;
 
     public void setupDatasource() {
         if (dialect.equals(DIALECT_POSTGRESQL)) {

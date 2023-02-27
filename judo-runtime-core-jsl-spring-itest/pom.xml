@@ -32,12 +32,63 @@
                     <sources>${basedir}/src/main/resources/model</sources>
                     <sdkPackagePrefix>${project.groupId}</sdkPackagePrefix>
                     <dialects>hsqldb,postgresql</dialects>
-                    <generateSdkSpring>true</generateSdkSpring>
+                    <ignoreAsm2sdk>true</ignoreAsm2sdk>
                     <sdkPackagePrefix>hu.blackbelt.judo.runtime.core.jsl.spring.test</sdkPackagePrefix>
                     <destination>${basedir}/target/generated-sources/model</destination>
                 </configuration>
             </plugin>
 
+            <plugin>
+                <groupId>hu.blackbelt.judo.meta</groupId>
+                <artifactId>judo-psm-generator-maven-plugin</artifactId>
+                <version>${judo-meta-psm-version}</version>
+                <configuration>
+                    <uris>
+                        <uri>mvn:hu.blackbelt.judo.generator:judo-psm-generator-sdk-core-api:${judo-psm-generator-sdk-core-version}</uri>
+                        <uri>mvn:hu.blackbelt.judo.generator:judo-psm-generator-sdk-core-impl:${judo-psm-generator-sdk-core-version}</uri>
+                        <uri>mvn:hu.blackbelt.judo.generator:judo-psm-generator-sdk-core-spring:${judo-psm-generator-sdk-core-version}</uri>
+                    </uris>
+                    <type>psm-sdk-core</type>
+                    <templateParameters>
+                        <apiPrefix>hu.blackbelt.judo.runtime.core.jsl.spring.test.api</apiPrefix>
+                        <implPrefix>hu.blackbelt.judo.runtime.core.jsl.spring.test.impl</implPrefix>
+                        <springPrefix>hu.blackbelt.judo.runtime.core.jsl.spring.test.spring</springPrefix>
+                        <generateOptionalTypes>true</generateOptionalTypes>
+                        <generatePayloadValidator>true</generatePayloadValidator>
+                    </templateParameters>
+
+                    <psm>
+                        ${basedir}/target/generated-sources/model/SalesModel-psm.model
+                    </psm>
+                    <destination>${basedir}/target/generated-sources/sdk/SalesModel</destination>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>execute-psm-model-sdk</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>hu.blackbelt.judo.generator</groupId>
+                        <artifactId>judo-psm-generator-sdk-core-api</artifactId>
+                        <version>${judo-psm-generator-sdk-core-version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>hu.blackbelt.judo.generator</groupId>
+                        <artifactId>judo-psm-generator-sdk-core-impl</artifactId>
+                        <version>${judo-psm-generator-sdk-core-version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>hu.blackbelt.judo.generator</groupId>
+                        <artifactId>judo-psm-generator-sdk-core-spring</artifactId>
+                        <version>${judo-psm-generator-sdk-core-version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
@@ -50,7 +101,7 @@
                         </goals>
                         <configuration>
                             <sources>
-                                <source>${project.basedir}/target/generated-sources/model/sdk/SalesModel</source>
+                                <source>${project.basedir}/target/generated-sources/sdk/SalesModel</source>
                             </sources>
                         </configuration>
                     </execution>

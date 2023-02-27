@@ -22,13 +22,24 @@ package hu.blackbelt.judo.runtime.core.jsl;
 
 import com.google.inject.Inject;
 import com.google.inject.Module;
-import hu.blackbelt.judo.runtime.core.jsl.itest.salesmodel.guice.salesmodel.SalesModelDaoModules;
-import hu.blackbelt.judo.runtime.core.jsl.itest.salesmodel.sdk.salesmodel.salesmodel.*;
-import hu.blackbelt.judo.runtime.core.jsl.itest.salesmodel.sdk.salesmodel.salesmodelcontract.Contract;
-import hu.blackbelt.judo.runtime.core.jsl.itest.salesmodel.sdk.salesmodel.salesmodelcontract.ContractDetail;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.salesmodel.salesmodel.contractsaggregator.ContractsAggregator;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.salesmodel.salesmodel.contractsaggregator.ContractsAggregatorDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.salesmodel.salesmodel.lead.Lead;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.salesmodel.salesmodel.lead.LeadAttachedRelationsForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.salesmodel.salesmodel.lead.LeadDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.salesmodel.salesmodel.leadsover.LeadsOverParameter;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.salesmodel.salesmodel.myextendederror.MyExtendedError;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.salesmodel.salesmodel.person.PersonDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.salesmodel.salesmodel.salesperson.SalesPerson;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.salesmodel.salesmodel.salesperson.SalesPersonAttachedRelationsForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.salesmodel.salesmodel.salesperson.SalesPersonDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.salesmodel.salesmodelcontract.contract.Contract;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.salesmodel.salesmodelcontract.contract.ContractDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.salesmodel.salesmodelcontract.contractdetail.ContractDetail;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.SalesModelDaoModules;
+import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.sdk.query.NumberFilter;
 import hu.blackbelt.judo.sdk.query.StringFilter;
-import hu.blackbelt.judo.test.Requirement;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -38,25 +49,24 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Slf4j
 class SalesModelTest extends AbstractJslTest {
     @Inject
-    SalesPerson.SalesPersonDao salesPersonDao;
+    SalesPersonDao salesPersonDao;
 
     @Inject
-    Person.PersonDao personDao;
+    PersonDao personDao;
 
     @Inject
-    Lead.LeadDao leadDao;
+    LeadDao leadDao;
 
     @Inject
-    Contract.ContractDao contractDao;
+    ContractDao contractDao;
 
     @Inject
-    ContractsAggregator.ContractsAggregatorDao contractsAggregatorDao;
+    ContractsAggregatorDao contractsAggregatorDao;
 
     @Override
     public Module getModelDaoModule() {
@@ -105,24 +115,26 @@ class SalesModelTest extends AbstractJslTest {
         assertEquals(1, personList.size());
 
         Lead lead1 = leadDao.create(Lead.builder()
-                .withSalesPerson(createdSalesPerson)
                 .withValue(100)
+                .build(), LeadAttachedRelationsForCreate.builder()
+                .withSalesPerson(createdSalesPerson)
                 .build());
         assertEquals(Optional.of(100), lead1.getValue());
-        assertEquals(Optional.of("Test"), leadDao.getSalesPerson(lead1).getFirstName());
+        assertEquals(Optional.of("Test"), leadDao.querySalesPerson(lead1).getFirstName());
 
         Lead lead2 = leadDao.create(Lead.builder()
-                .withSalesPerson(createdSalesPerson)
                 .withValue(9)
+                .build(), LeadAttachedRelationsForCreate.builder()
+                .withSalesPerson(createdSalesPerson)
                 .build());
         assertEquals(Optional.of(9), lead2.getValue());
-        assertEquals(Optional.of("Test"), leadDao.getSalesPerson(lead2).getFirstName());
+        assertEquals(Optional.of("Test"), leadDao.querySalesPerson(lead2).getFirstName());
 
         List<Lead> leadListOfQuery = salesPersonDao
-                .queryLeadsOver(createdSalesPerson, _SalesPerson_leadsOver_Parameters.builder()
+                .queryLeadsOver(createdSalesPerson, LeadsOverParameter.builder()
                         .withLimit(10)
                         .build())
-                .execute();
+                    .execute();
         assertEquals(1, leadListOfQuery.size());
         assertEquals(Optional.of(100), leadListOfQuery.get(0).getValue());
 
@@ -142,7 +154,7 @@ class SalesModelTest extends AbstractJslTest {
         createdSalesPerson = salesPersonDao.getById(createdSalesPerson.get__identifier()).get();
         assertEquals(Optional.of(2), createdSalesPerson.getNumberOfLeads());
 
-        List<Lead> leadsOver10 = salesPersonDao.getLeadsOver10(createdSalesPerson);
+        List<Lead> leadsOver10 = salesPersonDao.queryLeadsOver10(createdSalesPerson).execute();
 
         assertEquals(1, leadsOver10.size());
     }
@@ -162,6 +174,7 @@ class SalesModelTest extends AbstractJslTest {
                 .build());
 
         Lead lead = leadDao.create(Lead.builder()
+                .build(), LeadAttachedRelationsForCreate.builder()
                 .withSalesPerson(createdSalesPerson)
                 .build());
 
@@ -182,10 +195,11 @@ class SalesModelTest extends AbstractJslTest {
         Contract contract = contractDao.create(Contract.builder().withCreationDate(LocalDate.parse("2022-07-21")).build());
 
         SalesPerson createdSalesPerson = salesPersonDao.create(SalesPerson.builder()
+                .build(), SalesPersonAttachedRelationsForCreate.builder()
                 .withContracts(List.of(contract))
                 .build());
 
-        List<Contract> checkContracts = salesPersonDao.getContracts(createdSalesPerson);
+        List<Contract> checkContracts = salesPersonDao.queryContracts(createdSalesPerson).execute();
         Contract checkContract = checkContracts.get(0);
 
         assertEquals(1, checkContracts.size());
@@ -227,13 +241,13 @@ class SalesModelTest extends AbstractJslTest {
         Optional<ContractsAggregator> fetched = contractsAggregatorDao.getById(staticNavigationHost.get__identifier());
 
         // Collection<ContractDetail> details = fetched.get().getContractDetails() - derived relations are not embedded
-        Collection<ContractDetail> details = contractsAggregatorDao.getContractDetails(fetched.get());
+        Collection<ContractDetail> details = contractsAggregatorDao.queryContractDetails(fetched.get()).execute();
 
         assertEquals(Optional.of("Hello"), contract1.getDetail().get().getDetails());
         assertEquals(Optional.empty(), contract2.getDetail());
 
         // Collection<Contract> contracts = contractsAggregatorDao.getContracts(fetched.get()) - derived relations are not embedded
-        Collection<Contract> contracts = contractsAggregatorDao.getContracts(fetched.get());
+        Collection<Contract> contracts = contractsAggregatorDao.queryContracts(fetched.get()).execute();
 
         assertEquals(2, contracts.size());
         assertEquals(1, details.size());

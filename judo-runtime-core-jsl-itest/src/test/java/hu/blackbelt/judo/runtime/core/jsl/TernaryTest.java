@@ -22,9 +22,10 @@ package hu.blackbelt.judo.runtime.core.jsl;
 
 import com.google.inject.Inject;
 import com.google.inject.Module;
-import hu.blackbelt.judo.runtime.core.jsl.itest.ternarytest.guice.ternarytest.TernaryTestDaoModules;
-import hu.blackbelt.judo.runtime.core.jsl.itest.ternarytest.sdk.ternarytest.ternarytest.AAA;
-import hu.blackbelt.judo.test.Requirement;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.ternarytest.ternarytest.aaa.AAA;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.ternarytest.ternarytest.aaa.AAADao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.TernaryTestDaoModules;
+import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
@@ -33,7 +34,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @Slf4j
 public class TernaryTest extends AbstractJslTest {
 
-    @Inject AAA.AAADao aDao;
+    @Inject
+    AAADao aDao;
 
     @Override
     public Module getModelDaoModule() {

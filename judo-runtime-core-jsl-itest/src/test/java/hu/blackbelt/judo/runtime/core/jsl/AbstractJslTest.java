@@ -20,9 +20,8 @@ package hu.blackbelt.judo.runtime.core.jsl;
  * #L%
  */
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
 import com.google.inject.Module;
+import com.google.inject.*;
 import hu.blackbelt.judo.runtime.core.bootstrap.JudoDefaultModule;
 import hu.blackbelt.judo.runtime.core.bootstrap.JudoModelLoader;
 import hu.blackbelt.judo.runtime.core.bootstrap.dao.rdbms.hsqldb.JudoHsqldbModules;
@@ -42,7 +41,8 @@ import org.testcontainers.containers.JdbcDatabaseContainer;
 
 import java.io.File;
 
-import static hu.blackbelt.judo.runtime.core.jsl.fixture.RdbmsDatasourceFixture.*;
+import static hu.blackbelt.judo.runtime.core.jsl.fixture.RdbmsDatasourceFixture.DIALECT_HSQLDB;
+import static hu.blackbelt.judo.runtime.core.jsl.fixture.RdbmsDatasourceFixture.DIALECT_POSTGRESQL;
 
 @Slf4j
 @ExtendWith(RdbmsDatasourceByClassExtension.class)
@@ -57,30 +57,21 @@ abstract class AbstractJslTest {
         JudoModelLoader modelHolder;
 
         if (datasource.getDialect().equals(DIALECT_POSTGRESQL)) {
-            modelHolder = JudoModelLoader
-                    .loadFromDirectory(getModelName(), new File("target/generated-sources/model"), new PostgresqlDialect(), true);
-            JdbcDatabaseContainer sqlContainer = datasource.sqlContainer;
+            modelHolder = JudoModelLoader.loadFromDirectory(getModelName(), new File("target/generated-test-sources/model"), new PostgresqlDialect(), true);
+            JdbcDatabaseContainer sqlContainer = datasource.getSqlContainer();
             JudoPostgresqlModules judoPostgresqlModules = JudoPostgresqlModules.builder()
-                    .databaseName(sqlContainer.getDatabaseName())
-                    .user(sqlContainer.getUsername())
-                    .password(sqlContainer.getPassword())
-                    .port(sqlContainer.getFirstMappedPort())
-                    .build();
+                                                                               .databaseName(sqlContainer.getDatabaseName())
+                                                                               .user(sqlContainer.getUsername())
+                                                                               .password(sqlContainer.getPassword())
+                                                                               .port(sqlContainer.getFirstMappedPort())
+                                                                               .build();
 
-            injector = Guice.createInjector(
-                    judoPostgresqlModules,
-                    getModelDaoModule(),
-                    new JudoDefaultModule(this, modelHolder)
-            );
+            injector = Guice.createInjector(judoPostgresqlModules, getModelDaoModule(), new JudoDefaultModule(this, modelHolder));
         } else if (datasource.getDialect().equals(DIALECT_HSQLDB)) {
-            modelHolder = JudoModelLoader
-                    .loadFromDirectory(getModelName(), new File("target/generated-sources/model"), new HsqldbDialect(), true);
-            injector = Guice.createInjector(
-                    JudoHsqldbModules.builder().build(),
-                    getModelDaoModule(),
-                    new JudoDefaultModule(this, modelHolder)
-            );
+            modelHolder = JudoModelLoader.loadFromDirectory(getModelName(), new File("target/generated-test-sources/model"), new HsqldbDialect(), true);
+            injector = Guice.createInjector(JudoHsqldbModules.builder().build(), getModelDaoModule(), new JudoDefaultModule(this, modelHolder));
         }
+
         beginTransaction();
     }
 
@@ -93,10 +84,9 @@ abstract class AbstractJslTest {
     }
 
     @AfterEach
-    protected void teardown(RdbmsDatasourceFixture datasource) throws Exception {
+    protected void teardown() {
         endTransaction();
     }
-
 
     public abstract Module getModelDaoModule();
 
