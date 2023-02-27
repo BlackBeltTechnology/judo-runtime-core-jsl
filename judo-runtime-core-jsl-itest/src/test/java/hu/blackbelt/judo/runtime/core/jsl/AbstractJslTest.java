@@ -52,9 +52,13 @@ abstract class AbstractJslTest {
 
     TransactionStatus transactionStatus;
 
+    protected RdbmsDatasourceFixture datasource;
+
     @BeforeEach
     protected void init(RdbmsDatasourceFixture datasource) throws Exception {
         JudoModelLoader modelHolder;
+
+        this.datasource = datasource;
 
         if (datasource.getDialect().equals(DIALECT_POSTGRESQL)) {
             modelHolder = JudoModelLoader.loadFromDirectory(getModelName(), new File("target/generated-test-sources/model"), new PostgresqlDialect(), true);
