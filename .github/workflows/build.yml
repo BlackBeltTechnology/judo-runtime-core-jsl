@@ -99,13 +99,35 @@ jobs:
 # MAVEN BUILD START
 ##########################
 
-      # Phase 1 - Build and deploy to judong nexus
-      - name: 🔥 Build with Maven (build, test)
+      - name: Build
         run: |-
           ./mvnw -B -Dstyle.color=always \
           -Drevision=${{ steps.version.outputs.version }} \
-          -Psign-artifacts \
-          -Prelease-judong \
+          -Psign-artifacts,release-judong \
+          -DskipTests=true \
+          clean install
+
+      - name: Test hsqldb
+        run: |-
+          ./mvnw -B -Dstyle.color=always \
+          -Drevision=${{ steps.version.outputs.version }} \
+          -Psign-artifacts,release-judong \
+          surefire:test
+
+      - name: Test postgresql
+        run: |-
+          ./mvnw -B -Dstyle.color=always \
+          -Drevision=${{ steps.version.outputs.version }} \
+          -Ddialect=postgresql \
+          -Psign-artifacts,release-judong \
+          surefire:test
+
+      - name: Deploy with Maven
+        run: |-
+          ./mvnw -B -Dstyle.color=always \
+          -Drevision=${{ steps.version.outputs.version }} \
+          -Psign-artifacts,release-judong \
+          -DskipTests=true \
           deploy
 
       # Phase 2 - Build and deploy to maven central
