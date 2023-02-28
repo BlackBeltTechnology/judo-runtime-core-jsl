@@ -20,32 +20,76 @@ package hu.blackbelt.judo.runtime.core.jsl;
  * #L%
  */
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
 import com.google.inject.Module;
+import com.google.inject.*;
 import hu.blackbelt.judo.runtime.core.bootstrap.JudoDefaultModule;
 import hu.blackbelt.judo.runtime.core.bootstrap.JudoModelLoader;
 import hu.blackbelt.judo.runtime.core.bootstrap.dao.rdbms.hsqldb.JudoHsqldbModules;
+import hu.blackbelt.judo.runtime.core.bootstrap.dao.rdbms.postgresql.JudoPostgresqlModules;
 import hu.blackbelt.judo.runtime.core.dao.rdbms.hsqldb.HsqldbDialect;
+import hu.blackbelt.judo.runtime.core.dao.rdbms.postgresql.PostgresqlDialect;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.RdbmsDatasourceByClassExtension;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.RdbmsDatasourceFixture;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
+import org.testcontainers.containers.JdbcDatabaseContainer;
 
 import java.io.File;
 
+import static hu.blackbelt.judo.runtime.core.jsl.fixture.RdbmsDatasourceFixture.DIALECT_HSQLDB;
+import static hu.blackbelt.judo.runtime.core.jsl.fixture.RdbmsDatasourceFixture.DIALECT_POSTGRESQL;
+
 @Slf4j
+@ExtendWith(RdbmsDatasourceByClassExtension.class)
 abstract class AbstractJslTest {
 
     Injector injector;
 
-    @BeforeEach
-    protected void init() throws Exception {
-        JudoModelLoader modelHolder = JudoModelLoader
-                .loadFromDirectory(getModelName(), new File("target/generated-test-sources/model"), new HsqldbDialect(), true);
+    TransactionStatus transactionStatus;
 
-        injector = Guice.createInjector(
-                JudoHsqldbModules.builder().build(),
-                getModelDaoModule(),
-                new JudoDefaultModule(this, modelHolder));
+    protected RdbmsDatasourceFixture datasource;
+
+    @BeforeEach
+    protected void init(RdbmsDatasourceFixture datasource) throws Exception {
+        JudoModelLoader modelHolder;
+
+        this.datasource = datasource;
+
+        if (datasource.getDialect().equals(DIALECT_POSTGRESQL)) {
+            modelHolder = JudoModelLoader.loadFromDirectory(getModelName(), new File("target/generated-test-sources/model"), new PostgresqlDialect(), true);
+            JdbcDatabaseContainer sqlContainer = datasource.getSqlContainer();
+            JudoPostgresqlModules judoPostgresqlModules = JudoPostgresqlModules.builder()
+                                                                               .databaseName(sqlContainer.getDatabaseName())
+                                                                               .user(sqlContainer.getUsername())
+                                                                               .password(sqlContainer.getPassword())
+                                                                               .port(sqlContainer.getFirstMappedPort())
+                                                                               .build();
+
+            injector = Guice.createInjector(judoPostgresqlModules, getModelDaoModule(), new JudoDefaultModule(this, modelHolder));
+        } else if (datasource.getDialect().equals(DIALECT_HSQLDB)) {
+            modelHolder = JudoModelLoader.loadFromDirectory(getModelName(), new File("target/generated-test-sources/model"), new HsqldbDialect(), true);
+            injector = Guice.createInjector(JudoHsqldbModules.builder().build(), getModelDaoModule(), new JudoDefaultModule(this, modelHolder));
+        }
+
+        beginTransaction();
+    }
+
+    public void beginTransaction() {
+        transactionStatus = injector.getInstance(PlatformTransactionManager.class).getTransaction(new DefaultTransactionDefinition());
+    }
+
+    public void endTransaction() {
+        injector.getInstance(PlatformTransactionManager.class).rollback(transactionStatus);
+    }
+
+    @AfterEach
+    protected void teardown() {
+        endTransaction();
     }
 
     public abstract Module getModelDaoModule();
