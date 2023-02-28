@@ -290,7 +290,7 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
     }
 
     @Test
-    @Disabled
+    @Disabled("TODO: ticket") // TODO
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-TYPE-004",
@@ -378,7 +378,7 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
     }
 
     @Test
-    @Disabled("JNG-4317")
+    @Disabled("https://blackbelt.atlassian.net/browse/JNG-4317") // TODO
     void testDeepCopyConstructor() {
         //When we add a composition Entity we must copy it, because that comp entity belong the created entity
 
