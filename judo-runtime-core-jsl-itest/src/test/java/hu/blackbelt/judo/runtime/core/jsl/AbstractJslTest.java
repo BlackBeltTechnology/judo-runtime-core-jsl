@@ -79,12 +79,16 @@ abstract class AbstractJslTest {
         beginTransaction();
     }
 
-    public void beginTransaction() {
-        transactionStatus = injector.getInstance(PlatformTransactionManager.class).getTransaction(new DefaultTransactionDefinition());
+    protected PlatformTransactionManager getTransactionManager() {
+        return injector.getInstance(PlatformTransactionManager.class);
     }
 
-    public void endTransaction() {
-        injector.getInstance(PlatformTransactionManager.class).rollback(transactionStatus);
+    protected void beginTransaction() {
+        transactionStatus = getTransactionManager().getTransaction(new DefaultTransactionDefinition());
+    }
+
+    protected void endTransaction() {
+        getTransactionManager().rollback(transactionStatus);
     }
 
     @AfterEach

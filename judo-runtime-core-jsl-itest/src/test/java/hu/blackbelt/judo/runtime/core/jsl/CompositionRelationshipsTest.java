@@ -74,9 +74,6 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
     @Inject
     EntityEDao entityEDao;
 
-    @Inject
-    PlatformTransactionManager transactionManager;
-
     EntityA entityA;
     EntityC singleConA;
     EntityC singleRequiredConA;
@@ -290,11 +287,11 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
             "REQ-ENT-002"
     })
     void testManualTransactionManagementRollback() throws SystemException, NotSupportedException {
-        TransactionStatus transactionStatus = transactionManager.getTransaction(new DefaultTransactionDefinition());
+        TransactionStatus transactionStatus = getTransactionManager().getTransaction(new DefaultTransactionDefinition());
         assertEquals(Optional.of("TEST-A"), entityADao.getById(entityA.get__identifier()).get().getStringA());
         entityA.setStringA("BLAAA");
         entityADao.update(entityA);
-        transactionManager.rollback(transactionStatus);
+        getTransactionManager().rollback(transactionStatus);
         assertEquals(Optional.of("TEST-A"), entityADao.getById(entityA.get__identifier()).get().getStringA());
     }
 
@@ -306,11 +303,11 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
             "REQ-ENT-002"
     })
     void testManualTransactionManagementCommit() throws SystemException, NotSupportedException {
-        TransactionStatus transactionStatus = transactionManager.getTransaction(new DefaultTransactionDefinition());
+        TransactionStatus transactionStatus = getTransactionManager().getTransaction(new DefaultTransactionDefinition());
         assertEquals(Optional.of("TEST-A"), entityADao.getById(entityA.get__identifier()).get().getStringA());
         entityA.setStringA("BLAAA");
         entityADao.update(entityA);
-        transactionManager.commit(transactionStatus);
+        getTransactionManager().commit(transactionStatus);
         assertEquals(Optional.of("BLAAA"), entityADao.getById(entityA.get__identifier()).get().getStringA());
     }
 
