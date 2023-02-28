@@ -386,7 +386,7 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
     }
 
     @Test
-    @Disabled
+    @Disabled("JNG-4317")
     void testDeepCopyConstructor() {
         //When we add a composition Entity we must copy it, because that comp entity belong the created entity
 
@@ -403,8 +403,6 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
                 .withStringA("A")
                 .withSingleRequiredConA(singleRequiredConA)
                 .build());
-
-        //TODO-JNG-4317
 
         assertNotEquals(entityA.getSingleRequiredConA().get__identifier(), singleRequiredConA.get__identifier());
         List<UUID> collect = singleRequiredConA.getMultipleDonB().stream().map(c -> c.get__identifier()).collect(Collectors.toList());
