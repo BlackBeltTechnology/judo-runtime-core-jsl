@@ -28,8 +28,8 @@ import hu.blackbelt.judo.runtime.core.bootstrap.dao.rdbms.hsqldb.JudoHsqldbModul
 import hu.blackbelt.judo.runtime.core.bootstrap.dao.rdbms.postgresql.JudoPostgresqlModules;
 import hu.blackbelt.judo.runtime.core.dao.rdbms.hsqldb.HsqldbDialect;
 import hu.blackbelt.judo.runtime.core.dao.rdbms.postgresql.PostgresqlDialect;
-import hu.blackbelt.judo.runtime.core.jsl.fixture.RdbmsDatasourceByClassExtension;
-import hu.blackbelt.judo.runtime.core.jsl.fixture.RdbmsDatasourceFixture;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceByClassExtension;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,21 +41,21 @@ import org.testcontainers.containers.JdbcDatabaseContainer;
 
 import java.io.File;
 
-import static hu.blackbelt.judo.runtime.core.jsl.fixture.RdbmsDatasourceFixture.DIALECT_HSQLDB;
-import static hu.blackbelt.judo.runtime.core.jsl.fixture.RdbmsDatasourceFixture.DIALECT_POSTGRESQL;
+import static hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture.DIALECT_HSQLDB;
+import static hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture.DIALECT_POSTGRESQL;
 
 @Slf4j
-@ExtendWith(RdbmsDatasourceByClassExtension.class)
+@ExtendWith(JudoDatasourceByClassExtension.class)
 abstract class AbstractJslTest {
 
     Injector injector;
 
     TransactionStatus transactionStatus;
 
-    protected RdbmsDatasourceFixture datasource;
+    protected JudoDatasourceFixture datasource;
 
     @BeforeEach
-    protected void init(RdbmsDatasourceFixture datasource) throws Exception {
+    protected void init(JudoDatasourceFixture datasource) throws Exception {
         JudoModelLoader modelHolder;
 
         this.datasource = datasource;

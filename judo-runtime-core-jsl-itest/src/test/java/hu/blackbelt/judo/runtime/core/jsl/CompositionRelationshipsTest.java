@@ -37,7 +37,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationship
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.CompositionRelationshipsDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
-import hu.blackbelt.judo.runtime.core.jsl.fixture.RdbmsDatasourceFixture;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -85,7 +85,7 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
 
 
     @BeforeEach
-    protected void init(RdbmsDatasourceFixture datasource) throws Exception {
+    protected void init(JudoDatasourceFixture datasource) throws Exception {
         super.init(datasource);
 
         entityD1 = entityDDao.create(EntityD.builder()

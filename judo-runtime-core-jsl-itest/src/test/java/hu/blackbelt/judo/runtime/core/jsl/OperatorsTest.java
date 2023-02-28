@@ -29,7 +29,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.der
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.derivedsource.DerivedSource;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.OperatorsDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
-import hu.blackbelt.judo.runtime.core.jsl.fixture.RdbmsDatasourceFixture;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
@@ -133,7 +133,7 @@ public class OperatorsTest extends AbstractJslTest {
         assertEquals(Optional.of(true), operators.getStringNeq());
 
         // TODO: inconsistent consistent string comparison:D
-        if (datasource.getDialect().equals(RdbmsDatasourceFixture.DIALECT_HSQLDB)) {
+        if (datasource.getDialect().equals(JudoDatasourceFixture.DIALECT_HSQLDB)) {
             assertEquals(Optional.of(true), operators.getCsStringLt());
             assertEquals(Optional.of(true), operators.getCsStringLte2());
             assertEquals(Optional.of(true), operators.getCsStringGt());

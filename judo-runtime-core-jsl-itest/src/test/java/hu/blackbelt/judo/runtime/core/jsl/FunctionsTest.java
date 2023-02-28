@@ -67,7 +67,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.sim
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.simple.SimpleDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.FunctionsDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
-import hu.blackbelt.judo.runtime.core.jsl.fixture.RdbmsDatasourceFixture;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -143,7 +143,7 @@ public class FunctionsTest extends AbstractJslTest {
     SimpleDao simpleDao;
 
     @BeforeEach
-    protected void init(RdbmsDatasourceFixture datasource) throws Exception {
+    protected void init(JudoDatasourceFixture datasource) throws Exception {
         super.init(datasource);
         Entity entity = entityDao
                         .create(Entity.builder().build());
@@ -288,7 +288,7 @@ public class FunctionsTest extends AbstractJslTest {
         assertEquals("*****apple", str.getLpad1().orElseThrow());
 
         // TODO: JNG-4293
-        if (datasource.getDialect().equals(RdbmsDatasourceFixture.DIALECT_POSTGRESQL)) {
+        if (datasource.getDialect().equals(JudoDatasourceFixture.DIALECT_POSTGRESQL)) {
             assertEquals("ap", str.getLpad2().orElseThrow());
             assertEquals("ap", str.getLpad3().orElseThrow());
         } else {
@@ -504,7 +504,7 @@ public class FunctionsTest extends AbstractJslTest {
         assertEquals(LocalTime.of(13, 45, 0), time.getOf().orElseThrow());
 
         // TODO: timezone issue
-        if (datasource.getDialect().equals(RdbmsDatasourceFixture.DIALECT_HSQLDB)) {
+        if (datasource.getDialect().equals(JudoDatasourceFixture.DIALECT_HSQLDB)) {
             assertEquals(LocalTime.of(11, 11, 11), time.getTimeFromSeconds().orElseThrow());
             assertEquals(40271L, time.getTimeAsSeconds().orElseThrow());
         }

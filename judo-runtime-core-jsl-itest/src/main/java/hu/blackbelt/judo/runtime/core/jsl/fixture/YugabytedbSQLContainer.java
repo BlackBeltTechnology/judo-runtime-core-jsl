@@ -1,8 +1,8 @@
 package hu.blackbelt.judo.runtime.core.jsl.fixture;
 
-import org.jetbrains.annotations.NotNull;
 import org.testcontainers.containers.JdbcDatabaseContainer;
 import org.testcontainers.containers.wait.strategy.LogMessageWaitStrategy;
+import org.testcontainers.utility.DockerImageName;
 
 import java.time.Duration;
 import java.util.HashSet;
@@ -10,9 +10,6 @@ import java.util.Set;
 
 import static java.time.temporal.ChronoUnit.SECONDS;
 
-/**
- * @author richardnorth
- */
 public class YugabytedbSQLContainer<SELF extends org.testcontainers.containers.PostgreSQLContainer<SELF>> extends JdbcDatabaseContainer<SELF> {
     public static final String IMAGE = "yugabytedb/yugabyte";
     public static final String DEFAULT_TAG = "2.1.8.2-b1";
@@ -36,7 +33,7 @@ public class YugabytedbSQLContainer<SELF extends org.testcontainers.containers.P
     }
 
     public YugabytedbSQLContainer(final String dockerImageName) {
-        super(dockerImageName);
+        super(DockerImageName.parse(dockerImageName));
         this.waitStrategy = new LogMessageWaitStrategy()
                 .withRegEx(".*yugabyted started successfully.*")
                 .withTimes(1)
@@ -46,9 +43,9 @@ public class YugabytedbSQLContainer<SELF extends org.testcontainers.containers.P
         addExposedPort(YUGABYTE_PORT);
     }
 
-    @NotNull
+
     @Override
-    protected Set<Integer> getLivenessCheckPorts() {
+    public Set<Integer> getLivenessCheckPortNumbers() {
         return new HashSet<>(getMappedPort(YUGABYTE_PORT));
     }
 
@@ -68,9 +65,9 @@ public class YugabytedbSQLContainer<SELF extends org.testcontainers.containers.P
 
     @Override
     public String getJdbcUrl() {
-        String additionalUrlParams = constructUrlParameters("?", "&");
-        return "jdbc:postgresql://" + getContainerIpAddress() + ":" + getMappedPort(YUGABYTE_PORT)
-                + "/" + databaseName + additionalUrlParams;
+        String additionalUrlParams = constructUrlParameters("?", QUERY_PARAM_SEPARATOR);
+        return "jdbc:postgresql://" + getHost() + ":" + getMappedPort(YUGABYTE_PORT)
+               + "/" + databaseName + additionalUrlParams;
     }
 
     @Override
