@@ -112,7 +112,7 @@ jobs:
           -Drevision=${{ steps.version.outputs.version }} \
           -Ddialect=postgresql \
           -Dskip-test-source-generation \
-          -f judo-runtime-core-jsl-itest
+          -f judo-runtime-core-jsl-itest \
           test
 
       - name: 🎁 Deploy with Maven to judong
