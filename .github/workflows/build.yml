@@ -99,7 +99,7 @@ jobs:
 # MAVEN BUILD START
 ##########################
 
-      - name: 🔥 Build Maven project with tests included (HSQLDB)
+      - name: 🔥 Build Maven project with tests (HSQLDB)
         run: |-
           ./mvnw -B -Dstyle.color=always \
           -Drevision=${{ steps.version.outputs.version }} \
