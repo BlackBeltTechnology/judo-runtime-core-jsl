@@ -76,7 +76,7 @@ abstract class AbstractJslTest {
         }
     }
 
-    protected PlatformTransactionManager getTransactionManager() {
+    private PlatformTransactionManager getTransactionManager() {
         return injector.getInstance(PlatformTransactionManager.class);
     }
 

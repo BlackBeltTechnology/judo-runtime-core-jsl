@@ -281,11 +281,11 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
             "REQ-ENT-002"
     })
     void testManualTransactionManagementRollback() {
-        TransactionStatus transactionStatus = getTransactionManager().getTransaction(new DefaultTransactionDefinition());
+        TransactionStatus transactionStatus = beginTransaction();
         assertEquals(Optional.of("TEST-A"), entityADao.getById(entityA.get__identifier()).get().getStringA());
         entityA.setStringA("BLAAA");
         entityADao.update(entityA);
-        getTransactionManager().rollback(transactionStatus);
+        rollbackTransaction(transactionStatus);
         assertEquals(Optional.of("TEST-A"), entityADao.getById(entityA.get__identifier()).get().getStringA());
     }
 
@@ -297,11 +297,11 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
             "REQ-ENT-002"
     })
     void testManualTransactionManagementCommit() {
-        TransactionStatus transactionStatus = getTransactionManager().getTransaction(new DefaultTransactionDefinition());
+        TransactionStatus transactionStatus = beginTransaction();
         assertEquals(Optional.of("TEST-A"), entityADao.getById(entityA.get__identifier()).get().getStringA());
         entityA.setStringA("BLAAA");
         entityADao.update(entityA);
-        getTransactionManager().commit(transactionStatus);
+        commitTransaction(transactionStatus);
         assertEquals(Optional.of("BLAAA"), entityADao.getById(entityA.get__identifier()).get().getStringA());
     }
 
