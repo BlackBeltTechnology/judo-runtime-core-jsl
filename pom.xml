@@ -15,7 +15,7 @@
 
         <project-shortname>judo-runtime-core-jsl</project-shortname>
         <project-repositoryId>BlackBeltTechnology/judo-runtime-core-jsl</project-repositoryId>
-        <deployOnly>false</deployOnly>
+        <deploy-only>false</deploy-only>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <timestamp>${maven.build.timestamp}</timestamp>
         <maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
@@ -115,7 +115,7 @@
                         <execution>
                             <id>default-install</id>
                             <configuration>
-                                <skip>${deployOnly}</skip>
+                                <skip>${deploy-only}</skip>
                             </configuration>
                         </execution>
                         <execution>
