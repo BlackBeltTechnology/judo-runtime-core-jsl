@@ -48,10 +48,13 @@ import static hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture.D
 @ExtendWith(JudoDatasourceByClassExtension.class)
 abstract class AbstractJslTest {
 
+    public static final String MODEL_SOURCES = "target/generated-test-sources/model";
+
     Injector injector;
 
-    protected JudoDatasourceFixture datasource;
     protected TransactionStatus transactionStatus;
+
+    protected String dialect;
 
     public abstract Module getModelDaoModule();
 
@@ -61,10 +64,9 @@ abstract class AbstractJslTest {
     protected void init(JudoDatasourceFixture datasource) throws Exception {
         JudoModelLoader modelHolder;
 
-        this.datasource = datasource;
-
-        if (datasource.getDialect().equals(DIALECT_POSTGRESQL)) {
-            modelHolder = JudoModelLoader.loadFromDirectory(getModelName(), new File("target/generated-test-sources/model"), new PostgresqlDialect(), true);
+        dialect = datasource.getDialect();
+        if (DIALECT_POSTGRESQL.equals(dialect)) {
+            modelHolder = JudoModelLoader.loadFromDirectory(getModelName(), new File(MODEL_SOURCES), new PostgresqlDialect(), true);
             JdbcDatabaseContainer sqlContainer = datasource.getSqlContainer();
             JudoPostgresqlModules judoPostgresqlModules = JudoPostgresqlModules.builder()
                                                                                .databaseName(sqlContainer.getDatabaseName())
@@ -74,9 +76,11 @@ abstract class AbstractJslTest {
                                                                                .build();
 
             injector = Guice.createInjector(judoPostgresqlModules, getModelDaoModule(), new JudoDefaultModule(this, modelHolder));
-        } else if (datasource.getDialect().equals(DIALECT_HSQLDB)) {
-            modelHolder = JudoModelLoader.loadFromDirectory(getModelName(), new File("target/generated-test-sources/model"), new HsqldbDialect(), true);
+        } else if (DIALECT_HSQLDB.equals(dialect)) {
+            modelHolder = JudoModelLoader.loadFromDirectory(getModelName(), new File(MODEL_SOURCES), new HsqldbDialect(), true);
             injector = Guice.createInjector(JudoHsqldbModules.builder().build(), getModelDaoModule(), new JudoDefaultModule(this, modelHolder));
+        } else {
+            throw new IllegalArgumentException("Unsupported dialect: " + dialect);
         }
 
         transactionStatus = beginTransaction();

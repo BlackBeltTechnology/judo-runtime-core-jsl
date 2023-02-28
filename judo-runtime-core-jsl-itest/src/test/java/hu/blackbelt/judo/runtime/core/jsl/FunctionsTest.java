@@ -76,6 +76,9 @@ import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
+
+import static hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture.DIALECT_HSQLDB;
+import static hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture.DIALECT_POSTGRESQL;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
@@ -288,7 +291,7 @@ public class FunctionsTest extends AbstractJslTest {
         assertEquals("*****apple", str.getLpad1().orElseThrow());
 
         // TODO: JNG-4293
-        if (datasource.getDialect().equals(JudoDatasourceFixture.DIALECT_POSTGRESQL)) {
+        if (DIALECT_POSTGRESQL.equals(dialect)) {
             assertEquals("ap", str.getLpad2().orElseThrow());
             assertEquals("ap", str.getLpad3().orElseThrow());
         } else {
@@ -325,7 +328,7 @@ public class FunctionsTest extends AbstractJslTest {
             "REQ-EXPR-014"
     })
     public void testNumerics() {
-        NumericFunctions numericFunctions = numericFunctionsDao.create(NumericFunctions.builder().build()); // FIXME JNG-4292
+        NumericFunctions numericFunctions = numericFunctionsDao.create(NumericFunctions.builder().build());
 
         Long roundInt = numericFunctions.getRoundInt().orElseThrow();
         assertEquals(1, roundInt);
@@ -503,8 +506,8 @@ public class FunctionsTest extends AbstractJslTest {
         assertEquals(Optional.of(59L), time.getSecond());
         assertEquals(LocalTime.of(13, 45, 0), time.getOf().orElseThrow());
 
-        // TODO: timezone issue
-        if (datasource.getDialect().equals(JudoDatasourceFixture.DIALECT_HSQLDB)) {
+        // TODO: JNG-1586, JNG-3681
+        if (DIALECT_HSQLDB.equals(dialect)) {
             assertEquals(LocalTime.of(11, 11, 11), time.getTimeFromSeconds().orElseThrow());
             assertEquals(40271L, time.getTimeAsSeconds().orElseThrow());
         }
@@ -737,7 +740,7 @@ public class FunctionsTest extends AbstractJslTest {
         assertEquals(Optional.of(true), collectionFunctions.getAnyFalseChildrenRelation());
 
         assertEquals(Optional.of(false), collectionFunctions.getAllFalseChildrenField());
-        // assertEquals(Optional.of(true), collectionFunctions.getAllFalseChildrenRelation()); TODO:Norbi JNG-4179
+        assertEquals(Optional.of(false), collectionFunctions.getAllFalseChildrenRelation());
     }
 
     @Test

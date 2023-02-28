@@ -560,40 +560,40 @@ public class PrimitivesTest extends AbstractJslTest {
             "REQ-ENT-002"
     })
     public void testMaxPrecision() {
-        // FIXME: JNG-4262
-//        ValidationException thrown = assertThrows(
-//                ValidationException.class,
-//                () -> myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
-//                        .withScaledAttr(12345678.0)
-//                        .build())
-//        );
-//
-//        assertThat(thrown.getValidationResults(), containsInAnyOrder(
-//                matchPrecisionValidationForAttribute("scaledAttr")
-//        ));
+        ValidationException validationException = assertThrows(
+                ValidationException.class,
+                () -> myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
+                        .withScaledAttr(1234567890.0)
+                        .build())
+        );
+        assertThat(validationException.getValidationResults(), containsInAnyOrder(matchPrecisionValidationForAttribute("scaledAttr")));
+
+        ValidationException validationException1 = assertThrows(
+                ValidationException.class,
+                () -> myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
+                        .withScaledAttr(123456789.1)
+                        .build())
+        );
+        assertThat(validationException1.getValidationResults(), containsInAnyOrder(matchPrecisionValidationForAttribute("scaledAttr")));
 
         MyEntityWithOptionalFields e1 = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
-                .withScaledAttr(1234567.0)
+                .withScaledAttr(123456789.0)
                 .build());
-
-        assertEquals(Optional.of(1234567.0), e1.getScaledAttr());
+        assertEquals(Optional.of(123456789.0), e1.getScaledAttr());
 
         MyEntityWithOptionalFields e2 = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
-                .withScaledAttr(1234567.1)
+                .withScaledAttr(12345678.1)
                 .build());
-
-        assertEquals(Optional.of(1234567.1), e2.getScaledAttr());
+        assertEquals(Optional.of(12345678.1), e2.getScaledAttr());
 
         MyEntityWithOptionalFields e3 = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
                 .withScaledAttr(1234567.12)
                 .build());
-
         assertEquals(Optional.of(1234567.12), e3.getScaledAttr());
 
         MyEntityWithOptionalFields e4 = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
                 .withScaledAttr(1234567.1200)
                 .build());
-
         assertEquals(Optional.of(1234567.12), e4.getScaledAttr());
     }
 
