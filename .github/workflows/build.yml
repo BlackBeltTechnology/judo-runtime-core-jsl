@@ -112,7 +112,6 @@ jobs:
         run: |-
           ./mvnw -B -Dstyle.color=always \
           -Drevision=${{ steps.version.outputs.version }} \
-          -P"sign-artifacts,release-judong" \
           test
 
       # TODO: "test" goal is too broad, should be replaced, but surefire:test does not work here
@@ -120,8 +119,6 @@ jobs:
         run: |-
           ./mvnw -B -Dstyle.color=always \
           -Drevision=${{ steps.version.outputs.version }} \
-          -Ddialect=postgresql \
-          -P"sign-artifacts,release-judong" \
           test
 
       - name: 🎁 Deploy with Maven to judong
