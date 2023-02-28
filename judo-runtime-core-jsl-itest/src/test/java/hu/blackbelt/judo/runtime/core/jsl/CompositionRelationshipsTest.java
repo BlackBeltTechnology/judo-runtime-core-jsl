@@ -42,12 +42,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
-import javax.transaction.NotSupportedException;
-import javax.transaction.SystemException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -277,16 +274,13 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
     }
 
     @Test
-    @Disabled("CompositionRelationshipsTest.testManualTransactionManagementRollback: " +
-              "assertEquals(Optional.of(\"TEST-A\"), entityADao.getById(entityA.get__identifier()).get().getStringA()); " +
-              "expected: <Optional[TEST-A]> but was: <Optional[BLAAA]>")
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-TYPE-004",
             "REQ-ENT-001",
             "REQ-ENT-002"
     })
-    void testManualTransactionManagementRollback() throws SystemException, NotSupportedException {
+    void testManualTransactionManagementRollback() {
         TransactionStatus transactionStatus = getTransactionManager().getTransaction(new DefaultTransactionDefinition());
         assertEquals(Optional.of("TEST-A"), entityADao.getById(entityA.get__identifier()).get().getStringA());
         entityA.setStringA("BLAAA");
@@ -302,7 +296,7 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
             "REQ-ENT-001",
             "REQ-ENT-002"
     })
-    void testManualTransactionManagementCommit() throws SystemException, NotSupportedException {
+    void testManualTransactionManagementCommit() {
         TransactionStatus transactionStatus = getTransactionManager().getTransaction(new DefaultTransactionDefinition());
         assertEquals(Optional.of("TEST-A"), entityADao.getById(entityA.get__identifier()).get().getStringA());
         entityA.setStringA("BLAAA");

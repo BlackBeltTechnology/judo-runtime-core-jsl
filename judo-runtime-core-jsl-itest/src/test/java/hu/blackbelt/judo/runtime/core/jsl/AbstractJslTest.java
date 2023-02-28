@@ -31,6 +31,7 @@ import hu.blackbelt.judo.runtime.core.dao.rdbms.postgresql.PostgresqlDialect;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceByClassExtension;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.After;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -49,8 +50,6 @@ import static hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture.D
 abstract class AbstractJslTest {
 
     Injector injector;
-
-    TransactionStatus transactionStatus;
 
     protected JudoDatasourceFixture datasource;
 
@@ -75,25 +74,22 @@ abstract class AbstractJslTest {
             modelHolder = JudoModelLoader.loadFromDirectory(getModelName(), new File("target/generated-test-sources/model"), new HsqldbDialect(), true);
             injector = Guice.createInjector(JudoHsqldbModules.builder().build(), getModelDaoModule(), new JudoDefaultModule(this, modelHolder));
         }
-
-        beginTransaction();
     }
 
     protected PlatformTransactionManager getTransactionManager() {
         return injector.getInstance(PlatformTransactionManager.class);
     }
 
-    protected void beginTransaction() {
-        transactionStatus = getTransactionManager().getTransaction(new DefaultTransactionDefinition());
+    protected TransactionStatus beginTransaction() {
+        return getTransactionManager().getTransaction(new DefaultTransactionDefinition());
     }
 
-    protected void endTransaction() {
+    protected void commitTransaction(TransactionStatus transactionStatus) {
+        getTransactionManager().commit(transactionStatus);
+    }
+
+    protected void rollbackTransaction(TransactionStatus transactionStatus) {
         getTransactionManager().rollback(transactionStatus);
-    }
-
-    @AfterEach
-    protected void teardown() {
-        endTransaction();
     }
 
     public abstract Module getModelDaoModule();
@@ -101,4 +97,3 @@ abstract class AbstractJslTest {
     public abstract String getModelName();
 
 }
-
