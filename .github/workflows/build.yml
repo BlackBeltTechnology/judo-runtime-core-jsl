@@ -99,17 +99,39 @@ jobs:
 # MAVEN BUILD START
 ##########################
 
-      # Phase 1 - Build and deploy to judong nexus
-      - name: 🔥 Build with Maven (build, test)
+      - name: 🔥 Build with Maven
         run: |-
           ./mvnw -B -Dstyle.color=always \
           -Drevision=${{ steps.version.outputs.version }} \
-          -Psign-artifacts \
-          -Prelease-judong \
+          -P"sign-artifacts,release-judong" \
+          -Dmaven.test.skip=true \
+          clean install
+
+      - name: 🔥 Test HSQLDB
+        run: |-
+          ./mvnw -B -Dstyle.color=always \
+          -Drevision=${{ steps.version.outputs.version }} \
+          -P"sign-artifacts,release-judong" \
+          surefire:test
+
+      - name: 🔥 Test with PostgreSQL
+        run: |-
+          ./mvnw -B -Dstyle.color=always \
+          -Drevision=${{ steps.version.outputs.version }} \
+          -Ddialect=postgresql \
+          -P"sign-artifacts,release-judong" \
+          surefire:test
+
+      - name: 🎁 Deploy with Maven to judong
+        run: |-
+          ./mvnw -B -Dstyle.color=always \
+          -Drevision=${{ steps.version.outputs.version }} \
+          -DdeployOnly \
+          -Dmaven.test.skip=true \
+          -P"sign-artifacts,release-judong" \
           deploy
 
-      # Phase 2 - Build and deploy to maven central
-      - name: 🎁 Deploy with Maven (central)
+      - name: 🎁 Deploy with Maven to central
         if: ${{ always() && startsWith(github.head_ref, 'release') && job.status == 'success' }}
         run: |-
           ./mvnw -B -Dstyle.color=always \
