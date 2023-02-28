@@ -107,7 +107,7 @@ jobs:
           -Dmaven.test.skip=true \
           clean install
 
-      - name: 🔥 Test HSQLDB
+      - name: 🔥 Test with HSQLDB
         run: |-
           ./mvnw -B -Dstyle.color=always \
           -Drevision=${{ steps.version.outputs.version }} \
