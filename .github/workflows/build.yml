@@ -107,20 +107,22 @@ jobs:
           -Dmaven.test.skip=true \
           clean install
 
+      # TODO: "test" goal is too broad, should be replaced, but surefire:test does not work here
       - name: 🔥 Test with HSQLDB
         run: |-
           ./mvnw -B -Dstyle.color=always \
           -Drevision=${{ steps.version.outputs.version }} \
           -P"sign-artifacts,release-judong" \
-          surefire:test
+          test
 
+      # TODO: "test" goal is too broad, should be replaced, but surefire:test does not work here
       - name: 🔥 Test with PostgreSQL
         run: |-
           ./mvnw -B -Dstyle.color=always \
           -Drevision=${{ steps.version.outputs.version }} \
           -Ddialect=postgresql \
           -P"sign-artifacts,release-judong" \
-          surefire:test
+          test
 
       - name: 🎁 Deploy with Maven to judong
         run: |-
