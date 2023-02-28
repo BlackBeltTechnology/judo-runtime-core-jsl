@@ -64,7 +64,7 @@ public class TaskModelTest extends AbstractJslTest {
             "REQ-EXPR-008",
             "REQ-EXPR-022"
     })
-    public void testSumDirivedWithOtherDirived() {
+    public void testSumDerivedWithOtherDerived() {
 
         MarketPlace marketPlace = marketPlaceDao.create(MarketPlace.builder().build());
 
@@ -99,7 +99,7 @@ public class TaskModelTest extends AbstractJslTest {
             "REQ-EXPR-008",
             "REQ-EXPR-022"
     })
-    public void testSumDirivedInSumDirived() {
+    public void testSumDerivedInSumDerived() {
 
         Person person1 = personDao.create(Person.builder().withFirstName("Adam").build());
         Workplace blackbelt = personDao.createWorkplace(person1, Workplace.builder().withName("Blackbelt").withAddress("Ganz utca 2").build());
