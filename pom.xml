@@ -159,9 +159,7 @@
                         <systemPropertyVariables>
                             <logback.configurationFile>${logback-test-config}</logback.configurationFile>
                         </systemPropertyVariables>
-                        <!--suppress UnresolvedMavenProperty -->
                         <argLine>
-                            ${jacoco.agent}
                             -Dfile.encoding=UTF-8
                             --add-opens java.base/java.lang=ALL-UNNAMED
                             --add-opens java.base/java.util=ALL-UNNAMED
@@ -314,6 +312,9 @@
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
+                        <configuration>
+                            <propertyName>surefireArgLine</propertyName>
+                        </configuration>
                     </execution>
                     <execution>
                         <id>jacoco-report</id>
