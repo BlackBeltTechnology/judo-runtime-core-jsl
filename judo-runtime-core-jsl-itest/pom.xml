@@ -390,23 +390,6 @@
                             </sources>
                         </configuration>
                    </execution>
-                    <!--
-                    <execution>
-                        <id>add-resource</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>add-test-resource</goal>
-                        </goals>
-                        <configuration>
-                            <resources>
-                                <resource>
-                                    <directory>${project.basedir}/target/generated-test-sources/model</directory>
-                                    <targetPath>model</targetPath>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                    -->
                 </executions>
             </plugin>
 
@@ -419,22 +402,6 @@
                     </compilerArgs>
                 </configuration>
             </plugin>
-
-            <!--
-            <plugin>
-                <groupId>org.apache.felix</groupId>
-                <artifactId>maven-bundle-plugin</artifactId>
-                <configuration>
-                    <instructions>
-                        <Export-Package>hu.blackbelt.judo.runtime.core.jsl.itest.*;version=${project.version}</Export-Package>
-                        <Include-Resource>
-                            {maven-resources},
-                            model=target/model
-                        </Include-Resource>
-                    </instructions>
-                </configuration>
-            </plugin>
-            -->
         </plugins>
     </build>
 
