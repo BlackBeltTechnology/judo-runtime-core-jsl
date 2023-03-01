@@ -54,8 +54,6 @@ abstract class AbstractJslTest {
 
     protected TransactionStatus transactionStatus;
 
-    protected String dialect;
-
     public abstract Module getModelDaoModule();
 
     public abstract String getModelName();
@@ -64,8 +62,7 @@ abstract class AbstractJslTest {
     protected void init(JudoDatasourceFixture datasource) throws Exception {
         JudoModelLoader modelHolder;
 
-        dialect = datasource.getDialect();
-        if (DIALECT_POSTGRESQL.equals(dialect)) {
+        if (DIALECT_POSTGRESQL.equals(datasource.getDialect())) {
             modelHolder = JudoModelLoader.loadFromDirectory(getModelName(), new File(MODEL_SOURCES), new PostgresqlDialect(), true);
             JdbcDatabaseContainer sqlContainer = datasource.getSqlContainer();
             JudoPostgresqlModules judoPostgresqlModules = JudoPostgresqlModules.builder()
@@ -76,11 +73,11 @@ abstract class AbstractJslTest {
                                                                                .build();
 
             injector = Guice.createInjector(judoPostgresqlModules, getModelDaoModule(), new JudoDefaultModule(this, modelHolder));
-        } else if (DIALECT_HSQLDB.equals(dialect)) {
+        } else if (DIALECT_HSQLDB.equals(datasource.getDialect())) {
             modelHolder = JudoModelLoader.loadFromDirectory(getModelName(), new File(MODEL_SOURCES), new HsqldbDialect(), true);
             injector = Guice.createInjector(JudoHsqldbModules.builder().build(), getModelDaoModule(), new JudoDefaultModule(this, modelHolder));
         } else {
-            throw new IllegalArgumentException("Unsupported dialect: " + dialect);
+            throw new IllegalArgumentException("Unsupported dialect: " + datasource.getDialect());
         }
 
         transactionStatus = beginTransaction();
