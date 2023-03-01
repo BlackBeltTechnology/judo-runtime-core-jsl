@@ -345,7 +345,7 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
     }
 
     @Test
-    @Disabled("https://blackbelt.atlassian.net/browse/JNG-4317") // TODO
+    @Disabled("https://blackbelt.atlassian.net/browse/JNG-4317")
     void testDeepCopyConstructor() {
         //When we add a composition Entity we must copy it, because that comp entity belong the created entity
 

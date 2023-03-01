@@ -267,7 +267,7 @@ class SalesModelTest extends AbstractJslTest {
     }
 
     @Test
-    @Disabled("https://blackbelt.atlassian.net/browse/JNG-3893") // TODO
+    @Disabled("https://blackbelt.atlassian.net/browse/JNG-3893")
     public void testErrorDefaultValue() {
         MyExtendedError error = MyExtendedError.builder()
                 .withCode(403)

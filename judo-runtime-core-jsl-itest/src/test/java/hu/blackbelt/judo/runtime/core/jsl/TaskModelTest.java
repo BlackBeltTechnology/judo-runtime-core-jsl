@@ -51,7 +51,7 @@ public class TaskModelTest extends AbstractJslTest {
     }
 
     @Test
-    @Disabled("https://blackbelt.atlassian.net/browse/JNG-4150") // TODO
+    @Disabled("https://blackbelt.atlassian.net/browse/JNG-4150")
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-TYPE-005",
@@ -85,7 +85,7 @@ public class TaskModelTest extends AbstractJslTest {
 
 
     @Test
-    @Disabled("https://blackbelt.atlassian.net/browse/JNG-4150") // TODO
+    @Disabled("https://blackbelt.atlassian.net/browse/JNG-4150")
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-TYPE-004",
