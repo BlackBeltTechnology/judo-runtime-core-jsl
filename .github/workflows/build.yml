@@ -117,7 +117,7 @@ jobs:
         run: |-
           ./mvnw -B -Dstyle.color=always \
           -Drevision=${{ steps.version.outputs.version }} \
-          -Ddeploy-only \
+          -DdeployOnly \
           -Dmaven.test.skip=true \
           -P"sign-artifacts,release-judong" \
           deploy
@@ -127,7 +127,7 @@ jobs:
         run: |-
           ./mvnw -B -Dstyle.color=always \
           -Drevision=${{ steps.version.outputs.version }} \
-          -Ddeploy-only \
+          -DdeployOnly \
           -P"release-central,sign-artifacts,-verify-feature" \
           -Dmaven.test.skip=true \
           deploy
