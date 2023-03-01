@@ -121,7 +121,7 @@
                         <execution>
                             <id>default-test</id>
                             <configuration>
-                                <skip>${deployOnly}</skip>
+                                <skip>${deploy-only}</skip>
                             </configuration>
                         </execution>
                     </executions>
