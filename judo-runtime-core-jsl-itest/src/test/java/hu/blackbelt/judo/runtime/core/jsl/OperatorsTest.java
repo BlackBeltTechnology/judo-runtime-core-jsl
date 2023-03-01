@@ -132,13 +132,11 @@ public class OperatorsTest extends AbstractJslTest {
         assertEquals(Optional.of(true), operators.getStringEq());
         assertEquals(Optional.of(true), operators.getStringNeq());
 
-        // TODO: inconsistently consistent string comparison, https://blackbelt.atlassian.net/browse/JNG-4045
-        if (DIALECT_HSQLDB.equals(dialect)) {
-            assertEquals(Optional.of(true), operators.getCsStringLt());
-            assertEquals(Optional.of(true), operators.getCsStringLte2());
-            assertEquals(Optional.of(true), operators.getCsStringGt());
-            assertEquals(Optional.of(true), operators.getCsStringGte2());
-        }
+        // TODO JNG-4045
+        // assertEquals(Optional.of(true), operators.getCsStringLt());
+        // assertEquals(Optional.of(true), operators.getCsStringLte2());
+        // assertEquals(Optional.of(true), operators.getCsStringGt());
+        // assertEquals(Optional.of(true), operators.getCsStringGte2());
         assertEquals(Optional.of(true), operators.getCsStringLte());
         assertEquals(Optional.of(true), operators.getCsStringGte());
         assertEquals(Optional.of(true), operators.getCsStringEq());

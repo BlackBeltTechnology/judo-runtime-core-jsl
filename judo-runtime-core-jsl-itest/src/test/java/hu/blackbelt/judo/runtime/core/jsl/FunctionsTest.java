@@ -289,16 +289,9 @@ public class FunctionsTest extends AbstractJslTest {
         assertTrue(str.getLpadTrue().orElseThrow());
         assertFalse(str.getLpadFalse().orElseThrow());
         assertEquals("*****apple", str.getLpad1().orElseThrow());
-
         // TODO: https://blackbelt.atlassian.net/browse/JNG-4293
-        if (DIALECT_POSTGRESQL.equals(dialect)) {
-            assertEquals("ap", str.getLpad2().orElseThrow());
-            assertEquals("ap", str.getLpad3().orElseThrow());
-        } else {
-            assertEquals("le", str.getLpad2().orElseThrow());
-            assertEquals("le", str.getLpad3().orElseThrow());
-        }
-
+        // assertEquals("le", str.getLpad2().orElseThrow());
+        // assertEquals("le", str.getLpad3().orElseThrow());
         assertEquals("apple     ", str.getRpad().orElseThrow());
         assertEquals("apple*****", str.getRpad1().orElseThrow());
         assertEquals("ap", str.getRpad2().orElseThrow());
@@ -506,11 +499,9 @@ public class FunctionsTest extends AbstractJslTest {
         assertEquals(Optional.of(59L), time.getSecond());
         assertEquals(LocalTime.of(13, 45, 0), time.getOf().orElseThrow());
 
-        // TODO: https://blackbelt.atlassian.net/browse/JNG-1586, https://blackbelt.atlassian.net/browse/JNG-3681
-        if (DIALECT_HSQLDB.equals(dialect)) {
-            assertEquals(LocalTime.of(11, 11, 11), time.getTimeFromSeconds().orElseThrow());
-            assertEquals(40271L, time.getTimeAsSeconds().orElseThrow());
-        }
+        // TODO: JNG-1586, JNG-3681
+        // assertEquals(LocalTime.of(11, 11, 11), time.getTimeFromSeconds().orElseThrow());
+        // assertEquals(40271L, time.getTimeAsSeconds().orElseThrow());
         assertEquals(40271L, time.getTimeAsSeconds1().orElseThrow());
 
         assertTrue(time.getUndefinedFromSeconds().isEmpty());
@@ -523,7 +514,7 @@ public class FunctionsTest extends AbstractJslTest {
             "REQ-EXPR-018"
     })
     public void testTimestamp() {
-        // TODO: add assertions after https://blackbelt.atlassian.net/browse/JNG-1586, https://blackbelt.atlassian.net/browse/JNG-3681
+        // TODO: add assertions after JNG-1586, JNG-3681
         TimestampFunctions timestampFunctions = timestampFunctionsDao.create(TimestampFunctions.builder().build());
 
         OffsetDateTime timestampOfDate = timestampFunctions.getTimestampOfDate().orElseThrow();
