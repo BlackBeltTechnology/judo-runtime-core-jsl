@@ -54,6 +54,8 @@ abstract class AbstractJslTest {
 
     protected TransactionStatus transactionStatus;
 
+    private PlatformTransactionManager transactionManager;
+
     public abstract Module getModelDaoModule();
 
     public abstract String getModelName();
@@ -80,7 +82,7 @@ abstract class AbstractJslTest {
             throw new IllegalArgumentException("Unsupported dialect: " + datasource.getDialect());
         }
 
-        transactionStatus = beginTransaction();
+        beginTransaction();
     }
 
     @AfterEach
@@ -89,27 +91,46 @@ abstract class AbstractJslTest {
     }
 
     private PlatformTransactionManager getTransactionManager() {
-        return injector.getInstance(PlatformTransactionManager.class);
+        if (transactionManager == null) {
+            transactionManager = injector.getInstance(PlatformTransactionManager.class);
+        }
+        return transactionManager;
     }
 
-    protected TransactionStatus beginTransaction() {
-        return getTransactionManager().getTransaction(new DefaultTransactionDefinition());
+    protected void beginTransaction() {
+        if (transactionStatus != null && !transactionStatus.isCompleted()) {
+            throw new IllegalStateException("Previous transaction was not completed");
+        }
+        transactionStatus = getTransactionManager().getTransaction(new DefaultTransactionDefinition());
     }
 
     protected void commitTransaction() {
+        checkTransactionStatus();
         getTransactionManager().commit(transactionStatus);
     }
 
     protected void rollbackTransaction() {
+        checkTransactionStatus();
         getTransactionManager().rollback(transactionStatus);
     }
 
     protected Object createSavePoint() {
+        checkTransactionStatus();
         return transactionStatus.createSavepoint();
     }
 
     protected void rollbackToSavePoint(Object savePoint) {
+        checkTransactionStatus();
         transactionStatus.rollbackToSavepoint(savePoint);
+    }
+
+    private void checkTransactionStatus() {
+        if (transactionStatus == null) {
+            throw new IllegalStateException("TransactionStatus is null");
+        }
+        if (transactionStatus.isCompleted()) {
+            throw new IllegalStateException("Transaction was already completed");
+        }
     }
 
 }

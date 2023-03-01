@@ -278,39 +278,6 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
             "REQ-TYPE-001",
             "REQ-TYPE-004",
             "REQ-ENT-001",
-            "REQ-ENT-002"
-    })
-    void testManualTransactionManagementRollback() {
-        Object savePoint = createSavePoint();
-        assertEquals(Optional.of("TEST-A"), entityADao.getById(entityA.get__identifier()).get().getStringA());
-        entityA.setStringA("BLAAA");
-        entityADao.update(entityA);
-        rollbackToSavePoint(savePoint);
-        assertEquals(Optional.of("TEST-A"), entityADao.getById(entityA.get__identifier()).get().getStringA());
-    }
-
-    @Test
-    @Disabled("TODO: ticket") // TODO
-    @Requirement(reqs = {
-            "REQ-TYPE-001",
-            "REQ-TYPE-004",
-            "REQ-ENT-001",
-            "REQ-ENT-002"
-    })
-    void testManualTransactionManagementCommit() {
-        beginTransaction();
-        assertEquals(Optional.of("TEST-A"), entityADao.getById(entityA.get__identifier()).get().getStringA());
-        entityA.setStringA("BLAAA");
-        entityADao.update(entityA);
-        commitTransaction(); // TODO: if this change is committed, then afterEach won't be able to rollback to enable clean state for the other tests
-        assertEquals(Optional.of("BLAAA"), entityADao.getById(entityA.get__identifier()).get().getStringA());
-    }
-
-    @Test
-    @Requirement(reqs = {
-            "REQ-TYPE-001",
-            "REQ-TYPE-004",
-            "REQ-ENT-001",
             "REQ-ENT-002",
             "REQ-ENT-012"
     })

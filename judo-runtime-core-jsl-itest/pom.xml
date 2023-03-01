@@ -352,6 +352,20 @@
                         </configuration>
                     </execution>
 
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-TransactionManagementModel</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/TransactionManagementModel-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/sdk-core/TransactionManagementModel</destination>
+                        </configuration>
+                    </execution>
+
                 </executions>
             </plugin>
 
@@ -387,6 +401,7 @@
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/ContainsModel</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/CastingFunctionsModel</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/ContainerTest</source>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/TransactionManagementModel</source>
                             </sources>
                         </configuration>
                    </execution>
