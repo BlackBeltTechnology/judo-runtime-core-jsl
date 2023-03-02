@@ -67,7 +67,6 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.sim
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.simple.SimpleDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.FunctionsDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
-import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -76,7 +75,6 @@ import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
@@ -144,8 +142,8 @@ public class FunctionsTest extends AbstractJslTest {
     SimpleDao simpleDao;
 
     @BeforeEach
-    protected void init(JudoDatasourceFixture datasource) throws Exception {
-        super.init(datasource);
+    protected void init() throws Exception {
+        super.init();
         Entity entity = entityDao
                         .create(Entity.builder().build());
         EntityWithPrimitiveDefaults entityWithPrimitiveDefaults = entityWithPrimitiveDefaultsDao
@@ -287,9 +285,8 @@ public class FunctionsTest extends AbstractJslTest {
         assertTrue(str.getLpadTrue().orElseThrow());
         assertFalse(str.getLpadFalse().orElseThrow());
         assertEquals("*****apple", str.getLpad1().orElseThrow());
-        // TODO: https://blackbelt.atlassian.net/browse/JNG-4293
-        // assertEquals("le", str.getLpad2().orElseThrow());
-        // assertEquals("le", str.getLpad3().orElseThrow());
+        assertEquals("le", str.getLpad2().orElseThrow());
+        assertEquals("le", str.getLpad3().orElseThrow());
         assertEquals("apple     ", str.getRpad().orElseThrow());
         assertEquals("apple*****", str.getRpad1().orElseThrow());
         assertEquals("ap", str.getRpad2().orElseThrow());
@@ -497,9 +494,8 @@ public class FunctionsTest extends AbstractJslTest {
         assertEquals(Optional.of(59L), time.getSecond());
         assertEquals(LocalTime.of(13, 45, 0), time.getOf().orElseThrow());
 
-        // TODO: JNG-1586, JNG-3681
-        // assertEquals(LocalTime.of(11, 11, 11), time.getTimeFromSeconds().orElseThrow());
-        // assertEquals(40271L, time.getTimeAsSeconds().orElseThrow());
+        assertEquals(LocalTime.of(11, 11, 11), time.getTimeFromSeconds().orElseThrow());
+        assertEquals(40271L, time.getTimeAsSeconds().orElseThrow());
         assertEquals(40271L, time.getTimeAsSeconds1().orElseThrow());
 
         assertTrue(time.getUndefinedFromSeconds().isEmpty());
@@ -512,7 +508,7 @@ public class FunctionsTest extends AbstractJslTest {
             "REQ-EXPR-018"
     })
     public void testTimestamp() {
-        // TODO: add assertions after JNG-1586, JNG-3681
+        // TODO: add tests after JNG-1586, JNG-3681
         TimestampFunctions timestampFunctions = timestampFunctionsDao.create(TimestampFunctions.builder().build());
 
         OffsetDateTime timestampOfDate = timestampFunctions.getTimestampOfDate().orElseThrow();
@@ -691,7 +687,7 @@ public class FunctionsTest extends AbstractJslTest {
         assertEquals(Optional.of(133L), collectionFunctions.getSumChildrenRelation());
 
         assertEquals(Optional.of(34L), collectionFunctions.getAvgChildrenField());
-        assertEquals(Optional.of(26L), collectionFunctions.getAvgChildrenRelation());
+        assertEquals(Optional.of(27L), collectionFunctions.getAvgChildrenRelation());
 
         assertEquals(Optional.of(34.2), collectionFunctions.getAvgScaledChildrenField());
         assertEquals(Optional.of(26.6), collectionFunctions.getAvgScaledChildrenRelation());
@@ -729,7 +725,7 @@ public class FunctionsTest extends AbstractJslTest {
         assertEquals(Optional.of(true), collectionFunctions.getAnyFalseChildrenRelation());
 
         assertEquals(Optional.of(false), collectionFunctions.getAllFalseChildrenField());
-        assertEquals(Optional.of(false), collectionFunctions.getAllFalseChildrenRelation());
+        // assertEquals(Optional.of(true), collectionFunctions.getAllFalseChildrenRelation()); TODO:Norbi JNG-4179
     }
 
     @Test

@@ -51,7 +51,7 @@ public class TaskModelTest extends AbstractJslTest {
     }
 
     @Test
-    @Disabled("https://blackbelt.atlassian.net/browse/JNG-4150")
+    @Disabled("JNG-4150")
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-TYPE-005",
@@ -64,7 +64,7 @@ public class TaskModelTest extends AbstractJslTest {
             "REQ-EXPR-008",
             "REQ-EXPR-022"
     })
-    public void testSumDerivedWithOtherDerived() {
+    public void testSumDirivedWithOtherDirived() {
 
         MarketPlace marketPlace = marketPlaceDao.create(MarketPlace.builder().build());
 
@@ -85,7 +85,7 @@ public class TaskModelTest extends AbstractJslTest {
 
 
     @Test
-    @Disabled("https://blackbelt.atlassian.net/browse/JNG-4150")
+    @Disabled("JNG-4150")
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-TYPE-004",
@@ -99,7 +99,7 @@ public class TaskModelTest extends AbstractJslTest {
             "REQ-EXPR-008",
             "REQ-EXPR-022"
     })
-    public void testSumDerivedInSumDerived() {
+    public void testSumDirivedInSumDirived() {
 
         Person person1 = personDao.create(Person.builder().withFirstName("Adam").build());
         Workplace blackbelt = personDao.createWorkplace(person1, Workplace.builder().withName("Blackbelt").withAddress("Ganz utca 2").build());

@@ -28,7 +28,6 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.m
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.myenum.MyEnum;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.PrimitivesDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
-import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
 import hu.blackbelt.judo.sdk.query.*;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
@@ -70,8 +69,8 @@ public class FiltersTest extends AbstractJslTest {
     static final MyEnum ENUM_2 = MyEnum.Atomic;
 
     @BeforeEach
-    protected void init(JudoDatasourceFixture datasource) throws Exception {
-        super.init(datasource);
+    protected void init() throws Exception {
+        super.init();
 
         entity1 = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
                 .withIntegerAttr(INTEGER_1)

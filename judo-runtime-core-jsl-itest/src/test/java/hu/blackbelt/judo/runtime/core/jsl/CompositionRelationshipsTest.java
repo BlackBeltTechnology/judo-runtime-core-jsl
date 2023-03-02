@@ -37,14 +37,16 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationship
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.CompositionRelationshipsDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
-import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
+import javax.transaction.NotSupportedException;
+import javax.transaction.SystemException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -71,6 +73,9 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
     @Inject
     EntityEDao entityEDao;
 
+    @Inject
+    PlatformTransactionManager transactionManager;
+
     EntityA entityA;
     EntityC singleConA;
     EntityC singleRequiredConA;
@@ -79,8 +84,8 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
 
 
     @BeforeEach
-    protected void init(JudoDatasourceFixture datasource) throws Exception {
-        super.init(datasource);
+    protected void init() throws Exception {
+        super.init();
 
         entityD1 = entityDDao.create(EntityD.builder()
                 .build());
@@ -278,6 +283,38 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
             "REQ-TYPE-001",
             "REQ-TYPE-004",
             "REQ-ENT-001",
+            "REQ-ENT-002"
+    })
+    void testManualTransactionManagementRollback() throws SystemException, NotSupportedException {
+        TransactionStatus transactionStatus = transactionManager.getTransaction(new DefaultTransactionDefinition());
+        assertEquals(Optional.of("TEST-A"), entityADao.getById(entityA.get__identifier()).get().getStringA());
+        entityA.setStringA("BLAAA");
+        entityADao.update(entityA);
+        transactionManager.rollback(transactionStatus);
+        assertEquals(Optional.of("TEST-A"), entityADao.getById(entityA.get__identifier()).get().getStringA());
+    }
+
+    @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-ENT-001",
+            "REQ-ENT-002"
+    })
+    void testManualTransactionManagementCommit() throws SystemException, NotSupportedException {
+        TransactionStatus transactionStatus = transactionManager.getTransaction(new DefaultTransactionDefinition());
+        assertEquals(Optional.of("TEST-A"), entityADao.getById(entityA.get__identifier()).get().getStringA());
+        entityA.setStringA("BLAAA");
+        entityADao.update(entityA);
+        transactionManager.commit(transactionStatus);
+        assertEquals(Optional.of("BLAAA"), entityADao.getById(entityA.get__identifier()).get().getStringA());
+    }
+
+    @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-ENT-001",
             "REQ-ENT-002",
             "REQ-ENT-012"
     })
@@ -345,7 +382,7 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
     }
 
     @Test
-    @Disabled("https://blackbelt.atlassian.net/browse/JNG-4317")
+    @Disabled
     void testDeepCopyConstructor() {
         //When we add a composition Entity we must copy it, because that comp entity belong the created entity
 
@@ -362,6 +399,8 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
                 .withStringA("A")
                 .withSingleRequiredConA(singleRequiredConA)
                 .build());
+
+        //TODO-JNG-4317
 
         assertNotEquals(entityA.getSingleRequiredConA().get__identifier(), singleRequiredConA.get__identifier());
         List<UUID> collect = singleRequiredConA.getMultipleDonB().stream().map(c -> c.get__identifier()).collect(Collectors.toList());
