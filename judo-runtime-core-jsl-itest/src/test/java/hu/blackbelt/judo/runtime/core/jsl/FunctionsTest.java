@@ -287,8 +287,8 @@ public class FunctionsTest extends AbstractJslTest {
         assertTrue(str.getLpadTrue().orElseThrow());
         assertFalse(str.getLpadFalse().orElseThrow());
         assertEquals("*****apple", str.getLpad1().orElseThrow());
-        assertEquals("le", str.getLpad2().orElseThrow());
-        assertEquals("le", str.getLpad3().orElseThrow());
+        assertEquals("ap", str.getLpad2().orElseThrow());
+        assertEquals("ap", str.getLpad3().orElseThrow());
         assertEquals("apple     ", str.getRpad().orElseThrow());
         assertEquals("apple*****", str.getRpad1().orElseThrow());
         assertEquals("ap", str.getRpad2().orElseThrow());
