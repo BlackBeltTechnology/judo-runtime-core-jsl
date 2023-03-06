@@ -1,0 +1,34 @@
+model modelTC010;
+
+import judo::types;
+
+entity EnvVars {
+    field Boolean   fBool      = Boolean!getVariable(
+                                     category = "ENVIRIONMENT",
+                                     key = "JUDO_ENV_BOOLEAN1"
+                                 );
+    field Date      fDate      = Date!getVariable(
+                                     category = "ENVIRIONMENT",
+                                     key = "JUDO_ENV_DATE1"
+                                 );
+    field Time      fTime      = Time!getVariable(
+                                     category = "ENVIRIONMENT",
+                                     key = "JUDO_ENV_TIME1"
+                                 );
+    field Timestamp fTimestamp = Timestamp!getVariable(
+                                     category = "ENVIRIONMENT",
+                                     key = "JUDO_ENV_TIMESTAMP1"
+                                 );
+    field Integer   fInt       = Integer!getVariable(
+                                     category = "ENVIRIONMENT",
+                                     key = "JUDO_ENV_INTEGER1"
+                                 );
+    field Long      fLong      = Long!getVariable(
+                                     category = "ENVIRIONMENT",
+                                     key = "JUDO_ENV_LONG1"
+                                 );
+    field String    fString    = String!getVariable(
+                                     category = "ENVIRIONMENT",
+                                     key = "JUDO_ENV_STRING1"
+                                 );
+}
