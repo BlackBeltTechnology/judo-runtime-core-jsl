@@ -542,7 +542,7 @@ public class FunctionsTest extends AbstractJslTest {
     }
 
     @Test
-    @Disabled("TODO")
+    @Disabled("https://blackbelt.atlassian.net/browse/JNG-1586, https://blackbelt.atlassian.net/browse/JNG-3681")
     public void testTimestampAsString() {
         TimestampFunctions timestampFunctions = timestampFunctionsDao.create(TimestampFunctions.builder().build());
 
