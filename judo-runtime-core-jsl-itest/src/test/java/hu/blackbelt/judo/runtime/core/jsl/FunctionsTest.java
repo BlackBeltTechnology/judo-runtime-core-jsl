@@ -71,11 +71,9 @@ import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.OffsetDateTime;
-import java.util.List;
-import java.util.Optional;
+
+import java.time.*;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -581,6 +579,10 @@ public class FunctionsTest extends AbstractJslTest {
         assertEquals("2022-03-03T14:00:00.123-03:03", timestampFunctions.getTimestamp15AsString1().orElseThrow());
         assertEquals("2022-03-03T14:00:00.123Z", timestampFunctions.getTimestamp16AsString1().orElseThrow());
         assertEquals("2022-03-03T14:00:00Z", timestampFunctions.getTimestamp17AsString1().orElseThrow());
+
+        assertEquals("2022-09-29T00:00:00+01:00", timestampFunctions.getTimestampOfDateAsString().orElseThrow());
+        assertEquals("2022-09-29T11:11:11+01:00", timestampFunctions.getTimestampOfDateAndTimeAsString().orElseThrow());
+        assertEquals("2022-09-29T11:11:11+01:00", timestampFunctions.getFromMillisecondsAsString().orElseThrow());
     }
 
     @Test

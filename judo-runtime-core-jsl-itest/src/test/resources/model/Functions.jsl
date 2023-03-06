@@ -350,9 +350,9 @@ entity TimestampFunctions {
     derived String ownTimestamp2AsString => self.timestamp2!asString();
 
     derived Timestamp timestampOfDate => Timestamp!of(date = `2022-09-29`);
-    //derived String timestampOfDateAsString => Timestamp!of(date = `2022-09-29`)!asString();
+    derived String timestampOfDateAsString => Timestamp!of(date = `2022-09-29`)!asString();
     derived Timestamp timestampOfDateAndTime => Timestamp!of(date = `2022-09-29`, time = `11:11:11`);
-    //derived String timestampOfDateAndTimeAsString => Timestamp!of(date = `2022-09-29`, time = `11:11:11`)!asString();
+    derived String timestampOfDateAndTimeAsString => Timestamp!of(date = `2022-09-29`, time = `11:11:11`)!asString();
 
     derived Date dateOfTimestampWithDate => Timestamp!of(date = `2022-09-29`)!date();
     derived Date dateOfTimestampWithDateAndTime => Timestamp!of(date = `2022-09-29`, time = `11:11:11`)!date();
@@ -363,7 +363,7 @@ entity TimestampFunctions {
     derived Integer asMilliseconds2 => Timestamp!of(date = `2022-09-29`, time = `11:11:11`)!asMilliseconds();
 
     derived Timestamp fromMilliseconds => Timestamp!fromMilliseconds(milliseconds = 1664449871000);
-    //derived String fromMillisecondsAsString => Timestamp!fromMilliseconds(milliseconds = 1664449871000)!asString();
+    derived String fromMillisecondsAsString => Timestamp!fromMilliseconds(milliseconds = 1664449871000)!asString();
 
     derived Timestamp plusAll => Timestamp!of(date = `2022-09-29`, time = `11:11:11`)!plus(years = 1, months = 1, days = 1, hours = 1, minutes = 1, seconds = 1, milliseconds = 1);
     derived Timestamp plusDate => Timestamp!of(date = `2022-09-29`, time = `11:11:11`)!plus(years = 1, months = 1, days = 1);
