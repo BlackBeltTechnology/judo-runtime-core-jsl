@@ -69,13 +69,10 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.FunctionsDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.OffsetDateTime;
-import java.util.List;
-import java.util.Optional;
+import org.junit.jupiter.api.*;
+
+import java.time.*;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -542,6 +539,50 @@ public class FunctionsTest extends AbstractJslTest {
         OffsetDateTime minusDateReversed = timestampFunctions.getMinusDateReversed().orElseThrow();
 
         OffsetDateTime minusMilliseconds = timestampFunctions.getMinusMilliseconds().orElseThrow();
+    }
+
+    @Test
+    @Disabled("https://blackbelt.atlassian.net/browse/JNG-1586, https://blackbelt.atlassian.net/browse/JNG-3681")
+    public void testTimestampAsString() {
+        TimestampFunctions timestampFunctions = timestampFunctionsDao.create(TimestampFunctions.builder().build());
+
+        assertEquals("2019-07-18T01:11:12+02:00", timestampFunctions.getTimestamp1AsString().orElseThrow());
+        assertEquals("2019-07-18T01:11:12Z", timestampFunctions.getTimestamp2AsString().orElseThrow());
+        assertEquals("2022-03-03T14:00:00+00:03", timestampFunctions.getTimestamp3AsString().orElseThrow());
+        assertEquals("2022-03-03T14:00:00+03:00", timestampFunctions.getTimestamp4AsString().orElseThrow());
+        assertEquals("2022-03-03T14:00:00+03:03", timestampFunctions.getTimestamp5AsString().orElseThrow());
+        assertEquals("2022-03-03T14:00:00-00:03", timestampFunctions.getTimestamp6AsString().orElseThrow());
+        assertEquals("2022-03-03T14:00:00-03:00", timestampFunctions.getTimestamp7AsString().orElseThrow());
+        assertEquals("2022-03-03T14:00:00-03:03", timestampFunctions.getTimestamp8AsString().orElseThrow());
+        assertEquals("2022-03-03T14:00:00.123+00:03", timestampFunctions.getTimestamp9AsString().orElseThrow());
+        assertEquals("2022-03-03T14:00:00.123+03:00", timestampFunctions.getTimestamp10AsString().orElseThrow());
+        assertEquals("2022-03-03T14:00:00.123+03:03", timestampFunctions.getTimestamp12AsString().orElseThrow());
+        assertEquals("2022-03-03T14:00:00.123-00:03", timestampFunctions.getTimestamp13AsString().orElseThrow());
+        assertEquals("2022-03-03T14:00:00.123-03:00", timestampFunctions.getTimestamp14AsString().orElseThrow());
+        assertEquals("2022-03-03T14:00:00.123-03:03", timestampFunctions.getTimestamp15AsString().orElseThrow());
+        assertEquals("2022-03-03T14:00:00.123Z", timestampFunctions.getTimestamp16AsString().orElseThrow());
+        assertEquals("2022-03-03T14:00:00Z", timestampFunctions.getTimestamp17AsString().orElseThrow());
+
+        assertEquals("2019-07-18T01:11:12+02:00", timestampFunctions.getTimestamp1AsString1().orElseThrow());
+        assertEquals("2019-07-18T01:11:12Z", timestampFunctions.getTimestamp2AsString1().orElseThrow());
+        assertEquals("2022-03-03T14:00:00+00:03", timestampFunctions.getTimestamp3AsString1().orElseThrow());
+        assertEquals("2022-03-03T14:00:00+03:00", timestampFunctions.getTimestamp4AsString1().orElseThrow());
+        assertEquals("2022-03-03T14:00:00+03:03", timestampFunctions.getTimestamp5AsString1().orElseThrow());
+        assertEquals("2022-03-03T14:00:00-00:03", timestampFunctions.getTimestamp6AsString1().orElseThrow());
+        assertEquals("2022-03-03T14:00:00-03:00", timestampFunctions.getTimestamp7AsString1().orElseThrow());
+        assertEquals("2022-03-03T14:00:00-03:03", timestampFunctions.getTimestamp8AsString1().orElseThrow());
+        assertEquals("2022-03-03T14:00:00.123+00:03", timestampFunctions.getTimestamp9AsString1().orElseThrow());
+        assertEquals("2022-03-03T14:00:00.123+03:00", timestampFunctions.getTimestamp10AsString1().orElseThrow());
+        assertEquals("2022-03-03T14:00:00.123+03:03", timestampFunctions.getTimestamp12AsString1().orElseThrow());
+        assertEquals("2022-03-03T14:00:00.123-00:03", timestampFunctions.getTimestamp13AsString1().orElseThrow());
+        assertEquals("2022-03-03T14:00:00.123-03:00", timestampFunctions.getTimestamp14AsString1().orElseThrow());
+        assertEquals("2022-03-03T14:00:00.123-03:03", timestampFunctions.getTimestamp15AsString1().orElseThrow());
+        assertEquals("2022-03-03T14:00:00.123Z", timestampFunctions.getTimestamp16AsString1().orElseThrow());
+        assertEquals("2022-03-03T14:00:00Z", timestampFunctions.getTimestamp17AsString1().orElseThrow());
+
+        assertEquals("2022-09-29T00:00:00+01:00", timestampFunctions.getTimestampOfDateAsString().orElseThrow());
+        assertEquals("2022-09-29T11:11:11+01:00", timestampFunctions.getTimestampOfDateAndTimeAsString().orElseThrow());
+        assertEquals("2022-09-29T11:11:11+01:00", timestampFunctions.getFromMillisecondsAsString().orElseThrow());
     }
 
     @Test
