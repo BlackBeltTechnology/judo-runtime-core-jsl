@@ -9,6 +9,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.modeltc010.modeltc010.e
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import org.junit.jupiter.api.Test;
+import org.junitpioneer.jupiter.SetEnvironmentVariable;
 import org.junitpioneer.jupiter.SetSystemProperty;
 import static org.junit.jupiter.api.Assertions.*;
 import java.time.LocalDate;
@@ -88,45 +89,6 @@ public class GetVariablesTest extends AbstractJslTest {
      *      * fLong == 987654321098765
      *      * fString == "'Lorem ipsum dolor set...' And a number: 1987"
      *  
-     *  . Change the values of the following fields of the `ev1` entity instance as you can see below.
-     *      * fBool      = Boolean!getVariable(
-     *                         category = "ENVIRIONMENT",
-     *                         key = "JUDO_ENV_BOOLEAN2"
-     *                     );
-     *      * fDate      = Date!getVariable(
-     *                         category = "ENVIRIONMENT",
-     *                         key = "JUDO_ENV_DATE2"
-     *                     );
-     *      * fTime      = Time!getVariable(
-     *                         category = "ENVIRIONMENT",
-     *                         key = "JUDO_ENV_TIME2"
-     *                     );
-     *      * fTimestamp = Timestamp!getVariable(
-     *                         category = "ENVIRIONMENT",
-     *                         key = "JUDO_ENV_TIMESTAMP2"
-     *                     );
-     *      * fInt       = Integer!getVariable(
-     *                         category = "ENVIRIONMENT",
-     *                         key = "JUDO_ENV_INTEGER2"
-     *                     );
-     *      * fLong      = Long!getVariable(
-     *                         category = "ENVIRIONMENT",
-     *                         key = "JUDO_ENV_LONG2"
-     *                     );
-     *      * fString    = String!getVariable(
-     *                         category = "ENVIRIONMENT",
-     *                         key = "JUDO_ENV_STRING2"
-     *                     );
-     *  
-     *  . Check the values of the following fields of the new entity instance (ev1).
-     *      * fBool == false
-     *      * fDate == `2023-02-28`
-     *      * fTime == `23:59:02`
-     *      * fTimestamp == `2023-02-14T10:11:12+01:00`
-     *      * fInt == 123456789
-     *      * fLong == 123456789012345
-     *      * fString == "Other text."
-     *  
      *  . The test is passed if all modifications and checks are successful, and there were no exceptions.
      */
     @Test
@@ -153,22 +115,38 @@ public class GetVariablesTest extends AbstractJslTest {
             "REQ-EXPR-009",
             "REQ-EXPR-012"
     })
-    @SetSystemProperty(key = "JUDO_ENV_BOOLEAN1", value = "true")
-    @SetSystemProperty(key = "JUDO_ENV_BOOLEAN2", value = "false")
-    @SetSystemProperty(key = "JUDO_ENV_DATE1", value = "2023-02-13")
-    @SetSystemProperty(key = "JUDO_ENV_DATE2", value = "2023-02-28")
-    @SetSystemProperty(key = "JUDO_ENV_TIME1", value = "00:00:01")
-    @SetSystemProperty(key = "JUDO_ENV_TIME2", value = "23:59:02")
-    @SetSystemProperty(key = "JUDO_ENV_TIMESTAMP1", value = "2023-02-13T10:11:12+01:00")
-    @SetSystemProperty(key = "JUDO_ENV_TIMESTAMP2", value = "2023-02-14T10:11:12+01:00")
-    @SetSystemProperty(key = "JUDO_ENV_INTEGER1", value = "987654321")
-    @SetSystemProperty(key = "JUDO_ENV_INTEGER2", value = "123456789")
-    @SetSystemProperty(key = "JUDO_ENV_LONG1", value = "987654321098765")
-    @SetSystemProperty(key = "JUDO_ENV_LONG2", value = "123456789012345")
-    @SetSystemProperty(key = "JUDO_ENV_STRING1", value = "'Lorem ipsum dolor set...' And a number: 1987")
-    @SetSystemProperty(key = "JUDO_ENV_STRING2", value = "Other text.")
+    //@SetEnvironmentVariable(key = "JUDO_ENV_BOOLEAN1", value = "true")
+    //@SetEnvironmentVariable(key = "JUDO_ENV_BOOLEAN2", value = "false")
+    //@SetEnvironmentVariable(key = "JUDO_ENV_DATE1", value = "2023-02-13")
+    //@SetEnvironmentVariable(key = "JUDO_ENV_DATE2", value = "2023-02-28")
+    //@SetEnvironmentVariable(key = "JUDO_ENV_TIME1", value = "00:00:01")
+    //@SetEnvironmentVariable(key = "JUDO_ENV_TIME2", value = "23:59:02")
+    //@SetEnvironmentVariable(key = "JUDO_ENV_TIMESTAMP1", value = "2023-02-13T10:11:12+01:00")
+    //@SetEnvironmentVariable(key = "JUDO_ENV_TIMESTAMP2", value = "2023-02-14T10:11:12+01:00")
+    //@SetEnvironmentVariable(key = "JUDO_ENV_INTEGER1", value = "987654321")
+    //@SetEnvironmentVariable(key = "JUDO_ENV_INTEGER2", value = "123456789")
+    //@SetEnvironmentVariable(key = "JUDO_ENV_LONG1", value = "987654321098765")
+    //@SetEnvironmentVariable(key = "JUDO_ENV_LONG2", value = "123456789012345")
+    //@SetEnvironmentVariable(key = "JUDO_ENV_STRING1", value = "'Lorem ipsum dolor set...' And a number: 1987")
+    //@SetEnvironmentVariable(key = "JUDO_ENV_STRING2", value = "Other text.")
     public void getVariablesEnvironmentWithJudoPrimitiveTypes() {
-        System.setProperty("JUDO_ENV_STRING1", "'Lorem ipsum dolor set...' And a number: 1987");
+        System.out.println(System.getenv("JUDO_ENV_STRING1"));
+        
+        System.out.println("JUDO_ENV_BOOLEAN1: "  + System.getenv("JUDO_ENV_BOOLEAN1"));
+        System.out.println("JUDO_ENV_BOOLEAN2: "  + System.getenv("JUDO_ENV_BOOLEAN2"));
+        System.out.println("JUDO_ENV_DATE1: "     + System.getenv("JUDO_ENV_DATE1"));
+        System.out.println("JUDO_ENV_DATE2: "     + System.getenv("JUDO_ENV_DATE2"));
+        System.out.println("JUDO_ENV_TIME1: "     + System.getenv("JUDO_ENV_TIME1"));
+        System.out.println("JUDO_ENV_TIME2: "     + System.getenv("JUDO_ENV_TIME2"));
+        System.out.println("JUDO_ENV_TIMESTAMP1: "+ System.getenv("JUDO_ENV_TIMESTAMP1"));
+        System.out.println("JUDO_ENV_TIMESTAMP2: "+ System.getenv("JUDO_ENV_TIMESTAMP2"));
+        System.out.println("JUDO_ENV_INTEGER1: "  + System.getenv("JUDO_ENV_INTEGER1"));
+        System.out.println("JUDO_ENV_INTEGER2: "  + System.getenv("JUDO_ENV_INTEGER2"));
+        System.out.println("JUDO_ENV_LONG1: "     + System.getenv("JUDO_ENV_LONG1"));
+        System.out.println("JUDO_ENV_LONG2: "     + System.getenv("JUDO_ENV_LONG2"));
+        System.out.println("JUDO_ENV_STRING1: "   + System.getenv("JUDO_ENV_STRING1"));
+        System.out.println("JUDO_ENV_STRING2: "   + System.getenv("JUDO_ENV_STRING2"));
+        
         // Create an EnvVars entity instance (ev1) with the default values.
         EnvVars ev1 = envVarsDao.create(
                 EnvVars
@@ -176,9 +154,9 @@ public class GetVariablesTest extends AbstractJslTest {
                 .build()
         );
         
-        assertTrue(ev1.getFBool().orElseThrow());
-        assertEquals(LocalDate.of(2023, 02, 13), ev1.getFDate().orElseThrow());
-        assertEquals(LocalTime.of(0, 0, 01), ev1.getFTime().orElseThrow());
+        assertTrue(ev1.getFbool().orElseThrow());
+        assertEquals(LocalDate.of(2023, 02, 13), ev1.getFdate().orElseThrow());
+        assertEquals(LocalTime.of(0, 0, 01), ev1.getFtime().orElseThrow());
         assertEquals(
             OffsetDateTime.of(
                 2023,
@@ -190,69 +168,13 @@ public class GetVariablesTest extends AbstractJslTest {
                 0,
                 ZoneOffset.of("+01:00")
             ),
-            ev1.getFTimestamp().orElseThrow()
+            ev1.getFtimestamp().orElseThrow()
         );
-        assertEquals(987654321, ev1.getFInt().orElseThrow());
-        assertEquals(987654321098765L, ev1.getFLong().orElseThrow());
+        assertEquals(987654321, ev1.getFint().orElseThrow());
+        assertEquals(987654321098765L, ev1.getFlong().orElseThrow());
         assertEquals(
             "'Lorem ipsum dolor set...' And a number: 1987",
-            ev1.getFString().orElseThrow()
-        );
-        
-        /*
-        . Change the values of the following fields of the `ev1` entity instance as you can see below.
-            * fBool      = Boolean!getVariable(
-                               category = "ENVIRIONMENT",
-                               key = "JUDO_ENV_BOOLEAN2"
-                           );
-            * fDate      = Date!getVariable(
-                               category = "ENVIRIONMENT",
-                               key = "JUDO_ENV_DATE2"
-                           );
-            * fTime      = Time!getVariable(
-                               category = "ENVIRIONMENT",
-                               key = "JUDO_ENV_TIME2"
-                           );
-            * fTimestamp = Timestamp!getVariable(
-                               category = "ENVIRIONMENT",
-                               key = "JUDO_ENV_TIMESTAMP2"
-                           );
-            * fInt       = Integer!getVariable(
-                               category = "ENVIRIONMENT",
-                               key = "JUDO_ENV_INTEGER2"
-                           );
-            * fLong      = Long!getVariable(
-                               category = "ENVIRIONMENT",
-                               key = "JUDO_ENV_LONG2"
-                           );
-            * fString    = String!getVariable(
-                               category = "ENVIRIONMENT",
-                               key = "JUDO_ENV_STRING2"
-                           );
-        */
-        //TODO
-        
-        assertFalse(ev1.getFBool().orElseThrow());
-        assertEquals(LocalDate.of(2023, 02, 28), ev1.getFDate().orElseThrow());
-        assertEquals(LocalTime.of(23, 59, 02), ev1.getFTime().orElseThrow());
-        assertEquals(
-            OffsetDateTime.of(
-                2023,
-                02,
-                14,
-                10,
-                11,
-                12,
-                0,
-                ZoneOffset.of("+01:00")
-            ),
-            ev1.getFTimestamp().orElseThrow()
-        );
-        assertEquals(123456789, ev1.getFInt().orElseThrow());
-        assertEquals(123456789012345L, ev1.getFLong().orElseThrow());
-        assertEquals(
-            "Other text.",
-            ev1.getFString().orElseThrow()
+            ev1.getFstring().orElseThrow()
         );
     }
 }
