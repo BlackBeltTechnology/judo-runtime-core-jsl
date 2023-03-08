@@ -51,7 +51,6 @@ public class GetVariablesTest extends AbstractJslTest {
     
     @SystemStub
     private EnvironmentVariables environmentVariables = new EnvironmentVariables()
-        .set(MODEL_SOURCES, MODEL_SOURCES)
         .set("JUDO_ENV_BOOLEAN1"  , "true")
         .set("JUDO_ENV_BOOLEAN2"  , "false")
         .set("JUDO_ENV_DATE1"     , "2023-02-13")
