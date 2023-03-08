@@ -2,33 +2,64 @@ model modelTC010;
 
 import judo::types;
 
-entity EnvVars {
+entity EnvVars1 {
     field Boolean   fbool      = Boolean!getVariable(
-                                     category = "ENVIRIONMENT",
+                                     category = "ENVIRONMENT",
                                      key = "JUDO_ENV_BOOLEAN1"
                                  );
     field Date      fdate      = Date!getVariable(
-                                     category = "ENVIRIONMENT",
+                                     category = "ENVIRONMENT",
                                      key = "JUDO_ENV_DATE1"
                                  );
     field Time      ftime      = Time!getVariable(
-                                     category = "ENVIRIONMENT",
+                                     category = "ENVIRONMENT",
                                      key = "JUDO_ENV_TIME1"
                                  );
     field Timestamp ftimestamp = Timestamp!getVariable(
-                                     category = "ENVIRIONMENT",
+                                     category = "ENVIRONMENT",
                                      key = "JUDO_ENV_TIMESTAMP1"
                                  );
     field Integer   fint       = Integer!getVariable(
-                                     category = "ENVIRIONMENT",
+                                     category = "ENVIRONMENT",
                                      key = "JUDO_ENV_INTEGER1"
                                  );
     field Long      flong      = Long!getVariable(
-                                     category = "ENVIRIONMENT",
+                                     category = "ENVIRONMENT",
                                      key = "JUDO_ENV_LONG1"
                                  );
     field String    fstring    = String!getVariable(
-                                     category = "ENVIRIONMENT",
+                                     category = "ENVIRONMENT",
                                      key = "JUDO_ENV_STRING1"
+                                 );
+}
+
+entity EnvVars2 {
+    field Boolean   fbool      = Boolean!getVariable(
+                                     category = "ENVIRONMENT",
+                                     key = "JUDO_ENV_BOOLEAN2"
+                                 );
+    field Date      fdate      = Date!getVariable(
+                                     category = "ENVIRONMENT",
+                                     key = "JUDO_ENV_DATE2"
+                                 );
+    field Time      ftime      = Time!getVariable(
+                                     category = "ENVIRONMENT",
+                                     key = "JUDO_ENV_TIME2"
+                                 );
+    field Timestamp ftimestamp = Timestamp!getVariable(
+                                     category = "ENVIRONMENT",
+                                     key = "JUDO_ENV_TIMESTAMP2"
+                                 );
+    field Integer   fint       = Integer!getVariable(
+                                     category = "ENVIRONMENT",
+                                     key = "JUDO_ENV_INTEGER2"
+                                 );
+    field Long      flong      = Long!getVariable(
+                                     category = "ENVIRONMENT",
+                                     key = "JUDO_ENV_LONG2"
+                                 );
+    field String    fstring    = String!getVariable(
+                                     category = "ENVIRONMENT",
+                                     key = "JUDO_ENV_STRING2"
                                  );
 }
