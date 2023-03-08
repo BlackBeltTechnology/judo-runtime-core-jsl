@@ -3,11 +3,28 @@ package hu.blackbelt.judo.runtime.core.jsl;
 import com.google.inject.Module;
 import com.google.inject.Inject;
 
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.modeltc010.modeltc010.envvars1.EnvVars1;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.modeltc010.modeltc010.envvars1.EnvVars1Dao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.modeltc010.modeltc010.envvars2.EnvVars2;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.modeltc010.modeltc010.envvars2.EnvVars2Dao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.ModelTC010DaoModules;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.modeltc010tc011tc012tc013.modeltc010tc011tc012tc013.envvars1.EnvVars1;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.modeltc010tc011tc012tc013.modeltc010tc011tc012tc013.envvars1.EnvVars1Dao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.modeltc010tc011tc012tc013.modeltc010tc011tc012tc013.envvars2.EnvVars2;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.modeltc010tc011tc012tc013.modeltc010tc011tc012tc013.envvars2.EnvVars2Dao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.modeltc010tc011tc012tc013.modeltc010tc011tc012tc013.envvarbool.EnvVarBool;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.modeltc010tc011tc012tc013.modeltc010tc011tc012tc013.envvarbool.EnvVarBoolDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.modeltc010tc011tc012tc013.modeltc010tc011tc012tc013.envvardate.EnvVarDate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.modeltc010tc011tc012tc013.modeltc010tc011tc012tc013.envvardate.EnvVarDateDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.modeltc010tc011tc012tc013.modeltc010tc011tc012tc013.envvartime.EnvVarTime;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.modeltc010tc011tc012tc013.modeltc010tc011tc012tc013.envvartime.EnvVarTimeDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.modeltc010tc011tc012tc013.modeltc010tc011tc012tc013.envvartimestamp.EnvVarTimestamp;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.modeltc010tc011tc012tc013.modeltc010tc011tc012tc013.envvartimestamp.EnvVarTimestampDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.modeltc010tc011tc012tc013.modeltc010tc011tc012tc013.envvarinteger.EnvVarInteger;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.modeltc010tc011tc012tc013.modeltc010tc011tc012tc013.envvarinteger.EnvVarIntegerDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.modeltc010tc011tc012tc013.modeltc010tc011tc012tc013.envvarlong.EnvVarLong;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.modeltc010tc011tc012tc013.modeltc010tc011tc012tc013.envvarlong.EnvVarLongDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.modeltc010tc011tc012tc013.modeltc010tc011tc012tc013.envvars.EnvVars;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.modeltc010tc011tc012tc013.modeltc010tc011tc012tc013.envvars.EnvVarsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.modeltc010tc011tc012tc013.modeltc010tc011tc012tc013.sequences.Sequences;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.modeltc010tc011tc012tc013.modeltc010tc011tc012tc013.sequences.SequencesDao;
+
+import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.ModelTC010TC011TC012TC013DaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import uk.org.webcompere.systemstubs.environment.EnvironmentVariables;
@@ -48,6 +65,22 @@ public class GetVariablesTest extends AbstractJslTest {
     EnvVars1Dao envVars1Dao;
     @Inject
     EnvVars2Dao envVars2Dao;
+    @Inject
+    EnvVarBoolDao envVarBoolDao;
+    @Inject
+    EnvVarDateDao envVarDateDao;
+    @Inject
+    EnvVarTimeDao envVarTimeDao;
+    @Inject
+    EnvVarTimestampDao envVarTimestampDao;
+    @Inject
+    EnvVarIntegerDao envVarIntegerDao;
+    @Inject
+    EnvVarLongDao envVarLongDao;
+    @Inject
+    EnvVarsDao envVarsDao;
+    @Inject
+    SequencesDao sequencesDao;            
     
     @SystemStub
     private EnvironmentVariables environmentVariables = new EnvironmentVariables()
@@ -70,12 +103,12 @@ public class GetVariablesTest extends AbstractJslTest {
 
     @Override
     public Module getModelDaoModule() {
-        return new ModelTC010DaoModules();
+        return new ModelTC010TC011TC012TC013DaoModules();
     }
 
     @Override
     public String getModelName() {
-        return "modelTC010";
+        return "modelTC010TC011TC012TC013";
     }
     
 
@@ -248,7 +281,6 @@ end text"
      *  . The test is passed if all steps have been completed with the specified results.
      */
     @Test
-    @Disabled("TODO")
     @TestCase("TC011")
     @Requirement(reqs = {
             "REQ-SYNT-001",
@@ -273,7 +305,6 @@ end text"
             "REQ-EXPR-012"
     })
     public void testGetVariableEnvironmentWithJudoPrimitiveTypesExceptions() {
-        //TODO
         assertTrue(false);
     }
     
@@ -289,9 +320,9 @@ end text"
      *  
      *  . The result of the model parsing (and/or building) is successful.
      *  
-     *  . Create an EnvVars entity instance (ev1) with the default values.
+     *  . Create an EnvVars entity instance (evs1) with the default values.
      *  
-     *  . Check the values of the following fields of the new entity instance (ev1).
+     *  . Check the values of the following fields of the new entity instance (evs1).
      *      * f1 == true
      *      * f2 == true
      *      * f3 == true
@@ -300,7 +331,6 @@ end text"
 
      */
     @Test
-    @Disabled("TODO")
     @TestCase("TC012")
     @Requirement(reqs = {
             "REQ-SYNT-001",
@@ -368,7 +398,6 @@ end text"
      *  . The test is passed if all steps have been completed with the specified results.
      */
     @Test
-    @Disabled("TODO")
     @TestCase("TC013")
     @Requirement(reqs = {
             "REQ-SYNT-001",

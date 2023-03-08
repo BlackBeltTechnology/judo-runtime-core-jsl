@@ -1,7 +1,8 @@
-model modelTC010;
+model modelTC010TC011TC012TC013;
 
 import judo::types;
 
+// TC010
 entity EnvVars1 {
     field Boolean   fbool      = Boolean!getVariable(
                                      category = "ENVIRONMENT",
@@ -62,4 +63,62 @@ entity EnvVars2 {
                                      category = "ENVIRONMENT",
                                      key = "JUDO_ENV_STRING2"
                                  );
+}
+
+
+// TC011
+entity EnvVarBool {
+    field Boolean   fbool      = Boolean!getVariable(
+                                     category = "ENVIRONMENT",
+                                     key = "JUDO_ENV_XXX"
+                                 );
+}
+
+entity EnvVarDate {
+    field Date      fdate      = Date!getVariable(
+                                     category = "ENVIRONMENT",
+                                     key = "JUDO_ENV_XXX"
+                                 );
+}
+
+entity EnvVarTime {
+    field Time      ftime      = Time!getVariable(
+                                     category = "ENVIRONMENT",
+                                     key = "JUDO_ENV_XXX"
+                                 );
+}
+
+entity EnvVarTimestamp {
+    field Timestamp ftimestamp = Timestamp!getVariable(
+                                     category = "ENVIRONMENT",
+                                     key = "JUDO_ENV_XXX"
+                                 );
+}
+
+entity EnvVarInteger {
+    field Integer   fint       = Integer!getVariable(
+                                     category = "ENVIRONMENT",
+                                     key = "JUDO_ENV_XXX"
+                                 );
+}
+
+entity EnvVarLong {
+    field Long      flong      = Long!getVariable(
+                                     category = "ENVIRONMENT",
+                                     key = "JUDO_ENV_XXX"
+                                 );
+}
+
+// TC012
+entity EnvVars {
+    field Boolean f1 = (Date!getVariable(category = "SYSTEM", key = "current_date") == Date!now());
+    field Boolean f2 = (Timestamp!getVariable(category = "SYSTEM", key = "current_timestamp") == Timestamp!now());
+    field Boolean f3 = Time!getVariable(category = "SYSTEM", key = "current_time") == Time!now();
+}
+
+// TC013
+entity Sequences {
+    field Long f1 = Long!getVariable(category = "SEQUENCE", key = "Order");
+    field Long f2 = Long!getVariable(category = "SEQUENCE", key = "Order");
+    field Long f3 = Long!getVariable(category = "SEQUENCE", key = "Other");
 }
