@@ -1,0 +1,12 @@
+model modelTC012;
+
+import judo::types;
+
+entity EnvVars {
+    field Boolean f1 = (Date!getVariable(category = "SYSTEM", key = "current_date") == Date!now());
+    field Boolean f2 = (Timestamp!getVariable(category = "SYSTEM", key = "current_timestamp") == Timestamp!now());
+    field Boolean f3 = Time!getVariable(category = "SYSTEM", key = "current_time") == Time!now();
+    field Date fd1;
+    field Timestamp fts1;
+    field Time ft1;
+}

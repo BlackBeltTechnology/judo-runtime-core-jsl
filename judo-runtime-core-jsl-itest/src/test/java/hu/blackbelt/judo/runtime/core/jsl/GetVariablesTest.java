@@ -7,20 +7,15 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.modeltc010.modeltc010.e
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.modeltc010.modeltc010.envvars1.EnvVars1Dao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.modeltc010.modeltc010.envvars2.EnvVars2;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.modeltc010.modeltc010.envvars2.EnvVars2Dao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.ModelTC010DaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import org.junit.jupiter.api.Test;
-import org.junitpioneer.jupiter.SetEnvironmentVariable;
-import org.junitpioneer.jupiter.SetSystemProperty;
 import static org.junit.jupiter.api.Assertions.*;
-
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-
-import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.ModelTC010DaoModules;
 
 /*-
  * #%L
@@ -152,7 +147,7 @@ end text"
     //@SetEnvironmentVariable(key = "JUDO_ENV_LONG2", value = "123456789012345")
     //@SetEnvironmentVariable(key = "JUDO_ENV_STRING1", value = "'Lorem ipsum dolor set...' And a number: 1987")
     //@SetEnvironmentVariable(key = "JUDO_ENV_STRING2", value = "Other text.")
-    public void getVariablesEnvironmentWithJudoPrimitiveTypes() {
+    public void testGetVariableEnvironmentWithJudoPrimitiveTypes() {
     
     	
         System.out.println(System.getenv("JUDO_ENV_STRING1"));
@@ -230,5 +225,177 @@ end text"
                 "Other text.\n\n" + "end text",
             ev2.getFstring().orElseThrow()
         );
+    }
+    
+    /**
+     * With all judo-types primitives, except the String, test the !getVariables(“ENVIRONMENT“, “key”) that read the key environment variable that's value isn't convertable to the usaged type.
+     * 
+     * @prerequisites The following environment variables and their values have to be set as you see below:
+     *  * JUDO_ENV_XXX = "xxxx"
+     * 
+     * @type Behaviour
+     * 
+     * @negativeRequirements REQ-EXPR-009
+     * 
+     * @scenario
+     *  . Parse (and/or build) the model.
+     *  
+     *  . The result of the model parsing (and/or building) is successful.
+     *  
+     *  . Create an EnvVarBool entity instance with the default values. The creation process will fail with an exception.
+     *  
+     *  . Create an EnvVarDate entity instance with the default values. The creation process will fail with an exception.
+     *  
+     *  . Create an EnvVarTime entity instance with the default values. The creation process will fail with an exception.
+     *  
+     *  . Create an EnvVarTimestamp entity instance with the default values. The creation process will fail with an exception.
+     *  
+     *  . Create an EnvVarInteger entity instance with the default values. The creation process will fail with an exception.
+     *  
+     *  . Create an EnvVarLong entity instance with the default values. The creation process will fail with an exception.
+     *  
+     *  . The test is passed if all steps have been completed with the specified results.
+     */
+    @Test
+    @TestCase("TC011")
+    @Requirement(reqs = {
+            "REQ-SYNT-001",
+            "REQ-SYNT-002",
+            "REQ-SYNT-003",
+            "REQ-SYNT-004",
+            "REQ-TYPE-001",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-MDL-001",
+            "REQ-MDL-003",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-EXPR-001",
+            "REQ-EXPR-002",
+            "REQ-EXPR-006",
+            "REQ-EXPR-007",
+            "REQ-EXPR-009",
+            "REQ-EXPR-012"
+    })
+    public void testGetVariableEnvironmentWithJudoPrimitiveTypesExceptions() {
+        //TODO
+        assertTrue(false);
+    }
+    
+    /**
+     * Verify the !getVariable(“SYSTEM“, “key”) function calls and their shortcuts.
+     * 
+     * @prerequisites Nothing
+     * 
+     * @type Behaviour
+     * 
+     * @scenario
+     *  . Parse (and/or build) the model.
+     *  
+     *  . The result of the model parsing (and/or building) is successful.
+     *  
+     *  . Create an EnvVars entity instance (ev1) with the default values.
+     *  
+     *  . Check the values of the following fields of the new entity instance (ev1).
+     *      * f1 == true
+     *      * f2 == true
+     *      * f3 == true
+     *  
+     *  . The test is passed if all steps have been completed with the specified results.
+
+     */
+    @Test
+    @TestCase("TC012")
+    @Requirement(reqs = {
+            "REQ-SYNT-001",
+            "REQ-SYNT-002",
+            "REQ-SYNT-003",
+            "REQ-SYNT-004",
+            "REQ-TYPE-001",
+            "REQ-TYPE-006",
+            "REQ-MDL-001",
+            "REQ-MDL-003",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-EXPR-001",
+            "REQ-EXPR-002",
+            "REQ-EXPR-006",
+            "REQ-EXPR-007",
+            "REQ-EXPR-009",
+            "REQ-EXPR-012"
+    })
+    void testVerifyTheGetVariableShortcuts() {
+        // TODO
+        assertTrue(false);
+    }
+    
+    /**
+     * Verify the !getVariable(“SEQUENCE“, “key”) function calls.
+     * 
+     * @prerequisites The model runtime is empty. The "Order" and "Other" sequences have not been called before.
+     * 
+     * @type Behaviour
+     * 
+     * @others
+     *  TODO Write here any other instructions or information, that is necessary or important to implement
+     *  the test case. This is an optional property.
+     * 
+     * @jslModel
+     *  TODO Write here a JSL model, that is used by the test case.
+     * 
+     * @positiveRequirements
+     *  Write here the requirement identifiers that are positively checked by this test case.
+     *  The identifiers must be separeated by commas (,).
+     * 
+     * @negativeRequirements
+     *  Write here the requirement identifiers that are negatively checked by this test case.
+     *  The identifiers must be separeated by commas (,).
+     * 
+     * @scenario
+     *  . Parse (and/or build) the model.
+     *  
+     *  . The result of the model parsing (and/or building) is successful.
+     *  
+     *  . Create an Sequences entity instance (s1) with the default values.
+     *  
+     *  . Check the values of the following fields of the new entity instance (s1).
+     *      * f1 != f2
+     *      * f3 == f1 or f3 == f2
+     *  
+     *  . Create an Sequences entity instance (s2) with the default values.
+     *  
+     *  . Check the following statements.
+     *      * s1.f1 < s2.f1
+     *      * s1.f2 < s2.f2
+     *      * s1.f3 < s2.f3
+     *  
+     *  . The test is passed if all steps have been completed with the specified results.
+     */
+    @Test
+    @TestCase("TC013")
+    @Requirement(reqs = {
+            "REQ-SYNT-001",
+            "REQ-SYNT-002",
+            "REQ-SYNT-003",
+            "REQ-SYNT-004",
+            "REQ-TYPE-001",
+            "REQ-TYPE-005",
+            "REQ-MDL-001",
+            "REQ-MDL-003",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-EXPR-001",
+            "REQ-EXPR-002",
+            "REQ-EXPR-006",
+            "REQ-EXPR-007",
+            "REQ-EXPR-009",
+            "REQ-EXPR-012"
+    })
+    void testGetVariableSequence() {
+        // TODO
+        assertTrue(false);
     }
 }
