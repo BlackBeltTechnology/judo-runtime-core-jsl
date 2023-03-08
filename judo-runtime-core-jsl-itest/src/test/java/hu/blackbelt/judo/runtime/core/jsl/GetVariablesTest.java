@@ -19,6 +19,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.ModelTC010DaoModules;
 
 /*-
@@ -56,6 +57,8 @@ public class GetVariablesTest extends AbstractJslTest {
     public String getModelName() {
         return "modelTC010";
     }
+    
+
     
     /**
      * With all judo-types primitives test the !getVariables(“ENVIRONMENT“, “key”) that read the key environment variable, and check the returned values.
@@ -135,21 +138,23 @@ end text"
             "REQ-EXPR-009",
             "REQ-EXPR-012"
     })
-    @SetEnvironmentVariable(key = "JUDO_ENV_BOOLEAN1", value = "true")
-    @SetEnvironmentVariable(key = "JUDO_ENV_BOOLEAN2", value = "false")
-    @SetEnvironmentVariable(key = "JUDO_ENV_DATE1", value = "2023-02-13")
-    @SetEnvironmentVariable(key = "JUDO_ENV_DATE2", value = "2023-02-28")
-    @SetEnvironmentVariable(key = "JUDO_ENV_TIME1", value = "00:00:01")
-    @SetEnvironmentVariable(key = "JUDO_ENV_TIME2", value = "23:59:02")
-    @SetEnvironmentVariable(key = "JUDO_ENV_TIMESTAMP1", value = "2023-02-13T10:11:12+01:00")
-    @SetEnvironmentVariable(key = "JUDO_ENV_TIMESTAMP2", value = "2023-02-14T10:11:12+01:00")
-    @SetEnvironmentVariable(key = "JUDO_ENV_INTEGER1", value = "987654321")
-    @SetEnvironmentVariable(key = "JUDO_ENV_INTEGER2", value = "123456789")
-    @SetEnvironmentVariable(key = "JUDO_ENV_LONG1", value = "987654321098765")
-    @SetEnvironmentVariable(key = "JUDO_ENV_LONG2", value = "123456789012345")
-    @SetEnvironmentVariable(key = "JUDO_ENV_STRING1", value = "'Lorem ipsum dolor set...' And a number: 1987")
-    @SetEnvironmentVariable(key = "JUDO_ENV_STRING2", value = "Other text.")
+    //@SetEnvironmentVariable(key = "JUDO_ENV_BOOLEAN1", value = "true")
+    //@SetEnvironmentVariable(key = "JUDO_ENV_BOOLEAN2", value = "false")
+    //@SetEnvironmentVariable(key = "JUDO_ENV_DATE1", value = "2023-02-13")
+    //@SetEnvironmentVariable(key = "JUDO_ENV_DATE2", value = "2023-02-28")
+    //@SetEnvironmentVariable(key = "JUDO_ENV_TIME1", value = "00:00:01")
+    //@SetEnvironmentVariable(key = "JUDO_ENV_TIME2", value = "23:59:02")
+    //@SetEnvironmentVariable(key = "JUDO_ENV_TIMESTAMP1", value = "2023-02-13T10:11:12+01:00")
+    //@SetEnvironmentVariable(key = "JUDO_ENV_TIMESTAMP2", value = "2023-02-14T10:11:12+01:00")
+    //@SetEnvironmentVariable(key = "JUDO_ENV_INTEGER1", value = "987654321")
+    //@SetEnvironmentVariable(key = "JUDO_ENV_INTEGER2", value = "123456789")
+    //@SetEnvironmentVariable(key = "JUDO_ENV_LONG1", value = "987654321098765")
+    //@SetEnvironmentVariable(key = "JUDO_ENV_LONG2", value = "123456789012345")
+    //@SetEnvironmentVariable(key = "JUDO_ENV_STRING1", value = "'Lorem ipsum dolor set...' And a number: 1987")
+    //@SetEnvironmentVariable(key = "JUDO_ENV_STRING2", value = "Other text.")
     public void getVariablesEnvironmentWithJudoPrimitiveTypes() {
+    
+    	
         System.out.println(System.getenv("JUDO_ENV_STRING1"));
         //TODO kivenni PR előtt
         System.out.println("JUDO_ENV_BOOLEAN1: "  + System.getenv("JUDO_ENV_BOOLEAN1"));
@@ -166,27 +171,6 @@ end text"
         System.out.println("JUDO_ENV_LONG2: "     + System.getenv("JUDO_ENV_LONG2"));
         System.out.println("JUDO_ENV_STRING1: "   + System.getenv("JUDO_ENV_STRING1"));
         System.out.println("JUDO_ENV_STRING2: "   + System.getenv("JUDO_ENV_STRING2"));
-        try {
-            Runtime.getRuntime().exec(
-                "export JUDO_ENV_BOOLEAN1=\"true\"\n"
-                + "export JUDO_ENV_BOOLEAN2=\"false\"\n"
-                + "export JUDO_ENV_DATE1=\"2023-02-13\"\n"
-                + "export JUDO_ENV_DATE2=\"2023-12-28\"\n"
-                + "export JUDO_ENV_TIME1=\"00:00:01\"\n"
-                + "export JUDO_ENV_TIME2=\"23:59:02\"\n"
-                + "export JUDO_ENV_TIMESTAMP1=\"2023-02-13T10:11:12+01:00\"\n"
-                + "export JUDO_ENV_TIMESTAMP2=\"2023-02-14T10:11:12-01:00\"\n"
-                + "export JUDO_ENV_INTEGER1=\"987654321\"\n"
-                + "export JUDO_ENV_INTEGER2=\"-123456789\"\n"
-                + "export JUDO_ENV_LONG1=\"987654321098765\"\n"
-                + "export JUDO_ENV_LONG2=\"-123456789012345\"\n"
-                + "export JUDO_ENV_STRING1=\"'Lorem ipsum dolor set...' And a number: 1987\"\n"
-                + "export JUDO_ENV_STRING2=\"Other text.\"$'\\n'$'\\n'\"end text\""
-            );
-        } catch (IOException e) {
-            e.printStackTrace();
-            assertTrue(false); //TODO Cserélni
-        }
         
         // Create an EnvVars entity instance (ev1) with the default values.
         EnvVars1 ev1 = envVars1Dao.create(
