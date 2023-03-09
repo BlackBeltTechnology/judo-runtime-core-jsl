@@ -1,9 +1,0 @@
-model modelTC013;
-
-import judo::types;
-
-entity Sequences {
-    field Long f1 = Long!getVariable(category = "SEQUENCE", key = "Order");
-    field Long f2 = Long!getVariable(category = "SEQUENCE", key = "Order");
-    field Long f3 = Long!getVariable(category = "SEQUENCE", key = "Other");
-}
