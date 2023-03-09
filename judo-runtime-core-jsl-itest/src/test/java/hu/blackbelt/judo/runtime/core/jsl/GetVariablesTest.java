@@ -2,7 +2,6 @@ package hu.blackbelt.judo.runtime.core.jsl;
 
 import com.google.inject.Module;
 import com.google.inject.Inject;
-
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.modeltc010tc011tc012tc013.modeltc010tc011tc012tc013.envvars1.EnvVars1;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.modeltc010tc011tc012tc013.modeltc010tc011tc012tc013.envvars1.EnvVars1Dao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.modeltc010tc011tc012tc013.modeltc010tc011tc012tc013.envvars2.EnvVars2;
@@ -23,12 +22,9 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.modeltc010tc011tc012tc0
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.modeltc010tc011tc012tc013.modeltc010tc011tc012tc013.envvars.EnvVarsDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.modeltc010tc011tc012tc013.modeltc010tc011tc012tc013.sequences.Sequences;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.modeltc010tc011tc012tc013.modeltc010tc011tc012tc013.sequences.SequencesDao;
-
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.entityrequiredfields.EntityRequiredFields;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.ModelTC010TC011TC012TC013DaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
-import hu.blackbelt.judo.runtime.core.exception.ValidationException;
 import uk.org.webcompere.systemstubs.environment.EnvironmentVariables;
 import uk.org.webcompere.systemstubs.jupiter.SystemStub;
 import uk.org.webcompere.systemstubs.jupiter.SystemStubsExtension;
@@ -40,7 +36,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.Optional;
 
 /*-
  * #%L
@@ -356,7 +351,6 @@ end text"
      *      * f3 == true
      *
      *  . The test is passed if all steps have been completed with the specified results.
-
      */
     @Test
     @TestCase("TC012")
