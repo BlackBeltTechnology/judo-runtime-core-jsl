@@ -9,7 +9,7 @@ enum xEnum {
     xB1 = 1;
 }
 
-entity aEnt1 {
+entity aEnt {
     field Boolean fBool = true;
     field sType   sS99  = "abc";
     field xEnum   zEnum = xEnum#xB1;

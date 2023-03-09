@@ -9,6 +9,7 @@ import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mmodeltc021.mmodeltc021.aent.AEnt;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mmodeltc021.mmodeltc021.aent.AEntDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mmodeltc021.mmodeltc021.xenum.xEnum;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.MModelTC021DaoModules;
 
 
@@ -35,6 +36,24 @@ public class TestNamingRule1 extends AbstractJslTest {
      * 
      * @type Behaviour
      * 
+     * @jslModel
+     *  model mModelTC021;
+     *
+     *  import judo::types;
+     *  
+     *  type string sType(min-size = 0, max-size = 10);
+     *  
+     *  enum xEnum {
+     *      xA0 = 0;
+     *      xB1 = 1;
+     *  }
+     *  
+     *  entity aEnt1 {
+     *      field Boolean fBool = true;
+     *      field sType   sS99  = "abc";
+     *      field xEnum   zEnum = xEnum#xB1;
+     *  }
+     * 
      * @scenario
      *  . Parse (and/or build) the model.
      *  
@@ -44,7 +63,8 @@ public class TestNamingRule1 extends AbstractJslTest {
      *  
      *  . Check the values of the following fields of the new entity instance (ae1).
      *      * fBool == true
-     *      * sS == "abc"
+     *      * sS99 == "abc"
+     *      * zEnum == xEnum#xB1
      *  
      *  . The test is passed if all modifications and checks are successful, and there were no exceptions.
      */
@@ -74,7 +94,8 @@ public class TestNamingRule1 extends AbstractJslTest {
         );
         
         assertTrue(ae.getFBool().orElseThrow());
-        assertEquals("abc", ae.getSS());
+        assertEquals("abc", ae.getSS99());
+        assertEquals(xEnum.xB1, ae.getZEnum());
     }
 
 }
