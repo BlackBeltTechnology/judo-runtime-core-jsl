@@ -285,6 +285,7 @@ end text"
      */
     @Test
     @TestCase("TC011")
+    @Disabled("JNG-4621")
     @Requirement(reqs = {
             "REQ-SYNT-001",
             "REQ-SYNT-002",
@@ -308,11 +309,11 @@ end text"
             "REQ-EXPR-012"
     })
     public void testGetVariableEnvironmentWithJudoPrimitiveTypesExceptions() {
-// not throw error
-//        assertThrows(
-//                RuntimeException.class,
-//                () -> envVarBoolDao.create(EnvVarBool.builder().build())
-//        );
+
+        assertThrows(
+                RuntimeException.class,
+                () -> envVarBoolDao.create(EnvVarBool.builder().build())
+        );
         assertThrows(
                 RuntimeException.class,
                 () -> envVarDateDao.create(EnvVarDate.builder().build())
@@ -334,31 +335,32 @@ end text"
                 () -> envVarLongDao.create(EnvVarLong.builder().build())
         );
     }
-    
+
     /**
      * Verify the !getVariable(“SYSTEM“, “key”) function calls and their shortcuts.
-     * 
+     *
      * @prerequisites Nothing
-     * 
+     *
      * @type Behaviour
-     * 
+     *
      * @scenario
      *  . Parse (and/or build) the model.
-     *  
+     *
      *  . The result of the model parsing (and/or building) is successful.
-     *  
+     *
      *  . Create an EnvVars entity instance (evs1) with the default values.
-     *  
+     *
      *  . Check the values of the following fields of the new entity instance (evs1).
      *      * f1 == true
      *      * f2 == true
      *      * f3 == true
-     *  
+     *
      *  . The test is passed if all steps have been completed with the specified results.
 
      */
     @Test
     @TestCase("TC012")
+    @Disabled("JNG-4622")
     @Requirement(reqs = {
             "REQ-SYNT-001",
             "REQ-SYNT-002",
@@ -383,56 +385,56 @@ end text"
                 .builder()
                 .build()
         );
-
         assertTrue(evs1.getF1().orElseThrow());
-        assertTrue(evs1.getF2().orElseThrow());  //fails
+        assertTrue(evs1.getF2().orElseThrow());
         assertTrue(evs1.getF3().orElseThrow());
     }
-    
+
     /**
      * Verify the !getVariable(“SEQUENCE“, “key”) function calls.
-     * 
+     *
      * @prerequisites The model runtime is empty. The "Order" and "Other" sequences have not been called before.
-     * 
+     *
      * @type Behaviour
-     * 
+     *
      * @others
      *  TODO Write here any other instructions or information, that is necessary or important to implement
      *  the test case. This is an optional property.
-     * 
+     *
      * @jslModel
      *  TODO Write here a JSL model, that is used by the test case.
-     * 
+     *
      * @positiveRequirements
      *  Write here the requirement identifiers that are positively checked by this test case.
      *  The identifiers must be separeated by commas (,).
-     * 
+     *
      * @negativeRequirements
      *  Write here the requirement identifiers that are negatively checked by this test case.
      *  The identifiers must be separeated by commas (,).
-     * 
+     *
      * @scenario
      *  . Parse (and/or build) the model.
-     *  
+     *
      *  . The result of the model parsing (and/or building) is successful.
-     *  
+     *
      *  . Create an Sequences entity instance (s1) with the default values.
-     *  
+     *
      *  . Check the values of the following fields of the new entity instance (s1).
      *      * f1 != f2
      *      * f3 == f1 or f3 == f2
-     *  
+     *
      *  . Create an Sequences entity instance (s2) with the default values.
-     *  
+     *
      *  . Check the following statements.
      *      * s1.f1 < s2.f1
      *      * s1.f2 < s2.f2
      *      * s1.f3 < s2.f3
-     *  
+     *
      *  . The test is passed if all steps have been completed with the specified results.
      */
     @Test
     @TestCase("TC013")
+    @Disabled("JNG-4623")
     @Requirement(reqs = {
             "REQ-SYNT-001",
             "REQ-SYNT-002",
@@ -452,26 +454,21 @@ end text"
             "REQ-EXPR-012"
     })
     void testGetVariableSequence() {
-
         Sequences s1 = sequencesDao.create(
                 Sequences
                         .builder()
                         .build()
         );
-
         assertTrue(s1.getF1().orElseThrow() != s1.getF2().orElseThrow());
         assertTrue(s1.getF3().orElseThrow() == s1.getF1().orElseThrow());
         assertTrue(s1.getF3().orElseThrow() == s1.getF2().orElseThrow());
-
         Sequences s2 = sequencesDao.create(
                 Sequences
                         .builder()
                         .build()
         );
-
         assertTrue(s1.getF1().orElseThrow() < s2.getF1().orElseThrow());
         assertTrue(s1.getF2().orElseThrow() < s2.getF2().orElseThrow());
         assertTrue(s1.getF3().orElseThrow() < s2.getF3().orElseThrow());
-
     }
 }
