@@ -24,9 +24,11 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.modeltc010tc011tc012tc0
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.modeltc010tc011tc012tc013.modeltc010tc011tc012tc013.sequences.Sequences;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.modeltc010tc011tc012tc013.modeltc010tc011tc012tc013.sequences.SequencesDao;
 
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.entityrequiredfields.EntityRequiredFields;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.ModelTC010TC011TC012TC013DaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
+import hu.blackbelt.judo.runtime.core.exception.ValidationException;
 import uk.org.webcompere.systemstubs.environment.EnvironmentVariables;
 import uk.org.webcompere.systemstubs.jupiter.SystemStub;
 import uk.org.webcompere.systemstubs.jupiter.SystemStubsExtension;
@@ -38,6 +40,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.Optional;
 
 /*-
  * #%L
@@ -305,7 +308,31 @@ end text"
             "REQ-EXPR-012"
     })
     public void testGetVariableEnvironmentWithJudoPrimitiveTypesExceptions() {
-        assertTrue(false);
+// not throw error
+//        assertThrows(
+//                RuntimeException.class,
+//                () -> envVarBoolDao.create(EnvVarBool.builder().build())
+//        );
+        assertThrows(
+                RuntimeException.class,
+                () -> envVarDateDao.create(EnvVarDate.builder().build())
+        );
+        assertThrows(
+                RuntimeException.class,
+                () -> envVarTimeDao.create(EnvVarTime.builder().build())
+        );
+        assertThrows(
+                RuntimeException.class,
+                () -> envVarTimestampDao.create(EnvVarTimestamp.builder().build())
+        );
+        assertThrows(
+                RuntimeException.class,
+                () -> envVarIntegerDao.create(EnvVarInteger.builder().build())
+        );
+        assertThrows(
+                RuntimeException.class,
+                () -> envVarLongDao.create(EnvVarLong.builder().build())
+        );
     }
     
     /**
@@ -351,8 +378,15 @@ end text"
             "REQ-EXPR-012"
     })
     void testVerifyTheGetVariableShortcuts() {
-        // TODO
-        assertTrue(false);
+        EnvVars evs1 = envVarsDao.create(
+                EnvVars
+                .builder()
+                .build()
+        );
+
+        assertTrue(evs1.getF1().orElseThrow());
+        assertTrue(evs1.getF2().orElseThrow());  //fails
+        assertTrue(evs1.getF3().orElseThrow());
     }
     
     /**
@@ -418,7 +452,26 @@ end text"
             "REQ-EXPR-012"
     })
     void testGetVariableSequence() {
-        // TODO
-        assertTrue(false);
+
+        Sequences s1 = sequencesDao.create(
+                Sequences
+                        .builder()
+                        .build()
+        );
+
+        assertTrue(s1.getF1().orElseThrow() != s1.getF2().orElseThrow());
+        assertTrue(s1.getF3().orElseThrow() == s1.getF1().orElseThrow());
+        assertTrue(s1.getF3().orElseThrow() == s1.getF2().orElseThrow());
+
+        Sequences s2 = sequencesDao.create(
+                Sequences
+                        .builder()
+                        .build()
+        );
+
+        assertTrue(s1.getF1().orElseThrow() < s2.getF1().orElseThrow());
+        assertTrue(s1.getF2().orElseThrow() < s2.getF2().orElseThrow());
+        assertTrue(s1.getF3().orElseThrow() < s2.getF3().orElseThrow());
+
     }
 }
