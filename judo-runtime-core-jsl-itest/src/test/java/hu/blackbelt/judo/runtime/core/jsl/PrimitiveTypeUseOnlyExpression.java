@@ -1,5 +1,6 @@
 package hu.blackbelt.judo.runtime.core.jsl;
 
+import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.PrimitivesDaoModules;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -7,13 +8,14 @@ import com.google.inject.Module;
 
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.ModelTC022DaoModules;
 
 public class PrimitiveTypeUseOnlyExpression extends AbstractJslTest {
-    
+
     @Override
     public Module getModelDaoModule() {
         // TODO JNG-4617
-        return null;
+        return new ModelTC022DaoModules();
     }
     
     @Override

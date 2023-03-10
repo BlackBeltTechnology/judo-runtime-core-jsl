@@ -446,7 +446,7 @@
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/TransactionManagementModel</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/modelTC010TC011TC012TC013</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/mModelTC021</source>
-                                
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/modelTC022</source>
                             </sources>
                         </configuration>
                    </execution>
