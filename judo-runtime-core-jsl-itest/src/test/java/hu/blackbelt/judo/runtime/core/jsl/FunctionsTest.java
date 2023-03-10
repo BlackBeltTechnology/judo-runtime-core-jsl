@@ -507,37 +507,36 @@ public class FunctionsTest extends AbstractJslTest {
             "REQ-EXPR-018"
     })
     public void testTimestamp() {
-        // TODO: add assertions after JNG-1586, JNG-3681
         TimestampFunctions timestampFunctions = timestampFunctionsDao.create(TimestampFunctions.builder().build());
 
-        OffsetDateTime timestampOfDate = timestampFunctions.getTimestampOfDate().orElseThrow();
-        OffsetDateTime timestampOfDateAndTime = timestampFunctions.getTimestampOfDateAndTime().orElseThrow();
+        assertEquals(OffsetDateTime.of(2022, 9, 29, 0, 0, 0, 0, ZoneOffset.UTC), timestampFunctions.getTimestampOfDate().orElseThrow());
+        assertEquals(OffsetDateTime.of(2022, 9, 29, 11, 11, 11, 0, ZoneOffset.UTC), timestampFunctions.getTimestampOfDateAndTime().orElseThrow());
 
-        LocalDate dateOfTimestampWithDate = timestampFunctions.getDateOfTimestampWithDate().orElseThrow();
-        LocalDate dateOfTimestampWithDateAndTime = timestampFunctions.getDateOfTimestampWithDateAndTime().orElseThrow();
-        LocalTime timeOfTimestampWithDate = timestampFunctions.getTimeOfTimestampWithDate().orElseThrow();
-        LocalTime timeOfTimestampWithDateAndTime = timestampFunctions.getTimeOfTimestampWithDateAndTime().orElseThrow();
+        assertEquals(LocalDate.of(2022, 9, 29), timestampFunctions.getDateOfTimestampWithDate().orElseThrow());
+        assertEquals(LocalDate.of(2022, 9, 29), timestampFunctions.getDateOfTimestampWithDateAndTime().orElseThrow());
+        assertEquals(LocalTime.of(0, 0, 0), timestampFunctions.getTimeOfTimestampWithDate().orElseThrow());
+        assertEquals(LocalTime.of(11, 11, 11), timestampFunctions.getTimeOfTimestampWithDateAndTime().orElseThrow());
 
-        long asMilliseconds = timestampFunctions.getAsMilliseconds().orElseThrow();
-        long asMilliseconds2 = timestampFunctions.getAsMilliseconds2().orElseThrow();
+        assertEquals(1664409600000L, timestampFunctions.getAsMilliseconds().orElseThrow());
+        assertEquals(1664449871000L, timestampFunctions.getAsMilliseconds2().orElseThrow());
 
-        OffsetDateTime fromMilliseconds = timestampFunctions.getFromMilliseconds().orElseThrow();
+        assertEquals(OffsetDateTime.of(2022, 9, 29, 11, 11, 11, 0, ZoneOffset.UTC), timestampFunctions.getFromMilliseconds().orElseThrow());
 
-        OffsetDateTime plusAll = timestampFunctions.getPlusAll().orElseThrow();
-        OffsetDateTime plusDate = timestampFunctions.getPlusDate().orElseThrow();
+        assertEquals(OffsetDateTime.of(2023, 10, 30, 12, 12, 12, 1000000, ZoneOffset.UTC), timestampFunctions.getPlusAll().orElseThrow());
+        assertEquals(OffsetDateTime.of(2023, 10, 30, 11, 11, 11, 0, ZoneOffset.UTC), timestampFunctions.getPlusDate().orElseThrow());
 
-        OffsetDateTime plusAllReversed = timestampFunctions.getPlusAllReversed().orElseThrow();
-        OffsetDateTime plusDateReversed = timestampFunctions.getPlusDateReversed().orElseThrow();
+        assertEquals(OffsetDateTime.of(2023, 10, 30, 12, 12, 12, 1000000, ZoneOffset.UTC), timestampFunctions.getPlusAllReversed().orElseThrow());
+        assertEquals(OffsetDateTime.of(2023, 10, 30, 11, 11, 11, 0, ZoneOffset.UTC), timestampFunctions.getPlusDateReversed().orElseThrow());
 
-        OffsetDateTime plusMilliseconds = timestampFunctions.getPlusMilliseconds().orElseThrow();
+        assertEquals(OffsetDateTime.of(2022, 9, 29, 11, 11, 11, 1000000, ZoneOffset.UTC), timestampFunctions.getPlusMilliseconds().orElseThrow());
 
-        OffsetDateTime minusAll = timestampFunctions.getMinusAll().orElseThrow();
-        OffsetDateTime minusDate = timestampFunctions.getMinusDate().orElseThrow();
+        assertEquals(OffsetDateTime.of(2021, 8, 28, 10, 10, 9, 999000000, ZoneOffset.UTC), timestampFunctions.getMinusAll().orElseThrow());
+        assertEquals(OffsetDateTime.of(2021, 8, 28, 11, 11, 11, 0, ZoneOffset.UTC), timestampFunctions.getMinusDate().orElseThrow());
 
-        OffsetDateTime minusAllReversed = timestampFunctions.getMinusAllReversed().orElseThrow();
-        OffsetDateTime minusDateReversed = timestampFunctions.getMinusDateReversed().orElseThrow();
+        assertEquals(OffsetDateTime.of(2021, 8, 28, 10, 10, 9, 999000000, ZoneOffset.UTC), timestampFunctions.getMinusAllReversed().orElseThrow());
+        assertEquals(OffsetDateTime.of(2021, 8, 28, 11, 11, 11, 1000000, ZoneOffset.UTC), timestampFunctions.getMinusDateReversed().orElseThrow());
 
-        OffsetDateTime minusMilliseconds = timestampFunctions.getMinusMilliseconds().orElseThrow();
+        assertEquals(OffsetDateTime.of(2022, 9, 29, 11, 11, 10, 999000000, ZoneOffset.UTC), timestampFunctions.getMinusMilliseconds().orElseThrow());
     }
 
     @Test
