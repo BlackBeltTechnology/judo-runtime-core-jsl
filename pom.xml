@@ -161,7 +161,6 @@
                         </systemPropertyVariables>
                         <argLine>
                             -Dfile.encoding=UTF-8
-                            -Duser.timezone="UTC"
                             --add-opens java.base/java.lang=ALL-UNNAMED
                             --add-opens java.base/java.util=ALL-UNNAMED
                             --add-opens java.base/java.time=ALL-UNNAMED
