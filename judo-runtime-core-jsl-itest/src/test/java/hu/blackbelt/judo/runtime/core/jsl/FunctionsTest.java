@@ -534,7 +534,7 @@ public class FunctionsTest extends AbstractJslTest {
         assertEquals(OffsetDateTime.of(2021, 8, 28, 11, 11, 11, 0, ZoneOffset.UTC), timestampFunctions.getMinusDate().orElseThrow());
 
         assertEquals(OffsetDateTime.of(2021, 8, 28, 10, 10, 9, 999000000, ZoneOffset.UTC), timestampFunctions.getMinusAllReversed().orElseThrow());
-        assertEquals(OffsetDateTime.of(2021, 8, 28, 11, 11, 11, 1000000, ZoneOffset.UTC), timestampFunctions.getMinusDateReversed().orElseThrow());
+        assertEquals(OffsetDateTime.of(2021, 8, 28, 11, 11, 11, 0, ZoneOffset.UTC), timestampFunctions.getMinusDateReversed().orElseThrow());
 
         assertEquals(OffsetDateTime.of(2022, 9, 29, 11, 11, 10, 999000000, ZoneOffset.UTC), timestampFunctions.getMinusMilliseconds().orElseThrow());
     }
