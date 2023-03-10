@@ -1,6 +1,5 @@
 package hu.blackbelt.judo.runtime.core.jsl;
 
-import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.PrimitivesDaoModules;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
