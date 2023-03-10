@@ -337,6 +337,9 @@ end text"
      * @prerequisites Nothing
      *
      * @type Behaviour
+     * 
+     * @others If the parts of the expression won't evaluate in the "same time". The result of this test case is divergent.
+     *  Sometimes OK, sometimes Failed. In this case the equality need to replace with an investigation of the subtraction's result.
      *
      * @scenario
      *  . Parse (and/or build) the model.
@@ -362,6 +365,8 @@ end text"
             "REQ-SYNT-004",
             "REQ-TYPE-001",
             "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
             "REQ-MDL-001",
             "REQ-MDL-003",
             "REQ-ENT-001",
@@ -397,14 +402,6 @@ end text"
      *
      * @jslModel
      *  TODO Write here a JSL model, that is used by the test case.
-     *
-     * @positiveRequirements
-     *  Write here the requirement identifiers that are positively checked by this test case.
-     *  The identifiers must be separeated by commas (,).
-     *
-     * @negativeRequirements
-     *  Write here the requirement identifiers that are negatively checked by this test case.
-     *  The identifiers must be separeated by commas (,).
      *
      * @scenario
      *  . Parse (and/or build) the model.
