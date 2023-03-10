@@ -493,9 +493,8 @@ public class FunctionsTest extends AbstractJslTest {
         assertEquals(Optional.of(59L), time.getSecond());
         assertEquals(LocalTime.of(13, 45, 0), time.getOf().orElseThrow());
 
-        // TODO: JNG-1586, JNG-3681
-        // assertEquals(LocalTime.of(11, 11, 11), time.getTimeFromSeconds().orElseThrow());
-        // assertEquals(40271L, time.getTimeAsSeconds().orElseThrow());
+        assertEquals(LocalTime.of(11, 11, 11), time.getTimeFromSeconds().orElseThrow());
+        assertEquals(40271L, time.getTimeAsSeconds().orElseThrow());
         assertEquals(40271L, time.getTimeAsSeconds1().orElseThrow());
 
         assertTrue(time.getUndefinedFromSeconds().isEmpty());
@@ -579,10 +578,9 @@ public class FunctionsTest extends AbstractJslTest {
         assertEquals("2022-03-03T14:00:00.123Z", timestampFunctions.getTimestamp16AsString1().orElseThrow());
         assertEquals("2022-03-03T14:00:00Z", timestampFunctions.getTimestamp17AsString1().orElseThrow());
 
-        // TODO JNG-1586, JNG-3681
-//        assertEquals("2022-09-29T00:00:00Z", timestampFunctions.getTimestampOfDateAsString().orElseThrow());
-//        assertEquals("2022-09-29T11:11:11Z", timestampFunctions.getTimestampOfDateAndTimeAsString().orElseThrow());
-//        assertEquals("2022-09-29T11:11:11Z", timestampFunctions.getFromMillisecondsAsString().orElseThrow());
+        assertEquals("2022-09-29T00:00:00Z", timestampFunctions.getTimestampOfDateAsString().orElseThrow());
+        assertEquals("2022-09-29T11:11:11Z", timestampFunctions.getTimestampOfDateAndTimeAsString().orElseThrow());
+        assertEquals("2022-09-29T11:11:11Z", timestampFunctions.getFromMillisecondsAsString().orElseThrow());
     }
 
     @Test
