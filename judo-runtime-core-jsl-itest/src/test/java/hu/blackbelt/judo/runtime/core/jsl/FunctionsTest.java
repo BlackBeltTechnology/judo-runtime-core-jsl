@@ -522,7 +522,25 @@ public class FunctionsTest extends AbstractJslTest {
      *  
      *      * timestamp1 == `2019-07-18T01:11:12+02:00`
      *      * timestamp2 == `2019-07-18T01:11:12Z`
-     *      * TODO
+     *      * timestampOfDate == `2022-09-29T00:00:00Z`
+     *      * timestampOfDateAndTime == `2022-09-29T11:11:11Z`
+     *      * dateOfTimestampWithDate == `2022-09-29`
+     *      * dateOfTimestampWithDateAndTime == `2022-09-29`
+     *      * timeOfTimestampWithDate == `00:00:00`
+     *      * timeOfTimestampWithDateAndTime == `11:11:11`
+     *      * asMilliseconds == 1664409600000
+     *      * asMilliseconds2 == 1664449871000
+     *      * fromMilliseconds == `2022-09-29T11:11:11Z`
+     *      * plusAll == `2023-10-30T12:12:12,001`
+     *      * plusDate == `2023-10-30T11:11:11Z`
+     *      * plusAllReversed == `2023-10-30T12:12:12,001
+     *      * plusDateReversed == `2023-10-30T11:11:11Z`
+     *      * plusMilliseconds == `2022-09-29T11:11:11,001Z`
+     *      * minusAll == `2021-08-28T10:10:9,999Z`
+     *      * minusDate == `2021-08-28T11:11:11Z`
+     *      * minusAllReversed == `2021-08-28T10:10:9,999Z`
+     *      * minusDateReversed == `2021-08-28T11:11:11Z`
+     *      * minusMilliseconds == `2022-09-29T11:11:10,999Z`
      */
     @Test
     @TestCase("TC023")
@@ -536,6 +554,10 @@ public class FunctionsTest extends AbstractJslTest {
     })
     public void testTimestamp() {
         TimestampFunctions timestampFunctions = timestampFunctionsDao.create(TimestampFunctions.builder().build());
+        
+        // timestamp1 == `2019-07-18T01:11:12+02:00`
+        
+        // timestamp2 == `2019-07-18T01:11:12Z`
 
         assertEquals(OffsetDateTime.of(2022, 9, 29, 0, 0, 0, 0, ZoneOffset.UTC), timestampFunctions.getTimestampOfDate().orElseThrow());
         assertEquals(OffsetDateTime.of(2022, 9, 29, 11, 11, 11, 0, ZoneOffset.UTC), timestampFunctions.getTimestampOfDateAndTime().orElseThrow());
