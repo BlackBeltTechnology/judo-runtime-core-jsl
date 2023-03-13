@@ -170,88 +170,87 @@ end text"
     public void testGetVariableEnvironmentWithJudoPrimitiveTypes() throws Exception {
         EnvironmentVariableMocker.initMocked();
         EnvironmentVariables environmentVariables = new EnvironmentVariables()
-                .set("JUDO_ENV_BOOLEAN1"  , "true")
-                .set("JUDO_ENV_BOOLEAN2"  , "false")
-                .set("JUDO_ENV_DATE1"     , "2023-02-13")
-                .set("JUDO_ENV_DATE2"     , "2024-12-28")
-                .set("JUDO_ENV_TIME1"     , "00:00:01")
-                .set("JUDO_ENV_TIME2"     , "23:59:02")
+                .set("JUDO_ENV_BOOLEAN1", "true")
+                .set("JUDO_ENV_BOOLEAN2", "false")
+                .set("JUDO_ENV_DATE1", "2023-02-13")
+                .set("JUDO_ENV_DATE2", "2024-12-28")
+                .set("JUDO_ENV_TIME1", "00:00:01")
+                .set("JUDO_ENV_TIME2", "23:59:02")
                 .set("JUDO_ENV_TIMESTAMP1", "2023-02-13T10:11:12+01:00")
                 .set("JUDO_ENV_TIMESTAMP2", "2023-02-14T10:11:12-01:00")
-                .set("JUDO_ENV_INTEGER1"  , "987654321")
-                .set("JUDO_ENV_INTEGER2"  , "-123456789")
-                .set("JUDO_ENV_LONG1"     , "987654321098765")
-                .set("JUDO_ENV_LONG2"     , "-123456789012345")
-                .set("JUDO_ENV_STRING1"   , "'Lorem ipsum dolor set...' And a number: 1987")
-                .set("JUDO_ENV_STRING2"   , "Other text.\n\nend text")
-                .set("JUDO_ENV_XXX"       , "xxxx")
-                ;
+                .set("JUDO_ENV_INTEGER1", "987654321")
+                .set("JUDO_ENV_INTEGER2", "-123456789")
+                .set("JUDO_ENV_LONG1", "987654321098765")
+                .set("JUDO_ENV_LONG2", "-123456789012345")
+                .set("JUDO_ENV_STRING1", "'Lorem ipsum dolor set...' And a number: 1987")
+                .set("JUDO_ENV_STRING2", "Other text.\n\nend text")
+                .set("JUDO_ENV_XXX", "xxxx");
+        try {
+            environmentVariables
+                    .execute(() -> {
 
+                        EnvVars1 ev1 = envVars1Dao.create(
+                                EnvVars1
+                                        .builder()
+                                        .build()
+                        );
 
-        environmentVariables
-                .execute(() -> {
+                        assertTrue(ev1.getFbool().orElseThrow());
+                        assertEquals(LocalDate.of(2023, 02, 13), ev1.getFdate().orElseThrow());
+                        assertEquals(LocalTime.of(0, 0, 01), ev1.getFtime().orElseThrow());
+                        assertEquals(
+                                OffsetDateTime.of(
+                                        2023,
+                                        02,
+                                        13,
+                                        10,
+                                        11,
+                                        12,
+                                        0,
+                                        ZoneOffset.of("+01:00")
+                                ),
+                                ev1.getFtimestamp().orElseThrow()
+                        );
+                        assertEquals(987654321, ev1.getFint().orElseThrow());
+                        assertEquals(987654321098765L, ev1.getFlong().orElseThrow());
+                        assertEquals(
+                                "'Lorem ipsum dolor set...' And a number: 1987",
+                                ev1.getFstring().orElseThrow()
+                        );
 
-                    EnvVars1 ev1 = envVars1Dao.create(
-                            EnvVars1
-                                    .builder()
-                                    .build()
-                    );
+                        EnvVars2 ev2 = envVars2Dao.create(
+                                EnvVars2
+                                        .builder()
+                                        .build()
+                        );
 
-                    assertTrue(ev1.getFbool().orElseThrow());
-                    assertEquals(LocalDate.of(2023, 02, 13), ev1.getFdate().orElseThrow());
-                    assertEquals(LocalTime.of(0, 0, 01), ev1.getFtime().orElseThrow());
-                    assertEquals(
-                            OffsetDateTime.of(
-                                    2023,
-                                    02,
-                                    13,
-                                    10,
-                                    11,
-                                    12,
-                                    0,
-                                    ZoneOffset.of("+01:00")
-                            ),
-                            ev1.getFtimestamp().orElseThrow()
-                    );
-                    assertEquals(987654321, ev1.getFint().orElseThrow());
-                    assertEquals(987654321098765L, ev1.getFlong().orElseThrow());
-                    assertEquals(
-                            "'Lorem ipsum dolor set...' And a number: 1987",
-                            ev1.getFstring().orElseThrow()
-                    );
-
-                    EnvVars2 ev2 = envVars2Dao.create(
-                            EnvVars2
-                                    .builder()
-                                    .build()
-                    );
-
-                    assertFalse(ev2.getFbool().orElseThrow());
-                    assertEquals(LocalDate.of(2024, 12, 28), ev2.getFdate().orElseThrow());
-                    assertEquals(LocalTime.of(23, 59, 02), ev2.getFtime().orElseThrow());
-                    assertEquals(
-                            OffsetDateTime.of(
-                                    2023,
-                                    02,
-                                    14,
-                                    10,
-                                    11,
-                                    12,
-                                    0,
-                                    ZoneOffset.of("-01:00")
-                            ),
-                            ev2.getFtimestamp().orElseThrow()
-                    );
-                    assertEquals(-123456789, ev2.getFint().orElseThrow());
-                    assertEquals(-123456789012345L, ev2.getFlong().orElseThrow());
-                    assertEquals(
-                            "Other text.\n\n" + "end text",
-                            ev2.getFstring().orElseThrow()
-                    );
-                });
-
-        environmentVariables.teardown();
-        EnvironmentVariableMocker.deinitMocked();
+                        assertFalse(ev2.getFbool().orElseThrow());
+                        assertEquals(LocalDate.of(2024, 12, 28), ev2.getFdate().orElseThrow());
+                        assertEquals(LocalTime.of(23, 59, 02), ev2.getFtime().orElseThrow());
+                        assertEquals(
+                                OffsetDateTime.of(
+                                        2023,
+                                        02,
+                                        14,
+                                        10,
+                                        11,
+                                        12,
+                                        0,
+                                        ZoneOffset.of("-01:00")
+                                ),
+                                ev2.getFtimestamp().orElseThrow()
+                        );
+                        assertEquals(-123456789, ev2.getFint().orElseThrow());
+                        assertEquals(-123456789012345L, ev2.getFlong().orElseThrow());
+                        assertEquals(
+                                "Other text.\n\n" + "end text",
+                                ev2.getFstring().orElseThrow()
+                        );
+                    });
+        } finally {
+            environmentVariables.teardown();
+            EnvironmentVariableMocker.deinitMocked();
+        }
     }
     
     /**
