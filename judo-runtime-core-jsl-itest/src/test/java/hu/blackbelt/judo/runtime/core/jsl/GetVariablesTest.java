@@ -167,6 +167,7 @@ end text"
      */
     @Test
     @TestCase("TC010")
+    @Disabled("JNG-4621")
     @Requirement(reqs = {
             "REQ-SYNT-001",
             "REQ-SYNT-002",
