@@ -25,7 +25,8 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.modeltc010tc011tc012tc0
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.ModelTC010TC011TC012TC013DaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
-import uk.org.webcompere.systemstubs.environment.EnvironmentVariables;
+import hu.blackbelt.judo.runtime.core.jsl.util.EnvironmentVariableMocker;
+import hu.blackbelt.judo.runtime.core.jsl.util.EnvironmentVariables;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -75,24 +76,6 @@ public class GetVariablesTest extends AbstractJslTest {
     EnvVarsDao envVarsDao;
     @Inject
     SequencesDao sequencesDao;            
-
-    private EnvironmentVariables environmentVariables = new EnvironmentVariables()
-        .set("JUDO_ENV_BOOLEAN1"  , "true")
-        .set("JUDO_ENV_BOOLEAN2"  , "false")
-        .set("JUDO_ENV_DATE1"     , "2023-02-13")
-        .set("JUDO_ENV_DATE2"     , "2024-12-28")
-        .set("JUDO_ENV_TIME1"     , "00:00:01")
-        .set("JUDO_ENV_TIME2"     , "23:59:02")
-        .set("JUDO_ENV_TIMESTAMP1", "2023-02-13T10:11:12+01:00")
-        .set("JUDO_ENV_TIMESTAMP2", "2023-02-14T10:11:12-01:00")
-        .set("JUDO_ENV_INTEGER1"  , "987654321")
-        .set("JUDO_ENV_INTEGER2"  , "-123456789")
-        .set("JUDO_ENV_LONG1"     , "987654321098765")
-        .set("JUDO_ENV_LONG2"     , "-123456789012345")
-        .set("JUDO_ENV_STRING1"   , "'Lorem ipsum dolor set...' And a number: 1987")
-        .set("JUDO_ENV_STRING2"   , "Other text.\n\nend text")
-        .set("JUDO_ENV_XXX"       , "xxxx")
-        ;
 
     @Override
     public Module getModelDaoModule() {
@@ -185,6 +168,26 @@ end text"
             "REQ-EXPR-012"
     })
     public void testGetVariableEnvironmentWithJudoPrimitiveTypes() throws Exception {
+        EnvironmentVariableMocker.initMocked();
+        EnvironmentVariables environmentVariables = new EnvironmentVariables()
+                .set("JUDO_ENV_BOOLEAN1"  , "true")
+                .set("JUDO_ENV_BOOLEAN2"  , "false")
+                .set("JUDO_ENV_DATE1"     , "2023-02-13")
+                .set("JUDO_ENV_DATE2"     , "2024-12-28")
+                .set("JUDO_ENV_TIME1"     , "00:00:01")
+                .set("JUDO_ENV_TIME2"     , "23:59:02")
+                .set("JUDO_ENV_TIMESTAMP1", "2023-02-13T10:11:12+01:00")
+                .set("JUDO_ENV_TIMESTAMP2", "2023-02-14T10:11:12-01:00")
+                .set("JUDO_ENV_INTEGER1"  , "987654321")
+                .set("JUDO_ENV_INTEGER2"  , "-123456789")
+                .set("JUDO_ENV_LONG1"     , "987654321098765")
+                .set("JUDO_ENV_LONG2"     , "-123456789012345")
+                .set("JUDO_ENV_STRING1"   , "'Lorem ipsum dolor set...' And a number: 1987")
+                .set("JUDO_ENV_STRING2"   , "Other text.\n\nend text")
+                .set("JUDO_ENV_XXX"       , "xxxx")
+                ;
+
+
         environmentVariables
                 .execute(() -> {
 
@@ -246,6 +249,9 @@ end text"
                             ev2.getFstring().orElseThrow()
                     );
                 });
+
+        environmentVariables.teardown();
+        EnvironmentVariableMocker.deinitMocked();
     }
     
     /**
