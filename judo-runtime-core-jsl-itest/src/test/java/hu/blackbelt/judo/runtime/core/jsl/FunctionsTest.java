@@ -520,8 +520,6 @@ public class FunctionsTest extends AbstractJslTest {
      *  
      *  . Check the values of the following fields of the new entity instance (timestampFunctions).
      *  
-     *      * timestamp1 == `2019-07-18T01:11:12+02:00`
-     *      * timestamp2 == `2019-07-18T01:11:12Z`
      *      * timestampOfDate == `2022-09-29T00:00:00Z`
      *      * timestampOfDateAndTime == `2022-09-29T11:11:11Z`
      *      * dateOfTimestampWithDate == `2022-09-29`
@@ -554,10 +552,6 @@ public class FunctionsTest extends AbstractJslTest {
     })
     public void testTimestamp() {
         TimestampFunctions timestampFunctions = timestampFunctionsDao.create(TimestampFunctions.builder().build());
-        
-        // timestamp1 == `2019-07-18T01:11:12+02:00`
-        
-        // timestamp2 == `2019-07-18T01:11:12Z`
 
         assertEquals(OffsetDateTime.of(2022, 9, 29, 0, 0, 0, 0, ZoneOffset.UTC), timestampFunctions.getTimestampOfDate().orElseThrow());
         assertEquals(OffsetDateTime.of(2022, 9, 29, 11, 11, 11, 0, ZoneOffset.UTC), timestampFunctions.getTimestampOfDateAndTime().orElseThrow());
