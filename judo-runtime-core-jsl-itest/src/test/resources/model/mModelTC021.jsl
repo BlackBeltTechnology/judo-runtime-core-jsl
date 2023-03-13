@@ -1,0 +1,16 @@
+model mModelTC021;
+
+import judo::types;
+
+type string sType(min-size = 0, max-size = 10);
+
+enum xEnum {
+    xA0 = 0;
+    xB1 = 1;
+}
+
+entity aEnt {
+    field Boolean fBool = true;
+    field sType   sS99  = "abc";
+    field xEnum   zEnum = xEnum#xB1;
+}
