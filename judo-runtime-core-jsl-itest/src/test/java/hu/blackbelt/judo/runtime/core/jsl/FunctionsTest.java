@@ -67,6 +67,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.sim
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.simple.SimpleDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.FunctionsDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
+import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
@@ -501,8 +502,35 @@ public class FunctionsTest extends AbstractJslTest {
         assertTrue(time.getUndefinedAsSeconds().isEmpty());
     }
 
+    /**
+     * This test checks the Timestamp built in functions.
+     * 
+     * @prerequisites Nothing
+     * 
+     * @type Behaviour
+     * 
+     * @jslModel Functions.jsl
+     * 
+     * @scenario
+     *  . Parse (and/or build) the model.
+     *  
+     *  . The result of the model parsing (and/or building) is successful.
+     *  
+     *  . Create a TimestampFunctions entity instance (timestampFunctions) with the default values.
+     *  
+     *  . Check the values of the following fields of the new entity instance (timestampFunctions).
+     *  
+     *      * timestamp1 == `2019-07-18T01:11:12+02:00`
+     *      * timestamp2 == `2019-07-18T01:11:12Z`
+     *      * TODO
+     */
     @Test
+    @TestCase("TC023")
     @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
             "REQ-EXPR-010",
             "REQ-EXPR-018"
     })
