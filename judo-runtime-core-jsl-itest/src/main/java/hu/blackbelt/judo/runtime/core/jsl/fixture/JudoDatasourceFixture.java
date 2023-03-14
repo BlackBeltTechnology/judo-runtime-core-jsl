@@ -1,6 +1,7 @@
 package hu.blackbelt.judo.runtime.core.jsl.fixture;
 
 import lombok.Getter;
+import lombok.SneakyThrows;
 import org.hsqldb.jdbc.JDBCDataSource;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.function.Executable;
@@ -19,6 +20,12 @@ import java.util.function.Supplier;
 
 public class JudoDatasourceFixture {
 
+//    static {
+//        System.setProperty("user.timezone", "UTC");
+//        //         TZ: 'GMT+2'
+//        //        PGTZ: 'GMT+2'
+//    }
+
     public static final String CONTAINER_NONE = "none";
     public static final String CONTAINER_POSTGRESQL = "postgresql";
     public static final String CONTAINER_YUGABYTEDB = "yugabytedb";
@@ -33,6 +40,9 @@ public class JudoDatasourceFixture {
     protected String container = System.getProperty("container", CONTAINER_NONE);
 
     @Getter
+    protected String timezone = System.getProperty("tz", "GMT");
+
+    @Getter
     protected DataSource dataSource;
 
 
@@ -45,9 +55,15 @@ public class JudoDatasourceFixture {
     public void setupDatabase() {
         if (dialect.equals(DIALECT_POSTGRESQL)) {
             if (container.equals(CONTAINER_NONE) || container.equals(CONTAINER_POSTGRESQL)) {
-                sqlContainer = (PostgreSQLContainer) new PostgreSQLContainer("postgres:latest").withStartupTimeout(Duration.ofSeconds(600));
+                sqlContainer =
+                        (PostgreSQLContainer) new PostgreSQLContainer("postgres:latest").withStartupTimeout(Duration.ofSeconds(600))
+                                                                                        .withEnv("TZ", timezone)
+                                                                                        .withEnv("PGTZ", timezone);
             } else if (container.equals(CONTAINER_YUGABYTEDB)) {
-                sqlContainer = (YugabytedbSQLContainer) new YugabytedbSQLContainer().withStartupTimeout(Duration.ofSeconds(600));
+                sqlContainer =
+                        (YugabytedbSQLContainer) new YugabytedbSQLContainer().withStartupTimeout(Duration.ofSeconds(600))
+                                                                             .withEnv("TZ", timezone)
+                                                                             .withEnv("PGTZ", timezone);
             }
         }
     }
