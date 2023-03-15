@@ -77,6 +77,7 @@ import org.junit.jupiter.api.*;
 import java.time.*;
 import java.util.*;
 
+import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 import static java.time.format.DateTimeFormatter.ISO_OFFSET_DATE_TIME;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -513,7 +514,7 @@ public class FunctionsTest extends AbstractJslTest {
      * 
      * @prerequisites Nothing
      * 
-     * @type Behaviour
+     * @type Behavior
      * 
      * @jslModel Functions.jsl
      * 
@@ -559,8 +560,8 @@ public class FunctionsTest extends AbstractJslTest {
     public void testTimestamp() {
         TimestampFunctions timestampFunctions = timestampFunctionsDao.create(TimestampFunctions.builder().build());
 
-        assertEquals(OffsetDateTime.of(2022, 9, 29, 0, 0, 0, 0, ZoneOffset.UTC), timestampFunctions.getTimestampOfDate().orElseThrow());
-        assertEquals(OffsetDateTime.of(2022, 9, 29, 11, 11, 11, 0, ZoneOffset.UTC), timestampFunctions.getTimestampOfDateAndTime().orElseThrow());
+        assertEquals(LocalDateTime.of(2022, 9, 29, 0, 0, 0, 0), timestampFunctions.getTimestampOfDate().orElseThrow());
+        assertEquals(LocalDateTime.of(2022, 9, 29, 11, 11, 11, 0), timestampFunctions.getTimestampOfDateAndTime().orElseThrow());
 
         assertEquals(LocalDate.of(2022, 9, 29), timestampFunctions.getDateOfTimestampWithDate().orElseThrow());
         assertEquals(LocalDate.of(2022, 9, 29), timestampFunctions.getDateOfTimestampWithDateAndTime().orElseThrow());
@@ -570,23 +571,23 @@ public class FunctionsTest extends AbstractJslTest {
         assertEquals(1664409600000L, timestampFunctions.getAsMilliseconds().orElseThrow());
         assertEquals(1664449871000L, timestampFunctions.getAsMilliseconds2().orElseThrow());
 
-        assertEquals(Instant.ofEpochMilli(1664449871000L).atOffset(ZoneOffset.UTC), timestampFunctions.getFromMilliseconds().orElseThrow());
+        assertEquals(Instant.ofEpochMilli(1664449871000L).atOffset(ZoneOffset.UTC).toLocalDateTime(), timestampFunctions.getFromMilliseconds().orElseThrow());
 
-        assertEquals(OffsetDateTime.of(2023, 10, 30, 12, 12, 12, 1000000, ZoneOffset.UTC), timestampFunctions.getPlusAll().orElseThrow());
-        assertEquals(OffsetDateTime.of(2023, 10, 30, 11, 11, 11, 0, ZoneOffset.UTC), timestampFunctions.getPlusDate().orElseThrow());
+        assertEquals(LocalDateTime.of(2023, 10, 30, 12, 12, 12, 1000000), timestampFunctions.getPlusAll().orElseThrow());
+        assertEquals(LocalDateTime.of(2023, 10, 30, 11, 11, 11, 0), timestampFunctions.getPlusDate().orElseThrow());
 
-        assertEquals(OffsetDateTime.of(2023, 10, 30, 12, 12, 12, 1000000, ZoneOffset.UTC), timestampFunctions.getPlusAllReversed().orElseThrow());
-        assertEquals(OffsetDateTime.of(2023, 10, 30, 11, 11, 11, 0, ZoneOffset.UTC), timestampFunctions.getPlusDateReversed().orElseThrow());
+        assertEquals(LocalDateTime.of(2023, 10, 30, 12, 12, 12, 1000000), timestampFunctions.getPlusAllReversed().orElseThrow());
+        assertEquals(LocalDateTime.of(2023, 10, 30, 11, 11, 11, 0), timestampFunctions.getPlusDateReversed().orElseThrow());
 
-        assertEquals(OffsetDateTime.of(2022, 9, 29, 11, 11, 11, 1000000, ZoneOffset.UTC), timestampFunctions.getPlusMilliseconds().orElseThrow());
+        assertEquals(LocalDateTime.of(2022, 9, 29, 11, 11, 11, 1000000), timestampFunctions.getPlusMilliseconds().orElseThrow());
 
-        assertEquals(OffsetDateTime.of(2021, 8, 28, 10, 10, 9, 999000000, ZoneOffset.UTC), timestampFunctions.getMinusAll().orElseThrow());
-        assertEquals(OffsetDateTime.of(2021, 8, 28, 11, 11, 11, 0, ZoneOffset.UTC), timestampFunctions.getMinusDate().orElseThrow());
+        assertEquals(LocalDateTime.of(2021, 8, 28, 10, 10, 9, 999000000), timestampFunctions.getMinusAll().orElseThrow());
+        assertEquals(LocalDateTime.of(2021, 8, 28, 11, 11, 11, 0), timestampFunctions.getMinusDate().orElseThrow());
 
-        assertEquals(OffsetDateTime.of(2021, 8, 28, 10, 10, 9, 999000000, ZoneOffset.UTC), timestampFunctions.getMinusAllReversed().orElseThrow());
-        assertEquals(OffsetDateTime.of(2021, 8, 28, 11, 11, 11, 0, ZoneOffset.UTC), timestampFunctions.getMinusDateReversed().orElseThrow());
+        assertEquals(LocalDateTime.of(2021, 8, 28, 10, 10, 9, 999000000), timestampFunctions.getMinusAllReversed().orElseThrow());
+        assertEquals(LocalDateTime.of(2021, 8, 28, 11, 11, 11, 0), timestampFunctions.getMinusDateReversed().orElseThrow());
 
-        assertEquals(OffsetDateTime.of(2022, 9, 29, 11, 11, 10, 999000000, ZoneOffset.UTC), timestampFunctions.getMinusMilliseconds().orElseThrow());
+        assertEquals(LocalDateTime.of(2022, 9, 29, 11, 11, 10, 999000000), timestampFunctions.getMinusMilliseconds().orElseThrow());
     }
 
     /**
@@ -594,7 +595,7 @@ public class FunctionsTest extends AbstractJslTest {
      *
      * @prerequisites Nothing
      *
-     * @type Behaviour
+     * @type Behavior
      *
      * @jslModel Functions.jsl
      *
@@ -621,47 +622,47 @@ public class FunctionsTest extends AbstractJslTest {
     public void testTimestampAsString() {
         TimestampAsString timestampAsString = timestampAsStringDao.create(TimestampAsString.builder().build());
 
-        assertEquals("2022-03-03T14:00:00Z", timestampAsString.getTimestamp1AsString().orElseThrow());
-        assertEquals("2022-03-03T14:00:00.123Z", timestampAsString.getTimestamp2AsString().orElseThrow());
-        assertEquals("2022-03-03T13:57:00Z", timestampAsString.getTimestamp3AsString().orElseThrow());
-        assertEquals("2022-03-03T11:00:00Z", timestampAsString.getTimestamp4AsString().orElseThrow());
-        assertEquals("2022-03-03T10:57:00Z", timestampAsString.getTimestamp5AsString().orElseThrow());
-        assertEquals("2022-03-03T14:03:00Z", timestampAsString.getTimestamp6AsString().orElseThrow());
-        assertEquals("2022-03-03T17:00:00Z", timestampAsString.getTimestamp7AsString().orElseThrow());
-        assertEquals("2022-03-03T17:03:00Z", timestampAsString.getTimestamp8AsString().orElseThrow());
-        assertEquals("2022-03-03T13:57:00.123Z", timestampAsString.getTimestamp9AsString().orElseThrow());
-        assertEquals("2022-03-03T11:00:00.123Z", timestampAsString.getTimestamp10AsString().orElseThrow());
-        assertEquals("2022-03-03T10:57:00.123Z", timestampAsString.getTimestamp12AsString().orElseThrow());
-        assertEquals("2022-03-03T14:03:00.123Z", timestampAsString.getTimestamp13AsString().orElseThrow());
-        assertEquals("2022-03-03T17:00:00.123Z", timestampAsString.getTimestamp14AsString().orElseThrow());
-        assertEquals("2022-03-03T17:03:00.123Z", timestampAsString.getTimestamp15AsString().orElseThrow());
+        assertEquals("2022-03-03T14:00:00", timestampAsString.getTimestamp1AsString().orElseThrow());
+        assertEquals("2022-03-03T14:00:00.123", timestampAsString.getTimestamp2AsString().orElseThrow());
+        assertEquals("2022-03-03T13:57:00", timestampAsString.getTimestamp3AsString().orElseThrow());
+        assertEquals("2022-03-03T11:00:00", timestampAsString.getTimestamp4AsString().orElseThrow());
+        assertEquals("2022-03-03T10:57:00", timestampAsString.getTimestamp5AsString().orElseThrow());
+        assertEquals("2022-03-03T14:03:00", timestampAsString.getTimestamp6AsString().orElseThrow());
+        assertEquals("2022-03-03T17:00:00", timestampAsString.getTimestamp7AsString().orElseThrow());
+        assertEquals("2022-03-03T17:03:00", timestampAsString.getTimestamp8AsString().orElseThrow());
+        assertEquals("2022-03-03T13:57:00.123", timestampAsString.getTimestamp9AsString().orElseThrow());
+        assertEquals("2022-03-03T11:00:00.123", timestampAsString.getTimestamp10AsString().orElseThrow());
+        assertEquals("2022-03-03T10:57:00.123", timestampAsString.getTimestamp12AsString().orElseThrow());
+        assertEquals("2022-03-03T14:03:00.123", timestampAsString.getTimestamp13AsString().orElseThrow());
+        assertEquals("2022-03-03T17:00:00.123", timestampAsString.getTimestamp14AsString().orElseThrow());
+        assertEquals("2022-03-03T17:03:00.123", timestampAsString.getTimestamp15AsString().orElseThrow());
 
-        assertEquals("2022-03-03T14:00:00Z", timestampAsString.getTimestamp1AsString1().orElseThrow());
-        assertEquals("2022-03-03T14:00:00.123Z", timestampAsString.getTimestamp2AsString1().orElseThrow());
-        assertEquals("2022-03-03T13:57:00Z", timestampAsString.getTimestamp3AsString1().orElseThrow());
-        assertEquals("2022-03-03T11:00:00Z", timestampAsString.getTimestamp4AsString1().orElseThrow());
-        assertEquals("2022-03-03T10:57:00Z", timestampAsString.getTimestamp5AsString1().orElseThrow());
-        assertEquals("2022-03-03T14:03:00Z", timestampAsString.getTimestamp6AsString1().orElseThrow());
-        assertEquals("2022-03-03T17:00:00Z", timestampAsString.getTimestamp7AsString1().orElseThrow());
-        assertEquals("2022-03-03T17:03:00Z", timestampAsString.getTimestamp8AsString1().orElseThrow());
-        assertEquals("2022-03-03T13:57:00.123Z", timestampAsString.getTimestamp9AsString1().orElseThrow());
-        assertEquals("2022-03-03T11:00:00.123Z", timestampAsString.getTimestamp10AsString1().orElseThrow());
-        assertEquals("2022-03-03T10:57:00.123Z", timestampAsString.getTimestamp12AsString1().orElseThrow());
-        assertEquals("2022-03-03T14:03:00.123Z", timestampAsString.getTimestamp13AsString1().orElseThrow());
-        assertEquals("2022-03-03T17:00:00.123Z", timestampAsString.getTimestamp14AsString1().orElseThrow());
-        assertEquals("2022-03-03T17:03:00.123Z", timestampAsString.getTimestamp15AsString1().orElseThrow());
+        assertEquals("2022-03-03T14:00:00", timestampAsString.getTimestamp1AsString1().orElseThrow());
+        assertEquals("2022-03-03T14:00:00.123", timestampAsString.getTimestamp2AsString1().orElseThrow());
+        assertEquals("2022-03-03T13:57:00", timestampAsString.getTimestamp3AsString1().orElseThrow());
+        assertEquals("2022-03-03T11:00:00", timestampAsString.getTimestamp4AsString1().orElseThrow());
+        assertEquals("2022-03-03T10:57:00", timestampAsString.getTimestamp5AsString1().orElseThrow());
+        assertEquals("2022-03-03T14:03:00", timestampAsString.getTimestamp6AsString1().orElseThrow());
+        assertEquals("2022-03-03T17:00:00", timestampAsString.getTimestamp7AsString1().orElseThrow());
+        assertEquals("2022-03-03T17:03:00", timestampAsString.getTimestamp8AsString1().orElseThrow());
+        assertEquals("2022-03-03T13:57:00.123", timestampAsString.getTimestamp9AsString1().orElseThrow());
+        assertEquals("2022-03-03T11:00:00.123", timestampAsString.getTimestamp10AsString1().orElseThrow());
+        assertEquals("2022-03-03T10:57:00.123", timestampAsString.getTimestamp12AsString1().orElseThrow());
+        assertEquals("2022-03-03T14:03:00.123", timestampAsString.getTimestamp13AsString1().orElseThrow());
+        assertEquals("2022-03-03T17:00:00.123", timestampAsString.getTimestamp14AsString1().orElseThrow());
+        assertEquals("2022-03-03T17:03:00.123", timestampAsString.getTimestamp15AsString1().orElseThrow());
 
-        assertEquals(OffsetDateTime.of(2022, 9, 29, 0, 0, 0, 0, ZoneOffset.UTC), timestampAsString.getTimestampOfDate().orElseThrow());
-        assertEquals("2022-09-29T00:00:00Z", timestampAsString.getTimestampOfDateAsString().orElseThrow());
-        assertEquals("2022-09-29T00:00:00Z", timestampAsString.getTimestampOfDateAsString1().orElseThrow());
+        assertEquals(LocalDateTime.of(2022, 9, 29, 0, 0, 0, 0), timestampAsString.getTimestampOfDate().orElseThrow());
+        assertEquals("2022-09-29T00:00:00", timestampAsString.getTimestampOfDateAsString().orElseThrow());
+        assertEquals("2022-09-29T00:00:00", timestampAsString.getTimestampOfDateAsString1().orElseThrow());
 
-        assertEquals(OffsetDateTime.of(2022, 9, 29, 11, 11, 11, 0, ZoneOffset.UTC), timestampAsString.getTimestampOfDateAndTime().orElseThrow());
-        assertEquals("2022-09-29T11:11:11Z", timestampAsString.getTimestampOfDateAndTimeAsString().orElseThrow());
-        assertEquals("2022-09-29T11:11:11Z", timestampAsString.getTimestampOfDateAndTimeAsString1().orElseThrow());
+        assertEquals(LocalDateTime.of(2022, 9, 29, 11, 11, 11, 0), timestampAsString.getTimestampOfDateAndTime().orElseThrow());
+        assertEquals("2022-09-29T11:11:11", timestampAsString.getTimestampOfDateAndTimeAsString().orElseThrow());
+        assertEquals("2022-09-29T11:11:11", timestampAsString.getTimestampOfDateAndTimeAsString1().orElseThrow());
 
-        assertEquals(Instant.ofEpochMilli(1664449871000L).atOffset(ZoneOffset.UTC), timestampAsString.getFromMilliseconds().orElseThrow());
-        assertEquals(Instant.ofEpochMilli(1664449871000L).atOffset(ZoneOffset.UTC).format(ISO_OFFSET_DATE_TIME), timestampAsString.getFromMillisecondsAsString().orElseThrow());
-        assertEquals(Instant.ofEpochMilli(1664449871000L).atOffset(ZoneOffset.UTC).format(ISO_OFFSET_DATE_TIME), timestampAsString.getFromMillisecondsAsString1().orElseThrow());
+        assertEquals(Instant.ofEpochMilli(1664449871000L).atOffset(ZoneOffset.UTC).toLocalDateTime(), timestampAsString.getFromMilliseconds().orElseThrow());
+        assertEquals(Instant.ofEpochMilli(1664449871000L).atOffset(ZoneOffset.UTC).format(ISO_LOCAL_DATE_TIME), timestampAsString.getFromMillisecondsAsString().orElseThrow());
+        assertEquals(Instant.ofEpochMilli(1664449871000L).atOffset(ZoneOffset.UTC).format(ISO_LOCAL_DATE_TIME), timestampAsString.getFromMillisecondsAsString1().orElseThrow());
     }
 
     @Test
