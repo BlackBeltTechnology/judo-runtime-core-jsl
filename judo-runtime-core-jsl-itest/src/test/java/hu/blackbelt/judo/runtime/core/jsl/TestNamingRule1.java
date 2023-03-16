@@ -36,24 +36,6 @@ public class TestNamingRule1 extends AbstractJslTest {
      * 
      * @type Behaviour
      * 
-     * @jslModel
-     *  model mModelTC021;
-     *
-     *  import judo::types;
-     *  
-     *  type string sType(min-size = 0, max-size = 10);
-     *  
-     *  enum xEnum {
-     *      xA0 = 0;
-     *      xB1 = 1;
-     *  }
-     *  
-     *  entity aEnt1 {
-     *      field Boolean fBool = true;
-     *      field sType   sS99  = "abc";
-     *      field xEnum   zEnum = xEnum#xB1;
-     *  }
-     * 
      * @scenario
      *  . Parse (and/or build) the model.
      *  
@@ -62,14 +44,14 @@ public class TestNamingRule1 extends AbstractJslTest {
      *  . Create an aEnt1 entity instance (ae1) with the default values.
      *  
      *  . Check the values of the following fields of the new entity instance (ae1).
-     *      * fBool == true
-     *      * sS99 == "abc"
-     *      * zEnum == xEnum#xB1
+     *      * ffBool == true
+     *      * ssS99 == "abc"
+     *      * zzEnum == xEnum#xB1
      *  
      *  . The test is passed if all modifications and checks are successful, and there were no exceptions.
      */
     @Test
-    @Disabled("JNG-4618")
+    //@Disabled("JNG-4618")
     @TestCase("TC021")
     @Requirement(reqs = {
             "REQ-SYNT-001",
@@ -93,9 +75,9 @@ public class TestNamingRule1 extends AbstractJslTest {
                 .build()
         );
         
-        assertTrue(ae.getFBool().orElseThrow());
-        assertEquals("abc", ae.getSS99());
-        assertEquals(xEnum.xB1, ae.getZEnum());
+        assertTrue(ae.getFfBool().orElseThrow());
+        assertEquals("abc", ae.getSsS99().orElseThrow());
+        assertEquals(xEnum.xB1, ae.getZzEnum().orElseThrow());
     }
 
 }

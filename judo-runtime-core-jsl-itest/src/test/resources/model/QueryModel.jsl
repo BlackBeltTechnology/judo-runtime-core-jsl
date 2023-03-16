@@ -4,7 +4,7 @@ type numeric Integer(precision = 9, scale = 0);
 
 
 query Lead[] rootAllLeadsBetween(Integer min = 0, Integer max = 100) => Lead!all()!filter(l | l.value > min and  l.value < max);
-query Integer rootCountAllLeadsBetween(Integer min = 0, Integer max = 100) => Lead!all()!filter(l | l.value > min and  l.value < max)!size();
+query Integer rootCountAllLeadsBetween(Integer min = 0, Integer max = 100 + 100) => Lead!all()!filter(l | l.value > min and  l.value < max)!size();
 query Lead[] rootAllLeads() => Lead!all();
 query Lead rootOneLead() => Lead!any();
 query Integer totalNumberOfLeads() => Lead!all()!size();
