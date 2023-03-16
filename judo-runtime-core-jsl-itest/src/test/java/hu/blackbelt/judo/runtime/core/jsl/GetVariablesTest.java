@@ -400,13 +400,6 @@ end text"
      *
      * @type Behaviour
      *
-     * @others
-     *  TODO Write here any other instructions or information, that is necessary or important to implement
-     *  the test case. This is an optional property.
-     *
-     * @jslModel
-     *  TODO Write here a JSL model, that is used by the test case.
-     *
      * @scenario
      *  . Parse (and/or build) the model.
      *
