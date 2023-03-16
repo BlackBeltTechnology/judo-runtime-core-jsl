@@ -10,7 +10,7 @@ enum xEnum {
 }
 
 entity aEnt {
-    field Boolean fBool = true;
-    field sType   sS99  = "abc";
-    field xEnum   zEnum = xEnum#xB1;
+    field Boolean ffBool = true;
+    field sType   ssS99  = "abc";
+    field xEnum   zzEnum = xEnum#xB1;
 }
