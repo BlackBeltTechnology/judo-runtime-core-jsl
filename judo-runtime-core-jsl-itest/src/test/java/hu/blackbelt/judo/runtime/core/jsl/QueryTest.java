@@ -105,5 +105,11 @@ public class QueryTest extends AbstractJslTest {
                         .build());
 
         assertEquals(1, rootCountAllLeadsBetween);
-    }
+
+        Integer rootCountAllLeadsBetweenDefault = rootCountAllLeadsBetweenDao
+                .execute(RootCountAllLeadsBetweenParameter.builder()
+                        .build());
+
+        assertEquals(2, rootCountAllLeadsBetweenDefault);
+}
 }
