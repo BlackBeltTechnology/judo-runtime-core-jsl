@@ -407,6 +407,20 @@
                             <destination>${basedir}/target/generated-test-sources/sdk-core/modelTC022</destination>
                         </configuration>
                     </execution>
+
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-modelTC015</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/modelTC015-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/sdk-core/modelTC015</destination>
+                        </configuration>
+                    </execution>
                     
                 </executions>
             </plugin>
@@ -447,6 +461,7 @@
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/modelTC010TC011TC012TC013</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/mModelTC021</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/modelTC022</source>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/modelTC015</source>
                             </sources>
                         </configuration>
                    </execution>
