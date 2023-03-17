@@ -87,4 +87,5 @@ query MyEntity[] listOfMyEntities(String str, Date d, Boolean b, Long l) =>
                     MyEntity!all()!filter(e | (e.ffString!lower() == str and e.ffDate == d) or (e.ffBool == b and e.ffLong < l));
 
 query MyEntity   lastAddedMyEntity() =>
-                    MyEntity!all()!first(e | e.ffCreated)!any();
+                    MyEntity!all()!last(e | e.ffCreated)!any();
+                    

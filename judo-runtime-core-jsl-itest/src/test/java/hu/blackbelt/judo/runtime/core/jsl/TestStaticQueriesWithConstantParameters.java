@@ -295,7 +295,7 @@ public class TestStaticQueriesWithConstantParameters extends AbstractJslTest {
      *    * s13.ffDecimal!isUndefined()
      *    * s13.ffEnum!isDefined()      and s13.fEnum == MyEnum#A02
      *
-     *  . Run the lastAddedMyEntity() query. The return value of the query is the e5 MyEntity instance.
+     *  . Run the lastAddedMyEntity() query. The return value of the query is the e1 MyEntity instance.
      *
      *  . The test is passed if all steps have been completed with the specified results.
      *
@@ -337,7 +337,6 @@ public class TestStaticQueriesWithConstantParameters extends AbstractJslTest {
     })
     void testStaticQueryWithConstantParameters() {
         MyEntity e1 = myEntityDao.create(MyEntity.builder().build());
-        //System.out.println(e1.getFfCreated());
         assertFalse(e1.getFfCreated().equals(Optional.empty()));
         assertTrue(e1.getFfBool().equals(Optional.empty()));
         assertTrue(e1.getFfDate().equals(Optional.empty()));
@@ -442,11 +441,12 @@ public class TestStaticQueriesWithConstantParameters extends AbstractJslTest {
         assertTrue(!s21.getFfString().equals(Optional.empty()) && s21.getFfString().equals(Optional.of("AAA")));
         assertTrue(!s21.getFfDecimal().equals(Optional.empty()) && s21.getFfDecimal().equals(Optional.of(13.0001)));
         assertTrue(!s21.getFfEnum().equals(Optional.empty()) && s21.getFfEnum().equals(Optional.of(MyEnum.A02)));
-        //assertFalse(snapshot2Dao.getAll().contains(e1));
-        //assertFalse(snapshot2Dao.getAll().contains(e2));
-        //assertTrue(snapshot2Dao.getAll().contains(e3));
-        //assertFalse(snapshot2Dao.getAll().contains(e3));
-        //assertTrue(snapshot2Dao.getAll().contains(e4));
+        assertFalse(snapshot2Dao.queryEntities(s21).execute().contains(e1));
+        assertFalse(snapshot2Dao.queryEntities(s21).execute().contains(e2));
+        assertTrue(snapshot2Dao.queryEntities(s21).execute().contains(e3));
+        assertFalse(snapshot2Dao.queryEntities(s21).execute().contains(e4));
+        assertTrue(snapshot2Dao.queryEntities(s21).execute().contains(e5));
+        
 
         Optional<Snapshot1> s12FromDatabse = snapshot1Dao.getById(s12.get__identifier());
 
@@ -460,7 +460,6 @@ public class TestStaticQueriesWithConstantParameters extends AbstractJslTest {
         assertTrue(s12FromDatabse.orElseThrow().getFfDecimal().equals(Optional.empty()));
         assertTrue(!s12FromDatabse.orElseThrow().getFfEnum().equals(Optional.empty()) && s12.getFfEnum().equals(Optional.of(MyEnum.A02)));
 
-        //assertTrue(lastAddedMyEntityDao.query().execute().contains(e5));
-
+        assertTrue(lastAddedMyEntityDao.query().execute().contains(e5));
     }
 }
