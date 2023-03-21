@@ -62,8 +62,8 @@ entity DefaultOperators {
     field Boolean timeEq = `11:30` == `11:30`;
     field Boolean timeNeq = `11:30` != `11:29`;
 
-    field Boolean timeStampEq = `2020-02-18T09:11:12Z` == `2020-02-18T10:11:12+01:00`;
-    field Boolean timeStampNeq = `2020-02-18T10:11:12Z` != `2020-02-18T00:00:00Z`;
+    field Boolean timestampEq = `2020-02-18T09:11:12Z` == `2020-02-18T10:11:12+01:00`;
+    field Boolean timestampNeq = `2020-02-18T10:11:12Z` != `2020-02-18T00:00:00Z`;
 
     field Boolean stringLt = "abc" < "bcd";
     field Boolean stringLte = "abc" <= "abc";
