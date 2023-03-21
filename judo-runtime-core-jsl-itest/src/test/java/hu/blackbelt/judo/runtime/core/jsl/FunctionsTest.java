@@ -671,14 +671,14 @@ public class FunctionsTest extends AbstractJslTest {
     public void testTimestampAsString() {
         TimestampAsString timestampAsString = timestampAsStringDao.create(TimestampAsString.builder().build());
 
-        assertEquals("2022-03-03T14:00:00", timestampAsString.getTimestamp1AsString().orElseThrow());
+        assertEquals("2022-03-03T14:00", timestampAsString.getTimestamp1AsString().orElseThrow());
         assertEquals("2022-03-03T14:00:00.123", timestampAsString.getTimestamp2AsString().orElseThrow());
-        assertEquals("2022-03-03T13:57:00", timestampAsString.getTimestamp3AsString().orElseThrow());
-        assertEquals("2022-03-03T11:00:00", timestampAsString.getTimestamp4AsString().orElseThrow());
-        assertEquals("2022-03-03T10:57:00", timestampAsString.getTimestamp5AsString().orElseThrow());
-        assertEquals("2022-03-03T14:03:00", timestampAsString.getTimestamp6AsString().orElseThrow());
-        assertEquals("2022-03-03T17:00:00", timestampAsString.getTimestamp7AsString().orElseThrow());
-        assertEquals("2022-03-03T17:03:00", timestampAsString.getTimestamp8AsString().orElseThrow());
+        assertEquals("2022-03-03T13:57", timestampAsString.getTimestamp3AsString().orElseThrow());
+        assertEquals("2022-03-03T11:00", timestampAsString.getTimestamp4AsString().orElseThrow());
+        assertEquals("2022-03-03T10:57", timestampAsString.getTimestamp5AsString().orElseThrow());
+        assertEquals("2022-03-03T14:03", timestampAsString.getTimestamp6AsString().orElseThrow());
+        assertEquals("2022-03-03T17:00", timestampAsString.getTimestamp7AsString().orElseThrow());
+        assertEquals("2022-03-03T17:03", timestampAsString.getTimestamp8AsString().orElseThrow());
         assertEquals("2022-03-03T13:57:00.123", timestampAsString.getTimestamp9AsString().orElseThrow());
         assertEquals("2022-03-03T11:00:00.123", timestampAsString.getTimestamp10AsString().orElseThrow());
         assertEquals("2022-03-03T10:57:00.123", timestampAsString.getTimestamp12AsString().orElseThrow());
@@ -686,14 +686,14 @@ public class FunctionsTest extends AbstractJslTest {
         assertEquals("2022-03-03T17:00:00.123", timestampAsString.getTimestamp14AsString().orElseThrow());
         assertEquals("2022-03-03T17:03:00.123", timestampAsString.getTimestamp15AsString().orElseThrow());
 
-        assertEquals("2022-03-03T14:00:00", timestampAsString.getTimestamp1AsString1().orElseThrow());
+        assertEquals("2022-03-03T14:00", timestampAsString.getTimestamp1AsString1().orElseThrow());
         assertEquals("2022-03-03T14:00:00.123", timestampAsString.getTimestamp2AsString1().orElseThrow());
-        assertEquals("2022-03-03T13:57:00", timestampAsString.getTimestamp3AsString1().orElseThrow());
-        assertEquals("2022-03-03T11:00:00", timestampAsString.getTimestamp4AsString1().orElseThrow());
-        assertEquals("2022-03-03T10:57:00", timestampAsString.getTimestamp5AsString1().orElseThrow());
-        assertEquals("2022-03-03T14:03:00", timestampAsString.getTimestamp6AsString1().orElseThrow());
-        assertEquals("2022-03-03T17:00:00", timestampAsString.getTimestamp7AsString1().orElseThrow());
-        assertEquals("2022-03-03T17:03:00", timestampAsString.getTimestamp8AsString1().orElseThrow());
+        assertEquals("2022-03-03T13:57", timestampAsString.getTimestamp3AsString1().orElseThrow());
+        assertEquals("2022-03-03T11:00", timestampAsString.getTimestamp4AsString1().orElseThrow());
+        assertEquals("2022-03-03T10:57", timestampAsString.getTimestamp5AsString1().orElseThrow());
+        assertEquals("2022-03-03T14:03", timestampAsString.getTimestamp6AsString1().orElseThrow());
+        assertEquals("2022-03-03T17:00", timestampAsString.getTimestamp7AsString1().orElseThrow());
+        assertEquals("2022-03-03T17:03", timestampAsString.getTimestamp8AsString1().orElseThrow());
         assertEquals("2022-03-03T13:57:00.123", timestampAsString.getTimestamp9AsString1().orElseThrow());
         assertEquals("2022-03-03T11:00:00.123", timestampAsString.getTimestamp10AsString1().orElseThrow());
         assertEquals("2022-03-03T10:57:00.123", timestampAsString.getTimestamp12AsString1().orElseThrow());
@@ -702,8 +702,8 @@ public class FunctionsTest extends AbstractJslTest {
         assertEquals("2022-03-03T17:03:00.123", timestampAsString.getTimestamp15AsString1().orElseThrow());
 
         assertEquals(LocalDateTime.of(2022, 9, 29, 0, 0, 0, 0), timestampAsString.getTimestampOfDate().orElseThrow());
-        assertEquals("2022-09-29T00:00:00", timestampAsString.getTimestampOfDateAsString().orElseThrow());
-        assertEquals("2022-09-29T00:00:00", timestampAsString.getTimestampOfDateAsString1().orElseThrow());
+        assertEquals("2022-09-29T00:00", timestampAsString.getTimestampOfDateAsString().orElseThrow());
+        assertEquals("2022-09-29T00:00", timestampAsString.getTimestampOfDateAsString1().orElseThrow());
 
         assertEquals(LocalDateTime.of(2022, 9, 29, 11, 11, 11, 0), timestampAsString.getTimestampOfDateAndTime().orElseThrow());
         assertEquals("2022-09-29T11:11:11", timestampAsString.getTimestampOfDateAndTimeAsString().orElseThrow());
