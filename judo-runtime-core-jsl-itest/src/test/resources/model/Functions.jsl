@@ -350,8 +350,10 @@ entity TimestampFunctions {
 
     derived Date dateOfTimestampWithDate => Timestamp!of(date = `2022-09-29`)!date();
     derived Date dateOfTimestampWithDateAndTime => Timestamp!of(date = `2022-09-29`, time = `11:11:11`)!date();
+    derived Date dateOfTimestampSelf => self.timestamp2!date();
     derived Time timeOfTimestampWithDate => Timestamp!of(date = `2022-09-29`)!time();
     derived Time timeOfTimestampWithDateAndTime => Timestamp!of(date = `2022-09-29`, time =`11:11:11`)!time();
+    derived Time timeOfTimestampSelf => self.timestamp2!time();
 
     derived Integer asMilliseconds => Timestamp!of(date = `2022-09-29`)!asMilliseconds();
     derived Integer asMilliseconds2 => Timestamp!of(date = `2022-09-29`, time = `11:11:11`)!asMilliseconds();

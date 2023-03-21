@@ -558,44 +558,6 @@ public class FunctionsTest extends AbstractJslTest {
         assertEquals(LocalTime.ofNanoOfDay(999_999_000_000L), time.getTimeFromMillisecondOfConstant().orElseThrow());
     }
 
-    /**
-     * This test checks the Timestamp built in functions.
-     * 
-     * @prerequisites Nothing
-     * 
-     * @type Behavior
-     * 
-     * @jslModel Functions.jsl
-     * 
-     * @scenario
-     *  . Parse (and/or build) the model.
-     *  
-     *  . The result of the model parsing (and/or building) is successful.
-     *  
-     *  . Create a TimestampFunctions entity instance (timestampFunctions) with the default values.
-     *  
-     *  . Check the values of the following fields of the new entity instance (timestampFunctions).
-     *  
-     *      * timestampOfDate == `2022-09-29T00:00:00Z`
-     *      * timestampOfDateAndTime == `2022-09-29T11:11:11Z`
-     *      * dateOfTimestampWithDate == `2022-09-29`
-     *      * dateOfTimestampWithDateAndTime == `2022-09-29`
-     *      * timeOfTimestampWithDate == `00:00:00`
-     *      * timeOfTimestampWithDateAndTime == `11:11:11`
-     *      * asMilliseconds == 1664409600000
-     *      * asMilliseconds2 == 1664449871000
-     *      * fromMilliseconds == `2022-09-29T11:11:11Z`
-     *      * plusAll == `2023-10-30T12:12:12,001`
-     *      * plusDate == `2023-10-30T11:11:11Z`
-     *      * plusAllReversed == `2023-10-30T12:12:12,001
-     *      * plusDateReversed == `2023-10-30T11:11:11Z`
-     *      * plusMilliseconds == `2022-09-29T11:11:11,001Z`
-     *      * minusAll == `2021-08-28T10:10:9,999Z`
-     *      * minusDate == `2021-08-28T11:11:11Z`
-     *      * minusAllReversed == `2021-08-28T10:10:9,999Z`
-     *      * minusDateReversed == `2021-08-28T11:11:11Z`
-     *      * minusMilliseconds == `2022-09-29T11:11:10,999Z`
-     */
     @Test
     @TestCase("TC023")
     @Requirement(reqs = {
@@ -614,8 +576,10 @@ public class FunctionsTest extends AbstractJslTest {
 
         assertEquals(LocalDate.of(2022, 9, 29), timestampFunctions.getDateOfTimestampWithDate().orElseThrow());
         assertEquals(LocalDate.of(2022, 9, 29), timestampFunctions.getDateOfTimestampWithDateAndTime().orElseThrow());
+        assertEquals(LocalDate.of(2019, 7, 18), timestampFunctions.getDateOfTimestampSelf().orElseThrow());
         assertEquals(LocalTime.of(0, 0, 0), timestampFunctions.getTimeOfTimestampWithDate().orElseThrow());
         assertEquals(LocalTime.of(11, 11, 11), timestampFunctions.getTimeOfTimestampWithDateAndTime().orElseThrow());
+        assertEquals(LocalTime.of(1, 11, 12), timestampFunctions.getTimeOfTimestampSelf().orElseThrow());
 
         assertEquals(1664409600000L, timestampFunctions.getAsMilliseconds().orElseThrow());
         assertEquals(1664449871000L, timestampFunctions.getAsMilliseconds2().orElseThrow());
@@ -639,25 +603,6 @@ public class FunctionsTest extends AbstractJslTest {
         assertEquals(LocalDateTime.of(2022, 9, 29, 11, 11, 10, 999000000), timestampFunctions.getMinusMilliseconds().orElseThrow());
     }
 
-    /**
-     * This test checks the Timestamp's asString function.
-     *
-     * @prerequisites Nothing
-     *
-     * @type Behavior
-     *
-     * @jslModel Functions.jsl
-     *
-     * @scenario
-     *  . Parse (and/or build) the model.
-     *
-     *  . The result of the model parsing (and/or building) is successful.
-     *
-     *  . Create a TimestampAsString entity instance (timestampAsString) with the default values.
-     *
-     *  . Check the values of the fields of the new entity instance (timestampFunctions).
-     *
-     */
     @Test
     @TestCase("TC023")
     @Requirement(reqs = {
