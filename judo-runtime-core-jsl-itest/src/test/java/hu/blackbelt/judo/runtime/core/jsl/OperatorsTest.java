@@ -120,8 +120,8 @@ public class OperatorsTest extends AbstractJslTest {
         assertEquals(Optional.of(true), operators.getTimeEq());
         assertEquals(Optional.of(true), operators.getTimeNeq());
 
-        assertEquals(Optional.of(true), operators.getTimeStampEq());
-        assertEquals(Optional.of(true), operators.getTimeStampNeq());
+        assertEquals(Optional.of(true), operators.getTimestampEq());
+        assertEquals(Optional.of(true), operators.getTimestampNeq());
 
         assertEquals(Optional.of(true), operators.getStringLt());
         assertEquals(Optional.of(true), operators.getStringLte());
