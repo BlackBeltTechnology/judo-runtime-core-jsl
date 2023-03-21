@@ -274,24 +274,71 @@ entity DateFunctions {
 }
 
 entity TimeFunctions {
-    field Time `time` = `23:15:59`;
+    field Time timeHM = `12:34`;
+    field Time timeHMS = `12:34:56`;
+    field Time timeHMSF = `12:34:56.789`;
 
     field Time undefinedTime;
-    field Integer undefinedInteger;
+    field Integer undefinedNumber;
+    field Integer number;
 
-    derived String ownTimeAsString => self.`time`!asString();
-    derived String timeAsString => `23:15:59`!asString();
-    derived Integer hour => `23:15:59`!hour();
-    derived Integer minute => `23:15:59`!minute();
-    derived Integer second => `23:15:59`!second();
-    derived Time of => Time!of(hour = 13, minute = 45, second = 0);
+    // self
+    derived String selfTimeHMAsString => self.timeHM!asString();
+    derived Integer selfTimeHMHour => self.timeHM!hour();
+    derived Integer selfTimeHMMinute => self.timeHM!minute();
+    derived Integer selfTimeHMSecond => self.timeHM!second();
+    derived Integer selfTimeHMMillisecond => self.timeHM!millisecond();
+    derived Integer selfTimeHMAsMillisecond => self.timeHM!asMilliseconds();
 
-    derived Time timeFromSeconds => Time!fromSeconds(seconds = 40271);
-    derived Integer timeAsSeconds => Time!fromSeconds(seconds = 40271)!asSeconds();
-    derived Integer timeAsSeconds1 => `11:11:11`!asSeconds();
+    derived String selfTimeHMSAsString => self.timeHMS!asString();
+    derived Integer selfTimeHMSHour => self.timeHMS!hour();
+    derived Integer selfTimeHMSMinute => self.timeHMS!minute();
+    derived Integer selfTimeHMSSecond => self.timeHMS!second();
+    derived Integer selfTimeHMSMillisecond => self.timeHMS!millisecond();
+    derived Integer selfTimeHMSAsMillisecond => self.timeHMS!asMilliseconds();
 
-    derived Time undefinedFromSeconds => Time!fromSeconds(seconds = self.undefinedInteger);
-    derived Integer undefinedAsSeconds => self.undefinedTime!asSeconds();
+    derived String selfTimeHMSFAsString => self.timeHMSF!asString();
+    derived Integer selfTimeHMSFHour => self.timeHMSF!hour();
+    derived Integer selfTimeHMSFMinute => self.timeHMSF!minute();
+    derived Integer selfTimeHMSFSecond => self.timeHMSF!second();
+    derived Integer selfTimeHMSFMillisecond => self.timeHMSF!millisecond();
+    derived Integer selfTimeHMSFAsMillisecond => self.timeHMSF!asMilliseconds();
+
+    // undefined
+    derived String selfUndefinedTimeAsString => self.undefinedTime!asString();
+    derived Integer selfUndefinedTimeHour => self.undefinedTime!hour();
+    derived Integer selfUndefinedTimeMinute => self.undefinedTime!minute();
+    derived Integer selfUndefinedTimeSecond => self.undefinedTime!second();
+    derived Integer selfUndefinedTimeMillisecond => self.undefinedTime!millisecond();
+    derived Integer selfUndefinedTimeAsMillisecond => self.undefinedTime!asMilliseconds();
+
+    // constant
+    derived String timeConstantHMAsString => `12:34`!asString();
+    derived Integer timeConstantHMHour => `12:34`!hour();
+    derived Integer timeConstantHMMinute => `12:34`!minute();
+    derived Integer timeConstantHMSecond => `12:34`!second();
+    derived Integer timeConstantHMMillisecond => `12:34`!millisecond();
+    derived Integer timeConstantHMAsMillisecond => `12:34`!asMilliseconds();
+    
+    derived String timeConstantHMSAsString => `12:34:56`!asString();
+    derived Integer timeConstantHMSHour => `12:34:56`!hour();
+    derived Integer timeConstantHMSMinute => `12:34:56`!minute();
+    derived Integer timeConstantHMSSecond => `12:34:56`!second();
+    derived Integer timeConstantHMSMillisecond => `12:34:56`!millisecond();
+    derived Integer timeConstantHMSAsMillisecond => `12:34:56`!asMilliseconds();
+    
+    derived String timeConstantHMSFAsString => `12:34:56.789`!asString();
+    derived Integer timeConstantHMSFHour => `12:34:56.789`!hour();
+    derived Integer timeConstantHMSFMinute => `12:34:56.789`!minute();
+    derived Integer timeConstantHMSFSecond => `12:34:56.789`!second();
+    derived Integer timeConstantHMSFMillisecond => `12:34:56.789`!millisecond();
+    derived Integer timeConstantHMSFAsMillisecond => `12:34:56.789`!asMilliseconds();
+
+    // from millisecond
+    derived Time timeFromMillisecondOfUndefined => Time!fromMilliseconds(milliseconds = self.undefinedNumber);
+    derived Time timeFromMillisecondOfSelfNumber => Time!fromMilliseconds(milliseconds = self.number);
+    derived Time timeFromMillisecondOfConstant => Time!fromMilliseconds(milliseconds = 999999);
+
 }
 
 entity TimestampFunctions {

@@ -75,6 +75,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
 
 import java.time.*;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE_TIME;
@@ -492,21 +493,69 @@ public class FunctionsTest extends AbstractJslTest {
             "REQ-EXPR-017"
     })
     public void testTime() {
-        TimeFunctions time = timeFunctionsDao.create(TimeFunctions.builder().build());
+        LocalTime timeHM = LocalTime.parse("12:34");
+        LocalTime timeHMS = LocalTime.parse("12:34:56");
+        LocalTime timeHMSF = LocalTime.parse("12:34:56.789");
+        TimeFunctions time =
+                timeFunctionsDao.create(TimeFunctions.builder()
+                                                     .withTimeHM(timeHM)
+                                                     .withTimeHMS(timeHMS)
+                                                     .withTimeHMSF(timeHMSF)
+                                                     .withNumber(timeHMSF.toNanoOfDay() / 1_000_000)
+                                                     .build());
 
-        assertEquals(Optional.of("23:15:59"), time.getOwnTimeAsString());
-        assertEquals(Optional.of("23:15:59"), time.getTimeAsString());
-        assertEquals(Optional.of(23L), time.getHour());
-        assertEquals(Optional.of(15L), time.getMinute());
-        assertEquals(Optional.of(59L), time.getSecond());
-        assertEquals(LocalTime.of(13, 45, 0), time.getOf().orElseThrow());
+        assertEquals("12:34", time.getSelfTimeHMAsString().orElseThrow());
+        assertEquals(12, time.getSelfTimeHMHour().orElseThrow());
+        assertEquals(34, time.getSelfTimeHMMinute().orElseThrow());
+        assertEquals(0, time.getSelfTimeHMSecond().orElseThrow());
+        assertEquals(0, time.getSelfTimeHMMillisecond().orElseThrow());
+        assertEquals(timeHM.toNanoOfDay() / 1_000_000, time.getSelfTimeHMAsMillisecond().orElseThrow());
 
-        assertEquals(LocalTime.of(11, 11, 11), time.getTimeFromSeconds().orElseThrow());
-        assertEquals(40271L, time.getTimeAsSeconds().orElseThrow());
-        assertEquals(40271L, time.getTimeAsSeconds1().orElseThrow());
+        assertEquals("12:34:56", time.getSelfTimeHMSAsString().orElseThrow());
+        assertEquals(12, time.getSelfTimeHMSHour().orElseThrow());
+        assertEquals(34, time.getSelfTimeHMSMinute().orElseThrow());
+        assertEquals(56, time.getSelfTimeHMSSecond().orElseThrow());
+        assertEquals(0, time.getSelfTimeHMSMillisecond().orElseThrow());
+        assertEquals(timeHMS.toNanoOfDay() / 1_000_000, time.getSelfTimeHMSAsMillisecond().orElseThrow());
 
-        assertTrue(time.getUndefinedFromSeconds().isEmpty());
-        assertTrue(time.getUndefinedAsSeconds().isEmpty());
+        assertEquals("12:34:56.789", time.getSelfTimeHMSFAsString().orElseThrow());
+        assertEquals(12, time.getSelfTimeHMSFHour().orElseThrow());
+        assertEquals(34, time.getSelfTimeHMSFMinute().orElseThrow());
+        assertEquals(56, time.getSelfTimeHMSFSecond().orElseThrow());
+        assertEquals(789, time.getSelfTimeHMSFMillisecond().orElseThrow());
+        assertEquals(timeHMSF.toNanoOfDay() / 1_000_000, time.getSelfTimeHMSFAsMillisecond().orElseThrow());
+
+        assertTrue(time.getSelfUndefinedTimeAsString().isEmpty());
+        assertTrue(time.getSelfUndefinedTimeHour().isEmpty());
+        assertTrue(time.getSelfUndefinedTimeMinute().isEmpty());
+        assertTrue(time.getSelfUndefinedTimeSecond().isEmpty());
+        assertTrue(time.getSelfUndefinedTimeMillisecond().isEmpty());
+        assertTrue(time.getSelfUndefinedTimeAsMillisecond().isEmpty());
+
+        assertEquals("12:34", time.getTimeConstantHMAsString().orElseThrow());
+        assertEquals(12, time.getTimeConstantHMHour().orElseThrow());
+        assertEquals(34, time.getTimeConstantHMMinute().orElseThrow());
+        assertEquals(0, time.getTimeConstantHMSecond().orElseThrow());
+        assertEquals(0, time.getTimeConstantHMMillisecond().orElseThrow());
+        assertEquals(timeHM.toNanoOfDay() / 1_000_000, time.getTimeConstantHMAsMillisecond().orElseThrow());
+
+        assertEquals("12:34:56", time.getTimeConstantHMSAsString().orElseThrow());
+        assertEquals(12, time.getTimeConstantHMSHour().orElseThrow());
+        assertEquals(34, time.getTimeConstantHMSMinute().orElseThrow());
+        assertEquals(56, time.getTimeConstantHMSSecond().orElseThrow());
+        assertEquals(0, time.getTimeConstantHMSMillisecond().orElseThrow());
+        assertEquals(timeHMS.toNanoOfDay() / 1_000_000, time.getTimeConstantHMSAsMillisecond().orElseThrow());
+
+        assertEquals("12:34:56.789", time.getTimeConstantHMSFAsString().orElseThrow());
+        assertEquals(12, time.getTimeConstantHMSFHour().orElseThrow());
+        assertEquals(34, time.getTimeConstantHMSFMinute().orElseThrow());
+        assertEquals(56, time.getTimeConstantHMSFSecond().orElseThrow());
+        assertEquals(789, time.getTimeConstantHMSFMillisecond().orElseThrow());
+        assertEquals(timeHMSF.toNanoOfDay() / 1_000_000, time.getTimeConstantHMSFAsMillisecond().orElseThrow());
+
+        assertTrue(time.getTimeFromMillisecondOfUndefined().isEmpty());
+        assertEquals(timeHMSF, time.getTimeFromMillisecondOfSelfNumber().orElseThrow());
+        assertEquals(LocalTime.ofNanoOfDay(999_999_000_000L), time.getTimeFromMillisecondOfConstant().orElseThrow());
     }
 
     /**
