@@ -35,9 +35,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.OffsetDateTime;
+import java.time.*;
 import java.util.List;
 import java.util.Optional;
 
@@ -63,7 +61,7 @@ public class PrimitiveFunctionsTest extends AbstractJslTest {
                 .withRegexAttr("+36 333-333-3333")
                 .withBoolAttr(true)
                 .withDateAttr(LocalDate.of(2022, 7, 11))
-                .withTimestampAttr(OffsetDateTime.parse("2022-07-11T19:09:33Z"))
+                .withTimestampAttr(LocalDateTime.parse("2022-07-11T19:09:33"))
                 .withTimeAttr(LocalTime.parse("23:59:59"))
                 .withBinaryAttr(FileType.builder().fileName("test.txt").build())
                 .withEnumAttr(MyEnum.Bombastic)
@@ -76,7 +74,7 @@ public class PrimitiveFunctionsTest extends AbstractJslTest {
                 .withRegexAttr("+36 333-333-3331")
                 .withBoolAttr(false)
                 .withDateAttr(LocalDate.of(1999, 9, 19))
-                .withTimestampAttr(OffsetDateTime.parse("1999-09-19T09:09:09Z"))
+                .withTimestampAttr(LocalDateTime.parse("1999-09-19T09:09:09"))
                 .withTimeAttr(LocalTime.parse("12:34:56"))
                 .withBinaryAttr(FileType.builder().fileName("test.txt").build())
                 .withEnumAttr(MyEnum.Atomic)
