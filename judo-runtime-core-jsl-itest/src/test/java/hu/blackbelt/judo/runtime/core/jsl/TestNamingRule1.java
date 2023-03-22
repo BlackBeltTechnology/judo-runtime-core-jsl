@@ -7,16 +7,16 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mmodeltc021.mmodeltc021.aent.AEnt;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mmodeltc021.mmodeltc021.aent.AEntDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mmodeltc021.mmodeltc021.xenum.xEnum;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mmodeltc021.mmodeltc021.aaent.AaEnt;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mmodeltc021.mmodeltc021.aaent.AaEntDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mmodeltc021.mmodeltc021.xxenum.xxEnum;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.MModelTC021DaoModules;
 
 
 public class TestNamingRule1 extends AbstractJslTest {
 
     @Inject
-    AEntDao aEntDao;
+    AaEntDao aaEntDao;
     
     @Override
     public Module getModelDaoModule() {
@@ -69,15 +69,15 @@ public class TestNamingRule1 extends AbstractJslTest {
             "REQ-EXPR-001"
     })
     public void testNamingRule() {
-        AEnt ae = aEntDao.create(
-                AEnt
+        AaEnt ae = aaEntDao.create(
+                AaEnt
                 .builder()
                 .build()
         );
         
         assertTrue(ae.getFfBool().orElseThrow());
         assertEquals("abc", ae.getSsS99().orElseThrow());
-        assertEquals(xEnum.xB1, ae.getZzEnum().orElseThrow());
+        assertEquals(xxEnum.xxB1, ae.getZzEnum().orElseThrow());
     }
 
 }

@@ -2,15 +2,15 @@ model mModelTC021;
 
 import judo::types;
 
-type string sType(min-size = 0, max-size = 10);
+type string ssType(min-size = 0, max-size = 10);
 
-enum xEnum {
-    xA0 = 0;
-    xB1 = 1;
+enum xxEnum {
+    xxA0 = 0;
+    xxB1 = 1;
 }
 
-entity aEnt {
+entity aaEnt {
     field Boolean ffBool = true;
-    field sType   ssS99  = "abc";
-    field xEnum   zzEnum = xEnum#xB1;
+    field ssType   ssS99  = "abc";
+    field xxEnum   zzEnum = xxEnum#xxB1;
 }
