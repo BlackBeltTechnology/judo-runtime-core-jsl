@@ -304,7 +304,7 @@ public class FunctionsTest extends AbstractJslTest {
         String parenthizedAsString = str.getParenthizedAsString().orElseThrow();
         assertEquals("26", parenthizedAsString);
     }
-    
+
 
     @Test
     @Requirement(reqs = {
@@ -394,62 +394,62 @@ public class FunctionsTest extends AbstractJslTest {
             "REQ-TYPE-006"
     })
     public void testKleene() {
-    	Kleene kleene = kleeneDao.create(Kleene.builder().build());
+        Kleene kleene = kleeneDao.create(Kleene.builder().build());
 
-    	/*
-    	|=============================================================================================
-    	|`p`            |`q`            |`p or q`       |`p and q`      |`p xor q`      |`p implies q`
-    	|`true`	        |`true`	        |`true` 	    |`true`	        |`false`        |`true`
-    	|`true`	        |`false`	    |`true`         |`false`	    |`true`         |`false`
-    	|`true`	        |`undefined`	|`true`	        |`undefined`	|`undefined`    |`undefined`
-    	|`false`	    |`true`	        |`true`	        |`false`	    |`true`         |`true`
-    	|`false`	    |`false`	    |`false`	    |`false`	    |`false`        |`true`
-    	|`false`	    |`undefined`	|`undefined`	|`false`	    |`undefined`    |`true`
-    	|`undefined`	|`true`	        |`true`	        |`undefined`	|`undefined`    |`true`
-    	|`undefined`	|`false`	    |`undefined`	|`false`	    |`undefined`    |`undefined`
-    	|`undefined`	|`undefined`	|`undefined`	|`undefined`	|`undefined`    |`undefined`
-    	|=============================================================================================
-    		*/
+        /*
+        |=============================================================================================
+        |`p`            |`q`            |`p or q`       |`p and q`      |`p xor q`      |`p implies q`
+        |`true`            |`true`            |`true`         |`true`            |`false`        |`true`
+        |`true`            |`false`        |`true`         |`false`        |`true`         |`false`
+        |`true`            |`undefined`    |`true`            |`undefined`    |`undefined`    |`undefined`
+        |`false`        |`true`            |`true`            |`false`        |`true`         |`true`
+        |`false`        |`false`        |`false`        |`false`        |`false`        |`true`
+        |`false`        |`undefined`    |`undefined`    |`false`        |`undefined`    |`true`
+        |`undefined`    |`true`            |`true`            |`undefined`    |`undefined`    |`true`
+        |`undefined`    |`false`        |`undefined`    |`false`        |`undefined`    |`undefined`
+        |`undefined`    |`undefined`    |`undefined`    |`undefined`    |`undefined`    |`undefined`
+        |=============================================================================================
+            */
 
-	   	assertEquals(Optional.of(true), kleene.getTrueOrTrue());
-	   	assertEquals(Optional.of(true), kleene.getTrueOrFalse());
-	   	assertEquals(Optional.of(true), kleene.getTrueOrUndefined());
-	   	assertEquals(Optional.of(true), kleene.getFalseOrTrue());
-	   	assertEquals(Optional.of(false), kleene.getFalseOrFalse());
-	   	assertEquals(Optional.empty(), kleene.getFalseOrUndefined());
-	   	assertEquals(Optional.of(true), kleene.getUndefinedOrTrue());
-	   	assertEquals(Optional.empty(), kleene.getUndefinedOrFalse());
-	   	assertEquals(Optional.empty(), kleene.getUndefinedOrUndefined());
+           assertEquals(Optional.of(true), kleene.getTrueOrTrue());
+           assertEquals(Optional.of(true), kleene.getTrueOrFalse());
+           assertEquals(Optional.of(true), kleene.getTrueOrUndefined());
+           assertEquals(Optional.of(true), kleene.getFalseOrTrue());
+           assertEquals(Optional.of(false), kleene.getFalseOrFalse());
+           assertEquals(Optional.empty(), kleene.getFalseOrUndefined());
+           assertEquals(Optional.of(true), kleene.getUndefinedOrTrue());
+           assertEquals(Optional.empty(), kleene.getUndefinedOrFalse());
+           assertEquals(Optional.empty(), kleene.getUndefinedOrUndefined());
 
-	   	assertEquals(Optional.of(true), kleene.getTrueAndTrue());
-	   	assertEquals(Optional.of(false), kleene.getTrueAndFalse());
-	   	assertEquals(Optional.empty(), kleene.getTrueAndUndefined());
-	   	assertEquals(Optional.of(false), kleene.getFalseAndTrue());
-	   	assertEquals(Optional.of(false), kleene.getFalseAndFalse());
-	   	assertEquals(Optional.of(false), kleene.getFalseAndUndefined());
-	   	assertEquals(Optional.empty(), kleene.getUndefinedAndTrue());
-	   	assertEquals(Optional.of(false), kleene.getUndefinedAndFalse());
-	   	assertEquals(Optional.empty(), kleene.getUndefinedAndUndefined());
+           assertEquals(Optional.of(true), kleene.getTrueAndTrue());
+           assertEquals(Optional.of(false), kleene.getTrueAndFalse());
+           assertEquals(Optional.empty(), kleene.getTrueAndUndefined());
+           assertEquals(Optional.of(false), kleene.getFalseAndTrue());
+           assertEquals(Optional.of(false), kleene.getFalseAndFalse());
+           assertEquals(Optional.of(false), kleene.getFalseAndUndefined());
+           assertEquals(Optional.empty(), kleene.getUndefinedAndTrue());
+           assertEquals(Optional.of(false), kleene.getUndefinedAndFalse());
+           assertEquals(Optional.empty(), kleene.getUndefinedAndUndefined());
 
-	   	assertEquals(Optional.of(false), kleene.getTrueXorTrue());
-	   	assertEquals(Optional.of(true), kleene.getTrueXorFalse());
-	   	assertEquals(Optional.empty(), kleene.getTrueXorUndefined());
-	   	assertEquals(Optional.of(true), kleene.getFalseXorTrue());
-	   	assertEquals(Optional.of(false), kleene.getFalseXorFalse());
-	   	assertEquals(Optional.empty(), kleene.getFalseXorUndefined());
-	   	assertEquals(Optional.empty(), kleene.getUndefinedXorTrue());
-	   	assertEquals(Optional.empty(), kleene.getUndefinedXorFalse());
-	   	assertEquals(Optional.empty(), kleene.getUndefinedXorUndefined());
+           assertEquals(Optional.of(false), kleene.getTrueXorTrue());
+           assertEquals(Optional.of(true), kleene.getTrueXorFalse());
+           assertEquals(Optional.empty(), kleene.getTrueXorUndefined());
+           assertEquals(Optional.of(true), kleene.getFalseXorTrue());
+           assertEquals(Optional.of(false), kleene.getFalseXorFalse());
+           assertEquals(Optional.empty(), kleene.getFalseXorUndefined());
+           assertEquals(Optional.empty(), kleene.getUndefinedXorTrue());
+           assertEquals(Optional.empty(), kleene.getUndefinedXorFalse());
+           assertEquals(Optional.empty(), kleene.getUndefinedXorUndefined());
 
-	   	assertEquals(Optional.of(true), kleene.getTrueImpliesTrue());
-	   	assertEquals(Optional.of(false), kleene.getTrueImpliesFalse());
-	   	assertEquals(Optional.empty(), kleene.getTrueImpliesUndefined());
-	   	assertEquals(Optional.of(true), kleene.getFalseImpliesTrue());
-	   	assertEquals(Optional.of(true), kleene.getFalseImpliesFalse());
-	   	assertEquals(Optional.of(true), kleene.getFalseImpliesUndefined());
-	   	assertEquals(Optional.of(true), kleene.getUndefinedImpliesTrue());
-	   	assertEquals(Optional.empty(), kleene.getUndefinedImpliesFalse());
-	   	assertEquals(Optional.empty(), kleene.getUndefinedImpliesUndefined());
+           assertEquals(Optional.of(true), kleene.getTrueImpliesTrue());
+           assertEquals(Optional.of(false), kleene.getTrueImpliesFalse());
+           assertEquals(Optional.empty(), kleene.getTrueImpliesUndefined());
+           assertEquals(Optional.of(true), kleene.getFalseImpliesTrue());
+           assertEquals(Optional.of(true), kleene.getFalseImpliesFalse());
+           assertEquals(Optional.of(true), kleene.getFalseImpliesUndefined());
+           assertEquals(Optional.of(true), kleene.getUndefinedImpliesTrue());
+           assertEquals(Optional.empty(), kleene.getUndefinedImpliesFalse());
+           assertEquals(Optional.empty(), kleene.getUndefinedImpliesUndefined());
     }
 
     @Test
@@ -576,7 +576,7 @@ public class FunctionsTest extends AbstractJslTest {
         InstanceFunctions instanceFunctions1 = instanceFunctionsDao.create(InstanceFunctions.builder()
                         .withParent(parentDao.getById(child1.get__identifier()).orElseThrow())
                         .build());
-               
+
         assertTrue(instanceFunctions.getTypeOfParent().get());
         assertFalse(instanceFunctions.getKindOfChild().get());
         assertTrue(instanceFunctions.getKindOfParent().get());
@@ -588,9 +588,9 @@ public class FunctionsTest extends AbstractJslTest {
         assertEquals("Erika Young", childName);
 
         instanceFunctionsDao.addParents(instanceFunctions, ImmutableList.of(parent1));
-        
+
         instanceFunctions = instanceFunctionsDao.getById(instanceFunctions.get__identifier()).orElseThrow();
-        
+
         assertEquals(10, instanceFunctions.getNavigationWithCalls().get());
 
         InstanceFunctions instanceFunctions2 = instanceFunctionsDao.create(InstanceFunctions.builder()
@@ -871,11 +871,11 @@ public class FunctionsTest extends AbstractJslTest {
 
     @Test
     public void testFirst() {
-    	Simple s1 = simpleDao.create(Simple.builder().withStringAttr("A").build());
-    	Simple s2 = simpleDao.create(Simple.builder().withStringAttr("a").build());
-    	Simple s3 = simpleDao.create(Simple.builder().withStringAttr("b").build());
-    	s1 = simpleDao.update(s1);
-    	assertEquals(Optional.of(Long.valueOf(1)), s1.getFirstNum());
+        Simple s1 = simpleDao.create(Simple.builder().withStringAttr("A").build());
+        Simple s2 = simpleDao.create(Simple.builder().withStringAttr("a").build());
+        Simple s3 = simpleDao.create(Simple.builder().withStringAttr("b").build());
+        s1 = simpleDao.update(s1);
+        assertEquals(Optional.of(Long.valueOf(1)), s1.getFirstNum());
     }
 
 }
