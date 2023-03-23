@@ -504,6 +504,14 @@ public class FunctionsTest extends AbstractJslTest {
                                                      .withNumber(timeHMSF.toNanoOfDay() / 1_000_000)
                                                      .build());
 
+        assertEquals(timeHM, time.getTimeHM().orElseThrow());
+        assertEquals(timeHM, time.getTimeHM1().orElseThrow());
+        assertEquals(timeHMS, time.getTimeHMS().orElseThrow());
+        assertEquals(timeHMS, time.getTimeHMS1().orElseThrow());
+        assertEquals(timeHMSF, time.getTimeHMSF().orElseThrow());
+        assertEquals(timeHMSF, time.getTimeHMSF1().orElseThrow());
+        assertEquals(timeHMSF.withSecond(0), time.getTimeHMSF2().orElseThrow());
+
         assertEquals("12:34", time.getSelfTimeHMAsString().orElseThrow());
         assertEquals(12, time.getSelfTimeHMHour().orElseThrow());
         assertEquals(34, time.getSelfTimeHMMinute().orElseThrow());

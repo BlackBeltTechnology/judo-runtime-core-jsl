@@ -275,8 +275,12 @@ entity DateFunctions {
 
 entity TimeFunctions {
     field Time timeHM = `12:34`;
+    field Time timeHM1 = Time!of(hour = 12, minute = 34);
     field Time timeHMS = `12:34:56`;
+    field Time timeHMS1 = Time!of(hour = 12, minute = 34, second = 56);
     field Time timeHMSF = `12:34:56.789`;
+    field Time timeHMSF1 = Time!of(hour = 12, minute = 34, second = 56, millisecond = 789);
+    field Time timeHMSF2 = Time!of(hour = 12, minute = 34, millisecond = 789);
 
     field Time undefinedTime;
     field Integer undefinedNumber;
