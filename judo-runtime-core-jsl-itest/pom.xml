@@ -380,20 +380,6 @@
                         </configuration>
                     </execution>
                     
-                    <execution>
-                        <id>execute-psm-test-model-from-artifact-modelTC022</id>
-                        <phase>generate-test-sources</phase>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <psm>
-                                ${basedir}/target/generated-test-sources/model/modelTC022-psm.model
-                            </psm>
-                            <destination>${basedir}/target/generated-test-sources/sdk-core/modelTC022</destination>
-                        </configuration>
-                    </execution>
-                    
                 </executions>
             </plugin>
 
