@@ -9,13 +9,13 @@ package hu.blackbelt.judo.runtime.core.jsl.spring;
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
- * 
+ *
  * This Source Code may also be made available under the following Secondary
  * Licenses when the conditions for such availability set forth in the Eclipse
  * Public License, v. 2.0 are satisfied: GNU General Public License, version 2
  * with the GNU Classpath Exception which is
  * available at https://www.gnu.org/software/classpath/license.html.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  * #L%
  */
@@ -57,150 +57,150 @@ import static org.junit.jupiter.api.Assertions.*;
 @Slf4j
 class JudoRuntimeCoreSpringApplicationTests {
 
-	@Autowired
-	PlatformTransactionManager transactionManager;
+    @Autowired
+    PlatformTransactionManager transactionManager;
 
-	@Autowired
-	PersonDao personDao;
+    @Autowired
+    PersonDao personDao;
 
-	@Autowired
-	SalesPersonDao salesPersonDao;
+    @Autowired
+    SalesPersonDao salesPersonDao;
 
-	@Autowired
-	LeadDao leadDao;
+    @Autowired
+    LeadDao leadDao;
 
-	@Autowired
-	RootAllLeadsDao rootAllLeadsDao;
+    @Autowired
+    RootAllLeadsDao rootAllLeadsDao;
 
-	@Autowired
-	RootOneLeadDao rootOneLeadDao;
+    @Autowired
+    RootOneLeadDao rootOneLeadDao;
 
-	@Autowired
-	TotalNumberOfLeadsDao totalNumberOfLeadsDao;
-
-
-	@Test
-	void testDaoFunctions() {
-
-		SalesPerson createdSalesPerson = salesPersonDao.create(SalesPerson.builder()
-				.withFirstName("Test")
-				.withLastName("Elek")
-				.build());
-
-		assertEquals(Optional.of("Test"), createdSalesPerson.getFirstName());
-		assertEquals(Optional.of("Elek"), createdSalesPerson.getLastName());
-
-		List<SalesPerson> personList = salesPersonDao.query()
-				.filterByFirstName(StringFilter.equalTo("Test"))
-				.execute();
-
-		assertEquals(1, personList.size());
-
-		Lead lead1 = leadDao.create(Lead.builder().build(),
-				LeadAttachedRelationsForCreate.builder()
-						.withSalesPerson(createdSalesPerson)
-						.build());
-
-		assertEquals(Optional.of(100000), lead1.getValue());
-		assertEquals(Optional.of("Test"), leadDao.querySalesPerson(lead1).getFirstName());
-
-		Lead lead2 = leadDao.create(
-				Lead.builder()
-						.withValue(9)
-						.build(),
-				LeadAttachedRelationsForCreate.builder()
-						.withSalesPerson(createdSalesPerson)
-						.build()
-				);
-		assertEquals(Optional.of(9), lead2.getValue());
-		assertEquals(Optional.of("Test"), leadDao.querySalesPerson(lead2).getFirstName());
-
-		List<Lead> leadListOfQuery = salesPersonDao
-				.queryLeadsOver(createdSalesPerson, LeadsOverParameter.builder()
-						.withLimit(10)
-						.build())
-				.execute();
-		assertEquals(1, leadListOfQuery.size());
-		assertEquals(Optional.of(100000), leadListOfQuery.get(0).getValue());
-
-		leadListOfQuery = salesPersonDao
-				.queryLeads(createdSalesPerson)
-				.filterByValue(NumberFilter.equalTo(100000))
-				.execute();
-		assertEquals(1, leadListOfQuery.size());
-		assertEquals(Optional.of(100000), leadListOfQuery.get(0).getValue());
-
-		assertEquals(2, totalNumberOfLeadsDao.execute());
-		assertEquals(2, rootAllLeadsDao.query().execute().size());
-		assertNotNull(rootOneLeadDao.query().execute());
-	}
+    @Autowired
+    TotalNumberOfLeadsDao totalNumberOfLeadsDao;
 
 
-	@Test
-	void testManualTransactionManagementRollback()  {
-		assertFalse(TransactionSynchronizationManager.isActualTransactionActive());
+    @Test
+    void testDaoFunctions() {
 
-		DefaultTransactionDefinition defaultTransactionDefinition = new DefaultTransactionDefinition();
-		TransactionStatus transactionStatus = transactionManager.getTransaction(defaultTransactionDefinition);
+        SalesPerson createdSalesPerson = salesPersonDao.create(SalesPerson.builder()
+                .withFirstName("Test")
+                .withLastName("Elek")
+                .build());
 
-		// Create and commit a salesperson
-		SalesPerson salesPerson = salesPersonDao.create(SalesPerson.builder()
-				.withFirstName("Test")
-				.withLastName("Elek")
-				.build());
+        assertEquals(Optional.of("Test"), createdSalesPerson.getFirstName());
+        assertEquals(Optional.of("Elek"), createdSalesPerson.getLastName());
 
-		UUID uuid = salesPerson.get__identifier();
+        List<SalesPerson> personList = salesPersonDao.query()
+                .filterByFirstName(StringFilter.equalTo("Test"))
+                .execute();
 
-		transactionManager.commit(transactionStatus);
+        assertEquals(1, personList.size());
 
-		// Create test transaction
-		transactionStatus = transactionManager.getTransaction(defaultTransactionDefinition);
+        Lead lead1 = leadDao.create(Lead.builder().build(),
+                LeadAttachedRelationsForCreate.builder()
+                        .withSalesPerson(createdSalesPerson)
+                        .build());
 
-		assertEquals(Optional.of("Test"), salesPersonDao.getById(uuid).get().getFirstName());
-		salesPerson.setFirstName("BLAAA");
-		salesPersonDao.update(salesPerson);
-		transactionManager.rollback(transactionStatus);
-		assertEquals(Optional.of("Test"), salesPersonDao.getById(uuid).get().getFirstName());
+        assertEquals(Optional.of(100000), lead1.getValue());
+        assertEquals(Optional.of("Test"), leadDao.querySalesPerson(lead1).getFirstName());
 
-		// Delete created person to avoid collosion with other tests
-		transactionStatus = transactionManager.getTransaction(defaultTransactionDefinition);
-		salesPersonDao.delete(salesPerson);
-		transactionManager.commit(transactionStatus);
-	}
+        Lead lead2 = leadDao.create(
+                Lead.builder()
+                        .withValue(9)
+                        .build(),
+                LeadAttachedRelationsForCreate.builder()
+                        .withSalesPerson(createdSalesPerson)
+                        .build()
+                );
+        assertEquals(Optional.of(9), lead2.getValue());
+        assertEquals(Optional.of("Test"), leadDao.querySalesPerson(lead2).getFirstName());
 
-	@Test
-	void testManualTransactionManagementCommit() {
-		assertFalse(TransactionSynchronizationManager.isActualTransactionActive());
+        List<Lead> leadListOfQuery = salesPersonDao
+                .queryLeadsOver(createdSalesPerson, LeadsOverParameter.builder()
+                        .withLimit(10)
+                        .build())
+                .execute();
+        assertEquals(1, leadListOfQuery.size());
+        assertEquals(Optional.of(100000), leadListOfQuery.get(0).getValue());
 
-		DefaultTransactionDefinition defaultTransactionDefinition = new DefaultTransactionDefinition();
-		TransactionStatus transactionStatus = transactionManager.getTransaction(defaultTransactionDefinition);
+        leadListOfQuery = salesPersonDao
+                .queryLeads(createdSalesPerson)
+                .filterByValue(NumberFilter.equalTo(100000))
+                .execute();
+        assertEquals(1, leadListOfQuery.size());
+        assertEquals(Optional.of(100000), leadListOfQuery.get(0).getValue());
 
-		// Create and commit a salesperson
-		SalesPerson salesPerson = salesPersonDao.create(SalesPerson.builder()
-				.withFirstName("Test")
-				.withLastName("Elek")
-				.build());
+        assertEquals(2, totalNumberOfLeadsDao.execute());
+        assertEquals(2, rootAllLeadsDao.query().execute().size());
+        assertNotNull(rootOneLeadDao.query().execute());
+    }
 
-		transactionManager.commit(transactionStatus);
-		transactionStatus = transactionManager.getTransaction(defaultTransactionDefinition);
 
-		// Create test transaction
-		assertEquals(Optional.of("Test"), salesPersonDao.getById(salesPerson.get__identifier()).get().getFirstName());
-		salesPerson.setFirstName("BLAAA");
-		salesPersonDao.update(salesPerson);
-		transactionManager.commit(transactionStatus);
-		assertEquals(Optional.of("BLAAA"), salesPersonDao.getById(salesPerson.get__identifier()).get().getFirstName());
+    @Test
+    void testManualTransactionManagementRollback()  {
+        assertFalse(TransactionSynchronizationManager.isActualTransactionActive());
 
-		// Delete created person to avoid collosion with other tests
-		transactionStatus = transactionManager.getTransaction(defaultTransactionDefinition);
-		salesPersonDao.delete(salesPerson);
-		transactionManager.commit(transactionStatus);
-	}
+        DefaultTransactionDefinition defaultTransactionDefinition = new DefaultTransactionDefinition();
+        TransactionStatus transactionStatus = transactionManager.getTransaction(defaultTransactionDefinition);
 
-	@Test
-	@Transactional
-	public void testTransactionalAnnotationIsEffective() {
-		assertTrue(TransactionSynchronizationManager.isActualTransactionActive());
-	}
+        // Create and commit a salesperson
+        SalesPerson salesPerson = salesPersonDao.create(SalesPerson.builder()
+                .withFirstName("Test")
+                .withLastName("Elek")
+                .build());
+
+        UUID uuid = salesPerson.get__identifier();
+
+        transactionManager.commit(transactionStatus);
+
+        // Create test transaction
+        transactionStatus = transactionManager.getTransaction(defaultTransactionDefinition);
+
+        assertEquals(Optional.of("Test"), salesPersonDao.getById(uuid).get().getFirstName());
+        salesPerson.setFirstName("BLAAA");
+        salesPersonDao.update(salesPerson);
+        transactionManager.rollback(transactionStatus);
+        assertEquals(Optional.of("Test"), salesPersonDao.getById(uuid).get().getFirstName());
+
+        // Delete created person to avoid collosion with other tests
+        transactionStatus = transactionManager.getTransaction(defaultTransactionDefinition);
+        salesPersonDao.delete(salesPerson);
+        transactionManager.commit(transactionStatus);
+    }
+
+    @Test
+    void testManualTransactionManagementCommit() {
+        assertFalse(TransactionSynchronizationManager.isActualTransactionActive());
+
+        DefaultTransactionDefinition defaultTransactionDefinition = new DefaultTransactionDefinition();
+        TransactionStatus transactionStatus = transactionManager.getTransaction(defaultTransactionDefinition);
+
+        // Create and commit a salesperson
+        SalesPerson salesPerson = salesPersonDao.create(SalesPerson.builder()
+                .withFirstName("Test")
+                .withLastName("Elek")
+                .build());
+
+        transactionManager.commit(transactionStatus);
+        transactionStatus = transactionManager.getTransaction(defaultTransactionDefinition);
+
+        // Create test transaction
+        assertEquals(Optional.of("Test"), salesPersonDao.getById(salesPerson.get__identifier()).get().getFirstName());
+        salesPerson.setFirstName("BLAAA");
+        salesPersonDao.update(salesPerson);
+        transactionManager.commit(transactionStatus);
+        assertEquals(Optional.of("BLAAA"), salesPersonDao.getById(salesPerson.get__identifier()).get().getFirstName());
+
+        // Delete created person to avoid collosion with other tests
+        transactionStatus = transactionManager.getTransaction(defaultTransactionDefinition);
+        salesPersonDao.delete(salesPerson);
+        transactionManager.commit(transactionStatus);
+    }
+
+    @Test
+    @Transactional
+    public void testTransactionalAnnotationIsEffective() {
+        assertTrue(TransactionSynchronizationManager.isActualTransactionActive());
+    }
 
 }
