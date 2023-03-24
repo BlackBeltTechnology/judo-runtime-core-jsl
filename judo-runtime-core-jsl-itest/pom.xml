@@ -365,7 +365,21 @@
                             <destination>${basedir}/target/generated-test-sources/sdk-core/TransactionManagementModel</destination>
                         </configuration>
                     </execution>
-
+                    
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-EnvironmentAndSequenceModel</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/EnvironmentAndSequenceModel-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/sdk-core/EnvironmentAndSequenceModel</destination>
+                        </configuration>
+                    </execution>
+                    
                 </executions>
             </plugin>
 
@@ -402,6 +416,8 @@
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/CastingFunctionsModel</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/ContainerTest</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/TransactionManagementModel</source>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/EnvironmentAndSequenceModel</source>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/modelTC022</source>
                             </sources>
                         </configuration>
                    </execution>
@@ -474,6 +490,13 @@
         <dependency>
             <groupId>hu.blackbelt.judo</groupId>
             <artifactId>judo-requirement-report-processor</artifactId>
+        </dependency>
+        
+      	<dependency>
+            <groupId>uk.org.webcompere</groupId>
+            <artifactId>system-stubs-jupiter</artifactId>
+            <version>2.0.2</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>
