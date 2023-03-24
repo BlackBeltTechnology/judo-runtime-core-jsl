@@ -61,22 +61,25 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.tes
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.tester.TesterDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.timefunctions.TimeFunctions;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.timefunctions.TimeFunctionsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.timestampasstring.TimestampAsString;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.timestampasstring.TimestampAsStringDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.timestampfunctions.TimestampFunctions;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.timestampfunctions.TimestampFunctionsDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.simple.Simple;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.simple.SimpleDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.FunctionsDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
+import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.OffsetDateTime;
-import java.util.List;
-import java.util.Optional;
+import org.junit.jupiter.api.*;
 
+import java.time.*;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
+
+import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+import static java.time.format.DateTimeFormatter.ISO_OFFSET_DATE_TIME;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
@@ -109,6 +112,9 @@ public class FunctionsTest extends AbstractJslTest {
 
     @Inject
     TimestampFunctionsDao timestampFunctionsDao;
+
+    @Inject
+    TimestampAsStringDao timestampAsStringDao;
 
     @Inject
     EnumFunctionsDao enumFunctionsDao;
@@ -304,7 +310,7 @@ public class FunctionsTest extends AbstractJslTest {
         String parenthizedAsString = str.getParenthizedAsString().orElseThrow();
         assertEquals("26", parenthizedAsString);
     }
-    
+
 
     @Test
     @Requirement(reqs = {
@@ -394,62 +400,62 @@ public class FunctionsTest extends AbstractJslTest {
             "REQ-TYPE-006"
     })
     public void testKleene() {
-    	Kleene kleene = kleeneDao.create(Kleene.builder().build());
+        Kleene kleene = kleeneDao.create(Kleene.builder().build());
 
-    	/*
-    	|=============================================================================================
-    	|`p`            |`q`            |`p or q`       |`p and q`      |`p xor q`      |`p implies q`
-    	|`true`	        |`true`	        |`true` 	    |`true`	        |`false`        |`true`
-    	|`true`	        |`false`	    |`true`         |`false`	    |`true`         |`false`
-    	|`true`	        |`undefined`	|`true`	        |`undefined`	|`undefined`    |`undefined`
-    	|`false`	    |`true`	        |`true`	        |`false`	    |`true`         |`true`
-    	|`false`	    |`false`	    |`false`	    |`false`	    |`false`        |`true`
-    	|`false`	    |`undefined`	|`undefined`	|`false`	    |`undefined`    |`true`
-    	|`undefined`	|`true`	        |`true`	        |`undefined`	|`undefined`    |`true`
-    	|`undefined`	|`false`	    |`undefined`	|`false`	    |`undefined`    |`undefined`
-    	|`undefined`	|`undefined`	|`undefined`	|`undefined`	|`undefined`    |`undefined`
-    	|=============================================================================================
-    		*/
+        /*
+        |=============================================================================================
+        |`p`            |`q`            |`p or q`       |`p and q`      |`p xor q`      |`p implies q`
+        |`true`            |`true`            |`true`         |`true`            |`false`        |`true`
+        |`true`            |`false`        |`true`         |`false`        |`true`         |`false`
+        |`true`            |`undefined`    |`true`            |`undefined`    |`undefined`    |`undefined`
+        |`false`        |`true`            |`true`            |`false`        |`true`         |`true`
+        |`false`        |`false`        |`false`        |`false`        |`false`        |`true`
+        |`false`        |`undefined`    |`undefined`    |`false`        |`undefined`    |`true`
+        |`undefined`    |`true`            |`true`            |`undefined`    |`undefined`    |`true`
+        |`undefined`    |`false`        |`undefined`    |`false`        |`undefined`    |`undefined`
+        |`undefined`    |`undefined`    |`undefined`    |`undefined`    |`undefined`    |`undefined`
+        |=============================================================================================
+            */
 
-	   	assertEquals(Optional.of(true), kleene.getTrueOrTrue());
-	   	assertEquals(Optional.of(true), kleene.getTrueOrFalse());
-	   	assertEquals(Optional.of(true), kleene.getTrueOrUndefined());
-	   	assertEquals(Optional.of(true), kleene.getFalseOrTrue());
-	   	assertEquals(Optional.of(false), kleene.getFalseOrFalse());
-	   	assertEquals(Optional.empty(), kleene.getFalseOrUndefined());
-	   	assertEquals(Optional.of(true), kleene.getUndefinedOrTrue());
-	   	assertEquals(Optional.empty(), kleene.getUndefinedOrFalse());
-	   	assertEquals(Optional.empty(), kleene.getUndefinedOrUndefined());
+           assertEquals(Optional.of(true), kleene.getTrueOrTrue());
+           assertEquals(Optional.of(true), kleene.getTrueOrFalse());
+           assertEquals(Optional.of(true), kleene.getTrueOrUndefined());
+           assertEquals(Optional.of(true), kleene.getFalseOrTrue());
+           assertEquals(Optional.of(false), kleene.getFalseOrFalse());
+           assertEquals(Optional.empty(), kleene.getFalseOrUndefined());
+           assertEquals(Optional.of(true), kleene.getUndefinedOrTrue());
+           assertEquals(Optional.empty(), kleene.getUndefinedOrFalse());
+           assertEquals(Optional.empty(), kleene.getUndefinedOrUndefined());
 
-	   	assertEquals(Optional.of(true), kleene.getTrueAndTrue());
-	   	assertEquals(Optional.of(false), kleene.getTrueAndFalse());
-	   	assertEquals(Optional.empty(), kleene.getTrueAndUndefined());
-	   	assertEquals(Optional.of(false), kleene.getFalseAndTrue());
-	   	assertEquals(Optional.of(false), kleene.getFalseAndFalse());
-	   	assertEquals(Optional.of(false), kleene.getFalseAndUndefined());
-	   	assertEquals(Optional.empty(), kleene.getUndefinedAndTrue());
-	   	assertEquals(Optional.of(false), kleene.getUndefinedAndFalse());
-	   	assertEquals(Optional.empty(), kleene.getUndefinedAndUndefined());
+           assertEquals(Optional.of(true), kleene.getTrueAndTrue());
+           assertEquals(Optional.of(false), kleene.getTrueAndFalse());
+           assertEquals(Optional.empty(), kleene.getTrueAndUndefined());
+           assertEquals(Optional.of(false), kleene.getFalseAndTrue());
+           assertEquals(Optional.of(false), kleene.getFalseAndFalse());
+           assertEquals(Optional.of(false), kleene.getFalseAndUndefined());
+           assertEquals(Optional.empty(), kleene.getUndefinedAndTrue());
+           assertEquals(Optional.of(false), kleene.getUndefinedAndFalse());
+           assertEquals(Optional.empty(), kleene.getUndefinedAndUndefined());
 
-	   	assertEquals(Optional.of(false), kleene.getTrueXorTrue());
-	   	assertEquals(Optional.of(true), kleene.getTrueXorFalse());
-	   	assertEquals(Optional.empty(), kleene.getTrueXorUndefined());
-	   	assertEquals(Optional.of(true), kleene.getFalseXorTrue());
-	   	assertEquals(Optional.of(false), kleene.getFalseXorFalse());
-	   	assertEquals(Optional.empty(), kleene.getFalseXorUndefined());
-	   	assertEquals(Optional.empty(), kleene.getUndefinedXorTrue());
-	   	assertEquals(Optional.empty(), kleene.getUndefinedXorFalse());
-	   	assertEquals(Optional.empty(), kleene.getUndefinedXorUndefined());
+           assertEquals(Optional.of(false), kleene.getTrueXorTrue());
+           assertEquals(Optional.of(true), kleene.getTrueXorFalse());
+           assertEquals(Optional.empty(), kleene.getTrueXorUndefined());
+           assertEquals(Optional.of(true), kleene.getFalseXorTrue());
+           assertEquals(Optional.of(false), kleene.getFalseXorFalse());
+           assertEquals(Optional.empty(), kleene.getFalseXorUndefined());
+           assertEquals(Optional.empty(), kleene.getUndefinedXorTrue());
+           assertEquals(Optional.empty(), kleene.getUndefinedXorFalse());
+           assertEquals(Optional.empty(), kleene.getUndefinedXorUndefined());
 
-	   	assertEquals(Optional.of(true), kleene.getTrueImpliesTrue());
-	   	assertEquals(Optional.of(false), kleene.getTrueImpliesFalse());
-	   	assertEquals(Optional.empty(), kleene.getTrueImpliesUndefined());
-	   	assertEquals(Optional.of(true), kleene.getFalseImpliesTrue());
-	   	assertEquals(Optional.of(true), kleene.getFalseImpliesFalse());
-	   	assertEquals(Optional.of(true), kleene.getFalseImpliesUndefined());
-	   	assertEquals(Optional.of(true), kleene.getUndefinedImpliesTrue());
-	   	assertEquals(Optional.empty(), kleene.getUndefinedImpliesFalse());
-	   	assertEquals(Optional.empty(), kleene.getUndefinedImpliesUndefined());
+           assertEquals(Optional.of(true), kleene.getTrueImpliesTrue());
+           assertEquals(Optional.of(false), kleene.getTrueImpliesFalse());
+           assertEquals(Optional.empty(), kleene.getTrueImpliesUndefined());
+           assertEquals(Optional.of(true), kleene.getFalseImpliesTrue());
+           assertEquals(Optional.of(true), kleene.getFalseImpliesFalse());
+           assertEquals(Optional.of(true), kleene.getFalseImpliesUndefined());
+           assertEquals(Optional.of(true), kleene.getUndefinedImpliesTrue());
+           assertEquals(Optional.empty(), kleene.getUndefinedImpliesFalse());
+           assertEquals(Optional.empty(), kleene.getUndefinedImpliesUndefined());
     }
 
     @Test
@@ -487,61 +493,178 @@ public class FunctionsTest extends AbstractJslTest {
             "REQ-EXPR-017"
     })
     public void testTime() {
-        TimeFunctions time = timeFunctionsDao.create(TimeFunctions.builder().build());
+        LocalTime timeHM = LocalTime.parse("12:34");
+        LocalTime timeHMS = LocalTime.parse("12:34:56");
+        LocalTime timeHMSF = LocalTime.parse("12:34:56.789");
+        TimeFunctions time =
+                timeFunctionsDao.create(TimeFunctions.builder()
+                                                     .withTimeHM(timeHM)
+                                                     .withTimeHMS(timeHMS)
+                                                     .withTimeHMSF(timeHMSF)
+                                                     .withNumber(timeHMSF.toNanoOfDay() / 1_000_000)
+                                                     .build());
 
-        assertEquals(Optional.of("23:15:59"), time.getOwnTimeAsString());
-        assertEquals(Optional.of("23:15:59"), time.getTimeAsString());
-        assertEquals(Optional.of(23L), time.getHour());
-        assertEquals(Optional.of(15L), time.getMinute());
-        assertEquals(Optional.of(59L), time.getSecond());
-        assertEquals(LocalTime.of(13, 45, 0), time.getOf().orElseThrow());
+        assertEquals(timeHM, time.getTimeHM().orElseThrow());
+        assertEquals(timeHM, time.getTimeHM1().orElseThrow());
+        assertEquals(timeHMS, time.getTimeHMS().orElseThrow());
+        assertEquals(timeHMS, time.getTimeHMS1().orElseThrow());
+        assertEquals(timeHMSF, time.getTimeHMSF().orElseThrow());
+        assertEquals(timeHMSF, time.getTimeHMSF1().orElseThrow());
+        assertEquals(timeHMSF.withSecond(0), time.getTimeHMSF2().orElseThrow());
 
-        // TODO: JNG-1586, JNG-3681
-        // assertEquals(LocalTime.of(11, 11, 11), time.getTimeFromSeconds().orElseThrow());
-        // assertEquals(40271L, time.getTimeAsSeconds().orElseThrow());
-        assertEquals(40271L, time.getTimeAsSeconds1().orElseThrow());
+        assertEquals("12:34", time.getSelfTimeHMAsString().orElseThrow());
+        assertEquals(12, time.getSelfTimeHMHour().orElseThrow());
+        assertEquals(34, time.getSelfTimeHMMinute().orElseThrow());
+        assertEquals(0, time.getSelfTimeHMSecond().orElseThrow());
+        assertEquals(0, time.getSelfTimeHMMillisecond().orElseThrow());
+        assertEquals(timeHM.toNanoOfDay() / 1_000_000, time.getSelfTimeHMAsMillisecond().orElseThrow());
 
-        assertTrue(time.getUndefinedFromSeconds().isEmpty());
-        assertTrue(time.getUndefinedAsSeconds().isEmpty());
+        assertEquals("12:34:56", time.getSelfTimeHMSAsString().orElseThrow());
+        assertEquals(12, time.getSelfTimeHMSHour().orElseThrow());
+        assertEquals(34, time.getSelfTimeHMSMinute().orElseThrow());
+        assertEquals(56, time.getSelfTimeHMSSecond().orElseThrow());
+        assertEquals(0, time.getSelfTimeHMSMillisecond().orElseThrow());
+        assertEquals(timeHMS.toNanoOfDay() / 1_000_000, time.getSelfTimeHMSAsMillisecond().orElseThrow());
+
+        assertEquals("12:34:56.789", time.getSelfTimeHMSFAsString().orElseThrow());
+        assertEquals(12, time.getSelfTimeHMSFHour().orElseThrow());
+        assertEquals(34, time.getSelfTimeHMSFMinute().orElseThrow());
+        assertEquals(56, time.getSelfTimeHMSFSecond().orElseThrow());
+        assertEquals(789, time.getSelfTimeHMSFMillisecond().orElseThrow());
+        assertEquals(timeHMSF.toNanoOfDay() / 1_000_000, time.getSelfTimeHMSFAsMillisecond().orElseThrow());
+
+        assertTrue(time.getSelfUndefinedTimeAsString().isEmpty());
+        assertTrue(time.getSelfUndefinedTimeHour().isEmpty());
+        assertTrue(time.getSelfUndefinedTimeMinute().isEmpty());
+        assertTrue(time.getSelfUndefinedTimeSecond().isEmpty());
+        assertTrue(time.getSelfUndefinedTimeMillisecond().isEmpty());
+        assertTrue(time.getSelfUndefinedTimeAsMillisecond().isEmpty());
+
+        assertEquals("12:34", time.getTimeConstantHMAsString().orElseThrow());
+        assertEquals(12, time.getTimeConstantHMHour().orElseThrow());
+        assertEquals(34, time.getTimeConstantHMMinute().orElseThrow());
+        assertEquals(0, time.getTimeConstantHMSecond().orElseThrow());
+        assertEquals(0, time.getTimeConstantHMMillisecond().orElseThrow());
+        assertEquals(timeHM.toNanoOfDay() / 1_000_000, time.getTimeConstantHMAsMillisecond().orElseThrow());
+
+        assertEquals("12:34:56", time.getTimeConstantHMSAsString().orElseThrow());
+        assertEquals(12, time.getTimeConstantHMSHour().orElseThrow());
+        assertEquals(34, time.getTimeConstantHMSMinute().orElseThrow());
+        assertEquals(56, time.getTimeConstantHMSSecond().orElseThrow());
+        assertEquals(0, time.getTimeConstantHMSMillisecond().orElseThrow());
+        assertEquals(timeHMS.toNanoOfDay() / 1_000_000, time.getTimeConstantHMSAsMillisecond().orElseThrow());
+
+        assertEquals("12:34:56.789", time.getTimeConstantHMSFAsString().orElseThrow());
+        assertEquals(12, time.getTimeConstantHMSFHour().orElseThrow());
+        assertEquals(34, time.getTimeConstantHMSFMinute().orElseThrow());
+        assertEquals(56, time.getTimeConstantHMSFSecond().orElseThrow());
+        assertEquals(789, time.getTimeConstantHMSFMillisecond().orElseThrow());
+        assertEquals(timeHMSF.toNanoOfDay() / 1_000_000, time.getTimeConstantHMSFAsMillisecond().orElseThrow());
+
+        assertTrue(time.getTimeFromMillisecondOfUndefined().isEmpty());
+        assertEquals(timeHMSF, time.getTimeFromMillisecondOfSelfNumber().orElseThrow());
+        assertEquals(LocalTime.ofNanoOfDay(999_999_000_000L), time.getTimeFromMillisecondOfConstant().orElseThrow());
     }
 
     @Test
+    @TestCase("TC023")
     @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
             "REQ-EXPR-010",
             "REQ-EXPR-018"
     })
     public void testTimestamp() {
-        // TODO: add assertions after JNG-1586, JNG-3681
         TimestampFunctions timestampFunctions = timestampFunctionsDao.create(TimestampFunctions.builder().build());
 
-        OffsetDateTime timestampOfDate = timestampFunctions.getTimestampOfDate().orElseThrow();
-        OffsetDateTime timestampOfDateAndTime = timestampFunctions.getTimestampOfDateAndTime().orElseThrow();
+        assertEquals(LocalDateTime.of(2022, 9, 29, 0, 0, 0, 0), timestampFunctions.getTimestampOfDate().orElseThrow());
+        assertEquals(LocalDateTime.of(2022, 9, 29, 11, 11, 11, 0), timestampFunctions.getTimestampOfDateAndTime().orElseThrow());
 
-        LocalDate dateOfTimestampWithDate = timestampFunctions.getDateOfTimestampWithDate().orElseThrow();
-        LocalDate dateOfTimestampWithDateAndTime = timestampFunctions.getDateOfTimestampWithDateAndTime().orElseThrow();
-        LocalTime timeOfTimestampWithDate = timestampFunctions.getTimeOfTimestampWithDate().orElseThrow();
-        LocalTime timeOfTimestampWithDateAndTime = timestampFunctions.getTimeOfTimestampWithDateAndTime().orElseThrow();
+        assertEquals(LocalDate.of(2022, 9, 29), timestampFunctions.getDateOfTimestampWithDate().orElseThrow());
+        assertEquals(LocalDate.of(2022, 9, 29), timestampFunctions.getDateOfTimestampWithDateAndTime().orElseThrow());
+        assertEquals(LocalDate.of(2019, 7, 18), timestampFunctions.getDateOfTimestampSelf().orElseThrow());
+        assertEquals(LocalTime.of(0, 0, 0), timestampFunctions.getTimeOfTimestampWithDate().orElseThrow());
+        assertEquals(LocalTime.of(11, 11, 11), timestampFunctions.getTimeOfTimestampWithDateAndTime().orElseThrow());
+        assertEquals(LocalTime.of(1, 11, 12), timestampFunctions.getTimeOfTimestampSelf().orElseThrow());
 
-        long asMilliseconds = timestampFunctions.getAsMilliseconds().orElseThrow();
-        long asMilliseconds2 = timestampFunctions.getAsMilliseconds2().orElseThrow();
+        assertEquals(1664409600000L, timestampFunctions.getAsMilliseconds().orElseThrow());
+        assertEquals(1664449871000L, timestampFunctions.getAsMilliseconds2().orElseThrow());
 
-        OffsetDateTime fromMilliseconds = timestampFunctions.getFromMilliseconds().orElseThrow();
+        assertEquals(Instant.ofEpochMilli(1664449871000L).atOffset(ZoneOffset.UTC).toLocalDateTime(), timestampFunctions.getFromMilliseconds().orElseThrow());
 
-        OffsetDateTime plusAll = timestampFunctions.getPlusAll().orElseThrow();
-        OffsetDateTime plusDate = timestampFunctions.getPlusDate().orElseThrow();
+        assertEquals(LocalDateTime.of(2023, 10, 30, 12, 12, 12, 1000000), timestampFunctions.getPlusAll().orElseThrow());
+        assertEquals(LocalDateTime.of(2023, 10, 30, 11, 11, 11, 0), timestampFunctions.getPlusDate().orElseThrow());
 
-        OffsetDateTime plusAllReversed = timestampFunctions.getPlusAllReversed().orElseThrow();
-        OffsetDateTime plusDateReversed = timestampFunctions.getPlusDateReversed().orElseThrow();
+        assertEquals(LocalDateTime.of(2023, 10, 30, 12, 12, 12, 1000000), timestampFunctions.getPlusAllReversed().orElseThrow());
+        assertEquals(LocalDateTime.of(2023, 10, 30, 11, 11, 11, 0), timestampFunctions.getPlusDateReversed().orElseThrow());
 
-        OffsetDateTime plusMilliseconds = timestampFunctions.getPlusMilliseconds().orElseThrow();
+        assertEquals(LocalDateTime.of(2022, 9, 29, 11, 11, 11, 1000000), timestampFunctions.getPlusMilliseconds().orElseThrow());
 
-        OffsetDateTime minusAll = timestampFunctions.getMinusAll().orElseThrow();
-        OffsetDateTime minusDate = timestampFunctions.getMinusDate().orElseThrow();
+        assertEquals(LocalDateTime.of(2021, 8, 28, 10, 10, 9, 999000000), timestampFunctions.getMinusAll().orElseThrow());
+        assertEquals(LocalDateTime.of(2021, 8, 28, 11, 11, 11, 0), timestampFunctions.getMinusDate().orElseThrow());
 
-        OffsetDateTime minusAllReversed = timestampFunctions.getMinusAllReversed().orElseThrow();
-        OffsetDateTime minusDateReversed = timestampFunctions.getMinusDateReversed().orElseThrow();
+        assertEquals(LocalDateTime.of(2021, 8, 28, 10, 10, 9, 999000000), timestampFunctions.getMinusAllReversed().orElseThrow());
+        assertEquals(LocalDateTime.of(2021, 8, 28, 11, 11, 11, 0), timestampFunctions.getMinusDateReversed().orElseThrow());
 
-        OffsetDateTime minusMilliseconds = timestampFunctions.getMinusMilliseconds().orElseThrow();
+        assertEquals(LocalDateTime.of(2022, 9, 29, 11, 11, 10, 999000000), timestampFunctions.getMinusMilliseconds().orElseThrow());
+    }
+
+    @Test
+    @TestCase("TC023")
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-EXPR-010",
+            "REQ-EXPR-018"
+    })
+    public void testTimestampAsString() {
+        TimestampAsString timestampAsString = timestampAsStringDao.create(TimestampAsString.builder().build());
+
+        assertEquals("2022-03-03T14:00", timestampAsString.getTimestamp1AsString().orElseThrow());
+        assertEquals("2022-03-03T14:00:00.123", timestampAsString.getTimestamp2AsString().orElseThrow());
+        assertEquals("2022-03-03T13:57", timestampAsString.getTimestamp3AsString().orElseThrow());
+        assertEquals("2022-03-03T11:00", timestampAsString.getTimestamp4AsString().orElseThrow());
+        assertEquals("2022-03-03T10:57", timestampAsString.getTimestamp5AsString().orElseThrow());
+        assertEquals("2022-03-03T14:03", timestampAsString.getTimestamp6AsString().orElseThrow());
+        assertEquals("2022-03-03T17:00", timestampAsString.getTimestamp7AsString().orElseThrow());
+        assertEquals("2022-03-03T17:03", timestampAsString.getTimestamp8AsString().orElseThrow());
+        assertEquals("2022-03-03T13:57:00.123", timestampAsString.getTimestamp9AsString().orElseThrow());
+        assertEquals("2022-03-03T11:00:00.123", timestampAsString.getTimestamp10AsString().orElseThrow());
+        assertEquals("2022-03-03T10:57:00.123", timestampAsString.getTimestamp12AsString().orElseThrow());
+        assertEquals("2022-03-03T14:03:00.123", timestampAsString.getTimestamp13AsString().orElseThrow());
+        assertEquals("2022-03-03T17:00:00.123", timestampAsString.getTimestamp14AsString().orElseThrow());
+        assertEquals("2022-03-03T17:03:00.123", timestampAsString.getTimestamp15AsString().orElseThrow());
+
+        assertEquals("2022-03-03T14:00", timestampAsString.getTimestamp1AsString1().orElseThrow());
+        assertEquals("2022-03-03T14:00:00.123", timestampAsString.getTimestamp2AsString1().orElseThrow());
+        assertEquals("2022-03-03T13:57", timestampAsString.getTimestamp3AsString1().orElseThrow());
+        assertEquals("2022-03-03T11:00", timestampAsString.getTimestamp4AsString1().orElseThrow());
+        assertEquals("2022-03-03T10:57", timestampAsString.getTimestamp5AsString1().orElseThrow());
+        assertEquals("2022-03-03T14:03", timestampAsString.getTimestamp6AsString1().orElseThrow());
+        assertEquals("2022-03-03T17:00", timestampAsString.getTimestamp7AsString1().orElseThrow());
+        assertEquals("2022-03-03T17:03", timestampAsString.getTimestamp8AsString1().orElseThrow());
+        assertEquals("2022-03-03T13:57:00.123", timestampAsString.getTimestamp9AsString1().orElseThrow());
+        assertEquals("2022-03-03T11:00:00.123", timestampAsString.getTimestamp10AsString1().orElseThrow());
+        assertEquals("2022-03-03T10:57:00.123", timestampAsString.getTimestamp12AsString1().orElseThrow());
+        assertEquals("2022-03-03T14:03:00.123", timestampAsString.getTimestamp13AsString1().orElseThrow());
+        assertEquals("2022-03-03T17:00:00.123", timestampAsString.getTimestamp14AsString1().orElseThrow());
+        assertEquals("2022-03-03T17:03:00.123", timestampAsString.getTimestamp15AsString1().orElseThrow());
+
+        assertEquals(LocalDateTime.of(2022, 9, 29, 0, 0, 0, 0), timestampAsString.getTimestampOfDate().orElseThrow());
+        assertEquals("2022-09-29T00:00", timestampAsString.getTimestampOfDateAsString().orElseThrow());
+        assertEquals("2022-09-29T00:00", timestampAsString.getTimestampOfDateAsString1().orElseThrow());
+
+        assertEquals(LocalDateTime.of(2022, 9, 29, 11, 11, 11, 0), timestampAsString.getTimestampOfDateAndTime().orElseThrow());
+        assertEquals("2022-09-29T11:11:11", timestampAsString.getTimestampOfDateAndTimeAsString().orElseThrow());
+        assertEquals("2022-09-29T11:11:11", timestampAsString.getTimestampOfDateAndTimeAsString1().orElseThrow());
+
+        assertEquals(Instant.ofEpochMilli(1664449871000L).atOffset(ZoneOffset.UTC).toLocalDateTime(), timestampAsString.getFromMilliseconds().orElseThrow());
+        assertEquals(Instant.ofEpochMilli(1664449871000L).atOffset(ZoneOffset.UTC).format(ISO_LOCAL_DATE_TIME), timestampAsString.getFromMillisecondsAsString().orElseThrow());
+        assertEquals(Instant.ofEpochMilli(1664449871000L).atOffset(ZoneOffset.UTC).format(ISO_LOCAL_DATE_TIME), timestampAsString.getFromMillisecondsAsString1().orElseThrow());
     }
 
     @Test
@@ -576,7 +699,7 @@ public class FunctionsTest extends AbstractJslTest {
         InstanceFunctions instanceFunctions1 = instanceFunctionsDao.create(InstanceFunctions.builder()
                         .withParent(parentDao.getById(child1.get__identifier()).orElseThrow())
                         .build());
-               
+
         assertTrue(instanceFunctions.getTypeOfParent().get());
         assertFalse(instanceFunctions.getKindOfChild().get());
         assertTrue(instanceFunctions.getKindOfParent().get());
@@ -588,9 +711,9 @@ public class FunctionsTest extends AbstractJslTest {
         assertEquals("Erika Young", childName);
 
         instanceFunctionsDao.addParents(instanceFunctions, ImmutableList.of(parent1));
-        
+
         instanceFunctions = instanceFunctionsDao.getById(instanceFunctions.get__identifier()).orElseThrow();
-        
+
         assertEquals(10, instanceFunctions.getNavigationWithCalls().get());
 
         InstanceFunctions instanceFunctions2 = instanceFunctionsDao.create(InstanceFunctions.builder()
@@ -871,11 +994,11 @@ public class FunctionsTest extends AbstractJslTest {
 
     @Test
     public void testFirst() {
-    	Simple s1 = simpleDao.create(Simple.builder().withStringAttr("A").build());
-    	Simple s2 = simpleDao.create(Simple.builder().withStringAttr("a").build());
-    	Simple s3 = simpleDao.create(Simple.builder().withStringAttr("b").build());
-    	s1 = simpleDao.update(s1);
-    	assertEquals(Optional.of(Long.valueOf(1)), s1.getFirstNum());
+        Simple s1 = simpleDao.create(Simple.builder().withStringAttr("A").build());
+        Simple s2 = simpleDao.create(Simple.builder().withStringAttr("a").build());
+        Simple s3 = simpleDao.create(Simple.builder().withStringAttr("b").build());
+        s1 = simpleDao.update(s1);
+        assertEquals(Optional.of(Long.valueOf(1)), s1.getFirstNum());
     }
 
 }

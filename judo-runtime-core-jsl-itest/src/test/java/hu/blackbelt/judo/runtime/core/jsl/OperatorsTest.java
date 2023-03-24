@@ -9,13 +9,13 @@ package hu.blackbelt.judo.runtime.core.jsl;
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
- * 
+ *
  * This Source Code may also be made available under the following Secondary
  * Licenses when the conditions for such availability set forth in the Eclipse
  * Public License, v. 2.0 are satisfied: GNU General Public License, version 2
  * with the GNU Classpath Exception which is
  * available at https://www.gnu.org/software/classpath/license.html.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  * #L%
  */
@@ -120,8 +120,8 @@ public class OperatorsTest extends AbstractJslTest {
         assertEquals(Optional.of(true), operators.getTimeEq());
         assertEquals(Optional.of(true), operators.getTimeNeq());
 
-        assertEquals(Optional.of(true), operators.getTimeStampEq());
-        assertEquals(Optional.of(true), operators.getTimeStampNeq());
+        assertEquals(Optional.of(true), operators.getTimestampEq());
+        assertEquals(Optional.of(true), operators.getTimestampNeq());
 
         assertEquals(Optional.of(true), operators.getStringLt());
         assertEquals(Optional.of(true), operators.getStringLte());
