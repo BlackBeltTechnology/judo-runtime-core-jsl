@@ -417,7 +417,6 @@
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/ContainerTest</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/TransactionManagementModel</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/EnvironmentAndSequenceModel</source>
-                                <source>${project.basedir}/target/generated-test-sources/sdk-core/modelTC022</source>
                             </sources>
                         </configuration>
                    </execution>
