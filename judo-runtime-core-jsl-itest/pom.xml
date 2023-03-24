@@ -367,16 +367,16 @@
                     </execution>
                     
                     <execution>
-                        <id>execute-psm-test-model-from-artifact-modelTC010TC011TC012TC013</id>
+                        <id>execute-psm-test-model-from-artifact-EnvironmentAndSequenceModel</id>
                         <phase>generate-test-sources</phase>
                         <goals>
                             <goal>generate</goal>
                         </goals>
                         <configuration>
                             <psm>
-                                ${basedir}/target/generated-test-sources/model/modelTC010TC011TC012TC013-psm.model
+                                ${basedir}/target/generated-test-sources/model/EnvironmentAndSequenceModel-psm.model
                             </psm>
-                            <destination>${basedir}/target/generated-test-sources/sdk-core/modelTC010TC011TC012TC013</destination>
+                            <destination>${basedir}/target/generated-test-sources/sdk-core/EnvironmentAndSequenceModel</destination>
                         </configuration>
                     </execution>
                     
@@ -430,7 +430,7 @@
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/CastingFunctionsModel</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/ContainerTest</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/TransactionManagementModel</source>
-                                <source>${project.basedir}/target/generated-test-sources/sdk-core/modelTC010TC011TC012TC013</source>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/EnvironmentAndSequenceModel</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/modelTC022</source>
                             </sources>
                         </configuration>

@@ -84,7 +84,7 @@ public class GetVariablesTest extends AbstractJslTest {
 
     @Override
     public String getModelName() {
-        return "modelTC010TC011TC012TC013";
+        return "EnvironmentAndSequenceModel";
     }
     
 

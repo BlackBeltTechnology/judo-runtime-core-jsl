@@ -1,4 +1,4 @@
-model modelTC010TC011TC012TC013;
+model EnvironmentAndSequenceModel;
 
 import judo::types;
 
