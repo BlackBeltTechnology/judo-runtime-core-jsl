@@ -9,13 +9,13 @@ package hu.blackbelt.judo.runtime.core.jsl;
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
- * 
+ *
  * This Source Code may also be made available under the following Secondary
  * Licenses when the conditions for such availability set forth in the Eclipse
  * Public License, v. 2.0 are satisfied: GNU General Public License, version 2
  * with the GNU Classpath Exception which is
  * available at https://www.gnu.org/software/classpath/license.html.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  * #L%
  */
@@ -49,12 +49,11 @@ import hu.blackbelt.judo.runtime.core.exception.ValidationException;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.OffsetDateTime;
+import java.time.*;
 import java.util.List;
 import java.util.Optional;
 
+import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -145,7 +144,7 @@ public class PrimitivesTest extends AbstractJslTest {
                         .withRegexAttr("+36 333-333-3333")
                         .withBoolAttr(true)
                         .withDateAttr(LocalDate.of(2022, 7, 11))
-                        .withTimestampAttr(OffsetDateTime.parse("2022-07-11T19:09:33Z"))
+                        .withTimestampAttr(LocalDateTime.parse("2022-07-11T19:09:33"))
                         .withTimeAttr(LocalTime.parse("23:59:59"))
                         .withBinaryAttr(FileType.builder().fileName("test.txt").build())
                         .withEnumAttr(MyEnum.Bombastic)
@@ -161,7 +160,7 @@ public class PrimitivesTest extends AbstractJslTest {
         assertEquals(Optional.of("+36 333-333-3333"), myEntityWithOptionalFields.getRegexAttr());
         assertEquals(Optional.of(true), myEntityWithOptionalFields.getBoolAttr());
         assertEquals(Optional.of(LocalDate.of(2022, 7, 11)), myEntityWithOptionalFields.getDateAttr());
-        assertEquals(Optional.of(OffsetDateTime.parse("2022-07-11T19:09:33Z")), myEntityWithOptionalFields.getTimestampAttr());
+        assertEquals(Optional.of(LocalDateTime.parse("2022-07-11T19:09:33")), myEntityWithOptionalFields.getTimestampAttr());
         assertEquals(Optional.of(LocalTime.parse("23:59:59")), myEntityWithOptionalFields.getTimeAttr());
         assertEquals("test.txt", myEntityWithOptionalFields.getBinaryAttr().orElseThrow().getFileName());
         assertEquals(Optional.of(MyEnum.Bombastic), myEntityWithOptionalFields.getEnumAttr());
@@ -364,7 +363,7 @@ public class PrimitivesTest extends AbstractJslTest {
         myEntityWithOptionalFields.setRegexAttr("+36 333-333-3333");
         myEntityWithOptionalFields.setBoolAttr(true);
         myEntityWithOptionalFields.setDateAttr(LocalDate.of(2022, 7, 11));
-        myEntityWithOptionalFields.setTimestampAttr(OffsetDateTime.parse("2022-07-11T19:09:33Z"));
+        myEntityWithOptionalFields.setTimestampAttr(LocalDateTime.parse("2022-07-11T19:09:33"));
         myEntityWithOptionalFields.setTimeAttr(LocalTime.parse("23:59:59"));
         myEntityWithOptionalFields.setBinaryAttr(FileType.builder().fileName("test.txt").build());
         myEntityWithOptionalFields.setEnumAttr(MyEnum.Bombastic);
@@ -377,7 +376,7 @@ public class PrimitivesTest extends AbstractJslTest {
         assertEquals(Optional.of("+36 333-333-3333"), myEntityWithOptionalFields.getRegexAttr());
         assertEquals(Optional.of(true), myEntityWithOptionalFields.getBoolAttr());
         assertEquals(Optional.of(LocalDate.of(2022, 7, 11)), myEntityWithOptionalFields.getDateAttr());
-        assertEquals(Optional.of(OffsetDateTime.parse("2022-07-11T19:09:33Z")), myEntityWithOptionalFields.getTimestampAttr());
+        assertEquals(Optional.of(LocalDateTime.parse("2022-07-11T19:09:33")), myEntityWithOptionalFields.getTimestampAttr());
         assertEquals(Optional.of(LocalTime.parse("23:59:59")), myEntityWithOptionalFields.getTimeAttr());
         assertEquals("test.txt", myEntityWithOptionalFields.getBinaryAttr().get().getFileName());
         assertEquals(Optional.of(MyEnum.Bombastic), myEntityWithOptionalFields.getEnumAttr());
@@ -409,7 +408,7 @@ public class PrimitivesTest extends AbstractJslTest {
         assertEquals(Optional.of("+36-1-123-123"), entityWithDefaults.getRegexAttr());
         assertEquals(Optional.of(true), entityWithDefaults.getBoolAttr());
         assertEquals(Optional.of(LocalDate.of(2022, 7, 11)), entityWithDefaults.getDateAttr());
-        assertEquals(Optional.of(OffsetDateTime.parse("2022-07-11T19:09:33Z")), entityWithDefaults.getTimestampAttr());
+        assertEquals(Optional.of(LocalDateTime.parse("2022-07-11T19:09:33")), entityWithDefaults.getTimestampAttr());
         assertEquals(Optional.of(LocalTime.parse("23:59:59")), entityWithDefaults.getTimeAttr());
         assertEquals(Optional.of(LocalTime.parse("23:59")), entityWithDefaults.getShortTimeAttr());
         // There is no way to define default value in JSL for binary
@@ -443,7 +442,7 @@ public class PrimitivesTest extends AbstractJslTest {
         assertEquals("+36-1-123-123", entityRequiredWithDefaults.getRegexAttr());
         assertEquals(true, entityRequiredWithDefaults.getBoolAttr());
         assertEquals(LocalDate.of(2022, 7, 11), entityRequiredWithDefaults.getDateAttr());
-        assertEquals(OffsetDateTime.parse("2022-07-11T19:09:33Z"), entityRequiredWithDefaults.getTimestampAttr());
+        assertEquals(LocalDateTime.parse("2022-07-11T19:09:33"), entityRequiredWithDefaults.getTimestampAttr());
         assertEquals(LocalTime.parse("23:59:59"), entityRequiredWithDefaults.getTimeAttr());
         // There is no way to define default value in JSL for binary
         // assertEquals("test.txt", entityWithDefaults.getBinaryAttr().get().getFileName());

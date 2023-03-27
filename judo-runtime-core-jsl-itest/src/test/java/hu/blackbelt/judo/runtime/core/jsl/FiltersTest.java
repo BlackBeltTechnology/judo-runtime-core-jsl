@@ -9,13 +9,13 @@ package hu.blackbelt.judo.runtime.core.jsl;
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
- * 
+ *
  * This Source Code may also be made available under the following Secondary
  * Licenses when the conditions for such availability set forth in the Eclipse
  * Public License, v. 2.0 are satisfied: GNU General Public License, version 2
  * with the GNU Classpath Exception which is
  * available at https://www.gnu.org/software/classpath/license.html.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  * #L%
  */
@@ -34,9 +34,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.OffsetDateTime;
+import java.time.*;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -62,8 +60,8 @@ public class FiltersTest extends AbstractJslTest {
     static final boolean BOOL_2 = false;
     static final LocalDate DATE_1 = LocalDate.of(2022, 7, 11);
     static final LocalDate DATE_2 = LocalDate.of(1999, 9, 19);
-    static final OffsetDateTime TIMESTAMP_1 = OffsetDateTime.parse("2022-07-11T19:09:33Z");
-    static final OffsetDateTime TIMESTAMP_2 = OffsetDateTime.parse("1999-09-19T09:09:09Z");
+    static final LocalDateTime TIMESTAMP_1 = LocalDateTime.parse("2022-07-11T19:09:33");
+    static final LocalDateTime TIMESTAMP_2 = LocalDateTime.parse("1999-09-19T09:09:09");
     static final LocalTime TIME_1 = LocalTime.parse("23:59:59");
     static final LocalTime TIME_2 = LocalTime.parse("12:34:56");
     static final MyEnum ENUM_1 = MyEnum.Bombastic;
