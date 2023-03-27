@@ -352,15 +352,7 @@ end text"
     void testVerifyTheGetVariableShortcuts() {
         EnvVars envVars = envVarsDao.create(EnvVars.builder().build());
 
-        LocalDate localDate = envVars.getCd().orElseThrow();
-        LocalDate localDate1 = envVars.getCd1().orElseThrow();
-        if (localDate.isBefore(localDate1)) {
-            assertTrue(localDate1.minusDays(1).isBefore(localDate));
-        } else if (localDate1.isBefore(localDate)) {
-            assertTrue(localDate.minusDays(1).isBefore(localDate1));
-        } else {
-            assertEquals(localDate, localDate1);
-        }
+        assertEquals(envVars.getCd().orElseThrow(), envVars.getCd1().orElseThrow());
 
         LocalDateTime localDateTime = envVars.getCts().orElseThrow();
         LocalDateTime localDateTime1 = envVars.getCts1().orElseThrow();
