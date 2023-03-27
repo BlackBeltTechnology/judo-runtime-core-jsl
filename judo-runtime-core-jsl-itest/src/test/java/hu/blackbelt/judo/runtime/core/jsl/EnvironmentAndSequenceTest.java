@@ -352,14 +352,22 @@ end text"
     void testVerifyTheGetVariableShortcuts() {
         EnvVars envVars = envVarsDao.create(EnvVars.builder().build());
 
-        assertEquals(envVars.getCd().orElseThrow(), envVars.getCd1().orElseThrow());
+        LocalDate localDate = envVars.getCd().orElseThrow();
+        LocalDate localDate1 = envVars.getCd1().orElseThrow();
+        if (localDate.isBefore(localDate1)) {
+            assertTrue(localDate1.minusDays(1).isBefore(localDate));
+        } else if (localDate1.isBefore(localDate)) {
+            assertTrue(localDate.minusDays(1).isBefore(localDate1));
+        } else {
+            assertEquals(localDate, localDate1);
+        }
 
         LocalDateTime localDateTime = envVars.getCts().orElseThrow();
         LocalDateTime localDateTime1 = envVars.getCts1().orElseThrow();
         if (localDateTime.isBefore(localDateTime1)) {
-            assertTrue(localDateTime1.minusMinutes(1).isBefore(localDateTime));
+            assertTrue(localDateTime1.minusNanos(500_000_000).isBefore(localDateTime));
         } else if (localDateTime1.isBefore(localDateTime)) {
-            assertTrue(localDateTime.minusMinutes(1).isBefore(localDateTime1));
+            assertTrue(localDateTime.minusNanos(500_000_000).isBefore(localDateTime1));
         } else {
             assertEquals(localDateTime, localDateTime1);
         }
@@ -367,9 +375,9 @@ end text"
         LocalTime localTime = envVars.getCt().orElseThrow();
         LocalTime localTime1 = envVars.getCt1().orElseThrow();
         if (localTime.isBefore(localTime1)) {
-            assertTrue(localTime1.minusMinutes(1).isBefore(localTime) || localTime1.minusMinutes(3).isBefore(localTime.minusMinutes(2)));
+            assertTrue(localTime1.minusNanos(500_000_000).isBefore(localTime) || localTime1.minusSeconds(2).isBefore(localTime.minusSeconds(1)));
         } else if (localTime1.isBefore(localTime)) {
-            assertTrue(localTime.minusMinutes(1).isBefore(localTime1) || localTime.minusMinutes(3).isBefore(localTime1.minusMinutes(2)));
+            assertTrue(localTime.minusNanos(500_000_000).isBefore(localTime1) || localTime.minusSeconds(2).isBefore(localTime1.minusSeconds(1)));
         }
     }
 
