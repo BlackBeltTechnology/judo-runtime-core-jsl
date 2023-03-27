@@ -365,7 +365,7 @@
                             <destination>${basedir}/target/generated-test-sources/sdk-core/TransactionManagementModel</destination>
                         </configuration>
                     </execution>
-                    
+
                     <execution>
                         <id>execute-psm-test-model-from-artifact-EnvironmentAndSequenceModel</id>
                         <phase>generate-test-sources</phase>
@@ -379,7 +379,20 @@
                             <destination>${basedir}/target/generated-test-sources/sdk-core/EnvironmentAndSequenceModel</destination>
                         </configuration>
                     </execution>
-                    
+
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-modelTC015</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/modelTC015-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/sdk-core/modelTC015</destination>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
 
@@ -417,6 +430,7 @@
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/ContainerTest</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/TransactionManagementModel</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/EnvironmentAndSequenceModel</source>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/modelTC015</source>
                             </sources>
                         </configuration>
                    </execution>
