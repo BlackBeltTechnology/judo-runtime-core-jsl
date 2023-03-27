@@ -396,21 +396,20 @@ end text"
      *  . Create an Sequences entity instance (s1) with the default values.
      *
      *  . Check the values of the following fields of the new entity instance (s1).
-     *      * f1 != f2
-     *      * f3 == f1 or f3 == f2
+     *      * f1 == 1
+     *      * f2 == 2
+     *      * f3 == 1
      *
-     *  . Create an Sequences entity instance (s2) with the default values.
-     *
-     *  . Check the following statements.
-     *      * s1.f1 < s2.f1
-     *      * s1.f2 < s2.f2
-     *      * s1.f3 < s2.f3
+     *  . Check the values of the following fields of the new entity instance (s2).
+     *      * f1 == 3
+     *      * f2 == 4
+     *      * f3 == 2
      *
      *  . The test is passed if all steps have been completed with the specified results.
      */
     @Test
     @TestCase("TC013")
-    @Disabled("JNG-4623")
+    @Disabled("https://blackbelt.atlassian.net/browse/JNG-4671")
     @Requirement(reqs = {
             "REQ-SYNT-001",
             "REQ-SYNT-002",
@@ -431,15 +430,14 @@ end text"
     })
     void testGetVariableSequence() {
         Sequences s1 = sequencesDao.create(Sequences.builder().build());
-
-        assertEquals(s1.getF1().orElseThrow(), s1.getF2().orElseThrow());
-        assertNotEquals(s1.getF3().orElseThrow(), s1.getF1().orElseThrow());
-        assertEquals(s1.getF3().orElseThrow(), s1.getF2().orElseThrow());
+        assertEquals(1L, s1.getF1().orElseThrow());
+        assertEquals(2L, s1.getF2().orElseThrow());
+        assertEquals(1L, s1.getF3().orElseThrow());
 
         Sequences s2 = sequencesDao.create(Sequences.builder().build());
-        assertTrue(s1.getF1().orElseThrow() < s2.getF1().orElseThrow());
-        assertTrue(s1.getF2().orElseThrow() < s2.getF2().orElseThrow());
-        assertTrue(s1.getF3().orElseThrow() < s2.getF3().orElseThrow());
+        assertEquals(3L, s2.getF1().orElseThrow());
+        assertEquals(4L, s2.getF2().orElseThrow());
+        assertEquals(2L, s2.getF3().orElseThrow());
     }
 
 }
