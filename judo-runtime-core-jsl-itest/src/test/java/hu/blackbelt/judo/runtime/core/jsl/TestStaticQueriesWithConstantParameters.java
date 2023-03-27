@@ -1,19 +1,7 @@
 package hu.blackbelt.judo.runtime.core.jsl;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.OffsetDateTime;
-import java.util.List;
-import java.util.Optional;
-
-import org.checkerframework.checker.nullness.Opt;
-import org.junit.jupiter.api.Test;
-
 import com.google.inject.Inject;
 import com.google.inject.Module;
-
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.modeltc015.modeltc015.lastaddedmyentity.LastAddedMyEntityDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.modeltc015.modeltc015.myentity.MyEntity;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.modeltc015.modeltc015.myentity.MyEntityDao;
@@ -25,6 +13,13 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.modeltc015.modeltc015.s
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.ModelTC015DaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
+import org.junit.jupiter.api.Test;
+
+import java.time.*;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestStaticQueriesWithConstantParameters extends AbstractJslTest {
 
@@ -351,7 +346,7 @@ public class TestStaticQueriesWithConstantParameters extends AbstractJslTest {
                 .withFfBool(true)
                 .withFfDate(LocalDate.parse("2023-01-01"))
                 .withFfTime(LocalTime.parse("12:00:13"))
-                .withFfTimestamp(OffsetDateTime.parse("2020-01-01T01:11:13-12:00"))
+                .withFfTimestamp(OffsetDateTime.parse("2020-01-01T01:11:13-12:00").atZoneSameInstant(ZoneOffset.UTC).toLocalDateTime())
                 .withFfLong(Long.valueOf(1234567890))
                 .withFfString("AAA")
                 .withFfDecimal(-12.2302)
@@ -387,7 +382,7 @@ public class TestStaticQueriesWithConstantParameters extends AbstractJslTest {
                 .withFfBool(true)
                 .withFfDate(LocalDate.parse("2023-01-01"))
                 .withFfTime(LocalTime.parse("08:00:00"))
-                .withFfTimestamp(OffsetDateTime.parse("2020-01-01T12:11:13+01:00"))
+                .withFfTimestamp(OffsetDateTime.parse("2020-01-01T12:11:13+01:00").atZoneSameInstant(ZoneOffset.UTC).toLocalDateTime())
                 .withFfLong(Long.parseLong("9999999999"))
                 .withFfString("ABC")
                 .withFfDecimal(-1.9999)
@@ -410,7 +405,7 @@ public class TestStaticQueriesWithConstantParameters extends AbstractJslTest {
                 .withFfBool(true)
                 .withFfDate(LocalDate.parse("2023-01-01"))
                 .withFfTime(LocalTime.parse("12:00:13"))
-                .withFfTimestamp(OffsetDateTime.parse("2020-01-01T14:11:12+01:00"))
+                .withFfTimestamp(OffsetDateTime.parse("2020-01-01T14:11:12+01:00").atZoneSameInstant(ZoneOffset.UTC).toLocalDateTime())
                 .withFfLong(Long.valueOf(1234567890))
                 .withFfString("AAA")
                 .withFfDecimal(2.7109)
@@ -421,7 +416,7 @@ public class TestStaticQueriesWithConstantParameters extends AbstractJslTest {
                 .withFfBool(false)
                 .withFfDate(LocalDate.parse("2023-01-05"))
                 .withFfTime(LocalTime.parse("12:00:13"))
-                .withFfTimestamp(OffsetDateTime.parse("2020-01-01T01:11:13-12:00"))
+                .withFfTimestamp(OffsetDateTime.parse("2020-01-01T01:11:13-12:00").atZoneSameInstant(ZoneOffset.UTC).toLocalDateTime())
                 .withFfLong(Long.valueOf(-1234567890))
                 .withFfString("cbaaa")
                 .withFfDecimal(13.0001)
@@ -436,7 +431,7 @@ public class TestStaticQueriesWithConstantParameters extends AbstractJslTest {
         assertFalse(s21.getFfDate().equals(Optional.empty()));
         assertFalse(s21.getFfTime().equals(Optional.empty()));
         assertTrue(!s21.getFfTimestamp().equals(Optional.empty()) &&
-                s21.getFfTimestamp().equals(Optional.of(OffsetDateTime.parse("2020-01-01T14:11:12+01:00"))));
+                s21.getFfTimestamp().equals(Optional.of(OffsetDateTime.parse("2020-01-01T14:11:12+01:00").atZoneSameInstant(ZoneOffset.UTC).toLocalDateTime())));
         assertTrue(!s21.getFfLong().equals(Optional.empty()) && s21.getFfLong().equals(Optional.of(Long.parseLong("9999999999"))));
         assertTrue(!s21.getFfString().equals(Optional.empty()) && s21.getFfString().equals(Optional.of("AAA")));
         assertTrue(!s21.getFfDecimal().equals(Optional.empty()) && s21.getFfDecimal().equals(Optional.of(13.0001)));
