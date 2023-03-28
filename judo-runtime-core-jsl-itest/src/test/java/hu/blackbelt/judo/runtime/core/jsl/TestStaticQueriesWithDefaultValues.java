@@ -224,7 +224,6 @@ public class TestStaticQueriesWithDefaultValues extends AbstractJslTest {
             "REQ-EXPR-022"
     })
     void testStaticQueriesWithDefaultValuesByConstantsOrExpressions() {
-        // TODO: JNG-4662: Fixing enum handling in ternary operation
         MyEntity e1 = myEntityDao.create(MyEntity.builder().build());
         MyEntity e2 = myEntityDao.create(MyEntity.builder()
                 .withFldBool(true)
@@ -259,7 +258,7 @@ public class TestStaticQueriesWithDefaultValues extends AbstractJslTest {
                 .withFldEnum(MyEnum.A01)
                 .build());
 
-        // TODO: check s1 other derived fileds
+        // TODO: check s1 other derived fields
         Snapshot1 s1 = snapshot1Dao.create(Snapshot1.builder().build());
         assertTrue(snapshot1Dao.queryFldMyEntity002(s1).equals(Optional.of(e3)));
         assertTrue(snapshot1Dao.queryFldMyEntity005(s1).equals(Optional.of(e4)));
