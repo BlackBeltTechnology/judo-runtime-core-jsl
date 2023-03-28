@@ -13,7 +13,7 @@ enum TestLiteral {
 entity E1 {
     field TestLiteral f1 = TestLiteral#ZZ00;
     field TestLiteral f2 = TestLiteral#Aaa01;
-//    TODO: JNG-4662 Implementing '<' '>'  '<='  '>=' operations for enum in JQL 
+//    TODO: JNG-4664 Implementing '<' '>'  '<='  '>=' operations for enum in JQL
 //    derived Bool   f3 => self.f1 < self.f2;
 //    derived Bool   f4 => self.f1 <= self.f2;
 //    derived Bool   f5 => self.f1 > self.f2;

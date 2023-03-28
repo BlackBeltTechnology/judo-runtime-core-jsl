@@ -393,7 +393,36 @@
                             <destination>${basedir}/target/generated-test-sources/sdk-core/modelTC015</destination>
                         </configuration>
                     </execution>
+
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-modelTC004</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/modelTC004-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/sdk-core/modelTC004</destination>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-modelTC017</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/modelTC017-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/sdk-core/modelTC017</destination>
+                        </configuration>
+                    </execution>
                 </executions>
+
             </plugin>
 
             <plugin>
@@ -431,6 +460,8 @@
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/TransactionManagementModel</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/EnvironmentAndSequenceModel</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/modelTC015</source>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/modelTC004</source>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/modelTC017</source>
                             </sources>
                         </configuration>
                    </execution>
