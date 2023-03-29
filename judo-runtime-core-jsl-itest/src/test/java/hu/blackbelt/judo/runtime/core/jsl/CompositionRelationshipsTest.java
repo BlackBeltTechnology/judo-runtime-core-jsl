@@ -229,16 +229,17 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
             "REQ-ENT-012"
     })
     void testMask() {
-        List<EntityA> maskedAs = entityADao.query().maskedBy(EntityAMask.entityAMask().withSingleRequiredConA(EntityCMask.entityCMask().withStringC())).execute();
+        List<EntityA> maskedAs = entityADao.query().maskedBy(
+                EntityAMask.entityAMask().withSingleRequiredConA(EntityCMask.entityCMask().withStringC())).execute();
 
         EntityA maskedA = maskedAs.get(0);
         EntityC requiredC = maskedA.getSingleRequiredConA();
 
         assertEquals(1, maskedAs.size());
-        assertEquals(Optional.empty(), maskedA.getSingleConA());
-        assertEquals(Optional.empty(), maskedA.getStringA());
+        assertEquals(null, maskedA.getSingleConA());
+        assertEquals(null, maskedA.getStringA());
         assertEquals(singleRequiredConA, maskedA.getSingleRequiredConA());
-        assertEquals(Optional.empty(), requiredC.getStringB());
+        assertEquals(null, requiredC.getStringB());
         assertEquals(Optional.of("TEST-C"), requiredC.getStringC());
     }
 
