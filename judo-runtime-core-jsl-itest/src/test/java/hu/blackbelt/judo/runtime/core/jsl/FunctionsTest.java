@@ -54,6 +54,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.num
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.numericfunctions.NumericFunctionsDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.parent.Parent;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.parent.ParentDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.parent.ParentIdentifier;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.stringfunctions.StringFunctions;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.stringfunctions.StringFunctionsDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.tester.Tester;
@@ -697,7 +698,7 @@ public class FunctionsTest extends AbstractJslTest {
                         .build());
 
         InstanceFunctions instanceFunctions1 = instanceFunctionsDao.create(InstanceFunctions.builder()
-                        .withParent(parentDao.getById(child1.get__identifier()).orElseThrow())
+                        .withParent(parentDao.getById(child1.identifier().adaptTo(ParentIdentifier.class)).orElseThrow())
                         .build());
 
         assertTrue(instanceFunctions.getTypeOfParent().get());
@@ -712,7 +713,7 @@ public class FunctionsTest extends AbstractJslTest {
 
         instanceFunctionsDao.addParents(instanceFunctions, ImmutableList.of(parent1));
 
-        instanceFunctions = instanceFunctionsDao.getById(instanceFunctions.get__identifier()).orElseThrow();
+        instanceFunctions = instanceFunctionsDao.getById(instanceFunctions.identifier()).orElseThrow();
 
         assertEquals(10, instanceFunctions.getNavigationWithCalls().get());
 
@@ -726,7 +727,7 @@ public class FunctionsTest extends AbstractJslTest {
         instanceFunctionsDao.addParents(instanceFunctions2, List.of(p1));
         instanceFunctionsDao.addChildren(instanceFunctions2, List.of(c1));
 
-        instanceFunctions2 = instanceFunctionsDao.getById(instanceFunctions2.get__identifier()).orElseThrow();
+        instanceFunctions2 = instanceFunctionsDao.getById(instanceFunctions2.identifier()).orElseThrow();
 
         assertTrue(instanceFunctions2.getParentMemberOfParents().orElseThrow());
         assertTrue(instanceFunctions2.getParentMemberOfParentsExtra().orElseThrow());
@@ -988,7 +989,7 @@ public class FunctionsTest extends AbstractJslTest {
                             .withMember(m1)
                             .withMembers(List.of(m1, m2, m3))
                             .build());
-        tester = testerDao.getById(tester.get__identifier()).orElseThrow();
+        tester = testerDao.getById(tester.identifier()).orElseThrow();
         assertTrue(tester.getMemberMemberOfMembers().orElseThrow());
     }
 
