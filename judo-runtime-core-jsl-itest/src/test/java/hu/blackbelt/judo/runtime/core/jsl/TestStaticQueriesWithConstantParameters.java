@@ -1,0 +1,388 @@
+package hu.blackbelt.judo.runtime.core.jsl;
+
+import com.google.inject.Inject;
+import com.google.inject.Module;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.teststaticquerieswithconstantparameters.teststaticquerieswithconstantparameters.lastaddedmyentity.LastAddedMyEntityDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.teststaticquerieswithconstantparameters.teststaticquerieswithconstantparameters.myentity.MyEntity;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.teststaticquerieswithconstantparameters.teststaticquerieswithconstantparameters.myentity.MyEntityDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.teststaticquerieswithconstantparameters.teststaticquerieswithconstantparameters.myenum.MyEnum;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.teststaticquerieswithconstantparameters.teststaticquerieswithconstantparameters.snapshot1.Snapshot1;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.teststaticquerieswithconstantparameters.teststaticquerieswithconstantparameters.snapshot1.Snapshot1Dao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.teststaticquerieswithconstantparameters.teststaticquerieswithconstantparameters.snapshot2.Snapshot2;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.teststaticquerieswithconstantparameters.teststaticquerieswithconstantparameters.snapshot2.Snapshot2Dao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.TestStaticQueriesWithConstantParametersDaoModules;
+import hu.blackbelt.judo.requirement.report.annotation.Requirement;
+import hu.blackbelt.judo.requirement.report.annotation.TestCase;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Test;
+
+import java.time.*;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+@Slf4j
+public class TestStaticQueriesWithConstantParameters extends AbstractJslTest {
+
+    @Inject
+    MyEntityDao myEntityDao;
+
+    @Inject
+    Snapshot1Dao snapshot1Dao;
+
+    @Inject
+    Snapshot2Dao snapshot2Dao;
+
+    @Inject
+    LastAddedMyEntityDao lastAddedMyEntityDao;
+
+    @Override
+    public Module getModelDaoModule() {
+        return new TestStaticQueriesWithConstantParametersDaoModules();
+    }
+
+    @Override
+    public String getModelName() {
+        return "TestStaticQueriesWithConstantParameters";
+    }
+
+    /**
+     * Testing the working of static queries with constant parameters.
+     *
+     * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
+     *
+     * @type Behaviour
+     *
+     * @others
+     *  Implement this test case in the *judo-runtime-core-jsl-itest* module.
+     *
+     * @scenario
+     *  . Parse (and/or build) the model.
+     *
+     *  . The result of the model parsing (and/or building) is successful.
+     *
+     *  . Create and save a MyEntity instance without any field values. (*e1*)
+     *
+     *  . Check the value of the fields of the created *e1* instance. All of the following boolean expressions must be true.
+     *    * e1.created!isDefined()
+     *    * e1.ffBool!isUndefined()
+     *    * e1.ffDate!isUndefined()
+     *    * e1.ffTime!isUndefined()
+     *    * e1.ffTimestamp!isUndefined()
+     *    * e1.ffLong!isUndefined()
+     *    * e1.ffString!isUndefined()
+     *    * e1.ffDecimal!isUndefined()
+     *    * e1.ffEnum!isUndefined()
+     *
+     *  . Create and save a MyEntity instance with the following field values. (*e2*)
+     *    * ffBool = true
+     *    * ffDate = `2023-01-01`
+     *    * ffTime = `12:00:13`
+     *    * ffTimestamp = `2020-01-01T01:11:13-12:00`
+     *    * ffLong = 1234567890
+     *    * ffString = "AAA"
+     *    * ffDecimal = -12.2302
+     *    * ffEnum = MyEnum#A02
+     *
+     *  . Create and save a Snapshot1 instance without any field values. (*s11*)
+     *
+     *  . Check the value of the fields of the created *s11* instance. All of the following boolean expressions must be true.
+     *    * s11.created!isDefined()
+     *    * s11.ffBool!isUndefined()
+     *    * s11.ffDate!isUndefined()
+     *    * s11.ffTime!isUndefined()
+     *    * s11.ffTimestamp!isUndefined()
+     *    * s11.ffLong!isUndefined()
+     *    * s11.ffString!isUndefined()
+     *    * s11.ffDecimal!isUndefined()
+     *    * s11.ffEnum!isUndefined()
+     *
+     *  . Create and save a Snapshot2 instance without any field values. (*s21*)
+     *
+     *  . Check the value of the fields of the created *s21* instance. All of the following boolean expressions must be true.
+     *    * s21.created!isDefined()
+     *    * s21.ffBool!isUndefined()
+     *    * s21.ffDate!isUndefined()
+     *    * s21.ffTime!isUndefined()
+     *    * s21.ffTimestamp!isUndefined()
+     *    * s21.ffLong!isUndefined()
+     *    * s21.ffString!isUndefined()
+     *    * s21.ffDecimal!isUndefined()
+     *    * s21.ffEnum!isUndefined()
+     *    * s21.entites!size() == 0
+     *
+     *  . Create and save a MyEntity instance with the following field values. (*e3*)
+     *    * ffBool = true
+     *    * ffDate = `2023-01-01`
+     *    * ffTime = `08:00:00`
+     *    * ffTimestamp = `2020-01-01T12:11:13+01:00`
+     *    * ffLong = 9999999999
+     *    * ffString = "ABC"
+     *    * ffDecimal = -1.9999
+     *    * ffEnum = MyEnum#A02
+     *
+     *  . Create and save a Snapshot1 instance without any field values. (*s12*)
+     *
+     *  . Check the value of the fields of the created *s12* instance. All of the following boolean expressions must be true.
+     *    * s12.created!isDefined()
+     *    * s12.ffBool!isDefined()      and s12.fBool == true
+     *    * s12.ffDate!isDefined()      and s12.fDate == `2023-01-01`
+     *    * s12.ffTime!isDefined()      and s12.fTime == `08:00:00`
+     *    * s12.ffTimestamp!isUndefined()
+     *    * s12.ffLong!isDefined()      and s12.fLong == 9999999999
+     *    * s12.ffString!isUndefined()
+     *    * s12.ffDecimal!isUndefined()
+     *    * s12.ffEnum!isDefined()      and s12.fEnum == MyEnum#A02
+     *
+     *  // for fTimestamp and fString
+     *  . Create and save a MyEntity instance with the following field values. (*e4*)
+     *    * ffBool = true
+     *    * ffDate = `2023-01-01`
+     *    * ffTime = `12:00:13`
+     *    * ffTimestamp = `2020-01-01T14:11:12+01:00`
+     *    * ffLong = 1234567890
+     *    * ffString = "AAA"
+     *    * ffDecimal = 2.7109
+     *    * ffEnum = MyEnum#A01
+     *
+     *  // for fDecimal
+     *  . Create and save a MyEntity instance with the following field values. (*e5*)
+     *    * ffBool = false
+     *    * ffDate = `2023-01-05`
+     *    * ffTime = `12:00:13`
+     *    * ffTimestamp = `2020-01-01T01:11:13-12:00`
+     *    * ffLong = -1234567890
+     *    * ffString = "cbaaa"
+     *    * ffDecimal = 13.0001
+     *    * ffEnum = MyEnum#A03
+     *
+     *  . Create and save a Snapshot1 instance without any field values. (*s13*)
+     *
+     *  // Check the fTimestamp, fString and fDecimal
+     *  . Check the value of the fields of the created *s13* instance. All of the following boolean expressions must be true.
+     *    * s13.ffBool!isDefined()      and s13.fBool == true
+     *    * s13.ffDate!isDefined()
+     *    * s13.ffTime!isDefined()
+     *    * s13.ffTimestamp!isDefined() and s13.fTimstamp == `2020-01-01T14:11:12+01:00`
+     *    * s13.ffLong!isDefined()      and s13.fLong == 9999999999
+     *    * s13.ffString!isDefined()    and s13.fString == "AAA"
+     *    * s13.ffDecimal!isDefined()   and s13.fDecimal == 13.0001
+     *    * s13.ffEnum!isDefined()      and s13.fEnum == MyEnum#A02
+     *
+     *  . Retrieve the s21 Snapshot2 instance.
+     *
+     *  . All of the following boolean expressions must be true.
+     *    * s21.ffBool!isDefined()      and s21.fBool == true
+     *    * s21.ffDate!isDefined()
+     *    * s21.ffTime!isDefined()
+     *    * s21.ffTimestamp!isDefined() and s21.fTimstamp == `2020-01-01T14:11:12+01:00`
+     *    * s21.ffLong!isDefined()      and s21.fLong == 9999999999
+     *    * s21.ffString!isDefined()    and s21.fString == "AAA"
+     *    * s21.ffDecimal!isDefined()   and s21.fDecimal == 13.0001
+     *    * s21.ffEnum!isDefined()      and s21.fEnum == MyEnum#A02
+     *    * s21.entities!contains(e1) == false
+     *    * s21.entities!contains(e2) == false
+     *    * s21.entities!contains(e3) == true
+     *    * s21.entities!contains(e4) == false
+     *    * s21.entities!contains(e5) == true
+     *
+     *  . Retrieve the s12 entity from the database again.
+     *
+     *  . Check the value of the fields of the retrieved *s12* instance. All of the following boolean expressions must be true.
+     *    * s13.created!isDefined()
+     *    * s13.ffBool!isDefined()      and s13.fBool == true
+     *    * s13.ffDate!isDefined()      and s13.fDate == `2023-01-01`
+     *    * s13.ffTime!isDefined()      and s13.fTime == `08:00:00`
+     *    * s13.ffTimestamp!isUndefined()
+     *    * s13.ffLong!isDefined()      and s13.fLong == 9999999999
+     *    * s13.ffString!isUndefined()
+     *    * s13.ffDecimal!isUndefined()
+     *    * s13.ffEnum!isDefined()      and s13.fEnum == MyEnum#A02
+     *
+     *  . Run the lastAddedMyEntity() query. The return value of the query is the e1 MyEntity instance.
+     *
+     *  . The test is passed if all steps have been completed with the specified results.
+     *
+     */
+    @Test
+    @TestCase("TC015")
+    @Requirement(reqs = {
+            "REQ-SYNT-001",
+            "REQ-SYNT-002",
+            "REQ-SYNT-003",
+            "REQ-SYNT-004",
+            "REQ-SYNT-005",
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-MDL-001",
+            "REQ-MDL-003",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-ENT-008",
+            "REQ-ENT-009",
+            "REQ-ENT-011",
+            "REQ-EXPR-002",
+            "REQ-EXPR-004",
+            "REQ-EXPR-005",
+            "REQ-EXPR-006",
+            "REQ-EXPR-007",
+            "REQ-EXPR-008",
+            "REQ-EXPR-010",
+            // TODO: JNG-4392 "REQ-EXPR-012",
+            "REQ-EXPR-022"
+    })
+    void testStaticQueryWithConstantParameters() {
+        MyEntity e1 = myEntityDao.create(MyEntity.builder().build());
+        assertTrue(e1.getFfCreated().isPresent());
+        assertTrue(e1.getFfBool().isEmpty());
+        assertTrue(e1.getFfDate().isEmpty());
+        assertTrue(e1.getFfTime().isEmpty());
+        assertTrue(e1.getFfTimestamp().isEmpty());
+        assertTrue(e1.getFfLong().isEmpty());
+        assertTrue(e1.getFfString().isEmpty());
+        assertTrue(e1.getFfDecimal().isEmpty());
+        assertTrue(e1.getFfEnum().isEmpty());
+
+        MyEntity e2 = myEntityDao.create(MyEntity.builder()
+                .withFfBool(true)
+                .withFfDate(LocalDate.parse("2023-01-01"))
+                .withFfTime(LocalTime.parse("12:00:13"))
+                .withFfTimestamp(OffsetDateTime.parse("2020-01-01T01:11:13-12:00").atZoneSameInstant(ZoneOffset.UTC).toLocalDateTime())
+                .withFfLong(1234567890L)
+                .withFfString("AAA")
+                .withFfDecimal(-12.2302)
+                .withFfEnum(MyEnum.A02)
+                .build());
+
+        Snapshot1 s11 = snapshot1Dao.create(Snapshot1.builder().build());
+
+        assertTrue(s11.getCreated().isPresent());
+        assertTrue(s11.getFfBool().isEmpty());
+        assertTrue(s11.getFfDate().isEmpty());
+        assertTrue(s11.getFfTime().isEmpty());
+        assertTrue(s11.getFfTimestamp().isEmpty());
+        assertTrue(s11.getFfLong().isEmpty());
+        assertTrue(s11.getFfString().isEmpty());
+        assertTrue(s11.getFfDecimal().isEmpty());
+        assertTrue(s11.getFfEnum().isEmpty());
+
+        Snapshot2 s21 = snapshot2Dao.create(Snapshot2.builder().build());
+
+        assertTrue(s21.getCreated().isPresent());
+        assertTrue(s21.getFfBool().isEmpty());
+        assertTrue(s21.getFfDate().isEmpty());
+        assertTrue(s21.getFfTime().isEmpty());
+        assertTrue(s21.getFfTimestamp().isEmpty());
+        assertTrue(s21.getFfLong().isEmpty());
+        assertTrue(s21.getFfString().isEmpty());
+        assertTrue(s21.getFfDecimal().isEmpty());
+        assertTrue(s21.getFfEnum().isEmpty());
+        assertEquals(0, snapshot2Dao.countEntities(s21));
+
+        MyEntity e3 = myEntityDao.create(MyEntity.builder()
+                .withFfBool(true)
+                .withFfDate(LocalDate.parse("2023-01-01"))
+                .withFfTime(LocalTime.parse("08:00:00"))
+                .withFfTimestamp(OffsetDateTime.parse("2020-01-01T12:11:13+01:00").atZoneSameInstant(ZoneOffset.UTC).toLocalDateTime())
+                .withFfLong(9999999999L)
+                .withFfString("ABC")
+                .withFfDecimal(-1.9999)
+                .withFfEnum(MyEnum.A02)
+                .build());
+
+        Snapshot1 s12 = snapshot1Dao.create(Snapshot1.builder().build());
+
+        assertTrue(s12.getCreated().isPresent());
+        assertTrue(!s12.getFfBool().isEmpty());
+        assertTrue(s12.getFfBool().orElseThrow());
+        assertTrue(!s12.getFfDate().isEmpty());
+        assertEquals(LocalDate.parse("2023-01-01"), s12.getFfDate().orElseThrow());
+        assertTrue(!s12.getFfTime().isEmpty());
+        assertEquals(LocalTime.parse("08:00:00"), s12.getFfTime().orElseThrow());
+        assertTrue(s12.getFfTimestamp().isEmpty());
+        assertTrue(!s12.getFfLong().isEmpty());
+        assertEquals(9999999999L, s12.getFfLong().orElseThrow());
+        assertTrue(s12.getFfString().isEmpty());
+        assertTrue(s12.getFfDecimal().isEmpty());
+        assertTrue(!s12.getFfEnum().isEmpty());
+        assertEquals(MyEnum.A02, s12.getFfEnum().orElseThrow());
+
+        MyEntity e4 = myEntityDao.create(MyEntity.builder()
+                .withFfBool(true)
+                .withFfDate(LocalDate.parse("2023-01-01"))
+                .withFfTime(LocalTime.parse("12:00:13"))
+                .withFfTimestamp(OffsetDateTime.parse("2020-01-01T14:11:12+01:00").atZoneSameInstant(ZoneOffset.UTC).toLocalDateTime())
+                .withFfLong(1234567890L)
+                .withFfString("AAA")
+                .withFfDecimal(2.7109)
+                .withFfEnum(MyEnum.A01)
+                .build());
+
+        MyEntity e5 = myEntityDao.create(MyEntity.builder()
+                .withFfBool(false)
+                .withFfDate(LocalDate.parse("2023-01-05"))
+                .withFfTime(LocalTime.parse("12:00:13"))
+                .withFfTimestamp(OffsetDateTime.parse("2020-01-01T01:11:13-12:00").atZoneSameInstant(ZoneOffset.UTC).toLocalDateTime())
+                .withFfLong(-1234567890L)
+                .withFfString("cbaaa")
+                .withFfDecimal(13.0001)
+                .withFfEnum(MyEnum.A03)
+                .build());
+
+        Snapshot1 s13 = snapshot1Dao.create(Snapshot1.builder().build());
+
+        s21 = snapshot2Dao.getById(s21.get__identifier()).orElseThrow();
+        List<MyEntity> s21FromDataBase = snapshot2Dao.queryEntities(s21).execute();
+
+        assertTrue(!s21.getFfBool().isEmpty());
+        assertTrue(s12.getFfBool().orElseThrow());
+        assertFalse(s21.getFfDate().isEmpty());
+        assertFalse(s21.getFfTime().isEmpty());
+        assertTrue(!s21.getFfTimestamp().isEmpty());
+        assertEquals(OffsetDateTime.parse("2020-01-01T14:11:12+01:00").atZoneSameInstant(ZoneOffset.UTC).toLocalDateTime(), s21.getFfTimestamp().orElseThrow());
+        assertTrue(!s21.getFfLong().isEmpty());
+        assertEquals(9999999999L, s21.getFfLong().orElseThrow());
+        assertTrue(!s21.getFfString().isEmpty());
+        assertEquals("AAA", s21.getFfString().orElseThrow());
+        assertTrue(!s21.getFfDecimal().isEmpty());
+        assertEquals(13.0001, s21.getFfDecimal().orElseThrow());
+        assertTrue(!s21.getFfEnum().isEmpty());
+        assertEquals(MyEnum.A02, s21.getFfEnum().orElseThrow());
+        assertFalse(s21FromDataBase.contains(e1));
+        assertFalse(s21FromDataBase.contains(e2));
+        assertTrue(s21FromDataBase.contains(e3));
+        assertFalse(s21FromDataBase.contains(e4));
+        assertTrue(s21FromDataBase.contains(e5));
+        
+
+        Optional<Snapshot1> s12FromDatabse = snapshot1Dao.getById(s12.get__identifier());
+
+        assertTrue(s12FromDatabse.orElseThrow().getCreated().isPresent());
+        assertTrue(!s12FromDatabse.orElseThrow().getFfBool().isEmpty());
+        assertTrue(s12FromDatabse.orElseThrow().getFfBool().orElseThrow());
+        assertTrue(!s12FromDatabse.orElseThrow().getFfDate().isEmpty());
+        assertEquals(LocalDate.parse("2023-01-01"), s12FromDatabse.orElseThrow().getFfDate().orElseThrow());
+        assertTrue(!s12FromDatabse.orElseThrow().getFfTime().isEmpty());
+        assertEquals(LocalTime.parse("08:00:00"), s12FromDatabse.orElseThrow().getFfTime().orElseThrow());
+        assertTrue(s12FromDatabse.orElseThrow().getFfTimestamp().isEmpty());
+        assertTrue(!s12FromDatabse.orElseThrow().getFfLong().isEmpty());
+        assertEquals(9999999999L, s12FromDatabse.orElseThrow().getFfLong().orElseThrow());
+        assertTrue(s12FromDatabse.orElseThrow().getFfString().isEmpty());
+        assertTrue(s12FromDatabse.orElseThrow().getFfDecimal().isEmpty());
+        assertTrue(!s12FromDatabse.orElseThrow().getFfEnum().isEmpty());
+        assertEquals(MyEnum.A02, s12FromDatabse.orElseThrow().getFfEnum().orElseThrow());
+
+        assertTrue(lastAddedMyEntityDao.query().execute().contains(e5));
+    }
+}
