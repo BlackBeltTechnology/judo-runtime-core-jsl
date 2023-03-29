@@ -137,7 +137,7 @@ public class FiltersTest extends AbstractJslTest {
 
         assertEquals(1, multiFilter.size());
 
-        assertEquals(entity1.get__identifier(), multiFilter.get(0).get__identifier());
+        assertEquals(entity1.identifier(), multiFilter.get(0).identifier());
     }
 
     @Test
@@ -166,7 +166,7 @@ public class FiltersTest extends AbstractJslTest {
                 .execute()
                 .get(0);
 
-        assertEquals(entity1.get__identifier(), filteredByString.get__identifier());
+        assertEquals(entity1.identifier(), filteredByString.identifier());
 
         MyEntityWithOptionalFields equals = myEntityWithOptionalFieldsDao
                 .query()
@@ -174,7 +174,7 @@ public class FiltersTest extends AbstractJslTest {
                 .execute()
                 .get(0);
 
-        assertEquals(entity1.get__identifier(), equals.get__identifier());
+        assertEquals(entity1.identifier(), equals.identifier());
 
         MyEntityWithOptionalFields notEquals = myEntityWithOptionalFieldsDao
                 .query()
@@ -182,7 +182,7 @@ public class FiltersTest extends AbstractJslTest {
                 .execute()
                 .get(0);
 
-        assertEquals(entity2.get__identifier(), notEquals.get__identifier());
+        assertEquals(entity2.identifier(), notEquals.identifier());
 
         List<MyEntityWithOptionalFields> greaterOrEquals = myEntityWithOptionalFieldsDao
                 .query()
@@ -197,7 +197,7 @@ public class FiltersTest extends AbstractJslTest {
                 .execute()
                 .get(0);
 
-        assertEquals(entity2.get__identifier(), greater.get__identifier());
+        assertEquals(entity2.identifier(), greater.identifier());
 
         List<MyEntityWithOptionalFields> lessOrEqual = myEntityWithOptionalFieldsDao
                 .query()
@@ -212,7 +212,7 @@ public class FiltersTest extends AbstractJslTest {
                 .execute()
                 .get(0);
 
-        assertEquals(entity1.get__identifier(), less.get__identifier());
+        assertEquals(entity1.identifier(), less.identifier());
     }
 
     @Test
@@ -241,7 +241,7 @@ public class FiltersTest extends AbstractJslTest {
                 .execute()
                 .get(0);
 
-        assertEquals(entity1.get__identifier(), filteredByString.get__identifier());
+        assertEquals(entity1.identifier(), filteredByString.identifier());
 
         MyEntityWithOptionalFields equals = myEntityWithOptionalFieldsDao
                 .query()
@@ -249,7 +249,7 @@ public class FiltersTest extends AbstractJslTest {
                 .execute()
                 .get(0);
 
-        assertEquals(entity1.get__identifier(), equals.get__identifier());
+        assertEquals(entity1.identifier(), equals.identifier());
 
         MyEntityWithOptionalFields notEquals = myEntityWithOptionalFieldsDao
                 .query()
@@ -257,7 +257,7 @@ public class FiltersTest extends AbstractJslTest {
                 .execute()
                 .get(0);
 
-        assertEquals(entity2.get__identifier(), notEquals.get__identifier());
+        assertEquals(entity2.identifier(), notEquals.identifier());
 
         List<MyEntityWithOptionalFields> greaterOrEquals = myEntityWithOptionalFieldsDao
                 .query()
@@ -272,7 +272,7 @@ public class FiltersTest extends AbstractJslTest {
                 .execute()
                 .get(0);
 
-        assertEquals(entity2.get__identifier(), greater.get__identifier());
+        assertEquals(entity2.identifier(), greater.identifier());
 
         List<MyEntityWithOptionalFields> lessOrEqual = myEntityWithOptionalFieldsDao
                 .query()
@@ -287,7 +287,7 @@ public class FiltersTest extends AbstractJslTest {
                 .execute()
                 .get(0);
 
-        assertEquals(entity1.get__identifier(), less.get__identifier());
+        assertEquals(entity1.identifier(), less.identifier());
     }
 
     @Test
@@ -316,7 +316,7 @@ public class FiltersTest extends AbstractJslTest {
                 .execute()
                 .get(0);
 
-        assertEquals(entity1.get__identifier(), filteredByString.get__identifier());
+        assertEquals(entity1.identifier(), filteredByString.identifier());
 
         MyEntityWithOptionalFields equals = myEntityWithOptionalFieldsDao
                 .query()
@@ -324,7 +324,7 @@ public class FiltersTest extends AbstractJslTest {
                 .execute()
                 .get(0);
 
-        assertEquals(entity1.get__identifier(), equals.get__identifier());
+        assertEquals(entity1.identifier(), equals.identifier());
 
         MyEntityWithOptionalFields notEquals = myEntityWithOptionalFieldsDao
                 .query()
@@ -332,7 +332,7 @@ public class FiltersTest extends AbstractJslTest {
                 .execute()
                 .get(0);
 
-        assertEquals(entity2.get__identifier(), notEquals.get__identifier());
+        assertEquals(entity2.identifier(), notEquals.identifier());
 
         List<MyEntityWithOptionalFields> iLike = myEntityWithOptionalFieldsDao
                 .query()
@@ -340,7 +340,7 @@ public class FiltersTest extends AbstractJslTest {
                 .execute();
 
         assertEquals(1, iLike.size());
-        assertEquals(entity1.get__identifier(), iLike.get(0).get__identifier());
+        assertEquals(entity1.identifier(), iLike.get(0).identifier());
 
         List<MyEntityWithOptionalFields> like = myEntityWithOptionalFieldsDao
                 .query()
@@ -348,21 +348,21 @@ public class FiltersTest extends AbstractJslTest {
                 .execute();
 
         assertEquals(1, like.size());
-        assertEquals(entity1.get__identifier(), like.get(0).get__identifier());
+        assertEquals(entity1.identifier(), like.get(0).identifier());
 
         List<MyEntityWithOptionalFields> lessThan = myEntityWithOptionalFieldsDao
                 .query()
                 .filterByStringAttr(StringFilter.lessThan(STRING_1))
                 .execute();
 
-        assertEquals(entity2.get__identifier(), lessThan.get(0).get__identifier());
+        assertEquals(entity2.identifier(), lessThan.get(0).identifier());
 
         List<MyEntityWithOptionalFields> greaterThan = myEntityWithOptionalFieldsDao
                 .query()
                 .filterByStringAttr(StringFilter.greaterThan(STRING_2))
                 .execute();
 
-        assertEquals(entity1.get__identifier(), greaterThan.get(0).get__identifier());
+        assertEquals(entity1.identifier(), greaterThan.get(0).identifier());
 
         List<MyEntityWithOptionalFields> greaterOrEqualThan = myEntityWithOptionalFieldsDao
                 .query()
@@ -405,7 +405,7 @@ public class FiltersTest extends AbstractJslTest {
                 .execute()
                 .get(0);
 
-        assertEquals(entity1.get__identifier(), filteredByString.get__identifier());
+        assertEquals(entity1.identifier(), filteredByString.identifier());
 
         MyEntityWithOptionalFields isTrue = myEntityWithOptionalFieldsDao
                 .query()
@@ -413,7 +413,7 @@ public class FiltersTest extends AbstractJslTest {
                 .execute()
                 .get(0);
 
-        assertEquals(entity1.get__identifier(), isTrue.get__identifier());
+        assertEquals(entity1.identifier(), isTrue.identifier());
 
         MyEntityWithOptionalFields isFalse = myEntityWithOptionalFieldsDao
                 .query()
@@ -421,7 +421,7 @@ public class FiltersTest extends AbstractJslTest {
                 .execute()
                 .get(0);
 
-        assertEquals(entity2.get__identifier(), isFalse.get__identifier());
+        assertEquals(entity2.identifier(), isFalse.identifier());
     }
 
     @Test
@@ -450,7 +450,7 @@ public class FiltersTest extends AbstractJslTest {
                 .execute()
                 .get(0);
 
-        assertEquals(entity1.get__identifier(), equalTo.get__identifier());
+        assertEquals(entity1.identifier(), equalTo.identifier());
 
         MyEntityWithOptionalFields notEqualTo = myEntityWithOptionalFieldsDao
                 .query()
@@ -458,7 +458,7 @@ public class FiltersTest extends AbstractJslTest {
                 .execute()
                 .get(0);
 
-        assertEquals(entity2.get__identifier(), notEqualTo.get__identifier());
+        assertEquals(entity2.identifier(), notEqualTo.identifier());
 
         List<MyEntityWithOptionalFields> greaterOrEqual = myEntityWithOptionalFieldsDao
                 .query()
@@ -515,7 +515,7 @@ public class FiltersTest extends AbstractJslTest {
                 .execute()
                 .get(0);
 
-        assertEquals(entity1.get__identifier(), equalTo.get__identifier());
+        assertEquals(entity1.identifier(), equalTo.identifier());
 
         MyEntityWithOptionalFields notEqualTo = myEntityWithOptionalFieldsDao
                 .query()
@@ -523,7 +523,7 @@ public class FiltersTest extends AbstractJslTest {
                 .execute()
                 .get(0);
 
-        assertEquals(entity2.get__identifier(), notEqualTo.get__identifier());
+        assertEquals(entity2.identifier(), notEqualTo.identifier());
 
         List<MyEntityWithOptionalFields> greaterOrEqual = myEntityWithOptionalFieldsDao
                 .query()
@@ -580,7 +580,7 @@ public class FiltersTest extends AbstractJslTest {
                 .execute()
                 .get(0);
 
-        assertEquals(entity1.get__identifier(), equalTo.get__identifier());
+        assertEquals(entity1.identifier(), equalTo.identifier());
 
         MyEntityWithOptionalFields notEqualTo = myEntityWithOptionalFieldsDao
                 .query()
@@ -588,7 +588,7 @@ public class FiltersTest extends AbstractJslTest {
                 .execute()
                 .get(0);
 
-        assertEquals(entity2.get__identifier(), notEqualTo.get__identifier());
+        assertEquals(entity2.identifier(), notEqualTo.identifier());
 
         List<MyEntityWithOptionalFields> greaterOrEqual = myEntityWithOptionalFieldsDao
                 .query()
@@ -645,7 +645,7 @@ public class FiltersTest extends AbstractJslTest {
                 .execute()
                 .get(0);
 
-        assertEquals(entity1.get__identifier(), equalTo.get__identifier());
+        assertEquals(entity1.identifier(), equalTo.identifier());
 
         MyEntityWithOptionalFields notEqualTo = myEntityWithOptionalFieldsDao
                 .query()
@@ -653,6 +653,6 @@ public class FiltersTest extends AbstractJslTest {
                 .execute()
                 .get(0);
 
-        assertEquals(entity2.get__identifier(), notEqualTo.get__identifier());
+        assertEquals(entity2.identifier(), notEqualTo.identifier());
     }
 }
