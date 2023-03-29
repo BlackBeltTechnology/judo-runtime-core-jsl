@@ -1,4 +1,4 @@
-model modelTC004;
+model OperatorAndFunctionOfEnumTest;
 
 type boolean Bool;
 type string String(min-size=0, max-size=10);

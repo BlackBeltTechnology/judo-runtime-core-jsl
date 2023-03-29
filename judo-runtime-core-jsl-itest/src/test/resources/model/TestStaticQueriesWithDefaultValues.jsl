@@ -1,4 +1,4 @@
-model modelTC017;
+model TestStaticQueriesWithDefaultValues;
 
 import judo::types;
 

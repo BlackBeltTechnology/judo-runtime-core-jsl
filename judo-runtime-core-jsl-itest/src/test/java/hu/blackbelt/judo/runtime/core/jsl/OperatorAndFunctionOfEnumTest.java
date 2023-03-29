@@ -2,10 +2,10 @@ package hu.blackbelt.judo.runtime.core.jsl;
 
 import com.google.inject.Inject;
 import com.google.inject.Module;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.modeltc004.modeltc004.e1.E1;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.modeltc004.modeltc004.e1.E1Dao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.modeltc004.modeltc004.testliteral.TestLiteral;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.ModelTC004DaoModules;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operatorandfunctionofenumtest.operatorandfunctionofenumtest.e1.E1;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operatorandfunctionofenumtest.operatorandfunctionofenumtest.e1.E1Dao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operatorandfunctionofenumtest.operatorandfunctionofenumtest.testliteral.TestLiteral;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.OperatorAndFunctionOfEnumTestDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import org.junit.jupiter.api.Test;
@@ -23,12 +23,12 @@ public class OperatorAndFunctionOfEnumTest extends AbstractJslTest {
 
     @Override
     public Module getModelDaoModule() {
-        return new ModelTC004DaoModules();
+        return new OperatorAndFunctionOfEnumTestDaoModules();
     }
 
     @Override
     public String getModelName() {
-        return "modelTC004";
+        return "OperatorAndFunctionOfEnumTest";
     }
 
     /**
@@ -39,31 +39,6 @@ public class OperatorAndFunctionOfEnumTest extends AbstractJslTest {
      * @type Behaviour
      *
      * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
-     *
-     * @jslModel modelTC004.jsl
-     *  model modelTC004;
-     *
-     *  type boolean Bool;
-     *  type string String(min-size=0, max-size=10);
-     *
-     *  enum TestLiteral {
-     *      Aaa01 = 1;
-     *      Bbb02 = 2;
-     *      Ccc03 = 9999;
-     *      ZZ00  = 0;
-     *  }
-     *
-     *  entity E1 {
-     *      field TestLiteral f1 = TestLiteral#ZZ00;
-     *      field TestLiteral f2 = TestLiteral#Aaa01;
-     *      derived Bool   f3 => self.f1 < self.f2;
-     *      derived Bool   f4 => self.f1 <= self.f2;
-     *      derived Bool   f5 => self.f1 > self.f2;
-     *      derived Bool   f6 => self.f1 >= self.f2;
-     *      derived Bool   f7 => self.f1 == self.f2;
-     *      derived Bool   f8 => self.f1 != self.f2;
-     *      derived String f9 => self.f1!asString();
-     *  }
      *
      * @scenario
      *  . Parse (and/or build) the model.
@@ -96,9 +71,7 @@ public class OperatorAndFunctionOfEnumTest extends AbstractJslTest {
      *     * f8 == false
      *     * f9 == "Aaa01"
      *
-     *  . Change the e1 entity instance f1 field to TestLiteral#Ccc03 and save the e1 entity instance..
-     *
-     *  . Change the e1 entity instance f2 field to TestLiteral#ZZZ.
+     *  . Change the e1 entity instance's f1 field to TestLiteral#Ccc03 and f2 field to TestLiteral#ZZ00 and save the e1 entity instance.
      *
      *  . Check the values of the following fields of the modified e1 entity instance.
      *     * f1 == TestLiteral#Ccc03
@@ -148,8 +121,8 @@ public class OperatorAndFunctionOfEnumTest extends AbstractJslTest {
         assertTrue(e1.getF9().equals(Optional.of("Aaa01")));
 
         e1.setF1(TestLiteral.Ccc03);
-        e1 = e1Dao.update(e1);
         e1.setF2(TestLiteral.ZZ00);
+        e1 = e1Dao.update(e1);
         assertTrue(e1.getF1().equals(Optional.of(TestLiteral.Ccc03)));
         assertTrue(e1.getF2().equals(Optional.of(TestLiteral.ZZ00)));
         assertTrue(e1.getF7().equals(Optional.of(false)));

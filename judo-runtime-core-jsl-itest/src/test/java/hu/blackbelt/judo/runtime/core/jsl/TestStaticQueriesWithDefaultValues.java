@@ -1,16 +1,17 @@
 package hu.blackbelt.judo.runtime.core.jsl;
 
 
-import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.ModelTC017DaoModules;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.modeltc017.modeltc017.myentity.MyEntity;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.modeltc017.modeltc017.myentity.MyEntityDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.modeltc017.modeltc017.myenum.MyEnum;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.modeltc017.modeltc017.snapshot1.Snapshot1;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.modeltc017.modeltc017.snapshot1.Snapshot1Dao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.TestStaticQueriesWithDefaultValuesDaoModules;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.teststaticquerieswithdefaultvalues.teststaticquerieswithdefaultvalues.myentity.MyEntity;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.teststaticquerieswithdefaultvalues.teststaticquerieswithdefaultvalues.myentity.MyEntityDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.teststaticquerieswithdefaultvalues.teststaticquerieswithdefaultvalues.myenum.MyEnum;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.teststaticquerieswithdefaultvalues.teststaticquerieswithdefaultvalues.snapshot1.Snapshot1;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.teststaticquerieswithdefaultvalues.teststaticquerieswithdefaultvalues.snapshot1.Snapshot1Dao;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.google.inject.Inject;
 import com.google.inject.Module;
@@ -19,7 +20,9 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.Optional;
+import java.util.Arrays;
+import java.util.List;
+import java.util.ArrayList;
 
 @Slf4j
 public class TestStaticQueriesWithDefaultValues extends AbstractJslTest {
@@ -32,12 +35,12 @@ public class TestStaticQueriesWithDefaultValues extends AbstractJslTest {
 
     @Override
     public Module getModelDaoModule() {
-        return new ModelTC017DaoModules();
+        return new TestStaticQueriesWithDefaultValuesDaoModules();
     }
 
     @Override
     public String getModelName() {
-        return "modelTC017";
+        return "TestStaticQueriesWithDefaultValues";
     }
 
     /**
@@ -49,83 +52,6 @@ public class TestStaticQueriesWithDefaultValues extends AbstractJslTest {
      * @type Behaviour
      *
      * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
-     *
-     * @jslModel modelTC017.jsl
-     *  model modelTC017;
-     *
-     *  import judo::types;
-     *
-     *  // my decimal
-     *  type numeric Decimal(precision = 13, scale = 4);
-     *
-     *  // my enum
-     *  enum MyEnum {
-     *      A01 = 1;
-     *      A02 = 2;
-     *      A03 = 3;
-     *      A00 = 0;
-     *  }
-     *
-     *  // MyEntity
-     *  entity MyEntity {
-     *      field Timestamp fldCreated = Timestamp!now();
-     *      field Boolean   fldBool;
-     *      field Date      fldDate;
-     *      field Time      fldTime;
-     *      field Timestamp fldTimestamp;
-     *      field Long      fldLong;
-     *      field String    fldString;
-     *      field Decimal   fldDecimal;
-     *      field MyEnum    fldEnum;
-     *  }
-     *
-     *  // Entity for the results of queries
-     *  entity Snapshot1 {
-     *      field Timestamp created = Timestamp!now();
-     *
-     *      // fields
-     *      derived MyEntity fldMyEntity001 => anyMyEntity001();
-     *      derived MyEntity fldMyEntity002 => anyMyEntity002();
-     *      derived MyEntity fldMyEntity003 => anyMyEntity003();
-     *      derived MyEntity fldMyEntity004 => anyMyEntity001(p2 = false);
-     *      derived MyEntity fldMyEntity005 => anyMyEntity002(p3 = "AAA", p1 = `2023-01-01`);
-     *      derived MyEntity fldMyEntity006 => anyMyEntity003(p1 = -10, p3 = true, p2 = MyEnum#A02);
-     *
-     *      // relations
-     *      derived MyEntity[] defEntities => setOfMyEntities();
-     *      derived MyEntity[] otherEntities => setOfMyEntities(p1 = MyEnum#A01);
-     *  }
-     *
-     *  // static queries
-     *  query MyEntity anyMyEntity001(
-     *      Timestamp p1 = Timestamp!now()!plus(days = -7),
-     *      Boolean p2 = true,
-     *      Long p3 = 13
-     *  ) => MyEntity!all()
-     *       !filter(e | p1 <= e.fldCreated and p2 == e.fldBool and p3 <= e.fldLong)
-     *       !any();
-     *
-     *  query MyEntity anyMyEntity002(
-     *      Date p1 = Timestamp!now()!date(),
-     *      Time p2 = `15:15`,
-     *      String p3 = "Lorem ipsum"
-     *  ) => MyEntity!all()
-     *       !filter(e | p1 == e.fldDate and p2 <= e.Time and p3 != e.fldString)
-     *       !any();
-     *
-     *  query MyEntity anyMyEntity003(
-     *      Decimal p1 = 999999999.9999,
-     *      MyEnum p2 = MyEnum#A00,
-     *      Boolean p3 = false
-     *  ) => MyEntity!all()
-     *       !filter(e | p1 <= e.fldDecimal and e.fldEnum >= p2 or p3 == e.fldBool)
-     *       !any();
-     *
-     *  query MyEntity[] setOfMyEntities(
-     *      MyEnum p1 = MyEnum#A03
-     *  ) => MyEntity!all()
-     *       !filter(e | p1 == e.fldEnum and e.fldCreated <= Timestamp!now());
-     *
      *
      * @positiveRequirements
      *  Write here the requirement identifiers that are positively checked by this test case.
@@ -230,7 +156,7 @@ public class TestStaticQueriesWithDefaultValues extends AbstractJslTest {
                 .withFldDate(LocalDate.parse("1900-01-01"))
                 .withFldTime(LocalTime.parse("12:00:13"))
                 .withFldTimestamp(OffsetDateTime.parse("2020-01-01T01:11:13-12:00").atZoneSameInstant(ZoneOffset.UTC).toLocalDateTime())
-                .withFldLong(Long.valueOf(1234567890))
+                .withFldLong(1234567890L)
                 .withFldString("AAA")
                 .withFldDecimal(-1.2302)
                 .withFldEnum(MyEnum.A03)
@@ -241,7 +167,7 @@ public class TestStaticQueriesWithDefaultValues extends AbstractJslTest {
                 .withFldDate(LocalDate.now())
                 .withFldTime(LocalTime.parse("15:15:01"))
                 .withFldTimestamp(OffsetDateTime.parse("2020-01-01T01:11:13+01:00").atZoneSameInstant(ZoneOffset.UTC).toLocalDateTime())
-                .withFldLong(Long.parseLong("12345678999"))
+                .withFldLong(12345678999L)
                 .withFldString("AAA")
                 .withFldDecimal(-2.2302)
                 .withFldEnum(MyEnum.A02)
@@ -252,16 +178,32 @@ public class TestStaticQueriesWithDefaultValues extends AbstractJslTest {
                 .withFldDate(LocalDate.parse("2023-01-01"))
                 .withFldTime(LocalTime.parse("15:20"))
                 .withFldTimestamp(OffsetDateTime.parse("2020-01-01T01:11:13+01:00").atZoneSameInstant(ZoneOffset.UTC).toLocalDateTime())
-                .withFldLong(Long.valueOf(-16))
+                .withFldLong(-16L)
                 .withFldString("Lorem ipsum")
                 .withFldDecimal(999999999.9999)
                 .withFldEnum(MyEnum.A01)
                 .build());
 
-        // TODO: check s1 other derived fields
+        
         Snapshot1 s1 = snapshot1Dao.create(Snapshot1.builder().build());
-        assertTrue(snapshot1Dao.queryFldMyEntity002(s1).equals(Optional.of(e3)));
-        assertTrue(snapshot1Dao.queryFldMyEntity005(s1).equals(Optional.of(e4)));
+        assertEquals(e2.get__identifier(), snapshot1Dao.queryFldMyEntity001(s1).orElseThrow().get__identifier());
+        assertEquals(e3.get__identifier(), snapshot1Dao.queryFldMyEntity002(s1).orElseThrow().get__identifier());
+        assertTrue(
+                    snapshot1Dao.queryFldMyEntity003(s1).orElseThrow().get__identifier().equals(e3.get__identifier())
+                    || snapshot1Dao.queryFldMyEntity003(s1).orElseThrow().get__identifier().equals(e4.get__identifier())
+                );
+        assertEquals(e3.get__identifier(), snapshot1Dao.queryFldMyEntity004(s1).orElseThrow().get__identifier());
+        assertEquals(e4.get__identifier(), snapshot1Dao.queryFldMyEntity005(s1).orElseThrow().get__identifier());
+        assertTrue(
+                snapshot1Dao.queryFldMyEntity006(s1).orElseThrow().get__identifier().equals(e2.get__identifier())
+                || snapshot1Dao.queryFldMyEntity006(s1).orElseThrow().get__identifier().equals(e3.get__identifier())
+                || snapshot1Dao.queryFldMyEntity006(s1).orElseThrow().get__identifier().equals(e4.get__identifier())
+            );
+        List<MyEntity> defEntities = new ArrayList<>(List.of(e2));
+        assertEquals(defEntities, snapshot1Dao.queryDefEntities(s1).execute());
+        List<MyEntity> otherEntities = new ArrayList<>(List.of(e4));
+        assertEquals(otherEntities, snapshot1Dao.queryOtherEntities(s1).execute());
+
     }
 
 }
