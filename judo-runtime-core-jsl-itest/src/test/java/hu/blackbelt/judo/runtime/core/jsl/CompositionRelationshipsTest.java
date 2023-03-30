@@ -27,11 +27,13 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationship
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entitya.EntityAMask;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityb.EntityB;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityb.EntityBDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityb.EntityBIdentifier;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityc.EntityC;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityc.EntityCDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityc.EntityCMask;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityd.EntityD;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityd.EntityDDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityd.EntityDIdentifier;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entitye.EntityE;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entitye.EntityEDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.CompositionRelationshipsDaoModules;
@@ -42,12 +44,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -141,7 +140,7 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
 
         assertEquals(Optional.empty(), entityADao.querySingleConA(entityA));
         assertEquals(1, entityCDao.query().execute().size());
-        assertEquals(Optional.empty(), entityCDao.getById(singleConA.get__identifier()));
+        assertEquals(Optional.empty(), entityCDao.getById(singleConA.identifier()));
     }
 
     @Test
@@ -158,7 +157,7 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
 
         assertEquals(Optional.empty(), entityADao.querySingleConA(entityA));
         assertEquals(1, entityCDao.query().execute().size());
-        assertEquals(Optional.empty(), entityCDao.getById(singleConA.get__identifier()));
+        assertEquals(Optional.empty(), entityCDao.getById(singleConA.identifier()));
     }
 
     @Test
@@ -216,8 +215,8 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
         assertNotEquals(null, maskedA.getSingleRequiredConA());
         assertEquals(Optional.of("TEST-C"), singleRequiredConA.getStringC());
         assertEquals(2, singleRequiredConA.getMultipleDonB().size());
-        assertEquals(Optional.of(entityD1), singleRequiredConA.getMultipleDonB().stream().filter(d -> d.get__identifier().equals(entityD1.get__identifier())).findFirst());
-        assertEquals(Optional.of(entityD2), singleRequiredConA.getMultipleDonB().stream().filter(d -> d.get__identifier().equals(entityD2.get__identifier())).findFirst());
+        assertEquals(Optional.of(entityD1), singleRequiredConA.getMultipleDonB().stream().filter(d -> d.identifier().equals(entityD1.identifier())).findFirst());
+        assertEquals(Optional.of(entityD2), singleRequiredConA.getMultipleDonB().stream().filter(d -> d.identifier().equals(entityD2.identifier())).findFirst());
     }
 
     @Test
@@ -230,16 +229,17 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
             "REQ-ENT-012"
     })
     void testMask() {
-        List<EntityA> maskedAs = entityADao.query().maskedBy(EntityAMask.entityAMask().withSingleRequiredConA(EntityCMask.entityCMask().withStringC())).execute();
+        List<EntityA> maskedAs = entityADao.query().maskedBy(
+                EntityAMask.entityAMask().withSingleRequiredConA(EntityCMask.entityCMask().withStringC())).execute();
 
         EntityA maskedA = maskedAs.get(0);
         EntityC requiredC = maskedA.getSingleRequiredConA();
 
         assertEquals(1, maskedAs.size());
-        assertEquals(Optional.empty(), maskedA.getSingleConA());
-        assertEquals(Optional.empty(), maskedA.getStringA());
+        assertEquals(null, maskedA.getSingleConA());
+        assertEquals(null, maskedA.getStringA());
         assertEquals(singleRequiredConA, maskedA.getSingleRequiredConA());
-        assertEquals(Optional.empty(), requiredC.getStringB());
+        assertEquals(null, requiredC.getStringB());
         assertEquals(Optional.of("TEST-C"), requiredC.getStringC());
     }
 
@@ -329,7 +329,7 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
         assertEquals(Optional.empty(), entityC.getStringB());
         assertEquals(Optional.empty(), entityC.getStringC());
 
-        Optional<EntityB> entityB = entityBDao.getById(entityC.get__identifier());
+        Optional<EntityB> entityB = entityBDao.getById(entityC.identifier().adaptTo(EntityBIdentifier.class));
 
         assertTrue(entityB.isPresent());
 
@@ -339,7 +339,7 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
 
         assertEquals(Optional.of("B"), updatedC.getStringB());
 
-        Optional<EntityB> updatedB = entityBDao.getById(entityC.get__identifier());
+        Optional<EntityB> updatedB = entityBDao.getById(entityC.identifier().adaptTo(EntityBIdentifier.class));
 
         assertEquals(Optional.of("B"), updatedB.get().getStringB());
     }
@@ -363,10 +363,10 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
                 .withSingleRequiredConA(singleRequiredConA)
                 .build());
 
-        assertNotEquals(entityA.getSingleRequiredConA().get__identifier(), singleRequiredConA.get__identifier());
-        List<UUID> collect = singleRequiredConA.getMultipleDonB().stream().map(c -> c.get__identifier()).collect(Collectors.toList());
-        assertFalse(collect.contains(entityD1.get__identifier()));
-        assertFalse(collect.contains(entityD2.get__identifier()));
+        assertNotEquals(entityA.getSingleRequiredConA().identifier(), singleRequiredConA.identifier());
+        List<EntityDIdentifier> collect = singleRequiredConA.getMultipleDonB().stream().map(c -> c.identifier()).collect(Collectors.toList());
+        assertFalse(collect.contains(entityD1.identifier()));
+        assertFalse(collect.contains(entityD2.identifier()));
 
     }
 }

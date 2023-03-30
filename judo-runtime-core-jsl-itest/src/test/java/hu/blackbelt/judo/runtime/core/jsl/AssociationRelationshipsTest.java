@@ -162,7 +162,7 @@ public class AssociationRelationshipsTest extends AbstractJslTest {
 
         entityCDao.addMultipleDonC(entityC, List.of(entityD2));
 
-        Optional<EntityA> startA = entityADao.getById(entityA.get__identifier());
+        Optional<EntityA> startA = entityADao.getById(entityA.identifier());
 
         EntityC entityC2 = entityADao.querySingleRequiredConA(startA.get());
 
