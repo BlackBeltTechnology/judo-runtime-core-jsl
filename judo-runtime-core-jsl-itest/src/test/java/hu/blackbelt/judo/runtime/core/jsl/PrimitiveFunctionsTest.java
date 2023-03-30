@@ -138,11 +138,11 @@ public class PrimitiveFunctionsTest extends AbstractJslTest {
                 .execute()
                 .get(0);
 
-        assertEquals(entity1.get__identifier(), maskedResult.get__identifier());
+        assertEquals(entity1.identifier(), maskedResult.identifier());
         assertEquals(entity1.getIntegerAttr(), maskedResult.getIntegerAttr());
-        assertEquals(Optional.empty(), maskedResult.getScaledAttr());
+        assertEquals(null, maskedResult.getScaledAttr());
         assertEquals(entity1.getStringAttr(), maskedResult.getStringAttr());
-        assertEquals(Optional.empty(), maskedResult.getRegexAttr());
+        assertEquals(null, maskedResult.getRegexAttr());
     }
 
     private void assertOrderBy(MyEntityWithOptionalFieldsAttribute attribute, MyEntityWithOptionalFields firstEntity) {
@@ -152,7 +152,7 @@ public class PrimitiveFunctionsTest extends AbstractJslTest {
                 .execute()
                 .get(0);
 
-        assertEquals(firstEntity.get__identifier(), orderBy.get__identifier());
+        assertEquals(firstEntity.identifier(), orderBy.identifier());
     }
 
     private void assertOrderByDescending(MyEntityWithOptionalFieldsAttribute attribute, MyEntityWithOptionalFields firstEntity) {
@@ -162,6 +162,6 @@ public class PrimitiveFunctionsTest extends AbstractJslTest {
                 .execute()
                 .get(0);
 
-        assertEquals(firstEntity.get__identifier(), orderByDescending.get__identifier());
+        assertEquals(firstEntity.identifier(), orderByDescending.identifier());
     }
 }

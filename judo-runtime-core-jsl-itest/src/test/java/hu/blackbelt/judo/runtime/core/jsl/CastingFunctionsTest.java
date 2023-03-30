@@ -30,6 +30,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctionsmodel.c
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctionsmodel.castingfunctionsmodel.tester.Tester;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctionsmodel.castingfunctionsmodel.tester.TesterAttachedRelationsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctionsmodel.castingfunctionsmodel.tester.TesterDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctionsmodel.castingfunctionsmodel.b.BIdentifier;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.CastingFunctionsModelDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
@@ -70,9 +71,9 @@ public class CastingFunctionsTest extends AbstractJslTest {
         CA ca = caDao.create(CA.builder().withNameA("aca1").withNameB("bca1").withNameCA("ca1").build());
         CA ca1 = caDao.create(CA.builder().withNameA("aca2").withNameB("bca2").withNameCA("ca2").build());
         CA ca2 = caDao.create(CA.builder().withNameA("aca3").withNameB("bca3").withNameCA("ca3").build());
-        B caAsB = bDao.getById(ca.get__identifier()).orElseThrow();
-        B caAsB1 = bDao.getById(ca1.get__identifier()).orElseThrow();
-        B caAsB2 = bDao.getById(ca2.get__identifier()).orElseThrow();
+        B caAsB = bDao.getById(ca.identifier().adaptTo(BIdentifier.class)).orElseThrow();
+        B caAsB1 = bDao.getById(ca1.identifier().adaptTo(BIdentifier.class)).orElseThrow();
+        B caAsB2 = bDao.getById(ca2.identifier().adaptTo(BIdentifier.class)).orElseThrow();
 
         tester = testerDao.create(
                                     Tester.builder()

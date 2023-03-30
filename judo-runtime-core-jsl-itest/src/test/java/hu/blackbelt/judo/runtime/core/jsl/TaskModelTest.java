@@ -97,7 +97,7 @@ public class TaskModelTest extends AbstractJslTest {
         salesPersonDao.setWorkplace(person1, marketPlace);
         salesPersonDao.setWorkplace(person2, marketPlace);
 
-        marketPlace = marketPlaceDao.getById(marketPlace.get__identifier()).orElseThrow();
+        marketPlace = marketPlaceDao.getById(marketPlace.identifier()).orElseThrow();
 
         assertEquals(Optional.of(2), marketPlace.getAllTime());
 
@@ -139,7 +139,7 @@ public class TaskModelTest extends AbstractJslTest {
                 ))));
 
 
-        person1 = personDao.getById(person1.get__identifier()).orElseThrow();
+        person1 = personDao.getById(person1.identifier()).orElseThrow();
 
         assertEquals(Optional.of(10), person1.getAllTaskLong());
         assertEquals(Optional.of(16), blackbelt.getAllTime());
