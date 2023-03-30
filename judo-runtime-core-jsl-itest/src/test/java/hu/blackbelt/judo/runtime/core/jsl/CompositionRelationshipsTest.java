@@ -238,7 +238,7 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
         assertEquals(1, maskedAs.size());
         assertEquals(null, maskedA.getSingleConA());
         assertEquals(null, maskedA.getStringA());
-        assertEquals(singleRequiredConA, maskedA.getSingleRequiredConA());
+        assertEquals(singleRequiredConA.identifier(), maskedA.getSingleRequiredConA().identifier());
         assertEquals(null, requiredC.getStringB());
         assertEquals(Optional.of("TEST-C"), requiredC.getStringC());
     }
