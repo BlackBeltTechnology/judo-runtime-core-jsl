@@ -103,7 +103,6 @@ public class OperatorAndFunctionOfEnumTest extends AbstractJslTest {
             "REQ-EXPR-020"
     })
     void testEnumOperatorsAndFunctions() {
-        // TODO: JNG-4664 Implementing '<' '>'  '<='  '>=' operations for enum in JQL
         // TODO: check f3, f4, f6, f6 fields
         E1 e1 = e1Dao.create(E1.builder().build());
         assertTrue(e1.getF1().equals(Optional.of(TestLiteral.ZZ00)));
