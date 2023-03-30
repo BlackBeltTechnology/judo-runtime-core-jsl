@@ -61,7 +61,7 @@ public class TransactionManagementTest extends AbstractJslTest {
         commitTransaction();
         beginTransaction();
 
-        assertEquals("TEST-A", testerDao.getById(tester.get__identifier()).orElseThrow().getName());
+        assertEquals("TEST-A", testerDao.getById(tester.identifier()).orElseThrow().getName());
 
         tester.setName("BLAAA");
         testerDao.update(tester);
@@ -69,7 +69,7 @@ public class TransactionManagementTest extends AbstractJslTest {
         rollbackTransaction();
         beginTransaction();
 
-        assertEquals("TEST-A", testerDao.getById(tester.get__identifier()).orElseThrow().getName());
+        assertEquals("TEST-A", testerDao.getById(tester.identifier()).orElseThrow().getName());
 
         // rollbackTransaction(); in AfterEach
     }

@@ -29,6 +29,7 @@ import hu.blackbelt.judo.runtime.core.jsl.spring.test.api.salesmodel.salesmodel.
 import hu.blackbelt.judo.runtime.core.jsl.spring.test.api.salesmodel.salesmodel.rootonelead.RootOneLeadDao;
 import hu.blackbelt.judo.runtime.core.jsl.spring.test.api.salesmodel.salesmodel.salesperson.SalesPerson;
 import hu.blackbelt.judo.runtime.core.jsl.spring.test.api.salesmodel.salesmodel.salesperson.SalesPersonDao;
+import hu.blackbelt.judo.runtime.core.jsl.spring.test.api.salesmodel.salesmodel.salesperson.SalesPersonIdentifier;
 import hu.blackbelt.judo.runtime.core.jsl.spring.test.api.salesmodel.salesmodel.totalnumberofleads.TotalNumberOfLeadsDao;
 import hu.blackbelt.judo.sdk.query.NumberFilter;
 import hu.blackbelt.judo.sdk.query.StringFilter;
@@ -149,18 +150,18 @@ class JudoRuntimeCoreSpringApplicationTests {
                 .withLastName("Elek")
                 .build());
 
-        UUID uuid = salesPerson.get__identifier();
+        SalesPersonIdentifier salesPersonIdentifier = salesPerson.identifier();
 
         transactionManager.commit(transactionStatus);
 
         // Create test transaction
         transactionStatus = transactionManager.getTransaction(defaultTransactionDefinition);
 
-        assertEquals(Optional.of("Test"), salesPersonDao.getById(uuid).get().getFirstName());
+        assertEquals(Optional.of("Test"), salesPersonDao.getById(salesPersonIdentifier).get().getFirstName());
         salesPerson.setFirstName("BLAAA");
         salesPersonDao.update(salesPerson);
         transactionManager.rollback(transactionStatus);
-        assertEquals(Optional.of("Test"), salesPersonDao.getById(uuid).get().getFirstName());
+        assertEquals(Optional.of("Test"), salesPersonDao.getById(salesPersonIdentifier).get().getFirstName());
 
         // Delete created person to avoid collosion with other tests
         transactionStatus = transactionManager.getTransaction(defaultTransactionDefinition);
@@ -185,11 +186,11 @@ class JudoRuntimeCoreSpringApplicationTests {
         transactionStatus = transactionManager.getTransaction(defaultTransactionDefinition);
 
         // Create test transaction
-        assertEquals(Optional.of("Test"), salesPersonDao.getById(salesPerson.get__identifier()).get().getFirstName());
+        assertEquals(Optional.of("Test"), salesPersonDao.getById(salesPerson.identifier()).get().getFirstName());
         salesPerson.setFirstName("BLAAA");
         salesPersonDao.update(salesPerson);
         transactionManager.commit(transactionStatus);
-        assertEquals(Optional.of("BLAAA"), salesPersonDao.getById(salesPerson.get__identifier()).get().getFirstName());
+        assertEquals(Optional.of("BLAAA"), salesPersonDao.getById(salesPerson.identifier()).get().getFirstName());
 
         // Delete created person to avoid collosion with other tests
         transactionStatus = transactionManager.getTransaction(defaultTransactionDefinition);
