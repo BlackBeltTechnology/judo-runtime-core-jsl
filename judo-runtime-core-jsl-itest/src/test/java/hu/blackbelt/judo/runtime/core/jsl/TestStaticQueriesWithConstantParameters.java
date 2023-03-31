@@ -342,7 +342,7 @@ public class TestStaticQueriesWithConstantParameters extends AbstractJslTest {
 
         Snapshot1 s13 = snapshot1Dao.create(Snapshot1.builder().build());
 
-        s21 = snapshot2Dao.getById(s21.get__identifier()).orElseThrow();
+        s21 = snapshot2Dao.getById(s21.identifier()).orElseThrow();
         List<MyEntity> s21FromDataBase = snapshot2Dao.queryEntities(s21).execute();
 
         assertTrue(!s21.getFfBool().isEmpty());
@@ -366,7 +366,7 @@ public class TestStaticQueriesWithConstantParameters extends AbstractJslTest {
         assertTrue(s21FromDataBase.contains(e5));
         
 
-        Optional<Snapshot1> s12FromDatabse = snapshot1Dao.getById(s12.get__identifier());
+        Optional<Snapshot1> s12FromDatabse = snapshot1Dao.getById(s12.identifier());
 
         assertTrue(s12FromDatabse.orElseThrow().getCreated().isPresent());
         assertTrue(!s12FromDatabse.orElseThrow().getFfBool().isEmpty());
