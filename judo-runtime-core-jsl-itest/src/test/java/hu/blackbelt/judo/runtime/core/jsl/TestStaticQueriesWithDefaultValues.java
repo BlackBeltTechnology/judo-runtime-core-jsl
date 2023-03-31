@@ -1,28 +1,24 @@
 package hu.blackbelt.judo.runtime.core.jsl;
 
-
-import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.TestStaticQueriesWithDefaultValuesDaoModules;
+import com.google.inject.Inject;
+import com.google.inject.Module;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.teststaticquerieswithdefaultvalues.teststaticquerieswithdefaultvalues.myentity.MyEntity;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.teststaticquerieswithdefaultvalues.teststaticquerieswithdefaultvalues.myentity.MyEntityDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.teststaticquerieswithdefaultvalues.teststaticquerieswithdefaultvalues.myenum.MyEnum;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.teststaticquerieswithdefaultvalues.teststaticquerieswithdefaultvalues.snapshot1.Snapshot1;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.teststaticquerieswithdefaultvalues.teststaticquerieswithdefaultvalues.snapshot1.Snapshot1Dao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.TestStaticQueriesWithDefaultValuesDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+
+import java.time.*;
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import com.google.inject.Inject;
-import com.google.inject.Module;
-
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
-import java.util.Arrays;
-import java.util.List;
-import java.util.ArrayList;
 
 @Slf4j
 public class TestStaticQueriesWithDefaultValues extends AbstractJslTest {

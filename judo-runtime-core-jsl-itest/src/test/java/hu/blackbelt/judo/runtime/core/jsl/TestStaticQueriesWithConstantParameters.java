@@ -304,18 +304,18 @@ public class TestStaticQueriesWithConstantParameters extends AbstractJslTest {
         Snapshot1 s12 = snapshot1Dao.create(Snapshot1.builder().build());
 
         assertTrue(s12.getCreated().isPresent());
-        assertTrue(!s12.getFfBool().isEmpty());
+        assertTrue(s12.getFfBool().isPresent());
         assertTrue(s12.getFfBool().orElseThrow());
-        assertTrue(!s12.getFfDate().isEmpty());
+        assertTrue(s12.getFfDate().isPresent());
         assertEquals(LocalDate.parse("2023-01-01"), s12.getFfDate().orElseThrow());
-        assertTrue(!s12.getFfTime().isEmpty());
+        assertTrue(s12.getFfTime().isPresent());
         assertEquals(LocalTime.parse("08:00:00"), s12.getFfTime().orElseThrow());
         assertTrue(s12.getFfTimestamp().isEmpty());
-        assertTrue(!s12.getFfLong().isEmpty());
+        assertTrue(s12.getFfLong().isPresent());
         assertEquals(9999999999L, s12.getFfLong().orElseThrow());
         assertTrue(s12.getFfString().isEmpty());
         assertTrue(s12.getFfDecimal().isEmpty());
-        assertTrue(!s12.getFfEnum().isEmpty());
+        assertTrue(s12.getFfEnum().isPresent());
         assertEquals(MyEnum.A02, s12.getFfEnum().orElseThrow());
 
         MyEntity e4 = myEntityDao.create(MyEntity.builder()
@@ -345,19 +345,19 @@ public class TestStaticQueriesWithConstantParameters extends AbstractJslTest {
         s21 = snapshot2Dao.getById(s21.identifier()).orElseThrow();
         List<MyEntity> s21FromDataBase = snapshot2Dao.queryEntities(s21).execute();
 
-        assertTrue(!s21.getFfBool().isEmpty());
+        assertTrue(s21.getFfBool().isPresent());
         assertTrue(s12.getFfBool().orElseThrow());
         assertFalse(s21.getFfDate().isEmpty());
         assertFalse(s21.getFfTime().isEmpty());
-        assertTrue(!s21.getFfTimestamp().isEmpty());
+        assertTrue(s21.getFfTimestamp().isPresent());
         assertEquals(OffsetDateTime.parse("2020-01-01T14:11:12+01:00").atZoneSameInstant(ZoneOffset.UTC).toLocalDateTime(), s21.getFfTimestamp().orElseThrow());
-        assertTrue(!s21.getFfLong().isEmpty());
+        assertTrue(s21.getFfLong().isPresent());
         assertEquals(9999999999L, s21.getFfLong().orElseThrow());
-        assertTrue(!s21.getFfString().isEmpty());
+        assertTrue(s21.getFfString().isPresent());
         assertEquals("AAA", s21.getFfString().orElseThrow());
-        assertTrue(!s21.getFfDecimal().isEmpty());
+        assertTrue(s21.getFfDecimal().isPresent());
         assertEquals(13.0001, s21.getFfDecimal().orElseThrow());
-        assertTrue(!s21.getFfEnum().isEmpty());
+        assertTrue(s21.getFfEnum().isPresent());
         assertEquals(MyEnum.A02, s21.getFfEnum().orElseThrow());
         assertFalse(s21FromDataBase.contains(e1));
         assertFalse(s21FromDataBase.contains(e2));
@@ -369,18 +369,18 @@ public class TestStaticQueriesWithConstantParameters extends AbstractJslTest {
         Optional<Snapshot1> s12FromDatabse = snapshot1Dao.getById(s12.identifier());
 
         assertTrue(s12FromDatabse.orElseThrow().getCreated().isPresent());
-        assertTrue(!s12FromDatabse.orElseThrow().getFfBool().isEmpty());
+        assertTrue(s12FromDatabse.orElseThrow().getFfBool().isPresent());
         assertTrue(s12FromDatabse.orElseThrow().getFfBool().orElseThrow());
-        assertTrue(!s12FromDatabse.orElseThrow().getFfDate().isEmpty());
+        assertTrue(s12FromDatabse.orElseThrow().getFfDate().isPresent());
         assertEquals(LocalDate.parse("2023-01-01"), s12FromDatabse.orElseThrow().getFfDate().orElseThrow());
-        assertTrue(!s12FromDatabse.orElseThrow().getFfTime().isEmpty());
+        assertTrue(s12FromDatabse.orElseThrow().getFfTime().isPresent());
         assertEquals(LocalTime.parse("08:00:00"), s12FromDatabse.orElseThrow().getFfTime().orElseThrow());
         assertTrue(s12FromDatabse.orElseThrow().getFfTimestamp().isEmpty());
-        assertTrue(!s12FromDatabse.orElseThrow().getFfLong().isEmpty());
+        assertTrue(s12FromDatabse.orElseThrow().getFfLong().isPresent());
         assertEquals(9999999999L, s12FromDatabse.orElseThrow().getFfLong().orElseThrow());
         assertTrue(s12FromDatabse.orElseThrow().getFfString().isEmpty());
         assertTrue(s12FromDatabse.orElseThrow().getFfDecimal().isEmpty());
-        assertTrue(!s12FromDatabse.orElseThrow().getFfEnum().isEmpty());
+        assertTrue(s12FromDatabse.orElseThrow().getFfEnum().isPresent());
         assertEquals(MyEnum.A02, s12FromDatabse.orElseThrow().getFfEnum().orElseThrow());
 
         assertTrue(lastAddedMyEntityDao.query().execute().contains(e5));
