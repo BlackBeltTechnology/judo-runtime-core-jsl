@@ -76,7 +76,7 @@ public class OperatorAndFunctionOfEnumTest extends AbstractJslTest {
      *
      *  . Check the values of the following fields of the modified e1 entity instance.
      *     * f1 == TestLiteral#Ccc03
-     *     * f2 == TestLiteral#Bbb02
+     *     * f2 == TestLiteral#ZZ00
      *     * f3 == false
      *     * f4 == false
      *     * f5 == true
