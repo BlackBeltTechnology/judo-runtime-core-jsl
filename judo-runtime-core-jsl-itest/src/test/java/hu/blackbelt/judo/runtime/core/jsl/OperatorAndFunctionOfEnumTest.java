@@ -10,6 +10,7 @@ import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -107,16 +108,24 @@ public class OperatorAndFunctionOfEnumTest extends AbstractJslTest {
         E1 e1 = e1Dao.create(E1.builder().build());
         assertTrue(e1.getF1().equals(Optional.of(TestLiteral.ZZ00)));
         assertTrue(e1.getF2().equals(Optional.of(TestLiteral.Aaa01)));
-        assertTrue(e1.getF7().equals(Optional.of(false)));
-        assertTrue(e1.getF8().equals(Optional.of(true)));
+        assertEquals(true,e1.getF3().orElseThrow());
+        assertEquals(true,e1.getF4().orElseThrow());
+        assertEquals(false,e1.getF5().orElseThrow());
+        assertEquals(false,e1.getF6().orElseThrow());
+        assertEquals(false,e1.getF7().orElseThrow());
+        assertEquals(true,e1.getF8().orElseThrow());
         assertTrue(e1.getF9().equals(Optional.of("ZZ00")));
 
         e1.setF1(TestLiteral.Aaa01);
         e1 = e1Dao.update(e1);
         assertTrue(e1.getF1().equals(Optional.of(TestLiteral.Aaa01)));
         assertTrue(e1.getF2().equals(Optional.of(TestLiteral.Aaa01)));
-        assertTrue(e1.getF7().equals(Optional.of(true)));
-        assertTrue(e1.getF8().equals(Optional.of(false)));
+        assertEquals(false,e1.getF3().orElseThrow());
+        assertEquals(true,e1.getF4().orElseThrow());
+        assertEquals(false,e1.getF5().orElseThrow());
+        assertEquals(true,e1.getF6().orElseThrow());
+        assertEquals(true,e1.getF7().orElseThrow());
+        assertEquals(false,e1.getF8().orElseThrow());
         assertTrue(e1.getF9().equals(Optional.of("Aaa01")));
 
         e1.setF1(TestLiteral.Ccc03);
@@ -124,8 +133,12 @@ public class OperatorAndFunctionOfEnumTest extends AbstractJslTest {
         e1 = e1Dao.update(e1);
         assertTrue(e1.getF1().equals(Optional.of(TestLiteral.Ccc03)));
         assertTrue(e1.getF2().equals(Optional.of(TestLiteral.ZZ00)));
-        assertTrue(e1.getF7().equals(Optional.of(false)));
-        assertTrue(e1.getF8().equals(Optional.of(true)));
+        assertEquals(false,e1.getF3().orElseThrow());
+        assertEquals(false,e1.getF4().orElseThrow());
+        assertEquals(true,e1.getF5().orElseThrow());
+        assertEquals(true,e1.getF6().orElseThrow());
+        assertEquals(false,e1.getF7().orElseThrow());
+        assertEquals(true,e1.getF8().orElseThrow());
         assertTrue(e1.getF9().equals(Optional.of("Ccc03")));
 
     }
