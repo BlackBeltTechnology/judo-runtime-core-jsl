@@ -15,13 +15,14 @@ import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.testcontainers.shaded.com.fasterxml.jackson.databind.ser.std.UUIDSerializer;
 
+import java.io.Serializable;
 import java.time.*;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Slf4j
@@ -192,15 +193,15 @@ public class TestStaticQueriesWithConstantParameters extends AbstractJslTest {
      *  . Retrieve the s12 entity from the database again.
      *
      *  . Check the value of the fields of the retrieved *s12* instance. All of the following boolean expressions must be true.
-     *    * s13.created!isDefined()
-     *    * s13.ffBool!isDefined()      and s13.fBool == true
-     *    * s13.ffDate!isDefined()      and s13.fDate == `2023-01-01`
-     *    * s13.ffTime!isDefined()      and s13.fTime == `08:00:00`
-     *    * s13.ffTimestamp!isUndefined()
-     *    * s13.ffLong!isDefined()      and s13.fLong == 9999999999
-     *    * s13.ffString!isUndefined()
-     *    * s13.ffDecimal!isUndefined()
-     *    * s13.ffEnum!isDefined()      and s13.fEnum == MyEnum#A02
+     *    * s12.created!isDefined()
+     *    * s12.ffBool!isDefined()      and s13.fBool == true
+     *    * s12.ffDate!isDefined()      and s13.fDate == `2023-01-01`
+     *    * s12.ffTime!isDefined()      and s13.fTime == `08:00:00`
+     *    * s12.ffTimestamp!isUndefined()
+     *    * s12.ffLong!isDefined()      and s13.fLong == 9999999999
+     *    * s12.ffString!isUndefined()
+     *    * s12.ffDecimal!isUndefined()
+     *    * s12.ffEnum!isDefined()      and s13.fEnum == MyEnum#A02
      *
      *  . Run the lastAddedMyEntity() query. The return value of the query is the e1 MyEntity instance.
      *
@@ -239,12 +240,13 @@ public class TestStaticQueriesWithConstantParameters extends AbstractJslTest {
             "REQ-EXPR-007",
             "REQ-EXPR-008",
             "REQ-EXPR-010",
-            // TODO: JNG-4392 "REQ-EXPR-012",
+            "REQ-EXPR-012",
             "REQ-EXPR-022"
     })
     void testStaticQueryWithConstantParameters() {
         MyEntity e1 = myEntityDao.create(MyEntity.builder().build());
         assertTrue(e1.getFfCreated().isPresent());
+        assertTrue(LocalDateTime.now().minusSeconds(2).isBefore(e1.getFfCreated().orElseThrow()));
         assertTrue(e1.getFfBool().isEmpty());
         assertTrue(e1.getFfDate().isEmpty());
         assertTrue(e1.getFfTime().isEmpty());
@@ -268,6 +270,7 @@ public class TestStaticQueriesWithConstantParameters extends AbstractJslTest {
         Snapshot1 s11 = snapshot1Dao.create(Snapshot1.builder().build());
 
         assertTrue(s11.getCreated().isPresent());
+        assertTrue(LocalDateTime.now().minusSeconds(2).isBefore(s11.getCreated().orElseThrow()));
         assertTrue(s11.getFfBool().isEmpty());
         assertTrue(s11.getFfDate().isEmpty());
         assertTrue(s11.getFfTime().isEmpty());
@@ -280,6 +283,7 @@ public class TestStaticQueriesWithConstantParameters extends AbstractJslTest {
         Snapshot2 s21 = snapshot2Dao.create(Snapshot2.builder().build());
 
         assertTrue(s21.getCreated().isPresent());
+        assertTrue(LocalDateTime.now().minusSeconds(2).isBefore(s21.getCreated().orElseThrow()));
         assertTrue(s21.getFfBool().isEmpty());
         assertTrue(s21.getFfDate().isEmpty());
         assertTrue(s21.getFfTime().isEmpty());
@@ -304,6 +308,7 @@ public class TestStaticQueriesWithConstantParameters extends AbstractJslTest {
         Snapshot1 s12 = snapshot1Dao.create(Snapshot1.builder().build());
 
         assertTrue(s12.getCreated().isPresent());
+        assertTrue(LocalDateTime.now().minusSeconds(2).isBefore(s12.getCreated().orElseThrow()));
         assertTrue(s12.getFfBool().isPresent());
         assertTrue(s12.getFfBool().orElseThrow());
         assertTrue(s12.getFfDate().isPresent());
@@ -342,13 +347,31 @@ public class TestStaticQueriesWithConstantParameters extends AbstractJslTest {
 
         Snapshot1 s13 = snapshot1Dao.create(Snapshot1.builder().build());
 
+        assertTrue(s13.getFfBool().isPresent());
+        assertTrue(s13.getFfBool().orElseThrow());
+        assertTrue(s13.getFfDate().isPresent());
+        assertTrue(s13.getFfTime().isPresent());
+        assertTrue(s13.getFfTimestamp().isPresent());
+        assertEquals(OffsetDateTime.parse("2020-01-01T14:11:12+01:00").atZoneSameInstant(ZoneOffset.UTC).toLocalDateTime(), s13.getFfTimestamp().orElseThrow());
+        assertTrue(s13.getFfLong().isPresent());
+        assertEquals(9999999999L, s13.getFfLong().orElseThrow());
+        assertTrue(s13.getFfString().isPresent());
+        assertEquals("AAA", s13.getFfString().orElseThrow());
+        assertTrue(s13.getFfDecimal().isPresent());
+        assertEquals(13.0001, s13.getFfDecimal().orElseThrow());
+        assertTrue(s13.getFfEnum().isPresent());
+        assertEquals(MyEnum.A02, s13.getFfEnum().orElseThrow());
+
         s21 = snapshot2Dao.getById(s21.identifier()).orElseThrow();
         List<MyEntity> s21FromDataBase = snapshot2Dao.queryEntities(s21).execute();
+        List<Serializable> s21Ids = snapshot2Dao.queryEntities(s21).execute().stream().map(e -> e.identifier().getIdentifier()).collect(Collectors.toList());
+        assertEquals(2, s21Ids.size());
+        Set<Serializable> s21IdSet = new HashSet<>(s21Ids);
 
         assertTrue(s21.getFfBool().isPresent());
         assertTrue(s12.getFfBool().orElseThrow());
-        assertFalse(s21.getFfDate().isEmpty());
-        assertFalse(s21.getFfTime().isEmpty());
+        assertTrue(s21.getFfDate().isPresent());
+        assertTrue(s21.getFfTime().isPresent());
         assertTrue(s21.getFfTimestamp().isPresent());
         assertEquals(OffsetDateTime.parse("2020-01-01T14:11:12+01:00").atZoneSameInstant(ZoneOffset.UTC).toLocalDateTime(), s21.getFfTimestamp().orElseThrow());
         assertTrue(s21.getFfLong().isPresent());
@@ -359,16 +382,16 @@ public class TestStaticQueriesWithConstantParameters extends AbstractJslTest {
         assertEquals(13.0001, s21.getFfDecimal().orElseThrow());
         assertTrue(s21.getFfEnum().isPresent());
         assertEquals(MyEnum.A02, s21.getFfEnum().orElseThrow());
-        assertFalse(s21FromDataBase.contains(e1));
-        assertFalse(s21FromDataBase.contains(e2));
-        assertTrue(s21FromDataBase.contains(e3));
-        assertFalse(s21FromDataBase.contains(e4));
-        assertTrue(s21FromDataBase.contains(e5));
+        assertEquals(Set.of(e3.identifier().getIdentifier(), e5.identifier().getIdentifier()), s21IdSet);
         
 
         Optional<Snapshot1> s12FromDatabse = snapshot1Dao.getById(s12.identifier());
+        List<Serializable> lastAddedEntity = lastAddedMyEntityDao.query().execute().stream().map(e -> e.identifier().getIdentifier()).collect(Collectors.toList());
+        assertEquals(1, lastAddedEntity.size());
+        Set<Serializable> lastAddedEntitySet = new HashSet<>(lastAddedEntity);
 
         assertTrue(s12FromDatabse.orElseThrow().getCreated().isPresent());
+        assertTrue(LocalDateTime.now().minusSeconds(2).isBefore(s12FromDatabse.orElseThrow().getCreated().orElseThrow()));
         assertTrue(s12FromDatabse.orElseThrow().getFfBool().isPresent());
         assertTrue(s12FromDatabse.orElseThrow().getFfBool().orElseThrow());
         assertTrue(s12FromDatabse.orElseThrow().getFfDate().isPresent());
@@ -383,6 +406,6 @@ public class TestStaticQueriesWithConstantParameters extends AbstractJslTest {
         assertTrue(s12FromDatabse.orElseThrow().getFfEnum().isPresent());
         assertEquals(MyEnum.A02, s12FromDatabse.orElseThrow().getFfEnum().orElseThrow());
 
-        assertTrue(lastAddedMyEntityDao.query().execute().contains(e5));
+        assertEquals(Set.of(e5.identifier().getIdentifier()), lastAddedEntitySet);
     }
 }

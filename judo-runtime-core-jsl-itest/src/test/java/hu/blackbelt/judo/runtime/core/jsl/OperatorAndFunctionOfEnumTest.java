@@ -10,6 +10,7 @@ import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import lombok.extern.slf4j.Slf4j;
@@ -104,42 +105,41 @@ public class OperatorAndFunctionOfEnumTest extends AbstractJslTest {
             "REQ-EXPR-020"
     })
     void testEnumOperatorsAndFunctions() {
-        // TODO: check f3, f4, f6, f6 fields
         E1 e1 = e1Dao.create(E1.builder().build());
-        assertTrue(e1.getF1().equals(Optional.of(TestLiteral.ZZ00)));
-        assertTrue(e1.getF2().equals(Optional.of(TestLiteral.Aaa01)));
-        assertEquals(true,e1.getF3().orElseThrow());
-        assertEquals(true,e1.getF4().orElseThrow());
-        assertEquals(false,e1.getF5().orElseThrow());
-        assertEquals(false,e1.getF6().orElseThrow());
-        assertEquals(false,e1.getF7().orElseThrow());
-        assertEquals(true,e1.getF8().orElseThrow());
-        assertTrue(e1.getF9().equals(Optional.of("ZZ00")));
+        assertEquals(TestLiteral.ZZ00, e1.getF1().orElseThrow());
+        assertEquals(TestLiteral.Aaa01, e1.getF2().orElseThrow());
+        assertTrue(e1.getF3().orElseThrow());
+        assertTrue(e1.getF4().orElseThrow());
+        assertFalse(e1.getF5().orElseThrow());
+        assertFalse(e1.getF6().orElseThrow());
+        assertFalse(e1.getF7().orElseThrow());
+        assertTrue(e1.getF8().orElseThrow());
+        assertEquals("ZZ00", e1.getF9().orElseThrow());
 
         e1.setF1(TestLiteral.Aaa01);
         e1 = e1Dao.update(e1);
-        assertTrue(e1.getF1().equals(Optional.of(TestLiteral.Aaa01)));
-        assertTrue(e1.getF2().equals(Optional.of(TestLiteral.Aaa01)));
-        assertEquals(false,e1.getF3().orElseThrow());
-        assertEquals(true,e1.getF4().orElseThrow());
-        assertEquals(false,e1.getF5().orElseThrow());
-        assertEquals(true,e1.getF6().orElseThrow());
-        assertEquals(true,e1.getF7().orElseThrow());
-        assertEquals(false,e1.getF8().orElseThrow());
-        assertTrue(e1.getF9().equals(Optional.of("Aaa01")));
+        assertEquals(TestLiteral.Aaa01, e1.getF1().orElseThrow());
+        assertEquals(TestLiteral.Aaa01, e1.getF2().orElseThrow());
+        assertFalse(e1.getF3().orElseThrow());
+        assertTrue(e1.getF4().orElseThrow());
+        assertFalse(e1.getF5().orElseThrow());
+        assertTrue(e1.getF6().orElseThrow());
+        assertTrue(e1.getF7().orElseThrow());
+        assertFalse(e1.getF8().orElseThrow());
+        assertEquals("Aaa01", e1.getF9().orElseThrow());
 
         e1.setF1(TestLiteral.Ccc03);
         e1.setF2(TestLiteral.ZZ00);
         e1 = e1Dao.update(e1);
-        assertTrue(e1.getF1().equals(Optional.of(TestLiteral.Ccc03)));
-        assertTrue(e1.getF2().equals(Optional.of(TestLiteral.ZZ00)));
-        assertEquals(false,e1.getF3().orElseThrow());
-        assertEquals(false,e1.getF4().orElseThrow());
-        assertEquals(true,e1.getF5().orElseThrow());
-        assertEquals(true,e1.getF6().orElseThrow());
-        assertEquals(false,e1.getF7().orElseThrow());
-        assertEquals(true,e1.getF8().orElseThrow());
-        assertTrue(e1.getF9().equals(Optional.of("Ccc03")));
+        assertEquals(TestLiteral.Ccc03, e1.getF1().orElseThrow());
+        assertEquals(TestLiteral.ZZ00, e1.getF2().orElseThrow());
+        assertFalse(e1.getF3().orElseThrow());
+        assertFalse(e1.getF4().orElseThrow());
+        assertTrue(e1.getF5().orElseThrow());
+        assertTrue(e1.getF6().orElseThrow());
+        assertFalse(e1.getF7().orElseThrow());
+        assertTrue(e1.getF8().orElseThrow());
+        assertEquals("Ccc03", e1.getF9().orElseThrow());
 
     }
 }
