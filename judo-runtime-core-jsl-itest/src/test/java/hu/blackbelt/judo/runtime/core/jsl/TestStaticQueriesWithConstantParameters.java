@@ -363,7 +363,6 @@ public class TestStaticQueriesWithConstantParameters extends AbstractJslTest {
         assertEquals(MyEnum.A02, s13.getFfEnum().orElseThrow());
 
         s21 = snapshot2Dao.getById(s21.identifier()).orElseThrow();
-        List<MyEntity> s21FromDataBase = snapshot2Dao.queryEntities(s21).execute();
         List<Serializable> s21Ids = snapshot2Dao.queryEntities(s21).execute().stream().map(e -> e.identifier().getIdentifier()).collect(Collectors.toList());
         assertEquals(2, s21Ids.size());
         Set<Serializable> s21IdSet = new HashSet<>(s21Ids);
@@ -383,28 +382,30 @@ public class TestStaticQueriesWithConstantParameters extends AbstractJslTest {
         assertTrue(s21.getFfEnum().isPresent());
         assertEquals(MyEnum.A02, s21.getFfEnum().orElseThrow());
         assertEquals(Set.of(e3.identifier().getIdentifier(), e5.identifier().getIdentifier()), s21IdSet);
-        
 
-        Optional<Snapshot1> s12FromDatabse = snapshot1Dao.getById(s12.identifier());
+
+        Optional<Snapshot1> s12FromDatabseOpt = snapshot1Dao.getById(s12.identifier());
+        assertTrue(s12FromDatabseOpt.isPresent());
+        Snapshot1 s12FromDatabse = s12FromDatabseOpt.get();
         List<Serializable> lastAddedEntity = lastAddedMyEntityDao.query().execute().stream().map(e -> e.identifier().getIdentifier()).collect(Collectors.toList());
         assertEquals(1, lastAddedEntity.size());
         Set<Serializable> lastAddedEntitySet = new HashSet<>(lastAddedEntity);
 
-        assertTrue(s12FromDatabse.orElseThrow().getCreated().isPresent());
-        assertTrue(LocalDateTime.now().minusSeconds(2).isBefore(s12FromDatabse.orElseThrow().getCreated().orElseThrow()));
-        assertTrue(s12FromDatabse.orElseThrow().getFfBool().isPresent());
-        assertTrue(s12FromDatabse.orElseThrow().getFfBool().orElseThrow());
-        assertTrue(s12FromDatabse.orElseThrow().getFfDate().isPresent());
-        assertEquals(LocalDate.parse("2023-01-01"), s12FromDatabse.orElseThrow().getFfDate().orElseThrow());
-        assertTrue(s12FromDatabse.orElseThrow().getFfTime().isPresent());
-        assertEquals(LocalTime.parse("08:00:00"), s12FromDatabse.orElseThrow().getFfTime().orElseThrow());
-        assertTrue(s12FromDatabse.orElseThrow().getFfTimestamp().isEmpty());
-        assertTrue(s12FromDatabse.orElseThrow().getFfLong().isPresent());
-        assertEquals(9999999999L, s12FromDatabse.orElseThrow().getFfLong().orElseThrow());
-        assertTrue(s12FromDatabse.orElseThrow().getFfString().isEmpty());
-        assertTrue(s12FromDatabse.orElseThrow().getFfDecimal().isEmpty());
-        assertTrue(s12FromDatabse.orElseThrow().getFfEnum().isPresent());
-        assertEquals(MyEnum.A02, s12FromDatabse.orElseThrow().getFfEnum().orElseThrow());
+        assertTrue(s12FromDatabse.getCreated().isPresent());
+        assertTrue(LocalDateTime.now().minusSeconds(2).isBefore(s12FromDatabse.getCreated().orElseThrow()));
+        assertTrue(s12FromDatabse.getFfBool().isPresent());
+        assertTrue(s12FromDatabse.getFfBool().orElseThrow());
+        assertTrue(s12FromDatabse.getFfDate().isPresent());
+        assertEquals(LocalDate.parse("2023-01-01"), s12FromDatabse.getFfDate().orElseThrow());
+        assertTrue(s12FromDatabse.getFfTime().isPresent());
+        assertEquals(LocalTime.parse("08:00:00"), s12FromDatabse.getFfTime().orElseThrow());
+        assertTrue(s12FromDatabse.getFfTimestamp().isEmpty());
+        assertTrue(s12FromDatabse.getFfLong().isPresent());
+        assertEquals(9999999999L, s12FromDatabse.getFfLong().orElseThrow());
+        assertTrue(s12FromDatabse.getFfString().isEmpty());
+        assertTrue(s12FromDatabse.getFfDecimal().isEmpty());
+        assertTrue(s12FromDatabse.getFfEnum().isPresent());
+        assertEquals(MyEnum.A02, s12FromDatabse.getFfEnum().orElseThrow());
 
         assertEquals(Set.of(e5.identifier().getIdentifier()), lastAddedEntitySet);
     }

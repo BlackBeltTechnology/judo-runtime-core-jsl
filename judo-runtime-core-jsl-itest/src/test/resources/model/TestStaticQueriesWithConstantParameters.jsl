@@ -88,4 +88,3 @@ query MyEntity[] listOfMyEntities(String str, Date d, Boolean b, Long l) =>
 
 query MyEntity   lastAddedMyEntity() =>
                     MyEntity!all()!last(e | e.ffCreated)!any();
-                    

@@ -13,6 +13,7 @@ import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
+import java.io.Serializable;
 import java.time.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -142,7 +143,7 @@ public class TestStaticQueriesWithDefaultValues extends AbstractJslTest {
             "REQ-EXPR-006",
             "REQ-EXPR-007",
             "REQ-EXPR-008",
-            // TODO: JNG-4392 "REQ-EXPR-012",
+            "REQ-EXPR-012",
             "REQ-EXPR-022"
     })
     void testStaticQueriesWithDefaultValuesByConstantsOrExpressions() {
@@ -184,16 +185,18 @@ public class TestStaticQueriesWithDefaultValues extends AbstractJslTest {
         Snapshot1 s1 = snapshot1Dao.create(Snapshot1.builder().build());
         assertEquals(e2.identifier().getIdentifier(), snapshot1Dao.queryFldMyEntity001(s1).orElseThrow().identifier().getIdentifier());
         assertEquals(e3.identifier().getIdentifier(), snapshot1Dao.queryFldMyEntity002(s1).orElseThrow().identifier().getIdentifier());
+        Serializable fldMyEntity003ID = snapshot1Dao.queryFldMyEntity003(s1).orElseThrow().identifier().getIdentifier();
         assertTrue(
-                    snapshot1Dao.queryFldMyEntity003(s1).orElseThrow().identifier().getIdentifier().equals(e3.identifier().getIdentifier())
-                    || snapshot1Dao.queryFldMyEntity003(s1).orElseThrow().identifier().getIdentifier().equals(e4.identifier().getIdentifier())
+                fldMyEntity003ID.equals(e3.identifier().getIdentifier())
+                    || fldMyEntity003ID.equals(e4.identifier().getIdentifier())
                 );
         assertEquals(e3.identifier().getIdentifier(), snapshot1Dao.queryFldMyEntity004(s1).orElseThrow().identifier().getIdentifier());
         assertEquals(e4.identifier().getIdentifier(), snapshot1Dao.queryFldMyEntity005(s1).orElseThrow().identifier().getIdentifier());
+        Serializable fldMyEntity006ID = snapshot1Dao.queryFldMyEntity006(s1).orElseThrow().identifier().getIdentifier();
         assertTrue(
-                snapshot1Dao.queryFldMyEntity006(s1).orElseThrow().identifier().getIdentifier().equals(e2.identifier().getIdentifier())
-                || snapshot1Dao.queryFldMyEntity006(s1).orElseThrow().identifier().getIdentifier().equals(e3.identifier().getIdentifier())
-                || snapshot1Dao.queryFldMyEntity006(s1).orElseThrow().identifier().getIdentifier().equals(e4.identifier().getIdentifier())
+                fldMyEntity006ID.equals(e2.identifier().getIdentifier())
+                || fldMyEntity006ID.equals(e3.identifier().getIdentifier())
+                || fldMyEntity006ID.equals(e4.identifier().getIdentifier())
             );
         List<MyEntity> defEntities = new ArrayList<>(List.of(e2));
         assertEquals(defEntities, snapshot1Dao.queryDefEntities(s1).execute());
