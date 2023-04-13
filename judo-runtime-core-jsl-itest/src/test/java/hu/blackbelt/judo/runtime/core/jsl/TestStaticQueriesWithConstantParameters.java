@@ -165,8 +165,8 @@ public class TestStaticQueriesWithConstantParameters extends AbstractJslTest {
      *  // Check the fTimestamp, fString and fDecimal
      *  . Check the value of the fields of the created *s13* instance. All of the following boolean expressions must be true.
      *    * s13.ffBool!isDefined()      and s13.fBool == true
-     *    * s13.ffDate!isDefined()
-     *    * s13.ffTime!isDefined()
+     *    * s13.ffDate!isDefined()      and (s13.ffDate == `2023-01-01` or s13.ffDate == `2023-01-05`)
+     *    * s13.ffTime!isDefined()      and s13.ffTime == `08:00:00`
      *    * s13.ffTimestamp!isDefined() and s13.fTimstamp == `2020-01-01T14:11:12+01:00`
      *    * s13.ffLong!isDefined()      and s13.fLong == 9999999999
      *    * s13.ffString!isDefined()    and s13.fString == "AAA"
@@ -177,8 +177,8 @@ public class TestStaticQueriesWithConstantParameters extends AbstractJslTest {
      *
      *  . All of the following boolean expressions must be true.
      *    * s21.ffBool!isDefined()      and s21.fBool == true
-     *    * s21.ffDate!isDefined()
-     *    * s21.ffTime!isDefined()
+     *    * s21.ffDate!isDefined()      and (s21.ffDate == `2023-01-01` or s21.ffDate == `2023-01-05`)
+     *    * s21.ffTime!isDefined()      and s21.ffTime == `08:00:00`
      *    * s21.ffTimestamp!isDefined() and s21.fTimstamp == `2020-01-01T14:11:12+01:00`
      *    * s21.ffLong!isDefined()      and s21.fLong == 9999999999
      *    * s21.ffString!isDefined()    and s21.fString == "AAA"
@@ -350,7 +350,10 @@ public class TestStaticQueriesWithConstantParameters extends AbstractJslTest {
         assertTrue(s13.getFfBool().isPresent());
         assertTrue(s13.getFfBool().orElseThrow());
         assertTrue(s13.getFfDate().isPresent());
+        LocalDate s13Date = s13.getFfDate().orElseThrow();
+        assertTrue(s13Date.equals(LocalDate.parse("2023-01-01")) || s13Date.equals(LocalDate.parse("2023-01-05")));
         assertTrue(s13.getFfTime().isPresent());
+        assertEquals(LocalTime.parse("08:00:00"), s13.getFfTime().orElseThrow());
         assertTrue(s13.getFfTimestamp().isPresent());
         assertEquals(OffsetDateTime.parse("2020-01-01T14:11:12+01:00").atZoneSameInstant(ZoneOffset.UTC).toLocalDateTime(), s13.getFfTimestamp().orElseThrow());
         assertTrue(s13.getFfLong().isPresent());
@@ -370,7 +373,10 @@ public class TestStaticQueriesWithConstantParameters extends AbstractJslTest {
         assertTrue(s21.getFfBool().isPresent());
         assertTrue(s12.getFfBool().orElseThrow());
         assertTrue(s21.getFfDate().isPresent());
+        LocalDate s21Date = s21.getFfDate().orElseThrow();
+        assertTrue(s21Date.equals(LocalDate.parse("2023-01-01")) || s21Date.equals(LocalDate.parse("2023-01-05")));
         assertTrue(s21.getFfTime().isPresent());
+        assertEquals(LocalTime.parse("08:00:00"), s21.getFfTime().orElseThrow());
         assertTrue(s21.getFfTimestamp().isPresent());
         assertEquals(OffsetDateTime.parse("2020-01-01T14:11:12+01:00").atZoneSameInstant(ZoneOffset.UTC).toLocalDateTime(), s21.getFfTimestamp().orElseThrow());
         assertTrue(s21.getFfLong().isPresent());
