@@ -421,6 +421,21 @@
                             <destination>${basedir}/target/generated-test-sources/sdk-core/TestStaticQueriesWithDefaultValues</destination>
                         </configuration>
                     </execution>
+
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-AllTypeOfTransferObjects</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/AllTypeOfTransferObjects-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/sdk-core/AllTypeOfTransferObjects</destination>
+                        </configuration>
+                    </execution>
+
                 </executions>
 
             </plugin>
@@ -462,6 +477,7 @@
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/TestStaticQueriesWithConstantParameters</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/OperatorAndFunctionOfEnumTest</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/TestStaticQueriesWithDefaultValues</source>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/AllTypeOfTransferObjects</source>
                             </sources>
                         </configuration>
                    </execution>
