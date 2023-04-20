@@ -1,0 +1,19 @@
+model TransferSDKTestModel;
+
+import judo::types;
+
+entity A {
+}
+
+transfer TransferA (A a) {
+}
+
+entity B {
+    field String nameB;
+}
+
+
+transfer TransferB (B b) {
+    field String attributeTransferB;
+    field String mappedNameB maps b.nameB;
+}
