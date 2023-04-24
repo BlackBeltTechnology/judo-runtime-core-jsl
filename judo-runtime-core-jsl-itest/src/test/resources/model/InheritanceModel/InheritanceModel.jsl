@@ -1,0 +1,30 @@
+model InheritanceModel;
+
+type string String(min-size = 0, max-size = 128);
+type numeric Integer(precision=10,scale=0);
+
+entity abstract AbstractParentF {
+    field String nameF;
+}
+
+entity ParentA {
+    field String nameA;
+    identifier String identifierA;
+    derived String derivedA => self.nameA;
+    relation RelationEntity[] relationEntities;
+    query String queryA(String param) => param;
+}
+
+entity RelationEntity {
+	field Integer number = 1 ;
+}
+
+entity ParentB {
+    field String nameB;
+}
+
+entity C extends ParentA {
+}
+
+// entity D extends ParentA,ParentB {
+// }

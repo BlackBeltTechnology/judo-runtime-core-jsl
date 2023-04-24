@@ -72,15 +72,16 @@
 
                 <executions>
                     <execution>
-                        <id>generate-psm-test-model-from-artifact-AbstractModel</id>
+                        <id>generate-psm-test-model-from-artifact-InheritanceModel</id>
                         <goals>
                             <goal>parser-workflow</goal>
                         </goals>
                         <phase>generate-test-sources</phase>
                         <configuration>
-                            <sources>${basedir}/src/test/resources/model/abstractmodel</sources>
+                            <sources>${basedir}/src/test/resources/model/InheritanceModel</sources>
                         </configuration>
                     </execution>
+
                     <execution>
                         <id>generate-psm-test-model-from-artifact-AllTypeOfTransferObjectsModel</id>
                         <goals>
@@ -305,6 +306,7 @@
                             <sources>${basedir}/src/test/resources/model/TransactionManagementModel</sources>
                         </configuration>
                     </execution>
+
                 </executions>
 
             </plugin>
@@ -316,19 +318,18 @@
                 <executions>
 
                     <execution>
-                        <id>execute-psm-test-model-from-artifact-AbstractModel</id>
+                        <id>execute-psm-test-model-from-artifact-InheritanceModel</id>
                         <phase>generate-test-sources</phase>
                         <goals>
                             <goal>generate</goal>
                         </goals>
                         <configuration>
                             <psm>
-                                ${basedir}/target/generated-test-sources/model/AbstractModel-psm.model
+                                ${basedir}/target/generated-test-sources/model/InheritanceModel-psm.model
                             </psm>
-                            <destination>${basedir}/target/generated-test-sources/sdk-core/AbstractModel</destination>
+                            <destination>${basedir}/target/generated-test-sources/sdk-core/InheritanceModel</destination>
                         </configuration>
                     </execution>
-
                     <execution>
                         <id>execute-psm-test-model-from-artifact-AssociationRelationships</id>
                         <phase>generate-test-sources</phase>
@@ -678,6 +679,7 @@
                         </configuration>
                     </execution>
 
+
                 </executions>
 
             </plugin>
@@ -694,6 +696,7 @@
                         </goals>
                         <configuration>
                             <sources>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/InheritanceModel</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/SalesModel</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/SalesModel2</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/SalesModel3</source>
@@ -721,7 +724,6 @@
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/TestStaticQueriesWithDefaultValues</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/AllTypeOfTransferObjects</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/AutoMappedTransferModel</source>
-
                             </sources>
                         </configuration>
                    </execution>
