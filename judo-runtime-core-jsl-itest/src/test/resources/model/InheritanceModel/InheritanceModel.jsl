@@ -12,7 +12,7 @@ entity ParentA {
     identifier String identifierA;
     derived String derivedA => self.nameA;
     relation RelationEntity[] relationEntities;
-    //query String queryA(String param) => param;
+    query String queryA(String param) => param;
 }
 
 entity RelationEntity {
