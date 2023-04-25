@@ -1,10 +1,15 @@
 model InheritanceModel;
 
-type string String(min-size = 0, max-size = 128);
-type numeric Integer(precision = 10,scale = 0);
+import judo::types;
 
-entity abstract AbstractParentF {
-    field String nameF;
+type numeric Scaled(precision = 9, scale = 2);
+type string PhoneNumber(min-size = 0, max-size = 32, regex = "^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]\\d{3}[\\s.-]\\d{4}$");
+type string SmallString(min-size = 0, max-size = 128);
+
+enum MyEnum {
+    Atomic = 0;
+    Bombastic = 1;
+    Crazy = 2;
 }
 
 entity ParentA {
@@ -15,16 +20,56 @@ entity ParentA {
     query String queryA(String param) => param;
 }
 
-entity RelationEntity {
-	field Integer number = 1 ;
-}
-
 entity ParentB {
     field String nameB;
 }
 
-entity C extends ParentA {
+entity ParentRequiredC {
+    field required Integer integerAttr;
+    field required Scaled scaledAttr;
+    field required String stringAttr;
+    field required PhoneNumber regexAttr;
+    field required Boolean boolAttr;
+    field required Date dateAttr;
+    field required Timestamp timestampAttr;
+    field required Time timeAttr;
+    field required MyEnum enumAttr;
 }
 
-entity D extends ParentA,ParentB,AbstractParentF {
+entity ParentDefaultD {
+    field Integer integerAttr = 1;
+    field Scaled scaledAttr = 2.34;
+    field String stringAttr = "test";
+    field PhoneNumber regexAttr = "+36-1-123-123";
+    field Boolean boolAttr = true;
+    field Date dateAttr = `2022-07-11`;
+    field Timestamp timestampAttr = `2022-07-11T19:09:33Z`;
+    field Time timeAttr = `23:59:59`;
+    field Time shortTimeAttr = `23:59`;
+    field MyEnum enumAttr = MyEnum#Bombastic;
+}
+
+entity abstract ParentAbstract {
+    field String nameAbstract;
+}
+
+entity RelationEntity {
+	field Integer number = 1 ;
+}
+
+entity E extends ParentA {
+    field String nameC;
+}
+
+entity F extends ParentA,ParentB,ParentAbstract {
+}
+
+entity G extends E,ParentB {
+}
+
+entity H extends ParentRequiredC {
+}
+
+entity I extends ParentDefaultD {
+
 }
