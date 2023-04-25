@@ -13,6 +13,8 @@ import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
+import java.util.Locale;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
@@ -52,54 +54,7 @@ public class CreationOfTransferObjects extends AbstractJslTest {
      * @jslModel AllTypeOfTransferObjects.jsl
      * model AllTypeOfTransferObjects;
      *
-     * import judo::types;
-     *
-     * entity A {
-     * }
-     *
-     * transfer TransferA (A a) {
-     * }
-     *
-     * transfer UnmappedTransfer {
-     * }
-     *
-     * entity B {
-     *     field String nameB;
-     * }
-     *
-     * transfer TransferB (B b) {
-     *     field String attributeTransferB;
-     *     field String mappedNameB maps b.nameB;
-     * }
-     *
-     * entity C {
-     *     field String nameC;
-     * }
-     *
-     * transfer TransferC maps C as c {
-     *     field String attributeTransferC;
-     *     field String readCName reads c.nameC;
-     * }
-     *
-     * entity D {
-     *     field String nameD;
-     * }
-     *
-     * transfer TransferD maps D as d {
-     *     field String attributeTransferD;
-     *
-     *     constructor {
-     *         self.attributeTransferD = "SomeName";
-     *     }
-     * }
-     *
-     * transfer TransferA (A a) {
-     *
-     * }
-     *
-     * @positiveRequirements
-     *
-     * @negativeRequirements
+     * @positiveRequirements REQ-SRV-002
      *
      * @scenario Create each type of transfer object mapping variations and check the that doesn't throw errors.
      *
@@ -107,7 +62,19 @@ public class CreationOfTransferObjects extends AbstractJslTest {
     @Test
     @TestCase("CreationOfTransferObjectsWithDao")
     @Requirement(reqs = {
-            "",
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-SYNT-001",
+            "REQ-SYNT-002",
+            "REQ-SYNT-003",
+            "REQ-SRV-002",
+            "REQ-SRV-003",
+            "REQ-SRV-004"
     })
     void testCreationOfTransferObjects() {
 
