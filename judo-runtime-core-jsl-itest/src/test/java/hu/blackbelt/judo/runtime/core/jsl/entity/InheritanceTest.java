@@ -49,9 +49,7 @@ public class InheritanceTest extends AbstractJslTest {
      * @jslModel InheritanceModel.jsl
      *
      *
-     * @positiveRequirements
-     *
-     * @negativeRequirements
+     * @positiveRequirements  "REQ-ENT-012"
      *
      * @scenario
      *
