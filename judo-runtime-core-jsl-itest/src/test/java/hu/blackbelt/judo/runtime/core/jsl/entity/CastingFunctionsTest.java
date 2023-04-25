@@ -1,4 +1,4 @@
-package hu.blackbelt.judo.runtime.core.jsl;
+package hu.blackbelt.judo.runtime.core.jsl.entity;
 
 /*-
  * #%L
@@ -33,6 +33,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctionsmodel.c
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctionsmodel.castingfunctionsmodel.b.BIdentifier;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.CastingFunctionsModelDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
+import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
