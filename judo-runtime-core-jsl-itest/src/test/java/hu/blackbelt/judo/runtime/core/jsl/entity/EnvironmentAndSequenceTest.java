@@ -1,4 +1,4 @@
-package hu.blackbelt.judo.runtime.core.jsl;
+package hu.blackbelt.judo.runtime.core.jsl.entity;
 
 import com.google.inject.Inject;
 import com.google.inject.Module;
@@ -25,6 +25,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencem
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.EnvironmentAndSequenceModelDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
+import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
 import hu.blackbelt.judo.runtime.core.jsl.util.EnvironmentVariableMocker;
 import hu.blackbelt.judo.runtime.core.jsl.util.EnvironmentVariables;
 import org.junit.jupiter.api.Disabled;

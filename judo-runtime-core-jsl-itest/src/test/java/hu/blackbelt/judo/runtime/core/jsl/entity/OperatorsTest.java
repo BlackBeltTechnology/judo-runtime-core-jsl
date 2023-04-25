@@ -1,4 +1,4 @@
-package hu.blackbelt.judo.runtime.core.jsl;
+package hu.blackbelt.judo.runtime.core.jsl.entity;
 
 /*-
  * #%L
@@ -29,6 +29,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.der
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.derivedsource.DerivedSource;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.OperatorsDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
+import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
