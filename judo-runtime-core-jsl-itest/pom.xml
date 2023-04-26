@@ -62,22 +62,264 @@
                 <groupId>hu.blackbelt.judo.tatami</groupId>
                 <artifactId>judo-tatami-jsl-workflow-maven-plugin</artifactId>
                 <version>${judo-tatami-jsl-version}</version>
+
+                <configuration>
+                    <sdkPackagePrefix>hu.blackbelt.judo.runtime.core.jsl.itest</sdkPackagePrefix>
+                    <ignoreAsm2sdk>true</ignoreAsm2sdk>
+                    <saveModels>true</saveModels>
+                    <destination>${basedir}/target/generated-test-sources/model</destination>
+                </configuration>
+
                 <executions>
                     <execution>
-                        <id>generate-models</id>
+                        <id>generate-psm-test-model-from-artifact-InheritanceModel</id>
                         <goals>
                             <goal>parser-workflow</goal>
                         </goals>
                         <phase>generate-test-sources</phase>
+                        <configuration>
+                            <sources>${basedir}/src/test/resources/model/InheritanceModel</sources>
+                        </configuration>
                     </execution>
+
+                    <execution>
+                        <id>generate-psm-test-model-from-artifact-AllTypeOfTransferObjectsModel</id>
+                        <goals>
+                            <goal>parser-workflow</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <sources>${basedir}/src/test/resources/model/AllTypeOfTransferObjectsModel</sources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-psm-test-model-from-artifact-AssociationRelationshipsModel</id>
+                        <goals>
+                            <goal>parser-workflow</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <sources>${basedir}/src/test/resources/model/AssociationRelationshipsModel</sources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-psm-test-model-from-artifact-AutoMappedTransferModel</id>
+                        <goals>
+                            <goal>parser-workflow</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <sources>${basedir}/src/test/resources/model/AutoMappedTransferModel</sources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-psm-test-model-from-artifact-CastingFunctionsModel</id>
+                        <goals>
+                            <goal>parser-workflow</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <sources>${basedir}/src/test/resources/model/CastingFunctionsModel</sources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-psm-test-model-from-artifact-CompositionRelationshipsModel</id>
+                        <goals>
+                            <goal>parser-workflow</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <sources>${basedir}/src/test/resources/model/CompositionRelationshipsModel</sources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-psm-test-model-from-artifact-ContainerDerivedModel</id>
+                        <goals>
+                            <goal>parser-workflow</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <sources>${basedir}/src/test/resources/model/ContainerDerivedModel</sources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-psm-test-model-from-artifact-ContainerTestModel</id>
+                        <goals>
+                            <goal>parser-workflow</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <sources>${basedir}/src/test/resources/model/ContainerTestModel</sources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-psm-test-model-from-artifact-ContainsTestModel</id>
+                        <goals>
+                            <goal>parser-workflow</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <sources>${basedir}/src/test/resources/model/ContainsTestModel</sources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-psm-test-model-from-artifact-EnvironmentAndSequenceModel</id>
+                        <goals>
+                            <goal>parser-workflow</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <sources>${basedir}/src/test/resources/model/EnvironmentAndSequenceModel</sources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-psm-test-model-from-artifact-FunctionsModels</id>
+                        <goals>
+                            <goal>parser-workflow</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <sources>${basedir}/src/test/resources/model/FunctionsModels</sources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-psm-test-model-from-artifact-NavigationTestModel</id>
+                        <goals>
+                            <goal>parser-workflow</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <sources>${basedir}/src/test/resources/model/NavigationTestModel</sources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-psm-test-model-from-artifact-OperatorAndFunctionOfEnumTestModel</id>
+                        <goals>
+                            <goal>parser-workflow</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <sources>${basedir}/src/test/resources/model/OperatorAndFunctionOfEnumTestModel</sources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-psm-test-model-from-artifact-OperatorsModel</id>
+                        <goals>
+                            <goal>parser-workflow</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <sources>${basedir}/src/test/resources/model/OperatorsModel</sources>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>generate-psm-test-model-from-artifact-PrimitivesModel</id>
+                        <goals>
+                            <goal>parser-workflow</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <sources>${basedir}/src/test/resources/model/PrimitivesModel</sources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-psm-test-model-from-artifact-QueryModel</id>
+                        <goals>
+                            <goal>parser-workflow</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <sources>${basedir}/src/test/resources/model/QueryModel</sources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-psm-test-model-from-artifact-SalesModels</id>
+                        <goals>
+                            <goal>parser-workflow</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <sources>${basedir}/src/test/resources/model/SalesModels</sources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-psm-test-model-from-artifact-SampleModels</id>
+                        <goals>
+                            <goal>parser-workflow</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <sources>${basedir}/src/test/resources/model/SampleModels</sources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-psm-test-model-from-artifact-TaskModel</id>
+                        <goals>
+                            <goal>parser-workflow</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <sources>${basedir}/src/test/resources/model/TaskModel</sources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-psm-test-model-from-artifact-TernaryTestModel</id>
+                        <goals>
+                            <goal>parser-workflow</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <sources>${basedir}/src/test/resources/model/TernaryTestModel</sources>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>generate-psm-test-model-from-artifact-TestStaticQueriesWithConstantParametersModel</id>
+                        <goals>
+                            <goal>parser-workflow</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <sources>${basedir}/src/test/resources/model/TestStaticQueriesWithConstantParametersModel</sources>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>generate-psm-test-model-from-artifact-TestStaticQueriesWithDefaultValuesModel</id>
+                        <goals>
+                            <goal>parser-workflow</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <sources>${basedir}/src/test/resources/model/TestStaticQueriesWithDefaultValuesModel</sources>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>generate-psm-test-model-from-artifact-TransactionManagementModel</id>
+                        <goals>
+                            <goal>parser-workflow</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <sources>${basedir}/src/test/resources/model/TransactionManagementModel</sources>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>generate-psm-test-model-from-artifact-UnmappedTransferModel</id>
+                        <goals>
+                            <goal>parser-workflow</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <sources>${basedir}/src/test/resources/model/UnmappedTransferModel</sources>
+                        </configuration>
+                    </execution>
+
                 </executions>
-                <configuration>
-                    <destination>${basedir}/target/generated-test-sources/model</destination>
-                    <sources>${basedir}/src/test/resources/model</sources>
-                    <sdkPackagePrefix>hu.blackbelt.judo.runtime.core.jsl.itest</sdkPackagePrefix>
-                    <ignoreAsm2sdk>true</ignoreAsm2sdk>
-                    <saveModels>true</saveModels>
-                </configuration>
+
             </plugin>
 
             <plugin>
@@ -87,19 +329,18 @@
                 <executions>
 
                     <execution>
-                        <id>execute-psm-test-model-from-artifact-AbstractModel</id>
+                        <id>execute-psm-test-model-from-artifact-InheritanceModel</id>
                         <phase>generate-test-sources</phase>
                         <goals>
                             <goal>generate</goal>
                         </goals>
                         <configuration>
                             <psm>
-                                ${basedir}/target/generated-test-sources/model/AbstractModel-psm.model
+                                ${basedir}/target/generated-test-sources/model/InheritanceModel-psm.model
                             </psm>
-                            <destination>${basedir}/target/generated-test-sources/sdk-core/AbstractModel</destination>
+                            <destination>${basedir}/target/generated-test-sources/sdk-core/InheritanceModel</destination>
                         </configuration>
                     </execution>
-
                     <execution>
                         <id>execute-psm-test-model-from-artifact-AssociationRelationships</id>
                         <phase>generate-test-sources</phase>
@@ -421,6 +662,48 @@
                             <destination>${basedir}/target/generated-test-sources/sdk-core/TestStaticQueriesWithDefaultValues</destination>
                         </configuration>
                     </execution>
+
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-AllTypeOfTransferObjects</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/AllTypeOfTransferObjects-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/sdk-core/AllTypeOfTransferObjects</destination>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-AutoMappedTransferModel</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/AutoMappedTransferModel-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/sdk-core/AutoMappedTransferModel</destination>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-UnmappedTransferModel</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/UnmappedTransferModel-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/sdk-core/UnmappedTransferModel</destination>
+                        </configuration>
+                    </execution>
+
+
                 </executions>
 
             </plugin>
@@ -437,6 +720,7 @@
                         </goals>
                         <configuration>
                             <sources>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/InheritanceModel</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/SalesModel</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/SalesModel2</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/SalesModel3</source>
@@ -462,6 +746,9 @@
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/TestStaticQueriesWithConstantParameters</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/OperatorAndFunctionOfEnumTest</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/TestStaticQueriesWithDefaultValues</source>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/AllTypeOfTransferObjects</source>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/AutoMappedTransferModel</source>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/UnmappedTransferModel</source>
                             </sources>
                         </configuration>
                    </execution>

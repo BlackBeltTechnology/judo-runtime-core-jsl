@@ -1,4 +1,4 @@
-package hu.blackbelt.judo.runtime.core.jsl;
+package hu.blackbelt.judo.runtime.core.jsl.entity;
 
 /*-
  * #%L
@@ -29,6 +29,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.m
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.myentitywithoptionalfields.MyEntityWithOptionalFieldsMask;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.myenum.MyEnum;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.PrimitivesDaoModules;
+import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
 import hu.blackbelt.judo.sdk.query.StringFilter;
 import lombok.extern.slf4j.Slf4j;
