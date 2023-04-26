@@ -1,4 +1,4 @@
-model UnmappedTransferModel;
+model MappedTransferModel;
 
 import judo::types;
 
@@ -12,7 +12,10 @@ enum Enum {
     EnumC = 2;
 }
 
-transfer UnmappedTransferWithPrimitiveFields {
+entity MappedEntity {
+}
+
+transfer MappedTransferWithPrimitiveFields (MappedEntity mappedEntity) {
     field Integer integerAttr;
     field Scaled scaledAttr;
     field String stringAttr;
@@ -25,7 +28,7 @@ transfer UnmappedTransferWithPrimitiveFields {
     field Enum enumAttr;
 }
 
-transfer UnmappedTransferWithRequiredPrimitiveFields {
+transfer MappedTransferWithRequiredPrimitiveFields (MappedEntity mappedEntity) {
     field required Integer integerAttr;
     field required Scaled scaledAttr;
     field required String stringAttr;
@@ -38,7 +41,7 @@ transfer UnmappedTransferWithRequiredPrimitiveFields {
     field required Enum enumAttr;
 }
 
-transfer UnmappedTransferWithReadsPrimitiveFields {
+transfer MappedTransferWithReadsPrimitiveFields (MappedEntity mappedEntity) {
     field required Integer integerAttr reads 1; //make nonsense but work
     field Scaled scaledAttr reads 2.34;
     field String stringAttr reads "test";
@@ -51,15 +54,15 @@ transfer UnmappedTransferWithReadsPrimitiveFields {
     field Enum enumAttr reads Enum#EnumA;
 }
 
-transfer UnmappedTransferReference {
+transfer MappedTransferReference {
 }
 
-transfer UnmappedTransferWithTransferFields {
-    field UnmappedTransferReference unmappedTransferReferenceSingle;
-    field UnmappedTransferReference[] unmappedTransferReferenceMulti;
+transfer MappedTransferWithTransferFields (MappedEntity mappedEntity) {
+    field MappedTransferReference mappedTransferReferenceSingle;
+    field MappedTransferReference[] mappedTransferReferenceMulti;
 }
 
-transfer UnmappedTransferWithRequiredTransferFields {
-    field required UnmappedTransferReference unmappedTransferReferenceSingle;
-    field UnmappedTransferReference[] unmappedTransferReferenceMulti;
+transfer MappedTransferWithRequiredTransferFields (MappedEntity mappedEntity) {
+    field required MappedTransferReference mappedTransferReferenceSingle;
+    field MappedTransferReference[] mappedTransferReferenceMulti;
 }
