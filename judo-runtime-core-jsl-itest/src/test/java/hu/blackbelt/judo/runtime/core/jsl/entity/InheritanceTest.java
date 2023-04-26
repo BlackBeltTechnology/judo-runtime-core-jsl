@@ -9,7 +9,6 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritancemodel.inheri
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritancemodel.inheritancemodel.h.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritancemodel.inheritancemodel.myenum.MyEnum;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritancemodel.inheritancemodel.parentabstract.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.myentitywithoptionalfields.MyEntityWithOptionalFields;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.InheritanceModelDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
@@ -61,7 +60,6 @@ public class InheritanceTest extends AbstractJslTest {
     @Inject
     ParentAbstractDao parentAbstractDao;
 
-
     /**
      * This test check of a child entity contains all the parent entities attributes.
      *
@@ -95,6 +93,7 @@ public class InheritanceTest extends AbstractJslTest {
             "REQ-TYPE-005",
             "REQ-ENT-001",
             "REQ-ENT-002",
+            "REQ-ENT-003",
             "REQ-ENT-004",
             "REQ-ENT-005",
             "REQ-ENT-008",
@@ -158,9 +157,9 @@ public class InheritanceTest extends AbstractJslTest {
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-TYPE-004",
-            "REQ-TYPE-005",
             "REQ-ENT-001",
             "REQ-ENT-002",
+            "REQ-ENT-003",
             "REQ-ENT-004",
             "REQ-ENT-005",
             "REQ-ENT-008",
@@ -168,11 +167,11 @@ public class InheritanceTest extends AbstractJslTest {
             "REQ-ENT-012",
             "REQ-MDL-001",
             "REQ-MDL-002",
+            "REQ-MDL-003",
             "REQ-SYNT-001",
             "REQ-SYNT-002",
             "REQ-SYNT-003",
-            "REQ-SYNT-004",
-            "REQ-EXPR-005",
+            "REQ-SYNT-004"
     })
     void testMultiLevelInheritanceIsAllowed() {
 
@@ -180,7 +179,7 @@ public class InheritanceTest extends AbstractJslTest {
 
         assertTrue(hasDaoContainsMethod(g,"getNameA"));
         assertTrue(hasDaoContainsMethod(g,"getNameB"));
-        assertTrue(hasDaoContainsMethod(g,"getNameC"));
+        assertTrue(hasDaoContainsMethod(g,"getNameE"));
         assertTrue(hasDaoContainsMethod(g,"getIdentifierA"));
         assertTrue(hasDaoContainsMethod(g,"getDerivedA"));
         assertTrue(hasDaoContainsMethod(g,"getQueryA"));
@@ -204,14 +203,33 @@ public class InheritanceTest extends AbstractJslTest {
      *
      * @scenario
      *
-     *  Create one instance of the G entity without attribute parameters.
+     *  Create one instance of the H entity without attribute parameters.
      *
      *  Check the thrown expectation contains all the missing required attributes
      */
     @Test
     @TestCase("InheritedEntitiesContainsAllOfRequiredParentAttributes")
     @Requirement(reqs = {
-            "",
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-TYPE-010",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-003",
+            "REQ-ENT-012",
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-SYNT-001",
+            "REQ-SYNT-002",
+            "REQ-SYNT-003",
+            "REQ-SYNT-004"
     })
     void testInheritedEntitiesContainsAllOfRequiredParentAttributes() {
 
@@ -237,12 +255,6 @@ public class InheritanceTest extends AbstractJslTest {
 
     }
 
-    private org.hamcrest.Matcher matchMissingAttribute(String attrName) {
-        return allOf(
-                hasProperty("code", equalTo("MISSING_REQUIRED_ATTRIBUTE")),
-                hasProperty("location", equalTo(attrName)));
-    }
-
     /**
      * Testing the inherited entity contains the attributes with default values of the parent entity.
      *
@@ -255,9 +267,8 @@ public class InheritanceTest extends AbstractJslTest {
      * @jslModel InheritanceModel.jsl
      *
      *
-     * @positiveRequirements
+     * @positiveRequirements REQ-ENT-012
      *
-     * @negativeRequirements
      *
      * @scenario
      *
@@ -269,7 +280,26 @@ public class InheritanceTest extends AbstractJslTest {
     @Test
     @TestCase("InheritedEntitiesContainsAllOfDefaultValueParentAttributes")
     @Requirement(reqs = {
-            "",
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-TYPE-010",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-003",
+            "REQ-ENT-012",
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-SYNT-001",
+            "REQ-SYNT-002",
+            "REQ-SYNT-003",
+            "REQ-SYNT-004",
     })
     void testInheritedEntitiesContainsAllOfDefaultValueParentAttributes() {
 
@@ -297,9 +327,8 @@ public class InheritanceTest extends AbstractJslTest {
      * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
      *
      * @jslModel InheritanceModel.jsl
-     *
-     *
-     * @negativeRequirements
+
+     * @negativeRequirements REQ-ENT-012
      *
      * @scenario
      *
@@ -312,7 +341,18 @@ public class InheritanceTest extends AbstractJslTest {
     @TestCase("AbstractEntityInstanceThrowError")
     @Disabled("")
     @Requirement(reqs = {
-            "",
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-012",
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-SYNT-001",
+            "REQ-SYNT-002",
+            "REQ-SYNT-003",
+            "REQ-SYNT-004",
     })
     void testAbstractEntityInstanceThrowError() {
 
@@ -329,4 +369,9 @@ public class InheritanceTest extends AbstractJslTest {
                 .anyMatch(f -> f.getName().equals(methodName));
     }
 
+    private org.hamcrest.Matcher matchMissingAttribute(String attrName) {
+        return allOf(
+                hasProperty("code", equalTo("MISSING_REQUIRED_ATTRIBUTE")),
+                hasProperty("location", equalTo(attrName)));
+    }
 }

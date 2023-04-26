@@ -58,7 +58,7 @@ entity RelationEntity {
 }
 
 entity E extends ParentA {
-    field String nameC;
+    field String nameE;
 }
 
 entity F extends ParentA,ParentB,ParentAbstract {
