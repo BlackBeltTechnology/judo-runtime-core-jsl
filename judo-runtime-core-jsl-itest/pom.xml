@@ -307,6 +307,17 @@
                         </configuration>
                     </execution>
 
+                    <execution>
+                        <id>generate-psm-test-model-from-artifact-UnmappedTransferModel</id>
+                        <goals>
+                            <goal>parser-workflow</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <sources>${basedir}/src/test/resources/model/UnmappedTransferModel</sources>
+                        </configuration>
+                    </execution>
+
                 </executions>
 
             </plugin>
@@ -678,6 +689,19 @@
                             <destination>${basedir}/target/generated-test-sources/sdk-core/AutoMappedTransferModel</destination>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-UnmappedTransferModel</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/UnmappedTransferModel-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/sdk-core/UnmappedTransferModel</destination>
+                        </configuration>
+                    </execution>
 
 
                 </executions>
@@ -724,6 +748,7 @@
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/TestStaticQueriesWithDefaultValues</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/AllTypeOfTransferObjects</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/AutoMappedTransferModel</source>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/UnmappedTransferModel</source>
                             </sources>
                         </configuration>
                    </execution>

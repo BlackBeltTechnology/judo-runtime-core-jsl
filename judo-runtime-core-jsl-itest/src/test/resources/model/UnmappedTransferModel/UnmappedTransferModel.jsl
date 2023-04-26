@@ -1,0 +1,65 @@
+model UnmappedTransferModel;
+
+import judo::types;
+
+type numeric Scaled(precision = 9, scale = 2);
+type string PhoneNumber(min-size = 0, max-size = 32, regex = "^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]\\d{3}[\\s.-]\\d{4}$");
+type string SmallString(min-size = 0, max-size = 128);
+
+enum Enum {
+    EnumA = 0;
+    EnumB = 1;
+    EnumC = 2;
+}
+
+transfer UnmappedTransferWithPrimitiveFields {
+    field Integer integerAttr;
+    field Scaled scaledAttr;
+    field String stringAttr;
+    field PhoneNumber regexAttr;
+    field Boolean boolAttr;
+    field Date dateAttr;
+    field Timestamp timestampAttr;
+    field Time timeAttr;
+    field Time shortTimeAttr;
+    field Enum enumAttr;
+}
+
+transfer UnmappedTransferWithRequiredPrimitiveFields {
+    field required Integer integerAttr;
+    field required Scaled scaledAttr;
+    field required String stringAttr;
+    field required PhoneNumber regexAttr;
+    field required Boolean boolAttr;
+    field required Date dateAttr;
+    field required Timestamp timestampAttr;
+    field required Time timeAttr;
+    field required Time shortTimeAttr;
+    field required Enum enumAttr;
+}
+
+transfer UnmappedTransferWithReadsPrimitiveFields {
+    field required Integer integerAttr reads 1; //make nonsense but work
+    field Scaled scaledAttr reads 2.34;
+    field String stringAttr reads "test";
+    field PhoneNumber regexAttr reads "+36-1-123-123";
+    field Boolean boolAttr reads true;
+    field Date dateAttr reads `2022-07-11`;
+    field Timestamp timestampAttr reads `2022-07-11T19:09:33Z`;
+    field Time timeAttr reads `23:59:59`;
+    field Time shortTimeAttr reads `23:59`;
+    field Enum enumAttr reads Enum#EnumA;
+}
+
+transfer UnmappedTransferReference {
+}
+
+transfer UnmappedTransferWithTransferFields {
+    field UnmappedTransferReference unmappedTransferReferenceSingle;
+    field UnmappedTransferReference[] unmappedTransferReferenceMulti;
+}
+
+transfer UnmappedTransferWithRequiredTransferFields {
+    field required UnmappedTransferReference unmappedTransferReferenceSingle;
+    field UnmappedTransferReference[] unmappedTransferReferenceMulti;
+}
