@@ -61,7 +61,7 @@ public class InheritanceTest extends AbstractJslTest {
     ParentAbstractDao parentAbstractDao;
 
     /**
-     * This test check of a child entity contains all the parent entities attributes.
+     * This test check of the child entity contains all the parent entities attributes.
      *
      * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
@@ -82,7 +82,7 @@ public class InheritanceTest extends AbstractJslTest {
      *
      *  Create one instance of the F entity
      *
-     *  Check all the attributes is present of the parents entities (parentA,ParentB,ParentAbstract) in the F instance.
+     *  Check all the of the parents entities attributes is present (parentA,ParentB,ParentAbstract) in the F instance.
      *
      */
     @Test
@@ -112,27 +112,27 @@ public class InheritanceTest extends AbstractJslTest {
 
         E e = eDao.create(E.builder().build());
 
-        assertTrue(hasDaoContainsMethod(e,"getNameA"));
-        assertTrue(hasDaoContainsMethod(e,"getIdentifierA"));
-        assertTrue(hasDaoContainsMethod(e,"getDerivedA"));
-        assertTrue(hasDaoContainsMethod(e,"getQueryA"));
-        assertTrue(hasDaoContainsMethod(eDao,"queryRelationEntities"));
+        assertTrue(asMethodWithName("getNameA", e));
+        assertTrue(asMethodWithName("getIdentifierA", e));
+        assertTrue(asMethodWithName("getDerivedA", e));
+        assertTrue(asMethodWithName("getQueryA", e));
+        assertTrue(asMethodWithName("queryRelationEntities", eDao));
 
 
         F f = fDao.create(F.builder().build());
 
-        assertTrue(hasDaoContainsMethod(f,"getNameA"));
-        assertTrue(hasDaoContainsMethod(f,"getNameB"));
-        assertTrue(hasDaoContainsMethod(f,"getNameAbstract"));
-        assertTrue(hasDaoContainsMethod(f,"getIdentifierA"));
-        assertTrue(hasDaoContainsMethod(f,"getDerivedA"));
-        assertTrue(hasDaoContainsMethod(f,"getQueryA"));
-        assertTrue(hasDaoContainsMethod(fDao,"queryRelationEntities"));
+        assertTrue(asMethodWithName("getNameA", f));
+        assertTrue(asMethodWithName("getNameB", f));
+        assertTrue(asMethodWithName("getNameAbstract", f));
+        assertTrue(asMethodWithName("getIdentifierA", f));
+        assertTrue(asMethodWithName("getDerivedA", f));
+        assertTrue(asMethodWithName("getQueryA", f));
+        assertTrue(asMethodWithName("queryRelationEntities", fDao));
 
     }
 
     /**
-     * Testing an entity inherited form an inherited entity.
+     * Testing an entity that inheritance form an inherited entity.
      *
      * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
@@ -149,7 +149,7 @@ public class InheritanceTest extends AbstractJslTest {
      *
      *  Create one instance of the G entity
      *
-     *  Check all the attributes is present of the parents entities (E -> parentA,ParentB) in the G instance.
+     *  Check all the of the parents entities attributes is present (E -> parentA,ParentB) in the G instance.
      *
      */
     @Test
@@ -177,13 +177,13 @@ public class InheritanceTest extends AbstractJslTest {
 
         G g = gDao.create(G.builder().build());
 
-        assertTrue(hasDaoContainsMethod(g,"getNameA"));
-        assertTrue(hasDaoContainsMethod(g,"getNameB"));
-        assertTrue(hasDaoContainsMethod(g,"getNameE"));
-        assertTrue(hasDaoContainsMethod(g,"getIdentifierA"));
-        assertTrue(hasDaoContainsMethod(g,"getDerivedA"));
-        assertTrue(hasDaoContainsMethod(g,"getQueryA"));
-        assertTrue(hasDaoContainsMethod(gDao,"queryRelationEntities"));
+        assertTrue(asMethodWithName("getNameA", g));
+        assertTrue(asMethodWithName("getNameB", g));
+        assertTrue(asMethodWithName("getNameE", g));
+        assertTrue(asMethodWithName("getIdentifierA", g));
+        assertTrue(asMethodWithName("getDerivedA", g));
+        assertTrue(asMethodWithName("getQueryA", g));
+        assertTrue(asMethodWithName("queryRelationEntities", gDao));
 
     }
 
@@ -274,7 +274,7 @@ public class InheritanceTest extends AbstractJslTest {
      *
      *  Create one instance of the I entity without attribute parameters.
      *
-     *  Check all the attributes is present of the parents entities (ParentDefaultD) in the I instance and all of them contains the default value.
+     *  Check all the of the parents entity attributes is present (ParentDefaultD) in the I instance and all of them contains the default value.
      *
      */
     @Test
@@ -318,7 +318,7 @@ public class InheritanceTest extends AbstractJslTest {
     }
 
     /**
-     * Testing the abstract entity cannot contain instances.
+     * Testing the abstract entity Dao cannot create instances.
      *
      * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
@@ -338,8 +338,8 @@ public class InheritanceTest extends AbstractJslTest {
      *
      */
     @Test
+    @Disabled("JNG-4793")
     @TestCase("AbstractEntityInstanceThrowError")
-    @Disabled("")
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-TYPE-004",
@@ -362,9 +362,11 @@ public class InheritanceTest extends AbstractJslTest {
                         .build())
         );
 
+        //TODO If JNG-4793 implemented add more detailed error massage of here
+
     }
 
-    public boolean hasDaoContainsMethod(Object object, String methodName) {
+    public boolean asMethodWithName(String methodName,Object object) {
         return Arrays.stream(object.getClass().getDeclaredMethods())
                 .anyMatch(f -> f.getName().equals(methodName));
     }
