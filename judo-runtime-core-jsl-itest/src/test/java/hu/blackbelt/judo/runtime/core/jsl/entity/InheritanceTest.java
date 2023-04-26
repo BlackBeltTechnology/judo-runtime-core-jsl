@@ -2,14 +2,14 @@ package hu.blackbelt.judo.runtime.core.jsl.entity;
 
 import com.google.inject.Inject;
 import com.google.inject.Module;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritancemodel.inheritancemodel.e.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritancemodel.inheritancemodel.f.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritancemodel.inheritancemodel.g.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritancemodel.inheritancemodel.i.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritancemodel.inheritancemodel.h.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritancemodel.inheritancemodel.myenum.MyEnum;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritancemodel.inheritancemodel.parentabstract.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.InheritanceModelDaoModules;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.e.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.f.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.g.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.i.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.h.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.myenum.MyEnum;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.parentabstract.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.InheritanceDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
@@ -34,12 +34,12 @@ public class InheritanceTest extends AbstractJslTest {
 
     @Override
     public Module getModelDaoModule() {
-        return new InheritanceModelDaoModules();
+        return new InheritanceDaoModules();
     }
 
     @Override
     public String getModelName() {
-        return "InheritanceModel";
+        return "Inheritance";
     }
 
     @Inject
@@ -69,7 +69,7 @@ public class InheritanceTest extends AbstractJslTest {
      *
      * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
      *
-     * @jslModel InheritanceModel.jsl
+     * @jslModel inheritance.jsl
      *
      *
      * @positiveRequirements  REQ-ENT-012
@@ -112,22 +112,22 @@ public class InheritanceTest extends AbstractJslTest {
 
         E e = eDao.create(E.builder().build());
 
-        assertTrue(asMethodWithName("getNameA", e));
-        assertTrue(asMethodWithName("getIdentifierA", e));
-        assertTrue(asMethodWithName("getDerivedA", e));
-        assertTrue(asMethodWithName("getQueryA", e));
-        assertTrue(asMethodWithName("queryRelationEntities", eDao));
+        assertTrue(hasMethodWithName("getNameA", e));
+        assertTrue(hasMethodWithName("getIdentifierA", e));
+        assertTrue(hasMethodWithName("getDerivedA", e));
+        assertTrue(hasMethodWithName("getQueryA", e));
+        assertTrue(hasMethodWithName("queryRelationEntities", eDao));
 
 
         F f = fDao.create(F.builder().build());
 
-        assertTrue(asMethodWithName("getNameA", f));
-        assertTrue(asMethodWithName("getNameB", f));
-        assertTrue(asMethodWithName("getNameAbstract", f));
-        assertTrue(asMethodWithName("getIdentifierA", f));
-        assertTrue(asMethodWithName("getDerivedA", f));
-        assertTrue(asMethodWithName("getQueryA", f));
-        assertTrue(asMethodWithName("queryRelationEntities", fDao));
+        assertTrue(hasMethodWithName("getNameA", f));
+        assertTrue(hasMethodWithName("getNameB", f));
+        assertTrue(hasMethodWithName("getNameAbstract", f));
+        assertTrue(hasMethodWithName("getIdentifierA", f));
+        assertTrue(hasMethodWithName("getDerivedA", f));
+        assertTrue(hasMethodWithName("getQueryA", f));
+        assertTrue(hasMethodWithName("queryRelationEntities", fDao));
 
     }
 
@@ -140,7 +140,7 @@ public class InheritanceTest extends AbstractJslTest {
      *
      * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
      *
-     * @jslModel InheritanceModel.jsl
+     * @jslModel inheritance.jsl
      *
      *
      * @positiveRequirements REQ-ENT-012
@@ -177,13 +177,13 @@ public class InheritanceTest extends AbstractJslTest {
 
         G g = gDao.create(G.builder().build());
 
-        assertTrue(asMethodWithName("getNameA", g));
-        assertTrue(asMethodWithName("getNameB", g));
-        assertTrue(asMethodWithName("getNameE", g));
-        assertTrue(asMethodWithName("getIdentifierA", g));
-        assertTrue(asMethodWithName("getDerivedA", g));
-        assertTrue(asMethodWithName("getQueryA", g));
-        assertTrue(asMethodWithName("queryRelationEntities", gDao));
+        assertTrue(hasMethodWithName("getNameA", g));
+        assertTrue(hasMethodWithName("getNameB", g));
+        assertTrue(hasMethodWithName("getNameE", g));
+        assertTrue(hasMethodWithName("getIdentifierA", g));
+        assertTrue(hasMethodWithName("getDerivedA", g));
+        assertTrue(hasMethodWithName("getQueryA", g));
+        assertTrue(hasMethodWithName("queryRelationEntities", gDao));
 
     }
 
@@ -196,7 +196,7 @@ public class InheritanceTest extends AbstractJslTest {
      *
      * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
      *
-     * @jslModel InheritanceModel.jsl
+     * @jslModel inheritance.jsl
      *
 
      * @negativeRequirements REQ-ENT-012
@@ -264,7 +264,7 @@ public class InheritanceTest extends AbstractJslTest {
      *
      * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
      *
-     * @jslModel InheritanceModel.jsl
+     * @jslModel inheritance.jsl
      *
      *
      * @positiveRequirements REQ-ENT-012
@@ -326,7 +326,7 @@ public class InheritanceTest extends AbstractJslTest {
      *
      * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
      *
-     * @jslModel InheritanceModel.jsl
+     * @jslModel inheritance.jsl
 
      * @negativeRequirements REQ-ENT-012
      *
@@ -366,7 +366,7 @@ public class InheritanceTest extends AbstractJslTest {
 
     }
 
-    public boolean asMethodWithName(String methodName,Object object) {
+    public boolean hasMethodWithName(String methodName,Object object) {
         return Arrays.stream(object.getClass().getDeclaredMethods())
                 .anyMatch(f -> f.getName().equals(methodName));
     }

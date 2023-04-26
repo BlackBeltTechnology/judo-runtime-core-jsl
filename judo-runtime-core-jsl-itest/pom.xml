@@ -308,13 +308,13 @@
                     </execution>
 
                     <execution>
-                        <id>generate-psm-test-model-from-artifact-UnmappedTransferModel</id>
+                        <id>generate-psm-test-model-from-artifact-MappedTransferPrimitivesModel</id>
                         <goals>
                             <goal>parser-workflow</goal>
                         </goals>
                         <phase>generate-test-sources</phase>
                         <configuration>
-                            <sources>${basedir}/src/test/resources/model/UnmappedTransferModel</sources>
+                            <sources>${basedir}/src/test/resources/model/MappedTransferPrimitivesModel</sources>
                         </configuration>
                     </execution>
 
@@ -329,16 +329,16 @@
                 <executions>
 
                     <execution>
-                        <id>execute-psm-test-model-from-artifact-InheritanceModel</id>
+                        <id>execute-psm-test-model-from-artifact-Inheritance</id>
                         <phase>generate-test-sources</phase>
                         <goals>
                             <goal>generate</goal>
                         </goals>
                         <configuration>
                             <psm>
-                                ${basedir}/target/generated-test-sources/model/InheritanceModel-psm.model
+                                ${basedir}/target/generated-test-sources/model/Inheritance-psm.model
                             </psm>
-                            <destination>${basedir}/target/generated-test-sources/sdk-core/InheritanceModel</destination>
+                            <destination>${basedir}/target/generated-test-sources/sdk-core/Inheritance</destination>
                         </configuration>
                     </execution>
                     <execution>
@@ -677,29 +677,29 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <id>execute-psm-test-model-from-artifact-AutoMappedTransferModel</id>
+                        <id>execute-psm-test-model-from-artifact-AutoMappedTransfer</id>
                         <phase>generate-test-sources</phase>
                         <goals>
                             <goal>generate</goal>
                         </goals>
                         <configuration>
                             <psm>
-                                ${basedir}/target/generated-test-sources/model/AutoMappedTransferModel-psm.model
+                                ${basedir}/target/generated-test-sources/model/AutoMappedTransfer-psm.model
                             </psm>
-                            <destination>${basedir}/target/generated-test-sources/sdk-core/AutoMappedTransferModel</destination>
+                            <destination>${basedir}/target/generated-test-sources/sdk-core/AutoMappedTransfer</destination>
                         </configuration>
                     </execution>
                     <execution>
-                        <id>execute-psm-test-model-from-artifact-UnmappedTransferModel</id>
+                        <id>execute-psm-test-model-from-artifact-MappedTransferPrimitives</id>
                         <phase>generate-test-sources</phase>
                         <goals>
                             <goal>generate</goal>
                         </goals>
                         <configuration>
                             <psm>
-                                ${basedir}/target/generated-test-sources/model/UnmappedTransferModel-psm.model
+                                ${basedir}/target/generated-test-sources/model/MappedTransferPrimitives-psm.model
                             </psm>
-                            <destination>${basedir}/target/generated-test-sources/sdk-core/UnmappedTransferModel</destination>
+                            <destination>${basedir}/target/generated-test-sources/sdk-core/MappedTransferPrimitives</destination>
                         </configuration>
                     </execution>
 
@@ -720,7 +720,7 @@
                         </goals>
                         <configuration>
                             <sources>
-                                <source>${project.basedir}/target/generated-test-sources/sdk-core/InheritanceModel</source>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/Inheritance</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/SalesModel</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/SalesModel2</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/SalesModel3</source>
@@ -747,8 +747,8 @@
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/OperatorAndFunctionOfEnumTest</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/TestStaticQueriesWithDefaultValues</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/AllTypeOfTransferObjects</source>
-                                <source>${project.basedir}/target/generated-test-sources/sdk-core/AutoMappedTransferModel</source>
-                                <source>${project.basedir}/target/generated-test-sources/sdk-core/UnmappedTransferModel</source>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/AutoMappedTransfer</source>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/MappedTransferPrimitives</source>
                             </sources>
                         </configuration>
                    </execution>

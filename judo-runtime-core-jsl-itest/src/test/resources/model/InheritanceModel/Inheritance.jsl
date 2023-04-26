@@ -1,4 +1,4 @@
-model InheritanceModel;
+model Inheritance;
 
 import judo::types;
 
