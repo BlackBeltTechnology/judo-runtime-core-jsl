@@ -1,0 +1,73 @@
+model AbstractModel;
+
+entity abstract A {
+}
+
+entity abstract B {
+}
+
+entity C extends B {
+}
+
+entity abstract D {
+}
+
+entity abstract E extends D {
+}
+
+entity F {
+    relation G GOnFSingle;
+    relation required G GOnFSingleRequired;
+    relation G[] GOnFMulti;
+}
+
+entity abstract G {
+
+}
+
+
+entity H {
+    relation I IOnHSingle;
+    relation required I IOnHSingleRequired;
+    relation I[] IOnHMulti;
+}
+
+entity abstract I {
+
+}
+
+entity J extends I {
+
+}
+
+entity abstract K {
+    relation M MOnKSingle;
+    relation required M MOnKSingleRequired;
+    relation M[] MOnKMulti;
+}
+
+entity abstract M {
+
+}
+
+entity N extends M {
+
+}
+
+entity L extends K {
+
+}
+
+entity abstract O {
+    query O Oany() => O!all()!any();
+}
+
+entity abstract P {
+    query P Pany() => P!all()!any();
+    query P PQany() => Q!all()!any();
+    query Q Qany() => Q!all()!any();
+}
+
+entity Q extends P {
+
+}

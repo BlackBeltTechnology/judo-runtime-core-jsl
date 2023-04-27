@@ -324,6 +324,17 @@
                         </configuration>
                     </execution>
 
+                    <execution>
+                        <id>generate-psm-test-model-from-artifact-AbstractModel</id>
+                        <goals>
+                            <goal>parser-workflow</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <sources>${basedir}/src/test/resources/model/AbstractModel</sources>
+                        </configuration>
+                    </execution>
+
                 </executions>
 
             </plugin>
@@ -708,6 +719,19 @@
                             <destination>${basedir}/target/generated-test-sources/sdk-core/MappedTransferPrimitives</destination>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-AbstractModel</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/AbstractModel-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/sdk-core/AbstractModel</destination>
+                        </configuration>
+                    </execution>
 
 
                 </executions>
@@ -742,7 +766,6 @@
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/TaskModel</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/OrderManagement</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/QueryModel</source>
-                                <source>${project.basedir}/target/generated-test-sources/sdk-core/Abstract</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/TernaryTest</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/ContainsModel</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/CastingFunctionsModel</source>
@@ -755,6 +778,7 @@
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/AllTypeOfTransferObjects</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/AutoMappedTransfer</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/MappedTransferPrimitives</source>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/AbstractModel</source>
                             </sources>
                         </configuration>
                    </execution>
