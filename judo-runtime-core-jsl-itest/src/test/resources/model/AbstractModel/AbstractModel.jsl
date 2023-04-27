@@ -1,9 +1,12 @@
 model AbstractModel;
 
+type string String(min-size = 0, max-size = 128);
+
 entity abstract A {
 }
 
 entity abstract B {
+    field String nameB;
 }
 
 entity C extends B {
@@ -16,24 +19,30 @@ entity abstract E extends D {
 }
 
 entity F {
-    relation G GOnFSingle;
-    relation required G GOnFSingleRequired;
-    relation G[] GOnFMulti;
+    relation G relationGOnFSingle;
+    relation required G relationGOnFSingleRequired;
+    relation G[] relationGOnFMulti;
+    field G compositionGOnFSingle;
+    field required G compositionGOnFSingleRequired;
+    field G[] compositionGOnFMulti;
 }
 
 entity abstract G {
-
+    field String nameG;
 }
 
 
 entity H {
-    relation I IOnHSingle;
-    relation required I IOnHSingleRequired;
-    relation I[] IOnHMulti;
+    relation I relationIOnHSingle;
+    relation required I relationIOnHSingleIOnHSingleRequired;
+    relation I[] relationIOnHSingleIOnHMulti;
+    field I compositionIOnHSingle;
+    field required I compositionIOnHSingleRequired;
+    field I[] compositionIOnHMulti;
 }
 
 entity abstract I {
-
+    field String nameI;
 }
 
 entity J extends I {
@@ -41,13 +50,16 @@ entity J extends I {
 }
 
 entity abstract K {
-    relation M MOnKSingle;
-    relation required M MOnKSingleRequired;
-    relation M[] MOnKMulti;
+    relation M relationMOnKSingle;
+    relation required M relationMOnKSingleRequired;
+    relation M[] relationMOnKSingleMOnKMulti;
+    field M compositionMOnKSingle;
+    field required M compositionMOnKSingleRequired;
+    field M[] compositionMOnKMulti;
 }
 
 entity abstract M {
-
+    field String nameM;
 }
 
 entity N extends M {

@@ -366,10 +366,6 @@ public class InheritanceTest extends AbstractJslTest {
 
     }
 
-    public boolean hasMethodWithName(String methodName,Object object) {
-        return Arrays.stream(object.getClass().getDeclaredMethods())
-                .anyMatch(f -> f.getName().equals(methodName));
-    }
 
     private org.hamcrest.Matcher matchMissingAttribute(String attrName) {
         return allOf(

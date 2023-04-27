@@ -40,6 +40,7 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.testcontainers.containers.JdbcDatabaseContainer;
 
 import java.io.File;
+import java.util.Arrays;
 
 import static hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture.DIALECT_HSQLDB;
 import static hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture.DIALECT_POSTGRESQL;
@@ -131,6 +132,11 @@ public abstract class AbstractJslTest {
         if (transactionStatus.isCompleted()) {
             throw new IllegalStateException("Transaction was already completed");
         }
+    }
+
+    public boolean hasMethodWithName(String methodName,Object object) {
+        return Arrays.stream(object.getClass().getDeclaredMethods())
+                .anyMatch(f -> f.getName().equals(methodName));
     }
 
 }
