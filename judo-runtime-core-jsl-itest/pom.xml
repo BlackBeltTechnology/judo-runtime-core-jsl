@@ -21,6 +21,7 @@
                     <version>${judo-meta-psm-version}</version>
                     <configuration>
                         <uris>
+                            <uri>mvn:hu.blackbelt.judo.generator:judo-psm-generator-sdk-core-common:${judo-psm-generator-sdk-core-version}</uri>
                             <uri>mvn:hu.blackbelt.judo.generator:judo-psm-generator-sdk-core-api:${judo-psm-generator-sdk-core-version}</uri>
                             <uri>mvn:hu.blackbelt.judo.generator:judo-psm-generator-sdk-core-impl:${judo-psm-generator-sdk-core-version}</uri>
                             <uri>mvn:hu.blackbelt.judo.generator:judo-psm-generator-sdk-core-guice:${judo-psm-generator-sdk-core-version}</uri>
@@ -37,6 +38,11 @@
                         </templateParameters>
                     </configuration>
                     <dependencies>
+                        <dependency>
+                            <groupId>hu.blackbelt.judo.generator</groupId>
+                            <artifactId>judo-psm-generator-sdk-core-common</artifactId>
+                            <version>${judo-psm-generator-sdk-core-version}</version>
+                        </dependency>
                         <dependency>
                             <groupId>hu.blackbelt.judo.generator</groupId>
                             <artifactId>judo-psm-generator-sdk-core-api</artifactId>
