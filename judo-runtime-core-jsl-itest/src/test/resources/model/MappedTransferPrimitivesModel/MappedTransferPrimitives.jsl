@@ -42,7 +42,7 @@ transfer MappedTransferWithRequiredPrimitiveFields (MappedEntity mappedEntity) {
 }
 
 transfer MappedTransferWithReadsPrimitiveFields (MappedEntity mappedEntity) {
-    field required Integer integerAttr reads 1; //make nonsense but work
+    field Integer integerAttr reads 1; //make nonsense but work
     field Scaled scaledAttr reads 2.34;
     field String stringAttr reads "test";
     field PhoneNumber regexAttr reads "+36-1-123-123";
