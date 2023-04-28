@@ -34,14 +34,14 @@ entity abstract G {
 
 entity H {
     relation I relationIOnHSingle;
-    relation required I relationIOnHSingleIOnHSingleRequired;
-    relation I[] relationIOnHSingleIOnHMulti;
+    relation required I relationIOnHSingleRequired;
+    relation I[] relationIOnHMulti;
     field I compositionIOnHSingle;
     field required I compositionIOnHSingleRequired;
     field I[] compositionIOnHMulti;
 }
 
-entity abstract I {
+entity I {
     field String nameI;
 }
 
