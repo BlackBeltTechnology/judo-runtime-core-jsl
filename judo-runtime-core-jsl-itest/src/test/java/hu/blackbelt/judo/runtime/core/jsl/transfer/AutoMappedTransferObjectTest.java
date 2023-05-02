@@ -92,7 +92,7 @@ public class AutoMappedTransferObjectTest extends AbstractJslTest {
 
     @Test
     @Disabled("")
-    @TestCase("AutoMappedTransferObjectFields")
+    @TestCase("AutoMappedTransferObjectWithAbstractMappedField")
     @Requirement(reqs = {
             "",
     })
