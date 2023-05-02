@@ -18,6 +18,8 @@ entity abstract D {
 entity abstract E extends D {
 }
 
+
+//In this form we can test this case
 entity F {
     relation G relationGOnFSingle;
     relation required G relationGOnFSingleRequired;
@@ -30,7 +32,7 @@ entity F {
 entity abstract G {
     field String nameG;
 }
-
+//case end
 
 entity H {
     relation I relationIOnHSingle;
@@ -41,7 +43,7 @@ entity H {
     field I[] compositionIOnHMulti;
 }
 
-entity I {
+entity abstract I {
     field String nameI;
 }
 
