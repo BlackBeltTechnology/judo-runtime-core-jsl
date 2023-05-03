@@ -344,7 +344,7 @@ public class AbstractTest extends AbstractJslTest {
 
         assertEquals(Optional.of("CompositionSingleChanged"), h.getCompositionIOnHSingle().orElseThrow().getNameI());
         assertEquals(Optional.of("CompositionSingleRequiredChanged"), h.getCompositionIOnHSingleRequired().getNameI());
-        //TODO JNG-XXXX
+        //TODO JNG-4813
         //h.getCompositionIOnHMulti().stream().forEach( i -> assertEquals(Optional.of("MultiCompositionNameChanged"),i.getNameI()));
         //hDao.queryCompositionIOnHMulti.execute().stream().forEach( i -> assertEquals(Optional.of("iMultiRelationNameChanged"),i.getNameI()));
 
@@ -359,7 +359,7 @@ public class AbstractTest extends AbstractJslTest {
 //        assertTrue(iDao.getById(h.getCompositionIOnHSingle().get().identifier()).isEmpty());
 //        assertEquals(iDao.getAll().size(),jDao.getAll().size()); // the j representation not deleted
 
-        //TODO JNG-XXXX
+        //TODO JNG-4812
 //        iDao.delete(h.getCompositionIOnHSingleRequired()); //unfortunately you can delete required Component
 //        h = hDao.getById(h.identifier()).orElseThrow();
 

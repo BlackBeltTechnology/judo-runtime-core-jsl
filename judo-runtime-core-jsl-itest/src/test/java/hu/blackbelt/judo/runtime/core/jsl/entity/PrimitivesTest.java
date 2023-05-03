@@ -274,7 +274,7 @@ public class PrimitivesTest extends AbstractJslTest {
                 () ->
                         entityWithIdentifiersContainerDao.create(
                                 EntityWithIdentifiersContainer.builder()
-                                        .withEntiiesWithIdentifiers(ImmutableList.of(
+                                        .withEntitiesWithIdentifiers(ImmutableList.of(
                                                 EntityWithIdentifiers.builder()
                                                         .withIntegerAttr(2)
                                                         .build(),

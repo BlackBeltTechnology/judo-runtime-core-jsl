@@ -55,7 +55,7 @@ entity EntityWithIdentifiers {
 }
 
 entity EntityWithIdentifiersContainer {
-    field EntityWithIdentifiers[] entiiesWithIdentifiers;
+    field EntityWithIdentifiers[] entitiesWithIdentifiers;
 }
 
 
