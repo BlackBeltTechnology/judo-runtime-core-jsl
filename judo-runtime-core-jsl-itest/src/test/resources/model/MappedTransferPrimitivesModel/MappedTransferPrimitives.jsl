@@ -1,0 +1,111 @@
+model MappedTransferPrimitives;
+
+import judo::types;
+
+type numeric Scaled(precision = 9, scale = 2);
+type string PhoneNumber(min-size = 0, max-size = 32, regex = "^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]\\d{3}[\\s.-]\\d{4}$");
+type binary Binary(mime-types = ["text/plain"], max-file-size=1 GB);
+type string SmallString(min-size = 0, max-size = 128);
+
+enum Enum {
+    EnumA = 0;
+    EnumB = 1;
+    EnumC = 2;
+}
+
+entity EntityForMapping {
+        field Integer integerAttr ;
+        field Scaled scaledAttr;
+        field String stringAttr;
+        field PhoneNumber regexAttr;
+        field Boolean boolAttr;
+        field Date dateAttr;
+        field Timestamp timestampAttr;
+        field Time timeAttr;
+        field Enum enumAttr;
+        field Binary binaryAttr;
+}
+
+entity EntityForMappingRequired {
+        field required Integer integerAttr ;
+        field required Scaled scaledAttr;
+        field required String stringAttr;
+        field required PhoneNumber regexAttr;
+        field required Boolean boolAttr;
+        field required Date dateAttr;
+        field required Timestamp timestampAttr;
+        field required Time timeAttr;
+        field required Enum enumAttr;
+        field required Binary binaryAttr;
+}
+
+entity EntityForMappingReads {
+}
+
+transfer TransferPrimitives (EntityForMapping mappedEntity) {
+    field Integer integerAttr maps mappedEntity.integerAttr;
+    field Scaled scaledAttr maps mappedEntity.scaledAttr;
+    field String stringAttr maps mappedEntity.stringAttr;
+    field PhoneNumber regexAttr maps mappedEntity.regexAttr;
+    field Boolean boolAttr maps mappedEntity.boolAttr;
+    field Date dateAttr maps mappedEntity.dateAttr;
+    field Timestamp timestampAttr maps mappedEntity.timestampAttr;
+    field Time timeAttr maps mappedEntity.timeAttr;
+    field Enum enumAttr maps mappedEntity.enumAttr;
+    field Binary binaryAttr maps mappedEntity.binaryAttr;
+
+}
+
+transfer TransferRequiredPrimitives (EntityForMappingRequired mappedEntity) {
+    field required Integer integerAttr maps mappedEntity.integerAttr;
+    field required Scaled scaledAttr maps mappedEntity.scaledAttr;
+    field required String stringAttr maps mappedEntity.stringAttr;
+    field required PhoneNumber regexAttr maps mappedEntity.regexAttr;
+    field required Boolean boolAttr maps mappedEntity.boolAttr;
+    field required Date dateAttr maps mappedEntity.dateAttr;
+    field required Timestamp timestampAttr maps mappedEntity.timestampAttr;
+    field required Time timeAttr maps mappedEntity.timeAttr;
+    field required Enum enumAttr maps mappedEntity.enumAttr;
+    field required Binary binaryAttr maps mappedEntity.binaryAttr;
+}
+
+
+transfer TransferReadsPrimitives (EntityForMappingReads mappedEntity) {
+    field Integer integerAttr reads 1;
+    field Scaled scaledAttr reads 2.34;
+    field String stringAttr reads "test";
+    field PhoneNumber regexAttr reads "+36-1-123-123";
+    field Boolean boolAttr reads true;
+    field Date dateAttr reads `2022-07-11`;
+    field Timestamp timestampAttr reads `2022-07-11T19:09:33Z`;
+    field Time timeAttr reads `23:59:59`;
+    field Time shortTimeAttr reads `23:59`;
+    field Enum enumAttr reads Enum#EnumA;
+}
+
+entity RequiredForNotRequiredTransfer {
+        field required Integer integerAttr ;
+        field required Scaled scaledAttr;
+        field required String stringAttr;
+        field required PhoneNumber regexAttr;
+        field required Boolean boolAttr;
+        field required Date dateAttr;
+        field required Timestamp timestampAttr;
+        field required Time timeAttr;
+        field required Enum enumAttr;
+        field required Binary binaryAttr;
+}
+
+transfer TransferRequiredEntityPrimitives (RequiredForNotRequiredTransfer mappedEntity) {
+    field Integer integerAttr maps mappedEntity.integerAttr;
+    field Scaled scaledAttr maps mappedEntity.scaledAttr;
+    field String stringAttr maps mappedEntity.stringAttr;
+    field PhoneNumber regexAttr maps mappedEntity.regexAttr;
+    field Boolean boolAttr maps mappedEntity.boolAttr;
+    field Date dateAttr maps mappedEntity.dateAttr;
+    field Timestamp timestampAttr maps mappedEntity.timestampAttr;
+    field Time timeAttr maps mappedEntity.timeAttr;
+    field Enum enumAttr maps mappedEntity.enumAttr;
+    field Binary binaryAttr maps mappedEntity.binaryAttr;
+}
+
