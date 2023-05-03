@@ -287,7 +287,7 @@ public class PrimitivesTest extends AbstractJslTest {
         assertThat(thrown.getValidationResults(), containsInAnyOrder(
                 allOf(
                         hasProperty("code", equalTo("IDENTIFIER_ATTRIBUTE_UNIQUENESS_VIOLATION")),
-                        hasProperty("location", equalTo("entiiesWithIdentifiers[1].integerAttr")))
+                        hasProperty("location", equalTo("entitiesWithIdentifiers[1].integerAttr")))
         ));
     }
 
