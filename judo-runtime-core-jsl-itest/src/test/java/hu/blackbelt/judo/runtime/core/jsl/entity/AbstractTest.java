@@ -20,6 +20,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractm
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.i.IIdentifier;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.j.J;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.j.JDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.j.JIdentifier;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.k.KDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.l.LDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.m.MDao;
@@ -355,8 +356,10 @@ public class AbstractTest extends AbstractJslTest {
         //delete with IDao
 
         //TODO JNG-4803
+
 //        iDao.delete(h.getCompositionIOnHSingle().get());
 //        assertTrue(iDao.getById(h.getCompositionIOnHSingle().get().identifier()).isEmpty());
+//        assertTrue(jDao.getById(h.getCompositionIOnHSingle().get().identifier().adaptTo(JIdentifier.class)).isEmpty());
 //        assertEquals(iDao.getAll().size(),jDao.getAll().size()); // the j representation not deleted
 
         //TODO JNG-4812
