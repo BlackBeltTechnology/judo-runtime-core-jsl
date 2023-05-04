@@ -29,7 +29,7 @@ entity EntityForMapping {
 transfer TransferPrimitives (EntityForMapping mappedEntity) {
     field Integer integerAttr maps mappedEntity.integerAttr;
     field Scaled scaledAttr maps mappedEntity.scaledAttr;
-    field String stringAttr maps mappedEntity.stringAttr;
+    field SmallString stringAttr maps mappedEntity.stringAttr;
     field PhoneNumber regexAttr maps mappedEntity.regexAttr;
     field Boolean boolAttr maps mappedEntity.boolAttr;
     field Date dateAttr maps mappedEntity.dateAttr;

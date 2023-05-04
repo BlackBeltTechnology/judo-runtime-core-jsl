@@ -578,32 +578,33 @@ public class MappedTransferPrimitivesTest extends AbstractJslTest {
         ));
     }
 
-//    @Test
-//    @Requirement(reqs = {
-//            "REQ-TYPE-001",
-//            "REQ-TYPE-004",
-//            "REQ-ENT-001",
-//            "REQ-ENT-002"
-//    })
-//    public void testMaxLengthValidatorFailsForInvalidInput() {
-//        String lipsum = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." +
-//                "Imperdiet sed euismod nisi porta lorem mollis." +
-//                "Ac ut consequat semper viverra." +
-//                "Ultrices mi tempus imperdiet nulla malesuada pellentesque elit." +
-//                "Venenatis lectus magna fringilla urna porttitor rhoncus. In vitae turpis massa sed." +
-//                "Congue mauris rhoncus aenean vel elit. ";
-//
-//        ValidationException thrown = assertThrows(
-//                ValidationException.class,
-//                () -> transferPrimitivesDao.create(TransferPrimitives.builder()
-//                        .withStringAttr(lipsum)
-//                        .build()));
-//
-//        assertThat(thrown.getValidationResults(), containsInAnyOrder(allOf(
-//                hasProperty("code", equalTo("MAX_LENGTH_VALIDATION_FAILED")),
-//                hasProperty("location", equalTo("stringAttr")))
-//        ));
-//    }
+    @Test
+    @Disabled("")
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-ENT-001",
+            "REQ-ENT-002"
+    })
+    public void testMaxLengthValidatorFailsForInvalidInput() {
+        String lipsum = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." +
+                "Imperdiet sed euismod nisi porta lorem mollis." +
+                "Ac ut consequat semper viverra." +
+                "Ultrices mi tempus imperdiet nulla malesuada pellentesque elit." +
+                "Venenatis lectus magna fringilla urna porttitor rhoncus. In vitae turpis massa sed." +
+                "Congue mauris rhoncus aenean vel elit. ";
+
+        ValidationException thrown = assertThrows(
+                ValidationException.class,
+                () -> transferPrimitivesDao.create(TransferPrimitives.builder()
+                        .withStringAttr(lipsum)
+                        .build()));
+
+        assertThat(thrown.getValidationResults(), containsInAnyOrder(allOf(
+                hasProperty("code", equalTo("MAX_LENGTH_VALIDATION_FAILED")),
+                hasProperty("location", equalTo("stringAttr")))
+        ));
+    }
 
     @Test
     @Requirement(reqs = {
