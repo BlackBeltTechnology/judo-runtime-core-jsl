@@ -40,13 +40,14 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.testcontainers.containers.JdbcDatabaseContainer;
 
 import java.io.File;
+import java.util.Arrays;
 
 import static hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture.DIALECT_HSQLDB;
 import static hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture.DIALECT_POSTGRESQL;
 
 @Slf4j
 @ExtendWith(JudoDatasourceByClassExtension.class)
-abstract class AbstractJslTest {
+public abstract class AbstractJslTest {
 
     public static final String MODEL_SOURCES = "target/generated-test-sources/model";
 
@@ -131,6 +132,11 @@ abstract class AbstractJslTest {
         if (transactionStatus.isCompleted()) {
             throw new IllegalStateException("Transaction was already completed");
         }
+    }
+
+    public boolean hasMethodWithName(String methodName,Object object) {
+        return Arrays.stream(object.getClass().getDeclaredMethods())
+                .anyMatch(f -> f.getName().equals(methodName));
     }
 
 }
