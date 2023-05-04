@@ -1,0 +1,42 @@
+model AllTypeOfTransferObjects;
+
+import judo::types;
+
+entity A {
+}
+
+transfer TransferA (A a) {
+}
+
+transfer UnmappedTransfer {
+}
+
+entity B {
+    field String nameB;
+}
+
+transfer TransferB (B b) {
+    field String attributeTransferB;
+    field String mappedNameB maps b.nameB;
+}
+
+entity C {
+    field String nameC;
+}
+
+transfer TransferC maps C as c {
+    field String attributeTransferC;
+    field String readCName reads c.nameC;
+}
+
+entity D {
+    field String nameD;
+}
+
+transfer TransferD maps D as d {
+    field String attributeTransferD;
+
+    constructor {
+        self.attributeTransferD = "SomeName";
+    }
+}
