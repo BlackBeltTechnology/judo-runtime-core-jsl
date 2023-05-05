@@ -331,7 +331,6 @@ public class AbstractTest extends AbstractJslTest {
         iRequiredRelation.setNameI("iRequiredRelationNameChanged");
         iMultiRelation.forEach(i -> i.setNameI("iMultiRelationNameChanged"));
 
-        //Check update
 
         iDao.update(h.getCompositionIOnHSingle().get());
         iDao.update(h.getCompositionIOnHSingleRequired());
@@ -343,8 +342,10 @@ public class AbstractTest extends AbstractJslTest {
 
         h = hDao.getById(h.identifier()).orElseThrow();
 
+        //Check update
         assertEquals(Optional.of("CompositionSingleChanged"), h.getCompositionIOnHSingle().orElseThrow().getNameI());
         assertEquals(Optional.of("CompositionSingleRequiredChanged"), h.getCompositionIOnHSingleRequired().getNameI());
+
         //TODO JNG-4813
         //h.getCompositionIOnHMulti().stream().forEach( i -> assertEquals(Optional.of("MultiCompositionNameChanged"),i.getNameI()));
         //hDao.queryCompositionIOnHMulti.execute().stream().forEach( i -> assertEquals(Optional.of("iMultiRelationNameChanged"),i.getNameI()));
@@ -358,7 +359,7 @@ public class AbstractTest extends AbstractJslTest {
         iDao.delete(h.getCompositionIOnHSingle().get());
         assertTrue(iDao.getById(h.getCompositionIOnHSingle().get().identifier()).isEmpty());
         assertTrue(jDao.getById(h.getCompositionIOnHSingle().get().identifier().adaptTo(JIdentifier.class)).isEmpty());
-        assertEquals(iDao.getAll().size(),jDao.getAll().size()); // the j representation not deleted
+        assertEquals(iDao.getAll().size(),jDao.getAll().size());
 
         //TODO JNG-4812
 //        iDao.delete(h.getCompositionIOnHSingleRequired()); //unfortunately you can delete required Component
@@ -369,7 +370,7 @@ public class AbstractTest extends AbstractJslTest {
         h = hDao.getById(h.identifier()).orElseThrow();
         assertEquals(2,h.getCompositionIOnHMulti().size());
 
-        //check the other method is work well
+        //check the other methods are work well
 
         //add
 
@@ -406,7 +407,7 @@ public class AbstractTest extends AbstractJslTest {
 
         //set
 
-        hDao.setCompositionIOnHSingle(h,JtoI(jDao.create(J.builder().withNameI("SetNewElement").build()))); //this deletes the old comp but j is not deleted
+        hDao.setCompositionIOnHSingle(h,JtoI(jDao.create(J.builder().withNameI("SetNewElement").build())));
         hDao.setRelationIOnHSingle(h, JtoI(jDao.create(J.builder().withNameI("SetNewElement").build())));
 
         h = hDao.getById(h.identifier()).orElseThrow();
