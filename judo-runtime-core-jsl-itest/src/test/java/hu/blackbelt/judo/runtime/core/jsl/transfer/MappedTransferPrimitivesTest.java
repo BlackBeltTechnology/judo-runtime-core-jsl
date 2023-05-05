@@ -5,16 +5,15 @@ import com.google.inject.Module;
 
 import hu.blackbelt.judo.dispatcher.api.FileType;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.enum_.Enum;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferprimitives.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferoptionalprimitives.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferwithprimitivedefaultexpressions.TransferWithPrimitiveDefaultExpressions;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferwithprimitivedefaultexpressions.TransferWithPrimitiveDefaultExpressionsDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferwithprimitivedefaults.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferrequiredprimitives.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.entityformapping.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferwithidentifiers.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferwithrequiredentityprimitives.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferwithrequiredprimitivedefaults.TransferWithRequiredPrimitiveDefaults;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferwithrequiredprimitivedefaults.TransferWithRequiredPrimitiveDefaultsDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.myentitywithoptionalfields.MyEntityWithOptionalFields;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferwithrequiredprimitivedefaults.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.MappedTransferPrimitivesDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
@@ -49,18 +48,14 @@ public class MappedTransferPrimitivesTest extends AbstractJslTest {
         return "MappedTransferPrimitives";
     }
 
-
     @Inject
-    TransferPrimitivesDao transferPrimitivesDao;
+    TransferOptionalPrimitivesDao transferOptionalPrimitivesDao;
 
     @Inject
     TransferWithPrimitiveDefaultsDao transferWithPrimitiveDefaultsDao;
 
     @Inject
     TransferRequiredPrimitivesDao transferRequiredPrimitivesDao;
-
-    @Inject
-    EntityForMappingDao entityForMappingDao;
 
     @Inject
     TransferWithIdentifiersDao transferWithIdentifiersDao;
@@ -71,8 +66,11 @@ public class MappedTransferPrimitivesTest extends AbstractJslTest {
     @Inject
     TransferWithPrimitiveDefaultExpressionsDao transferWithPrimitiveDefaultExpressionsDao;
 
+    @Inject
+    TransferWithRequiredEntityPrimitivesDao transferWithRequiredEntityPrimitivesDao;
+
     /**
-     *
+     * Test the optional fields are empty and mapped on a transfer objet.
      *
      * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
@@ -80,38 +78,54 @@ public class MappedTransferPrimitivesTest extends AbstractJslTest {
      *
      * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
      *
-     * @jslModel .jsl
-     * model ;
+     * @jslModel MappedTransferPrimitives.jsl
      *
      * @positiveRequirements REQ-SRV-002
      *
      * @scenario
      *
+     *  Create one TransferOptionalPrimitives.
+     *
+     *  Check all field mapped field is exsist and it is empty.
      */
     @Test
-    @TestCase("MappedTransferPrimitives")
+    @TestCase("MappedTransferOptionalPrimitives")
     @Requirement(reqs = {
-            "",
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-TYPE-010",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-SRV-002",
     })
-    void testMappedTransferPrimitivesWithoutValue() {
+    void testMappedTransferOptionalPrimitivesWithoutValue() {
 
-        TransferPrimitives transferPrimitives = transferPrimitivesDao.create(TransferPrimitives.builder().build());
+        TransferOptionalPrimitives transferOptionalPrimitives = transferOptionalPrimitivesDao.create(TransferOptionalPrimitives.builder().build());
 
-        assertEquals(Optional.empty(), transferPrimitives.getIntegerAttr());
-        assertEquals(Optional.empty(), transferPrimitives.getScaledAttr());
-        assertEquals(Optional.empty(), transferPrimitives.getStringAttr());
-        assertEquals(Optional.empty(), transferPrimitives.getRegexAttr());
-        assertEquals(Optional.empty(), transferPrimitives.getBoolAttr());
-        assertEquals(Optional.empty(), transferPrimitives.getDateAttr());
-        assertEquals(Optional.empty(), transferPrimitives.getTimestampAttr());
-        assertEquals(Optional.empty(), transferPrimitives.getTimeAttr());
-        assertEquals(Optional.empty(), transferPrimitives.getEnumAttr());
-        assertEquals(Optional.empty(), transferPrimitives.getBinaryAttr());
+        assertEquals(Optional.empty(), transferOptionalPrimitives.getIntegerAttr());
+        assertEquals(Optional.empty(), transferOptionalPrimitives.getScaledAttr());
+        assertEquals(Optional.empty(), transferOptionalPrimitives.getStringAttr());
+        assertEquals(Optional.empty(), transferOptionalPrimitives.getRegexAttr());
+        assertEquals(Optional.empty(), transferOptionalPrimitives.getBoolAttr());
+        assertEquals(Optional.empty(), transferOptionalPrimitives.getDateAttr());
+        assertEquals(Optional.empty(), transferOptionalPrimitives.getTimestampAttr());
+        assertEquals(Optional.empty(), transferOptionalPrimitives.getTimeAttr());
+        assertEquals(Optional.empty(), transferOptionalPrimitives.getEnumAttr());
+        assertEquals(Optional.empty(), transferOptionalPrimitives.getBinaryAttr());
 
     }
 
     /**
-     *
+     * Test the fields are mapped on a transfer objet and contains the added primitives.
      *
      * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
@@ -119,22 +133,39 @@ public class MappedTransferPrimitivesTest extends AbstractJslTest {
      *
      * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
      *
-     * @jslModel .jsl
-     * model ;
+     * @jslModel MappedTransferPrimitives.jsl
      *
      * @positiveRequirements REQ-SRV-002
      *
      * @scenario
+     *
+     *  Create one TransferOptionalPrimitives.
+     *
+     *  Check all fields contain the Dao added values.
      *
      */
     @Test
     @TestCase("MappedTransferRequiredPrimitives")
     @Requirement(reqs = {
-            "",
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-TYPE-010",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-SRV-002",
     })
-    void testMappedTransferRequiredPrimitives() {
+    void testMappedTransferOptionalPrimitives() {
 
-        TransferPrimitives transferPrimitives = transferPrimitivesDao.create(TransferPrimitives.builder()
+        TransferOptionalPrimitives transferOptionalPrimitives = transferOptionalPrimitivesDao.create(TransferOptionalPrimitives.builder()
                 .withIntegerAttr(1)
                 .withScaledAttr(1.23)
                 .withStringAttr("test")
@@ -148,20 +179,20 @@ public class MappedTransferPrimitivesTest extends AbstractJslTest {
                 .build());
 
 
-        assertEquals(Optional.of(1), transferPrimitives.getIntegerAttr());
-        assertEquals(Optional.of(1.23), transferPrimitives.getScaledAttr());
-        assertEquals(Optional.of("test"), transferPrimitives.getStringAttr());
-        assertEquals(Optional.of("+36 333-333-3333"), transferPrimitives.getRegexAttr());
-        assertEquals(Optional.of(true), transferPrimitives.getBoolAttr());
-        assertEquals(Optional.of(LocalDate.of(2022, 7, 11)), transferPrimitives.getDateAttr());
-        assertEquals(Optional.of(LocalDateTime.parse("2022-07-11T19:09:33")), transferPrimitives.getTimestampAttr());
-        assertEquals(Optional.of(LocalTime.parse("23:59:59")), transferPrimitives.getTimeAttr());
-        assertEquals("test.txt", transferPrimitives.getBinaryAttr().orElseThrow().getFileName());
-        assertEquals(Optional.of(Enum.EnumA), transferPrimitives.getEnumAttr());
+        assertEquals(Optional.of(1), transferOptionalPrimitives.getIntegerAttr());
+        assertEquals(Optional.of(1.23), transferOptionalPrimitives.getScaledAttr());
+        assertEquals(Optional.of("test"), transferOptionalPrimitives.getStringAttr());
+        assertEquals(Optional.of("+36 333-333-3333"), transferOptionalPrimitives.getRegexAttr());
+        assertEquals(Optional.of(true), transferOptionalPrimitives.getBoolAttr());
+        assertEquals(Optional.of(LocalDate.of(2022, 7, 11)), transferOptionalPrimitives.getDateAttr());
+        assertEquals(Optional.of(LocalDateTime.parse("2022-07-11T19:09:33")), transferOptionalPrimitives.getTimestampAttr());
+        assertEquals(Optional.of(LocalTime.parse("23:59:59")), transferOptionalPrimitives.getTimeAttr());
+        assertEquals("test.txt", transferOptionalPrimitives.getBinaryAttr().orElseThrow().getFileName());
+        assertEquals(Optional.of(Enum.EnumA), transferOptionalPrimitives.getEnumAttr());
     }
 
     /**
-     *
+     * Test required fields on a transfer objet and thrown errors when the Dao instance not contains the required values.
      *
      * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
@@ -169,20 +200,33 @@ public class MappedTransferPrimitivesTest extends AbstractJslTest {
      *
      * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
      *
-     * @jslModel .jsl
-     * model ;
+     * @jslModel MappedTransferPrimitives.jsl
      *
-     * @positiveRequirements REQ-SRV-002
+     * @negativeRequirements REQ-SRV-002
      *
      * @scenario
      *
+     *  Try to create one TransferRequiredPrimitives instance.
+     *
+     *  Check the thrown Validation exception contains all the fields with MISSING_REQUIRED_ATTRIBUTE code.
      */
     @Test()
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-TYPE-010",
             "REQ-ENT-001",
-            "REQ-ENT-002"
+            "REQ-ENT-002",
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-SRV-002",
     })
     public void testMissingRequiredFieldsThrowExceptions() {
         ValidationException thrown = assertThrows(
@@ -208,7 +252,7 @@ public class MappedTransferPrimitivesTest extends AbstractJslTest {
     }
 
     /**
-     *
+     *  //TODO JNG-XXXX
      *
      * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
@@ -216,25 +260,36 @@ public class MappedTransferPrimitivesTest extends AbstractJslTest {
      *
      * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
      *
-     * @jslModel .jsl
-     * model ;
+     * @jslModel MappedTransferPrimitives.jsl
      *
-     * @positiveRequirements REQ-SRV-002
+     * @negativeRequirements REQ-SRV-002
      *
      * @scenario
      *
      */
     @Test()
+    @Disabled("JNG-XXXX")
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-TYPE-010",
             "REQ-ENT-001",
-            "REQ-ENT-002"
+            "REQ-ENT-002",
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-SRV-002",
     })
     public void testMissingRequiredFieldsInEntitiesButNotRequiredInTransferThrowExceptions() {
         ValidationException thrown = assertThrows(
                 ValidationException.class,
-                () -> transferRequiredPrimitivesDao.create(TransferRequiredPrimitives.builder().build())
+                () -> transferWithRequiredEntityPrimitivesDao.create(TransferWithRequiredEntityPrimitives.builder().build())
         );
 
         assertThat(thrown.getValidationResults(), containsInAnyOrder(
@@ -255,7 +310,7 @@ public class MappedTransferPrimitivesTest extends AbstractJslTest {
     }
 
     /**
-     *
+     * Test the identifiers fields are mapped on a transfer objet and thrown errors when the Dao instance is not unique.
      *
      * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
@@ -263,13 +318,15 @@ public class MappedTransferPrimitivesTest extends AbstractJslTest {
      *
      * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
      *
-     * @jslModel .jsl
-     * model ;
+     * @jslModel MappedTransferPrimitives.jsl
      *
-     * @positiveRequirements REQ-SRV-002
+     * @negativeRequirements REQ-SRV-002, REQ-ENT-003
      *
      * @scenario
      *
+     *  Try to create two TransferRequiredPrimitives instance with the same parameters.
+     *
+     *  Check the second instance creation thrown Validation exception contains all the fields with IDENTIFIER_ATTRIBUTE_UNIQUENESS_VIOLATION code.
      */
     @Test
     @Requirement(reqs = {
@@ -279,13 +336,18 @@ public class MappedTransferPrimitivesTest extends AbstractJslTest {
             "REQ-TYPE-005",
             "REQ-TYPE-006",
             "REQ-TYPE-007",
+            "REQ-TYPE-008",
             "REQ-TYPE-009",
             "REQ-TYPE-010",
             "REQ-ENT-001",
             "REQ-ENT-002",
-            "REQ-ENT-003"
+            "REQ-ENT-003",
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-SRV-002",
     })
-    public void testIdentifierFieldsAreUnique() {
+    public void testTransferMapsIdentifierFieldsAreUnique() {
         LocalDate now = LocalDate.now();
         TransferWithIdentifiers transf1 = transferWithIdentifiersDao.create(TransferWithIdentifiers.builder()
                 .withIntegerAttr(1)
@@ -325,64 +387,29 @@ public class MappedTransferPrimitivesTest extends AbstractJslTest {
                         hasProperty("location", equalTo("dateAttr")))
         ));
 
-//        thrown = assertThrows(
-//                ValidationException.class,
-//                () ->
-//                        entityWithIdentifiersContainerDao.create(
-//                                EntityWithIdentifiersContainer.builder()
-//                                        .withEntitiesWithIdentifiers(ImmutableList.of(
-//                                                EntityWithIdentifiers.builder()
-//                                                        .withIntegerAttr(2)
-//                                                        .build(),
-//                                                EntityWithIdentifiers.builder()
-//                                                        .withIntegerAttr(2)
-//                                                        .build()
-//                                        ))
-//                                        .build()));
-//
-//        assertThat(thrown.getValidationResults(), containsInAnyOrder(
-//                allOf(
-//                        hasProperty("code", equalTo("IDENTIFIER_ATTRIBUTE_UNIQUENESS_VIOLATION")),
-//                        hasProperty("location", equalTo("entitiesWithIdentifiers[1].integerAttr")))
-//        ));
-
     }
 
-
-    @Test
-    @Requirement(reqs = {
-            "REQ-TYPE-001",
-            "REQ-TYPE-002",
-            "REQ-TYPE-004",
-            "REQ-TYPE-005",
-            "REQ-TYPE-006",
-            "REQ-TYPE-007",
-            "REQ-ENT-001",
-            "REQ-ENT-002"
-    })
-    public void testFieldsAreNonUnique() {
-        LocalDate now = LocalDate.now();
-        TransferPrimitives transf1 = transferPrimitivesDao.create(TransferPrimitives.builder()
-                .withIntegerAttr(1)
-                .withBoolAttr(true)
-                .withDateAttr(now)
-                .withEnumAttr(Enum.EnumA)
-                .withStringAttr("blabla")
-                .build());
-
-        assertEquals(1, transf1.getIntegerAttr().get());
-
-        TransferPrimitives transf2 = transferPrimitivesDao.create(TransferPrimitives.builder()
-                .withIntegerAttr(1)
-                .withBoolAttr(true)
-                .withDateAttr(now)
-                .withEnumAttr(Enum.EnumA)
-                .withStringAttr("blabla")
-                .build());
-
-        assertEquals(1, transf2.getIntegerAttr().get());
-    }
-
+    /**
+     * Test the optional fields are mapped on a transfer objet and do not throw any errors when the Dao made same instances.
+     *
+     * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
+     *
+     * @type Behaviour
+     *
+     * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
+     *
+     * @jslModel MappedTransferPrimitives.jsl
+     *
+     * @positiveRequirements REQ-SRV-002
+     *
+     *
+     * @scenario
+     *
+     *  Create two TransferOptionalPrimitives instance with the same parameters.
+     *
+     *  Check the second instance creation does not throw any errors.
+     *
+     */
     @Test
     @Requirement(reqs = {
             "REQ-TYPE-001",
@@ -396,51 +423,140 @@ public class MappedTransferPrimitivesTest extends AbstractJslTest {
             "REQ-TYPE-010",
             "REQ-ENT-001",
             "REQ-ENT-002",
-            "REQ-ENT-012"
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-SRV-002",
+    })
+    public void testTransferFieldsAreNonUnique() {
+        LocalDate now = LocalDate.now();
+        TransferOptionalPrimitives transf1 = transferOptionalPrimitivesDao.create(TransferOptionalPrimitives.builder()
+                .withIntegerAttr(1)
+                .withBoolAttr(true)
+                .withDateAttr(now)
+                .withEnumAttr(Enum.EnumA)
+                .withStringAttr("blabla")
+                .build());
+
+        assertEquals(1, transf1.getIntegerAttr().get());
+
+        TransferOptionalPrimitives transf2 = transferOptionalPrimitivesDao.create(TransferOptionalPrimitives.builder()
+                .withIntegerAttr(1)
+                .withBoolAttr(true)
+                .withDateAttr(now)
+                .withEnumAttr(Enum.EnumA)
+                .withStringAttr("blabla")
+                .build());
+
+        assertEquals(1, transf2.getIntegerAttr().get());
+    }
+
+    /**
+     * Test the update method on Dao when the mapped transfer object has optional fields.
+     *
+     * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
+     *
+     * @type Behaviour
+     *
+     * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
+     *
+     * @jslModel MappedTransferPrimitives.jsl
+     *
+     *
+     * @positiveRequirements REQ-SRV-002
+     *
+     * @scenario
+     *
+     *  Create one TransferOptionalPrimitives instance without parameters.
+     *
+     *  Add all field a primitive parameter.
+     *
+     *  Update with the dao.
+     *
+     *  Check the field are updated.
+     *
+     */
+    @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-TYPE-010",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-SRV-002",
     })
     public void testUpdateOptionalTransferAfterCreation() {
-        TransferPrimitives transferPrimitives = transferPrimitivesDao.create(TransferPrimitives.builder().build());
+        TransferOptionalPrimitives transferOptionalPrimitives = transferOptionalPrimitivesDao.create(TransferOptionalPrimitives.builder().build());
 
-        List<TransferPrimitives> list = transferPrimitivesDao.query().execute();
+        List<TransferOptionalPrimitives> list = transferOptionalPrimitivesDao.query().execute();
 
         assertEquals(1, list.size());
 
-        assertEquals(Optional.empty(), transferPrimitives.getIntegerAttr());
-        assertEquals(Optional.empty(), transferPrimitives.getScaledAttr());
-        assertEquals(Optional.empty(), transferPrimitives.getStringAttr());
-        assertEquals(Optional.empty(), transferPrimitives.getRegexAttr());
-        assertEquals(Optional.empty(), transferPrimitives.getBoolAttr());
-        assertEquals(Optional.empty(), transferPrimitives.getDateAttr());
-        assertEquals(Optional.empty(), transferPrimitives.getTimestampAttr());
-        assertEquals(Optional.empty(), transferPrimitives.getTimeAttr());
-        assertEquals(Optional.empty(), transferPrimitives.getBinaryAttr());
-        assertEquals(Optional.empty(), transferPrimitives.getEnumAttr());
+        assertEquals(Optional.empty(), transferOptionalPrimitives.getIntegerAttr());
+        assertEquals(Optional.empty(), transferOptionalPrimitives.getScaledAttr());
+        assertEquals(Optional.empty(), transferOptionalPrimitives.getStringAttr());
+        assertEquals(Optional.empty(), transferOptionalPrimitives.getRegexAttr());
+        assertEquals(Optional.empty(), transferOptionalPrimitives.getBoolAttr());
+        assertEquals(Optional.empty(), transferOptionalPrimitives.getDateAttr());
+        assertEquals(Optional.empty(), transferOptionalPrimitives.getTimestampAttr());
+        assertEquals(Optional.empty(), transferOptionalPrimitives.getTimeAttr());
+        assertEquals(Optional.empty(), transferOptionalPrimitives.getBinaryAttr());
+        assertEquals(Optional.empty(), transferOptionalPrimitives.getEnumAttr());
 
-        transferPrimitives.setIntegerAttr(1);
-        transferPrimitives.setScaledAttr(1.23);
-        transferPrimitives.setStringAttr("test");
-        transferPrimitives.setRegexAttr("+36 333-333-3333");
-        transferPrimitives.setBoolAttr(true);
-        transferPrimitives.setDateAttr(LocalDate.of(2022, 7, 11));
-        transferPrimitives.setTimestampAttr(LocalDateTime.parse("2022-07-11T19:09:33"));
-        transferPrimitives.setTimeAttr(LocalTime.parse("23:59:59"));
-        transferPrimitives.setBinaryAttr(FileType.builder().fileName("test.txt").build());
-        transferPrimitives.setEnumAttr(Enum.EnumA);
+        transferOptionalPrimitives.setIntegerAttr(1);
+        transferOptionalPrimitives.setScaledAttr(1.23);
+        transferOptionalPrimitives.setStringAttr("test");
+        transferOptionalPrimitives.setRegexAttr("+36 333-333-3333");
+        transferOptionalPrimitives.setBoolAttr(true);
+        transferOptionalPrimitives.setDateAttr(LocalDate.of(2022, 7, 11));
+        transferOptionalPrimitives.setTimestampAttr(LocalDateTime.parse("2022-07-11T19:09:33"));
+        transferOptionalPrimitives.setTimeAttr(LocalTime.parse("23:59:59"));
+        transferOptionalPrimitives.setBinaryAttr(FileType.builder().fileName("test.txt").build());
+        transferOptionalPrimitives.setEnumAttr(Enum.EnumA);
 
-        transferPrimitives = transferPrimitivesDao.update(transferPrimitives);
+        transferOptionalPrimitives = transferOptionalPrimitivesDao.update(transferOptionalPrimitives);
 
-        assertEquals(Optional.of(1), transferPrimitives.getIntegerAttr());
-        assertEquals(Optional.of(1.23), transferPrimitives.getScaledAttr());
-        assertEquals(Optional.of("test"), transferPrimitives.getStringAttr());
-        assertEquals(Optional.of("+36 333-333-3333"), transferPrimitives.getRegexAttr());
-        assertEquals(Optional.of(true), transferPrimitives.getBoolAttr());
-        assertEquals(Optional.of(LocalDate.of(2022, 7, 11)), transferPrimitives.getDateAttr());
-        assertEquals(Optional.of(LocalDateTime.parse("2022-07-11T19:09:33")), transferPrimitives.getTimestampAttr());
-        assertEquals(Optional.of(LocalTime.parse("23:59:59")), transferPrimitives.getTimeAttr());
-        assertEquals("test.txt", transferPrimitives.getBinaryAttr().get().getFileName());
-        assertEquals(Optional.of(Enum.EnumA), transferPrimitives.getEnumAttr());
+        assertEquals(Optional.of(1), transferOptionalPrimitives.getIntegerAttr());
+        assertEquals(Optional.of(1.23), transferOptionalPrimitives.getScaledAttr());
+        assertEquals(Optional.of("test"), transferOptionalPrimitives.getStringAttr());
+        assertEquals(Optional.of("+36 333-333-3333"), transferOptionalPrimitives.getRegexAttr());
+        assertEquals(Optional.of(true), transferOptionalPrimitives.getBoolAttr());
+        assertEquals(Optional.of(LocalDate.of(2022, 7, 11)), transferOptionalPrimitives.getDateAttr());
+        assertEquals(Optional.of(LocalDateTime.parse("2022-07-11T19:09:33")), transferOptionalPrimitives.getTimestampAttr());
+        assertEquals(Optional.of(LocalTime.parse("23:59:59")), transferOptionalPrimitives.getTimeAttr());
+        assertEquals("test.txt", transferOptionalPrimitives.getBinaryAttr().get().getFileName());
+        assertEquals(Optional.of(Enum.EnumA), transferOptionalPrimitives.getEnumAttr());
     }
 
+    /**
+     * Test the fields with default value mapped on a transfer object and the instance contains the default value.
+     *
+     * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
+     *
+     * @type Behaviour
+     *
+     * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
+     *
+     * @jslModel MappedTransferPrimitives.jsl
+     *
+     *
+     * @positiveRequirements
+     *
+     * @negativeRequirements
+     *
+     * @scenario
+     *
+     *
+     */
     @Test
     @Disabled("https://blackbelt.atlassian.net/browse/JNG-4815")
     @Requirement(reqs = {
@@ -453,7 +569,12 @@ public class MappedTransferPrimitivesTest extends AbstractJslTest {
             "REQ-TYPE-008",
             "REQ-TYPE-009",
             "REQ-ENT-001",
-            "REQ-ENT-002"
+            "REQ-ENT-002",
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-SRV-002",
+            "REQ-EXPR-001",
     })
     public void testEntityCreationWithPrimitiveDefaults() {
         TransferWithPrimitiveDefaults transferWithPrimitiveDefaults = transferWithPrimitiveDefaultsDao.create(TransferWithPrimitiveDefaults.builder().build());
@@ -474,6 +595,26 @@ public class MappedTransferPrimitivesTest extends AbstractJslTest {
         assertEquals(Optional.of(Enum.EnumA), transferWithPrimitiveDefaults.getEnumAttr());
     }
 
+    /**
+     * [description]
+     *
+     * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
+     *
+     * @type Behaviour
+     *
+     * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
+     *
+     * @jslModel MappedTransferPrimitives.jsl
+     *
+     *
+     * @positiveRequirements
+     *
+     * @negativeRequirements
+     *
+     * @scenario
+     *
+     *
+     */
     @Test
     @Disabled("https://blackbelt.atlassian.net/browse/JNG-4815")
     @Requirement(reqs = {
@@ -486,7 +627,12 @@ public class MappedTransferPrimitivesTest extends AbstractJslTest {
             "REQ-TYPE-008",
             "REQ-TYPE-009",
             "REQ-ENT-001",
-            "REQ-ENT-002"
+            "REQ-ENT-002",
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-SRV-002",
+            "REQ-EXPR-001",
     })
     public void testEntityCreationRequiredWithPrimitiveDefaults() {
         TransferWithRequiredPrimitiveDefaults transferWithRequiredPrimitiveDefaults = transferWithRequiredPrimitiveDefaultsDao.create(TransferWithRequiredPrimitiveDefaults.builder().build());
@@ -508,6 +654,26 @@ public class MappedTransferPrimitivesTest extends AbstractJslTest {
         assertEquals(Enum.EnumA, transferWithRequiredPrimitiveDefaults.getEnumAttr());
     }
 
+    /**
+     * [description]
+     *
+     * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
+     *
+     * @type Behaviour
+     *
+     * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
+     *
+     * @jslModel MappedTransferPrimitives.jsl
+     *
+     *
+     * @positiveRequirements
+     *
+     * @negativeRequirements
+     *
+     * @scenario
+     *
+     *
+     */
     @Test
     @Disabled("https://blackbelt.atlassian.net/browse/JNG-4815")
     @Requirement(reqs = {
@@ -520,7 +686,12 @@ public class MappedTransferPrimitivesTest extends AbstractJslTest {
             "REQ-TYPE-008",
             "REQ-TYPE-009",
             "REQ-ENT-001",
-            "REQ-ENT-002"
+            "REQ-ENT-002",
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-SRV-002",
+            "REQ-EXPR-001",
     })
     public void testEntityCreationWithPrimitiveDefaultExpressions() {
         TransferWithPrimitiveDefaultExpressions transferWithPrimitiveDefaultExpressions = transferWithPrimitiveDefaultExpressionsDao.create(TransferWithPrimitiveDefaultExpressions.builder().build());
@@ -558,17 +729,41 @@ public class MappedTransferPrimitivesTest extends AbstractJslTest {
                 hasProperty("location", equalTo(attrName)));
     }
 
+    /**
+     * [description]
+     *
+     * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
+     *
+     * @type Behaviour
+     *
+     * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
+     *
+     * @jslModel MappedTransferPrimitives.jsl
+     *
+     *
+     * @positiveRequirements
+     *
+     * @negativeRequirements
+     *
+     * @scenario
+     *
+     *
+     */
     @Test
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-TYPE-004",
             "REQ-ENT-001",
-            "REQ-ENT-002"
+            "REQ-ENT-002",
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-SRV-002",
     })
     public void testRegexValidatorFailsForInvalidInput() {
         ValidationException thrown = assertThrows(
                 ValidationException.class,
-                () -> transferPrimitivesDao.create(TransferPrimitives.builder()
+                () -> transferOptionalPrimitivesDao.create(TransferOptionalPrimitives.builder()
                         .withRegexAttr("hello-bello")
                         .build()));
 
@@ -578,13 +773,36 @@ public class MappedTransferPrimitivesTest extends AbstractJslTest {
         ));
     }
 
+    /**
+     * [description]
+     *
+     * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
+     *
+     * @type Behaviour
+     *
+     * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
+     *
+     * @jslModel MappedTransferPrimitives.jsl
+     *
+     *
+     * @positiveRequirements
+     *
+     * @negativeRequirements
+     *
+     * @scenario
+     *
+     *
+     */
     @Test
-    @Disabled("")
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-TYPE-004",
             "REQ-ENT-001",
-            "REQ-ENT-002"
+            "REQ-ENT-002",
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-SRV-002",
     })
     public void testMaxLengthValidatorFailsForInvalidInput() {
         String lipsum = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." +
@@ -596,7 +814,7 @@ public class MappedTransferPrimitivesTest extends AbstractJslTest {
 
         ValidationException thrown = assertThrows(
                 ValidationException.class,
-                () -> transferPrimitivesDao.create(TransferPrimitives.builder()
+                () -> transferOptionalPrimitivesDao.create(TransferOptionalPrimitives.builder()
                         .withStringAttr(lipsum)
                         .build()));
 
@@ -606,17 +824,41 @@ public class MappedTransferPrimitivesTest extends AbstractJslTest {
         ));
     }
 
+    /**
+     * [description]
+     *
+     * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
+     *
+     * @type Behaviour
+     *
+     * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
+     *
+     * @jslModel MappedTransferPrimitives.jsl
+     *
+     *
+     * @positiveRequirements
+     *
+     * @negativeRequirements
+     *
+     * @scenario
+     *
+     *
+     */
     @Test
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-TYPE-005",
             "REQ-ENT-001",
-            "REQ-ENT-002"
+            "REQ-ENT-002",
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-SRV-002",
     })
     public void testPrecisionValidation() {
         ValidationException thrown = assertThrows(
                 ValidationException.class,
-                () -> transferPrimitivesDao.create(TransferPrimitives.builder()
+                () -> transferOptionalPrimitivesDao.create(TransferOptionalPrimitives.builder()
                         .withIntegerAttr(1234567890)
                         .build()));
 
@@ -626,17 +868,41 @@ public class MappedTransferPrimitivesTest extends AbstractJslTest {
         ));
     }
 
+    /**
+     * [description]
+     *
+     * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
+     *
+     * @type Behaviour
+     *
+     * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
+     *
+     * @jslModel MappedTransferPrimitives.jsl
+     *
+     *
+     * @positiveRequirements
+     *
+     * @negativeRequirements
+     *
+     * @scenario
+     *
+     *
+     */
     @Test
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-TYPE-005",
             "REQ-ENT-001",
-            "REQ-ENT-002"
+            "REQ-ENT-002",
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-SRV-002",
     })
     public void testMaxPrecision() {
         ValidationException validationException = assertThrows(
                 ValidationException.class,
-                () -> transferPrimitivesDao.create(TransferPrimitives.builder()
+                () -> transferOptionalPrimitivesDao.create(TransferOptionalPrimitives.builder()
                         .withScaledAttr(1234567890.0)
                         .build())
         );
@@ -644,44 +910,68 @@ public class MappedTransferPrimitivesTest extends AbstractJslTest {
 
         ValidationException validationException1 = assertThrows(
                 ValidationException.class,
-                () -> transferPrimitivesDao.create(TransferPrimitives.builder()
+                () -> transferOptionalPrimitivesDao.create(TransferOptionalPrimitives.builder()
                         .withScaledAttr(123456789.1)
                         .build())
         );
         assertThat(validationException1.getValidationResults(), containsInAnyOrder(matchPrecisionValidationForAttribute("scaledAttr")));
 
-        TransferPrimitives t1 = transferPrimitivesDao.create(TransferPrimitives.builder()
+        TransferOptionalPrimitives t1 = transferOptionalPrimitivesDao.create(TransferOptionalPrimitives.builder()
                 .withScaledAttr(123456789.0)
                 .build());
         assertEquals(Optional.of(123456789.0), t1.getScaledAttr());
 
-        TransferPrimitives t2 = transferPrimitivesDao.create(TransferPrimitives.builder()
+        TransferOptionalPrimitives t2 = transferOptionalPrimitivesDao.create(TransferOptionalPrimitives.builder()
                 .withScaledAttr(12345678.1)
                 .build());
         assertEquals(Optional.of(12345678.1), t2.getScaledAttr());
 
-        TransferPrimitives t3 = transferPrimitivesDao.create(TransferPrimitives.builder()
+        TransferOptionalPrimitives t3 = transferOptionalPrimitivesDao.create(TransferOptionalPrimitives.builder()
                 .withScaledAttr(1234567.12)
                 .build());
         assertEquals(Optional.of(1234567.12), t3.getScaledAttr());
 
-        TransferPrimitives t4 = transferPrimitivesDao.create(TransferPrimitives.builder()
+        TransferOptionalPrimitives t4 = transferOptionalPrimitivesDao.create(TransferOptionalPrimitives.builder()
                 .withScaledAttr(1234567.1200)
                 .build());
         assertEquals(Optional.of(1234567.12), t4.getScaledAttr());
     }
 
+    /**
+     * [description]
+     *
+     * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
+     *
+     * @type Behaviour
+     *
+     * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
+     *
+     * @jslModel MappedTransferPrimitives.jsl
+     *
+     *
+     * @positiveRequirements
+     *
+     * @negativeRequirements
+     *
+     * @scenario
+     *
+     *
+     */
     @Test
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-TYPE-005",
             "REQ-ENT-001",
-            "REQ-ENT-002"
+            "REQ-ENT-002",
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-SRV-002",
     })
     public void testScaleValidation() {
         ValidationException thrown = assertThrows(
                 ValidationException.class,
-                () -> transferPrimitivesDao.create(TransferPrimitives.builder()
+                () -> transferOptionalPrimitivesDao.create(TransferOptionalPrimitives.builder()
                         .withScaledAttr(123456.789)
                         .build()));
 

@@ -373,7 +373,6 @@ public class AbstractTest extends AbstractJslTest {
         //check the other methods are work well
 
         //add
-
         hDao.addCompositionIOnHMulti(h, Collections.singletonList(JtoI(jDao.create(J.builder().build()))));
         assertEquals(2, h.getCompositionIOnHMulti().size());
         h = hDao.getById(h.identifier()).orElseThrow();
@@ -406,7 +405,6 @@ public class AbstractTest extends AbstractJslTest {
         h = hDao.getById(h.identifier()).orElseThrow();
 
         //set
-
         hDao.setCompositionIOnHSingle(h,JtoI(jDao.create(J.builder().withNameI("SetNewElement").build())));
         hDao.setRelationIOnHSingle(h, JtoI(jDao.create(J.builder().withNameI("SetNewElement").build())));
 
@@ -420,7 +418,7 @@ public class AbstractTest extends AbstractJslTest {
 
         //unset
 
-        hDao.unsetCompositionIOnHSingle(h); //this deletes the old comp but j is not deleted
+        hDao.unsetCompositionIOnHSingle(h);
         hDao.unsetRelationIOnHSingle(h);
 
         h = hDao.getById(h.identifier()).orElseThrow();
@@ -428,20 +426,7 @@ public class AbstractTest extends AbstractJslTest {
         assertEquals(Optional.empty(),h.getCompositionIOnHSingle());
         assertEquals(Optional.empty(), hDao.queryRelationIOnHSingle(h));
 
-        //Check j and i instance ar equal because i is live with j only
         assertEquals(iDao.getAll().size(), jDao.getAll().size());
-
-        //TODO JNG-4803
-//        iDao.delete(iOptionalComposition); // iOptionalComposition variable is not present yet, I let you to finish it:D - Bence
-//        assertTrue(iDao.getById(iOptionalComposition.identifier()).isEmpty());
-//        assertTrue(jDao.getById(jOptionalComposition.identifier()).isEmpty());
-//
-//        J jOptionalComposition = ItoJ(h.getCompositionIOnHSingle().get());
-//        assertTrue(jDao.getById(jOptionalComposition.identifier()).isPresent());
-//        assertTrue(iDao.getById(h.getCompositionIOnHSingle().get().identifier()).isPresent());
-//        jDao.delete(jOptionalComposition);
-//        assertTrue(jDao.getById(jOptionalComposition.identifier()).isEmpty());
-//        assertTrue(iDao.getById(h.getCompositionIOnHSingle().get().identifier()).isEmpty());
 
     }
 

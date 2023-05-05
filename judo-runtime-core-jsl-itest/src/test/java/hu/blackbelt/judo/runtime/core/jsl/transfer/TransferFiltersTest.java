@@ -23,11 +23,11 @@ package hu.blackbelt.judo.runtime.core.jsl.transfer;
 import com.google.inject.Inject;
 import com.google.inject.Module;
 import hu.blackbelt.judo.dispatcher.api.FileType;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferprimitives.TransferPrimitives;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferprimitives.TransferPrimitivesDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferoptionalprimitives.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.enum_.Enum;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.MappedTransferPrimitivesDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
+import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
 import hu.blackbelt.judo.sdk.query.*;
@@ -45,11 +45,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @Slf4j
 public class TransferFiltersTest extends AbstractJslTest {
     @Inject
-    TransferPrimitivesDao transferPrimitivesDao;
+    TransferOptionalPrimitivesDao transferOptionalPrimitivesDao;
 
-    TransferPrimitives transf1;
+    TransferOptionalPrimitives transf1;
 
-    TransferPrimitives transf2;
+    TransferOptionalPrimitives transf2;
 
     static final int INTEGER_1 = 1;
     static final int INTEGER_2 = 2;
@@ -74,7 +74,7 @@ public class TransferFiltersTest extends AbstractJslTest {
     protected void init(JudoDatasourceFixture datasource) throws Exception {
         super.init(datasource);
 
-        transf1 = transferPrimitivesDao.create(TransferPrimitives.builder()
+        transf1 = transferOptionalPrimitivesDao.create(TransferOptionalPrimitives.builder()
                 .withIntegerAttr(INTEGER_1)
                 .withScaledAttr(SCALED_1)
                 .withStringAttr(STRING_1)
@@ -87,7 +87,7 @@ public class TransferFiltersTest extends AbstractJslTest {
                 .withEnumAttr(ENUM_1)
                 .build());
 
-        transf2 = transferPrimitivesDao.create(TransferPrimitives.builder()
+        transf2 = transferOptionalPrimitivesDao.create(TransferOptionalPrimitives.builder()
                 .withIntegerAttr(INTEGER_2)
                 .withScaledAttr(SCALED_2)
                 .withStringAttr(STRING_2)
@@ -112,6 +112,7 @@ public class TransferFiltersTest extends AbstractJslTest {
     }
 
     @Test
+    @TestCase("TransferFilterWithMultipleFilters")
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-TYPE-002",
@@ -124,14 +125,14 @@ public class TransferFiltersTest extends AbstractJslTest {
             "REQ-TYPE-010",
             "REQ-ENT-001",
             "REQ-ENT-002",
-            "REQ-ENT-012"
+            "REQ-SVR-002"
     })
     public void testFilterWithMultipleFilters() {
-        List<TransferPrimitives> list = transferPrimitivesDao.query().execute();
+        List<TransferOptionalPrimitives> list = transferOptionalPrimitivesDao.query().execute();
 
         assertEquals(2, list.size());
 
-        List<TransferPrimitives> multiFilter = transferPrimitivesDao
+        List<TransferOptionalPrimitives> multiFilter = transferOptionalPrimitivesDao
                 .query()
                 .filterByIntegerAttr(NumberFilter.equalTo(INTEGER_1))
                 .filterByScaledAttr(NumberFilter.lessThan(INTEGER_2))
@@ -144,6 +145,7 @@ public class TransferFiltersTest extends AbstractJslTest {
     }
 
     @Test
+    @TestCase("TransferIntegerNumberFilter")
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-TYPE-002",
@@ -156,14 +158,14 @@ public class TransferFiltersTest extends AbstractJslTest {
             "REQ-TYPE-010",
             "REQ-ENT-001",
             "REQ-ENT-002",
-            "REQ-ENT-012"
+            "REQ-SVR-002"
     })
     public void testIntegerNumberFilter() {
-        List<TransferPrimitives> list = transferPrimitivesDao.query().execute();
+        List<TransferOptionalPrimitives> list = transferOptionalPrimitivesDao.query().execute();
 
         assertEquals(2, list.size());
 
-        TransferPrimitives filteredByString = transferPrimitivesDao
+        TransferOptionalPrimitives filteredByString = transferOptionalPrimitivesDao
                 .query()
                 .filterBy("this.integerAttr >= 1 and this.integerAttr < 2")
                 .execute()
@@ -171,7 +173,7 @@ public class TransferFiltersTest extends AbstractJslTest {
 
         assertEquals(transf1.identifier(), filteredByString.identifier());
 
-        TransferPrimitives equals = transferPrimitivesDao
+        TransferOptionalPrimitives equals = transferOptionalPrimitivesDao
                 .query()
                 .filterByIntegerAttr(NumberFilter.equalTo(INTEGER_1))
                 .execute()
@@ -179,7 +181,7 @@ public class TransferFiltersTest extends AbstractJslTest {
 
         assertEquals(transf1.identifier(), equals.identifier());
 
-        TransferPrimitives notEquals = transferPrimitivesDao
+        TransferOptionalPrimitives notEquals = transferOptionalPrimitivesDao
                 .query()
                 .filterByIntegerAttr(NumberFilter.notEqualTo(INTEGER_1))
                 .execute()
@@ -187,14 +189,14 @@ public class TransferFiltersTest extends AbstractJslTest {
 
         assertEquals(transf2.identifier(), notEquals.identifier());
 
-        List<TransferPrimitives> greaterOrEquals = transferPrimitivesDao
+        List<TransferOptionalPrimitives> greaterOrEquals = transferOptionalPrimitivesDao
                 .query()
                 .filterByIntegerAttr(NumberFilter.greaterOrEqualThan(INTEGER_1))
                 .execute();
 
         assertEquals(2, greaterOrEquals.size());
 
-        TransferPrimitives greater = transferPrimitivesDao
+        TransferOptionalPrimitives greater = transferOptionalPrimitivesDao
                 .query()
                 .filterByIntegerAttr(NumberFilter.greaterThan(INTEGER_1))
                 .execute()
@@ -202,14 +204,14 @@ public class TransferFiltersTest extends AbstractJslTest {
 
         assertEquals(transf2.identifier(), greater.identifier());
 
-        List<TransferPrimitives> lessOrEqual = transferPrimitivesDao
+        List<TransferOptionalPrimitives> lessOrEqual = transferOptionalPrimitivesDao
                 .query()
                 .filterByIntegerAttr(NumberFilter.lessOrEqualThan(INTEGER_2))
                 .execute();
 
         assertEquals(2, lessOrEqual.size());
 
-        TransferPrimitives less = transferPrimitivesDao
+        TransferOptionalPrimitives less = transferOptionalPrimitivesDao
                 .query()
                 .filterByIntegerAttr(NumberFilter.lessThan(INTEGER_2))
                 .execute()
@@ -219,6 +221,7 @@ public class TransferFiltersTest extends AbstractJslTest {
     }
 
     @Test
+    @TestCase("TransferScaledNumberFilter")
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-TYPE-002",
@@ -231,14 +234,14 @@ public class TransferFiltersTest extends AbstractJslTest {
             "REQ-TYPE-010",
             "REQ-ENT-001",
             "REQ-ENT-002",
-            "REQ-ENT-012"
+            "REQ-SVR-002"
     })
     public void testScaledNumberFilter() {
-        List<TransferPrimitives> list = transferPrimitivesDao.query().execute();
+        List<TransferOptionalPrimitives> list = transferOptionalPrimitivesDao.query().execute();
 
         assertEquals(2, list.size());
 
-        TransferPrimitives filteredByString = transferPrimitivesDao
+        TransferOptionalPrimitives filteredByString = transferOptionalPrimitivesDao
                 .query()
                 .filterBy("this.scaledAttr >= 1 and this.scaledAttr <= 2")
                 .execute()
@@ -246,7 +249,7 @@ public class TransferFiltersTest extends AbstractJslTest {
 
         assertEquals(transf1.identifier(), filteredByString.identifier());
 
-        TransferPrimitives equals = transferPrimitivesDao
+        TransferOptionalPrimitives equals = transferOptionalPrimitivesDao
                 .query()
                 .filterByScaledAttr(NumberFilter.equalTo(SCALED_1))
                 .execute()
@@ -254,7 +257,7 @@ public class TransferFiltersTest extends AbstractJslTest {
 
         assertEquals(transf1.identifier(), equals.identifier());
 
-        TransferPrimitives notEquals = transferPrimitivesDao
+        TransferOptionalPrimitives notEquals = transferOptionalPrimitivesDao
                 .query()
                 .filterByScaledAttr(NumberFilter.notEqualTo(SCALED_1))
                 .execute()
@@ -262,14 +265,14 @@ public class TransferFiltersTest extends AbstractJslTest {
 
         assertEquals(transf2.identifier(), notEquals.identifier());
 
-        List<TransferPrimitives> greaterOrEquals = transferPrimitivesDao
+        List<TransferOptionalPrimitives> greaterOrEquals = transferOptionalPrimitivesDao
                 .query()
                 .filterByScaledAttr(NumberFilter.greaterOrEqualThan(SCALED_1))
                 .execute();
 
         assertEquals(2, greaterOrEquals.size());
 
-        TransferPrimitives greater = transferPrimitivesDao
+        TransferOptionalPrimitives greater = transferOptionalPrimitivesDao
                 .query()
                 .filterByScaledAttr(NumberFilter.greaterThan(SCALED_1))
                 .execute()
@@ -277,14 +280,14 @@ public class TransferFiltersTest extends AbstractJslTest {
 
         assertEquals(transf2.identifier(), greater.identifier());
 
-        List<TransferPrimitives> lessOrEqual = transferPrimitivesDao
+        List<TransferOptionalPrimitives> lessOrEqual = transferOptionalPrimitivesDao
                 .query()
                 .filterByScaledAttr(NumberFilter.lessOrEqualThan(SCALED_2))
                 .execute();
 
         assertEquals(2, lessOrEqual.size());
 
-        TransferPrimitives less = transferPrimitivesDao
+        TransferOptionalPrimitives less = transferOptionalPrimitivesDao
                 .query()
                 .filterByScaledAttr(NumberFilter.lessThan(SCALED_2))
                 .execute()
@@ -293,7 +296,9 @@ public class TransferFiltersTest extends AbstractJslTest {
         assertEquals(transf1.identifier(), less.identifier());
     }
 
+
     @Test
+    @TestCase("TransferStringFilter")
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-TYPE-002",
@@ -306,14 +311,14 @@ public class TransferFiltersTest extends AbstractJslTest {
             "REQ-TYPE-010",
             "REQ-ENT-001",
             "REQ-ENT-002",
-            "REQ-ENT-012"
+            "REQ-SVR-002"
     })
     public void testStringFilter() {
-        List<TransferPrimitives> list = transferPrimitivesDao.query().execute();
+        List<TransferOptionalPrimitives> list = transferOptionalPrimitivesDao.query().execute();
 
         assertEquals(2, list.size());
 
-        TransferPrimitives filteredByString = transferPrimitivesDao
+        TransferOptionalPrimitives filteredByString = transferOptionalPrimitivesDao
                 .query()
                 .filterBy("this.stringAttr!matches('test')")
                 .execute()
@@ -321,7 +326,7 @@ public class TransferFiltersTest extends AbstractJslTest {
 
         assertEquals(transf1.identifier(), filteredByString.identifier());
 
-        TransferPrimitives equals = transferPrimitivesDao
+        TransferOptionalPrimitives equals = transferOptionalPrimitivesDao
                 .query()
                 .filterByStringAttr(StringFilter.equalTo(STRING_1))
                 .execute()
@@ -329,7 +334,7 @@ public class TransferFiltersTest extends AbstractJslTest {
 
         assertEquals(transf1.identifier(), equals.identifier());
 
-        TransferPrimitives notEquals = transferPrimitivesDao
+        TransferOptionalPrimitives notEquals = transferOptionalPrimitivesDao
                 .query()
                 .filterByStringAttr(StringFilter.notEqualTo(STRING_1))
                 .execute()
@@ -337,7 +342,7 @@ public class TransferFiltersTest extends AbstractJslTest {
 
         assertEquals(transf2.identifier(), notEquals.identifier());
 
-        List<TransferPrimitives> iLike = transferPrimitivesDao
+        List<TransferOptionalPrimitives> iLike = transferOptionalPrimitivesDao
                 .query()
                 .filterByStringAttr(StringFilter.ilike(STRING_1.toUpperCase()))
                 .execute();
@@ -345,7 +350,7 @@ public class TransferFiltersTest extends AbstractJslTest {
         assertEquals(1, iLike.size());
         assertEquals(transf1.identifier(), iLike.get(0).identifier());
 
-        List<TransferPrimitives> like = transferPrimitivesDao
+        List<TransferOptionalPrimitives> like = transferOptionalPrimitivesDao
                 .query()
                 .filterByStringAttr(StringFilter.like(STRING_1))
                 .execute();
@@ -353,28 +358,28 @@ public class TransferFiltersTest extends AbstractJslTest {
         assertEquals(1, like.size());
         assertEquals(transf1.identifier(), like.get(0).identifier());
 
-        List<TransferPrimitives> lessThan = transferPrimitivesDao
+        List<TransferOptionalPrimitives> lessThan = transferOptionalPrimitivesDao
                 .query()
                 .filterByStringAttr(StringFilter.lessThan(STRING_1))
                 .execute();
 
         assertEquals(transf2.identifier(), lessThan.get(0).identifier());
 
-        List<TransferPrimitives> greaterThan = transferPrimitivesDao
+        List<TransferOptionalPrimitives> greaterThan = transferOptionalPrimitivesDao
                 .query()
                 .filterByStringAttr(StringFilter.greaterThan(STRING_2))
                 .execute();
 
         assertEquals(transf1.identifier(), greaterThan.get(0).identifier());
 
-        List<TransferPrimitives> greaterOrEqualThan = transferPrimitivesDao
+        List<TransferOptionalPrimitives> greaterOrEqualThan = transferOptionalPrimitivesDao
                 .query()
                 .filterByStringAttr(StringFilter.greaterOrEqualThan(STRING_2))
                 .execute();
 
         assertEquals(2, greaterOrEqualThan.size());
 
-        List<TransferPrimitives> lessOrEqualThan = transferPrimitivesDao
+        List<TransferOptionalPrimitives> lessOrEqualThan = transferOptionalPrimitivesDao
                 .query()
                 .filterByStringAttr(StringFilter.lessOrEqualThan(STRING_1))
                 .execute();
@@ -383,6 +388,7 @@ public class TransferFiltersTest extends AbstractJslTest {
     }
 
     @Test
+    @TestCase("TransferBooleanFilter")
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-TYPE-002",
@@ -395,14 +401,14 @@ public class TransferFiltersTest extends AbstractJslTest {
             "REQ-TYPE-010",
             "REQ-ENT-001",
             "REQ-ENT-002",
-            "REQ-ENT-012"
+            "REQ-SVR-002"
     })
     public void testBooleanFilter() {
-        List<TransferPrimitives> list = transferPrimitivesDao.query().execute();
+        List<TransferOptionalPrimitives> list = transferOptionalPrimitivesDao.query().execute();
 
         assertEquals(2, list.size());
 
-        TransferPrimitives filteredByString = transferPrimitivesDao
+        TransferOptionalPrimitives filteredByString = transferOptionalPrimitivesDao
                 .query()
                 .filterBy("this.boolAttr == true")
                 .execute()
@@ -410,7 +416,7 @@ public class TransferFiltersTest extends AbstractJslTest {
 
         assertEquals(transf1.identifier(), filteredByString.identifier());
 
-        TransferPrimitives isTrue = transferPrimitivesDao
+        TransferOptionalPrimitives isTrue = transferOptionalPrimitivesDao
                 .query()
                 .filterByBoolAttr(BooleanFilter.isTrue())
                 .execute()
@@ -418,7 +424,7 @@ public class TransferFiltersTest extends AbstractJslTest {
 
         assertEquals(transf1.identifier(), isTrue.identifier());
 
-        TransferPrimitives isFalse = transferPrimitivesDao
+        TransferOptionalPrimitives isFalse = transferOptionalPrimitivesDao
                 .query()
                 .filterByBoolAttr(BooleanFilter.isFalse())
                 .execute()
@@ -428,6 +434,7 @@ public class TransferFiltersTest extends AbstractJslTest {
     }
 
     @Test
+    @TestCase("TransferDateFilter")
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-TYPE-002",
@@ -440,14 +447,14 @@ public class TransferFiltersTest extends AbstractJslTest {
             "REQ-TYPE-010",
             "REQ-ENT-001",
             "REQ-ENT-002",
-            "REQ-ENT-012"
+            "REQ-SVR-002"
     })
     public void testDateFilter() {
-        List<TransferPrimitives> list = transferPrimitivesDao.query().execute();
+        List<TransferOptionalPrimitives> list = transferOptionalPrimitivesDao.query().execute();
 
         assertEquals(2, list.size());
 
-        TransferPrimitives equalTo = transferPrimitivesDao
+        TransferOptionalPrimitives equalTo = transferOptionalPrimitivesDao
                 .query()
                 .filterByDateAttr(DateFilter.equalTo(DATE_1))
                 .execute()
@@ -455,7 +462,7 @@ public class TransferFiltersTest extends AbstractJslTest {
 
         assertEquals(transf1.identifier(), equalTo.identifier());
 
-        TransferPrimitives notEqualTo = transferPrimitivesDao
+        TransferOptionalPrimitives notEqualTo = transferOptionalPrimitivesDao
                 .query()
                 .filterByDateAttr(DateFilter.notEqualTo(DATE_1))
                 .execute()
@@ -463,28 +470,28 @@ public class TransferFiltersTest extends AbstractJslTest {
 
         assertEquals(transf2.identifier(), notEqualTo.identifier());
 
-        List<TransferPrimitives> greaterOrEqual = transferPrimitivesDao
+        List<TransferOptionalPrimitives> greaterOrEqual = transferOptionalPrimitivesDao
                 .query()
                 .filterByDateAttr(DateFilter.greaterOrEqualThan(DATE_2))
                 .execute();
 
         assertEquals(2, greaterOrEqual.size());
 
-        List<TransferPrimitives> lessOrEqual = transferPrimitivesDao
+        List<TransferOptionalPrimitives> lessOrEqual = transferOptionalPrimitivesDao
                 .query()
                 .filterByDateAttr(DateFilter.lessOrEqualThan(DATE_1))
                 .execute();
 
         assertEquals(2, lessOrEqual.size());
 
-        List<TransferPrimitives> greaterThan = transferPrimitivesDao
+        List<TransferOptionalPrimitives> greaterThan = transferOptionalPrimitivesDao
                 .query()
                 .filterByDateAttr(DateFilter.greaterThan(DATE_2))
                 .execute();
 
         assertEquals(1, greaterThan.size());
 
-        List<TransferPrimitives> lessThan = transferPrimitivesDao
+        List<TransferOptionalPrimitives> lessThan = transferOptionalPrimitivesDao
                 .query()
                 .filterByDateAttr(DateFilter.lessThan(DATE_1))
                 .execute();
@@ -492,7 +499,9 @@ public class TransferFiltersTest extends AbstractJslTest {
         assertEquals(1, lessThan.size());
     }
 
+
     @Test
+    @TestCase("TransferTimestampFilter")
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-TYPE-002",
@@ -505,14 +514,14 @@ public class TransferFiltersTest extends AbstractJslTest {
             "REQ-TYPE-010",
             "REQ-ENT-001",
             "REQ-ENT-002",
-            "REQ-ENT-012"
+            "REQ-SVR-002"
     })
     public void testTimestampFilter() {
-        List<TransferPrimitives> list = transferPrimitivesDao.query().execute();
+        List<TransferOptionalPrimitives> list = transferOptionalPrimitivesDao.query().execute();
 
         assertEquals(2, list.size());
 
-        TransferPrimitives equalTo = transferPrimitivesDao
+        TransferOptionalPrimitives equalTo = transferOptionalPrimitivesDao
                 .query()
                 .filterByTimestampAttr(TimestampFilter.equalTo(TIMESTAMP_1))
                 .execute()
@@ -520,7 +529,7 @@ public class TransferFiltersTest extends AbstractJslTest {
 
         assertEquals(transf1.identifier(), equalTo.identifier());
 
-        TransferPrimitives notEqualTo = transferPrimitivesDao
+        TransferOptionalPrimitives notEqualTo = transferOptionalPrimitivesDao
                 .query()
                 .filterByTimestampAttr(TimestampFilter.notEqualTo(TIMESTAMP_1))
                 .execute()
@@ -528,28 +537,28 @@ public class TransferFiltersTest extends AbstractJslTest {
 
         assertEquals(transf2.identifier(), notEqualTo.identifier());
 
-        List<TransferPrimitives> greaterOrEqual = transferPrimitivesDao
+        List<TransferOptionalPrimitives> greaterOrEqual = transferOptionalPrimitivesDao
                 .query()
                 .filterByTimestampAttr(TimestampFilter.greaterOrEqualThan(TIMESTAMP_2))
                 .execute();
 
         assertEquals(2, greaterOrEqual.size());
 
-        List<TransferPrimitives> lessOrEqual = transferPrimitivesDao
+        List<TransferOptionalPrimitives> lessOrEqual = transferOptionalPrimitivesDao
                 .query()
                 .filterByTimestampAttr(TimestampFilter.lessOrEqualThan(TIMESTAMP_1))
                 .execute();
 
         assertEquals(2, lessOrEqual.size());
 
-        List<TransferPrimitives> greaterThan = transferPrimitivesDao
+        List<TransferOptionalPrimitives> greaterThan = transferOptionalPrimitivesDao
                 .query()
                 .filterByTimestampAttr(TimestampFilter.greaterThan(TIMESTAMP_2))
                 .execute();
 
         assertEquals(1, greaterThan.size());
 
-        List<TransferPrimitives> lessThan = transferPrimitivesDao
+        List<TransferOptionalPrimitives> lessThan = transferOptionalPrimitivesDao
                 .query()
                 .filterByTimestampAttr(TimestampFilter.lessThan(TIMESTAMP_1))
                 .execute();
@@ -558,6 +567,7 @@ public class TransferFiltersTest extends AbstractJslTest {
     }
 
     @Test
+    @TestCase("TransferTimeFilter")
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-TYPE-002",
@@ -570,14 +580,14 @@ public class TransferFiltersTest extends AbstractJslTest {
             "REQ-TYPE-010",
             "REQ-ENT-001",
             "REQ-ENT-002",
-            "REQ-ENT-012"
+            "REQ-SVR-002"
     })
     public void testTimeFilter() {
-        List<TransferPrimitives> list = transferPrimitivesDao.query().execute();
+        List<TransferOptionalPrimitives> list = transferOptionalPrimitivesDao.query().execute();
 
         assertEquals(2, list.size());
 
-        TransferPrimitives equalTo = transferPrimitivesDao
+        TransferOptionalPrimitives equalTo = transferOptionalPrimitivesDao
                 .query()
                 .filterByTimeAttr(TimeFilter.equalTo(TIME_1))
                 .execute()
@@ -585,7 +595,7 @@ public class TransferFiltersTest extends AbstractJslTest {
 
         assertEquals(transf1.identifier(), equalTo.identifier());
 
-        TransferPrimitives notEqualTo = transferPrimitivesDao
+        TransferOptionalPrimitives notEqualTo = transferOptionalPrimitivesDao
                 .query()
                 .filterByTimeAttr(TimeFilter.notEqualTo(TIME_1))
                 .execute()
@@ -593,28 +603,28 @@ public class TransferFiltersTest extends AbstractJslTest {
 
         assertEquals(transf2.identifier(), notEqualTo.identifier());
 
-        List<TransferPrimitives> greaterOrEqual = transferPrimitivesDao
+        List<TransferOptionalPrimitives> greaterOrEqual = transferOptionalPrimitivesDao
                 .query()
                 .filterByTimeAttr(TimeFilter.greaterOrEqualThan(TIME_2))
                 .execute();
 
         assertEquals(2, greaterOrEqual.size());
 
-        List<TransferPrimitives> lessOrEqual = transferPrimitivesDao
+        List<TransferOptionalPrimitives> lessOrEqual = transferOptionalPrimitivesDao
                 .query()
                 .filterByTimeAttr(TimeFilter.lessOrEqualThan(TIME_1))
                 .execute();
 
         assertEquals(2, lessOrEqual.size());
 
-        List<TransferPrimitives> greaterThan = transferPrimitivesDao
+        List<TransferOptionalPrimitives> greaterThan = transferOptionalPrimitivesDao
                 .query()
                 .filterByTimeAttr(TimeFilter.greaterThan(TIME_2))
                 .execute();
 
         assertEquals(1, greaterThan.size());
 
-        List<TransferPrimitives> lessThan = transferPrimitivesDao
+        List<TransferOptionalPrimitives> lessThan = transferOptionalPrimitivesDao
                 .query()
                 .filterByTimeAttr(TimeFilter.lessThan(TIME_1))
                 .execute();
@@ -623,6 +633,7 @@ public class TransferFiltersTest extends AbstractJslTest {
     }
 
     @Test
+    @TestCase("EnumFilter")
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-TYPE-002",
@@ -635,14 +646,14 @@ public class TransferFiltersTest extends AbstractJslTest {
             "REQ-TYPE-010",
             "REQ-ENT-001",
             "REQ-ENT-002",
-            "REQ-ENT-012"
+            "REQ-SVR-002"
     })
     public void testEnumFilter() {
-        List<TransferPrimitives> list = transferPrimitivesDao.query().execute();
+        List<TransferOptionalPrimitives> list = transferOptionalPrimitivesDao.query().execute();
 
         assertEquals(2, list.size());
 
-        TransferPrimitives equalTo = transferPrimitivesDao
+        TransferOptionalPrimitives equalTo = transferOptionalPrimitivesDao
                 .query()
                 .filterByEnumAttr(EnumerationFilter.equalTo(Enum.EnumB))
                 .execute()
@@ -650,7 +661,7 @@ public class TransferFiltersTest extends AbstractJslTest {
 
         assertEquals(transf1.identifier(), equalTo.identifier());
 
-        TransferPrimitives notEqualTo = transferPrimitivesDao
+        TransferOptionalPrimitives notEqualTo = transferOptionalPrimitivesDao
                 .query()
                 .filterByEnumAttr(EnumerationFilter.notEqualTo(Enum.EnumB))
                 .execute()

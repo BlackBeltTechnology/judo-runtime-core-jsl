@@ -21,6 +21,18 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+//        /$$$$$$                 /$$$$$$$
+//       |_  $$_/                | $$__  $$
+//         | $$   /$$$$$$$       | $$  \ $$ /$$$$$$   /$$$$$$   /$$$$$$   /$$$$$$   /$$$$$$   /$$$$$$$ /$$$$$$$
+//         | $$  | $$__  $$      | $$$$$$$//$$__  $$ /$$__  $$ /$$__  $$ /$$__  $$ /$$__  $$ /$$_____//$$_____/
+//         | $$  | $$  \ $$      | $$____/| $$  \__/| $$  \ $$| $$  \ $$| $$  \__/| $$$$$$$$|  $$$$$$|  $$$$$$
+//         | $$  | $$  | $$      | $$     | $$      | $$  | $$| $$  | $$| $$      | $$_____/ \____  $$\____  $$
+//         /$$$$$$| $$  | $$      | $$     | $$      |  $$$$$$/|  $$$$$$$| $$      |  $$$$$$$ /$$$$$$$//$$$$$$$/
+//         |______/|__/  |__/      |__/     |__/       \______/  \____  $$|__/       \_______/|_______/|_______/
+//                                                               /$$  \ $$
+//                                                               |  $$$$$$/
+//                                                                \______/
+
 @Slf4j
 public class AutoMappedTransferObjectTest extends AbstractJslTest {
 
@@ -90,6 +102,26 @@ public class AutoMappedTransferObjectTest extends AbstractJslTest {
 
     }
 
+    /**
+     * [description]
+     *
+     * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
+     *
+     * @type Behaviour
+     *
+     * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
+     *
+     * @jslModel [modelName].jsl
+     *
+     *
+     * @positiveRequirements
+     *
+     * @negativeRequirements
+     *
+     * @scenario
+     *
+     *
+     */
     @Test
     @Disabled("")
     @TestCase("AutoMappedTransferObjectWithAbstractMappedField")

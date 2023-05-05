@@ -26,7 +26,7 @@ entity EntityForMapping {
         field Binary binaryAttr;
 }
 
-transfer TransferPrimitives (EntityForMapping mappedEntity) {
+transfer TransferOptionalPrimitives (EntityForMapping mappedEntity) {
     field Integer integerAttr maps mappedEntity.integerAttr;
     field Scaled scaledAttr maps mappedEntity.scaledAttr;
     field SmallString stringAttr maps mappedEntity.stringAttr;
@@ -154,7 +154,7 @@ entity RequiredForNotRequiredTransfer {
         field required Binary binaryAttr;
 }
 
-transfer TransferRequiredEntityPrimitives (RequiredForNotRequiredTransfer mappedEntity) {
+transfer TransferWithRequiredEntityPrimitives (RequiredForNotRequiredTransfer mappedEntity) {
     field Integer integerAttr maps mappedEntity.integerAttr;
     field Scaled scaledAttr maps mappedEntity.scaledAttr;
     field String stringAttr maps mappedEntity.stringAttr;

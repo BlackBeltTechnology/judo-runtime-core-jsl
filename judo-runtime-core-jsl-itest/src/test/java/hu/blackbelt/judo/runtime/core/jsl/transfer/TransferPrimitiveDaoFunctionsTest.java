@@ -24,10 +24,14 @@ import com.google.inject.Inject;
 import com.google.inject.Module;
 import hu.blackbelt.judo.dispatcher.api.FileType;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.enum_.Enum;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferprimitives.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferoptionalprimitives.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.MappedTransferPrimitivesDaoModules;
+import hu.blackbelt.judo.requirement.report.annotation.Requirement;
+import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
+import hu.blackbelt.judo.sdk.query.BooleanFilter;
+import hu.blackbelt.judo.sdk.query.EnumerationFilter;
 import hu.blackbelt.judo.sdk.query.StringFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
@@ -43,17 +47,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @Slf4j
 public class TransferPrimitiveDaoFunctionsTest extends AbstractJslTest {
     @Inject
-    TransferPrimitivesDao transferPrimitivesDao;
+    TransferOptionalPrimitivesDao transferOptionalPrimitivesDao;
 
-    TransferPrimitives transf1;
+    TransferOptionalPrimitives transf1;
 
-    TransferPrimitives transf2;
+    TransferOptionalPrimitives transf2;
 
     @BeforeEach
     protected void init(JudoDatasourceFixture datasource) throws Exception {
         super.init(datasource);
 
-        transf1 = transferPrimitivesDao.create(TransferPrimitives.builder()
+        transf1 = transferOptionalPrimitivesDao.create(TransferOptionalPrimitives.builder()
                 .withIntegerAttr(2)
                 .withScaledAttr(2.34)
                 .withStringAttr("test")
@@ -66,7 +70,7 @@ public class TransferPrimitiveDaoFunctionsTest extends AbstractJslTest {
                 .withEnumAttr(Enum.EnumC)
                 .build());
 
-        transf2 = transferPrimitivesDao.create(TransferPrimitives.builder()
+        transf2 = transferOptionalPrimitivesDao.create(TransferOptionalPrimitives.builder()
                 .withIntegerAttr(1)
                 .withScaledAttr(1.23)
                 .withStringAttr("Another")
@@ -90,9 +94,41 @@ public class TransferPrimitiveDaoFunctionsTest extends AbstractJslTest {
         return "MappedTransferPrimitives";
     }
 
+
+    /**
+     * Testing the transfer Dao query limit method.
+     *
+     * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
+     *
+     * @type Behaviour
+     *
+     * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
+     *
+     * @jslModel MappedTransferPrimitives.jsl
+     *
+     *
+     * @scenario
+     *
+     *  Create two instance of TransferOptionalPrimitives like transf1,transf2
+     *
+     *  Make a list with the Dao query and use the limit method with parameter 1.
+     *
+     *  Check the list have only one element.
+     *
+     */
     @Test
+    @TestCase("TransferDaoQueryLimitFunction")
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-SRV-002",
+    })
     public void testLimit() {
-        List<TransferPrimitives> list = transferPrimitivesDao
+        List<TransferOptionalPrimitives> list = transferOptionalPrimitivesDao
                 .query()
                 .limit(1)
                 .execute();
@@ -100,37 +136,145 @@ public class TransferPrimitiveDaoFunctionsTest extends AbstractJslTest {
         assertEquals(1, list.size());
     }
 
+    /**
+     * Testing the transfer Dao query orderBy method.
+     *
+     * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
+     *
+     * @type Behaviour
+     *
+     * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
+     *
+     * @jslModel MappedTransferPrimitives.jsl
+     *
+     *
+     * @scenario
+     *
+     * Create two instance of TransferOptionalPrimitives like transf1,transf2
+     *
+     * Use the Dao query OrderbBy method for each primitive type.
+     *
+     * Check all list first element is the transf2 intsance
+     *
+     */
     @Test
+    @TestCase("TransferDaoQueryOrderByFunction")
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-SRV-002",
+    })
     public void testOrderBy() {
-        assertOrderBy(TransferPrimitivesAttribute.INTEGER_ATTR, transf2);
-        assertOrderBy(TransferPrimitivesAttribute.SCALED_ATTR, transf2);
-        assertOrderBy(TransferPrimitivesAttribute.STRING_ATTR, transf2);
-        assertOrderBy(TransferPrimitivesAttribute.REGEX_ATTR, transf2);
-        assertOrderBy(TransferPrimitivesAttribute.BOOL_ATTR, transf2);
-        assertOrderBy(TransferPrimitivesAttribute.DATE_ATTR, transf2);
-        assertOrderBy(TransferPrimitivesAttribute.TIMESTAMP_ATTR, transf2);
-        assertOrderBy(TransferPrimitivesAttribute.TIME_ATTR, transf2);
-        assertOrderBy(TransferPrimitivesAttribute.ENUM_ATTR, transf2);
+        assertOrderBy(TransferOptionalPrimitivesAttribute.INTEGER_ATTR, transf2);
+        assertOrderBy(TransferOptionalPrimitivesAttribute.SCALED_ATTR, transf2);
+        assertOrderBy(TransferOptionalPrimitivesAttribute.STRING_ATTR, transf2);
+        assertOrderBy(TransferOptionalPrimitivesAttribute.REGEX_ATTR, transf2);
+        assertOrderBy(TransferOptionalPrimitivesAttribute.BOOL_ATTR, transf2);
+        assertOrderBy(TransferOptionalPrimitivesAttribute.DATE_ATTR, transf2);
+        assertOrderBy(TransferOptionalPrimitivesAttribute.TIMESTAMP_ATTR, transf2);
+        assertOrderBy(TransferOptionalPrimitivesAttribute.TIME_ATTR, transf2);
+        assertOrderBy(TransferOptionalPrimitivesAttribute.ENUM_ATTR, transf2);
     }
 
+    /**
+     * Testing the transfer Dao query orderByDescending method.
+     *
+     * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
+     *
+     * @type Behaviour
+     *
+     * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
+     *
+     * @jslModel MappedTransferPrimitives.jsl
+     *
+     *
+     * @scenario
+     *
+     * Create two instance of TransferOptionalPrimitives like transf1,transf2
+     *
+     * Use the Dao query OrderByDescending method for each primitive type.
+     *
+     * Check all list first element is the transf1 intsance
+     *
+     */
     @Test
+    @TestCase("TransferDaoQueryOrderByDescendingFunction")
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-SRV-002",
+    })
     public void testOrderByDescending() {
-        assertOrderByDescending(TransferPrimitivesAttribute.INTEGER_ATTR, transf1);
-        assertOrderByDescending(TransferPrimitivesAttribute.SCALED_ATTR, transf1);
-        assertOrderByDescending(TransferPrimitivesAttribute.STRING_ATTR, transf1);
-        assertOrderByDescending(TransferPrimitivesAttribute.REGEX_ATTR, transf1);
-        assertOrderByDescending(TransferPrimitivesAttribute.BOOL_ATTR, transf1);
-        assertOrderByDescending(TransferPrimitivesAttribute.DATE_ATTR, transf1);
-        assertOrderByDescending(TransferPrimitivesAttribute.TIMESTAMP_ATTR, transf1);
-        assertOrderByDescending(TransferPrimitivesAttribute.TIME_ATTR, transf1);
-        assertOrderByDescending(TransferPrimitivesAttribute.ENUM_ATTR, transf1);
+        assertOrderByDescending(TransferOptionalPrimitivesAttribute.INTEGER_ATTR, transf1);
+        assertOrderByDescending(TransferOptionalPrimitivesAttribute.SCALED_ATTR, transf1);
+        assertOrderByDescending(TransferOptionalPrimitivesAttribute.STRING_ATTR, transf1);
+        assertOrderByDescending(TransferOptionalPrimitivesAttribute.REGEX_ATTR, transf1);
+        assertOrderByDescending(TransferOptionalPrimitivesAttribute.BOOL_ATTR, transf1);
+        assertOrderByDescending(TransferOptionalPrimitivesAttribute.DATE_ATTR, transf1);
+        assertOrderByDescending(TransferOptionalPrimitivesAttribute.TIMESTAMP_ATTR, transf1);
+        assertOrderByDescending(TransferOptionalPrimitivesAttribute.TIME_ATTR, transf1);
+        assertOrderByDescending(TransferOptionalPrimitivesAttribute.ENUM_ATTR, transf1);
     }
 
+    /**
+     * Testing the transfer Dao query maskedBy method.
+     *
+     * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
+     *
+     * @type Behaviour
+     *
+     * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
+     *
+     * @jslModel MappedTransferPrimitives.jsl
+     *
+     * @scenario
+     *
+     *  Create one instance of TransferOptionalPrimitives like transf1.
+     *
+     *  Use the Dao query maskedBy method and filter one of the attribute to the transf1 instance.
+     *
+     *  Check if just the masked attributes are available, the other ones should have null value.
+     *
+     */
     @Test
+    @TestCase("TransferDaoQueryMaskedByFunction")
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-SRV-002",
+    })
     public void testMask() {
-        TransferPrimitives maskedResult = transferPrimitivesDao
+        TransferOptionalPrimitives maskedResult = transferOptionalPrimitivesDao
                 .query()
-                .maskedBy(TransferPrimitivesMask.transferPrimitivesMask()
+                .maskedBy(TransferOptionalPrimitivesMask.transferOptionalPrimitivesMask()
                         .withStringAttr()
                         .withIntegerAttr())
                 .filterByStringAttr(StringFilter.equalTo("test"))
@@ -144,8 +288,8 @@ public class TransferPrimitiveDaoFunctionsTest extends AbstractJslTest {
         assertEquals(null, maskedResult.getRegexAttr());
     }
 
-    private void assertOrderBy(TransferPrimitivesAttribute attribute, TransferPrimitives firstTransfer) {
-        TransferPrimitives orderBy = transferPrimitivesDao
+    private void assertOrderBy(TransferOptionalPrimitivesAttribute attribute, TransferOptionalPrimitives firstTransfer) {
+        TransferOptionalPrimitives orderBy = transferOptionalPrimitivesDao
                 .query()
                 .orderBy(attribute)
                 .execute()
@@ -154,8 +298,8 @@ public class TransferPrimitiveDaoFunctionsTest extends AbstractJslTest {
         assertEquals(firstTransfer.identifier(), orderBy.identifier());
     }
 
-    private void assertOrderByDescending(TransferPrimitivesAttribute attribute, TransferPrimitives firstEntity) {
-        TransferPrimitives orderByDescending = transferPrimitivesDao
+    private void assertOrderByDescending(TransferOptionalPrimitivesAttribute attribute, TransferOptionalPrimitives firstEntity) {
+        TransferOptionalPrimitives orderByDescending = transferOptionalPrimitivesDao
                 .query()
                 .orderByDescending(attribute)
                 .execute()
