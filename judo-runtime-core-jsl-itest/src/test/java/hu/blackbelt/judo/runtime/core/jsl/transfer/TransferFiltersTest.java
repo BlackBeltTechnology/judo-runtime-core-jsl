@@ -633,7 +633,7 @@ public class TransferFiltersTest extends AbstractJslTest {
     }
 
     @Test
-    @TestCase("EnumFilter")
+    @TestCase("TransferEnumFilter")
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-TYPE-002",

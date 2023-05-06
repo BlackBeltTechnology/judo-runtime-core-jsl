@@ -56,7 +56,9 @@ public class CreationOfTransferObjects extends AbstractJslTest {
      *
      * @positiveRequirements REQ-SRV-002
      *
-     * @scenario Create each type of transfer object mapping variations and check the that doesn't throw errors.
+     * @scenario
+     *
+     *  Create each type of transfer object mapping variations and check the that doesn't throw errors.
      *
      */
     @Test

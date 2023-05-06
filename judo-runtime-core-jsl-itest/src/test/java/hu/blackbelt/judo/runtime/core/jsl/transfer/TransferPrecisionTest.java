@@ -35,7 +35,7 @@ public class TransferPrecisionTest extends AbstractJslTest {
     TransferOptionalPrimitivesDao transferOptionalPrimitivesDao;
 
     /**
-     * Test the numeric type precision is greater than the max
+     * The test checks if the numeric type precision is greater than the max.
      *
      * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
@@ -51,7 +51,7 @@ public class TransferPrecisionTest extends AbstractJslTest {
      *
      *  Try to create a TransferOptionalPrimitives instance with integerAttr that have greater precision than 9
      *
-     *  Check it is thrown a ValidationException with PRECISION_VALIDATION_FAILED code.
+     *  Check if the instance creation gives back Validation exception and contains PRECISION_VALIDATION_FAILED code.
      *
      */
     @Test
@@ -80,7 +80,7 @@ public class TransferPrecisionTest extends AbstractJslTest {
     }
 
     /**
-     * Test the numeric type scale is greater than max
+     * The test checks if the numeric type scale is greater than max.
      *
      * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
@@ -96,8 +96,7 @@ public class TransferPrecisionTest extends AbstractJslTest {
      *
      *  Try to create a TransferOptionalPrimitives instance with integerAttr that have greater scale than 2
      *
-     *  Check it is thrown a ValidationException with SCALE_VALIDATION_FAILED code.
-     *
+     *  Check if the instance creation gives back Validation exception and contains SCALE_VALIDATION_FAILED code.
      */
     @Test
     @TestCase("TransferScaleValidatorFailsWithScaleOverflow")
@@ -125,7 +124,7 @@ public class TransferPrecisionTest extends AbstractJslTest {
     }
 
     /**
-     * Test the numeric type  precision and scale is greater than max
+     * The test checks if the numeric type precision and scale is greater than max.
      *
      * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
@@ -141,7 +140,7 @@ public class TransferPrecisionTest extends AbstractJslTest {
      *
      *  Try to create a TransferOptionalPrimitives instance with integerAttr that have greater scale than 2 and greater precision than 9
      *
-     *  Check it is thrown a ValidationException with SCALE_VALIDATION_FAILED and PRECISION_VALIDATION_FAILED codes.
+     *  Check if the instance creation gives back Validation exception and contains SCALE_VALIDATION_FAILED and PRECISION_VALIDATION_FAILED code.
      *
      */
     @Test
@@ -175,7 +174,7 @@ public class TransferPrecisionTest extends AbstractJslTest {
     }
 
     /**
-     * Test the numeric type  precision is the max and the scale is zero
+     * The test checks if the numeric type  precision is the max and the scale is zero on a mapped transfer object
      *
      * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
@@ -189,9 +188,9 @@ public class TransferPrecisionTest extends AbstractJslTest {
      *
      * @scenario
      *
-     *  Try to create a TransferOptionalPrimitives instance with integerAttr that have greater scale than 2 and greater precision than 9
+     *  Create a TransferOptionalPrimitives instance with integerAttr that have zero in scale.
      *
-     *  Check it is thrown a ValidationException with SCALE_VALIDATION_FAILED and PRECISION_VALIDATION_FAILED codes.
+     *  Check if is converted to a valid Decimal number.
      *
      */
     @Test

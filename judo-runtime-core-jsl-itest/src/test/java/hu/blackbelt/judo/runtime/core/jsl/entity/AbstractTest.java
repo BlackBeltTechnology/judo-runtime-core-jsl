@@ -153,7 +153,7 @@ public class AbstractTest extends AbstractJslTest {
     }
 
     /**
-     * The test check dao functionality for an abstract entity with inherited child. (create,delete,update)
+     * The test checks dao functionality for an abstract entity with inherited child. (create,delete,update)
      *
      * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
@@ -178,7 +178,7 @@ public class AbstractTest extends AbstractJslTest {
      *
      *  Delete the b instance with the BDao.
      *
-     *  Check the c instance deleted also.
+     *  Check if the c instance is also deleted.
      *
      */
     @Test
@@ -220,8 +220,8 @@ public class AbstractTest extends AbstractJslTest {
     }
 
     /**
-     *  The test check all of the dao functionality in an Entity with all relation type (Composition, Relation),
-     *  which type is an abstract entity, with inherited entity from the abstract entity.
+     *  The test checks all the dao functionality in an Entity with all relation type (Composition, Relation)
+     *  which return type is an abstract entity, with inherited entity from the abstract entity.
      *
      *      H has all type of the relations, I is the type of the relations and J is a child entity of J.
      *
@@ -245,7 +245,7 @@ public class AbstractTest extends AbstractJslTest {
      *
      *  Create the H instance, with the composition elements inside.
      *
-     *  Check the I and J instance are equals.
+     *  Check if the I and J instance are equals.
      *
      *  Update relations String fields value with the IDao.
      *
@@ -253,7 +253,7 @@ public class AbstractTest extends AbstractJslTest {
      *
      *  Delete relations with the IDao.
      *
-     *  Check the relations deleted in the j representation with the JDao.
+     *  Check if the relations are deleted in the j representation with the JDao.
      *
      *  Add relations with the HDao.
      *
@@ -261,11 +261,11 @@ public class AbstractTest extends AbstractJslTest {
      *
      *  Remove relations with the HDao.
      *
-     *  Check the relations removed with the HDao.
+     *  Check if the relations are removed with the HDao.
      *
      *  Unset relations with the HDao.
      *
-     *  Check the relations unseted with the HDao.
+     *  Check if the relations are unset with the HDao.
      *
      */
     @Test
@@ -474,8 +474,8 @@ public class AbstractTest extends AbstractJslTest {
     }
 
     /**
-     * The test check the representation of the abstract entity and the child with query. The query collect and
-     * back the entity that is exist on the representation table.
+     * The test checks the representation of the abstract entity and the child with query. The query collects and
+     *  gives back the entity that is existing on the representation table.
      *
      * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
@@ -494,9 +494,9 @@ public class AbstractTest extends AbstractJslTest {
      *
      *  Get the I representation with the q instance id.
      *
-     *  Check with the p Dao query the instances is exists.
+     *  Check with p Dao query the instance exists.
      *
-     *  Check with the q Dao query the instances is exists.
+     *  Check with q Dao query the instance exists.
      *
      */
     @Test
@@ -517,10 +517,6 @@ public class AbstractTest extends AbstractJslTest {
     void testAbstractEntityQueryTest() {
 
         //Entity O,P,Q
-
-        //assertFalse(hasMethodWithName("create",oDao));
-
-        //O.Oany make no sense because we cant make any O instance
 
         Q q = qDao.create(Q.builder().build());
         P p = pDao.getById(q.identifier().adaptTo(PIdentifier.class)).orElseThrow();
