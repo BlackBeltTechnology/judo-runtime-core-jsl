@@ -75,7 +75,7 @@ entity EntityWithPrimitiveDefaults {
     field Timestamp timestampAttr = `2022-07-11T19:09:33Z`;
     field Time timeAttr = `23:59:59`;
     field Time shortTimeAttr = `23:59`;
-    field Binary binaryAttr; // There is no syntax for define default value for binary
+    field Binary binaryAttr; // There is no syntax to define default value for binary
     field Enum enumAttr = Enum#EnumA;
 }
 

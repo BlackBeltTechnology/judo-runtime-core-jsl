@@ -6,6 +6,10 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.alltypeoftransferobject
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.alltypeoftransferobjects.alltypeoftransferobjects.transferb.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.alltypeoftransferobjects.alltypeoftransferobjects.transferc.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.alltypeoftransferobjects.alltypeoftransferobjects.transferd.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.alltypeoftransferobjects.alltypeoftransferobjects.a.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.alltypeoftransferobjects.alltypeoftransferobjects.b.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.alltypeoftransferobjects.alltypeoftransferobjects.c.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.alltypeoftransferobjects.alltypeoftransferobjects.d.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.AllTypeOfTransferObjectsDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
@@ -41,6 +45,18 @@ public class CreationOfTransferObjects extends AbstractJslTest {
 
     @Inject
     TransferDDao transferDDao;
+
+    @Inject
+    ADao aDao;
+
+    @Inject
+    BDao bDao;
+
+    @Inject
+    CDao cDao;
+
+    @Inject
+    DDao dDao;
 
     /**
      * Test transfer object Dao to create new Transfer objects successfully
@@ -85,6 +101,22 @@ public class CreationOfTransferObjects extends AbstractJslTest {
         assertDoesNotThrow(()->{transferCDao.create(TransferC.builder().build());});
         assertDoesNotThrow(()->{transferDDao.create(TransferD.builder().build());});
 
+        TransferA transferA = transferADao.create(TransferA.builder().build());
+        TransferB transferB = transferBDao.create(TransferB.builder().build());
+        TransferC transferC = transferCDao.create(TransferC.builder().build());
+        TransferD transferD = transferDDao.create(TransferD.builder().build());
+
+        assertTrue(transferADao.getById(transferA.identifier()).isPresent());
+        assertTrue(transferBDao.getById(transferB.identifier()).isPresent());
+        assertTrue(transferCDao.getById(transferC.identifier()).isPresent());
+        assertTrue(transferDDao.getById(transferD.identifier()).isPresent());
+
+        assertTrue(aDao.getById(transferA.identifier().adaptTo(AIdentifier.class)).isPresent());
+        assertTrue(bDao.getById(transferB.identifier().adaptTo(BIdentifier.class)).isPresent());
+        assertTrue(cDao.getById(transferC.identifier().adaptTo(CIdentifier.class)).isPresent());
+        assertTrue(dDao.getById(transferD.identifier().adaptTo(DIdentifier.class)).isPresent());
+
     }
+
 
 }

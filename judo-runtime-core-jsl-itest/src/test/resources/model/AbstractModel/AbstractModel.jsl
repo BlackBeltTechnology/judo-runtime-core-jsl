@@ -19,7 +19,6 @@ entity abstract E extends D {
 }
 
 
-//In this form we can test this case
 entity F {
     relation G relationGOnFSingle;
     relation required G relationGOnFSingleRequired;

@@ -278,7 +278,6 @@ public class MappedTransferPrimitivesTest extends AbstractJslTest {
     /**
      * The transfer object mapped entity with required primitives fields but the transfer object field are not required.
      * The test checks transfer object Dao instance doesn't contain the mandatory attribute.
-     * //TODO JNG-XXXX
      *
      * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
@@ -298,7 +297,7 @@ public class MappedTransferPrimitivesTest extends AbstractJslTest {
      */
     @Test
     @TestCase("TransferMissingRequiredFieldsInEntitiesButNotRequiredInTransferThrowExceptions")
-    @Disabled("JNG-XXXX")
+    @Disabled("JNG-4824")
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-TYPE-002",
@@ -317,6 +316,7 @@ public class MappedTransferPrimitivesTest extends AbstractJslTest {
             "REQ-SRV-002",
     })
     public void testMissingRequiredFieldsInEntitiesButNotRequiredInTransferThrowExceptions() {
+        //TODO JNG-4824
         ValidationException thrown = assertThrows(
                 ValidationException.class,
                 () -> transferWithRequiredEntityPrimitivesDao.create(TransferWithRequiredEntityPrimitives.builder().build())
@@ -752,7 +752,7 @@ public class MappedTransferPrimitivesTest extends AbstractJslTest {
         assertEquals(Optional.of(true), transferWithPrimitiveDefaultExpressions.getBoolAttr());
         assertEquals(Optional.of(LocalDate.now()), transferWithPrimitiveDefaultExpressions.getDateAttr());
         assertEquals(OffsetDateTime.now().toString().substring(1, 10),
-                transferWithPrimitiveDefaultExpressions.getTimestampAttr().get().toString().substring(1, 10));
+                transferWithPrimitiveDefaultExpressions.getTimestampAttr().get().toString().substring(1, 10)); //use constant value
         assertEquals(Optional.of(LocalTime.parse("23:59:59")), transferWithPrimitiveDefaultExpressions.getTimeAttr());
     }
 
