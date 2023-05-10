@@ -17,7 +17,6 @@ import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.hamcrest.Matcher;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -364,7 +363,7 @@ public class InheritanceTest extends AbstractJslTest {
     }
 
 
-    private Matcher matchMissingAttribute(String attrName) {
+    private org.hamcrest.Matcher matchMissingAttribute(String attrName) {
         return allOf(
                 hasProperty("code", equalTo("MISSING_REQUIRED_ATTRIBUTE")),
                 hasProperty("location", equalTo(attrName)));
