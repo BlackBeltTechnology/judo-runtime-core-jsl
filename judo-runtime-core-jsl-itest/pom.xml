@@ -28,6 +28,7 @@
                         </uris>
                         <type>psm-sdk-core</type>
                         <templateParameters>
+                            <debugPrint>true</debugPrint>
                             <apiPrefix>hu.blackbelt.judo.psm.generator.sdk.core.test.api</apiPrefix>
                             <implPrefix>hu.blackbelt.judo.psm.generator.sdk.core.test.impl</implPrefix>
                             <guicePrefix>hu.blackbelt.judo.psm.generator.sdk.core.test.guice</guicePrefix>
