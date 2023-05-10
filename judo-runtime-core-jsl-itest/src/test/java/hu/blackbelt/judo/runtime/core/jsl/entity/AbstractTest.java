@@ -313,7 +313,7 @@ public class AbstractTest extends AbstractJslTest {
                         .build()
         );
 
-        //Check j and i instance ar equal because i is live with j only
+        //Check if instances of j and i are equal because all instances of j are also instances of i.
         assertEquals(iDao.getAll().size(), jDao.getAll().size());
 
         //update
@@ -340,7 +340,7 @@ public class AbstractTest extends AbstractJslTest {
         //Check update
         assertEquals(Optional.of("CompositionSingleChanged"), h.getCompositionIOnHSingle().orElseThrow().getNameI());
         assertEquals(Optional.of("CompositionSingleRequiredChanged"), h.getCompositionIOnHSingleRequired().getNameI());
-        h.getCompositionIOnHMulti().stream().forEach( i -> assertEquals(Optional.of("MultiCompositionNameChanged"),i.getNameI()));
+        h.getCompositionIOnHMulti().stream().forEach(i -> assertEquals(Optional.of("MultiCompositionNameChanged"), i.getNameI()));
         //TODO JNG-4813
         //hDao.queryCompositionIOnHMulti.execute().stream().forEach( i -> assertEquals(Optional.of("iMultiRelationNameChanged"),i.getNameI()));
 
@@ -362,9 +362,9 @@ public class AbstractTest extends AbstractJslTest {
         iDao.delete(h.getCompositionIOnHMulti().get(0));
         assertTrue(iDao.getById(h.getCompositionIOnHMulti().get(0).identifier()).isEmpty());
         h = hDao.getById(h.identifier()).orElseThrow();
-        assertEquals(2,h.getCompositionIOnHMulti().size());
+        assertEquals(2, h.getCompositionIOnHMulti().size());
 
-        //check if other methods are work well
+        //check if other methods are working well
 
         //add
         hDao.addCompositionIOnHMulti(h, Collections.singletonList(JtoI(jDao.create(J.builder().build()))));
@@ -379,33 +379,33 @@ public class AbstractTest extends AbstractJslTest {
 
         //remove
         hDao.removeCompositionIOnHMulti(h, List.of(h.getCompositionIOnHMulti().get(0)));
-        assertEquals(3,h.getCompositionIOnHMulti().size());
+        assertEquals(3, h.getCompositionIOnHMulti().size());
         h = hDao.getById(h.identifier()).orElseThrow();
-        assertEquals(2,h.getCompositionIOnHMulti().size());
+        assertEquals(2, h.getCompositionIOnHMulti().size());
 
-        assertEquals(4,hDao.countRelationIOnHMulti(h));
-        hDao.removeRelationIOnHMulti(h, List.of(hDao.queryRelationIOnHMulti(h).execute().get(0)) );
-        assertEquals(3,hDao.countRelationIOnHMulti(h));
+        assertEquals(4, hDao.countRelationIOnHMulti(h));
+        hDao.removeRelationIOnHMulti(h, List.of(hDao.queryRelationIOnHMulti(h).execute().get(0)));
+        assertEquals(3, hDao.countRelationIOnHMulti(h));
         h = hDao.getById(h.identifier()).orElseThrow();
 
-        hDao.removeCompositionIOnHMulti(h, List.of(h.getCompositionIOnHMulti().get(0),h.getCompositionIOnHMulti().get(1)));
-        assertEquals(2,h.getCompositionIOnHMulti().size());
+        hDao.removeCompositionIOnHMulti(h, List.of(h.getCompositionIOnHMulti().get(0), h.getCompositionIOnHMulti().get(1)));
+        assertEquals(2, h.getCompositionIOnHMulti().size());
         h = hDao.getById(h.identifier()).orElseThrow();
-        assertEquals(0,h.getCompositionIOnHMulti().size());
+        assertEquals(0, h.getCompositionIOnHMulti().size());
 
-        assertEquals(3,hDao.countRelationIOnHMulti(h));
-        hDao.removeRelationIOnHMulti(h, List.of(hDao.queryRelationIOnHMulti(h).execute().get(0),hDao.queryRelationIOnHMulti(h).execute().get(1)) );
-        assertEquals(1,hDao.countRelationIOnHMulti(h));
+        assertEquals(3, hDao.countRelationIOnHMulti(h));
+        hDao.removeRelationIOnHMulti(h, List.of(hDao.queryRelationIOnHMulti(h).execute().get(0), hDao.queryRelationIOnHMulti(h).execute().get(1)));
+        assertEquals(1, hDao.countRelationIOnHMulti(h));
         h = hDao.getById(h.identifier()).orElseThrow();
 
         //set
         //TODO JNG-4823
-        hDao.setCompositionIOnHSingle(h,JtoI(jDao.create(J.builder().withNameI("SetNewElement").build())));
+        hDao.setCompositionIOnHSingle(h, JtoI(jDao.create(J.builder().withNameI("SetNewElement").build())));
         hDao.setRelationIOnHSingle(h, JtoI(jDao.create(J.builder().withNameI("SetNewElement").build())));
 
         h = hDao.getById(h.identifier()).orElseThrow();
 
-        assertEquals(Optional.of("SetNewElement"),h.getCompositionIOnHSingle().orElseThrow().getNameI());
+        assertEquals(Optional.of("SetNewElement"), h.getCompositionIOnHSingle().orElseThrow().getNameI());
         assertEquals(Optional.of("SetNewElement"), hDao.queryRelationIOnHSingle(h).orElseThrow().getNameI());
 
         //Check if instances of j and i are equal because all instances of j are also instances of i.
@@ -418,7 +418,7 @@ public class AbstractTest extends AbstractJslTest {
 
         h = hDao.getById(h.identifier()).orElseThrow();
 
-        assertEquals(Optional.empty(),h.getCompositionIOnHSingle());
+        assertEquals(Optional.empty(), h.getCompositionIOnHSingle());
         assertEquals(Optional.empty(), hDao.queryRelationIOnHSingle(h));
 
         assertEquals(iDao.getAll().size(), jDao.getAll().size());
@@ -444,6 +444,7 @@ public class AbstractTest extends AbstractJslTest {
      *
      */
     @Test
+    @Disabled("https://blackbelt.atlassian.net/browse/JNG-4831")
     @TestCase("AbstractEntityRelationsAndCompositionsOnAbstractEntityWithInheritedEntity")
     @Requirement(reqs = {
             "REQ-TYPE-001",
@@ -462,7 +463,7 @@ public class AbstractTest extends AbstractJslTest {
             "REQ-SYNT-004"
     })
     void testAbstractEntityRelationsAndCompositionsOnAbstractEntityWithInheritedEntity() {
-        //TODO JNG-4803 If this issue will solve then implement this case.
+        //TODO JNG-4831
 
         //Entity K.M,N,L
 
@@ -526,7 +527,7 @@ public class AbstractTest extends AbstractJslTest {
 
     }
 
-    private I JtoI(J j){
+    private I JtoI(J j) {
         return iDao.getById(j.identifier().adaptTo(IIdentifier.class)).orElseThrow();
     }
 

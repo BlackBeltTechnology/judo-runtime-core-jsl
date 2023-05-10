@@ -31,7 +31,6 @@ entity F {
 entity abstract G {
     field String nameG;
 }
-//case end
 
 entity H {
     relation I relationIOnHSingle;

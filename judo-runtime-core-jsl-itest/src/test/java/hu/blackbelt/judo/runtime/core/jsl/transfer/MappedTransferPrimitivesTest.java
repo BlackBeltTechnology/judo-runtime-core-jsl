@@ -23,6 +23,7 @@ import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.hamcrest.Matcher;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -756,19 +757,19 @@ public class MappedTransferPrimitivesTest extends AbstractJslTest {
         assertEquals(Optional.of(LocalTime.parse("23:59:59")), transferWithPrimitiveDefaultExpressions.getTimeAttr());
     }
 
-    private org.hamcrest.Matcher matchMissingAttribute(String attrName) {
+    private Matcher matchMissingAttribute(String attrName) {
         return allOf(
                 hasProperty("code", equalTo("MISSING_REQUIRED_ATTRIBUTE")),
                 hasProperty("location", equalTo(attrName)));
     }
 
-    private org.hamcrest.Matcher matchPrecisionValidationForAttribute(String attrName) {
+    private Matcher matchPrecisionValidationForAttribute(String attrName) {
         return allOf(
                 hasProperty("code", equalTo("PRECISION_VALIDATION_FAILED")),
                 hasProperty("location", equalTo(attrName)));
     }
 
-    private org.hamcrest.Matcher matchScaleValidationForAttribute(String attrName) {
+    private Matcher matchScaleValidationForAttribute(String attrName) {
         return allOf(
                 hasProperty("code", equalTo("SCALE_VALIDATION_FAILED")),
                 hasProperty("location", equalTo(attrName)));
