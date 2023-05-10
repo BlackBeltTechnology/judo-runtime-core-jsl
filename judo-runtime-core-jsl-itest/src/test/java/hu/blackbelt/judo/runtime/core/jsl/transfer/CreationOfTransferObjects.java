@@ -96,10 +96,18 @@ public class CreationOfTransferObjects extends AbstractJslTest {
     })
     void testCreationOfTransferObjects() {
 
-        assertDoesNotThrow(()->{transferADao.create(TransferA.builder().build());});
-        assertDoesNotThrow(()->{transferBDao.create(TransferB.builder().build());});
-        assertDoesNotThrow(()->{transferCDao.create(TransferC.builder().build());});
-        assertDoesNotThrow(()->{transferDDao.create(TransferD.builder().build());});
+        assertDoesNotThrow(() -> {
+            transferADao.create(TransferA.builder().build());
+        });
+        assertDoesNotThrow(() -> {
+            transferBDao.create(TransferB.builder().build());
+        });
+        assertDoesNotThrow(() -> {
+            transferCDao.create(TransferC.builder().build());
+        });
+        assertDoesNotThrow(() -> {
+            transferDDao.create(TransferD.builder().build());
+        });
 
         TransferA transferA = transferADao.create(TransferA.builder().build());
         TransferB transferB = transferBDao.create(TransferB.builder().build());

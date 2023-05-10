@@ -130,7 +130,6 @@ public class AutoMappedTransferObjectTest extends AbstractJslTest {
     })
     void testCheckOfTransferAutoMappedTOAbstractEntity() {
 
-
         assertThrows(
                 ValidationException.class,
                 () -> autoMappedTransferOnAbstractOptionalFieldsDao.create(AutoMappedTransferOnAbstractOptionalFields.builder()

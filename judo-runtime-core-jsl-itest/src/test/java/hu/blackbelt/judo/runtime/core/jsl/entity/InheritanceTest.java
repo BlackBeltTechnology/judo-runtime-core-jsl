@@ -17,6 +17,7 @@ import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.hamcrest.Matcher;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -356,18 +357,14 @@ public class InheritanceTest extends AbstractJslTest {
     })
     void testAbstractEntityInstanceThrowError() {
 
-        assertThrows(
-                ValidationException.class,
-                () -> parentAbstractDao.create(ParentAbstract.builder()
-                        .build())
-        );
+        assertThrows(ValidationException.class, () -> parentAbstractDao.create(ParentAbstract.builder().build()));
 
         //TODO If JNG-4793 implemented add more detailed error massage of here
 
     }
 
 
-    private org.hamcrest.Matcher matchMissingAttribute(String attrName) {
+    private Matcher matchMissingAttribute(String attrName) {
         return allOf(
                 hasProperty("code", equalTo("MISSING_REQUIRED_ATTRIBUTE")),
                 hasProperty("location", equalTo(attrName)));

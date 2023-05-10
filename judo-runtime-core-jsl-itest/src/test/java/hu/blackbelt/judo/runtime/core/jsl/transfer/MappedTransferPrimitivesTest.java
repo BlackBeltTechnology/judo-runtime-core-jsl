@@ -185,7 +185,7 @@ public class MappedTransferPrimitivesTest extends AbstractJslTest {
                 .withEnumAttr(Enum.EnumA)
                 .build());
 
-        assertEquals(1,transferOptionalPrimitivesDao.query().execute().size());
+        assertEquals(1, transferOptionalPrimitivesDao.query().execute().size());
         assertEquals(Optional.of(1), transferOptionalPrimitives.getIntegerAttr());
         assertEquals(Optional.of(1.23), transferOptionalPrimitives.getScaledAttr());
         assertEquals(Optional.of("test"), transferOptionalPrimitives.getStringAttr());
@@ -198,7 +198,7 @@ public class MappedTransferPrimitivesTest extends AbstractJslTest {
         assertEquals(Optional.of(Enum.EnumA), transferOptionalPrimitives.getEnumAttr());
 
         EntityForMapping entityForMapping = entityForMappingDao.getById(transferOptionalPrimitives.identifier().adaptTo(EntityForMappingIdentifier.class)).orElseThrow();
-        assertEquals(1,entityForMappingDao.query().execute().size());
+        assertEquals(1, entityForMappingDao.query().execute().size());
 
         assertEquals(Optional.of(1), entityForMapping.getIntegerAttr());
         assertEquals(Optional.of(1.23), entityForMapping.getScaledAttr());
@@ -570,7 +570,7 @@ public class MappedTransferPrimitivesTest extends AbstractJslTest {
         assertEquals(Optional.of(Enum.EnumA), transferOptionalPrimitives.getEnumAttr());
 
         EntityForMapping entityForMapping = entityForMappingDao.getById(transferOptionalPrimitives.identifier().adaptTo(EntityForMappingIdentifier.class)).orElseThrow();
-        assertEquals(1,entityForMappingDao.query().execute().size());
+        assertEquals(1, entityForMappingDao.query().execute().size());
 
         assertEquals(Optional.of(1), entityForMapping.getIntegerAttr());
         assertEquals(Optional.of(1.23), entityForMapping.getScaledAttr());

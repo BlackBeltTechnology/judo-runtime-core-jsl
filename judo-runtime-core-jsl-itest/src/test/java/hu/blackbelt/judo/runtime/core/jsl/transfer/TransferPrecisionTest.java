@@ -206,9 +206,7 @@ public class TransferPrecisionTest extends AbstractJslTest {
             "REQ-SRV-002",
     })
     public void testScaleValidatorPassesForValueWithoutScale() {
-        TransferOptionalPrimitives created = transferOptionalPrimitivesDao.create(TransferOptionalPrimitives.builder()
-                .withScaledAttr(123456789.0)
-                .build());
+        TransferOptionalPrimitives created = transferOptionalPrimitivesDao.create(TransferOptionalPrimitives.builder().withScaledAttr(123456789.0).build());
 
         assertThat(created.getScaledAttr(), equalTo(Optional.of(123456789.0)));
 
