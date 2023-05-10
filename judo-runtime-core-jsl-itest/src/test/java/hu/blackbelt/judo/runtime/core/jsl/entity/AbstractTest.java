@@ -132,13 +132,11 @@ public class AbstractTest extends AbstractJslTest {
      *
      */
     @Test
-    @Disabled("JNG-4793")
     @TestCase("AbstractEntitiesHaveNoCreateMethods")
     @Requirement(reqs = {
             "",
     })
     void testAbstractEntitiesHaveNoCreateMethods() {
-
         assertFalse(hasMethodWithName("create", aDao));
         assertFalse(hasMethodWithName("create", bDao));
         assertFalse(hasMethodWithName("create", dDao));
@@ -149,7 +147,6 @@ public class AbstractTest extends AbstractJslTest {
         assertFalse(hasMethodWithName("create", kDao));
         assertFalse(hasMethodWithName("create", oDao));
         assertFalse(hasMethodWithName("create", pDao));
-
     }
 
     /**

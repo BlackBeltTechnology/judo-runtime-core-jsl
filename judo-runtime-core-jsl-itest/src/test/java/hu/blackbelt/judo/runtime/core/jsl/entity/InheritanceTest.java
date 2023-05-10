@@ -339,7 +339,6 @@ public class InheritanceTest extends AbstractJslTest {
      *
      */
     @Test
-    @Disabled("JNG-4793")
     @TestCase("AbstractEntityInstanceThrowError")
     @Requirement(reqs = {
             "REQ-TYPE-001",
@@ -356,11 +355,7 @@ public class InheritanceTest extends AbstractJslTest {
             "REQ-SYNT-004",
     })
     void testAbstractEntityInstanceThrowError() {
-
-        assertThrows(ValidationException.class, () -> parentAbstractDao.create(ParentAbstract.builder().build()));
-
-        //TODO If JNG-4793 implemented add more detailed error massage of here
-
+        assertFalse(hasMethodWithName("create", parentAbstractDao));
     }
 
 
