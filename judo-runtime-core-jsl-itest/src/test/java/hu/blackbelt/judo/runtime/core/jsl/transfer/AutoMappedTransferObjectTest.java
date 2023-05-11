@@ -123,21 +123,12 @@ public class AutoMappedTransferObjectTest extends AbstractJslTest {
      *
      */
     @Test
-    @Disabled("")
     @TestCase("AutoMappedTransferObjectWithAbstractMappedField")
     @Requirement(reqs = {
             "",
     })
     void testCheckOfTransferAutoMappedTOAbstractEntity() {
-
-        assertThrows(
-                ValidationException.class,
-                () -> autoMappedTransferOnAbstractOptionalFieldsDao.create(AutoMappedTransferOnAbstractOptionalFields.builder()
-                        .build())
-        );
-
-        //TODO If JNG-XXXX implemented add more detailed error massage of here
-
+        assertFalse(hasMethodWithName("create", autoMappedTransferOnAbstractOptionalFieldsDao));
     }
 
 }
