@@ -168,7 +168,7 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
             "REQ-ENT-012"
     })
     void testDeleteOptionalRelation() {
-        assertEquals(singleConA.identifier().getIdentifier(), entityADao.querySingleConA(entityA).get().orElseThrow());
+        assertEquals(singleConA.identifier().getIdentifier(), entityADao.querySingleConA(entityA).get().orElseThrow().identifier().getIdentifier());
         assertEquals(2, entityCDao.query().execute().size());
 
         entityCDao.delete(singleConA);
