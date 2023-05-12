@@ -97,15 +97,15 @@ public class AssociationRelationshipsTest extends AbstractJslTest {
             "REQ-ENT-012"
     })
     public void testSetUnsetSingleRelation() {
-        assertTrue(entityADao.querySingleConA(entityA).execute().isEmpty());
+        assertEquals(Optional.empty(), entityADao.querySingleConA(entityA).get());
 
         entityADao.setSingleConA(entityA, entityC);
 
-        assertEquals(entityC.identifier().getIdentifier(), entityADao.querySingleConA(entityA).execute().get(0).identifier().getIdentifier());
+        assertEquals(entityC.identifier().getIdentifier(), entityADao.querySingleConA(entityA).get().orElseThrow().identifier().getIdentifier());
 
         entityADao.unsetSingleConA(entityA);
 
-        assertTrue(entityADao.querySingleConA(entityA).execute().isEmpty());
+        assertEquals(Optional.empty(), entityADao.querySingleConA(entityA).get());
     }
 
     @Test
@@ -165,7 +165,7 @@ public class AssociationRelationshipsTest extends AbstractJslTest {
 
         Optional<EntityA> startA = entityADao.getById(entityA.identifier());
 
-        EntityC entityC2 = entityADao.querySingleRequiredConA(startA.get()).execute().get(0);
+        EntityC entityC2 = entityADao.querySingleRequiredConA(startA.get()).get().orElseThrow();
 
         assertEquals(entityC, entityC2);
 
@@ -227,8 +227,8 @@ public class AssociationRelationshipsTest extends AbstractJslTest {
                 );
 
         assertEquals(2, entityEDao.queryMultipleFOnE(entityE).execute().size());
-        assertEquals(entityE.identifier().getIdentifier(), entityFDao.querySingleEAdded(entityF1).execute().get(0).identifier().getIdentifier());
-        assertEquals(entityE.identifier().getIdentifier(), entityFDao.querySingleEAdded(entityF2).execute().get(0).identifier().getIdentifier());
+        assertEquals(entityE.identifier().getIdentifier(), entityFDao.querySingleEAdded(entityF1).execute().get().orElseThrow().getIdentifier());
+        assertEquals(entityE.identifier().getIdentifier(), entityFDao.querySingleEAdded(entityF2).execute().get().orElseThrow().getIdentifier());
     }
 
     @Test

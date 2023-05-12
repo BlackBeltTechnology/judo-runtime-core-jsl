@@ -123,50 +123,50 @@ class NavigationTest extends AbstractJslTest {
 
     private void assertEmptyBAndC(A a) {
         assertEmpty(aDao.queryBbAll(a).execute());
-        assertTrue(aDao.queryBbAny(a).execute().isEmpty());
+        assertEmpty(aDao.queryBbAny(a).get());
 
         assertEmpty(a.getBbAnyName());
         assertEmpty(a.getSelfBName());
 
         assertEmpty(aDao.queryBbAllFilter(a).execute());
-        assertTrue(aDao.queryBbAllFilterAny(a).execute().isEmpty());
-        assertTrue(aDao.queryBbAllFilterAny1(a).execute().isEmpty());
+        assertEmpty(aDao.queryBbAllFilterAny(a).get());
+        assertEmpty(aDao.queryBbAllFilterAny1(a).get());
 
         assertEmpty(a.getBbAllFilterAnyName());
         assertEmpty(a.getBbAllFilterAnyName1());
         assertEmpty(a.getBbAllFilterAnyName2());
 
         assertEmpty(aDao.querySelfbAllC(a).execute());
-        assertTrue(aDao.querySelfbAllCAny(a).execute().isEmpty());
+        assertEmpty(aDao.querySelfbAllCAny(a).get());
         assertEmpty(a.getSelfbAllCAnyName());
 
         assertEmpty(aDao.queryBbAllC(a).execute());
-        assertTrue(aDao.queryBbAllCAny(a).execute().isEmpty());
+        assertEmpty(aDao.queryBbAllCAny(a).get());
         assertEmpty(a.getBbAllCAnyName());
     }
 
     @SuppressWarnings("unchecked")
     private void assertAttributesAndRelations(A a, Collection<Identifiable> bIds, Collection<Identifiable> cIds) {
         assertThat(aDao.queryBbAll(a).execute().stream().map(B::identifier).collect(Collectors.toList()), anyOf(toHasItems(bIds)));
-        assertThat(aDao.queryBbAny(a).execute().get(0).identifier(), anyOf(toIss(bIds)));
+        assertThat(aDao.queryBbAny(a).get().orElseThrow().identifier(), anyOf(toIss(bIds)));
 
         assertEquals("b", a.getBbAnyName().orElseThrow());
         assertEquals("b", a.getSelfBName().orElseThrow());
 
         assertThat(aDao.queryBbAllFilter(a).execute().stream().map(B::identifier).collect(Collectors.toList()), anyOf(toHasItems(bIds)));
-        assertThat(aDao.queryBbAllFilterAny(a).execute().get(0).identifier(), anyOf(toIss(bIds)));
-        assertThat(aDao.queryBbAllFilterAny1(a).execute().get(0).identifier(), anyOf(toIss(bIds)));
+        assertThat(aDao.queryBbAllFilterAny(a).get().orElseThrow().identifier(), anyOf(toIss(bIds)));
+        assertThat(aDao.queryBbAllFilterAny1(a).get().orElseThrow().identifier(), anyOf(toIss(bIds)));
 
         assertEquals("b", a.getBbAllFilterAnyName().orElseThrow());
         assertEquals("b", a.getBbAllFilterAnyName1().orElseThrow());
         assertEquals("b", a.getBbAllFilterAnyName2().orElseThrow());
 
         assertThat(aDao.querySelfbAllC(a).execute().stream().map(C::identifier).collect(Collectors.toList()), anyOf(toHasItems(cIds)));
-        assertThat(aDao.querySelfbAllCAny(a).execute().get(0).identifier(), anyOf(toIss(cIds)));
+        assertThat(aDao.querySelfbAllCAny(a).get().orElseThrow().identifier(), anyOf(toIss(cIds)));
         assertEquals("c", a.getSelfbAllCAnyName().orElseThrow());
 
         assertThat(aDao.queryBbAllC(a).execute().stream().map(C::identifier).collect(Collectors.toList()), anyOf(toHasItems(cIds)));
-        assertThat(aDao.queryBbAllCAny(a).execute().get(0).identifier(), anyOf(toIss(cIds)));
+        assertThat(aDao.queryBbAllCAny(a).get().orElseThrow().identifier(), anyOf(toIss(cIds)));
         assertEquals("c", a.getBbAllCAnyName().orElseThrow());
     }
 

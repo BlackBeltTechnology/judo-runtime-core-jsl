@@ -340,8 +340,8 @@ public class AbstractTest extends AbstractJslTest {
         h.getCompositionIOnHMulti().stream().forEach(i -> assertEquals(Optional.of("MultiCompositionNameChanged"), i.getNameI()));
         hDao.queryCompositionIOnHMulti(h).execute().stream().forEach(i -> assertEquals(Optional.of("iMultiRelationNameChanged"), i.getNameI()));
 
-        assertEquals(Optional.of("iOptionalRelationNameChanged"), hDao.queryRelationIOnHSingle(h).execute().get(0).getNameI());
-        assertEquals(Optional.of("iRequiredRelationNameChanged"), hDao.queryRelationIOnHSingleRequired(h).execute().get(0).getNameI());
+        assertEquals(Optional.of("iOptionalRelationNameChanged"), hDao.queryRelationIOnHSingle(h).get().orElseThrow().getNameI());
+        assertEquals(Optional.of("iRequiredRelationNameChanged"), hDao.queryRelationIOnHSingleRequired(h).get().orElseThrow().getNameI());
         hDao.queryRelationIOnHMulti(h).execute().stream().forEach(i -> assertEquals(Optional.of("iMultiRelationNameChanged"), i.getNameI()));
 
         //delete with IDao
@@ -402,7 +402,7 @@ public class AbstractTest extends AbstractJslTest {
         h = hDao.getById(h.identifier()).orElseThrow();
 
         assertEquals(Optional.of("SetNewElement"), h.getCompositionIOnHSingle().orElseThrow().getNameI());
-        assertEquals(Optional.of("SetNewElement"), hDao.queryRelationIOnHSingle(h).execute().get(0).getNameI());
+        assertEquals(Optional.of("SetNewElement"), hDao.queryRelationIOnHSingle(h).get().orElseThrow().getNameI());
 
         //Check if instances of j and i are equal because all instances of j are also instances of i.
         assertEquals(iDao.getAll().size(), jDao.getAll().size());
@@ -415,7 +415,7 @@ public class AbstractTest extends AbstractJslTest {
         h = hDao.getById(h.identifier()).orElseThrow();
 
         assertEquals(Optional.empty(), h.getCompositionIOnHSingle());
-        assertTrue(hDao.queryRelationIOnHSingle(h).execute().isEmpty());
+        assertEquals(Optional.empty(), hDao.queryRelationIOnHSingle(h).get());
 
         assertEquals(iDao.getAll().size(), jDao.getAll().size());
 
@@ -513,13 +513,13 @@ public class AbstractTest extends AbstractJslTest {
         Q q = qDao.create(Q.builder().build());
         P p = pDao.getById(q.identifier().adaptTo(PIdentifier.class)).orElseThrow();
 
-        assertEquals(p.identifier().getIdentifier(), pDao.queryPany(p).execute().get(0).identifier().getIdentifier());
-        assertEquals(p.identifier().getIdentifier(), pDao.queryPQany(p).execute().get(0).identifier().getIdentifier());
-        assertEquals(q.identifier().getIdentifier(), pDao.queryQany(p).execute().get(0).identifier().getIdentifier());
+        assertEquals(p.identifier().getIdentifier(), pDao.queryPany(p).get().orElseThrow().identifier().getIdentifier());
+        assertEquals(p.identifier().getIdentifier(), pDao.queryPQany(p).get().orElseThrow().identifier().getIdentifier());
+        assertEquals(q.identifier().getIdentifier(), pDao.queryQany(p).get().orElseThrow().identifier().getIdentifier());
 
-        assertEquals(p.identifier().getIdentifier(), qDao.queryPany(q).execute().get(0).identifier().getIdentifier());
-        assertEquals(p.identifier().getIdentifier(), qDao.queryPQany(q).execute().get(0).identifier().getIdentifier());
-        assertEquals(q.identifier().getIdentifier(), qDao.queryQany(q).execute().get(0).identifier().getIdentifier());
+        assertEquals(p.identifier().getIdentifier(), qDao.queryPany(q).get().orElseThrow().identifier().getIdentifier());
+        assertEquals(p.identifier().getIdentifier(), qDao.queryPQany(q).get().orElseThrow().identifier().getIdentifier());
+        assertEquals(q.identifier().getIdentifier(), qDao.queryQany(q).get().orElseThrow().identifier().getIdentifier());
 
     }
 

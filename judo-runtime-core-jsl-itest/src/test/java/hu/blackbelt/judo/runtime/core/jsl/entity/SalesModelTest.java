@@ -121,7 +121,7 @@ class SalesModelTest extends AbstractJslTest {
                 .withSalesPerson(createdSalesPerson)
                 .build());
         assertEquals(Optional.of(100), lead1.getValue());
-        assertEquals(Optional.of("Test"), leadDao.querySalesPerson(lead1).execute().get(0).getFirstName());
+        assertEquals(Optional.of("Test"), leadDao.querySalesPerson(lead1).get().orElseThrow().getFirstName());
 
         Lead lead2 = leadDao.create(Lead.builder()
                 .withValue(9)
@@ -129,7 +129,7 @@ class SalesModelTest extends AbstractJslTest {
                 .withSalesPerson(createdSalesPerson)
                 .build());
         assertEquals(Optional.of(9), lead2.getValue());
-        assertEquals(Optional.of("Test"), leadDao.querySalesPerson(lead2).execute().get(0).getFirstName());
+        assertEquals(Optional.of("Test"), leadDao.querySalesPerson(lead2).get().orElseThrow().getFirstName());
 
         List<Lead> leadListOfQuery = salesPersonDao
                 .queryLeadsOver(createdSalesPerson, LeadsOverParameter.builder()

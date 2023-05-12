@@ -183,16 +183,16 @@ public class TestStaticQueriesWithDefaultValues extends AbstractJslTest {
 
         
         Snapshot1 s1 = snapshot1Dao.create(Snapshot1.builder().build());
-        assertEquals(e2.identifier().getIdentifier(), snapshot1Dao.queryFldMyEntity001(s1).execute().get(0).identifier().getIdentifier());
-        assertEquals(e3.identifier().getIdentifier(), snapshot1Dao.queryFldMyEntity002(s1).execute().get(0).identifier().getIdentifier());
-        Serializable fldMyEntity003ID = snapshot1Dao.queryFldMyEntity003(s1).execute().get(0).identifier().getIdentifier();
+        assertEquals(e2.identifier().getIdentifier(), snapshot1Dao.queryFldMyEntity001(s1).get().orElseThrow().identifier().getIdentifier());
+        assertEquals(e3.identifier().getIdentifier(), snapshot1Dao.queryFldMyEntity002(s1).get().orElseThrow().identifier().getIdentifier());
+        Serializable fldMyEntity003ID = snapshot1Dao.queryFldMyEntity003(s1).get().orElseThrow().identifier().getIdentifier();
         assertTrue(
                 fldMyEntity003ID.equals(e3.identifier().getIdentifier())
                     || fldMyEntity003ID.equals(e4.identifier().getIdentifier())
                 );
-        assertEquals(e3.identifier().getIdentifier(), snapshot1Dao.queryFldMyEntity004(s1).execute().get(0).identifier().getIdentifier());
-        assertEquals(e4.identifier().getIdentifier(), snapshot1Dao.queryFldMyEntity005(s1).execute().get(0).identifier().getIdentifier());
-        Serializable fldMyEntity006ID = snapshot1Dao.queryFldMyEntity006(s1).execute().get(0).identifier().getIdentifier();
+        assertEquals(e3.identifier().getIdentifier(), snapshot1Dao.queryFldMyEntity004(s1).get().orElseThrow().identifier().getIdentifier());
+        assertEquals(e4.identifier().getIdentifier(), snapshot1Dao.queryFldMyEntity005(s1).get().orElseThrow().identifier().getIdentifier());
+        Serializable fldMyEntity006ID = snapshot1Dao.queryFldMyEntity006(s1).get().orElseThrow().identifier().getIdentifier();
         assertTrue(
                 fldMyEntity006ID.equals(e2.identifier().getIdentifier())
                 || fldMyEntity006ID.equals(e3.identifier().getIdentifier())
