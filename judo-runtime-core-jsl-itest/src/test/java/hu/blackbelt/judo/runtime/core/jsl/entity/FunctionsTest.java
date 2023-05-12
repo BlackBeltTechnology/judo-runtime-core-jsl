@@ -707,9 +707,9 @@ public class FunctionsTest extends AbstractJslTest {
         assertTrue(instanceFunctions.getKindOfParent().get());
         assertFalse(instanceFunctions.getNotTypeOfChild().get());
 
-        String parentName = instanceFunctionsDao.queryAsParentType(instanceFunctions).orElseThrow().getName().orElseThrow();
+        String parentName = instanceFunctionsDao.queryAsParentType(instanceFunctions).get().orElseThrow().getName().orElseThrow();
         assertEquals("Another Child", parentName);
-        String childName = instanceFunctionsDao.queryAsChildType(instanceFunctions1).orElseThrow().getName().orElseThrow();
+        String childName = instanceFunctionsDao.queryAsChildType(instanceFunctions1).get().orElseThrow().getName().orElseThrow();
         assertEquals("Erika Young", childName);
 
         instanceFunctionsDao.addParents(instanceFunctions, ImmutableList.of(parent1));

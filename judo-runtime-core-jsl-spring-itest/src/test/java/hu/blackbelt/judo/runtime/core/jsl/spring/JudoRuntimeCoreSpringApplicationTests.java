@@ -103,7 +103,7 @@ class JudoRuntimeCoreSpringApplicationTests {
                         .build());
 
         assertEquals(Optional.of(100000), lead1.getValue());
-        assertEquals(Optional.of("Test"), leadDao.querySalesPerson(lead1).getFirstName());
+        assertEquals(Optional.of("Test"), leadDao.querySalesPerson(lead1).get().orElseThrow().getFirstName());
 
         Lead lead2 = leadDao.create(
                 Lead.builder()
@@ -114,7 +114,7 @@ class JudoRuntimeCoreSpringApplicationTests {
                         .build()
                 );
         assertEquals(Optional.of(9), lead2.getValue());
-        assertEquals(Optional.of("Test"), leadDao.querySalesPerson(lead2).getFirstName());
+        assertEquals(Optional.of("Test"), leadDao.querySalesPerson(lead2).get().orElseThrow().getFirstName());
 
         List<Lead> leadListOfQuery = salesPersonDao
                 .queryLeadsOver(createdSalesPerson, LeadsOverParameter.builder()
