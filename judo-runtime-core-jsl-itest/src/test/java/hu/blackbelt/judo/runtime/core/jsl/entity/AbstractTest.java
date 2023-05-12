@@ -338,8 +338,7 @@ public class AbstractTest extends AbstractJslTest {
         assertEquals(Optional.of("CompositionSingleChanged"), h.getCompositionIOnHSingle().orElseThrow().getNameI());
         assertEquals(Optional.of("CompositionSingleRequiredChanged"), h.getCompositionIOnHSingleRequired().getNameI());
         h.getCompositionIOnHMulti().stream().forEach(i -> assertEquals(Optional.of("MultiCompositionNameChanged"), i.getNameI()));
-        //TODO JNG-4813
-        //hDao.queryCompositionIOnHMulti.execute().stream().forEach( i -> assertEquals(Optional.of("iMultiRelationNameChanged"),i.getNameI()));
+        hDao.queryCompositionIOnHMulti(h).execute().stream().forEach(i -> assertEquals(Optional.of("iMultiRelationNameChanged"), i.getNameI()));
 
         assertEquals(Optional.of("iOptionalRelationNameChanged"), hDao.queryRelationIOnHSingle(h).execute().get(0).getNameI());
         assertEquals(Optional.of("iRequiredRelationNameChanged"), hDao.queryRelationIOnHSingleRequired(h).execute().get(0).getNameI());
