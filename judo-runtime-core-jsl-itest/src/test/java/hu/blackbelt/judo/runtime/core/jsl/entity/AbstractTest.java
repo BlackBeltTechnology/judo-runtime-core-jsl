@@ -341,8 +341,8 @@ public class AbstractTest extends AbstractJslTest {
         //TODO JNG-4813
         //hDao.queryCompositionIOnHMulti.execute().stream().forEach( i -> assertEquals(Optional.of("iMultiRelationNameChanged"),i.getNameI()));
 
-        assertEquals(Optional.of("iOptionalRelationNameChanged"), hDao.queryRelationIOnHSingle(h).orElseThrow().getNameI());
-        assertEquals(Optional.of("iRequiredRelationNameChanged"), hDao.queryRelationIOnHSingleRequired(h).getNameI());
+        assertEquals(Optional.of("iOptionalRelationNameChanged"), hDao.queryRelationIOnHSingle(h).execute().get(0).getNameI());
+        assertEquals(Optional.of("iRequiredRelationNameChanged"), hDao.queryRelationIOnHSingleRequired(h).execute().get(0).getNameI());
         hDao.queryRelationIOnHMulti(h).execute().stream().forEach(i -> assertEquals(Optional.of("iMultiRelationNameChanged"), i.getNameI()));
 
         //delete with IDao
@@ -403,7 +403,7 @@ public class AbstractTest extends AbstractJslTest {
         h = hDao.getById(h.identifier()).orElseThrow();
 
         assertEquals(Optional.of("SetNewElement"), h.getCompositionIOnHSingle().orElseThrow().getNameI());
-        assertEquals(Optional.of("SetNewElement"), hDao.queryRelationIOnHSingle(h).orElseThrow().getNameI());
+        assertEquals(Optional.of("SetNewElement"), hDao.queryRelationIOnHSingle(h).execute().get(0).getNameI());
 
         //Check if instances of j and i are equal because all instances of j are also instances of i.
         assertEquals(iDao.getAll().size(), jDao.getAll().size());
@@ -416,7 +416,7 @@ public class AbstractTest extends AbstractJslTest {
         h = hDao.getById(h.identifier()).orElseThrow();
 
         assertEquals(Optional.empty(), h.getCompositionIOnHSingle());
-        assertEquals(Optional.empty(), hDao.queryRelationIOnHSingle(h));
+        assertTrue(hDao.queryRelationIOnHSingle(h).execute().isEmpty());
 
         assertEquals(iDao.getAll().size(), jDao.getAll().size());
 
@@ -514,13 +514,13 @@ public class AbstractTest extends AbstractJslTest {
         Q q = qDao.create(Q.builder().build());
         P p = pDao.getById(q.identifier().adaptTo(PIdentifier.class)).orElseThrow();
 
-        assertEquals(p.identifier().getIdentifier(), pDao.queryPany(p).orElseThrow().identifier().getIdentifier());
-        assertEquals(p.identifier().getIdentifier(), pDao.queryPQany(p).orElseThrow().identifier().getIdentifier());
-        assertEquals(q.identifier().getIdentifier(), pDao.queryQany(p).orElseThrow().identifier().getIdentifier());
+        assertEquals(p.identifier().getIdentifier(), pDao.queryPany(p).execute().get(0).identifier().getIdentifier());
+        assertEquals(p.identifier().getIdentifier(), pDao.queryPQany(p).execute().get(0).identifier().getIdentifier());
+        assertEquals(q.identifier().getIdentifier(), pDao.queryQany(p).execute().get(0).identifier().getIdentifier());
 
-        assertEquals(p.identifier().getIdentifier(), qDao.queryPany(q).orElseThrow().identifier().getIdentifier());
-        assertEquals(p.identifier().getIdentifier(), qDao.queryPQany(q).orElseThrow().identifier().getIdentifier());
-        assertEquals(q.identifier().getIdentifier(), qDao.queryQany(q).orElseThrow().identifier().getIdentifier());
+        assertEquals(p.identifier().getIdentifier(), qDao.queryPany(q).execute().get(0).identifier().getIdentifier());
+        assertEquals(p.identifier().getIdentifier(), qDao.queryPQany(q).execute().get(0).identifier().getIdentifier());
+        assertEquals(q.identifier().getIdentifier(), qDao.queryQany(q).execute().get(0).identifier().getIdentifier());
 
     }
 
