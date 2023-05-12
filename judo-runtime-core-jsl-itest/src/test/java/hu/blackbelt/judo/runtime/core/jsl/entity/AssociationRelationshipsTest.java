@@ -227,8 +227,8 @@ public class AssociationRelationshipsTest extends AbstractJslTest {
                 );
 
         assertEquals(2, entityEDao.queryMultipleFOnE(entityE).execute().size());
-        assertEquals(entityE.identifier().getIdentifier(), entityFDao.querySingleEAdded(entityF1).execute().get().orElseThrow().getIdentifier());
-        assertEquals(entityE.identifier().getIdentifier(), entityFDao.querySingleEAdded(entityF2).execute().get().orElseThrow().getIdentifier());
+        assertEquals(entityE.identifier().getIdentifier(), entityFDao.querySingleEAdded(entityF1).get().orElseThrow().identifier().getIdentifier());
+        assertEquals(entityE.identifier().getIdentifier(), entityFDao.querySingleEAdded(entityF2).get().orElseThrow().identifier().getIdentifier());
     }
 
     @Test
