@@ -133,13 +133,13 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
             "REQ-ENT-012"
     })
     void testNullOutOptionalRelationRemovesNested() {
-        assertEquals(singleConA.identifier().getIdentifier(), entityADao.querySingleConA(entityA).get().orElseThrow().identifier().getIdentifier());
+        assertEquals(singleConA.identifier().getIdentifier(), entityADao.querySingleConA(entityA).orElseThrow().identifier().getIdentifier());
         assertEquals(2, entityCDao.query().execute().size());
 
         entityA.setSingleConA(null);
         entityADao.update(entityA);
 
-        assertEquals(Optional.empty(), entityADao.querySingleConA(entityA).get());
+        assertEquals(Optional.empty(), entityADao.querySingleConA(entityA));
         assertEquals(1, entityCDao.query().execute().size());
         assertEquals(Optional.empty(), entityCDao.getById(singleConA.identifier()));
     }
@@ -151,12 +151,12 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
             "REQ-ENT-012"
     })
     void testUnsetOptionalRelationRemovesNested() {
-        assertEquals(singleConA.identifier().getIdentifier(), entityADao.querySingleConA(entityA).get().orElseThrow().identifier().getIdentifier());
+        assertEquals(singleConA.identifier().getIdentifier(), entityADao.querySingleConA(entityA).orElseThrow().identifier().getIdentifier());
         assertEquals(2, entityCDao.query().execute().size());
 
         entityADao.unsetSingleConA(entityA);
 
-        assertEquals(Optional.empty(), entityADao.querySingleConA(entityA).get());
+        assertEquals(Optional.empty(), entityADao.querySingleConA(entityA));
         assertEquals(1, entityCDao.query().execute().size());
         assertEquals(Optional.empty(), entityCDao.getById(singleConA.identifier()));
     }
@@ -168,12 +168,12 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
             "REQ-ENT-012"
     })
     void testDeleteOptionalRelation() {
-        assertEquals(singleConA.identifier().getIdentifier(), entityADao.querySingleConA(entityA).get().orElseThrow().identifier().getIdentifier());
+        assertEquals(singleConA.identifier().getIdentifier(), entityADao.querySingleConA(entityA).orElseThrow().identifier().getIdentifier());
         assertEquals(2, entityCDao.query().execute().size());
 
         entityCDao.delete(singleConA);
 
-        assertEquals(Optional.empty(), entityADao.querySingleConA(entityA).get());
+        assertEquals(Optional.empty(), entityADao.querySingleConA(entityA));
         assertEquals(1, entityCDao.query().execute().size());
     }
 

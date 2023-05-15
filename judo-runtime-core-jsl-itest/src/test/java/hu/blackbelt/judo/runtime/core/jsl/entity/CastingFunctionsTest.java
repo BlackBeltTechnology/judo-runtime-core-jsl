@@ -147,20 +147,20 @@ public class CastingFunctionsTest extends AbstractJslTest {
             "REQ-EXPR-021"
     })
     public void testAsType() {
-        assertEquals("ab", testerDao.queryAsTypeA(tester).get().orElseThrow().getNameA().orElseThrow());
+        assertEquals("ab", testerDao.queryAsTypeA(tester).orElseThrow().getNameA().orElseThrow());
 
-        B b = testerDao.queryAsTypeB(tester).get().orElseThrow();
+        B b = testerDao.queryAsTypeB(tester).orElseThrow();
         assertEquals("ab", b.getNameA().orElseThrow());
         assertEquals("b", b.getNameB().orElseThrow());
 
-        assertTrue(testerDao.queryAsTypeCA(tester).get().isEmpty());
+        assertTrue(testerDao.queryAsTypeCA(tester).isEmpty());
 
-        CA caFromT = testerDao.queryAsTypeCA1(tester).get().orElseThrow();
+        CA caFromT = testerDao.queryAsTypeCA1(tester).orElseThrow();
         assertEquals("aca1", caFromT.getNameA().orElseThrow());
         assertEquals("bca1", caFromT.getNameB().orElseThrow());
         assertEquals("ca1", caFromT.getNameCA().orElseThrow());
 
-        assertTrue(testerDao.queryAsTypeCB(tester).get().isEmpty());
+        assertTrue(testerDao.queryAsTypeCB(tester).isEmpty());
     }
 
     @Test
