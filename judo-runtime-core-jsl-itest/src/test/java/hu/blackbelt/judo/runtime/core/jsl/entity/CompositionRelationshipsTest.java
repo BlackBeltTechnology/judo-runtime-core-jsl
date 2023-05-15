@@ -133,7 +133,7 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
             "REQ-ENT-012"
     })
     void testNullOutOptionalRelationRemovesNested() {
-        assertEquals(Optional.of(singleConA), entityADao.querySingleConA(entityA));
+        assertEquals(singleConA.identifier().getIdentifier(), entityADao.querySingleConA(entityA).orElseThrow().identifier().getIdentifier());
         assertEquals(2, entityCDao.query().execute().size());
 
         entityA.setSingleConA(null);
@@ -151,7 +151,7 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
             "REQ-ENT-012"
     })
     void testUnsetOptionalRelationRemovesNested() {
-        assertEquals(Optional.of(singleConA), entityADao.querySingleConA(entityA));
+        assertEquals(singleConA.identifier().getIdentifier(), entityADao.querySingleConA(entityA).orElseThrow().identifier().getIdentifier());
         assertEquals(2, entityCDao.query().execute().size());
 
         entityADao.unsetSingleConA(entityA);
@@ -168,7 +168,7 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
             "REQ-ENT-012"
     })
     void testDeleteOptionalRelation() {
-        assertEquals(Optional.of(singleConA), entityADao.querySingleConA(entityA));
+        assertEquals(singleConA.identifier().getIdentifier(), entityADao.querySingleConA(entityA).orElseThrow().identifier().getIdentifier());
         assertEquals(2, entityCDao.query().execute().size());
 
         entityCDao.delete(singleConA);

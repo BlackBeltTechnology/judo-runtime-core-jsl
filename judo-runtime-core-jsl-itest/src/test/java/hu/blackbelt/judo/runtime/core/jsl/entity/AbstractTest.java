@@ -132,13 +132,11 @@ public class AbstractTest extends AbstractJslTest {
      *
      */
     @Test
-    @Disabled("JNG-4793")
     @TestCase("AbstractEntitiesHaveNoCreateMethods")
     @Requirement(reqs = {
             "",
     })
     void testAbstractEntitiesHaveNoCreateMethods() {
-
         assertFalse(hasMethodWithName("create", aDao));
         assertFalse(hasMethodWithName("create", bDao));
         assertFalse(hasMethodWithName("create", dDao));
@@ -149,7 +147,6 @@ public class AbstractTest extends AbstractJslTest {
         assertFalse(hasMethodWithName("create", kDao));
         assertFalse(hasMethodWithName("create", oDao));
         assertFalse(hasMethodWithName("create", pDao));
-
     }
 
     /**
@@ -341,8 +338,7 @@ public class AbstractTest extends AbstractJslTest {
         assertEquals(Optional.of("CompositionSingleChanged"), h.getCompositionIOnHSingle().orElseThrow().getNameI());
         assertEquals(Optional.of("CompositionSingleRequiredChanged"), h.getCompositionIOnHSingleRequired().getNameI());
         h.getCompositionIOnHMulti().stream().forEach(i -> assertEquals(Optional.of("MultiCompositionNameChanged"), i.getNameI()));
-        //TODO JNG-4813
-        //hDao.queryCompositionIOnHMulti.execute().stream().forEach( i -> assertEquals(Optional.of("iMultiRelationNameChanged"),i.getNameI()));
+        hDao.queryCompositionIOnHMulti(h).execute().stream().forEach(i -> assertEquals(Optional.of("MultiCompositionNameChanged"), i.getNameI()));
 
         assertEquals(Optional.of("iOptionalRelationNameChanged"), hDao.queryRelationIOnHSingle(h).orElseThrow().getNameI());
         assertEquals(Optional.of("iRequiredRelationNameChanged"), hDao.queryRelationIOnHSingleRequired(h).getNameI());
