@@ -105,7 +105,7 @@ public class AssociationRelationshipsTest extends AbstractJslTest {
 
         entityADao.unsetSingleConA(entityA);
 
-        assertEquals(Optional.empty(), entityADao.querySingleConA(entityA).get());
+        assertEquals(Optional.empty(), entityADao.querySingleConA(entityA));
     }
 
     @Test
