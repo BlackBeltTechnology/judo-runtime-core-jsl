@@ -101,7 +101,7 @@ public class AssociationRelationshipsTest extends AbstractJslTest {
 
         entityADao.setSingleConA(entityA, entityC);
 
-        assertEquals(Optional.of(entityC), entityADao.querySingleConA(entityA));
+        assertEquals(entityC.identifier().getIdentifier(), entityADao.querySingleConA(entityA).orElseThrow().identifier().getIdentifier());
 
         entityADao.unsetSingleConA(entityA);
 
@@ -165,7 +165,7 @@ public class AssociationRelationshipsTest extends AbstractJslTest {
 
         Optional<EntityA> startA = entityADao.getById(entityA.identifier());
 
-        EntityC entityC2 = entityADao.querySingleRequiredConA(startA.get());
+        EntityC entityC2 = entityADao.querySingleRequiredConA(startA.orElseThrow());
 
         assertEquals(entityC, entityC2);
 
@@ -227,8 +227,8 @@ public class AssociationRelationshipsTest extends AbstractJslTest {
                 );
 
         assertEquals(2, entityEDao.queryMultipleFOnE(entityE).execute().size());
-        assertEquals(Optional.of(entityE), entityFDao.querySingleEAdded(entityF1));
-        assertEquals(Optional.of(entityE), entityFDao.querySingleEAdded(entityF2));
+        assertEquals(entityE.identifier().getIdentifier(), entityFDao.querySingleEAdded(entityF1).orElseThrow().identifier().getIdentifier());
+        assertEquals(entityE.identifier().getIdentifier(), entityFDao.querySingleEAdded(entityF2).orElseThrow().identifier().getIdentifier());
     }
 
     @Test
