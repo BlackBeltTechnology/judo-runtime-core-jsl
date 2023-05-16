@@ -39,10 +39,10 @@
             javax.transaction.xa;version=!,
             javax.resource;version="[1.6,2)"
         </osgi-transaction-import>
-        <judo-tatami-jsl-version>1.1.4.20230516_101746_3ee8ad99_develop</judo-tatami-jsl-version>
-        <judo-runtime-core-version>1.0.6.20230516_101259_765b6a3a_develop</judo-runtime-core-version>
-        <judo-psm-generator-sdk-core-version>1.0.0.20230516_152115_c618a36e_bugfix_JNG_4793_SDK_dao_should_not_have_create_method_for_abstract_entities</judo-psm-generator-sdk-core-version>
-        <judo-meta-psm-version>1.3.0.20230516_100351_2fb48f5a_develop</judo-meta-psm-version>
+        <judo-tatami-jsl-version>1.1.4.20230516_200512_833f6090_feature_JNG_4775_UsePsm2SdkGeneratorVol2</judo-tatami-jsl-version>
+        <judo-runtime-core-version>1.0.6.20230516_192419_420ff9d1_feature_JNG_4775_UsePsm2SdkGeneratorVol2</judo-runtime-core-version>
+        <judo-psm-generator-sdk-core-version>1.0.0.20230516_012103_c29c5a17_feature_JNG_4840_FixPayloadValidator</judo-psm-generator-sdk-core-version>
+        <judo-meta-psm-version>1.3.0.20230516_011751_c962ac92_feature_JNG_4840_FixPayloadValidator</judo-meta-psm-version>
 
         <!-- Code Quality-->
         <sonar-maven-plugin-version>3.9.1.2184</sonar-maven-plugin-version>
