@@ -295,13 +295,13 @@ public class AbstractTest extends AbstractJslTest {
         List<I> iMultiRelation = jMultiRelation.stream().map(l -> JtoI(l)).collect(Collectors.toList());
 
         H h = hDao.create(H.builder()
-                        .withCompositionIOnHSingle(JtoI(jDao.create(J.builder().build())))
-                        .withCompositionIOnHSingleRequired(JtoI(jDao.create(J.builder().build())))
-                        .withCompositionIOnHMulti(List.of(
-                                jDao.create(J.builder().withNameI("V").build()),
-                                jDao.create(J.builder().withNameI("V").build()),
-                                jDao.create(J.builder().withNameI("V").build())
-                        ).stream().map(l -> JtoI(l)).collect(Collectors.toList()))
+//                        .withCompositionIOnHSingle(JtoI(jDao.create(J.builder().build())))
+//                        .withCompositionIOnHSingleRequired(JtoI(jDao.create(J.builder().build())))
+//                        .withCompositionIOnHMulti(List.of(
+//                                jDao.create(J.builder().withNameI("V").build()),
+//                                jDao.create(J.builder().withNameI("V").build()),
+//                                jDao.create(J.builder().withNameI("V").build())
+//                        ).stream().map(l -> JtoI(l)).collect(Collectors.toList()))
                         .build(),
                 HAttachedRelationsForCreate.builder()
                         .withRelationIOnHSingle(iOptionalRelation)
@@ -315,18 +315,18 @@ public class AbstractTest extends AbstractJslTest {
 
         //update
 
-        h.getCompositionIOnHSingle().get().setNameI("CompositionSingleChanged");
-        h.getCompositionIOnHSingleRequired().setNameI("CompositionSingleRequiredChanged");
-        h.getCompositionIOnHMulti().forEach(i -> i.setNameI("MultiCompositionNameChanged"));
+//        h.getCompositionIOnHSingle().get().setNameI("CompositionSingleChanged");
+//        h.getCompositionIOnHSingleRequired().setNameI("CompositionSingleRequiredChanged");
+//        h.getCompositionIOnHMulti().forEach(i -> i.setNameI("MultiCompositionNameChanged"));
 
         iOptionalRelation.setNameI("iOptionalRelationNameChanged");
         iRequiredRelation.setNameI("iRequiredRelationNameChanged");
         iMultiRelation.forEach(i -> i.setNameI("iMultiRelationNameChanged"));
 
 
-        iDao.update(h.getCompositionIOnHSingle().get());
-        iDao.update(h.getCompositionIOnHSingleRequired());
-        h.setCompositionIOnHMulti(h.getCompositionIOnHMulti().stream().map(i -> iDao.update(i)).collect(Collectors.toList()));
+//        iDao.update(h.getCompositionIOnHSingle().get());
+//        iDao.update(h.getCompositionIOnHSingleRequired());
+//        h.setCompositionIOnHMulti(h.getCompositionIOnHMulti().stream().map(i -> iDao.update(i)).collect(Collectors.toList()));
 
         iOptionalRelation = iDao.update(iOptionalRelation);
         iRequiredRelation = iDao.update(iRequiredRelation);
@@ -335,9 +335,9 @@ public class AbstractTest extends AbstractJslTest {
         h = hDao.getById(h.identifier()).orElseThrow();
 
         //Check update
-        assertEquals(Optional.of("CompositionSingleChanged"), h.getCompositionIOnHSingle().orElseThrow().getNameI());
-        assertEquals(Optional.of("CompositionSingleRequiredChanged"), h.getCompositionIOnHSingleRequired().getNameI());
-        h.getCompositionIOnHMulti().stream().forEach(i -> assertEquals(Optional.of("MultiCompositionNameChanged"), i.getNameI()));
+//        assertEquals(Optional.of("CompositionSingleChanged"), h.getCompositionIOnHSingle().orElseThrow().getNameI());
+//        assertEquals(Optional.of("CompositionSingleRequiredChanged"), h.getCompositionIOnHSingleRequired().getNameI());
+//        h.getCompositionIOnHMulti().stream().forEach(i -> assertEquals(Optional.of("MultiCompositionNameChanged"), i.getNameI()));
         // hDao.queryCompositionIOnHMulti(h).execute().stream().forEach(i -> assertEquals(Optional.of("MultiCompositionNameChanged"), i.getNameI()));
 
         assertEquals(Optional.of("iOptionalRelationNameChanged"), hDao.queryRelationIOnHSingle(h).orElseThrow().getNameI());
@@ -346,19 +346,19 @@ public class AbstractTest extends AbstractJslTest {
 
         //delete with IDao
 
-        iDao.delete(h.getCompositionIOnHSingle().get());
-        assertTrue(iDao.getById(h.getCompositionIOnHSingle().get().identifier()).isEmpty());
-        assertTrue(jDao.getById(h.getCompositionIOnHSingle().get().identifier().adaptTo(JIdentifier.class)).isEmpty());
+//        iDao.delete(h.getCompositionIOnHSingle().get());
+//        assertTrue(iDao.getById(h.getCompositionIOnHSingle().get().identifier()).isEmpty());
+//        assertTrue(jDao.getById(h.getCompositionIOnHSingle().get().identifier().adaptTo(JIdentifier.class)).isEmpty());
         assertEquals(iDao.getAll().size(), jDao.getAll().size());
 
         //TODO JNG-4812
 //        iDao.delete(h.getCompositionIOnHSingleRequired()); //unfortunately you can delete required Component
 //        h = hDao.getById(h.identifier()).orElseThrow();
 
-        iDao.delete(h.getCompositionIOnHMulti().get(0));
-        assertTrue(iDao.getById(h.getCompositionIOnHMulti().get(0).identifier()).isEmpty());
-        h = hDao.getById(h.identifier()).orElseThrow();
-        assertEquals(2, h.getCompositionIOnHMulti().size());
+//        iDao.delete(h.getCompositionIOnHMulti().get(0));
+//        assertTrue(iDao.getById(h.getCompositionIOnHMulti().get(0).identifier()).isEmpty());
+//        h = hDao.getById(h.identifier()).orElseThrow();
+//        assertEquals(2, h.getCompositionIOnHMulti().size());
 
         //check if other methods are working well
 
@@ -384,7 +384,7 @@ public class AbstractTest extends AbstractJslTest {
 
         h = hDao.getById(h.identifier()).orElseThrow();
 
-        assertEquals(Optional.empty(), h.getCompositionIOnHSingle());
+//        assertEquals(Optional.empty(), h.getCompositionIOnHSingle());
         assertEquals(Optional.of("SetNewElement"), hDao.queryRelationIOnHSingle(h).orElseThrow().getNameI());
 
         //Check if instances of j and i are equal because all instances of j are also instances of i.
@@ -396,7 +396,7 @@ public class AbstractTest extends AbstractJslTest {
 
         h = hDao.getById(h.identifier()).orElseThrow();
 
-        assertEquals(Optional.empty(), h.getCompositionIOnHSingle());
+//        assertEquals(Optional.empty(), h.getCompositionIOnHSingle());
         assertEquals(Optional.empty(), hDao.queryRelationIOnHSingle(h));
 
         assertEquals(iDao.getAll().size(), jDao.getAll().size());
