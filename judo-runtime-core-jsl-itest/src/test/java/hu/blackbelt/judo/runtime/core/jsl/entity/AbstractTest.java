@@ -411,7 +411,6 @@ public class AbstractTest extends AbstractJslTest {
      *
      */
     @Test
-    @Disabled("https://blackbelt.atlassian.net/browse/JNG-4831")
     @TestCase("AbstractEntityRelationsAndCompositionsOnAbstractEntityWithInheritedEntity")
     @Requirement(reqs = {
             "REQ-TYPE-001",
