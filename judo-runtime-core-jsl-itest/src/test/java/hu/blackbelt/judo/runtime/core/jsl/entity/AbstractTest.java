@@ -217,10 +217,10 @@ public class AbstractTest extends AbstractJslTest {
     }
 
     /**
-     *  The test checks all the dao functionality in an Entity with all relation type (Composition, Relation)
+     *  The test checks all the dao functionality in an Entity with all relation type
      *  which return type is an abstract entity, with inherited entity from the abstract entity.
      *
-     *      H has all type of the relations, I is the type of the relations and J is a child entity of J.
+     *      H has all type of the relations, I is the type of the relations and J is a child entity of I.
      *
      * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
@@ -240,7 +240,7 @@ public class AbstractTest extends AbstractJslTest {
      *
      *  Retrieve the relation representations with the help of IDao.
      *
-     *  Create the H instance, with the composition elements inside.
+     *  Create the H instance.
      *
      *  Check if the I and J instance are equals.
      *
@@ -266,7 +266,7 @@ public class AbstractTest extends AbstractJslTest {
      *
      */
     @Test
-    @TestCase("AbstractInheritedEntityRelationsAndCompositionsOnANotAbstractEntity")
+    @TestCase("AbstractInheritedEntityRelationsOnANotAbstractEntity")
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-TYPE-004",
@@ -283,7 +283,7 @@ public class AbstractTest extends AbstractJslTest {
             "REQ-SYNT-003",
             "REQ-SYNT-004"
     })
-    void testAbstractInheritedEntityRelationsAndCompositionsOnANotAbstractEntity() {
+    void testAbstractInheritedEntityRelationsOnANotAbstractEntity() {
 
         //Entity H,I,J
 
@@ -393,7 +393,10 @@ public class AbstractTest extends AbstractJslTest {
     }
 
     /**
-     * [description]
+     *  The test checks all the dao functionality in an abstract Entity with all relation type
+     *  which return type is an abstract entity, with inherited entity from the abstract entity.
+     *
+     *      K has all type of the relations, M is the type of the relations and N is a child entity of M.
      *
      * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
@@ -408,10 +411,49 @@ public class AbstractTest extends AbstractJslTest {
      *
      * @scenario
      *
+     *  Create the relation instance with the MDao.
+     *
+     *  Retrieve the relation representations with the help of NDao.
+     *
+     *  Create the L instance.
+     *
+     *  Retrieve the relation representations with the help of KDao.
+     *
+     *  Check if the L and K instance are equals.
+     *
+     *  Update relations String fields value with the MDao.
+     *
+     *  Check the relations String fields updated in the l representation with the lDao.
+     *
+     *  Check the relations String fields updated in the k representation with the kDao.
+     *
+     *  Delete relations with the MDao.
+     *
+     *  Check if the relations are deleted in the l representation with the lDao.
+     *
+     *  Check if the relations are deleted in the k representation with the kDao.
+     *
+     *  Add relations with the kDao.
+     *
+     *  Check the relations added with the kDao.
+     *
+     *  Check the relations added with the lDao.
+     *
+     *  Remove relations with the kDao.
+     *
+     *  Check if the relations are removed with the kDao.
+     *
+     *  Check if the relations are removed with the lDao.
+     *
+     *  Unset relations with the kDao.
+     *
+     *  Check if the relations are unset with the kDao.
+     *
+     *  Check if the relations are unset with the lDao.
      *
      */
     @Test
-    @TestCase("AbstractEntityRelationsAndCompositionsOnAbstractEntityWithInheritedEntity")
+    @TestCase("AbstractEntityRelationsOnAbstractEntityWithInheritedEntity")
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-TYPE-004",
@@ -428,7 +470,7 @@ public class AbstractTest extends AbstractJslTest {
             "REQ-SYNT-003",
             "REQ-SYNT-004"
     })
-    void testAbstractEntityRelationsAndCompositionsOnAbstractEntityWithInheritedEntity() {
+    void testAbstractEntityRelationsOnAbstractEntityWithInheritedEntity() {
         //TODO JNG-4831
 
         //Entity K.M,N,L
@@ -457,6 +499,8 @@ public class AbstractTest extends AbstractJslTest {
         assertTrue(kDao.getById(l.identifier().adaptTo(KIdentifier.class)).isPresent());
 
         K k = kDao.getById(l.identifier().adaptTo(KIdentifier.class)).orElseThrow();
+
+        assertEquals(lDao.getAll().size(), kDao.getAll().size());
 
         //update
 
