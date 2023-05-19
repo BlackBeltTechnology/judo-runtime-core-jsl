@@ -347,6 +347,17 @@
                         </configuration>
                     </execution>
 
+                    <execution>
+                        <id>generate-psm-test-model-from-artifact-UnmappedTransferModel</id>
+                        <goals>
+                            <goal>parser-workflow</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <sources>${basedir}/src/test/resources/model/UnmappedTransferModel</sources>
+                        </configuration>
+                    </execution>
+
                 </executions>
 
             </plugin>
@@ -757,6 +768,19 @@
                             <destination>${basedir}/target/generated-test-sources/sdk-core/ImportedTypesWithNoFieldDefinitions</destination>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-UnmappedTransfer</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/UnmappedTransfer-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/sdk-core/UnmappedTransfer</destination>
+                        </configuration>
+                    </execution>
 
 
                 </executions>
@@ -805,6 +829,7 @@
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/MappedTransferPrimitives</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/AbstractModel</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/ImportedTypesWithNoFieldDefinitions</source>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/UnmappedTransfer</source>
                             </sources>
                         </configuration>
                    </execution>

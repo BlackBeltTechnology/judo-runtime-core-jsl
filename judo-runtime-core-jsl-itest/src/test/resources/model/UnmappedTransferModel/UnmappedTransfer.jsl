@@ -1,0 +1,15 @@
+model UnmappedTransfer;
+
+import judo::types;
+
+entity Entitiy {
+	query String primitivQuery(String param) =>  "Something";
+}
+
+
+query String primitivQuery(String param) =>  "Something";
+
+
+transfer UnmappedTransfer {
+    field String name;
+}
