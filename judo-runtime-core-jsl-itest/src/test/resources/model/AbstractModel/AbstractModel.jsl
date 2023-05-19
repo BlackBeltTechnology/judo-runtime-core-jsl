@@ -46,7 +46,7 @@ entity J extends I {
 entity abstract K {
     relation M relationMOnKSingle;
     relation required M relationMOnKSingleRequired;
-    relation M[] relationMOnKSingleMOnKMulti;
+    relation M[] relationMOnKMulti;
 }
 
 entity abstract M {
