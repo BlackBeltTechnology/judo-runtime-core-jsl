@@ -1,0 +1,72 @@
+model StaticQueryDaoTest;
+
+import judo::types;
+
+type numeric Scaled(precision = 9, scale = 2);
+
+enum MyEnum {
+    Atomic = 0;
+    Bombastic = 1;
+    Crazy = 2;
+}
+
+// Primitives
+
+entity EntityWithPrimitives {
+    field Integer integerAttr = 1;
+    field Scaled scaledAttr = 2.34;
+    field String stringAttr = "test";
+    field Boolean boolAttr = true;
+    field Date dateAttr = `2022-07-11`;
+    field Time timeAttr = `22:59:59`;
+    field Timestamp timestampAttr = `2022-07-11T19:09:33Z`;
+    field MyEnum enumAttr = MyEnum#Bombastic;
+}
+
+//Integer primitives queries
+query Integer integerWithoutParamQuery() =>  EntityWithPrimitives!all()!any().integerAttr;
+query Integer integerWithParamQuery(Integer num) =>  EntityWithPrimitives!all()!any().integerAttr + num;
+query Integer integerWithDefaultParamQuery(Integer num = 1) =>  EntityWithPrimitives!all()!any().integerAttr + num;
+
+//Scaled primitives queries
+query Scaled scaledWithoutParamQuery() =>  EntityWithPrimitives!all()!any().scaledAttr;
+query Scaled scaledWithParamQuery(Scaled num) =>  EntityWithPrimitives!all()!any().scaledAttr + num;
+query Scaled scaledWithDefaultParamQuery(Scaled num = 2.34) =>  EntityWithPrimitives!all()!any().scaledAttr + num;
+
+//String primitives queries
+query String stringWithoutParamQuery() =>  EntityWithPrimitives!all()!any().stringAttr;
+query String stringWithParamQuery(String string) =>  EntityWithPrimitives!all()!any().stringAttr + string;
+query String stringWithDefaultParamQuery(String string = "hello") =>  EntityWithPrimitives!all()!any().stringAttr + string;
+
+//Boolean primitives queries
+query Boolean booleanWithoutParamQuery() =>  EntityWithPrimitives!all()!any().boolAttr;
+query Boolean booleanWithParamQuery(Boolean bool) =>  EntityWithPrimitives!all()!any().boolAttr and bool;
+query Boolean booleanWithDefaultParamQuery(Boolean bool = true ) =>  EntityWithPrimitives!all()!any().boolAttr and bool;
+
+//Date primitives queries
+query Date dateWithoutParamQuery() =>  EntityWithPrimitives!all()!any().dateAttr;
+query Date dateWithParamQuery(Integer dateYear, Integer dateMonth, Integer dateDay) =>  Date!of(year = dateYear, month = dateMonth, day = dateDay);
+query Date dateWithDefaultParamQuery(Integer dateYear = 2023, Integer dateMonth = 3, Integer dateDay = 3) =>  Date!of(year = dateYear, month = dateMonth, day = dateDay);
+
+
+//Time primitives queries
+query Time timeWithoutParamQuery() =>  EntityWithPrimitives!all()!any().timeAttr;
+query Time timeWithParamQuery(Integer timeHour,Integer timeMinute,Integer timeSecond) =>  Time!of(hour = timeHour, minute = timeMinute, second = timeSecond);
+query Time timeWithDefaultParamQuery(Integer timeHour = 13, Integer timeMinute = 4, Integer timeSecond = 5) =>  Time!of(hour = timeHour, minute = timeMinute, second = timeSecond);
+
+//Enum primitives queries
+query MyEnum enumWithoutParamQuery() =>  EntityWithPrimitives!all()!any().enumAttr;
+
+//Entity queries
+
+entity EntityQueryElement {
+    field String name;
+    field Integer value;
+    field MyEnum category;
+}
+
+//Date primitives queries
+query EntityQueryElement entityWithoutParamQuery() =>  EntityQueryElement!all()!filter(e | e.name == "A")!any();
+query EntityQueryElement entityWithParamQuery(String name, Integer value, MyEnum enum) =>  EntityQueryElement!all()!filter(e | e.name == name and e.value == value and e.category == enum)!any();
+query EntityQueryElement entityWithDefaultParamQuery(String name = "B", Integer value = 2, MyEnum enum = MyEnum#Bombastic) =>  EntityQueryElement!all()!filter(e | e.name == name and e.value == value and e.category == enum)!any();
+
