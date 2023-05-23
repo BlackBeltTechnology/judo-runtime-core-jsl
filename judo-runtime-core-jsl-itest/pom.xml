@@ -71,8 +71,6 @@
                 <version>${judo-tatami-jsl-version}</version>
 
                 <configuration>
-                    <sdkPackagePrefix>hu.blackbelt.judo.runtime.core.jsl.itest</sdkPackagePrefix>
-                    <ignoreAsm2sdk>true</ignoreAsm2sdk>
                     <saveModels>true</saveModels>
                     <destination>${basedir}/target/generated-test-sources/model</destination>
                 </configuration>
