@@ -51,7 +51,7 @@ query Date dateWithDefaultParamQuery(Integer dateYear = 2023, Integer dateMonth 
 
 //Time primitives queries
 query Time timeWithoutParamQuery() =>  EntityWithPrimitives!all()!any().timeAttr;
-query Time timeWithParamQuery(Integer timeHour,Integer timeMinute,Integer timeSecond) =>  Time!of(hour = timeHour, minute = timeMinute, second = timeSecond);
+query Time timeWithParamQuery(Integer timeHour, Integer timeMinute, Integer timeSecond) =>  Time!of(hour = timeHour, minute = timeMinute, second = timeSecond);
 query Time timeWithDefaultParamQuery(Integer timeHour = 13, Integer timeMinute = 4, Integer timeSecond = 5) =>  Time!of(hour = timeHour, minute = timeMinute, second = timeSecond);
 
 //Enum primitives queries
@@ -69,4 +69,3 @@ entity EntityQueryElement {
 query EntityQueryElement entityWithoutParamQuery() =>  EntityQueryElement!all()!filter(e | e.name == "A")!any();
 query EntityQueryElement entityWithParamQuery(String name, Integer value, MyEnum enum) =>  EntityQueryElement!all()!filter(e | e.name == name and e.value == value and e.category == enum)!any();
 query EntityQueryElement entityWithDefaultParamQuery(String name = "B", Integer value = 2, MyEnum enum = MyEnum#Bombastic) =>  EntityQueryElement!all()!filter(e | e.name == name and e.value == value and e.category == enum)!any();
-

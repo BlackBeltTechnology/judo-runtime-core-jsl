@@ -152,44 +152,44 @@ public class TestStaticQueryDao extends AbstractJslTest {
         EntityWithPrimitives entityWithPrimitives = entityWithPrimitivesDao.create(EntityWithPrimitives.builder().build());
 
         //Integer query
-        assertEquals(1,integerWithoutParamQueryDao.execute());
-        assertEquals(2,integerWithParamQueryDao.execute(IntegerWithParamQueryParameter.builder().withNum(1).build()));
-        assertEquals(2,integerWithDefaultParamQueryDao.execute(IntegerWithDefaultParamQueryParameter.builder().build()));
+        assertEquals(1, integerWithoutParamQueryDao.execute());
+        assertEquals(2, integerWithParamQueryDao.execute(IntegerWithParamQueryParameter.builder().withNum(1).build()));
+        assertEquals(2, integerWithDefaultParamQueryDao.execute(IntegerWithDefaultParamQueryParameter.builder().build()));
 
         //Scaled query
-        assertEquals(2.34,scaledWithoutParamQueryDao.execute());
-        assertEquals(3.34,scaledWithParamQueryDao.execute(ScaledWithParamQueryParameter.builder().withNum(1.0).build()));
-        assertEquals(4.68,scaledWithDefaultParamQueryDao.execute(ScaledWithDefaultParamQueryParameter.builder().build()));
+        assertEquals(2.34, scaledWithoutParamQueryDao.execute());
+        assertEquals(3.34, scaledWithParamQueryDao.execute(ScaledWithParamQueryParameter.builder().withNum(1.0).build()));
+        assertEquals(4.68, scaledWithDefaultParamQueryDao.execute(ScaledWithDefaultParamQueryParameter.builder().build()));
 
         //String query
-        assertEquals("test",stringWithoutParamQueryDao.execute());
-        assertEquals("testhello",stringWithParamQueryDao.execute(StringWithParamQueryParameter.builder().withString("hello").build()));
-        assertEquals("testhello",stringWithDefaultParamQueryDao.execute(StringWithDefaultParamQueryParameter.builder().build()));
+        assertEquals("test", stringWithoutParamQueryDao.execute());
+        assertEquals("testhello", stringWithParamQueryDao.execute(StringWithParamQueryParameter.builder().withString("hello").build()));
+        assertEquals("testhello", stringWithDefaultParamQueryDao.execute(StringWithDefaultParamQueryParameter.builder().build()));
 
         //Boolean query
-        assertEquals(true,booleanWithoutParamQueryDao.execute());
-        assertEquals(false,booleanWithParamQueryDao.execute(BooleanWithParamQueryParameter.builder().withBool(false).build()));
-        assertEquals(true,booleanWithDefaultParamQueryDao.execute(BooleanWithDefaultParamQueryParameter.builder().build()));
+        assertEquals(true, booleanWithoutParamQueryDao.execute());
+        assertEquals(false, booleanWithParamQueryDao.execute(BooleanWithParamQueryParameter.builder().withBool(false).build()));
+        assertEquals(true, booleanWithDefaultParamQueryDao.execute(BooleanWithDefaultParamQueryParameter.builder().build()));
 
         //Date query
-        assertEquals(LocalDate.of(2022,7,11),dateWithoutParamQueryDao.execute());
+        assertEquals(LocalDate.of(2022, 7, 11), dateWithoutParamQueryDao.execute());
         assertEquals(
-                LocalDate.of(2023,4,3),
+                LocalDate.of(2023, 4, 3),
                 dateWithParamQueryDao.execute(DateWithParamQueryParameter.builder().withDateYear(2023).withDateMonth(4).withDateDay(3).build())
         );
         assertEquals(
-                LocalDate.of(2023,3,3),
+                LocalDate.of(2023, 3, 3),
                 dateWithDefaultParamQueryDao.execute(DateWithDefaultParamQueryParameter.builder().build())
         );
 
         //Time
-        assertEquals(LocalTime.of(22,59,59),timeWithoutParamQueryDao.execute());
+        assertEquals(LocalTime.of(22, 59, 59), timeWithoutParamQueryDao.execute());
         assertEquals(
-                LocalTime.of(12,24,45),
+                LocalTime.of(12, 24, 45),
                 timeWithParamQueryDao.execute(TimeWithParamQueryParameter.builder().withTimeHour(12).withTimeMinute(24).withTimeSecond(45).build())
         );
         assertEquals(
-                LocalTime.of(13,4,5),
+                LocalTime.of(13, 4, 5),
                 timeWithDefaultParamQueryDao.execute(TimeWithDefaultParamQueryParameter.builder().build())
         );
         //Enum
@@ -198,7 +198,7 @@ public class TestStaticQueryDao extends AbstractJslTest {
 
         entityWithPrimitivesDao.delete(entityWithPrimitives);
 
-        assertEquals(null,integerWithoutParamQueryDao.execute());
+        assertEquals(null, integerWithoutParamQueryDao.execute());
 
     }
 
