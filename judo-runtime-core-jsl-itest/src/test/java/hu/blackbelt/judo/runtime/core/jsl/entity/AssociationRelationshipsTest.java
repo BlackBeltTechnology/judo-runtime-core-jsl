@@ -183,7 +183,13 @@ public class AssociationRelationshipsTest extends AbstractJslTest {
             "REQ-ENT-012"
     })
     public void testDeletingRequiredRelationThrowsException() {
+        IllegalStateException thrown = assertThrows(
+                IllegalStateException.class,
+                () -> entityCDao.delete(entityC)
+        );
 
+        assertTrue(thrown.getMessage().contains("There is mandatory references which is not removable"));
+        assertTrue(thrown.getMessage().contains("#singleRequiredConA"));
     }
 
     @Test

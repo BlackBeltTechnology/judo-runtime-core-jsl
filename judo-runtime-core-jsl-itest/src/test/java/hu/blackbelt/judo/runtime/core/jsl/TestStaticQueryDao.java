@@ -19,14 +19,17 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.staticquerydaotest.stat
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.staticquerydaotest.staticquerydaotest.datewithoutparamquery.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.staticquerydaotest.staticquerydaotest.datewithparamquery.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.staticquerydaotest.staticquerydaotest.datewithdefaultparamquery.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.staticquerydaotest.staticquerydaotest.timestampwithdefaultparamquery.TimestampWithDefaultParamQueryDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.staticquerydaotest.staticquerydaotest.timestampwithdefaultparamquery.TimestampWithDefaultParamQueryParameter;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.staticquerydaotest.staticquerydaotest.timestampwithparamquery.TimestampWithParamQueryDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.staticquerydaotest.staticquerydaotest.timestampwithparamquery.TimestampWithParamQueryParameter;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.staticquerydaotest.staticquerydaotest.timewithoutparamquery.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.staticquerydaotest.staticquerydaotest.timewithparamquery.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.staticquerydaotest.staticquerydaotest.timewithdefaultparamquery.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.staticquerydaotest.staticquerydaotest.timestampwithoutparamquery.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.staticquerydaotest.staticquerydaotest.timewithparamquery.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.staticquerydaotest.staticquerydaotest.timewithdefaultparamquery.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.staticquerydaotest.staticquerydaotest.enumwithoutparamquery.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.staticquerydaotest.staticquerydaotest.entitywithparamquery.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.staticquerydaotest.staticquerydaotest.entitywithdefaultparamquery.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.staticquerydaotest.staticquerydaotest.entitywithoutparamquery.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.staticquerydaotest.staticquerydaotest.entityqueryelement.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.StaticQueryDaoTestDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
@@ -34,6 +37,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Locale;
@@ -99,6 +103,15 @@ public class TestStaticQueryDao extends AbstractJslTest {
     TimeWithParamQueryDao timeWithParamQueryDao;
 
     @Inject
+    TimestampWithoutParamQueryDao timestampWithoutParamQueryDao;
+
+    @Inject
+    TimestampWithParamQueryDao timestampWithParamQueryDao;
+
+    @Inject
+    TimestampWithDefaultParamQueryDao timestampWithDefaultParamQueryDao;
+
+    @Inject
     TimeWithDefaultParamQueryDao timeWithDefaultParamQueryDao;
 
     @Override
@@ -142,6 +155,7 @@ public class TestStaticQueryDao extends AbstractJslTest {
             "REQ-TYPE-006",
             "REQ-TYPE-007",
             "REQ-TYPE-008",
+            "REQ-TYPE-009",
             "REQ-ENT-001",
             "REQ-ENT-002",
             "REQ-ENT-011"
@@ -191,6 +205,22 @@ public class TestStaticQueryDao extends AbstractJslTest {
         assertEquals(
                 LocalTime.of(13, 4, 5),
                 timeWithDefaultParamQueryDao.execute(TimeWithDefaultParamQueryParameter.builder().build())
+        );
+
+        //Timestamp
+        assertEquals(LocalDateTime.parse("2022-07-11T19:09:33"), timestampWithoutParamQueryDao.execute());
+        //TODO JNG-4864
+//        assertEquals(
+//                LocalDateTime.parse("2023-03-03T12:24:45"),
+//                timestampWithParamQueryDao.execute(TimestampWithParamQueryParameter
+//                        .builder()
+//                        .withTimestampDate(LocalDate.of(2023, 3, 3))
+//                        .withTimestampTime(LocalTime.of(12, 24, 45))
+//                        .build())
+//        );
+        assertEquals(
+                LocalDateTime.parse("2021-02-28T10:30:01"),
+                timestampWithDefaultParamQueryDao.execute(TimestampWithDefaultParamQueryParameter.builder().build())
         );
 
         //Enum

@@ -54,6 +54,11 @@ query Time timeWithoutParamQuery() =>  EntityWithPrimitives!all()!any().timeAttr
 query Time timeWithParamQuery(Integer timeHour, Integer timeMinute, Integer timeSecond) =>  Time!of(hour = timeHour, minute = timeMinute, second = timeSecond);
 query Time timeWithDefaultParamQuery(Integer timeHour = 13, Integer timeMinute = 4, Integer timeSecond = 5) =>  Time!of(hour = timeHour, minute = timeMinute, second = timeSecond);
 
+//Timestamp primitives queries
+query Timestamp timestampWithoutParamQuery() =>  EntityWithPrimitives!all()!any().timestampAttr;
+query Timestamp timestampWithParamQuery(Date timestampDate, Time timestampTime) =>  Timestamp!of(date = timestampDate, time = timestampTime);
+query Timestamp timestampWithDefaultParamQuery(Date timestampDate = `2021-02-28`, Time timestampTime = `10:30:01`) =>  Timestamp!of(date = timestampDate, time = timestampTime);
+
 //Enum primitives queries
 query MyEnum enumWithoutParamQuery() =>  EntityWithPrimitives!all()!any().enumAttr;
 
