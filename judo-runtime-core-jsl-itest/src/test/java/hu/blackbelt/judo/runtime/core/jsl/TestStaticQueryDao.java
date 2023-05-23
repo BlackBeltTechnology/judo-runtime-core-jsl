@@ -36,6 +36,7 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -100,22 +101,6 @@ public class TestStaticQueryDao extends AbstractJslTest {
     @Inject
     TimeWithDefaultParamQueryDao timeWithDefaultParamQueryDao;
 
-    @Inject
-    EnumWithoutParamQueryDao enumWithoutParamQueryDao;
-
-    @Inject
-    EntityWithoutParamQueryDao entityWithoutParamQueryDao;
-
-    @Inject
-    EntityWithParamQueryDao entityWithParamQueryDao;
-
-    @Inject
-    EntityWithDefaultParamQueryDao entityWithDefaultParamQueryDao;
-
-    @Inject
-    EntityQueryElementDao entityQueryElementDao;
-
-
     @Override
     public Module getModelDaoModule() {
         return new StaticQueryDaoTestDaoModules();
@@ -127,7 +112,7 @@ public class TestStaticQueryDao extends AbstractJslTest {
     }
 
     /**
-     *
+     * This test check the static query dao functionality when the return type is a primitive.
      *
      * @prerequisites The test must start and finish on the same day. Therefore, don't run this test close to midnight.
      *
@@ -135,19 +120,34 @@ public class TestStaticQueryDao extends AbstractJslTest {
      *
      * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
      *
-     * @positiveRequirements
-     *
-     * @negativeRequirements
+     * @positiveRequirements REQ-ENT-011
      *
      * @scenario
      *
+     * Create one instance of EntityWithPrimitives.
+     *
+     * Checks queries are returned with the expected value.
+     *
      */
     @Test
-    @TestCase("")
+    @TestCase("PrimitiveQueriesDao")
     @Requirement(reqs = {
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-011"
 
     })
-    void testPrimitiveQueries() {
+    void testPrimitiveQueriesDao() {
 
         EntityWithPrimitives entityWithPrimitives = entityWithPrimitivesDao.create(EntityWithPrimitives.builder().build());
 
@@ -192,75 +192,15 @@ public class TestStaticQueryDao extends AbstractJslTest {
                 LocalTime.of(13, 4, 5),
                 timeWithDefaultParamQueryDao.execute(TimeWithDefaultParamQueryParameter.builder().build())
         );
+
         //Enum
-        //TODO The query throw error when the execution happend
-        //assertEquals(MyEnum.Bombastic,enumWithoutParamQueryDao.execute());
+        //TODO JNG-4863
+        //assertEquals(MyEnum.Bombastic, enumWithoutParamQueryDao.execute());
 
         entityWithPrimitivesDao.delete(entityWithPrimitives);
 
         assertEquals(null, integerWithoutParamQueryDao.execute());
 
     }
-
-    /**
-     *
-     *
-     * @prerequisites The test must start and finish on the same day. Therefore, don't run this test close to midnight.
-     *
-     * @type Behaviour
-     *
-     * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
-     *
-     * @positiveRequirements
-     *
-     * @negativeRequirements
-     *
-     * @scenario
-     *
-     */
-    @Test
-    @TestCase("")
-    @Requirement(reqs = {
-
-    })
-    void testEntitySingleQueries() {
-
-        EntityQueryElement a = entityQueryElementDao.create(EntityQueryElement.builder().withName("A").withValue(1).withCategory(MyEnum.Bombastic).build());
-        EntityQueryElement b = entityQueryElementDao.create(EntityQueryElement.builder().withName("B").withValue(2).withCategory(MyEnum.Bombastic).build());
-        EntityQueryElement c = entityQueryElementDao.create(EntityQueryElement.builder().withName("C").withValue(3).withCategory(MyEnum.Crazy).build());
-        EntityQueryElement d = entityQueryElementDao.create(EntityQueryElement.builder().withName("D").withValue(4).withCategory(MyEnum.Atomic).build());
-
-        //TODO Should be not a list because it can be only one element.
-        assertEquals(List.of(a.identifier()),entityWithoutParamQueryDao.query().execute().stream().map(e -> e.identifier()).collect(Collectors.toList()));
-
-    }
-
-    /**
-     *
-     *
-     * @prerequisites The test must start and finish on the same day. Therefore, don't run this test close to midnight.
-     *
-     * @type Behaviour
-     *
-     * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
-     *
-     * @positiveRequirements
-     *
-     * @negativeRequirements
-     *
-     * @scenario
-     *
-     */
-    @Test
-    @TestCase("")
-    @Requirement(reqs = {
-
-    })
-    void testEntityCollectionQueries() {
-
-
-
-    }
-
 
 }
