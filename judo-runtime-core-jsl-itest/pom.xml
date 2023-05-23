@@ -345,6 +345,17 @@
                         </configuration>
                     </execution>
 
+                    <execution>
+                        <id>generate-psm-test-model-from-artifact-StaticQueryDaoTestModel</id>
+                        <goals>
+                            <goal>parser-workflow</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <sources>${basedir}/src/test/resources/model/StaticQueryDaoTestModel</sources>
+                        </configuration>
+                    </execution>
+
                 </executions>
 
             </plugin>
@@ -755,6 +766,19 @@
                             <destination>${basedir}/target/generated-test-sources/sdk-core/ImportedTypesWithNoFieldDefinitions</destination>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-StaticQueryDaoTest</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/StaticQueryDaoTest-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/sdk-core/StaticQueryDaoTest</destination>
+                        </configuration>
+                    </execution>
 
 
                 </executions>
@@ -803,6 +827,7 @@
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/MappedTransferPrimitives</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/AbstractModel</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/ImportedTypesWithNoFieldDefinitions</source>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/StaticQueryDaoTest</source>
                             </sources>
                         </configuration>
                    </execution>
