@@ -2,6 +2,8 @@ package hu.blackbelt.judo.runtime.core.jsl;
 
 import com.google.inject.Inject;
 import com.google.inject.Module;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.staticquerydaotest.staticquerydaotest.entitycollectionwithdefaultparamquery.EntityCollectionWithDefaultParamQueryDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.staticquerydaotest.staticquerydaotest.entitycollectionwithdefaultparamquery.EntityCollectionWithDefaultParamQueryParameter;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.staticquerydaotest.staticquerydaotest.myenum.MyEnum;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.staticquerydaotest.staticquerydaotest.entitywithprimitives.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.staticquerydaotest.staticquerydaotest.integerwithoutparamquery.*;
@@ -27,12 +29,19 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.staticquerydaotest.stat
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.staticquerydaotest.staticquerydaotest.timewithparamquery.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.staticquerydaotest.staticquerydaotest.timewithdefaultparamquery.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.staticquerydaotest.staticquerydaotest.timestampwithoutparamquery.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.staticquerydaotest.staticquerydaotest.timewithparamquery.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.staticquerydaotest.staticquerydaotest.timewithdefaultparamquery.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.staticquerydaotest.staticquerydaotest.enumwithoutparamquery.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.staticquerydaotest.staticquerydaotest.entitywithoutparamquery.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.staticquerydaotest.staticquerydaotest.entitywithparamquery.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.staticquerydaotest.staticquerydaotest.entitywithdefaultparamquery.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.staticquerydaotest.staticquerydaotest.entitycollectionwithoutparamquery.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.staticquerydaotest.staticquerydaotest.entitycollectionwithparamquery.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.staticquerydaotest.staticquerydaotest.entitycollectionwithvalueparamquery.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.staticquerydaotest.staticquerydaotest.entitywithdefaultparamquery.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.staticquerydaotest.staticquerydaotest.entityqueryelement.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.StaticQueryDaoTestDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
+import hu.blackbelt.judo.sdk.query.StringFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
@@ -43,7 +52,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.equalTo;
+import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
 public class TestStaticQueryDao extends AbstractJslTest {
@@ -113,6 +125,35 @@ public class TestStaticQueryDao extends AbstractJslTest {
 
     @Inject
     TimeWithDefaultParamQueryDao timeWithDefaultParamQueryDao;
+
+
+    @Inject
+    EnumWithoutParamQueryDao enumWithoutParamQueryDao;
+
+    @Inject
+    EntityWithoutParamQueryDao entityWithoutParamQueryDao;
+
+    @Inject
+    EntityWithParamQueryDao entityWithParamQueryDao;
+
+    @Inject
+    EntityWithDefaultParamQueryDao entityWithDefaultParamQueryDao;
+
+    @Inject
+    EntityCollectionWithoutParamQueryDao entityCollectionWithoutParamQueryDao;
+
+    @Inject
+    EntityCollectionWithParamQueryDao entityCollectionWithParamQueryDao;
+
+    @Inject
+    EntityCollectionWithValueParamQueryDao entityCollectionWithValueParamQueryDao;
+
+    @Inject
+    EntityCollectionWithDefaultParamQueryDao entityCollectionWithDefaultParamQueryDao;
+
+    @Inject
+    EntityQueryElementDao entityQueryElementDao;
+
 
     @Override
     public Module getModelDaoModule() {
@@ -230,6 +271,237 @@ public class TestStaticQueryDao extends AbstractJslTest {
         entityWithPrimitivesDao.delete(entityWithPrimitives);
 
         assertEquals(null, integerWithoutParamQueryDao.execute());
+
+    }
+
+    /**
+     * This test check the static query dao functionality when the return type is a single Entity.
+     *
+     * @prerequisites The test must start and finish on the same day. Therefore, don't run this test close to midnight.
+     *
+     * @type Behaviour
+     *
+     * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
+     *
+     * @positiveRequirements @positiveRequirements REQ-ENT-011
+     *
+     * @scenario
+     *
+     * Create one instance of EntityQueryElement.
+     *
+     * Checks queries are returned with the expected value.
+     *
+     */
+    @Test
+    @TestCase("EntitySingleQueriesDao")
+    @Requirement(reqs = {
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-011"
+    })
+    void testEntitySingleQueriesDao() {
+
+        EntityQueryElement a = entityQueryElementDao.create(EntityQueryElement.builder().withName("A").withValue(1).withCategory(MyEnum.Bombastic).build());
+        EntityQueryElement b = entityQueryElementDao.create(EntityQueryElement.builder().withName("B").withValue(2).withCategory(MyEnum.Bombastic).build());
+        EntityQueryElement c = entityQueryElementDao.create(EntityQueryElement.builder().withName("C").withValue(3).withCategory(MyEnum.Crazy).build());
+        EntityQueryElement d = entityQueryElementDao.create(EntityQueryElement.builder().withName("D").withValue(4).withCategory(MyEnum.Atomic).build());
+
+        //TODO Should be not a list because it can be only one element.
+        assertEquals(List.of(a.identifier()), entityWithoutParamQueryDao.query().execute().stream().map(e -> e.identifier()).collect(Collectors.toList()));
+        assertEquals(
+                List.of(b.identifier()),
+                entityWithParamQueryDao.query(EntityWithParamQueryParameter
+                        .builder()
+                        .withName("B")
+                        .withValue(2)
+                        .withEnum(MyEnum.Bombastic)
+                        .build()).execute().stream().map(e -> e.identifier()).collect(Collectors.toList())
+        );
+        assertEquals(List.of(b.identifier()), entityWithDefaultParamQueryDao.query().execute().stream().map(e -> e.identifier()).collect(Collectors.toList()));
+
+    }
+
+    /**
+     * This test check the static query dao functionality when the return type is a collection of entities.
+     *
+     * @prerequisites The test must start and finish on the same day. Therefore, don't run this test close to midnight.
+     *
+     * @type Behaviour
+     *
+     * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
+     *
+     * @positiveRequirements @positiveRequirements REQ-ENT-011
+     *
+     * @scenario
+     *
+     * Create one instance of EntityQueryElement.
+     *
+     * Checks queries are returned with the expected value.
+     *
+     */
+    @Test
+    @TestCase("EntityCollectionQueriesDao")
+    @Requirement(reqs = {
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-011"
+    })
+    void testEntityCollectionQueriesDao() {
+
+        EntityQueryElement a = entityQueryElementDao.create(EntityQueryElement.builder().withName("A").withValue(1).withCategory(MyEnum.Bombastic).build());
+        EntityQueryElement b1 = entityQueryElementDao.create(EntityQueryElement.builder().withName("B").withValue(2).withCategory(MyEnum.Bombastic).build());
+        EntityQueryElement b2 = entityQueryElementDao.create(EntityQueryElement.builder().withName("B").withValue(2).withCategory(MyEnum.Bombastic).build());
+        EntityQueryElement c = entityQueryElementDao.create(EntityQueryElement.builder().withName("C").withValue(3).withCategory(MyEnum.Crazy).build());
+        EntityQueryElement d = entityQueryElementDao.create(EntityQueryElement.builder().withName("D").withValue(4).withCategory(MyEnum.Atomic).build());
+        EntityQueryElement e = entityQueryElementDao.create(EntityQueryElement.builder().withName("E").withValue(4).withCategory(MyEnum.Atomic).build());
+        EntityQueryElement f = entityQueryElementDao.create(EntityQueryElement.builder().withName("F").withValue(3).withCategory(MyEnum.Bombastic).build());
+        EntityQueryElement g = entityQueryElementDao.create(EntityQueryElement.builder().withName("G").withValue(3).withCategory(MyEnum.Crazy).build());
+        EntityQueryElement empty = entityQueryElementDao.create(EntityQueryElement.builder().build());
+
+
+        //Without parameter
+        assertEquals(3, entityCollectionWithoutParamQueryDao.query().execute().size());
+        assertThat(
+                entityCollectionWithoutParamQueryDao.query().execute().stream().map(p -> p.identifier()).collect(Collectors.toList()),
+                containsInAnyOrder(c.identifier(), g.identifier(), f.identifier())
+        );
+
+        //With parameter
+        assertThat(
+                entityCollectionWithParamQueryDao.query(EntityCollectionWithParamQueryParameter
+                        .builder()
+                        .withName("B")
+                        .withValue(2)
+                        .withEnum(MyEnum.Bombastic)
+                        .build()).execute().stream().map(p -> p.identifier()).collect(Collectors.toList()),
+                containsInAnyOrder(b1.identifier(), b2.identifier())
+        );
+
+        //This is the expected behaviour
+        List<EntityQueryElement> execute = entityCollectionWithValueParamQueryDao.query().execute();
+        assertEquals(0, execute.size());
+
+        assertThat(
+                entityCollectionWithValueParamQueryDao
+                        .query(EntityCollectionWithValueParamQueryParameter
+                                .builder()
+                                .withValue(4)
+                                .build())
+                        .execute().stream().map(p -> p.identifier()).collect(Collectors.toList()),
+                containsInAnyOrder(d.identifier(), e.identifier())
+        );
+
+        //QueryQueryCustomizer functionality
+
+        //With parameter and filter
+        assertThat(
+                entityCollectionWithValueParamQueryDao
+                        .query(EntityCollectionWithValueParamQueryParameter
+                                .builder()
+                                .withValue(4)
+                                .build())
+                        .filterByName(StringFilter.equalTo("D"))
+                        .execute()
+                        .stream().map(p -> p.identifier()).collect(Collectors.toList()),
+                containsInAnyOrder(d.identifier())
+        );
+
+        //With parameter and limit
+        assertEquals(
+                1,
+                entityCollectionWithValueParamQueryDao
+                        .query(EntityCollectionWithValueParamQueryParameter
+                                .builder()
+                                .withValue(4)
+                                .build())
+                        .limit(1)
+                        .execute().size()
+        );
+
+        //With parameter and maskedBy
+        List<EntityQueryElement> maskedList = entityCollectionWithValueParamQueryDao
+                .query(EntityCollectionWithValueParamQueryParameter
+                        .builder()
+                        .withValue(4)
+                        .build())
+                .maskedBy(EntityQueryElementMask.entityQueryElementMask().withName())
+                .execute();
+
+        assertNull(maskedList.get(0).getCategory());
+        assertNull(maskedList.get(0).getValue());
+        assertNotNull(maskedList.get(0).getName());
+
+        assertNull(maskedList.get(1).getCategory());
+        assertNull(maskedList.get(1).getValue());
+        assertNotNull(maskedList.get(1).getName());
+
+        //With parameter and orderBy
+        List<EntityQueryElement> orderByList = entityCollectionWithValueParamQueryDao
+                .query(EntityCollectionWithValueParamQueryParameter
+                        .builder()
+                        .withValue(4)
+                        .build())
+                .orderBy(EntityQueryElementAttribute.NAME)
+                .execute();
+
+        assertEquals(d.identifier(), orderByList.get(0).identifier());
+        assertEquals(e.identifier(), orderByList.get(1).identifier());
+
+        //With parameter and orderByDesc
+        List<EntityQueryElement> orderByDescList = entityCollectionWithValueParamQueryDao
+                .query(EntityCollectionWithValueParamQueryParameter
+                        .builder()
+                        .withValue(4)
+                        .build())
+                .orderByDescending(EntityQueryElementAttribute.NAME)
+                .execute();
+
+        assertEquals(e.identifier(), orderByDescList.get(0).identifier());
+        assertEquals(d.identifier(), orderByDescList.get(1).identifier());
+
+        //With parameter and count
+        //TODO JNG-4867 Count didn't work
+//        assertEquals(2, entityCollectionWithValueParamQueryDao
+//                .query(EntityCollectionWithValueParamQueryParameter
+//                        .builder()
+//                        .withValue(4)
+//                        .build())
+//                .count()
+//        );
+
+        ///With parameter default
+        assertThat(
+                entityCollectionWithDefaultParamQueryDao.query(EntityCollectionWithDefaultParamQueryParameter
+                                .builder()
+                                .build())
+                        .execute().stream().map(p -> p.identifier()).collect(Collectors.toList()),
+                containsInAnyOrder(b1.identifier(), b2.identifier())
+        );
+
+        assertThat(
+                entityCollectionWithDefaultParamQueryDao.query(EntityCollectionWithDefaultParamQueryParameter
+                                .builder()
+                                .withName("C")
+                                .withValue(3)
+                                .withEnum(MyEnum.Crazy)
+                                .build())
+                        .execute().stream().map(p -> p.identifier()).collect(Collectors.toList()),
+                containsInAnyOrder(c.identifier())
+        );
 
     }
 
