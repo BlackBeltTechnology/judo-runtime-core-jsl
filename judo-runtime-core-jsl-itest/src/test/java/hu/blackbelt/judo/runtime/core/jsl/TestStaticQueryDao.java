@@ -55,7 +55,7 @@ import java.util.stream.Collectors;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
 public class TestStaticQueryDao extends AbstractJslTest {
@@ -317,12 +317,12 @@ public class TestStaticQueryDao extends AbstractJslTest {
         assertEquals(List.of(a.identifier()), entityWithoutParamQueryDao.query().execute().stream().map(e -> e.identifier()).collect(Collectors.toList()));
         assertEquals(
                 List.of(b.identifier()),
-                entityWithParamQueryDao.query().execute(EntityWithParamQueryParameter
+                entityWithParamQueryDao.query(EntityWithParamQueryParameter
                         .builder()
                         .withName("B")
                         .withValue(2)
                         .withEnum(MyEnum.Bombastic)
-                        .build()).stream().map(e -> e.identifier()).collect(Collectors.toList())
+                        .build()).execute().stream().map(e -> e.identifier()).collect(Collectors.toList())
         );
         assertEquals(List.of(b.identifier()), entityWithDefaultParamQueryDao.query().execute().stream().map(e -> e.identifier()).collect(Collectors.toList()));
 
@@ -370,55 +370,136 @@ public class TestStaticQueryDao extends AbstractJslTest {
         EntityQueryElement e = entityQueryElementDao.create(EntityQueryElement.builder().withName("E").withValue(4).withCategory(MyEnum.Atomic).build());
         EntityQueryElement f = entityQueryElementDao.create(EntityQueryElement.builder().withName("F").withValue(3).withCategory(MyEnum.Bombastic).build());
         EntityQueryElement g = entityQueryElementDao.create(EntityQueryElement.builder().withName("G").withValue(3).withCategory(MyEnum.Crazy).build());
+        EntityQueryElement empty = entityQueryElementDao.create(EntityQueryElement.builder().build());
 
 
         //Without parameter
         assertEquals(3, entityCollectionWithoutParamQueryDao.query().execute().size());
-
-        //With parameter
         assertThat(
                 entityCollectionWithoutParamQueryDao.query().execute().stream().map(p -> p.identifier()).collect(Collectors.toList()),
                 containsInAnyOrder(c.identifier(), g.identifier(), f.identifier())
         );
 
+        //With parameter
         assertThat(
-                entityCollectionWithParamQueryDao.query().execute(EntityCollectionWithParamQueryParameter
+                entityCollectionWithParamQueryDao.query(EntityCollectionWithParamQueryParameter
                         .builder()
                         .withName("B")
                         .withValue(2)
                         .withEnum(MyEnum.Bombastic)
-                        .build()).stream().map(p -> p.identifier()).collect(Collectors.toList()),
-                 containsInAnyOrder(b1.identifier(), b2.identifier())
+                        .build()).execute().stream().map(p -> p.identifier()).collect(Collectors.toList()),
+                containsInAnyOrder(b1.identifier(), b2.identifier())
         );
+
+        //This is the expected behaviour
+        List<EntityQueryElement> execute = entityCollectionWithValueParamQueryDao.query().execute();
+        assertEquals(0, execute.size());
+
+        assertThat(
+                entityCollectionWithValueParamQueryDao
+                        .query(EntityCollectionWithValueParamQueryParameter
+                                .builder()
+                                .withValue(4)
+                                .build())
+                        .execute().stream().map(p -> p.identifier()).collect(Collectors.toList()),
+                containsInAnyOrder(d.identifier(), e.identifier())
+        );
+
+        //QueryQueryCustomizer functionality
 
         //With parameter and filter
         assertThat(
                 entityCollectionWithValueParamQueryDao
-                        .query()
+                        .query(EntityCollectionWithValueParamQueryParameter
+                                .builder()
+                                .withValue(4)
+                                .build())
                         .filterByName(StringFilter.equalTo("D"))
-                        .execute(EntityCollectionWithValueParamQueryParameter
-                            .builder()
-                            .withValue(4)
-                            .build())
+                        .execute()
                         .stream().map(p -> p.identifier()).collect(Collectors.toList()),
                 containsInAnyOrder(d.identifier())
         );
 
+        //With parameter and limit
+        assertEquals(
+                1,
+                entityCollectionWithValueParamQueryDao
+                        .query(EntityCollectionWithValueParamQueryParameter
+                                .builder()
+                                .withValue(4)
+                                .build())
+                        .limit(1)
+                        .execute().size()
+        );
+
+        //With parameter and maskedBy
+        List<EntityQueryElement> maskedList = entityCollectionWithValueParamQueryDao
+                .query(EntityCollectionWithValueParamQueryParameter
+                        .builder()
+                        .withValue(4)
+                        .build())
+                .maskedBy(EntityQueryElementMask.entityQueryElementMask().withName())
+                .execute();
+
+        assertNull(maskedList.get(0).getCategory());
+        assertNull(maskedList.get(0).getValue());
+        assertNotNull(maskedList.get(0).getName());
+
+        assertNull(maskedList.get(1).getCategory());
+        assertNull(maskedList.get(1).getValue());
+        assertNotNull(maskedList.get(1).getName());
+
+        //With parameter and orderBy
+        List<EntityQueryElement> orderByList = entityCollectionWithValueParamQueryDao
+                .query(EntityCollectionWithValueParamQueryParameter
+                        .builder()
+                        .withValue(4)
+                        .build())
+                .orderBy(EntityQueryElementAttribute.NAME)
+                .execute();
+
+        assertEquals(d.identifier(), orderByList.get(0).identifier());
+        assertEquals(e.identifier(), orderByList.get(1).identifier());
+
+        //With parameter and orderByDesc
+        List<EntityQueryElement> orderByDescList = entityCollectionWithValueParamQueryDao
+                .query(EntityCollectionWithValueParamQueryParameter
+                        .builder()
+                        .withValue(4)
+                        .build())
+                .orderByDescending(EntityQueryElementAttribute.NAME)
+                .execute();
+
+        assertEquals(e.identifier(), orderByDescList.get(0).identifier());
+        assertEquals(d.identifier(), orderByDescList.get(1).identifier());
+
+        //With parameter and count
+        //TODO JNG-4867 Count didn't work
+//        assertEquals(2, entityCollectionWithValueParamQueryDao
+//                .query(EntityCollectionWithValueParamQueryParameter
+//                        .builder()
+//                        .withValue(4)
+//                        .build())
+//                .count()
+//        );
+
         ///With parameter default
         assertThat(
-                entityCollectionWithDefaultParamQueryDao.query().execute(EntityCollectionWithDefaultParamQueryParameter
-                        .builder()
-                        .build()).stream().map(p -> p.identifier()).collect(Collectors.toList()),
+                entityCollectionWithDefaultParamQueryDao.query(EntityCollectionWithDefaultParamQueryParameter
+                                .builder()
+                                .build())
+                        .execute().stream().map(p -> p.identifier()).collect(Collectors.toList()),
                 containsInAnyOrder(b1.identifier(), b2.identifier())
         );
 
         assertThat(
-                entityCollectionWithDefaultParamQueryDao.query().execute(EntityCollectionWithDefaultParamQueryParameter
-                        .builder()
-                        .withName("C")
-                        .withValue(3)
-                        .withEnum(MyEnum.Crazy)
-                        .build()).stream().map(p -> p.identifier()).collect(Collectors.toList()),
+                entityCollectionWithDefaultParamQueryDao.query(EntityCollectionWithDefaultParamQueryParameter
+                                .builder()
+                                .withName("C")
+                                .withValue(3)
+                                .withEnum(MyEnum.Crazy)
+                                .build())
+                        .execute().stream().map(p -> p.identifier()).collect(Collectors.toList()),
                 containsInAnyOrder(c.identifier())
         );
 
