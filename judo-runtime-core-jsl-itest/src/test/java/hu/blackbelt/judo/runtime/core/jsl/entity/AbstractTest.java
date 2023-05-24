@@ -344,7 +344,7 @@ public class AbstractTest extends AbstractJslTest {
                 () -> iDao.delete(deleteSingleRequiredRelation)
         );
 
-        assertTrue(thrown.getMessage().contains("There is mandatory references which is not removable"));
+        assertTrue(thrown.getMessage().contains("There are mandatory references that cannot be removed"));
         assertTrue(thrown.getMessage().contains("#relationIOnHSingleRequired"));
 
 
@@ -540,7 +540,7 @@ public class AbstractTest extends AbstractJslTest {
                 () -> mDao.delete(deleteSingleRequiredRelation)
         );
 
-        assertTrue(thrown.getMessage().contains("There is mandatory references which is not removable"));
+        assertTrue(thrown.getMessage().contains("There are mandatory references that cannot be removed"));
         assertTrue(thrown.getMessage().contains("#relationMOnKSingleRequired"));
 
         List<M> deleteMultiRelation = kDao.queryRelationMOnKMulti(k).execute();

@@ -42,6 +42,7 @@ import hu.blackbelt.judo.runtime.core.exception.ValidationException;
 import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
 import lombok.extern.slf4j.Slf4j;
+import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -167,6 +168,16 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
             "REQ-ENT-012"
     })
     void testDeleteRequiredRelationThrowsException() {
+        EntityC c = entityADao.querySingleRequiredConA(entityA.identifier());
+        assertNotNull(c);
+        assertNotNull(c.identifier());
+        IllegalStateException exception = assertThrows(
+                IllegalStateException.class,
+                () -> entityCDao.delete(c.identifier())
+        );
+
+        assertThat(exception.getMessage(), CoreMatchers.startsWith("There are mandatory references that cannot be removed"));
+
         entityA.setSingleRequiredConA(null);
         ValidationException thrown = assertThrows(
                 ValidationException.class,
