@@ -206,27 +206,27 @@ public class TestStaticQueryDao extends AbstractJslTest {
 
         EntityWithPrimitives entityWithPrimitives = entityWithPrimitivesDao.create(EntityWithPrimitives.builder().build());
 
-        //Integer query
+        // Integer query
         assertEquals(1, integerWithoutParamQueryDao.execute());
         assertEquals(2, integerWithParamQueryDao.execute(IntegerWithParamQueryParameter.builder().withNum(1).build()));
         assertEquals(2, integerWithDefaultParamQueryDao.execute(IntegerWithDefaultParamQueryParameter.builder().build()));
 
-        //Scaled query
+        // Scaled query
         assertEquals(2.34, scaledWithoutParamQueryDao.execute());
         assertEquals(3.34, scaledWithParamQueryDao.execute(ScaledWithParamQueryParameter.builder().withNum(1.0).build()));
         assertEquals(4.68, scaledWithDefaultParamQueryDao.execute(ScaledWithDefaultParamQueryParameter.builder().build()));
 
-        //String query
+        // String query
         assertEquals("test", stringWithoutParamQueryDao.execute());
         assertEquals("testhello", stringWithParamQueryDao.execute(StringWithParamQueryParameter.builder().withString("hello").build()));
         assertEquals("testhello", stringWithDefaultParamQueryDao.execute(StringWithDefaultParamQueryParameter.builder().build()));
 
-        //Boolean query
+        // Boolean query
         assertEquals(true, booleanWithoutParamQueryDao.execute());
         assertEquals(false, booleanWithParamQueryDao.execute(BooleanWithParamQueryParameter.builder().withBool(false).build()));
         assertEquals(true, booleanWithDefaultParamQueryDao.execute(BooleanWithDefaultParamQueryParameter.builder().build()));
 
-        //Date query
+        // Date query
         assertEquals(LocalDate.of(2022, 7, 11), dateWithoutParamQueryDao.execute());
         assertEquals(
                 LocalDate.of(2023, 4, 3),
@@ -237,7 +237,7 @@ public class TestStaticQueryDao extends AbstractJslTest {
                 dateWithDefaultParamQueryDao.execute(DateWithDefaultParamQueryParameter.builder().build())
         );
 
-        //Time
+        // Time
         assertEquals(LocalTime.of(22, 59, 59), timeWithoutParamQueryDao.execute());
         assertEquals(
                 LocalTime.of(12, 24, 45),
@@ -248,9 +248,9 @@ public class TestStaticQueryDao extends AbstractJslTest {
                 timeWithDefaultParamQueryDao.execute(TimeWithDefaultParamQueryParameter.builder().build())
         );
 
-        //Timestamp
+        // Timestamp
         assertEquals(LocalDateTime.parse("2022-07-11T19:09:33"), timestampWithoutParamQueryDao.execute());
-        //TODO JNG-4864
+        // TODO JNG-4864
 //        assertEquals(
 //                LocalDateTime.parse("2023-03-03T12:24:45"),
 //                timestampWithParamQueryDao.execute(TimestampWithParamQueryParameter
@@ -313,7 +313,7 @@ public class TestStaticQueryDao extends AbstractJslTest {
         EntityQueryElement c = entityQueryElementDao.create(EntityQueryElement.builder().withName("C").withValue(3).withCategory(MyEnum.Crazy).build());
         EntityQueryElement d = entityQueryElementDao.create(EntityQueryElement.builder().withName("D").withValue(4).withCategory(MyEnum.Atomic).build());
 
-        //TODO Should be not a list because it can be only one element.
+        // TODO JNG-4857 Should be not a list because it can be only one element.
         assertEquals(List.of(a.identifier()), entityWithoutParamQueryDao.query().execute().stream().map(e -> e.identifier()).collect(Collectors.toList()));
         assertEquals(
                 List.of(b.identifier()),
@@ -373,14 +373,14 @@ public class TestStaticQueryDao extends AbstractJslTest {
         EntityQueryElement empty = entityQueryElementDao.create(EntityQueryElement.builder().build());
 
 
-        //Without parameter
+        // Without parameter
         assertEquals(3, entityCollectionWithoutParamQueryDao.query().execute().size());
         assertThat(
                 entityCollectionWithoutParamQueryDao.query().execute().stream().map(p -> p.identifier()).collect(Collectors.toList()),
                 containsInAnyOrder(c.identifier(), g.identifier(), f.identifier())
         );
 
-        //With parameter
+        // With parameter
         assertThat(
                 entityCollectionWithParamQueryDao.query(EntityCollectionWithParamQueryParameter
                         .builder()
@@ -391,7 +391,7 @@ public class TestStaticQueryDao extends AbstractJslTest {
                 containsInAnyOrder(b1.identifier(), b2.identifier())
         );
 
-        //This is the expected behaviour
+        // This is the expected behaviour
         List<EntityQueryElement> execute = entityCollectionWithValueParamQueryDao.query().execute();
         assertEquals(0, execute.size());
 
@@ -405,9 +405,9 @@ public class TestStaticQueryDao extends AbstractJslTest {
                 containsInAnyOrder(d.identifier(), e.identifier())
         );
 
-        //QueryQueryCustomizer functionality
+        // QueryQueryCustomizer functionality
 
-        //With parameter and filter
+        // With parameter and filter
         assertThat(
                 entityCollectionWithValueParamQueryDao
                         .query(EntityCollectionWithValueParamQueryParameter
@@ -420,7 +420,7 @@ public class TestStaticQueryDao extends AbstractJslTest {
                 containsInAnyOrder(d.identifier())
         );
 
-        //With parameter and limit
+        // With parameter and limit
         assertEquals(
                 1,
                 entityCollectionWithValueParamQueryDao
@@ -432,7 +432,7 @@ public class TestStaticQueryDao extends AbstractJslTest {
                         .execute().size()
         );
 
-        //With parameter and maskedBy
+        // With parameter and maskedBy
         List<EntityQueryElement> maskedList = entityCollectionWithValueParamQueryDao
                 .query(EntityCollectionWithValueParamQueryParameter
                         .builder()
@@ -449,7 +449,7 @@ public class TestStaticQueryDao extends AbstractJslTest {
         assertNull(maskedList.get(1).getValue());
         assertNotNull(maskedList.get(1).getName());
 
-        //With parameter and orderBy
+        // With parameter and orderBy
         List<EntityQueryElement> orderByList = entityCollectionWithValueParamQueryDao
                 .query(EntityCollectionWithValueParamQueryParameter
                         .builder()
@@ -461,7 +461,7 @@ public class TestStaticQueryDao extends AbstractJslTest {
         assertEquals(d.identifier(), orderByList.get(0).identifier());
         assertEquals(e.identifier(), orderByList.get(1).identifier());
 
-        //With parameter and orderByDesc
+        // With parameter and orderByDesc
         List<EntityQueryElement> orderByDescList = entityCollectionWithValueParamQueryDao
                 .query(EntityCollectionWithValueParamQueryParameter
                         .builder()
@@ -473,7 +473,7 @@ public class TestStaticQueryDao extends AbstractJslTest {
         assertEquals(e.identifier(), orderByDescList.get(0).identifier());
         assertEquals(d.identifier(), orderByDescList.get(1).identifier());
 
-        //With parameter and count
+        // With parameter and count
         //TODO JNG-4867 Count didn't work
 //        assertEquals(2, entityCollectionWithValueParamQueryDao
 //                .query(EntityCollectionWithValueParamQueryParameter
@@ -483,7 +483,7 @@ public class TestStaticQueryDao extends AbstractJslTest {
 //                .count()
 //        );
 
-        ///With parameter default
+        // With parameter default
         assertThat(
                 entityCollectionWithDefaultParamQueryDao.query(EntityCollectionWithDefaultParamQueryParameter
                                 .builder()
