@@ -188,7 +188,7 @@ public class AssociationRelationshipsTest extends AbstractJslTest {
                 () -> entityCDao.delete(entityC)
         );
 
-        assertTrue(thrown.getMessage().contains("There is mandatory references which is not removable"));
+        assertTrue(thrown.getMessage().contains("There are mandatory references that cannot be removed"));
         assertTrue(thrown.getMessage().contains("#singleRequiredConA"));
     }
 
