@@ -5,9 +5,9 @@ import judo::types;
 type numeric Scaled(precision = 9, scale = 2);
 
 enum MyEnum {
-    Atomic = 0;
-    Bombastic = 1;
-    Crazy = 2;
+    Atomic = 22;
+    Bombastic = 333;
+    Crazy = 4444;
 }
 
 // Primitives
