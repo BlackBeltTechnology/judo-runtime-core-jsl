@@ -1,0 +1,49 @@
+model MappedTransferAssociation;
+import judo::types;
+
+//Single relation
+
+entity EntityA {
+    field String nameA;
+    relation EntityB relationBonA;
+    //relation entityB relationBonATwoWay opposite relationAonBTwoWay;
+}
+
+entity EntityB {
+    field String nameB;
+    //relation entityA relationAonBTwoWay opposite relationBonATwoWay;
+}
+
+transfer TransferA (EntityA a) {
+    field String nameB maps a.nameA;
+    field TransferB relationBonA maps a.relationBonA;
+    //field transferB relationConBTwoWay maps a.relationBonATwoWay;
+}
+
+transfer TransferB (EntityB b) {
+    field String nameB maps b.nameB;
+    //field transferA relationAonBTwoWay maps b.relationAonBTwoWay;
+}
+
+//Single required relation
+entity EntityC {
+    field String nameC;
+    relation required EntityD relationDonC;
+    //relation entityD relationDonCTwoWay opposite relationConDTwoWay;
+}
+
+entity EntityD {
+    field String nameD;
+    //relation entityC relationConDTwoWay opposite relationDonCTwoWay;
+}
+
+transfer TransferC (EntityC c) {
+    field String nameC maps c.nameC;
+    field required TransferD relationDonC maps c.relationDonC;
+    //field transferB relationConBTwoWay maps a.relationBonATwoWay;
+}
+
+transfer TransferD (EntityD d) {
+    field String nameD maps d.nameD;
+    //field transferA relationAonBTwoWay maps b.relationAonBTwoWay;
+}
