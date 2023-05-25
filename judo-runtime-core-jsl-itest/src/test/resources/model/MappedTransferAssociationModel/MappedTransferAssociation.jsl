@@ -1,28 +1,49 @@
 model MappedTransferAssociation;
-
 import judo::types;
 
 //Single relation
-entity abstract entityA {
-    relation entityC relationConA;
-    relation entityC relationConATwoWay opposite relationAonCTwoWay;
+
+entity EntityA {
+    field String nameA;
+    relation EntityB relationBonA;
+    //relation entityB relationBonATwoWay opposite relationAonBTwoWay;
 }
 
-entity entityB extends entityA {
-
+entity EntityB {
+    field String nameB;
+    //relation entityA relationAonBTwoWay opposite relationBonATwoWay;
 }
 
-entity entityC {
-    relation entityA relationAonCTwoWay opposite relationConATwoWay;
+transfer TransferA (EntityA a) {
+    field String nameB maps a.nameA;
+    field TransferB relationBonA maps a.relationBonA;
+    //field transferB relationConBTwoWay maps a.relationBonATwoWay;
 }
 
+transfer TransferB (EntityB b) {
+    field String nameB maps b.nameB;
+    //field transferA relationAonBTwoWay maps b.relationAonBTwoWay;
+}
 
 //Single required relation
-entity abstract entityD {
-    relation entityE relationEonD;
-    relation entityE relationEonDTwoWay opposite relationDonETwoWay;
+entity EntityC {
+    field String nameC;
+    relation required EntityD relationDonC;
+    //relation entityD relationDonCTwoWay opposite relationConDTwoWay;
 }
 
-entity entityE {
-    relation entityD relationDonETwoWay opposite relationEonDTwoWay;
+entity EntityD {
+    field String nameD;
+    //relation entityC relationConDTwoWay opposite relationDonCTwoWay;
+}
+
+transfer TransferC (EntityC c) {
+    field String nameC maps c.nameC;
+    field required TransferD relationDonC maps c.relationDonC;
+    //field transferB relationConBTwoWay maps a.relationBonATwoWay;
+}
+
+transfer TransferD (EntityD d) {
+    field String nameD maps d.nameD;
+    //field transferA relationAonBTwoWay maps b.relationAonBTwoWay;
 }
