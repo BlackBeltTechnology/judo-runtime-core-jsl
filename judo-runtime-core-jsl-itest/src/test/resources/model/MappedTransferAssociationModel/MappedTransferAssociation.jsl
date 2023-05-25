@@ -1,0 +1,28 @@
+model MappedTransferAssociation;
+
+import judo::types;
+
+//Single relation
+entity abstract entityA {
+    relation entityC relationConA;
+    relation entityC relationConATwoWay opposite relationAonCTwoWay;
+}
+
+entity entityB extends entityA {
+
+}
+
+entity entityC {
+    relation entityA relationAonCTwoWay opposite relationConATwoWay;
+}
+
+
+//Single required relation
+entity abstract entityD {
+    relation entityE relationEonD;
+    relation entityE relationEonDTwoWay opposite relationDonETwoWay;
+}
+
+entity entityE {
+    relation entityD relationDonETwoWay opposite relationEonDTwoWay;
+}
