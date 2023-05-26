@@ -1,49 +1,89 @@
 model MappedTransferAssociation;
+
 import judo::types;
 
-//Single relation
+// Single relation
 
 entity EntityA {
     field String nameA;
     relation EntityB relationBonA;
-    //relation entityB relationBonATwoWay opposite relationAonBTwoWay;
 }
 
 entity EntityB {
     field String nameB;
-    //relation entityA relationAonBTwoWay opposite relationBonATwoWay;
 }
 
 transfer TransferA (EntityA a) {
     field String nameB maps a.nameA;
     field TransferB relationBonA maps a.relationBonA;
-    //field transferB relationConBTwoWay maps a.relationBonATwoWay;
 }
 
 transfer TransferB (EntityB b) {
     field String nameB maps b.nameB;
-    //field transferA relationAonBTwoWay maps b.relationAonBTwoWay;
 }
 
-//Single required relation
+// Single required relation
 entity EntityC {
     field String nameC;
     relation required EntityD relationDonC;
-    //relation entityD relationDonCTwoWay opposite relationConDTwoWay;
 }
 
 entity EntityD {
     field String nameD;
-    //relation entityC relationConDTwoWay opposite relationDonCTwoWay;
 }
 
 transfer TransferC (EntityC c) {
     field String nameC maps c.nameC;
     field required TransferD relationDonC maps c.relationDonC;
-    //field transferB relationConBTwoWay maps a.relationBonATwoWay;
 }
 
 transfer TransferD (EntityD d) {
     field String nameD maps d.nameD;
-    //field transferA relationAonBTwoWay maps b.relationAonBTwoWay;
+}
+
+// Multi relation
+entity EntityE {
+    field String nameE;
+    relation EntityF[] relationFonE;
+}
+
+entity EntityF {
+    field String nameF;
+}
+
+transfer TransferE (EntityE e) {
+    field String nameE maps e.nameE;
+    field TransferF[] relationFonE maps e.relationFonE;
+}
+
+transfer TransferF (EntityF f) {
+    field String nameF maps f.nameF;
+}
+
+// Navigation trought transfers
+
+entity EntityG {
+    field String nameG;
+    relation EntityH relationHonG;
+}
+
+entity EntityH {
+    relation EntityJ[] relationJonH;
+}
+
+entity EntityJ {
+    field String nameJ;
+}
+
+transfer TransferG (EntityG g) {
+    field String nameF maps g.nameG;
+    field TransferH relationHonG maps g.relationHonG;
+}
+
+transfer TransferH (EntityH h) {
+    field TransferJ[] relationJonH maps h.relationJonH;
+}
+
+transfer TransferJ (EntityJ j) {
+        field String nameJ maps j.nameJ;
 }
