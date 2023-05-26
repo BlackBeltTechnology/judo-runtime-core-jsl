@@ -282,7 +282,7 @@ public class TestStaticQueryDao extends AbstractJslTest {
      *
      * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
      *
-     * @positiveRequirements @positiveRequirements REQ-ENT-011
+     * @positiveRequirements REQ-ENT-011
      *
      * @scenario
      *
@@ -336,7 +336,7 @@ public class TestStaticQueryDao extends AbstractJslTest {
      *
      * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
      *
-     * @positiveRequirements @positiveRequirements REQ-ENT-011
+     * @positiveRequirements REQ-ENT-011
      *
      * @scenario
      *
