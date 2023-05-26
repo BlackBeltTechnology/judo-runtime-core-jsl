@@ -265,12 +265,11 @@ public class TestStaticQueryDao extends AbstractJslTest {
         );
 
         //Enum
-        //TODO JNG-4863
-        //assertEquals(MyEnum.Bombastic, enumWithoutParamQueryDao.execute());
+        assertEquals(MyEnum.Bombastic, enumWithoutParamQueryDao.execute());
 
         entityWithPrimitivesDao.delete(entityWithPrimitives);
 
-        assertEquals(null, integerWithoutParamQueryDao.execute());
+        assertNull(integerWithoutParamQueryDao.execute());
 
     }
 
