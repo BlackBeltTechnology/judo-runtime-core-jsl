@@ -198,7 +198,7 @@ public class MappedTransferAssociationTest extends AbstractJslTest {
      *
      */
     @Test
-    @TestCase("SingleRequeredRelationOnTransfer")
+    @TestCase("SingleRequiredRelationOnTransfer")
     @Requirement(reqs = {
             "REQ-MDL-001",
             "REQ-MDL-002",
@@ -211,7 +211,7 @@ public class MappedTransferAssociationTest extends AbstractJslTest {
             "REQ-ENT-005",
             "REQ-SRV-001"
     })
-    public void testSingleRequeredRelationOnTransfer() {
+    public void testSingleRequiredRelationOnTransfer() {
 
         TransferD td1 = transferDDao.create(TransferD.builder().build());
         TransferD td2 = transferDDao.create(TransferD.builder().build());
