@@ -1,0 +1,3 @@
+model MappedTransferAggregation;
+
+import judo::types;
