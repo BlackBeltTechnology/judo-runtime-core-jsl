@@ -312,18 +312,17 @@ public class TestStaticQueryDao extends AbstractJslTest {
         EntityQueryElement c = entityQueryElementDao.create(EntityQueryElement.builder().withName("C").withValue(3).withCategory(MyEnum.Crazy).build());
         EntityQueryElement d = entityQueryElementDao.create(EntityQueryElement.builder().withName("D").withValue(4).withCategory(MyEnum.Atomic).build());
 
-        // TODO JNG-4857 Should be not a list because it can be only one element.
-        assertEquals(List.of(a.identifier()), entityWithoutParamQueryDao.query().execute().stream().map(e -> e.identifier()).collect(Collectors.toList()));
+        assertEquals(a.identifier(), entityWithoutParamQueryDao.execute().map(e -> e.identifier()).orElseThrow());
         assertEquals(
-                List.of(b.identifier()),
-                entityWithParamQueryDao.query(EntityWithParamQueryParameter
+                b.identifier(),
+                entityWithParamQueryDao.execute(EntityWithParamQueryParameter
                         .builder()
                         .withName("B")
                         .withValue(2)
                         .withEnum(MyEnum.Bombastic)
-                        .build()).execute().stream().map(e -> e.identifier()).collect(Collectors.toList())
+                        .build()).map(e -> e.identifier()).orElseThrow()
         );
-        assertEquals(List.of(b.identifier()), entityWithDefaultParamQueryDao.query().execute().stream().map(e -> e.identifier()).collect(Collectors.toList()));
+        assertEquals(b.identifier(), entityWithDefaultParamQueryDao.execute().map(e -> e.identifier()).orElseThrow());
 
     }
 
