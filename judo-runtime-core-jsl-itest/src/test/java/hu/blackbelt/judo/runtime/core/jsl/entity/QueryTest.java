@@ -40,8 +40,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
 public class QueryTest extends AbstractJslTest {
@@ -88,7 +87,7 @@ public class QueryTest extends AbstractJslTest {
 
         assertEquals(2, totalNumberOfLeadsDao.execute());
         assertEquals(2, rootAllLeadsDao.query().execute().size());
-        assertNotNull(rootOneLeadDao.execute());
+        assertTrue(rootOneLeadDao.execute().isPresent());
 
         List<Lead> rootAllLeadsBetween = rootAllLeadsBetweenDao.query(RootAllLeadsBetweenParameter.builder().withMax(80).withMin(10).build()).execute();
         assertEquals(1, rootAllLeadsBetween.size());
