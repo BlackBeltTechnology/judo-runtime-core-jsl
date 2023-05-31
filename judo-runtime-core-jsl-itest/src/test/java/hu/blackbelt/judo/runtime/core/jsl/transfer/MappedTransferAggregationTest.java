@@ -26,10 +26,18 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferaggregati
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferaggregation.mappedtransferaggregation.entityb.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferaggregation.mappedtransferaggregation.entityc.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferaggregation.mappedtransferaggregation.entityd.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferaggregation.mappedtransferaggregation.entitye.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferaggregation.mappedtransferaggregation.entityf.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferaggregation.mappedtransferaggregation.entityg.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferaggregation.mappedtransferaggregation.transfera.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferaggregation.mappedtransferaggregation.transferb.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferaggregation.mappedtransferaggregation.transferc.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferaggregation.mappedtransferaggregation.transferd.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferaggregation.mappedtransferaggregation.transfere.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferaggregation.mappedtransferaggregation.transferf.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferaggregation.mappedtransferaggregation.transferg.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociation.mappedtransferassociation.transferh.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociation.mappedtransferassociation.transferj.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.MappedTransferAggregationDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
@@ -39,7 +47,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.Matchers.equalTo;
@@ -73,6 +80,25 @@ public class MappedTransferAggregationTest extends AbstractJslTest {
     @Inject
     TransferDDao transferDDao;
 
+    @Inject
+    EntityEDao entityEDao;
+
+    @Inject
+    TransferEDao transferEDao;
+
+    @Inject
+    EntityFDao entityFDao;
+
+    @Inject
+    TransferFDao transferFDao;
+
+
+    @Inject
+    EntityGDao entityGDao;
+
+    @Inject
+    TransferGDao transferGDao;
+
 
     @Override
     public Module getModelDaoModule() {
@@ -97,13 +123,9 @@ public class MappedTransferAggregationTest extends AbstractJslTest {
      *
      * @positiveRequirements REQ-ENT-005
      *
-     * @senario
-     *
-     *
-     *
      */
     @Test
-    @TestCase("SingleAggregationBindingOnTransfer")
+    @TestCase("SingleAggregationOnTransfer")
     @Requirement(reqs = {
             "REQ-MDL-001",
             "REQ-MDL-002",
@@ -116,7 +138,7 @@ public class MappedTransferAggregationTest extends AbstractJslTest {
             "REQ-ENT-005",
             "REQ-SRV-001"
     })
-    public void testSingleAggregationBindingOnTransfer() {
+    public void testSingleAggregationOnTransfer() {
 
         TransferB transferB = transferBDao.create(TransferB.builder().withNameB("B1").build());
 
@@ -146,7 +168,6 @@ public class MappedTransferAggregationTest extends AbstractJslTest {
         );
         assertTrue(thrown.getMessage().contains("Identifier cannot be different on containment reference element"));
         assertTrue(thrown.getMessage().contains("#singleEntityB"));
-
 
         // Check transferA can set to null
         transferA.setSingleEntityB(null);
@@ -187,13 +208,9 @@ public class MappedTransferAggregationTest extends AbstractJslTest {
      *
      * @positiveRequirements REQ-ENT-005
      *
-     * @senario
-     *
-     *
-     *
      */
     @Test
-    @TestCase("SingleRequiredAggregationBindingOnTransfer")
+    @TestCase("SingleRequiredAggregationOnTransfer")
     @Requirement(reqs = {
             "REQ-MDL-001",
             "REQ-MDL-002",
@@ -206,7 +223,7 @@ public class MappedTransferAggregationTest extends AbstractJslTest {
             "REQ-ENT-005",
             "REQ-SRV-001"
     })
-    public void testSingleRequiredAggregationBindingOnTransfer() {
+    public void testSingleRequiredAggregationOnTransfer() {
 
         TransferD transferD = transferDDao.create(TransferD.builder().withNameD("D1").build());
 
@@ -266,13 +283,9 @@ public class MappedTransferAggregationTest extends AbstractJslTest {
      *
      * @positiveRequirements REQ-ENT-005
      *
-     * @senario
-     *
-     *
-     *
      */
     @Test
-    @TestCase("MultiCompositonAggregationBindingOnTransfer")
+    @TestCase("MultiAggregationOnTransfer")
     @Requirement(reqs = {
             "REQ-MDL-001",
             "REQ-MDL-002",
@@ -285,7 +298,7 @@ public class MappedTransferAggregationTest extends AbstractJslTest {
             "REQ-ENT-005",
             "REQ-SRV-001"
     })
-    public void testMultiCompositonAggregationBindingOnTransfer() {
+    public void testMultiAggregationOnTransfer() {
 
         TransferB transferB1 = transferBDao.create(TransferB.builder().withNameB("B1").build());
         TransferB transferB2 = transferBDao.create(TransferB.builder().withNameB("B2").build());
@@ -339,6 +352,59 @@ public class MappedTransferAggregationTest extends AbstractJslTest {
 //        transferADao.createMultiEntityB(transferA, List.of(TransferB.builder().build()));
 //        assertEquals(1, transferADao.countMultiEntityB(transferA));
 
+    }
+
+    /**
+     * The test checks the navigation between aggregations work well on transfer object.
+     *
+     * @prerequisites The test must start and finish on the same day. Therefore, don't run this test close to midnight.
+     *
+     * @type Behaviour
+     *
+     * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
+     *
+     * @jslModel MappedTransferAggregation.jsl
+     *
+     * @positiveRequirements REQ-ENT-005
+     *
+     *
+     */
+    @Test
+    @TestCase("AggregationNavigationOnTransfer")
+    @Requirement(reqs = {
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-SRV-001"
+    })
+    public void testAggregationNavigationOnTransfer() {
+
+        TransferE transferE = transferEDao.create(TransferE
+                .builder()
+                .withSingleEntityF(transferFDao.create(TransferF
+                        .builder()
+                        .withMultiEntityG(List.of(
+                                transferGDao.create(TransferG.builder().build()),
+                                transferGDao.create(TransferG.builder().build()),
+                                transferGDao.create(TransferG.builder().build())
+                        ))
+                        .build())
+                )
+                .build());
+
+        TransferF transferF = transferE.getSingleEntityF().get();
+        List<TransferGIdentifier> listOfG = transferE.getSingleEntityF().get().getMultiEntityG().stream().map(t -> t.identifier()).toList();
+
+        assertThat(
+                transferF.getMultiEntityG().stream().map(t -> t.identifier()).toList(),
+                containsInAnyOrder(listOfG.toArray())
+        );
     }
 
 }

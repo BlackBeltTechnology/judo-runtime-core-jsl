@@ -39,3 +39,29 @@ transfer TransferC (EntityC c) {
 transfer TransferD (EntityD d) {
     field String nameD maps d.nameD;
 }
+
+// Navigation trough transfers
+
+entity EntityE {
+    field EntityF singleEntityF;
+}
+
+entity EntityF {
+    field EntityG[] multiEntityG;
+}
+
+entity EntityG {
+    field String nameG;
+}
+
+transfer TransferE (EntityE e) {
+    field TransferF singleEntityF maps e.singleEntityF;
+}
+
+transfer TransferF (EntityF f) {
+    field TransferG[] multiEntityG maps f.multiEntityG;
+}
+
+transfer TransferG (EntityG g) {
+        field String nameG maps g.nameG;
+}
