@@ -250,15 +250,14 @@ public class TestStaticQueryDao extends AbstractJslTest {
 
         // Timestamp
         assertEquals(LocalDateTime.parse("2022-07-11T19:09:33"), timestampWithoutParamQueryDao.execute());
-        // TODO JNG-4864
-//        assertEquals(
-//                LocalDateTime.parse("2023-03-03T12:24:45"),
-//                timestampWithParamQueryDao.execute(TimestampWithParamQueryParameter
-//                        .builder()
-//                        .withTimestampDate(LocalDate.of(2023, 3, 3))
-//                        .withTimestampTime(LocalTime.of(12, 24, 45))
-//                        .build())
-//        );
+        assertEquals(
+                LocalDateTime.parse("2023-03-03T12:24:45"),
+                timestampWithParamQueryDao.execute(TimestampWithParamQueryParameter
+                        .builder()
+                        .withTimestampDate(LocalDate.of(2023, 3, 3))
+                        .withTimestampTime(LocalTime.of(12, 24, 45))
+                        .build())
+        );
         assertEquals(
                 LocalDateTime.parse("2021-02-28T10:30:01"),
                 timestampWithDefaultParamQueryDao.execute(TimestampWithDefaultParamQueryParameter.builder().build())
