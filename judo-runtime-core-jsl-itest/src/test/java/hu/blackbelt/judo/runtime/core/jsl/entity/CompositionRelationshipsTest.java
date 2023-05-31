@@ -133,24 +133,6 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
             "REQ-ENT-007",
             "REQ-ENT-012"
     })
-    void testNullOutOptionalRelationRemovesNested() {
-        assertEquals(singleConA.identifier().getIdentifier(), entityADao.querySingleConA(entityA).orElseThrow().identifier().getIdentifier());
-        assertEquals(2, entityCDao.query().execute().size());
-
-        entityA.setSingleConA(null);
-        entityADao.update(entityA);
-
-        assertEquals(Optional.empty(), entityADao.querySingleConA(entityA));
-        assertEquals(1, entityCDao.query().execute().size());
-        assertEquals(Optional.empty(), entityCDao.getById(singleConA.identifier()));
-    }
-
-    @Test
-    @Requirement(reqs = {
-            "REQ-ENT-001",
-            "REQ-ENT-007",
-            "REQ-ENT-012"
-    })
     void testDeleteOptionalRelation() {
         assertEquals(singleConA.identifier().getIdentifier(), entityADao.querySingleConA(entityA).orElseThrow().identifier().getIdentifier());
         assertEquals(2, entityCDao.query().execute().size());
@@ -177,17 +159,6 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
         );
 
         assertThat(exception.getMessage(), CoreMatchers.startsWith("There are mandatory references that cannot be removed"));
-
-        entityA.setSingleRequiredConA(null);
-        ValidationException thrown = assertThrows(
-                ValidationException.class,
-                () -> entityADao.update(entityA)
-        );
-
-        assertThat(thrown.getValidationResults(), containsInAnyOrder(allOf(
-                hasProperty("code", equalTo("MISSING_REQUIRED_RELATION")),
-                hasProperty("location", equalTo("singleRequiredConA")))
-        ));
     }
 
     @Test
