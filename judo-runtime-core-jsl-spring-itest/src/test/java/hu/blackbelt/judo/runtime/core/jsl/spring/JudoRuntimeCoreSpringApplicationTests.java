@@ -133,7 +133,7 @@ class JudoRuntimeCoreSpringApplicationTests {
 
         assertEquals(2, totalNumberOfLeadsDao.execute());
         assertEquals(2, rootAllLeadsDao.query().execute().size());
-        assertNotNull(rootOneLeadDao.query().execute());
+        assertTrue(rootOneLeadDao.execute().isPresent());
     }
 
 
