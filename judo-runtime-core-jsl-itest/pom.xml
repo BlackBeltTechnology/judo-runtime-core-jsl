@@ -355,6 +355,16 @@
                             <sources>${basedir}/src/test/resources/model/StaticQueryDaoTestModel</sources>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>generate-psm-test-model-from-artifact-MappedTransferAssociationModel</id>
+                        <goals>
+                            <goal>parser-workflow</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <sources>${basedir}/src/test/resources/model/MappedTransferAssociationModel</sources>
+                        </configuration>
+                    </execution>
 
                 </executions>
 
@@ -779,6 +789,19 @@
                             <destination>${basedir}/target/generated-test-sources/sdk-core/StaticQueryDaoTest</destination>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-MappedTransferAssociation</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/MappedTransferAssociation-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/sdk-core/MappedTransferAssociation</destination>
+                        </configuration>
+                    </execution>
 
 
                 </executions>
@@ -828,6 +851,7 @@
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/AbstractModel</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/ImportedTypesWithNoFieldDefinitions</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/StaticQueryDaoTest</source>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/MappedTransferAssociation</source>
                             </sources>
                         </configuration>
                    </execution>

@@ -265,12 +265,11 @@ public class TestStaticQueryDao extends AbstractJslTest {
         );
 
         //Enum
-        //TODO JNG-4863
-        //assertEquals(MyEnum.Bombastic, enumWithoutParamQueryDao.execute());
+        assertEquals(MyEnum.Bombastic, enumWithoutParamQueryDao.execute());
 
         entityWithPrimitivesDao.delete(entityWithPrimitives);
 
-        assertEquals(null, integerWithoutParamQueryDao.execute());
+        assertNull(integerWithoutParamQueryDao.execute());
 
     }
 
@@ -283,7 +282,7 @@ public class TestStaticQueryDao extends AbstractJslTest {
      *
      * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
      *
-     * @positiveRequirements @positiveRequirements REQ-ENT-011
+     * @positiveRequirements REQ-ENT-011
      *
      * @scenario
      *
@@ -337,7 +336,7 @@ public class TestStaticQueryDao extends AbstractJslTest {
      *
      * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
      *
-     * @positiveRequirements @positiveRequirements REQ-ENT-011
+     * @positiveRequirements REQ-ENT-011
      *
      * @scenario
      *
