@@ -1,0 +1,41 @@
+model MappedTransferAggregation;
+
+import judo::types;
+
+// not required Single and Multi
+entity EntityA {
+    field EntityB singleEntityB;
+    field EntityB[] multiEntityB;
+}
+
+entity EntityB {
+    field String nameB;
+}
+
+transfer TransferA (EntityA a) {
+    field TransferB singleEntityB maps a.singleEntityB;
+    field TransferB[] multiEntityB maps a.multiEntityB;
+}
+
+transfer TransferB (EntityB b) {
+    field String nameB maps b.nameB;
+}
+
+// required single
+
+entity EntityC {
+    field required EntityD singleRequiredEntityD;
+}
+
+entity EntityD {
+    field String nameD;
+}
+
+transfer TransferC (EntityC c) {
+    field required TransferD singleRequiredEntityD maps c.singleRequiredEntityD;
+
+}
+
+transfer TransferD (EntityD d) {
+    field String nameD maps d.nameD;
+}
