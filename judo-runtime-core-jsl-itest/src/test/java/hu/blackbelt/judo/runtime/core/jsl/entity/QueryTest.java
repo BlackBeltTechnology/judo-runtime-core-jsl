@@ -88,7 +88,7 @@ public class QueryTest extends AbstractJslTest {
 
         assertEquals(2, totalNumberOfLeadsDao.execute());
         assertEquals(2, rootAllLeadsDao.query().execute().size());
-        assertNotNull(rootOneLeadDao.query().execute());
+        assertNotNull(rootOneLeadDao.execute());
 
         List<Lead> rootAllLeadsBetween = rootAllLeadsBetweenDao.query(RootAllLeadsBetweenParameter.builder().withMax(80).withMin(10).build()).execute();
         assertEquals(1, rootAllLeadsBetween.size());
