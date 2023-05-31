@@ -162,16 +162,18 @@ public class MappedTransferAggregationTest extends AbstractJslTest {
 
         // Check transferA cannot bind a different B element
         transferA.setSingleEntityB(transferBDao.create(TransferB.builder().withNameB("B2").build()));
+
+        TransferA referenceForLambda = transferA;
         IllegalStateException thrown = assertThrows(
                 IllegalStateException.class,
-                () -> transferADao.update(transferA)
+                () -> transferADao.update(referenceForLambda)
         );
         assertTrue(thrown.getMessage().contains("Identifier cannot be different on containment reference element"));
         assertTrue(thrown.getMessage().contains("#singleEntityB"));
 
         // Check transferA can set to null
         transferA.setSingleEntityB(null);
-        transferADao.update(transferA);
+        transferA = transferADao.update(transferA);
 
         assertTrue(transferA.getSingleEntityB().isEmpty());
         assertTrue(entityADao.getById(transferA.adaptTo(EntityAIdentifier.class)).orElseThrow().getSingleEntityB().isEmpty());
@@ -179,15 +181,17 @@ public class MappedTransferAggregationTest extends AbstractJslTest {
         assertTrue(entityBDao.getById(transferB.identifier().adaptTo(EntityBIdentifier.class)).isEmpty());
 
         // Check transferA cannot bind a new B element
+        TransferA referenceForLambda1 = transferA;
         transferB = transferBDao.create(TransferB.builder().withNameB("B2").build());
         transferA.setSingleEntityB(transferB);
 
         IllegalStateException thrown1 = assertThrows(
                 IllegalStateException.class,
-                () -> transferADao.update(transferA)
+                () -> transferADao.update(referenceForLambda1)
         );
         assertTrue(thrown1.getMessage().contains("Identifier cannot be set on new association reference element"));
         assertTrue(thrown1.getMessage().contains("#singleEntityB"));
+
 
         //TODO JNG-4877 create dao function throw error
 //        transferADao.createSingleEntityB(transferA, TransferB.builder().withNameB("B2").build());
