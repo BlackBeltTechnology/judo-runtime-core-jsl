@@ -393,9 +393,7 @@ public class TestStaticQueriesWithConstantParameters extends AbstractJslTest {
         Optional<Snapshot1> s12FromDatabseOpt = snapshot1Dao.getById(s12.identifier());
         assertTrue(s12FromDatabseOpt.isPresent());
         Snapshot1 s12FromDatabse = s12FromDatabseOpt.get();
-        List<Serializable> lastAddedEntity = lastAddedMyEntityDao.query().execute().stream().map(e -> e.identifier().getIdentifier()).collect(Collectors.toList());
-        assertEquals(1, lastAddedEntity.size());
-        Set<Serializable> lastAddedEntitySet = new HashSet<>(lastAddedEntity);
+        Serializable lastAddedEntity = lastAddedMyEntityDao.execute().map(e -> e.identifier().getIdentifier()).orElseThrow();
 
         assertTrue(s12FromDatabse.getCreated().isPresent());
         assertTrue(LocalDateTime.now().minusSeconds(2).isBefore(s12FromDatabse.getCreated().orElseThrow()));
@@ -413,6 +411,6 @@ public class TestStaticQueriesWithConstantParameters extends AbstractJslTest {
         assertTrue(s12FromDatabse.getFfEnum().isPresent());
         assertEquals(MyEnum.A02, s12FromDatabse.getFfEnum().orElseThrow());
 
-        assertEquals(Set.of(e5.identifier().getIdentifier()), lastAddedEntitySet);
+        assertEquals(e5.identifier().getIdentifier(), lastAddedEntity);
     }
 }

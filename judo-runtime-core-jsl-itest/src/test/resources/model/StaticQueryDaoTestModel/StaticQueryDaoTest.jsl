@@ -76,7 +76,6 @@ query EntityQueryElement entityWithParamQuery(String name, Integer value, MyEnum
 query EntityQueryElement entityWithDefaultParamQuery(String name = "B", Integer value = 2, MyEnum enum = MyEnum#Bombastic) =>  EntityQueryElement!all()!filter(e | e.name == name and e.value == value and e.category == enum)!any();
 
 //Collection Entity queries
-
 query EntityQueryElement[] entityCollectionWithoutParamQuery() =>  EntityQueryElement!all()!filter(e | e.value == 3);
 query EntityQueryElement[] entityCollectionWithParamQuery(String name, Integer value, MyEnum enum) =>  EntityQueryElement!all()!filter(e | e.name == name and e.value == value and e.category == enum);
 query EntityQueryElement[] entityCollectionWithValueParamQuery(Integer value) =>  EntityQueryElement!all()!filter(e | e.value == value);
