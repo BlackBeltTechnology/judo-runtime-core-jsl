@@ -3,9 +3,12 @@ package hu.blackbelt.judo.runtime.core.jsl.transfer;
 import com.google.inject.Inject;
 import com.google.inject.Module;
 
+import hu.blackbelt.judo.dao.api.ValidationResult;
 import hu.blackbelt.judo.dispatcher.api.FileType;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.entityrequiredwithprimitivedefaults.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.enum_.Enum;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferoptionalprimitives.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferprimitivedefaults.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferwithprimitivedefaultexpressions.TransferWithPrimitiveDefaultExpressions;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferwithprimitivedefaultexpressions.TransferWithPrimitiveDefaultExpressionsDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferwithprimitivedefaults.*;
@@ -21,16 +24,16 @@ import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
 import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
 import lombok.extern.slf4j.Slf4j;
+import org.hamcrest.*;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.hamcrest.Matcher;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.time.OffsetDateTime;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -67,6 +70,9 @@ public class MappedTransferPrimitivesTest extends AbstractJslTest {
 
     @Inject
     TransferWithRequiredPrimitiveDefaultsDao transferWithRequiredPrimitiveDefaultsDao;
+
+    @Inject
+    TransferPrimitiveDefaultsDao transferPrimitiveDefaultsDao;
 
     @Inject
     TransferWithPrimitiveDefaultExpressionsDao transferWithPrimitiveDefaultExpressionsDao;
@@ -605,7 +611,6 @@ public class MappedTransferPrimitivesTest extends AbstractJslTest {
      */
     @Test
     @TestCase("TransferCreationWithPrimitiveDefaults")
-    @Disabled("https://blackbelt.atlassian.net/browse/JNG-4815")
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-TYPE-002",
@@ -663,7 +668,6 @@ public class MappedTransferPrimitivesTest extends AbstractJslTest {
      */
     @Test
     @TestCase("TransferCreationRequiredWithPrimitiveDefaults")
-    @Disabled("https://blackbelt.atlassian.net/browse/JNG-4815")
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-TYPE-002",
@@ -682,23 +686,92 @@ public class MappedTransferPrimitivesTest extends AbstractJslTest {
             "REQ-EXPR-001",
     })
     public void testTransferCreationRequiredWithPrimitiveDefaults() {
-        TransferWithRequiredPrimitiveDefaults transferWithRequiredPrimitiveDefaults = transferWithRequiredPrimitiveDefaultsDao.create(TransferWithRequiredPrimitiveDefaults.builder().build());
-
+        TransferPrimitiveDefaults transferPrimitiveDefaults = transferPrimitiveDefaultsDao.create(TransferPrimitiveDefaults.builder().build());
         List<TransferWithRequiredPrimitiveDefaults> list = transferWithRequiredPrimitiveDefaultsDao.query().execute();
 
         assertEquals(1, list.size());
 
-        assertEquals(1, transferWithRequiredPrimitiveDefaults.getIntegerAttr());
-        assertEquals(2.34, transferWithRequiredPrimitiveDefaults.getScaledAttr());
-        assertEquals("test", transferWithRequiredPrimitiveDefaults.getStringAttr());
-        assertEquals("+36-1-123-123", transferWithRequiredPrimitiveDefaults.getRegexAttr());
-        assertEquals(true, transferWithRequiredPrimitiveDefaults.getBoolAttr());
-        assertEquals(LocalDate.of(2022, 7, 11), transferWithRequiredPrimitiveDefaults.getDateAttr());
-        assertEquals(LocalDateTime.parse("2022-07-11T19:09:33"), transferWithRequiredPrimitiveDefaults.getTimestampAttr());
-        assertEquals(LocalTime.parse("23:59:59"), transferWithRequiredPrimitiveDefaults.getTimeAttr());
-        // There is no way to define default value in JSL for binary
-        // assertEquals("test.txt", entityWithDefaults.getBinaryAttr().get().getFileName());
-        assertEquals(Enum.EnumA, transferWithRequiredPrimitiveDefaults.getEnumAttr());
+        assertEquals(1, transferPrimitiveDefaults.getIntegerAttr().orElseThrow());
+        assertEquals(2.34, transferPrimitiveDefaults.getScaledAttr().orElseThrow());
+        assertEquals("test", transferPrimitiveDefaults.getStringAttr().orElseThrow());
+        assertEquals("+36-1-123-123", transferPrimitiveDefaults.getRegexAttr().orElseThrow());
+        assertEquals(true, transferPrimitiveDefaults.getBoolAttr().orElseThrow());
+        assertEquals(LocalDate.of(2022, 7, 11), transferPrimitiveDefaults.getDateAttr().orElseThrow());
+        assertEquals(LocalDateTime.parse("2022-07-11T19:09:33"), transferPrimitiveDefaults.getTimestampAttr().orElseThrow());
+        assertEquals(LocalTime.parse("23:59:59"), transferPrimitiveDefaults.getTimeAttr().orElseThrow());
+        assertEquals(Enum.EnumA, transferPrimitiveDefaults.getEnumAttr().orElseThrow());
+    }
+
+    /**
+     * The transfer object mapped entity with required default primitive values. The test checks the required default values are present in the transfer object too.
+     *
+     * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
+     *
+     * @type Behaviour
+     *
+     * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
+     *
+     * @jslModel MappedTransferPrimitives.jsl
+     *
+     *
+     * @scenario
+     *
+     *  Create one TransferWithRequiredPrimitiveDefaults instance.
+     *
+     *  Check all fields contain the default primitives values.
+     *
+     */
+    @Test
+    @TestCase("TransferCreationWithRequiredPrimitiveDefaults")
+    @Disabled("JNG-4888")
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-SRV-002",
+            "REQ-EXPR-001",
+    })
+    public void testTransferCreationWithRequiredPrimitiveDefaults() {
+        ValidationException exception = assertThrows(ValidationException.class, () -> transferWithRequiredPrimitiveDefaultsDao.create(TransferWithRequiredPrimitiveDefaults.builder().build()));
+        assertEquals(9, exception.getValidationResults().size());
+        Set<String> validationCodes = exception.getValidationResults().stream().map(ValidationResult::getCode).collect(Collectors.toSet());
+        assertThat(validationCodes.size(), equalTo(1));
+        assertThat(validationCodes.stream().findAny().get(), equalTo("MISSING_REQUIRED_ATTRIBUTE"));
+        assertEquals(0, transferWithRequiredPrimitiveDefaultsDao.countAll());
+
+        TransferWithRequiredPrimitiveDefaults transferWithRequiredPrimitiveDefaults =
+                transferWithRequiredPrimitiveDefaultsDao.create(
+                        TransferWithRequiredPrimitiveDefaults.builder()
+                                                             .withIntegerAttr(2)
+                                                             .withScaledAttr(3.34)
+                                                             .withStringAttr("str")
+                                                             .withRegexAttr("+36 123 123 4567")
+                                                             .withBoolAttr(false)
+                                                             .withDateAttr(LocalDate.of(2022, 8, 14))
+                                                             .withTimeAttr(LocalTime.parse("23:00:00"))
+                                                             .withTimestampAttr(LocalDateTime.parse("2022-08-12T10:09:33"))
+                                                             .withEnumAttr(Enum.EnumB)
+                                                             .build());
+
+        assertEquals(2, transferWithRequiredPrimitiveDefaults.getIntegerAttr());
+        assertEquals(3.34, transferWithRequiredPrimitiveDefaults.getScaledAttr());
+        assertEquals("str", transferWithRequiredPrimitiveDefaults.getStringAttr());
+        assertEquals("+36 123 123 4567", transferWithRequiredPrimitiveDefaults.getRegexAttr());
+        assertEquals(false, transferWithRequiredPrimitiveDefaults.getBoolAttr());
+        assertEquals(LocalDate.of(2022, 8, 14), transferWithRequiredPrimitiveDefaults.getDateAttr());
+        assertEquals(LocalTime.parse("23:00:00"), transferWithRequiredPrimitiveDefaults.getTimeAttr());
+        assertEquals(LocalDateTime.parse("2022-08-12T10:09:33"), transferWithRequiredPrimitiveDefaults.getTimestampAttr());
+        assertEquals(Enum.EnumB, transferWithRequiredPrimitiveDefaults.getEnumAttr());
     }
 
     /**
@@ -721,7 +794,6 @@ public class MappedTransferPrimitivesTest extends AbstractJslTest {
      */
     @Test
     @TestCase("TransferCreationWithPrimitiveDefaultExpressions")
-    @Disabled("https://blackbelt.atlassian.net/browse/JNG-4815")
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-TYPE-002",
