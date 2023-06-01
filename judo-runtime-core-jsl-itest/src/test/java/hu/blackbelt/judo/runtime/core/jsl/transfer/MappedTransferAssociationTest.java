@@ -48,7 +48,7 @@ import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
+import java.util.*;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -327,12 +327,13 @@ public class MappedTransferAssociationTest extends AbstractJslTest {
         assertEquals(3, transferE.getRelationFonE().size());
         assertThat(transferE.getRelationFonE(), containsInAnyOrder(tf1, tf2, tf3));
 
-//        TODO JNG-4877
-//        tf3 = transferFDao.create(TransferF.builder().build());
-//        transferEDao.createRelationFonE(transferE, List.of(tf1,tf2,tf3));
-//        transferE = transferEDao.getById(transferE.identifier()).orElseThrow();
-//
-//        assertThat(transferE.getRelationFonE(), containsInAnyOrder(tf1, tf2, tf3));
+        tf1 = TransferF.builder().withNameF("tf1").build();
+        tf2 = TransferF.builder().withNameF("tf2").build();
+        tf3 = TransferF.builder().withNameF("tf3").build();
+        transferEDao.createRelationFonE(transferE, List.of(tf1, tf2, tf3));
+        transferE = transferEDao.getById(transferE.identifier()).orElseThrow();
+
+        assertThat(transferE.getRelationFonE().stream().map(ee -> ee.getNameF()).filter(Optional::isPresent).map(Optional::get).toList(), containsInAnyOrder("tf1", "tf2", "tf3"));
 
         // TODO JNG-4878 Dao not contains add, remove, set, unset method for Collections
         // Add
