@@ -106,6 +106,18 @@ entity EntityRequiredWithPrimitiveDefaults {
     field required Enum enumAttr = Enum#EnumA;
 }
 
+transfer TransferPrimitiveDefaults(EntityRequiredWithPrimitiveDefaults mappedEntity) {
+    field Integer integerAttr maps mappedEntity.integerAttr;
+    field Scaled scaledAttr maps mappedEntity.scaledAttr;
+    field String stringAttr maps mappedEntity.stringAttr;
+    field PhoneNumber regexAttr maps mappedEntity.regexAttr;
+    field Boolean boolAttr maps mappedEntity.boolAttr;
+    field Date dateAttr maps mappedEntity.dateAttr;
+    field Timestamp timestampAttr maps mappedEntity.timestampAttr;
+    field Time timeAttr maps mappedEntity.timeAttr;
+    field Enum enumAttr maps mappedEntity.enumAttr;
+}
+
 transfer TransferWithRequiredPrimitiveDefaults(EntityRequiredWithPrimitiveDefaults mappedEntity) {
     field required Integer integerAttr maps mappedEntity.integerAttr;
     field required Scaled scaledAttr maps mappedEntity.scaledAttr;
