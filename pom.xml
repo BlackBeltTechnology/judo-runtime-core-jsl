@@ -39,9 +39,9 @@
             javax.transaction.xa;version=!,
             javax.resource;version="[1.6,2)"
         </osgi-transaction-import>
-        <judo-tatami-jsl-version>1.1.4.20230601_160112_7e7a606e_bugfix_JNG_4815_Fix_transferobject_instantiation</judo-tatami-jsl-version>
-        <judo-runtime-core-version>1.0.6.20230531_122635_76067dd8_bugfix_JNG_4864_Remove_cast_before_time_component_extraction_in_hsqldb</judo-runtime-core-version>
-        <judo-psm-generator-sdk-core-version>1.0.0.20230531_113750_b8c9389e_develop</judo-psm-generator-sdk-core-version>
+        <judo-tatami-jsl-version>1.1.4.20230601_202859_0f6c220d_develop</judo-tatami-jsl-version>
+        <judo-runtime-core-version>1.0.6.20230601_140205_83adcbe4_develop</judo-runtime-core-version>
+        <judo-psm-generator-sdk-core-version>1.0.0.20230601_164852_42bfbb54_bugfix_JNG_4877_Fix_create_through_relation</judo-psm-generator-sdk-core-version>
         <judo-meta-psm-version>1.3.0.20230516_100351_2fb48f5a_develop</judo-meta-psm-version>
 
         <!-- Code Quality-->
