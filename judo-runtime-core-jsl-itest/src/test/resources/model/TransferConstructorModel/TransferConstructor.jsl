@@ -1,0 +1,86 @@
+model TransferConstructor;
+
+import judo::types;
+
+type numeric Scaled(precision = 9, scale = 2);
+type string PhoneNumber(min-size = 0, max-size = 32, regex = "^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]\\d{3}[\\s.-]\\d{4}$");
+type binary Binary(mime-types = ["text/plain"], max-file-size=1 GB);
+type string SmallString(min-size = 0, max-size = 128);
+
+enum Enum {
+    EnumA = 0;
+    EnumB = 1;
+    EnumC = 2;
+}
+
+entity EntityWithPrimitives {
+        field Integer integerAttr;
+        field Scaled scaledAttr;
+        field SmallString stringAttr;
+        field PhoneNumber regexAttr;
+        field Boolean boolAttr;
+        field Date dateAttr;
+        field Timestamp timestampAttr;
+        field Time timeAttr;
+        field Enum enumAttr;
+}
+
+transfer TransferOptionalPrimitivesWithConstructor (EntityWithPrimitives mappedEntity) {
+    field Integer integerAttr maps mappedEntity.integerAttr;
+    field Scaled scaledAttr maps mappedEntity.scaledAttr;
+    field SmallString stringAttr maps mappedEntity.stringAttr;
+    field PhoneNumber regexAttr maps mappedEntity.regexAttr;
+    field Boolean boolAttr maps mappedEntity.boolAttr;
+    field Date dateAttr maps mappedEntity.dateAttr;
+    field Timestamp timestampAttr maps mappedEntity.timestampAttr;
+    field Time timeAttr maps mappedEntity.timeAttr;
+    field Enum enumAttr maps mappedEntity.enumAttr;
+
+    constructor {
+        self.integerAttr = 1;
+        self.scaledAttr = 2.34;
+        self.stringAttr = "Hello there";
+        self.regexAttr = "+36-1-123-123";
+        self.boolAttr = true;
+        self.dateAttr = `2022-07-11`;
+        self.timestampAttr = `2022-07-11T19:09:33Z`;
+        self.timeAttr  = `23:59:59`;
+        self.enumAttr = Enum#EnumA;
+    }
+}
+
+entity EntityWithRequiredPrimitives {
+        field required Integer integerAttr;
+        field required Scaled scaledAttr;
+        field required SmallString stringAttr;
+        field required PhoneNumber regexAttr;
+        field required Boolean boolAttr;
+        field required Date dateAttr;
+        field required Timestamp timestampAttr;
+        field required Time timeAttr;
+        field required Enum enumAttr;
+}
+
+transfer TransferRequiredPrimitivesWithConstructor (EntityWithRequiredPrimitives mappedEntity) {
+    field required Integer integerAttr maps mappedEntity.integerAttr;
+    field required Scaled scaledAttr maps mappedEntity.scaledAttr;
+    field required SmallString stringAttr maps mappedEntity.stringAttr;
+    field required PhoneNumber regexAttr maps mappedEntity.regexAttr;
+    field required Boolean boolAttr maps mappedEntity.boolAttr;
+    field required Date dateAttr maps mappedEntity.dateAttr;
+    field required Timestamp timestampAttr maps mappedEntity.timestampAttr;
+    field required Time timeAttr maps mappedEntity.timeAttr;
+    field required Enum enumAttr maps mappedEntity.enumAttr;
+
+    constructor {
+        self.integerAttr = 1;
+        self.scaledAttr = 2.34;
+        self.stringAttr = "Hello there";
+        self.regexAttr = "+36-1-123-123";
+        self.boolAttr = true;
+        self.dateAttr = `2022-07-11`;
+        self.timestampAttr = `2022-07-11T19:09:33Z`;
+        self.timeAttr  = `23:59:59`;
+        self.enumAttr = Enum#EnumA;
+    }
+}
