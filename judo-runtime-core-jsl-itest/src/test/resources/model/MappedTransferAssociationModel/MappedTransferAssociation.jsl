@@ -60,7 +60,7 @@ transfer TransferF (EntityF f) {
     field String nameF maps f.nameF;
 }
 
-// Navigation trought transfers
+// Navigation trough transfers
 
 entity EntityG {
     field String nameG;
