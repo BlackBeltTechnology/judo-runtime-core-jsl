@@ -84,3 +84,75 @@ transfer TransferRequiredPrimitivesWithConstructor (EntityWithRequiredPrimitives
         self.enumAttr = Enum#EnumA;
     }
 }
+
+entity EntityWithPrimitivesDefaults {
+    field Integer integerAttr = 2;
+    field Scaled scaledAttr = 3.34;
+    field String stringAttr = "t";
+    field PhoneNumber regexAttr = "+36-1-223-123";
+    field Boolean boolAttr = false;
+    field Date dateAttr = `2021-07-11`;
+    field Timestamp timestampAttr = `2021-07-11T19:09:33Z`;
+    field Time timeAttr = `22:59:59`;
+    field Enum enumAttr = Enum#EnumB;
+}
+
+transfer TransferOptionalPrimitivesDefaultsWithConstructor (EntityWithPrimitivesDefaults mappedEntity) {
+    field Integer integerAttr maps mappedEntity.integerAttr;
+    field Scaled scaledAttr maps mappedEntity.scaledAttr;
+    field SmallString stringAttr maps mappedEntity.stringAttr;
+    field PhoneNumber regexAttr maps mappedEntity.regexAttr;
+    field Boolean boolAttr maps mappedEntity.boolAttr;
+    field Date dateAttr maps mappedEntity.dateAttr;
+    field Timestamp timestampAttr maps mappedEntity.timestampAttr;
+    field Time timeAttr maps mappedEntity.timeAttr;
+    field Enum enumAttr maps mappedEntity.enumAttr;
+
+    constructor {
+        self.integerAttr = 1;
+        self.scaledAttr = 2.34;
+        self.stringAttr = "Hello there";
+        self.regexAttr = "+36-1-123-123";
+        self.boolAttr = true;
+        self.dateAttr = `2022-07-11`;
+        self.timestampAttr = `2022-07-11T19:09:33Z`;
+        self.timeAttr  = `23:59:59`;
+        self.enumAttr = Enum#EnumA;
+    }
+}
+
+entity EntityWithRequiredPrimitivesDefaults {
+    field required Integer integerAttr = 2;
+    field required Scaled scaledAttr = 3.34;
+    field required String stringAttr = "t";
+    field required PhoneNumber regexAttr = "+36-1-223-123";
+    field required Boolean boolAttr = false;
+    field required Date dateAttr = `2021-07-11`;
+    field required Timestamp timestampAttr = `2021-07-11T19:09:33Z`;
+    field required Time timeAttr = `22:59:59`;
+    field required Enum enumAttr = Enum#EnumB;
+}
+
+transfer TransferRequiredPrimitivesDefaultsWithConstructor (EntityWithRequiredPrimitivesDefaults mappedEntity) {
+    field required Integer integerAttr maps mappedEntity.integerAttr;
+    field required Scaled scaledAttr maps mappedEntity.scaledAttr;
+    field required SmallString stringAttr maps mappedEntity.stringAttr;
+    field required PhoneNumber regexAttr maps mappedEntity.regexAttr;
+    field required Boolean boolAttr maps mappedEntity.boolAttr;
+    field required Date dateAttr maps mappedEntity.dateAttr;
+    field required Timestamp timestampAttr maps mappedEntity.timestampAttr;
+    field required Time timeAttr maps mappedEntity.timeAttr;
+    field required Enum enumAttr maps mappedEntity.enumAttr;
+
+    constructor {
+        self.integerAttr = 1;
+        self.scaledAttr = 2.34;
+        self.stringAttr = "Hello there";
+        self.regexAttr = "+36-1-123-123";
+        self.boolAttr = true;
+        self.dateAttr = `2022-07-11`;
+        self.timestampAttr = `2022-07-11T19:09:33Z`;
+        self.timeAttr  = `23:59:59`;
+        self.enumAttr = Enum#EnumA;
+    }
+}

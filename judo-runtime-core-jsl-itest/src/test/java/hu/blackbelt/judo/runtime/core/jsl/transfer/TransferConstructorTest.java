@@ -2,11 +2,18 @@ package hu.blackbelt.judo.runtime.core.jsl.transfer;
 
 import com.google.inject.Inject;
 import com.google.inject.Module;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferconstructor.transferconstructor.entitywithrequiredprimitivesdefaults.EntityWithRequiredPrimitivesDefaults;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferconstructor.transferconstructor.entitywithrequiredprimitivesdefaults.EntityWithRequiredPrimitivesDefaultsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferconstructor.transferconstructor.entitywithrequiredprimitivesdefaults.EntityWithRequiredPrimitivesDefaultsIdentifier;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferconstructor.transferconstructor.enum_.Enum;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferconstructor.transferconstructor.entitywithprimitives.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferconstructor.transferconstructor.entitywithrequiredprimitives.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferconstructor.transferconstructor.entitywithprimitivesdefaults.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferconstructor.transferconstructor.transferoptionalprimitiveswithconstructor.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferconstructor.transferconstructor.transferrequiredprimitivesdefaultswithconstructor.TransferRequiredPrimitivesDefaultsWithConstructor;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferconstructor.transferconstructor.transferrequiredprimitivesdefaultswithconstructor.TransferRequiredPrimitivesDefaultsWithConstructorDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferconstructor.transferconstructor.transferrequiredprimitiveswithconstructor.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferconstructor.transferconstructor.transferoptionalprimitivesdefaultswithconstructor.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.TransferConstructorDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
@@ -47,7 +54,17 @@ public class TransferConstructorTest extends AbstractJslTest {
     @Inject
     TransferRequiredPrimitivesWithConstructorDao transferRequiredPrimitivesWithConstructorDao;
 
+    @Inject
+    EntityWithPrimitivesDefaultsDao entityRequiredWithPrimitiveDefaultsDao;
 
+    @Inject
+    TransferOptionalPrimitivesDefaultsWithConstructorDao transferOptionalPrimitivesDefaultsWithConstructorDao;
+
+    @Inject
+    EntityWithRequiredPrimitivesDefaultsDao entityWithRequiredPrimitivesDefaultsDao;
+
+    @Inject
+    TransferRequiredPrimitivesDefaultsWithConstructorDao transferRequiredPrimitivesDefaultsWithConstructorDao;
 
     /**
      *
@@ -120,7 +137,7 @@ public class TransferConstructorTest extends AbstractJslTest {
      *
      */
     @Test
-    @TestCase("TransferOptionalPrimitivesWithConstructor")
+    @TestCase("TransferRequiredPrimitivesWithConstructor")
     @Requirement(reqs = {
             ""
     })
@@ -139,7 +156,6 @@ public class TransferConstructorTest extends AbstractJslTest {
         assertEquals(LocalTime.parse("23:59:59"), transferRequiredPrimitives.getTimeAttr());
         assertEquals(Enum.EnumA, transferRequiredPrimitives.getEnumAttr());
 
-
         Optional<EntityWithRequiredPrimitives> entityWithRequiredPrimitivesOptional = entityWithRequiredPrimitivesDao.getById(transferRequiredPrimitives.adaptTo(EntityWithRequiredPrimitivesIdentifier.class));
 
         assertTrue(entityWithRequiredPrimitivesOptional.isPresent());
@@ -155,6 +171,114 @@ public class TransferConstructorTest extends AbstractJslTest {
         assertEquals(LocalDateTime.parse("2022-07-11T19:09:33"), entityWithRequiredPrimitives.getTimestampAttr());
         assertEquals(LocalTime.parse("23:59:59"), entityWithRequiredPrimitives.getTimeAttr());
         assertEquals(Enum.EnumA, entityWithRequiredPrimitives.getEnumAttr());
+
+    }
+
+    /**
+     *
+     *
+     * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
+     *
+     * @type Behaviour
+     *
+     * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
+     *
+     * @jslModel TransferConstructor.jsl
+     *
+     * @positiveRequirements
+     *
+     * @scenario
+     *
+     */
+    @Test
+    @TestCase("TransferPrimitivesDefaultWithConstructor")
+    @Requirement(reqs = {
+            ""
+    })
+    void testTransferPrimitivesDefaultWithConstructor() {
+
+        TransferOptionalPrimitivesDefaultsWithConstructor transferDefaultPrimitives = transferOptionalPrimitivesDefaultsWithConstructorDao.create(TransferOptionalPrimitivesDefaultsWithConstructor.builder().build());
+
+        assertEquals(1, transferOptionalPrimitivesDefaultsWithConstructorDao.query().execute().size());
+        assertEquals(Optional.of(1), transferDefaultPrimitives.getIntegerAttr());
+        assertEquals(Optional.of(2.34), transferDefaultPrimitives.getScaledAttr());
+        assertEquals(Optional.of("Hello there"), transferDefaultPrimitives.getStringAttr());
+        assertEquals(Optional.of("+36-1-123-123"), transferDefaultPrimitives.getRegexAttr());
+        assertEquals(Optional.of(true), transferDefaultPrimitives.getBoolAttr());
+        assertEquals(Optional.of(LocalDate.of(2022, 7, 11)), transferDefaultPrimitives.getDateAttr());
+        assertEquals(Optional.of(LocalDateTime.parse("2022-07-11T19:09:33")), transferDefaultPrimitives.getTimestampAttr());
+        assertEquals(Optional.of(LocalTime.parse("23:59:59")), transferDefaultPrimitives.getTimeAttr());
+        assertEquals(Optional.of(Enum.EnumA), transferDefaultPrimitives.getEnumAttr());
+
+        Optional<EntityWithPrimitivesDefaults> entityWithPrimitivesDefaultsOptional = entityRequiredWithPrimitiveDefaultsDao.getById(transferDefaultPrimitives.adaptTo(EntityWithPrimitivesDefaultsIdentifier.class));
+
+        assertTrue(entityWithPrimitivesDefaultsOptional.isPresent());
+
+        EntityWithPrimitivesDefaults entityWithPrimitivesDefaults = entityWithPrimitivesDefaultsOptional.orElseThrow();
+
+        assertEquals(Optional.of(1), entityWithPrimitivesDefaults.getIntegerAttr());
+        assertEquals(Optional.of(2.34), entityWithPrimitivesDefaults.getScaledAttr());
+        assertEquals(Optional.of("Hello there"), entityWithPrimitivesDefaults.getStringAttr());
+        assertEquals(Optional.of("+36-1-123-123"), entityWithPrimitivesDefaults.getRegexAttr());
+        assertEquals(Optional.of(true), entityWithPrimitivesDefaults.getBoolAttr());
+        assertEquals(Optional.of(LocalDate.of(2022, 7, 11)), entityWithPrimitivesDefaults.getDateAttr());
+        assertEquals(Optional.of(LocalDateTime.parse("2022-07-11T19:09:33")), entityWithPrimitivesDefaults.getTimestampAttr());
+        assertEquals(Optional.of(LocalTime.parse("23:59:59")), entityWithPrimitivesDefaults.getTimeAttr());
+        assertEquals(Optional.of(Enum.EnumA), entityWithPrimitivesDefaults.getEnumAttr());
+
+    }
+
+    /**
+     *
+     *
+     * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
+     *
+     * @type Behaviour
+     *
+     * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
+     *
+     * @jslModel TransferConstructor.jsl
+     *
+     * @positiveRequirements
+     *
+     * @scenario
+     *
+     */
+    @Test
+    @TestCase("TransferPrimitivesRequiredDefaultWithConstructor")
+    @Requirement(reqs = {
+            ""
+    })
+    void testTransferPrimitivesRequiredDefaultWithConstructor() {
+
+        TransferRequiredPrimitivesDefaultsWithConstructor transferRequiredPrimitivesDefaults = transferRequiredPrimitivesDefaultsWithConstructorDao.create(TransferRequiredPrimitivesDefaultsWithConstructor.builder().build());
+
+        assertEquals(1, transferRequiredPrimitivesDefaultsWithConstructorDao.query().execute().size());
+        assertEquals(1, transferRequiredPrimitivesDefaults.getIntegerAttr());
+        assertEquals(2.34, transferRequiredPrimitivesDefaults.getScaledAttr());
+        assertEquals("Hello there", transferRequiredPrimitivesDefaults.getStringAttr());
+        assertEquals("+36-1-123-123", transferRequiredPrimitivesDefaults.getRegexAttr());
+        assertEquals(true, transferRequiredPrimitivesDefaults.getBoolAttr());
+        assertEquals(LocalDate.of(2022, 7, 11), transferRequiredPrimitivesDefaults.getDateAttr());
+        assertEquals(LocalDateTime.parse("2022-07-11T19:09:33"), transferRequiredPrimitivesDefaults.getTimestampAttr());
+        assertEquals(LocalTime.parse("23:59:59"), transferRequiredPrimitivesDefaults.getTimeAttr());
+        assertEquals(Enum.EnumA, transferRequiredPrimitivesDefaults.getEnumAttr());
+
+        Optional<EntityWithRequiredPrimitivesDefaults> entityWithRequiredPrimitivesDefaultsOptional = entityWithRequiredPrimitivesDefaultsDao.getById(transferRequiredPrimitivesDefaults.adaptTo(EntityWithRequiredPrimitivesDefaultsIdentifier.class));
+
+        assertTrue(entityWithRequiredPrimitivesDefaultsOptional.isPresent());
+
+        EntityWithRequiredPrimitivesDefaults entityWithRequiredPrimitivesDefaults = entityWithRequiredPrimitivesDefaultsOptional.orElseThrow();
+
+        assertEquals(1, entityWithRequiredPrimitivesDefaults.getIntegerAttr());
+        assertEquals(2.34, entityWithRequiredPrimitivesDefaults.getScaledAttr());
+        assertEquals("Hello there", entityWithRequiredPrimitivesDefaults.getStringAttr());
+        assertEquals("+36-1-123-123", entityWithRequiredPrimitivesDefaults.getRegexAttr());
+        assertEquals(true, entityWithRequiredPrimitivesDefaults.getBoolAttr());
+        assertEquals(LocalDate.of(2022, 7, 11), entityWithRequiredPrimitivesDefaults.getDateAttr());
+        assertEquals(LocalDateTime.parse("2022-07-11T19:09:33"), entityWithRequiredPrimitivesDefaults.getTimestampAttr());
+        assertEquals(LocalTime.parse("23:59:59"), entityWithRequiredPrimitivesDefaults.getTimeAttr());
+        assertEquals(Enum.EnumA, entityWithRequiredPrimitivesDefaults.getEnumAttr());
 
     }
 
