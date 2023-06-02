@@ -67,7 +67,7 @@ public class TransferConstructorTest extends AbstractJslTest {
     TransferRequiredPrimitivesDefaultsWithConstructorDao transferRequiredPrimitivesDefaultsWithConstructorDao;
 
     /**
-     *
+     * This test check the transfer constructor on an entity with contains primitive optional field.
      *
      * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
@@ -81,17 +81,41 @@ public class TransferConstructorTest extends AbstractJslTest {
      *
      * @scenario
      *
+     *  Create one instance of TransferOptionalPrimitivesWithConstructor.
+     *
+     *  Check the transfer instance contains the constructor assigned values.
+     *
+     *  Get the entity representation the transfer instance.
+     *
+     *  Check the entity representation contains the constructor assigned values.
+     *
      */
     @Test
     @TestCase("TransferOptionalPrimitivesWithConstructor")
     @Requirement(reqs = {
-            ""
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-SRV-002",
+            "REQ-SRV-003",
+            "REQ-SRV-004",
+            "REQ-EXPR-001"
     })
     void testTransferOptionalPrimitivesWithConstructor() {
 
         TransferOptionalPrimitivesWithConstructor transferWithPrimitives = transferOptionalPrimitivesWithConstructorDao.create(TransferOptionalPrimitivesWithConstructor.builder().build());
 
-        assertEquals(1, transferOptionalPrimitivesWithConstructorDao.query().execute().size());
+        assertEquals(1, transferOptionalPrimitivesWithConstructorDao.countAll());
         assertEquals(Optional.of(1), transferWithPrimitives.getIntegerAttr());
         assertEquals(Optional.of(2.34), transferWithPrimitives.getScaledAttr());
         assertEquals(Optional.of("Hello there"), transferWithPrimitives.getStringAttr());
@@ -121,7 +145,7 @@ public class TransferConstructorTest extends AbstractJslTest {
     }
 
     /**
-     *
+     * This test check the transfer constructor on an entity with contains primitive required field.
      *
      * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
@@ -135,17 +159,41 @@ public class TransferConstructorTest extends AbstractJslTest {
      *
      * @scenario
      *
+     *  Create one instance of TransferRequiredPrimitivesWithConstructor.
+     *
+     *  Check the transfer instance contains the constructor assigned values.
+     *
+     *  Get the entity representation the transfer instance.
+     *
+     *  Check the entity representation contains the constructor assigned values.
+     *
      */
     @Test
     @TestCase("TransferRequiredPrimitivesWithConstructor")
     @Requirement(reqs = {
-            ""
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-SRV-002",
+            "REQ-SRV-003",
+            "REQ-SRV-004",
+            "REQ-EXPR-001"
     })
     void testTransferRequiredPrimitivesWithConstructor() {
 
         TransferRequiredPrimitivesWithConstructor transferRequiredPrimitives = transferRequiredPrimitivesWithConstructorDao.create(TransferRequiredPrimitivesWithConstructor.builder().build());
 
-        assertEquals(1, transferRequiredPrimitivesWithConstructorDao.query().execute().size());
+        assertEquals(1, transferRequiredPrimitivesWithConstructorDao.countAll());
         assertEquals(1, transferRequiredPrimitives.getIntegerAttr());
         assertEquals(2.34, transferRequiredPrimitives.getScaledAttr());
         assertEquals("Hello there", transferRequiredPrimitives.getStringAttr());
@@ -175,7 +223,7 @@ public class TransferConstructorTest extends AbstractJslTest {
     }
 
     /**
-     *
+     * This test check the transfer constructor on an entity with contains primitive fields with defaults.
      *
      * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
@@ -189,17 +237,41 @@ public class TransferConstructorTest extends AbstractJslTest {
      *
      * @scenario
      *
+     *  Create one instance of TransferOptionalPrimitivesDefaultsWithConstructor.
+     *
+     *  Check the transfer instance contains the constructor assigned values.
+     *
+     *  Get the entity representation the transfer instance.
+     *
+     *  Check the entity representation contains the constructor assigned values.
+     *
      */
     @Test
     @TestCase("TransferPrimitivesDefaultWithConstructor")
     @Requirement(reqs = {
-            ""
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-SRV-002",
+            "REQ-SRV-003",
+            "REQ-SRV-004",
+            "REQ-EXPR-001"
     })
     void testTransferPrimitivesDefaultWithConstructor() {
 
         TransferOptionalPrimitivesDefaultsWithConstructor transferDefaultPrimitives = transferOptionalPrimitivesDefaultsWithConstructorDao.create(TransferOptionalPrimitivesDefaultsWithConstructor.builder().build());
 
-        assertEquals(1, transferOptionalPrimitivesDefaultsWithConstructorDao.query().execute().size());
+        assertEquals(1, transferOptionalPrimitivesDefaultsWithConstructorDao.countAll());
         assertEquals(Optional.of(1), transferDefaultPrimitives.getIntegerAttr());
         assertEquals(Optional.of(2.34), transferDefaultPrimitives.getScaledAttr());
         assertEquals(Optional.of("Hello there"), transferDefaultPrimitives.getStringAttr());
@@ -229,7 +301,7 @@ public class TransferConstructorTest extends AbstractJslTest {
     }
 
     /**
-     *
+     * This test check the transfer constructor on an entity with contains primitive fields with defaults.
      *
      * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
@@ -243,17 +315,41 @@ public class TransferConstructorTest extends AbstractJslTest {
      *
      * @scenario
      *
+     *  Create one instance of TransferRequiredPrimitivesDefaultsWithConstructor.
+     *
+     *  Check the transfer instance contains the constructor assigned values.
+     *
+     *  Get the entity representation the transfer instance.
+     *
+     *  Check the entity representation contains the constructor assigned values.
+     *
      */
     @Test
     @TestCase("TransferPrimitivesRequiredDefaultWithConstructor")
     @Requirement(reqs = {
-            ""
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-SRV-002",
+            "REQ-SRV-003",
+            "REQ-SRV-004",
+            "REQ-EXPR-001"
     })
     void testTransferPrimitivesRequiredDefaultWithConstructor() {
 
         TransferRequiredPrimitivesDefaultsWithConstructor transferRequiredPrimitivesDefaults = transferRequiredPrimitivesDefaultsWithConstructorDao.create(TransferRequiredPrimitivesDefaultsWithConstructor.builder().build());
 
-        assertEquals(1, transferRequiredPrimitivesDefaultsWithConstructorDao.query().execute().size());
+        assertEquals(1, transferRequiredPrimitivesDefaultsWithConstructorDao.countAll());
         assertEquals(1, transferRequiredPrimitivesDefaults.getIntegerAttr());
         assertEquals(2.34, transferRequiredPrimitivesDefaults.getScaledAttr());
         assertEquals("Hello there", transferRequiredPrimitivesDefaults.getStringAttr());
