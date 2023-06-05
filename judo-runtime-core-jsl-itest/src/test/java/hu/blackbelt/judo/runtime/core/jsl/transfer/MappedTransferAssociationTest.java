@@ -49,6 +49,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -355,23 +356,36 @@ public class MappedTransferAssociationTest extends AbstractJslTest {
         transferEDao.createRelationFonE(transferE, List.of(tf1, tf2, tf3));
         transferE = transferEDao.getById(transferE.identifier()).orElseThrow();
 
-        assertThat(transferE.getRelationFonE().stream().map(ee -> ee.getNameF()).filter(Optional::isPresent).map(Optional::get).toList(), containsInAnyOrder("tf1", "tf2", "tf3"));
+        List<String> relationFonEs = transferE.getRelationFonE().stream().map(ee -> ee.getNameF()).filter(Optional::isPresent).map(Optional::get).toList();
+        assertEquals(3, relationFonEs.size());
+        assertEquals(new HashSet<>(relationFonEs), Set.of("tf1", "tf2", "tf3"));
 
         //Add
         TransferF tf4 = transferFDao.create(TransferF.builder().withNameF("tf4").build());
         transferEDao.addRelationFonE(transferE, List.of(tf4));
         transferE = transferEDao.getById(transferE.identifier()).orElseThrow();
 
-        assertThat(transferE.getRelationFonE().stream().map(ee -> ee.getNameF()).filter(Optional::isPresent).map(Optional::get).toList(), containsInAnyOrder("tf1", "tf2", "tf3", "tf4"));
+        relationFonEs = transferE.getRelationFonE().stream().map(ee -> ee.getNameF()).filter(Optional::isPresent).map(Optional::get).toList();
+        assertEquals(4, relationFonEs.size());
+        assertEquals(new HashSet<>(relationFonEs), Set.of("tf1", "tf2", "tf3", "tf4"));
 
         //Remove
         transferEDao.removeRelationFonE(transferE, List.of(tf4));
         transferE = transferEDao.getById(transferE.identifier()).orElseThrow();
-        assertEquals(6, transferE.getRelationFonE().size());
-        assertThat(transferE.getRelationFonE().stream().map(ee -> ee.getNameF()).filter(Optional::isPresent).map(Optional::get).toList(), containsInAnyOrder("tf1", "tf2", "tf3"));
 
-        // TODO https://blackbelt.atlassian.net/browse/JNG-4892 Not remove elemet if we remove not the last element
+        relationFonEs = transferE.getRelationFonE().stream().map(ee -> ee.getNameF()).filter(Optional::isPresent).map(Optional::get).toList();
+        assertEquals(3, relationFonEs.size());
+        assertEquals(new HashSet<>(relationFonEs), Set.of("tf1", "tf2", "tf3"));
 
+        List<TransferF> relationContent = transferEDao.queryRelationFonE(transferE).execute().stream().filter(ee -> ee.getNameF().isPresent()).toList();
+        assertEquals(3, relationContent.size());
+        TransferF elementToRemove = relationContent.get(0);
+        transferEDao.removeRelationFonE(transferE, List.of(elementToRemove));
+        relationContent = transferEDao.queryRelationFonE(transferE).execute().stream().filter(ee -> ee.getNameF().isPresent()).toList();
+        assertEquals(relationContent.stream().filter(ee -> !ee.getNameF().equals(elementToRemove.getNameF()))
+                                    .map(TransferF::identifier)
+                                    .collect(Collectors.toSet()),
+                     relationContent.stream().map(TransferF::identifier).collect(Collectors.toSet()));
     }
 
     /**
