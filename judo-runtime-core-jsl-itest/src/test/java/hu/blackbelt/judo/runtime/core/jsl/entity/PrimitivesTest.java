@@ -406,7 +406,7 @@ public class PrimitivesTest extends AbstractJslTest {
         assertEquals(Optional.of(1), entityWithDefaults.getIntegerAttr());
         assertEquals(Optional.of(2.34), entityWithDefaults.getScaledAttr());
         assertEquals(Optional.of("test"), entityWithDefaults.getStringAttr());
-        assertEquals(Optional.of("+36-1-123-123"), entityWithDefaults.getRegexAttr());
+        assertEquals(Optional.of("+36 (30) 123 1234"), entityWithDefaults.getRegexAttr());
         assertEquals(Optional.of(true), entityWithDefaults.getBoolAttr());
         assertEquals(Optional.of(LocalDate.of(2022, 7, 11)), entityWithDefaults.getDateAttr());
         assertEquals(Optional.of(LocalDateTime.parse("2022-07-11T19:09:33")), entityWithDefaults.getTimestampAttr());
@@ -440,7 +440,7 @@ public class PrimitivesTest extends AbstractJslTest {
         assertEquals(1, entityRequiredWithDefaults.getIntegerAttr());
         assertEquals(2.34, entityRequiredWithDefaults.getScaledAttr());
         assertEquals("test", entityRequiredWithDefaults.getStringAttr());
-        assertEquals("+36-1-123-123", entityRequiredWithDefaults.getRegexAttr());
+        assertEquals("+36 (30) 123 1234", entityRequiredWithDefaults.getRegexAttr());
         assertEquals(true, entityRequiredWithDefaults.getBoolAttr());
         assertEquals(LocalDate.of(2022, 7, 11), entityRequiredWithDefaults.getDateAttr());
         assertEquals(LocalDateTime.parse("2022-07-11T19:09:33"), entityRequiredWithDefaults.getTimestampAttr());
@@ -477,7 +477,7 @@ public class PrimitivesTest extends AbstractJslTest {
         assertEquals(Optional.of(1), entityWithDefaultExpressions.getIntegerAttr());
         assertEquals(Optional.of(2.9), entityWithDefaultExpressions.getScaledAttr());
         assertEquals(Optional.of("true"), entityWithDefaultExpressions.getStringAttr());
-        assertEquals(Optional.of("+36-1-123-123"), entityWithDefaultExpressions.getRegexAttr());
+        assertEquals(Optional.of("+36 (30) 123 1234"), entityWithDefaultExpressions.getRegexAttr());
         assertEquals(Optional.of(true), entityWithDefaultExpressions.getBoolAttr());
         assertEquals(Optional.of(LocalDate.now()), entityWithDefaultExpressions.getDateAttr());
         assertEquals(OffsetDateTime.now().toString().substring(1, 10),
@@ -626,7 +626,7 @@ public class PrimitivesTest extends AbstractJslTest {
             "REQ-EXPR-016",
             "REQ-EXPR-022"
     })
-    public void testDefaultRequieredValuesInEntity() {
+    public void testDefaultRequiredValuesInEntity() {
 
         referenceEntityDao.create(ReferenceEntity.builder().build());
         referenceEntityDao.create(ReferenceEntity.builder().build());

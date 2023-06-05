@@ -63,7 +63,7 @@ entity EntityWithPrimitiveDefaults {
     field Integer integerAttr = 1;
     field Scaled scaledAttr = 2.34;
     field String stringAttr = "test";
-    field PhoneNumber regexAttr = "+36-1-123-123";
+    field PhoneNumber regexAttr = "+36 (30) 123 1234";
     field Boolean boolAttr = true;
     field Date dateAttr = `2022-07-11`;
     field Timestamp timestampAttr = `2022-07-11T19:09:33Z`;
@@ -77,7 +77,7 @@ entity EntityRequiredWithPrimitiveDefaults {
     field required Integer integerAttr = 1;
     field required Scaled scaledAttr = 2.34;
     field required String stringAttr = "test";
-    field required PhoneNumber regexAttr = "+36-1-123-123";
+    field required PhoneNumber regexAttr = "+36 (30) 123 1234";
     field required Boolean boolAttr = true;
     field required Date dateAttr = `2022-07-11`;
     field required Timestamp timestampAttr = `2022-07-11T19:09:33Z`;
@@ -90,7 +90,7 @@ entity EntityWithPrimitiveDefaultExpressions {
     field Integer integerAttr = 1.23!round();
     field Scaled scaledAttr = 2.9!abs();
     field String stringAttr = true!asString();
-    field PhoneNumber regexAttr = "+36-1-123-123";
+    field PhoneNumber regexAttr = "+36 (30) 123 1234";
     field Boolean boolAttr = 2 > -1;
     field Date dateAttr = Date!now();
     field Timestamp timestampAttr = Timestamp!now();
