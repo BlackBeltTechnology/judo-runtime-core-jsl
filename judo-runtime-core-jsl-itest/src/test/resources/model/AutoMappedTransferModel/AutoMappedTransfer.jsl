@@ -4,8 +4,6 @@ import judo::types;
 
 type numeric Scaled(precision = 9, scale = 2);
 type string PhoneNumber(min-size = 0, max-size = 32, regex = "^(\\+\\d{1,2}\\s)?\\(?\\d{2,3}\\)?[\\s.-]\\d{3}[\\s.-]\\d{4}$");
-type binary Binary(mime-types = ["text/plain"], max-file-size=1 GB);
-type string SmallString(min-size = 0, max-size = 128);
 
 enum MyEnum {
     Atomic = 0;
@@ -13,10 +11,9 @@ enum MyEnum {
     Crazy = 2;
 }
 
-//Contains all types of field
+//Contains all types of primitive fields
 entity abstract AbstractEntityFields {
     field Boolean boolAttr;
-    field Binary binaryAttr;
     field Integer integerAttr;
     field PhoneNumber regexAttr;
     field Scaled scaledAttr;
@@ -24,12 +21,11 @@ entity abstract AbstractEntityFields {
     field Time timeAttr;
     field Timestamp timestampAttr;
     field MyEnum enumAttr;
-    field SmallString stringAttr;
+    field String stringAttr;
 }
 
 entity abstract AbstractEntityRequiredFields {
     field required Boolean boolAttr;
-    field required Binary binaryAttr;
     field required Integer integerAttr;
     field required PhoneNumber regexAttr;
     field required Scaled scaledAttr;
@@ -37,17 +33,13 @@ entity abstract AbstractEntityRequiredFields {
     field required Time timeAttr;
     field required Timestamp timestampAttr;
     field required MyEnum enumAttr;
-    field required SmallString stringAttr;
+    field required String stringAttr;
 }
-
-transfer AutoMappedTransferOnAbstractOptionalFields (AbstractEntityFields abstractEntityFields);
-
-transfer AutoMappedTransferOnAbstractRequiredFields (AbstractEntityRequiredFields abstractEntityRequiredFields);
 
 entity EntityOptionalFields extends AbstractEntityFields {
 }
 
-entity EntityRequiredFields extends AbstractEntityRequiredFields {
+entity EntityRequiredFields  extends AbstractEntityRequiredFields {
 }
 
 transfer AutoMappedTransferOnOptionalFields (EntityOptionalFields entityOptionalFields);
@@ -62,7 +54,6 @@ entity EntityWithIdentifiers {
     identifier Boolean boolAttr;
     identifier Date dateAttr;
     identifier Timestamp timestampAttr;
-    identifier Binary binaryAttr;
     identifier MyEnum enumAttr;
 }
 
@@ -78,7 +69,6 @@ entity EntityWithPrimitiveDefaults {
     field Timestamp timestampAttr = `2022-07-11T19:09:33Z`;
     field Time timeAttr = `23:59:59`;
     field Time shortTimeAttr = `23:59`;
-    field Binary binaryAttr; // There is no syntax for define default value for binary
     field MyEnum enumAttr = MyEnum#Bombastic;
 }
 
@@ -93,7 +83,6 @@ entity EntityRequiredWithPrimitiveDefaults {
     field required Date dateAttr = `2022-07-11`;
     field required Timestamp timestampAttr = `2022-07-11T19:09:33Z`;
     field required Time timeAttr = `23:59:59`;
-    // field required Binary binaryAttr; // There is no syntax for define default value for binary
     field required MyEnum enumAttr = MyEnum#Bombastic;
 }
 
@@ -102,3 +91,5 @@ transfer AutoMappedTransferOnEntityRequiredWithPrimitiveDefaults (EntityRequired
 entity EntityWithIdentifiersContainer {
     field EntityWithIdentifiers[] entitiesWithIdentifiers;
 }
+
+transfer AutoMappedTransferOnEntityWithIdentifiersContainer (EntityWithIdentifiersContainer entityWithIdentifiersContainer);
