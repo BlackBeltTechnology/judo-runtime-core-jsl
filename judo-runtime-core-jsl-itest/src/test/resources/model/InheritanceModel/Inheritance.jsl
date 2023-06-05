@@ -3,7 +3,7 @@ model Inheritance;
 import judo::types;
 
 type numeric Scaled(precision = 9, scale = 2);
-type string PhoneNumber(min-size = 0, max-size = 32, regex = "^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]\\d{3}[\\s.-]\\d{4}$");
+type string PhoneNumber(min-size = 0, max-size = 32, regex = "^(\\+\\d{1,2}\\s)?\\(?\\d{2,3}\\)?[\\s.-]\\d{3}[\\s.-]\\d{4}$");
 type string SmallString(min-size = 0, max-size = 128);
 
 enum MyEnum {
@@ -40,7 +40,7 @@ entity ParentDefaultD {
     field Integer integerAttr = 1;
     field Scaled scaledAttr = 2.34;
     field String stringAttr = "test";
-    field PhoneNumber regexAttr = "+36-1-123-123";
+    field PhoneNumber regexAttr = "+36 (30) 123 1234";
     field Boolean boolAttr = true;
     field Date dateAttr = `2022-07-11`;
     field Timestamp timestampAttr = `2022-07-11T19:09:33Z`;

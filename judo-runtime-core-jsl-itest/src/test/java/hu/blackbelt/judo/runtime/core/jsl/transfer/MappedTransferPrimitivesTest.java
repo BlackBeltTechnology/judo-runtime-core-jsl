@@ -638,7 +638,7 @@ public class MappedTransferPrimitivesTest extends AbstractJslTest {
         assertEquals(Optional.of(1), transferWithPrimitiveDefaults.getIntegerAttr());
         assertEquals(Optional.of(2.34), transferWithPrimitiveDefaults.getScaledAttr());
         assertEquals(Optional.of("test"), transferWithPrimitiveDefaults.getStringAttr());
-        assertEquals(Optional.of("+36-1-123-123"), transferWithPrimitiveDefaults.getRegexAttr());
+        assertEquals(Optional.of("+36 (30) 123 1234"), transferWithPrimitiveDefaults.getRegexAttr());
         assertEquals(Optional.of(true), transferWithPrimitiveDefaults.getBoolAttr());
         assertEquals(Optional.of(LocalDate.of(2022, 7, 11)), transferWithPrimitiveDefaults.getDateAttr());
         assertEquals(Optional.of(LocalDateTime.parse("2022-07-11T19:09:33")), transferWithPrimitiveDefaults.getTimestampAttr());
@@ -694,7 +694,7 @@ public class MappedTransferPrimitivesTest extends AbstractJslTest {
         assertEquals(1, transferPrimitiveDefaults.getIntegerAttr().orElseThrow());
         assertEquals(2.34, transferPrimitiveDefaults.getScaledAttr().orElseThrow());
         assertEquals("test", transferPrimitiveDefaults.getStringAttr().orElseThrow());
-        assertEquals("+36-1-123-123", transferPrimitiveDefaults.getRegexAttr().orElseThrow());
+        assertEquals("+36 (30) 123 1234", transferPrimitiveDefaults.getRegexAttr().orElseThrow());
         assertEquals(true, transferPrimitiveDefaults.getBoolAttr().orElseThrow());
         assertEquals(LocalDate.of(2022, 7, 11), transferPrimitiveDefaults.getDateAttr().orElseThrow());
         assertEquals(LocalDateTime.parse("2022-07-11T19:09:33"), transferPrimitiveDefaults.getTimestampAttr().orElseThrow());
@@ -821,7 +821,7 @@ public class MappedTransferPrimitivesTest extends AbstractJslTest {
         assertEquals(Optional.of(1), transferWithPrimitiveDefaultExpressions.getIntegerAttr());
         assertEquals(Optional.of(2.9), transferWithPrimitiveDefaultExpressions.getScaledAttr());
         assertEquals(Optional.of("true"), transferWithPrimitiveDefaultExpressions.getStringAttr());
-        assertEquals(Optional.of("+36-1-123-123"), transferWithPrimitiveDefaultExpressions.getRegexAttr());
+        assertEquals(Optional.of("+36 (30) 123 1234"), transferWithPrimitiveDefaultExpressions.getRegexAttr());
         assertEquals(Optional.of(true), transferWithPrimitiveDefaultExpressions.getBoolAttr());
         assertEquals(Optional.of(LocalDate.now()), transferWithPrimitiveDefaultExpressions.getDateAttr());
         assertEquals(OffsetDateTime.now().toString().substring(1, 10),
