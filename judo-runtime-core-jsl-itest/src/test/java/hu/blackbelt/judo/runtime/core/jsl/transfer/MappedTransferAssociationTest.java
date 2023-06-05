@@ -183,6 +183,18 @@ public class MappedTransferAssociationTest extends AbstractJslTest {
         assertTrue(transferA.getRelationBonA().isEmpty());
         assertTrue(entityADao.queryRelationBonA(a).isEmpty());
 
+        //test Dao functions set, unset
+
+        transferADao.setRelationBonA(transferA, tb2);
+
+        assertEquals(tb2.identifier(), transferADao.queryRelationBonA(transferA).orElseThrow().identifier());
+        assertEquals(b2.identifier(), entityADao.queryRelationBonA(a).orElseThrow().identifier());
+
+        transferADao.unsetRelationBonA(transferA);
+
+        assertTrue(transferADao.queryRelationBonA(transferA).isEmpty());
+        assertTrue(entityADao.queryRelationBonA(a).isEmpty());
+
     }
 
     /**
@@ -245,6 +257,8 @@ public class MappedTransferAssociationTest extends AbstractJslTest {
         assertTrue(thrown.getMessage().contains("There are mandatory references that cannot be removed"));
         assertTrue(thrown.getMessage().contains("#relationDonC"));
 
+        //creation without mandatory element
+
         ValidationException thrown1 = assertThrows(
                 ValidationException.class,
                 () -> transferCDao.create(TransferC.builder().build())
@@ -254,6 +268,14 @@ public class MappedTransferAssociationTest extends AbstractJslTest {
                 hasProperty("code", equalTo("MISSING_REQUIRED_RELATION")),
                 hasProperty("location", equalTo("relationDonC")))
         ));
+
+        // Test dao set, unset
+
+        transferCDao.setRelationDonC(transferC, td1);
+        transferC = transferCDao.getById(transferC.identifier()).orElseThrow();
+
+        assertEquals(td1.identifier(), transferC.getRelationDonC().identifier());
+        assertEquals(d1.identifier(), entityCDao.queryRelationDonC(c).identifier());
 
     }
 
@@ -335,11 +357,20 @@ public class MappedTransferAssociationTest extends AbstractJslTest {
 
         assertThat(transferE.getRelationFonE().stream().map(ee -> ee.getNameF()).filter(Optional::isPresent).map(Optional::get).toList(), containsInAnyOrder("tf1", "tf2", "tf3"));
 
-        // TODO JNG-4878 Dao not contains add, remove, set, unset method for Collections
-        // Add
-        // Remove
-        // Set
-        // Unset
+        //Add
+        TransferF tf4 = transferFDao.create(TransferF.builder().withNameF("tf4").build());
+        transferEDao.addRelationFonE(transferE, List.of(tf4));
+        transferE = transferEDao.getById(transferE.identifier()).orElseThrow();
+
+        assertThat(transferE.getRelationFonE().stream().map(ee -> ee.getNameF()).filter(Optional::isPresent).map(Optional::get).toList(), containsInAnyOrder("tf1", "tf2", "tf3", "tf4"));
+
+        //Remove
+        transferEDao.removeRelationFonE(transferE, List.of(tf4));
+        transferE = transferEDao.getById(transferE.identifier()).orElseThrow();
+        assertEquals(6, transferE.getRelationFonE().size());
+        assertThat(transferE.getRelationFonE().stream().map(ee -> ee.getNameF()).filter(Optional::isPresent).map(Optional::get).toList(), containsInAnyOrder("tf1", "tf2", "tf3"));
+
+        // TODO https://blackbelt.atlassian.net/browse/JNG-4892 Not remove elemet if we remove not the last element
 
     }
 
