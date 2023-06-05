@@ -309,7 +309,7 @@ public class InheritanceTest extends AbstractJslTest {
         assertEquals(Optional.of(1), i.getIntegerAttr());
         assertEquals(Optional.of(2.34), i.getScaledAttr());
         assertEquals(Optional.of("test"), i.getStringAttr());
-        assertEquals(Optional.of("+36-1-123-123"), i.getRegexAttr());
+        assertEquals(Optional.of("+36 (30) 123 1234"), i.getRegexAttr());
         assertEquals(Optional.of(true), i.getBoolAttr());
         assertEquals(Optional.of(LocalDate.of(2022, 7, 11)), i.getDateAttr());
         assertEquals(Optional.of(LocalDateTime.parse("2022-07-11T19:09:33")), i.getTimestampAttr());
