@@ -41,7 +41,7 @@
         </osgi-transaction-import>
         <judo-tatami-jsl-version>1.1.4.20230602_041636_43e281bd_develop</judo-tatami-jsl-version>
         <judo-runtime-core-version>1.0.6.20230601_140205_83adcbe4_develop</judo-runtime-core-version>
-        <judo-psm-generator-sdk-core-version>1.0.0.20230602_161130_abbe750f_bugfix_JNG_4867_Fix_querycustomizer_count_method</judo-psm-generator-sdk-core-version>
+        <judo-psm-generator-sdk-core-version>1.0.0.20230605_151935_e75e41a8_bugfix_JNG_4867_Fix_querycustomizer_count_method</judo-psm-generator-sdk-core-version>
         <judo-meta-psm-version>1.3.0.20230516_100351_2fb48f5a_develop</judo-meta-psm-version>
 
         <!-- Code Quality-->
