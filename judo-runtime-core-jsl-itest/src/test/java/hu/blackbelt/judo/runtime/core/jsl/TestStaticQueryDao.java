@@ -471,14 +471,8 @@ public class TestStaticQueryDao extends AbstractJslTest {
         assertEquals(d.identifier(), orderByDescList.get(1).identifier());
 
         // With parameter and count
-        // TODO JNG-4867 Count didn't work
-//        assertEquals(2, entityCollectionWithValueParamQueryDao
-//                .query(EntityCollectionWithValueParamQueryParameter
-//                        .builder()
-//                        .withValue(4)
-//                        .build())
-//                .count()
-//        );
+        assertEquals(2, entityCollectionWithValueParamQueryDao.query(EntityCollectionWithValueParamQueryParameter.builder().withValue(4).build()).execute().size());
+        assertEquals(2, entityCollectionWithValueParamQueryDao.query(EntityCollectionWithValueParamQueryParameter.builder().withValue(4).build()).count());
 
         // With parameter default
         assertThat(
