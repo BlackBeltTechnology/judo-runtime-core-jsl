@@ -3,14 +3,14 @@ package hu.blackbelt.judo.runtime.core.jsl.transfer;
 import com.google.inject.Inject;
 import com.google.inject.Module;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfer.automappedtransfer.myenum.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfer.automappedtransfer.entityoptionalfields.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfer.automappedtransfer.entityrequiredfields.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfer.automappedtransfer.entitywithprimitivedefaults.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfer.automappedtransfer.entityrequiredwithprimitivedefaults.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfer.automappedtransfer.automappedtransferonoptionalfields.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfer.automappedtransfer.automappedtransferonentitywithprimitivedefaults.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfer.automappedtransfer.automappedtransferonrequiredfields.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfer.automappedtransfer.automappedtransferonentityrequiredwithprimitivedefaults.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfer.automappedtransfer.entitywithoptionalprimitives.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfer.automappedtransfer.entitywithrequiredprimitives.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfer.automappedtransfer.entitywithoptionalprimitivedefaults.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfer.automappedtransfer.entitywithrequiredprimitivedefaults.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfer.automappedtransfer.automappedtransferonoptionalprimitives.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfer.automappedtransfer.automappedtransferonrequiredprimitives.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfer.automappedtransfer.automappedtransferonoptionalprimitivedefaults.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfer.automappedtransfer.automappedtransferonrequiredprimitivedefaults.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.AutoMappedTransferDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
@@ -46,29 +46,28 @@ public class AutoMappedTransferObjectTest extends AbstractJslTest {
     }
 
     @Inject
-    AutoMappedTransferOnOptionalFieldsDao autoMappedTransferOnOptionalFieldsDao;
+    EntityWithOptionalPrimitivesDao entityWithOptionalPrimitivesDao;
 
     @Inject
-    EntityOptionalFieldsDao entityOptionalFieldsDao;
+    EntityWithRequiredPrimitivesDao entityWithRequiredPrimitivesDao;
 
     @Inject
-    EntityWithPrimitiveDefaultsDao entityWithPrimitiveDefaultsDao;
+    EntityWithOptionalPrimitiveDefaultsDao entityWithOptionalPrimitiveDefaultsDao;
 
     @Inject
-    AutoMappedTransferOnEntityWithPrimitiveDefaultsDao autoMappedTransferOnEntityWithPrimitiveDefaultsDao;
+    EntityWithRequiredPrimitiveDefaultsDao entityWithRequiredPrimitiveDefaultsDao;
 
     @Inject
-    EntityRequiredFieldsDao entityRequiredFieldsDao;
+    AutoMappedTransferOnOptionalPrimitivesDao autoMappedTransferOnOptionalPrimitivesDao;
 
     @Inject
-    AutoMappedTransferOnRequiredFieldsDao autoMappedTransferOnRequiredFieldsDao;
+    AutoMappedTransferOnRequiredPrimitivesDao autoMappedTransferOnRequiredPrimitivesDao;
 
     @Inject
-    EntityRequiredWithPrimitiveDefaultsDao entityRequiredWithPrimitiveDefaultsDao;
+    AutoMappedTransferOnOptionalPrimitiveDefaultsDao autoMappedTransferOnOptionalPrimitiveDefaultsDao;
 
     @Inject
-    AutoMappedTransferOnEntityRequiredWithPrimitiveDefaultsDao autoMappedTransferOnEntityRequiredWithPrimitiveDefaultsDao;
-
+    AutoMappedTransferOnRequiredPrimitiveDefaultsDao autoMappedTransferOnRequiredPrimitiveDefaultsDao;
 
     /**
      * [DESCRIPTION]
@@ -98,32 +97,32 @@ public class AutoMappedTransferObjectTest extends AbstractJslTest {
     void testCheckOfTransferAutoMappedTransferObjectsCreationWithValidOptionalPrimitiveFields() {
 
         //check all field is mapped
-        AutoMappedTransferOnOptionalFields autoMappedTransferOnOptionalFields =
-                autoMappedTransferOnOptionalFieldsDao.create(AutoMappedTransferOnOptionalFields.builder().build());
+        AutoMappedTransferOnOptionalPrimitives autoMappedTransferOnOptionalPrimitives =
+                autoMappedTransferOnOptionalPrimitivesDao.create(AutoMappedTransferOnOptionalPrimitives.builder().build());
 
-        assertTrue(autoMappedTransferOnOptionalFields.getBoolAttr().isEmpty());
-        assertTrue(autoMappedTransferOnOptionalFields.getIntegerAttr().isEmpty());
-        assertTrue(autoMappedTransferOnOptionalFields.getRegexAttr().isEmpty());
-        assertTrue(autoMappedTransferOnOptionalFields.getScaledAttr().isEmpty());
-        assertTrue(autoMappedTransferOnOptionalFields.getDateAttr().isEmpty());
-        assertTrue(autoMappedTransferOnOptionalFields.getTimeAttr().isEmpty());
-        assertTrue(autoMappedTransferOnOptionalFields.getTimestampAttr().isEmpty());
-        assertTrue(autoMappedTransferOnOptionalFields.getEnumAttr().isEmpty());
-        assertTrue(autoMappedTransferOnOptionalFields.getStringAttr().isEmpty());
+        assertTrue(autoMappedTransferOnOptionalPrimitives.getBoolAttr().isEmpty());
+        assertTrue(autoMappedTransferOnOptionalPrimitives.getIntegerAttr().isEmpty());
+        assertTrue(autoMappedTransferOnOptionalPrimitives.getRegexAttr().isEmpty());
+        assertTrue(autoMappedTransferOnOptionalPrimitives.getScaledAttr().isEmpty());
+        assertTrue(autoMappedTransferOnOptionalPrimitives.getDateAttr().isEmpty());
+        assertTrue(autoMappedTransferOnOptionalPrimitives.getTimeAttr().isEmpty());
+        assertTrue(autoMappedTransferOnOptionalPrimitives.getTimestampAttr().isEmpty());
+        assertTrue(autoMappedTransferOnOptionalPrimitives.getEnumAttr().isEmpty());
+        assertTrue(autoMappedTransferOnOptionalPrimitives.getStringAttr().isEmpty());
 
-        Optional<EntityOptionalFields> entityOptionalFieldsOptional = entityOptionalFieldsDao.getById(autoMappedTransferOnOptionalFields.adaptTo(EntityOptionalFieldsIdentifier.class));
-        assertTrue(entityOptionalFieldsOptional.isPresent());
-        EntityOptionalFields entityOptionalFields = entityOptionalFieldsOptional.orElseThrow();
+        Optional<EntityWithOptionalPrimitives> entityWithOptionalPrimitivesOptional = entityWithOptionalPrimitivesDao.getById(autoMappedTransferOnOptionalPrimitives.adaptTo(EntityWithOptionalPrimitivesIdentifier.class));
+        assertTrue(entityWithOptionalPrimitivesOptional.isPresent());
+        EntityWithOptionalPrimitives entityWithOptionalPrimitives = entityWithOptionalPrimitivesOptional.orElseThrow();
 
-        assertTrue(entityOptionalFields.getBoolAttr().isEmpty());
-        assertTrue(entityOptionalFields.getIntegerAttr().isEmpty());
-        assertTrue(entityOptionalFields.getRegexAttr().isEmpty());
-        assertTrue(entityOptionalFields.getScaledAttr().isEmpty());
-        assertTrue(entityOptionalFields.getDateAttr().isEmpty());
-        assertTrue(entityOptionalFields.getTimeAttr().isEmpty());
-        assertTrue(entityOptionalFields.getTimestampAttr().isEmpty());
-        assertTrue(entityOptionalFields.getEnumAttr().isEmpty());
-        assertTrue(entityOptionalFields.getStringAttr().isEmpty());
+        assertTrue(entityWithOptionalPrimitives.getBoolAttr().isEmpty());
+        assertTrue(entityWithOptionalPrimitives.getIntegerAttr().isEmpty());
+        assertTrue(entityWithOptionalPrimitives.getRegexAttr().isEmpty());
+        assertTrue(entityWithOptionalPrimitives.getScaledAttr().isEmpty());
+        assertTrue(entityWithOptionalPrimitives.getDateAttr().isEmpty());
+        assertTrue(entityWithOptionalPrimitives.getTimeAttr().isEmpty());
+        assertTrue(entityWithOptionalPrimitives.getTimestampAttr().isEmpty());
+        assertTrue(entityWithOptionalPrimitives.getEnumAttr().isEmpty());
+        assertTrue(entityWithOptionalPrimitives.getStringAttr().isEmpty());
 
     }
 
@@ -147,7 +146,7 @@ public class AutoMappedTransferObjectTest extends AbstractJslTest {
      *
      */
     @Test
-    @Disabled("ProblemWithDefaultValuesMapping")
+    @Disabled("JNG-4888")
     @TestCase("CheckOfTransferAutoMappedTransferObjectsCreationWithValidOptionalPrimitiveDefaultFields")
     @Requirement(reqs = {
             "",
@@ -155,34 +154,34 @@ public class AutoMappedTransferObjectTest extends AbstractJslTest {
     void testCheckOfTransferAutoMappedTransferObjectsCreationWithValidOptionalPrimitiveDefaultFields() {
 
         //check all field is mapped
-        AutoMappedTransferOnEntityWithPrimitiveDefaults transferOnEntityWithPrimitiveDefaults = autoMappedTransferOnEntityWithPrimitiveDefaultsDao.create(AutoMappedTransferOnEntityWithPrimitiveDefaults.builder().build());
+        AutoMappedTransferOnOptionalPrimitiveDefaults transferOnOptionalPrimitiveDefaults = autoMappedTransferOnOptionalPrimitiveDefaultsDao.create(AutoMappedTransferOnOptionalPrimitiveDefaults.builder().build());
 
-        assertEquals(1, autoMappedTransferOnEntityWithPrimitiveDefaultsDao.countAll());
-        assertEquals(Optional.of(1), transferOnEntityWithPrimitiveDefaults.getIntegerAttr());
-        assertEquals(Optional.of(2.34), transferOnEntityWithPrimitiveDefaults.getScaledAttr());
-        assertEquals(Optional.of("test"), transferOnEntityWithPrimitiveDefaults.getStringAttr());
-        assertEquals(Optional.of("+36 (30) 123 1234"), transferOnEntityWithPrimitiveDefaults.getRegexAttr());
-        assertEquals(Optional.of(true), transferOnEntityWithPrimitiveDefaults.getBoolAttr());
-        assertEquals(Optional.of(LocalDate.of(2022, 7, 11)), transferOnEntityWithPrimitiveDefaults.getDateAttr());
-        assertEquals(Optional.of(LocalDateTime.parse("2022-07-11T19:09:33")), transferOnEntityWithPrimitiveDefaults.getTimestampAttr());
-        assertEquals(Optional.of(LocalTime.parse("23:59:59")), transferOnEntityWithPrimitiveDefaults.getTimeAttr());
-        assertEquals(Optional.of(MyEnum.Bombastic), transferOnEntityWithPrimitiveDefaults.getEnumAttr());
+        assertEquals(1, autoMappedTransferOnOptionalPrimitiveDefaultsDao.countAll());
+        assertEquals(Optional.of(1), transferOnOptionalPrimitiveDefaults.getIntegerAttr());
+        assertEquals(Optional.of(2.34), transferOnOptionalPrimitiveDefaults.getScaledAttr());
+        assertEquals(Optional.of("test"), transferOnOptionalPrimitiveDefaults.getStringAttr());
+        assertEquals(Optional.of("+36 (30) 123 1234"), transferOnOptionalPrimitiveDefaults.getRegexAttr());
+        assertEquals(Optional.of(true), transferOnOptionalPrimitiveDefaults.getBoolAttr());
+        assertEquals(Optional.of(LocalDate.of(2022, 7, 11)), transferOnOptionalPrimitiveDefaults.getDateAttr());
+        assertEquals(Optional.of(LocalDateTime.parse("2022-07-11T19:09:33")), transferOnOptionalPrimitiveDefaults.getTimestampAttr());
+        assertEquals(Optional.of(LocalTime.parse("23:59:59")), transferOnOptionalPrimitiveDefaults.getTimeAttr());
+        assertEquals(Optional.of(MyEnum.Bombastic), transferOnOptionalPrimitiveDefaults.getEnumAttr());
 
-        Optional<EntityWithPrimitiveDefaults> entityWithPrimitiveDefaultsOptional = entityWithPrimitiveDefaultsDao.getById(transferOnEntityWithPrimitiveDefaults.adaptTo(EntityWithPrimitiveDefaultsIdentifier.class));
+        Optional<EntityWithOptionalPrimitiveDefaults> entityWithOptionalPrimitiveDefaults = entityWithOptionalPrimitiveDefaultsDao.getById(transferOnOptionalPrimitiveDefaults.adaptTo(EntityWithOptionalPrimitiveDefaultsIdentifier.class));
 
-        assertTrue(entityWithPrimitiveDefaultsOptional.isPresent());
+        assertTrue(entityWithOptionalPrimitiveDefaults.isPresent());
 
-        EntityWithPrimitiveDefaults entityWithPrimitivesDefault = entityWithPrimitiveDefaultsOptional.orElseThrow();
+        EntityWithOptionalPrimitiveDefaults entityWithOptionalPrimitiveDefaults1 = entityWithOptionalPrimitiveDefaults.orElseThrow();
 
-        assertEquals(Optional.of(1), entityWithPrimitivesDefault.getIntegerAttr());
-        assertEquals(Optional.of(2.34), entityWithPrimitivesDefault.getScaledAttr());
-        assertEquals(Optional.of("Hello there"), entityWithPrimitivesDefault.getStringAttr());
-        assertEquals(Optional.of("+36 (30) 123 1234"), entityWithPrimitivesDefault.getRegexAttr());
-        assertEquals(Optional.of(true), entityWithPrimitivesDefault.getBoolAttr());
-        assertEquals(Optional.of(LocalDate.of(2022, 7, 11)), entityWithPrimitivesDefault.getDateAttr());
-        assertEquals(Optional.of(LocalDateTime.parse("2022-07-11T19:09:33")), entityWithPrimitivesDefault.getTimestampAttr());
-        assertEquals(Optional.of(LocalTime.parse("23:59:59")), entityWithPrimitivesDefault.getTimeAttr());
-        assertEquals(Optional.of(MyEnum.Bombastic), entityWithPrimitivesDefault.getEnumAttr());
+        assertEquals(Optional.of(1), entityWithOptionalPrimitiveDefaults1.getIntegerAttr());
+        assertEquals(Optional.of(2.34), entityWithOptionalPrimitiveDefaults1.getScaledAttr());
+        assertEquals(Optional.of("Hello there"), entityWithOptionalPrimitiveDefaults1.getStringAttr());
+        assertEquals(Optional.of("+36 (30) 123 1234"), entityWithOptionalPrimitiveDefaults1.getRegexAttr());
+        assertEquals(Optional.of(true), entityWithOptionalPrimitiveDefaults1.getBoolAttr());
+        assertEquals(Optional.of(LocalDate.of(2022, 7, 11)), entityWithOptionalPrimitiveDefaults1.getDateAttr());
+        assertEquals(Optional.of(LocalDateTime.parse("2022-07-11T19:09:33")), entityWithOptionalPrimitiveDefaults1.getTimestampAttr());
+        assertEquals(Optional.of(LocalTime.parse("23:59:59")), entityWithOptionalPrimitiveDefaults1.getTimeAttr());
+        assertEquals(Optional.of(MyEnum.Bombastic), entityWithOptionalPrimitiveDefaults1.getEnumAttr());
 
     }
 
@@ -214,7 +213,7 @@ public class AutoMappedTransferObjectTest extends AbstractJslTest {
 
         ValidationException thrown = assertThrows(
                 ValidationException.class,
-                () -> autoMappedTransferOnRequiredFieldsDao.create(AutoMappedTransferOnRequiredFields.builder().build())
+                () -> autoMappedTransferOnRequiredPrimitivesDao.create(AutoMappedTransferOnRequiredPrimitives.builder().build())
         );
 
         assertThat(thrown.getValidationResults(), containsInAnyOrder(
@@ -231,8 +230,8 @@ public class AutoMappedTransferObjectTest extends AbstractJslTest {
 
 
         //check all field is mapped
-        AutoMappedTransferOnRequiredFields transferOnRequiredFields = autoMappedTransferOnRequiredFieldsDao.create(
-                AutoMappedTransferOnRequiredFields
+        AutoMappedTransferOnRequiredPrimitives transferOnRequiredPrimitives = autoMappedTransferOnRequiredPrimitivesDao.create(
+                AutoMappedTransferOnRequiredPrimitives
                         .builder()
                         .withIntegerAttr(1)
                         .withScaledAttr(2.34)
@@ -246,32 +245,32 @@ public class AutoMappedTransferObjectTest extends AbstractJslTest {
                         .build()
         );
 
-        assertEquals(1, autoMappedTransferOnRequiredFieldsDao.countAll());
-        assertEquals(1, transferOnRequiredFields.getIntegerAttr());
-        assertEquals(2.34, transferOnRequiredFields.getScaledAttr());
-        assertEquals("Hello there", transferOnRequiredFields.getStringAttr());
-        assertEquals("+36 333-333-3333", transferOnRequiredFields.getRegexAttr());
-        assertEquals(true, transferOnRequiredFields.getBoolAttr());
-        assertEquals(LocalDate.of(2022, 7, 11), transferOnRequiredFields.getDateAttr());
-        assertEquals(LocalDateTime.parse("2022-07-11T19:09:33"), transferOnRequiredFields.getTimestampAttr());
-        assertEquals(LocalTime.parse("23:59:59"), transferOnRequiredFields.getTimeAttr());
-        assertEquals(MyEnum.Bombastic, transferOnRequiredFields.getEnumAttr());
+        assertEquals(1, autoMappedTransferOnRequiredPrimitivesDao.countAll());
+        assertEquals(1, transferOnRequiredPrimitives.getIntegerAttr());
+        assertEquals(2.34, transferOnRequiredPrimitives.getScaledAttr());
+        assertEquals("Hello there", transferOnRequiredPrimitives.getStringAttr());
+        assertEquals("+36 333-333-3333", transferOnRequiredPrimitives.getRegexAttr());
+        assertEquals(true, transferOnRequiredPrimitives.getBoolAttr());
+        assertEquals(LocalDate.of(2022, 7, 11), transferOnRequiredPrimitives.getDateAttr());
+        assertEquals(LocalDateTime.parse("2022-07-11T19:09:33"), transferOnRequiredPrimitives.getTimestampAttr());
+        assertEquals(LocalTime.parse("23:59:59"), transferOnRequiredPrimitives.getTimeAttr());
+        assertEquals(MyEnum.Bombastic, transferOnRequiredPrimitives.getEnumAttr());
 
-        Optional<EntityRequiredFields> entityRequiredFieldsOptional = entityRequiredFieldsDao.getById(transferOnRequiredFields.adaptTo(EntityRequiredFieldsIdentifier.class));
+        Optional<EntityWithRequiredPrimitives> entityWithRequiredPrimitivesOptional = entityWithRequiredPrimitivesDao.getById(transferOnRequiredPrimitives.adaptTo(EntityWithRequiredPrimitivesIdentifier.class));
 
-        assertTrue(entityRequiredFieldsOptional.isPresent());
+        assertTrue(entityWithRequiredPrimitivesOptional.isPresent());
 
-        EntityRequiredFields entityRequiredFields = entityRequiredFieldsOptional.orElseThrow();
+        EntityWithRequiredPrimitives withRequiredPrimitives = entityWithRequiredPrimitivesOptional.orElseThrow();
 
-        assertEquals(1, entityRequiredFields.getIntegerAttr());
-        assertEquals(2.34, entityRequiredFields.getScaledAttr());
-        assertEquals("Hello there", entityRequiredFields.getStringAttr());
-        assertEquals("+36 333-333-3333", entityRequiredFields.getRegexAttr());
-        assertEquals(true, entityRequiredFields.getBoolAttr());
-        assertEquals(LocalDate.of(2022, 7, 11), entityRequiredFields.getDateAttr());
-        assertEquals(LocalDateTime.parse("2022-07-11T19:09:33"), entityRequiredFields.getTimestampAttr());
-        assertEquals(LocalTime.parse("23:59:59"), entityRequiredFields.getTimeAttr());
-        assertEquals(MyEnum.Bombastic, entityRequiredFields.getEnumAttr());
+        assertEquals(1, withRequiredPrimitives.getIntegerAttr());
+        assertEquals(2.34, withRequiredPrimitives.getScaledAttr());
+        assertEquals("Hello there", withRequiredPrimitives.getStringAttr());
+        assertEquals("+36 333-333-3333", withRequiredPrimitives.getRegexAttr());
+        assertEquals(true, withRequiredPrimitives.getBoolAttr());
+        assertEquals(LocalDate.of(2022, 7, 11), withRequiredPrimitives.getDateAttr());
+        assertEquals(LocalDateTime.parse("2022-07-11T19:09:33"), withRequiredPrimitives.getTimestampAttr());
+        assertEquals(LocalTime.parse("23:59:59"), withRequiredPrimitives.getTimeAttr());
+        assertEquals(MyEnum.Bombastic, withRequiredPrimitives.getEnumAttr());
 
     }
 
@@ -295,7 +294,7 @@ public class AutoMappedTransferObjectTest extends AbstractJslTest {
      *
      */
     @Test
-    @Disabled("ProblemWithDefaultValuesMapping")
+    @Disabled("JNG-4888")
     @TestCase("CheckOfTransferAutoMappedTransferObjectsCreationWithValidRequiredPrimitiveDefaultFields")
     @Requirement(reqs = {
             "",
@@ -303,34 +302,34 @@ public class AutoMappedTransferObjectTest extends AbstractJslTest {
     void testCheckOfTransferAutoMappedTransferObjectsCreationWithValidRequiredPrimitiveDefaultFields() {
 
         //check all field is mapped
-        AutoMappedTransferOnEntityRequiredWithPrimitiveDefaults transferOnEntityRequiredWithPrimitiveDefaults = autoMappedTransferOnEntityRequiredWithPrimitiveDefaultsDao.create(AutoMappedTransferOnEntityRequiredWithPrimitiveDefaults.builder().build());
+        AutoMappedTransferOnRequiredPrimitiveDefaults transferOnRequiredPrimitiveDefaults = autoMappedTransferOnRequiredPrimitiveDefaultsDao.create(AutoMappedTransferOnRequiredPrimitiveDefaults.builder().build());
 
-        assertEquals(1, autoMappedTransferOnEntityRequiredWithPrimitiveDefaultsDao.countAll());
-        assertEquals(1, transferOnEntityRequiredWithPrimitiveDefaults.getIntegerAttr());
-        assertEquals(2.34, transferOnEntityRequiredWithPrimitiveDefaults.getScaledAttr());
-        assertEquals("Hello there", transferOnEntityRequiredWithPrimitiveDefaults.getStringAttr());
-        assertEquals("+36 333-333-3333", transferOnEntityRequiredWithPrimitiveDefaults.getRegexAttr());
-        assertEquals(true, transferOnEntityRequiredWithPrimitiveDefaults.getBoolAttr());
-        assertEquals(LocalDate.of(2022, 7, 11), transferOnEntityRequiredWithPrimitiveDefaults.getDateAttr());
-        assertEquals(LocalDateTime.parse("2022-07-11T19:09:33"), transferOnEntityRequiredWithPrimitiveDefaults.getTimestampAttr());
-        assertEquals(LocalTime.parse("23:59:59"), transferOnEntityRequiredWithPrimitiveDefaults.getTimeAttr());
-        assertEquals(MyEnum.Bombastic, transferOnEntityRequiredWithPrimitiveDefaults.getEnumAttr());
+        assertEquals(1, autoMappedTransferOnRequiredPrimitiveDefaultsDao.countAll());
+        assertEquals(1, transferOnRequiredPrimitiveDefaults.getIntegerAttr());
+        assertEquals(2.34, transferOnRequiredPrimitiveDefaults.getScaledAttr());
+        assertEquals("Hello there", transferOnRequiredPrimitiveDefaults.getStringAttr());
+        assertEquals("+36 333-333-3333", transferOnRequiredPrimitiveDefaults.getRegexAttr());
+        assertEquals(true, transferOnRequiredPrimitiveDefaults.getBoolAttr());
+        assertEquals(LocalDate.of(2022, 7, 11), transferOnRequiredPrimitiveDefaults.getDateAttr());
+        assertEquals(LocalDateTime.parse("2022-07-11T19:09:33"), transferOnRequiredPrimitiveDefaults.getTimestampAttr());
+        assertEquals(LocalTime.parse("23:59:59"), transferOnRequiredPrimitiveDefaults.getTimeAttr());
+        assertEquals(MyEnum.Bombastic, transferOnRequiredPrimitiveDefaults.getEnumAttr());
 
-        Optional<EntityRequiredWithPrimitiveDefaults> entityRequiredWithPrimitiveDefaultsOptional = entityRequiredWithPrimitiveDefaultsDao.getById(transferOnEntityRequiredWithPrimitiveDefaults.adaptTo(EntityRequiredWithPrimitiveDefaultsIdentifier.class));
+        Optional<EntityWithRequiredPrimitiveDefaults> entityWithRequiredPrimitiveDefaultsOptional = entityWithRequiredPrimitiveDefaultsDao.getById(transferOnRequiredPrimitiveDefaults.adaptTo(EntityWithRequiredPrimitiveDefaultsIdentifier.class));
 
-        assertTrue(entityRequiredWithPrimitiveDefaultsOptional.isPresent());
+        assertTrue(entityWithRequiredPrimitiveDefaultsOptional.isPresent());
 
-        EntityRequiredWithPrimitiveDefaults entityRequiredWithPrimitiveDefaults = entityRequiredWithPrimitiveDefaultsOptional.orElseThrow();
+        EntityWithRequiredPrimitiveDefaults entityWithRequiredPrimitiveDefaults = entityWithRequiredPrimitiveDefaultsOptional.orElseThrow();
 
-        assertEquals(1, entityRequiredWithPrimitiveDefaults.getIntegerAttr());
-        assertEquals(2.34, entityRequiredWithPrimitiveDefaults.getScaledAttr());
-        assertEquals("Hello there", entityRequiredWithPrimitiveDefaults.getStringAttr());
-        assertEquals("+36 333-333-3333", entityRequiredWithPrimitiveDefaults.getRegexAttr());
-        assertEquals(true, entityRequiredWithPrimitiveDefaults.getBoolAttr());
-        assertEquals(LocalDate.of(2022, 7, 11), entityRequiredWithPrimitiveDefaults.getDateAttr());
-        assertEquals(LocalDateTime.parse("2022-07-11T19:09:33"), entityRequiredWithPrimitiveDefaults.getTimestampAttr());
-        assertEquals(LocalTime.parse("23:59:59"), entityRequiredWithPrimitiveDefaults.getTimeAttr());
-        assertEquals(MyEnum.Bombastic, entityRequiredWithPrimitiveDefaults.getEnumAttr());
+        assertEquals(1, entityWithRequiredPrimitiveDefaults.getIntegerAttr());
+        assertEquals(2.34, entityWithRequiredPrimitiveDefaults.getScaledAttr());
+        assertEquals("Hello there", entityWithRequiredPrimitiveDefaults.getStringAttr());
+        assertEquals("+36 333-333-3333", entityWithRequiredPrimitiveDefaults.getRegexAttr());
+        assertEquals(true, entityWithRequiredPrimitiveDefaults.getBoolAttr());
+        assertEquals(LocalDate.of(2022, 7, 11), entityWithRequiredPrimitiveDefaults.getDateAttr());
+        assertEquals(LocalDateTime.parse("2022-07-11T19:09:33"), entityWithRequiredPrimitiveDefaults.getTimestampAttr());
+        assertEquals(LocalTime.parse("23:59:59"), entityWithRequiredPrimitiveDefaults.getTimeAttr());
+        assertEquals(MyEnum.Bombastic, entityWithRequiredPrimitiveDefaults.getEnumAttr());
 
     }
 

@@ -36,17 +36,17 @@ entity abstract AbstractEntityRequiredFields {
     field required String stringAttr;
 }
 
-entity EntityOptionalFields extends AbstractEntityFields {
+entity EntityWithOptionalPrimitives extends AbstractEntityFields {
 }
 
-entity EntityRequiredFields  extends AbstractEntityRequiredFields {
+entity EntityWithRequiredPrimitives  extends AbstractEntityRequiredFields {
 }
 
-transfer AutoMappedTransferOnOptionalFields (EntityOptionalFields entityOptionalFields);
+transfer AutoMappedTransferOnOptionalPrimitives (EntityWithOptionalPrimitives mappedEntity);
 
-transfer AutoMappedTransferOnRequiredFields (EntityRequiredFields entityRequiredFields);
+transfer AutoMappedTransferOnRequiredPrimitives (EntityWithRequiredPrimitives mappedEntity);
 
-entity EntityWithIdentifiers {
+entity EntityWithOptionalIdentifiers {
     identifier Integer integerAttr;
     identifier Scaled scaledAttr;
     identifier String stringAttr;
@@ -57,9 +57,9 @@ entity EntityWithIdentifiers {
     identifier MyEnum enumAttr;
 }
 
-transfer AutoMappedTransferOnEntityWithIdentifiers (EntityWithIdentifiers entityWithIdentifiers);
+transfer AutoMappedTransferOnOptionalIdentifiers (EntityWithOptionalIdentifiers mappedEntity);
 
-entity EntityWithPrimitiveDefaults {
+entity EntityWithOptionalPrimitiveDefaults {
     field Integer integerAttr = 1;
     field Scaled scaledAttr = 2.34;
     field String stringAttr = "test";
@@ -72,9 +72,9 @@ entity EntityWithPrimitiveDefaults {
     field MyEnum enumAttr = MyEnum#Bombastic;
 }
 
-transfer AutoMappedTransferOnEntityWithPrimitiveDefaults (EntityWithPrimitiveDefaults entityWithPrimitiveDefaults);
+transfer AutoMappedTransferOnOptionalPrimitiveDefaults (EntityWithOptionalPrimitiveDefaults mappedEntity);
 
-entity EntityRequiredWithPrimitiveDefaults {
+entity EntityWithRequiredPrimitiveDefaults {
     field required Integer integerAttr = 1;
     field required Scaled scaledAttr = 2.34;
     field required String stringAttr = "test";
@@ -86,10 +86,10 @@ entity EntityRequiredWithPrimitiveDefaults {
     field required MyEnum enumAttr = MyEnum#Bombastic;
 }
 
-transfer AutoMappedTransferOnEntityRequiredWithPrimitiveDefaults (EntityRequiredWithPrimitiveDefaults entityWithPrimitiveDefaults);
+transfer AutoMappedTransferOnRequiredPrimitiveDefaults (EntityWithRequiredPrimitiveDefaults mappedEntity);
 
 entity EntityWithIdentifiersContainer {
-    field EntityWithIdentifiers[] entitiesWithIdentifiers;
+    field EntityWithOptionalIdentifiers[] entitiesWithIdentifiers;
 }
 
-transfer AutoMappedTransferOnEntityWithIdentifiersContainer (EntityWithIdentifiersContainer entityWithIdentifiersContainer);
+transfer AutoMappedTransferOnOptionalIdentifiersContainer (EntityWithIdentifiersContainer mappedEntity);
