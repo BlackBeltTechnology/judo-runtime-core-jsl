@@ -110,3 +110,25 @@ entity DefaultRequiredEntity {
     field required Integer sumEntitiesIntegerValue = ReferenceEntity!all()!sum(e | e.intAtt);
 
 }
+
+//Entity with not valid default values
+
+entity EntityWithNotValidIntegerDefaultValue {
+        field Integer integerAttr = 1234567890;
+}
+
+entity EntityWithNotValidPrecisionDefaultValue {
+        field Scaled scaledAttrWithWrongPrecision = 123456789.34;
+}
+
+entity EntityWithNotValidScaleDefaultValue {
+        field Scaled scaledAttrWithWrongScale = 2.3466;
+}
+
+// entity EntityWithNotValidStringDefaultValue {
+//         field SmallString stringAttr = "To large string literal. To large string literal.To large string literal.To large string literal.To large string literal.Too larg";
+// }
+
+entity EntityWithNotValidRegexDefaultValue {
+        field PhoneNumber regexAttrWrongPattern = "+36-30 123 1234";
+}
