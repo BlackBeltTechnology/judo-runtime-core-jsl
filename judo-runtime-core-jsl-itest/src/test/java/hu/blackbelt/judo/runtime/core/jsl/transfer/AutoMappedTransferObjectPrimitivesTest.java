@@ -2,21 +2,20 @@ package hu.blackbelt.judo.runtime.core.jsl.transfer;
 
 import com.google.inject.Inject;
 import com.google.inject.Module;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfer.automappedtransfer.myenum.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfer.automappedtransfer.entitywithoptionalprimitives.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfer.automappedtransfer.entitywithrequiredprimitives.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfer.automappedtransfer.entitywithoptionalprimitivedefaults.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfer.automappedtransfer.entitywithrequiredprimitivedefaults.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfer.automappedtransfer.automappedtransferonoptionalprimitives.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfer.automappedtransfer.automappedtransferonrequiredprimitives.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfer.automappedtransfer.automappedtransferonoptionalprimitivedefaults.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfer.automappedtransfer.automappedtransferonrequiredprimitivedefaults.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.AutoMappedTransferDaoModules;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.myenum.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.entitywithoptionalprimitives.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.entitywithrequiredprimitives.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.entitywithoptionalprimitivedefaults.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.entitywithrequiredprimitivedefaults.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.automappedtransferonoptionalprimitives.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.automappedtransferonrequiredprimitives.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.automappedtransferonoptionalprimitivedefaults.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.automappedtransferonrequiredprimitivedefaults.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.AutoMappedTransferPrimitivesDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
 import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
-import liquibase.pro.packaged.M;
 import lombok.extern.slf4j.Slf4j;
 import org.hamcrest.Matcher;
 import org.junit.jupiter.api.Disabled;
@@ -33,16 +32,16 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
-public class AutoMappedTransferObjectTest extends AbstractJslTest {
+public class AutoMappedTransferObjectPrimitivesTest extends AbstractJslTest {
 
     @Override
     public Module getModelDaoModule() {
-        return new AutoMappedTransferDaoModules();
+        return new AutoMappedTransferPrimitivesDaoModules();
     }
 
     @Override
     public String getModelName() {
-        return "AutoMappedTransfer";
+        return "AutoMappedTransferPrimitives";
     }
 
     @Inject
@@ -90,11 +89,11 @@ public class AutoMappedTransferObjectTest extends AbstractJslTest {
      *
      */
     @Test
-    @TestCase("CheckOfTransferAutoMappedTransferObjectsCreationWithValidOptionalPrimitiveFields")
+    @TestCase("TransferAutoMappedTransferCreationWithValidOptionalPrimitiveFields")
     @Requirement(reqs = {
             "",
     })
-    void testCheckOfTransferAutoMappedTransferObjectsCreationWithValidOptionalPrimitiveFields() {
+    void testTransferAutoMappedTransferCreationWithValidOptionalPrimitiveFields() {
 
         //check all field is mapped
         AutoMappedTransferOnOptionalPrimitives autoMappedTransferOnOptionalPrimitives =
@@ -147,11 +146,11 @@ public class AutoMappedTransferObjectTest extends AbstractJslTest {
      */
     @Test
     @Disabled("JNG-4888")
-    @TestCase("CheckOfTransferAutoMappedTransferObjectsCreationWithValidOptionalPrimitiveDefaultFields")
+    @TestCase("TransferAutoMappedTransferCreationWithValidOptionalPrimitiveDefaultFields")
     @Requirement(reqs = {
             "",
     })
-    void testCheckOfTransferAutoMappedTransferObjectsCreationWithValidOptionalPrimitiveDefaultFields() {
+    void testTransferAutoMappedTransferCreationWithValidOptionalPrimitiveDefaultFields() {
 
         //check all field is mapped
         AutoMappedTransferOnOptionalPrimitiveDefaults transferOnOptionalPrimitiveDefaults = autoMappedTransferOnOptionalPrimitiveDefaultsDao.create(AutoMappedTransferOnOptionalPrimitiveDefaults.builder().build());
@@ -205,11 +204,11 @@ public class AutoMappedTransferObjectTest extends AbstractJslTest {
      *
      */
     @Test
-    @TestCase("CheckOfTransferAutoMappedTransferObjectsCreationWithValidRequiredPrimitiveFields")
+    @TestCase("TransferAutoMappedTransferCreationWithValidRequiredPrimitiveFields")
     @Requirement(reqs = {
             "",
     })
-    void testCheckOfTransferAutoMappedTransferObjectsCreationWithValidRequiredPrimitiveFields() {
+    void testTransferAutoMappedTransferCreationWithValidRequiredPrimitiveFields() {
 
         ValidationException thrown = assertThrows(
                 ValidationException.class,
@@ -295,11 +294,11 @@ public class AutoMappedTransferObjectTest extends AbstractJslTest {
      */
     @Test
     @Disabled("JNG-4888")
-    @TestCase("CheckOfTransferAutoMappedTransferObjectsCreationWithValidRequiredPrimitiveDefaultFields")
+    @TestCase("TransferAutoMappedTransferCreationWithValidRequiredPrimitiveDefaultFields")
     @Requirement(reqs = {
             "",
     })
-    void testCheckOfTransferAutoMappedTransferObjectsCreationWithValidRequiredPrimitiveDefaultFields() {
+    void testTransferAutoMappedTransferCreationWithValidRequiredPrimitiveDefaultFields() {
 
         //check all field is mapped
         AutoMappedTransferOnRequiredPrimitiveDefaults transferOnRequiredPrimitiveDefaults = autoMappedTransferOnRequiredPrimitiveDefaultsDao.create(AutoMappedTransferOnRequiredPrimitiveDefaults.builder().build());

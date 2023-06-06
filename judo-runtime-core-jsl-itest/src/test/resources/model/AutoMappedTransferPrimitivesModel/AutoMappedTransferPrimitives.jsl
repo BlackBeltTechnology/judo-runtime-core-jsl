@@ -1,4 +1,4 @@
-model AutoMappedTransfer;
+model AutoMappedTransferPrimitives;
 
 import judo::types;
 
