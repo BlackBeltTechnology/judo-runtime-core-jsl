@@ -93,3 +93,108 @@ entity EntityWithIdentifiersContainer {
 }
 
 transfer AutoMappedTransferOnOptionalIdentifiersContainer (EntityWithIdentifiersContainer mappedEntity);
+
+entity DerivedWithFieldsExpression {
+    field Integer integerAttr;
+    field Scaled scaledAttr ;
+    field String stringAttr;
+    field PhoneNumber regexAttr;
+    field Boolean boolAttr;
+    field Date dateAttr;
+    field Timestamp timestampAttr;
+    field Time timeAttr;
+    field MyEnum enumAttr;
+
+    derived Integer integerDerived => self.integerAttr;
+    derived Scaled scaledDerived => self.scaledAttr;
+    derived String stringDerived => self.stringAttr;
+    derived PhoneNumber regexDerived => self.regexAttr;
+    derived Boolean boolDerived => self.boolAttr;
+    derived Date dateDerived => self.dateAttr;
+    derived Timestamp timestampDerived => self.timestampAttr;
+    derived Time timeDerived => self.timeAttr;
+    derived MyEnum enumDerived => self.enumAttr;
+
+}
+
+transfer AutoMappedTransferOnDerivedWithFieldsExpression (DerivedWithFieldsExpression mappedEntity);
+
+entity DerivedWithDefaultFieldsExpression {
+    field Integer integerAttr = 1;
+    field Scaled scaledAttr = 2.34;
+    field String stringAttr = "test";
+    field PhoneNumber regexAttr = "+36 (30) 123 1234";
+    field Boolean boolAttr = true;
+    field Date dateAttr = `2022-07-11`;
+    field Timestamp timestampAttr = `2022-07-11T19:09:33Z`;
+    field Time timeAttr = `23:59:59`;
+    field MyEnum enumAttr = MyEnum#Bombastic;
+
+    derived Integer integerDerived => self.integerAttr;
+    derived Scaled scaledDerived => self.scaledAttr;
+    derived String stringDerived => self.stringAttr;
+    derived PhoneNumber regexDerived => self.regexAttr;
+    derived Boolean boolDerived => self.boolAttr;
+    derived Date dateDerived => self.dateAttr;
+    derived Timestamp timestampDerived => self.timestampAttr;
+    derived Time timeDerived => self.timeAttr;
+    derived MyEnum enumDerived => self.enumAttr;
+
+}
+
+transfer AutoMappedTransferOnDerivedWithDefaultFieldsExpression (DerivedWithDefaultFieldsExpression mappedEntity);
+
+entity DerivedWithSimplePrimitiveExpression {
+
+    derived Integer integerDerived => 1;
+    derived Scaled scaledDerived => 2.34;
+    derived String stringDerived => "test";
+    derived PhoneNumber regexDerived => "+36 (30) 123 1234";
+    derived Boolean boolDerived => true;
+    derived Date dateDerived => `2022-07-11`;
+    derived Timestamp timestampDerived => `2022-07-11T19:09:33Z`;
+    derived Time timeDerived => `23:59:59`;
+    derived MyEnum enumDerived => MyEnum#Bombastic;
+
+}
+
+transfer AutoMappedTransferOnDerivedWithSimplePrimitiveExpression (DerivedWithSimplePrimitiveExpression mappedEntity);
+
+entity DerivedWithComplexPrimitiveExpression {
+
+    derived Integer integerDerived => 1.23!round();
+    derived Scaled scaledDerived => 2.34!abs();
+    derived Boolean boolDerived => 2 > -1;
+    derived Date dateDerived => Date!of(year = 2022, month = 7, day = 11);
+    derived Timestamp timestampDerived => Timestamp!of(date = `2022-07-11`, time = `19:09:33`);
+    derived Time timeDerived => Time!of(hour = 23, minute = 59, second = 59);
+
+}
+
+transfer AutoMappedTransferOnDerivedWithComplexPrimitiveExpression (DerivedWithComplexPrimitiveExpression mappedEntity);
+
+entity DerivedWithQueryExpression {
+
+    derived Integer integerDerived => self.integerQuery();
+    derived Scaled scaledDerived => self.scaledQuery();
+    derived String stringDerived => self.stringQuery();
+    derived PhoneNumber regexDerived => self.regexQuery();
+    derived Boolean boolDerived => self.boolQuery();
+    derived Date dateDerived => self.dateQuery();
+    derived Timestamp timestampDerived => self.timestampQuery();
+    derived Time timeDerived => self.timeQuery();
+    derived MyEnum enumDerived => self.enumQuery();
+
+    query Integer integerQuery() => 1;
+    query Scaled scaledQuery() => 2.34;
+    query String stringQuery() => "test";
+    query PhoneNumber regexQuery() => "+36 (30) 123 1234";
+    query Boolean boolQuery() => true;
+    query Date dateQuery() => `2022-07-11`;
+    query Timestamp timestampQuery() => `2022-07-11T19:09:33Z`;
+    query Time timeQuery() => `23:59:59`;
+    query MyEnum enumQuery() => MyEnum#Bombastic;
+
+}
+
+transfer AutoMappedTransferOnDerivedWithQueryExpression (DerivedWithQueryExpression mappedEntity);
