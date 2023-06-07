@@ -110,7 +110,7 @@ public class AutoMappedTransferObjectPrimitivesTest extends AbstractJslTest {
 
 
     /**
-     * [DESCRIPTION]
+     * The test checks when an entity's optional fields are mapped to the transfer object automatically and are empty.
      *
      * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
@@ -118,21 +118,38 @@ public class AutoMappedTransferObjectPrimitivesTest extends AbstractJslTest {
      *
      * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
      *
-     * @jslModel AutoMappedTransfer.jsl
-     * model AutoMappedTransfer;
+     * @jslModel AutoMappedTransferPrimitives.jsl
      *
-     *
-     * @positiveRequirements
-     *
-     * @negativeRequirements
+     * @positiveRequirements REQ-SRV-006
      *
      * @scenario
+     *
+     *  Create one instance of AutoMappedTransferOnOptionalPrimitives.
+     *
+     *  Check all auto mapped fields exist and are empty.
+     *
+     *  Get the entity representation the transfer instance.
+     *
+     *  Check the entity representation fields exist and are empty.
      *
      */
     @Test
     @TestCase("AutoMappedTransferCreationWithValidOptionalPrimitiveFields")
     @Requirement(reqs = {
-            "",
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-SRV-006"
     })
     void testAutoMappedTransferCreationWithValidOptionalPrimitiveFields() {
 
@@ -167,7 +184,7 @@ public class AutoMappedTransferObjectPrimitivesTest extends AbstractJslTest {
     }
 
     /**
-     * [DESCRIPTION]
+     * The test checks when an entity's optional fields with default value are mapped to the transfer object automatically and contains the default values.
      *
      * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
@@ -175,21 +192,40 @@ public class AutoMappedTransferObjectPrimitivesTest extends AbstractJslTest {
      *
      * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
      *
-     * @jslModel AutoMappedTransfer.jsl
-     * model AutoMappedTransfer;
+     * @jslModel AutoMappedTransferPrimitives.jsl
      *
-     * @positiveRequirements
-     *
-     * @negativeRequirements
+     * @positiveRequirements REQ-SRV-006
      *
      * @scenario
+     *
+     *  Create one instance of AutoMappedTransferOnOptionalPrimitiveDefaults.
+     *
+     *  Check all auto mapped fields exist and contains the default values.
+     *
+     *  Get the entity representation the transfer instance.
+     *
+     *  Check the entity representation fields exist and contains the default values.
      *
      */
     @Test
     @Disabled("JNG-4888")
     @TestCase("AutoMappedTransferCreationWithValidOptionalPrimitiveDefaultFields")
     @Requirement(reqs = {
-            "",
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-EXPR-001",
+            "REQ-SRV-006"
     })
     void testAutoMappedTransferCreationWithValidOptionalPrimitiveDefaultFields() {
 
@@ -226,7 +262,7 @@ public class AutoMappedTransferObjectPrimitivesTest extends AbstractJslTest {
     }
 
     /**
-     * [DESCRIPTION]
+     * The test checks when an entity's required fields are mapped to the transfer object automatically and contains the reqiured values.
      *
      * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
@@ -234,20 +270,42 @@ public class AutoMappedTransferObjectPrimitivesTest extends AbstractJslTest {
      *
      * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
      *
-     * @jslModel AutoMappedTransfer.jsl
-     * model AutoMappedTransfer;
+     * @jslModel AutoMappedTransferPrimitives.jsl
      *
-     * @positiveRequirements
-     *
-     * @negativeRequirements
+     * @positiveRequirements REQ-SRV-006
      *
      * @scenario
+     *
+     *  Try to create one instance of AutoMappedTransferOnRequiredPrimitives without values.
+     *
+     *  Check the creation throw MISSING_REQUIRED_ATTRIBUTE Validation errors.
+     *
+     *  Create one instance of AutoMappedTransferOnRequiredPrimitives.
+     *
+     *  Check all auto mapped fields exist and contains the added values.
+     *
+     *  Get the entity representation the transfer instance.
+     *
+     *  Check the entity representation fields exist and contains the added values.
      *
      */
     @Test
     @TestCase("AutoMappedTransferCreationWithValidRequiredPrimitiveFields")
     @Requirement(reqs = {
-            "",
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-SRV-006"
     })
     void testAutoMappedTransferCreationWithValidRequiredPrimitiveFields() {
 
@@ -315,7 +373,7 @@ public class AutoMappedTransferObjectPrimitivesTest extends AbstractJslTest {
     }
 
     /**
-     * [DESCRIPTION]
+     * The test checks when an entity's reqiured fields with default value are mapped to the transfer object automatically and contains the default values.
      *
      * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
@@ -323,21 +381,40 @@ public class AutoMappedTransferObjectPrimitivesTest extends AbstractJslTest {
      *
      * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
      *
-     * @jslModel AutoMappedTransfer.jsl
-     * model AutoMappedTransfer;
+     * @jslModel AutoMappedTransferPrimitives.jsl
      *
-     * @positiveRequirements
-     *
-     * @negativeRequirements
+     * @positiveRequirements REQ-SRV-006
      *
      * @scenario
+     *
+     *  Create one instance of transferOnRequiredPrimitiveDefaults.
+     *
+     *  Check all auto mapped fields exist and contains the default values.
+     *
+     *  Get the entity representation the transfer instance.
+     *
+     *  Check the entity representation fields exist and contains the default values.
      *
      */
     @Test
     @Disabled("JNG-4888")
     @TestCase("AutoMappedTransferCreationWithValidRequiredPrimitiveDefaultFields")
     @Requirement(reqs = {
-            "",
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-EXPR-001",
+            "REQ-SRV-006"
     })
     void testAutoMappedTransferCreationWithValidRequiredPrimitiveDefaultFields() {
 
@@ -374,7 +451,7 @@ public class AutoMappedTransferObjectPrimitivesTest extends AbstractJslTest {
     }
 
     /**
-     * [DESCRIPTION]
+     * The test checks when an entity's derived with entity field expression mapped to the transfer object automatically and contains the expression values.
      *
      * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
@@ -382,20 +459,40 @@ public class AutoMappedTransferObjectPrimitivesTest extends AbstractJslTest {
      *
      * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
      *
-     * @jslModel AutoMappedTransfer.jsl
-     * model AutoMappedTransfer;
+     * @jslModel AutoMappedTransferPrimitives.jsl
      *
-     * @positiveRequirements
-     *
-     * @negativeRequirements
+     * @positiveRequirements REQ-SRV-006
      *
      * @scenario
+     *
+     *  Create one instance of transferOnDerivedWithFieldsExpression.
+     *
+     *  Check all auto mapped fields exist and contains the expression values.
+     *
+     *  Get the entity representation the transfer instance.
+     *
+     *  Check the entity representation fields exist and contains the expression values.
      *
      */
     @Test
     @TestCase("AutoMappedTransferCreationValidDerivedWithFieldsExpression")
     @Requirement(reqs = {
-            "",
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-008",
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-EXPR-001",
+            "REQ-SRV-006"
     })
     void testAutoMappedTransferCreationValidDerivedWithFieldsExpression() {
 
@@ -446,7 +543,7 @@ public class AutoMappedTransferObjectPrimitivesTest extends AbstractJslTest {
     }
 
     /**
-     * [DESCRIPTION]
+     * The test checks when an entity's derived expression contains the entity fields with default value mapped to the transfer object automatically and contains the expression values.
      *
      * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
@@ -454,21 +551,41 @@ public class AutoMappedTransferObjectPrimitivesTest extends AbstractJslTest {
      *
      * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
      *
-     * @jslModel AutoMappedTransfer.jsl
-     * model AutoMappedTransfer;
+     * @jslModel AutoMappedTransferPrimitives.jsl
      *
-     * @positiveRequirements
-     *
-     * @negativeRequirements
+     * @positiveRequirements REQ-SRV-006
      *
      * @scenario
+     *
+     *  Create one instance of AutoMappedTransferOnDerivedWithDefaultFieldsExpression.
+     *
+     *  Check all auto mapped fields exist and contains the expression values.
+     *
+     *  Get the entity representation the transfer instance.
+     *
+     *  Check the entity representation fields exist and contains the expression values.
      *
      */
     @Test
     @Disabled("JNG-4888")
     @TestCase("AutoMappedTransferCreationValidDerivedWithDefaultFieldsExpression")
     @Requirement(reqs = {
-            "",
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-008",
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-EXPR-001",
+            "REQ-SRV-006"
     })
     void testAutoMappedTransferCreationValidDerivedWithDefaultFieldsExpression() {
 
@@ -508,7 +625,7 @@ public class AutoMappedTransferObjectPrimitivesTest extends AbstractJslTest {
     }
 
     /**
-     * [DESCRIPTION]
+     * The test checks when an entity's derived expression contains a single primitive expression mapped to the transfer object automatically and contains the expression values.
      *
      * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
@@ -516,20 +633,39 @@ public class AutoMappedTransferObjectPrimitivesTest extends AbstractJslTest {
      *
      * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
      *
-     * @jslModel AutoMappedTransfer.jsl
-     * model AutoMappedTransfer;
+     * @jslModel AutoMappedTransferPrimitives.jsl
      *
-     * @positiveRequirements
-     *
-     * @negativeRequirements
+     * @positiveRequirements REQ-SRV-006
      *
      * @scenario
+     *
+     *  Create one instance of AutoMappedTransferOnDerivedWithSimplePrimitiveExpression.
+     *
+     *  Check all auto mapped fields exist and contains the expression values.
+     *
+     *  Get the entity representation the transfer instance.
+     *
+     *  Check the entity representation fields exist and contains the expression values.
      *
      */
     @Test
     @TestCase("AutoMappedTransferCreationDerivedWithSimplePrimitiveExpression")
     @Requirement(reqs = {
-            "",
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-ENT-001",
+            "REQ-ENT-008",
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-EXPR-001",
+            "REQ-SRV-006"
     })
     void testAutoMappedTransferCreationDerivedWithSimplePrimitiveExpression() {
 
@@ -569,7 +705,7 @@ public class AutoMappedTransferObjectPrimitivesTest extends AbstractJslTest {
     }
 
     /**
-     * [DESCRIPTION]
+     * The test checks when an entity's derived expression contains a complex primitive expression mapped to the transfer object automatically and contains the expression values.
      *
      * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
@@ -577,20 +713,38 @@ public class AutoMappedTransferObjectPrimitivesTest extends AbstractJslTest {
      *
      * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
      *
-     * @jslModel AutoMappedTransfer.jsl
-     * model AutoMappedTransfer;
+     * @jslModel AutoMappedTransferPrimitives.jsl
      *
-     * @positiveRequirements
-     *
-     * @negativeRequirements
+     * @positiveRequirements REQ-SRV-006
      *
      * @scenario
+     *
+     *  Create one instance of AutoMappedTransferOnDerivedWithComplexPrimitiveExpression.
+     *
+     *  Check all auto mapped fields exist and contains the expression values.
+     *
+     *  Get the entity representation the transfer instance.
+     *
+     *  Check the entity representation fields exist and contains the expression values.
      *
      */
     @Test
     @TestCase("AutoMappedTransferCreationDerivedWithComplexPrimitiveExpression")
     @Requirement(reqs = {
-            "",
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-ENT-001",
+            "REQ-ENT-008",
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-EXPR-001",
+            "REQ-SRV-006"
     })
     void testAutoMappedTransferCreationDerivedWithComplexPrimitiveExpression() {
 
@@ -624,7 +778,7 @@ public class AutoMappedTransferObjectPrimitivesTest extends AbstractJslTest {
     }
 
     /**
-     * [DESCRIPTION]
+     * The test checks when an entity's derived expression contains a query that return a primitive mapped to the transfer object automatically and contains the expression values.
      *
      * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
@@ -632,20 +786,41 @@ public class AutoMappedTransferObjectPrimitivesTest extends AbstractJslTest {
      *
      * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
      *
-     * @jslModel AutoMappedTransfer.jsl
-     * model AutoMappedTransfer;
+     * @jslModel AutoMappedTransferPrimitives.jsl
      *
-     * @positiveRequirements
-     *
-     * @negativeRequirements
+     * @positiveRequirements REQ-SRV-006
      *
      * @scenario
+     *
+     *  Create one instance of AutoMappedTransferOnDerivedWithQueryExpression.
+     *
+     *  Check all auto mapped fields exist and contains the expression values.
+     *
+     *  Get the entity representation the transfer instance.
+     *
+     *  Check the entity representation fields exist and contains the expression values.
      *
      */
     @Test
     @TestCase("AutoMappedTransferCreationDerivedWithQueryExpression")
     @Requirement(reqs = {
-            "",
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-008",
+            "REQ-ENT-009",
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-EXPR-001",
+            "REQ-SRV-006"
     })
     void testAutoMappedTransferCreationDerivedWithQueryExpression() {
 
