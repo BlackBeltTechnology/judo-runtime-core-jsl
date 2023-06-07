@@ -22,7 +22,6 @@ package hu.blackbelt.judo.runtime.core.jsl.entity;
 
 import com.google.inject.Inject;
 import com.google.inject.Module;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.entityrequiredfields.EntityRequiredFields;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.entitywithnotvalidintegerdefaultvalue.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.entitywithnotvalidprecisiondefaultvalue.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.entitywithnotvalidregexdefaultvalue.*;
@@ -33,6 +32,7 @@ import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
 import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.dao.DataIntegrityViolationException;
 
@@ -59,6 +59,7 @@ public class DefaultValueValidationTest extends AbstractJslTest {
     @Inject
     EntityWithNotValidRegexDefaultValueDao entityWithNotValidRegexDefaultValueDao;
 
+    // TODO JNG-JNG-4899 The injection is failed in this module
     @Override
     public Module getModelDaoModule() {
         return new PrimitivesDaoModules();
@@ -71,7 +72,7 @@ public class DefaultValueValidationTest extends AbstractJslTest {
 
 
     /**
-     * [DESCRIPTION]
+     * This case checks the invalid default value behaviors, when try to create an Entity instance of them.
      *
      * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
@@ -80,20 +81,34 @@ public class DefaultValueValidationTest extends AbstractJslTest {
      * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
      *
      * @jslModel Primitives.jsl
-     * model Primitives;
      *
-     * @positiveRequirements
      *
      * @negativeRequirements
      *
      * @scenario
      *
+     * Create instances for each invalid default value Entity
+     *
+     * Check the creation is good
+     *
+     * Check the update is failed with validation error.
+     *
      */
     @Test
+    @Disabled("https://blackbelt.atlassian.net/browse/JNG-4899")
     @Requirement(reqs = {
-            "",
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-EXPR-001"
     })
     public void testNotValidDefaultValueValidationTest() {
+
 
         DataIntegrityViolationException thrown = assertThrows(
                 DataIntegrityViolationException.class,
