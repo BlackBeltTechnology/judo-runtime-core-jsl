@@ -13,9 +13,6 @@ enum Enum {
     EnumC = 2;
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// optional, optional
-
 entity EntityForMapping {
         field Integer integerAttr;
         field Scaled scaledAttr;
@@ -42,9 +39,6 @@ transfer TransferOptionalPrimitives (EntityForMapping mappedEntity) {
     field Binary binaryAttr maps mappedEntity.binaryAttr;
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// required, required
-
 entity EntityForMappingRequired {
         field required Integer integerAttr ;
         field required Scaled scaledAttr;
@@ -70,9 +64,6 @@ transfer TransferRequiredPrimitives (EntityForMappingRequired mappedEntity) {
     field required Enum enumAttr maps mappedEntity.enumAttr;
     field required Binary binaryAttr maps mappedEntity.binaryAttr;
 }
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// optional, default, optional
 
 entity EntityWithPrimitiveDefaults {
     field Integer integerAttr = 1;
@@ -101,9 +92,6 @@ transfer TransferWithPrimitiveDefaults(EntityWithPrimitiveDefaults mappedEntity)
     field Enum enumAttr maps mappedEntity.enumAttr;
     field Binary binaryAttr maps mappedEntity.binaryAttr;
 }
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// required, default, optional + required, default, required
 
 entity EntityRequiredWithPrimitiveDefaults {
     field required Integer integerAttr = 1;
@@ -142,8 +130,6 @@ transfer TransferWithRequiredPrimitiveDefaults(EntityRequiredWithPrimitiveDefaul
     field required Enum enumAttr maps mappedEntity.enumAttr;
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// optional, default, optional
 
 entity EntityWithPrimitiveDefaultExpressions {
     field Integer integerAttr = 1.23!round();
@@ -166,9 +152,6 @@ transfer TransferWithPrimitiveDefaultExpressions(EntityWithPrimitiveDefaultExpre
     field Timestamp timestampAttr maps mappedEntity.timestampAttr;
     field Time timeAttr maps mappedEntity.timeAttr;
 }
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// required, optional
 
 entity RequiredForNotRequiredTransfer {
         field required Integer integerAttr ;
@@ -195,9 +178,6 @@ transfer TransferWithRequiredEntityPrimitives (RequiredForNotRequiredTransfer ma
     field Enum enumAttr maps mappedEntity.enumAttr;
     field Binary binaryAttr maps mappedEntity.binaryAttr;
 }
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// identifier
 
 entity EntityWithIdentifiers {
     identifier Integer integerAttr;
