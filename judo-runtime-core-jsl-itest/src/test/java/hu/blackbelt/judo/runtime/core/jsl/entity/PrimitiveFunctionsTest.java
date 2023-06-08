@@ -106,12 +106,11 @@ public class PrimitiveFunctionsTest extends AbstractJslTest {
 
         assertEquals(2, list.size());
 
-        // List size should be 0 after execute, but it is 2
-        //list = myEntityWithOptionalFieldsDao
-        //        .query()
-        //        .execute(0, null);
-//
-        //assertEquals(0, list.size());
+        list = myEntityWithOptionalFieldsDao
+                .query()
+                .execute(0, null);
+
+        assertEquals(2, list.size());
 
         list = myEntityWithOptionalFieldsDao
                 .query()

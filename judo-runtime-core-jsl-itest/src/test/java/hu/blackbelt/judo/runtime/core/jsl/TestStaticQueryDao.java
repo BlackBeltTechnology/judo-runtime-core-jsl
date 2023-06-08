@@ -438,6 +438,17 @@ public class TestStaticQueryDao extends AbstractJslTest {
                         .execute(null, null).size()
         );
 
+
+        assertEquals(
+                2,
+                entityCollectionWithValueParamQueryDao
+                        .query(EntityCollectionWithValueParamQueryParameter
+                                .builder()
+                                .withValue(4)
+                                .build())
+                        .execute(0, null).size()
+        );
+
         assertEquals(
                 2,
                 entityCollectionWithValueParamQueryDao
