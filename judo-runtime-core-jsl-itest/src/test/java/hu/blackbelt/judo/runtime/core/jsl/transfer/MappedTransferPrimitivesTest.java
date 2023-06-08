@@ -703,6 +703,83 @@ public class MappedTransferPrimitivesTest extends AbstractJslTest {
     }
 
     /**
+     * The transfer object mapped entity with required default primitive values. The test checks required attributes on entity cannot be nullified with optional mappings.
+     *
+     * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
+     *
+     * @type Behaviour
+     *
+     * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
+     *
+     * @jslModel MappedTransferPrimitives.jsl
+     *
+     *
+     * @scenario
+     *
+     *  Create one TransferWithRequiredPrimitiveDefaults instance.
+     *
+     *  Nullify mapping fields.
+     *
+     *  Expect error on update.
+     *
+     */
+    @Test
+    @TestCase("TransferCreationRequiredWithPrimitiveDefaults")
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-SRV-002",
+            "REQ-EXPR-001",
+    })
+    public void testInvalidTransferCreationRequiredWithPrimitiveDefaults() {
+        TransferPrimitiveDefaults transferPrimitiveDefaults = transferPrimitiveDefaultsDao.create(TransferPrimitiveDefaults.builder().build());
+
+        transferPrimitiveDefaults.setIntegerAttr(null);
+        transferPrimitiveDefaults.setScaledAttr(null);
+        transferPrimitiveDefaults.setStringAttr(null);
+        transferPrimitiveDefaults.setRegexAttr(null);
+        transferPrimitiveDefaults.setBoolAttr(null);
+        transferPrimitiveDefaults.setDateAttr(null);
+        transferPrimitiveDefaults.setTimestampAttr(null);
+        transferPrimitiveDefaults.setTimeAttr(null);
+        transferPrimitiveDefaults.setEnumAttr(null);
+
+        ValidationException exception = assertThrows(ValidationException.class, () -> transferPrimitiveDefaultsDao.update(transferPrimitiveDefaults));
+        Collection<ValidationResult> validationResults = exception.getValidationResults();
+        assertEquals(9, validationResults.size());
+        Set<String> codes = validationResults.stream().map(ValidationResult::getCode).collect(Collectors.toSet());
+        assertEquals(Set.of("MISSING_REQUIRED_ATTRIBUTE"), codes);
+
+        List<String> pathToAttributesInValidationResult = validationResults.stream().flatMap(vr -> vr.getDetails().values().stream()).map(v -> (String) v).toList();
+        assertEquals(9, pathToAttributesInValidationResult.size());
+        List<String> attributeNamesInValidationResult = pathToAttributesInValidationResult.stream().map(v -> {
+            String[] split = v.split("_");
+            return split[split.length - 1];
+        }).toList();
+
+        assertThat(attributeNamesInValidationResult, hasItem("integerAttr"));
+        assertThat(attributeNamesInValidationResult, hasItem("scaledAttr"));
+        assertThat(attributeNamesInValidationResult, hasItem("stringAttr"));
+        assertThat(attributeNamesInValidationResult, hasItem("regexAttr"));
+        assertThat(attributeNamesInValidationResult, hasItem("boolAttr"));
+        assertThat(attributeNamesInValidationResult, hasItem("dateAttr"));
+        assertThat(attributeNamesInValidationResult, hasItem("timestampAttr"));
+        assertThat(attributeNamesInValidationResult, hasItem("timeAttr"));
+        assertThat(attributeNamesInValidationResult, hasItem("enumAttr"));
+    }
+
+    /**
      * The transfer object mapped entity with required default primitive values. The test checks the required default values are present in the transfer object too.
      *
      * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
