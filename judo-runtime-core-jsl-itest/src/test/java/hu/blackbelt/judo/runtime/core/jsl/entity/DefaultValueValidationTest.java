@@ -53,6 +53,7 @@ public class DefaultValueValidationTest extends AbstractJslTest {
     @Inject
     EntityWithNotValidScaleDefaultValueDao entityWithNotValidScaleDefaultValueDao;
 
+    // TODO JNG-JNG-4899 The injection is failed in this dao
 //    @Inject
 //    EntityWithNotValidStringDefaultValueDao entityWithNotValidStringDefaultValueDao;
 
