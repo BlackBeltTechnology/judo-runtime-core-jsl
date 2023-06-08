@@ -1,0 +1,14 @@
+model AutoMappedTransferSingleEntity;
+
+import judo::types;
+
+entity ReferenceEntity {
+    field String name;
+}
+
+entity ContainerSingleCompositionEntity {
+    field ReferenceEntity singleCompositionEntity;
+    field required ReferenceEntity requireSingleCompositionEntity;
+    field ReferenceEntity singleCompositionDefaultEntity = ReferenceEntity!all()!filter(e | e.name == "CompositionDefault")!any();
+    field required ReferenceEntity singleRequiredCompositionDefaultEntity = ReferenceEntity!all()!any();
+}
