@@ -93,13 +93,48 @@ public class PrimitiveFunctionsTest extends AbstractJslTest {
     }
 
     @Test
-    public void testLimit() {
+    public void testLimitAndOffset() {
         List<MyEntityWithOptionalFields> list = myEntityWithOptionalFieldsDao
                 .query()
-                .limit(1)
-                .execute();
+                .execute(1, null);
 
         assertEquals(1, list.size());
+
+        list = myEntityWithOptionalFieldsDao
+                .query()
+                .execute(null, null);
+
+        assertEquals(2, list.size());
+
+        list = myEntityWithOptionalFieldsDao
+                .query()
+                .execute(0, null);
+
+        assertEquals(2, list.size());
+
+        list = myEntityWithOptionalFieldsDao
+                .query()
+                .execute(3, null);
+
+        assertEquals(2, list.size());
+
+        list = myEntityWithOptionalFieldsDao
+                .query()
+                .execute(2, 0);
+
+        assertEquals(2, list.size());
+
+        list = myEntityWithOptionalFieldsDao
+                .query()
+                .execute(2, 1);
+
+        assertEquals(1, list.size());
+
+        list = myEntityWithOptionalFieldsDao
+                .query()
+                .execute(2, 2);
+
+        assertEquals(0, list.size());
     }
 
     @Test
