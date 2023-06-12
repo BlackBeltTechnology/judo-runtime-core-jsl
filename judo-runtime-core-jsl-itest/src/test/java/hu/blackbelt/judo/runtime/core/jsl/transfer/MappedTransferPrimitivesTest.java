@@ -19,6 +19,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitive
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferwithrequiredprimitivedefaults.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.entityformapping.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.MappedTransferPrimitivesDaoModules;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.entitywithwrongregex.*;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
@@ -79,6 +80,9 @@ public class MappedTransferPrimitivesTest extends AbstractJslTest {
 
     @Inject
     TransferWithRequiredEntityPrimitivesDao transferWithRequiredEntityPrimitivesDao;
+
+    @Inject
+    EntityWithWrongRegexDao entityWithWrongRegexDao;
 
     /**
      * The test checks if the entity's optional fields are mapped to the transfer object and are empty.
@@ -1104,6 +1108,23 @@ public class MappedTransferPrimitivesTest extends AbstractJslTest {
         assertThat(thrown.getValidationResults(), containsInAnyOrder(
                 matchScaleValidationForAttribute("scaledAttr")
         ));
+    }
+
+    @Test
+    @TestCase("TestEntityWithWrongRegex")
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-005",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-SRV-002",
+    })
+    public void testWrongRegex() {
+        EntityWithWrongRegex entity = entityWithWrongRegexDao.create(EntityWithWrongRegex.builder().build());
+        System.out.println(entity.getRegexAttr());
     }
 
 }

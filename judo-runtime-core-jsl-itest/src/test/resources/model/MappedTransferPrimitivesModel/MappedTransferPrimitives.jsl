@@ -204,3 +204,12 @@ transfer TransferWithIdentifiers (EntityWithIdentifiers mappedEntity) {
     field Enum enumAttr maps mappedEntity.enumAttr;
     field Binary binaryAttr maps mappedEntity.binaryAttr;
 }
+
+entity EntityWithWrongRegex {
+    field required PhoneNumber regexAttr = "+36-1-123-123apple";
+}
+
+transfer TransferMapsEntityWithWrongRegex(EntityWithWrongRegex entityWithWrongRegex) {
+    field PhoneNumber regexAttr maps entityWithWrongRegex.regexAttr;
+}
+
