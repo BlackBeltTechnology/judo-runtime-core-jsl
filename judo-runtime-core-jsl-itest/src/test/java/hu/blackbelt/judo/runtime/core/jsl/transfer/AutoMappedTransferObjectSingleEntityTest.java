@@ -87,8 +87,8 @@ public class AutoMappedTransferObjectSingleEntityTest extends AbstractJslTest {
         AutoMappedContainerSingleComposition autoMappedContainerSingleComposition =
                 autoMappedContainerSingleCompositionDao.create(AutoMappedContainerSingleComposition
                         .builder()
-                        .withSingleCompositionEntity(autoMappedReferenceEntityDao.create(AutoMappedReferenceEntity.builder().withName("singleComposition").build()))
-                        .withSingleRequiredCompositionEntity(autoMappedReferenceEntityDao.create(AutoMappedReferenceEntity.builder().withName("singleRequiredComposition").build()))
+                        .withSingleCompositionEntity(AutoMappedReferenceEntity.builder().withName("singleComposition").build())
+                        .withSingleRequiredCompositionEntity(AutoMappedReferenceEntity.builder().withName("singleRequiredComposition").build())
                         .build()
                 );
 
@@ -113,6 +113,11 @@ public class AutoMappedTransferObjectSingleEntityTest extends AbstractJslTest {
         // composition deletion
 
         autoMappedContainerSingleComposition.setSingleCompositionEntity(null);
+
+        autoMappedContainerSingleComposition = autoMappedContainerSingleCompositionDao.update(autoMappedContainerSingleComposition);
+
+        assertTrue(autoMappedReferenceEntityDao.query().execute().stream().filter(t -> t.getName().equals(Optional.of("singleCompositionRenamed"))).toList().isEmpty());
+
         autoMappedContainerSingleComposition.setSingleCompositionEntity(autoMappedReferenceEntityDao.create(AutoMappedReferenceEntity.builder().withName("singleCompositionBind").build()));
 
         AutoMappedContainerSingleComposition referenceForLambda = autoMappedContainerSingleComposition;
