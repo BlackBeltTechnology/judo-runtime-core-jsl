@@ -417,7 +417,7 @@ public class TestStaticQueryDao extends AbstractJslTest {
                 containsInAnyOrder(d.identifier())
         );
 
-        // With parameter and limit
+        // With parameter, limit and offset
         assertEquals(
                 1,
                 entityCollectionWithValueParamQueryDao
@@ -425,8 +425,68 @@ public class TestStaticQueryDao extends AbstractJslTest {
                                 .builder()
                                 .withValue(4)
                                 .build())
-                        .limit(1)
-                        .execute().size()
+                        .execute(1, null).size()
+        );
+
+        assertEquals(
+                2,
+                entityCollectionWithValueParamQueryDao
+                        .query(EntityCollectionWithValueParamQueryParameter
+                                .builder()
+                                .withValue(4)
+                                .build())
+                        .execute(null, null).size()
+        );
+
+
+        assertEquals(
+                2,
+                entityCollectionWithValueParamQueryDao
+                        .query(EntityCollectionWithValueParamQueryParameter
+                                .builder()
+                                .withValue(4)
+                                .build())
+                        .execute(0, null).size()
+        );
+
+        assertEquals(
+                2,
+                entityCollectionWithValueParamQueryDao
+                        .query(EntityCollectionWithValueParamQueryParameter
+                                .builder()
+                                .withValue(4)
+                                .build())
+                        .execute(3, null).size()
+        );
+
+        assertEquals(
+                2,
+                entityCollectionWithValueParamQueryDao
+                        .query(EntityCollectionWithValueParamQueryParameter
+                                .builder()
+                                .withValue(4)
+                                .build())
+                        .execute(2, 0).size()
+        );
+
+        assertEquals(
+                1,
+                entityCollectionWithValueParamQueryDao
+                        .query(EntityCollectionWithValueParamQueryParameter
+                                .builder()
+                                .withValue(4)
+                                .build())
+                        .execute(2, 1).size()
+        );
+
+        assertEquals(
+                0,
+                entityCollectionWithValueParamQueryDao
+                        .query(EntityCollectionWithValueParamQueryParameter
+                                .builder()
+                                .withValue(4)
+                                .build())
+                        .execute(2, 2).size()
         );
 
         // With parameter and maskedBy

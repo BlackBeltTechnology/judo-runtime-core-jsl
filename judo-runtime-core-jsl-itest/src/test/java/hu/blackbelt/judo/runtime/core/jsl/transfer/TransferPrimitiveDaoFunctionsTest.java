@@ -127,13 +127,48 @@ public class TransferPrimitiveDaoFunctionsTest extends AbstractJslTest {
             "REQ-MDL-003",
             "REQ-SRV-002",
     })
-    public void testLimit() {
+    public void testLimitAndOffset() {
         List<TransferOptionalPrimitives> list = transferOptionalPrimitivesDao
                 .query()
-                .limit(1)
-                .execute();
+                .execute(1, null);
 
         assertEquals(1, list.size());
+
+        list = transferOptionalPrimitivesDao
+                .query()
+                .execute(null, null);
+
+        assertEquals(2, list.size());
+
+        list = transferOptionalPrimitivesDao
+                .query()
+                .execute(0, null);
+
+        assertEquals(2, list.size());
+
+        list = transferOptionalPrimitivesDao
+                .query()
+                .execute(3, null);
+
+        assertEquals(2, list.size());
+
+        list = transferOptionalPrimitivesDao
+                .query()
+                .execute(2, 0);
+
+        assertEquals(2, list.size());
+
+        list = transferOptionalPrimitivesDao
+                .query()
+                .execute(2, 1);
+
+        assertEquals(1, list.size());
+
+        list = transferOptionalPrimitivesDao
+                .query()
+                .execute(2, 2);
+
+        assertEquals(0, list.size());
     }
 
     /**
