@@ -51,7 +51,7 @@ public class AutoMappedTransferObjectSingleEntityTest extends AbstractJslTest {
     AutoMappedContainerSingleCompositionDao autoMappedContainerSingleCompositionDao;
 
     /**
-     *  [description]
+     * This test checks the auto mapped transfer object on single entity composition fields.
      *
      * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
@@ -61,33 +61,28 @@ public class AutoMappedTransferObjectSingleEntityTest extends AbstractJslTest {
      *
      * @jslModel AutoMappedTransferSingleEntity.jsl
      *
-     * @positiveRequirements REQ-SRV-006
      *
      * @scenario
      *
+     *  Create an auto mapped transfer object that contains all type of single composited entity fields.
+     *
+     *  Check the dao functionality works well.
      *
      */
     @Test
     @TestCase("AutoMappedTransferWithSingleAggregationVariations")
     @Requirement(reqs = {
-            "",
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-SRV-006"
 
     })
     void testAutoMappedTransferWithSingleAggregationVariations() {
-
-        AutoMappedReferenceEntity  autoMappedReference = autoMappedReferenceEntityDao.create(
-                AutoMappedReferenceEntity
-                        .builder()
-                        .withName("CompositionDefault")
-                        .build()
-        );
-
-        AutoMappedReferenceEntity  autoMappedReferenceEntityRequiredCompositionDefault = autoMappedReferenceEntityDao.create(
-                AutoMappedReferenceEntity
-                        .builder()
-                        .withName("RequiredCompositionDefault")
-                        .build()
-        );
 
         AutoMappedContainerSingleComposition autoMappedContainerSingleComposition =
                 autoMappedContainerSingleCompositionDao.create(AutoMappedContainerSingleComposition
@@ -97,8 +92,7 @@ public class AutoMappedTransferObjectSingleEntityTest extends AbstractJslTest {
                         .build()
                 );
 
-
-        //TODO The field not contains the default value
+        // TODO JNG-4909 The field not contains the default value
 //        assertEquals(autoMappedReferenceEntityRequiredCompositionDefault.identifier(), autoMappedContainerSingleComposition.getSingleCompositionDefaultEntity().orElseThrow().identifier());
 //        autoMappedContainerSingleComposition = autoMappedContainerSingleCompositionDao.update(autoMappedContainerSingleComposition);
 //        assertEquals(autoMappedReferenceEntityRequiredCompositionDefault.identifier(), autoMappedContainerSingleComposition.getSingleCompositionDefaultEntity().orElseThrow().identifier());
@@ -106,7 +100,7 @@ public class AutoMappedTransferObjectSingleEntityTest extends AbstractJslTest {
         assertEquals(Optional.of("singleComposition"), autoMappedContainerSingleComposition.getSingleCompositionEntity().orElseThrow().getName());
         assertEquals(Optional.of("singleRequiredComposition"), autoMappedContainerSingleComposition.getSingleRequiredCompositionEntity().getName());
 
-        //update the name of the compositions
+        // update the name of the compositions
 
         autoMappedContainerSingleComposition.getSingleCompositionEntity().orElseThrow().setName("singleCompositionRenamed");
         autoMappedContainerSingleComposition.getSingleRequiredCompositionEntity().setName("singleRequiredCompositionRenamed");
@@ -116,12 +110,12 @@ public class AutoMappedTransferObjectSingleEntityTest extends AbstractJslTest {
         assertEquals(Optional.of("singleCompositionRenamed"), autoMappedContainerSingleComposition.getSingleCompositionEntity().orElseThrow().getName());
         assertEquals(Optional.of("singleRequiredCompositionRenamed"), autoMappedContainerSingleComposition.getSingleRequiredCompositionEntity().getName());
 
-        //composition deletion
+        // composition deletion
 
         autoMappedContainerSingleComposition.setSingleCompositionEntity(null);
         autoMappedContainerSingleComposition.setSingleCompositionEntity(autoMappedReferenceEntityDao.create(AutoMappedReferenceEntity.builder().withName("singleCompositionBind").build()));
 
-        AutoMappedContainerSingleComposition referenceForLambda  = autoMappedContainerSingleComposition;
+        AutoMappedContainerSingleComposition referenceForLambda = autoMappedContainerSingleComposition;
         IllegalStateException thrown = assertThrows(
                 IllegalStateException.class,
                 () -> autoMappedContainerSingleCompositionDao.update(referenceForLambda)
@@ -132,7 +126,7 @@ public class AutoMappedTransferObjectSingleEntityTest extends AbstractJslTest {
 
 
         autoMappedContainerSingleComposition.setSingleRequiredCompositionEntity(null);
-        AutoMappedContainerSingleComposition referenceForLambda1  = autoMappedContainerSingleComposition;
+        AutoMappedContainerSingleComposition referenceForLambda1 = autoMappedContainerSingleComposition;
         ValidationException thrown1 = assertThrows(
                 ValidationException.class,
                 () -> autoMappedContainerSingleCompositionDao.update(referenceForLambda1)
@@ -147,7 +141,7 @@ public class AutoMappedTransferObjectSingleEntityTest extends AbstractJslTest {
 
 
     /**
-     *  [description]
+     *  This test checks the auto mapped transfer object on single entity relation fields.
      *
      * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
@@ -157,17 +151,28 @@ public class AutoMappedTransferObjectSingleEntityTest extends AbstractJslTest {
      *
      * @jslModel AutoMappedTransferSingleEntity.jsl
      *
-     * @positiveRequirements REQ-SRV-006
      *
      * @scenario
      *
+     *  Create an auto mapped transfer object that contains all type of single relation entity fields.
+     *
+     *  Check the dao functionality works well.
      *
      */
     @Test
     @Disabled("JNG-4906")
-    @TestCase("AutoMappedTransfernWithValidOptionalPrimitiveFields")
+    @TestCase("AutoMappedTransferWithSingleAssociationVariations")
     @Requirement(reqs = {
-            "",
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-SRV-006"
 
     })
     void testAutoMappedTransferWithSingleAssociationVariations() {

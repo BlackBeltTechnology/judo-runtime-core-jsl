@@ -9,6 +9,7 @@ entity ReferenceEntity {
 entity ContainerSingleCompositionEntity {
     field ReferenceEntity singleCompositionEntity;
     field required ReferenceEntity singleRequiredCompositionEntity;
+    //TODO JNG-4909
     field ReferenceEntity singleCompositionDefaultEntity = ReferenceEntity!all()!filter(e | e.name == "CompositionDefault")!any();
 //     field required ReferenceEntity singleRequiredCompositionDefaultEntity = ReferenceEntity!all()!filter(e | e.name == "RequiredCompositionDefault")!any(); //error
 }
