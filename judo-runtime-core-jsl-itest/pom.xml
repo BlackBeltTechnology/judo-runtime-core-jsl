@@ -395,6 +395,16 @@
                             <sources>${basedir}/src/test/resources/model/AutoMappedTransferSingleEntityModel</sources>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>generate-psm-test-model-from-artifact-PrimitiveAttributeMappingCombinationsModel</id>
+                        <goals>
+                            <goal>parser-workflow</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <sources>${basedir}/src/test/resources/model/PrimitiveAttributeMappingCombinationsModel</sources>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
 
@@ -868,6 +878,62 @@
                             <destination>${basedir}/target/generated-test-sources/sdk-core/AutoMappedTransferSingleEntity</destination>
                         </configuration>
                     </execution>
+
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-PrimitiveAttributeMappingCombinations-Optional</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/OptionalModel-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/sdk-core/OptionalModel</destination>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-PrimitiveAttributeMappingCombinations-OptionalWithDefault</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/OptionalWithDefaultModel-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/sdk-core/OptionalWithDefaultModel</destination>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-PrimitiveAttributeMappingCombinations-Required</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/RequiredModel-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/sdk-core/RequiredModel</destination>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-PrimitiveAttributeMappingCombinations-RequiredWithDefault</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/RequiredWithDefaultModel-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/sdk-core/RequiredWithDefaultModel</destination>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
 
@@ -918,6 +984,10 @@
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/MappedTransferAggregation</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/TransferConstructor</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/AutoMappedTransferSingleEntity</source>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/OptionalModel</source>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/OptionalWithDefaultModel</source>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/RequiredModel</source>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/RequiredWithDefaultModel</source>
                             </sources>
                         </configuration>
                    </execution>

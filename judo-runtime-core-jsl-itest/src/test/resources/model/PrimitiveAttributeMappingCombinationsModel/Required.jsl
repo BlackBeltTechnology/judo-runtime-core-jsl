@@ -1,0 +1,31 @@
+model RequiredModel;
+
+import judo::types;
+
+entity RequiredAttribute {
+    field required String attr;
+}
+
+transfer OptionalMappingRequired(RequiredAttribute ra) {
+    field String attr maps ra.attr;
+}
+
+transfer OptionalWithDefaultMappingRequired(RequiredAttribute ra) {
+    field String attr maps ra.attr;
+
+    constructor {
+        self.attr = "OptionalWithDefaultMappingRequired";
+    }
+}
+
+transfer RequiredMappingRequired(RequiredAttribute ra) {
+    field required String attr maps ra.attr;
+}
+
+transfer RequiredWithDefaultMappingRequired(RequiredAttribute ra) {
+    field required String attr maps ra.attr;
+
+    constructor {
+        self.attr = "RequiredWithDefaultMappingRequired";
+    }
+}
