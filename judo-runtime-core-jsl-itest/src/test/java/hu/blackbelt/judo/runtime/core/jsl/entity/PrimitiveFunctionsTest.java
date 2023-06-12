@@ -94,44 +94,93 @@ public class PrimitiveFunctionsTest extends AbstractJslTest {
 
     @Test
     public void testLimitAndOffset() {
+
         List<MyEntityWithOptionalFields> list = myEntityWithOptionalFieldsDao
                 .query()
+                .orderBy(MyEntityWithOptionalFieldsAttribute.INTEGER_ATTR)
+                .execute(1);
+
+        assertEquals(1, list.size());
+        assertEquals(entity2.identifier(), list.get(0).identifier());
+
+        list = myEntityWithOptionalFieldsDao
+                .query()
+                .orderBy(MyEntityWithOptionalFieldsAttribute.INTEGER_ATTR)
+                .execute(null);
+
+        assertEquals(2, list.size());
+        assertEquals(entity2.identifier(), list.get(0).identifier());
+        assertEquals(entity1.identifier(), list.get(1).identifier());
+
+        list = myEntityWithOptionalFieldsDao
+                .query()
+                .orderBy(MyEntityWithOptionalFieldsAttribute.INTEGER_ATTR)
+                .execute(0);
+
+        assertEquals(2, list.size());
+        assertEquals(entity2.identifier(), list.get(0).identifier());
+        assertEquals(entity1.identifier(), list.get(1).identifier());
+
+        list = myEntityWithOptionalFieldsDao
+                .query()
+                .orderBy(MyEntityWithOptionalFieldsAttribute.INTEGER_ATTR)
+                .execute(3);
+
+        list = myEntityWithOptionalFieldsDao
+                .query()
+                .orderBy(MyEntityWithOptionalFieldsAttribute.INTEGER_ATTR)
                 .execute(1, null);
 
         assertEquals(1, list.size());
+        assertEquals(entity2.identifier(), list.get(0).identifier());
 
         list = myEntityWithOptionalFieldsDao
                 .query()
+                .orderBy(MyEntityWithOptionalFieldsAttribute.INTEGER_ATTR)
                 .execute(null, null);
 
         assertEquals(2, list.size());
+        assertEquals(entity2.identifier(), list.get(0).identifier());
+        assertEquals(entity1.identifier(), list.get(1).identifier());
 
         list = myEntityWithOptionalFieldsDao
                 .query()
+                .orderBy(MyEntityWithOptionalFieldsAttribute.INTEGER_ATTR)
                 .execute(0, null);
 
         assertEquals(2, list.size());
+        assertEquals(entity2.identifier(), list.get(0).identifier());
+        assertEquals(entity1.identifier(), list.get(1).identifier());
 
         list = myEntityWithOptionalFieldsDao
                 .query()
+                .orderBy(MyEntityWithOptionalFieldsAttribute.INTEGER_ATTR)
                 .execute(3, null);
 
         assertEquals(2, list.size());
+        assertEquals(entity2.identifier(), list.get(0).identifier());
+        assertEquals(entity1.identifier(), list.get(1).identifier());
 
         list = myEntityWithOptionalFieldsDao
                 .query()
+                .orderBy(MyEntityWithOptionalFieldsAttribute.INTEGER_ATTR)
                 .execute(2, 0);
 
         assertEquals(2, list.size());
+        assertEquals(entity2.identifier(), list.get(0).identifier());
+        assertEquals(entity1.identifier(), list.get(1).identifier());
 
         list = myEntityWithOptionalFieldsDao
                 .query()
+                .orderBy(MyEntityWithOptionalFieldsAttribute.INTEGER_ATTR)
                 .execute(2, 1);
 
         assertEquals(1, list.size());
+        assertEquals(entity1.identifier(), list.get(0).identifier());
 
         list = myEntityWithOptionalFieldsDao
                 .query()
+                .orderBy(MyEntityWithOptionalFieldsAttribute.INTEGER_ATTR)
                 .execute(2, 2);
 
         assertEquals(0, list.size());
