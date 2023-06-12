@@ -1,0 +1,35 @@
+model AutoMappedTransferSingleEntity;
+
+import judo::types;
+
+entity ReferenceEntity {
+    field String name;
+}
+
+entity ContainerSingleCompositionEntity {
+    field ReferenceEntity singleCompositionEntity;
+    field required ReferenceEntity singleRequiredCompositionEntity;
+    //TODO JNG-4909
+    field ReferenceEntity singleCompositionDefaultEntity = ReferenceEntity!all()!filter(e | e.name == "CompositionDefault")!any();
+//     field required ReferenceEntity singleRequiredCompositionDefaultEntity = ReferenceEntity!all()!filter(e | e.name == "RequiredCompositionDefault")!any(); //error
+}
+
+transfer AutoMappedReferenceEntity(ReferenceEntity mappedEntity);
+
+transfer AutoMappedContainerSingleComposition(ContainerSingleCompositionEntity mappedEntity);
+
+
+// TODO JNG-4906
+entity TwoWayReferenceEntity {
+}
+
+transfer AutoMappedTwoWayReferenceEntity(TwoWayReferenceEntity mappedEntity);
+
+entity ContainerSingleAssociationEntity {
+    relation ReferenceEntity singleCompositionEntity;
+    relation required ReferenceEntity singleRequiredCompositionEntity;
+    relation TwoWayReferenceEntity twoWayReferenceEntityRelation opposite-add twoWayContainerRelation;
+
+}
+
+transfer AutoMappedContainerSingleAssociation(ContainerSingleAssociationEntity mappedEntity);
