@@ -126,7 +126,7 @@ public class AutoMappedTransferObjectSingleEntityTest extends AbstractJslTest {
                 () -> autoMappedContainerSingleCompositionDao.update(referenceForLambda)
         );
 
-        assertTrue(thrown.getMessage().contains("Identifier cannot be different on containment reference element"));
+        assertTrue(thrown.getMessage().contains("Identifier cannot be set on new association reference element"));
         assertTrue(thrown.getMessage().contains("#singleCompositionEntity"));
 
 
