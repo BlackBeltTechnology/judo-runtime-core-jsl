@@ -2,14 +2,14 @@ model Functions;
 
 import FunctionsExternals as FE;
 
-type numeric Integer(precision = 15, scale = 0);
-type numeric Scaled(precision = 15, scale = 2);
-type string String(min-size = 0, max-size = 128);
+type numeric Integer precision:15 scale:0;
+type numeric Scaled precision:15 scale:2;
+type string String min-size:0 max-size:128;
 type boolean Boolean;
 type date Date;
 type timestamp Timestamp;
 type time Time;
-type binary Binary(mime-types = ["text/plain"], max-file-size=1 GB);
+type binary Binary mime-type:["text/plain"] max-file-size:1 GB;
 
 enum MyEnum {
     Atomic = 0;
@@ -19,7 +19,7 @@ enum MyEnum {
 
 entity Simple {
 	field String stringAttr;
-	derived Integer firstNum => Simple!all()!first(s | s.stringAttr)!size();
+	field Integer firstNum <= Simple!all()!first(s | s.stringAttr)!size();
 }
 
 entity Entity {
@@ -48,93 +48,93 @@ entity Functions {
 
 entity AnyTypeFunctions extends Functions {
 
-    derived Boolean integerIsDefinedFalse => self.`entity`.integerAttr!isDefined();
-    derived Boolean integerIsDefinedTrue => self.entityWithPrimitives.integerAttr!isDefined();
-    derived Boolean integerIsUndefinedTrue => self.`entity`.integerAttr!isUndefined();
-    derived Boolean integerIsUndefinedFalse => self.entityWithPrimitives.integerAttr!isUndefined();
+    field Boolean integerIsDefinedFalse <= self.`entity`.integerAttr!isDefined();
+    field Boolean integerIsDefinedTrue <= self.entityWithPrimitives.integerAttr!isDefined();
+    field Boolean integerIsUndefinedTrue <= self.`entity`.integerAttr!isUndefined();
+    field Boolean integerIsUndefinedFalse <= self.entityWithPrimitives.integerAttr!isUndefined();
 
-    derived Boolean scaledIsDefinedFalse => self.`entity`.scaledAttr!isDefined();
-    derived Boolean scaledIsDefinedTrue => self.entityWithPrimitives.scaledAttr!isDefined();
-    derived Boolean scaledIsUndefinedTrue => self.`entity`.scaledAttr!isUndefined();
-    derived Boolean scaledIsUndefinedFalse => self.entityWithPrimitives.scaledAttr!isUndefined();
+    field Boolean scaledIsDefinedFalse <= self.`entity`.scaledAttr!isDefined();
+    field Boolean scaledIsDefinedTrue <= self.entityWithPrimitives.scaledAttr!isDefined();
+    field Boolean scaledIsUndefinedTrue <= self.`entity`.scaledAttr!isUndefined();
+    field Boolean scaledIsUndefinedFalse <= self.entityWithPrimitives.scaledAttr!isUndefined();
 
-    derived Boolean stringIsDefinedFalse => self.`entity`.stringAttr!isDefined();
-    derived Boolean stringIsDefinedTrue => self.entityWithPrimitives.stringAttr!isDefined();
-    derived Boolean stringIsUndefinedTrue => self.`entity`.stringAttr!isUndefined();
-    derived Boolean stringIsUndefinedFalse => self.entityWithPrimitives.stringAttr!isUndefined();
+    field Boolean stringIsDefinedFalse <= self.`entity`.stringAttr!isDefined();
+    field Boolean stringIsDefinedTrue <= self.entityWithPrimitives.stringAttr!isDefined();
+    field Boolean stringIsUndefinedTrue <= self.`entity`.stringAttr!isUndefined();
+    field Boolean stringIsUndefinedFalse <= self.entityWithPrimitives.stringAttr!isUndefined();
 
-    derived Boolean boolIsDefinedFalse => self.`entity`.boolAttr!isDefined();
-    derived Boolean boolIsDefinedTrue => self.entityWithPrimitives.boolAttr!isDefined();
-    derived Boolean boolIsUndefinedTrue => self.`entity`.boolAttr!isUndefined();
-    derived Boolean boolIsUndefinedFalse => self.entityWithPrimitives.boolAttr!isUndefined();
+    field Boolean boolIsDefinedFalse <= self.`entity`.boolAttr!isDefined();
+    field Boolean boolIsDefinedTrue <= self.entityWithPrimitives.boolAttr!isDefined();
+    field Boolean boolIsUndefinedTrue <= self.`entity`.boolAttr!isUndefined();
+    field Boolean boolIsUndefinedFalse <= self.entityWithPrimitives.boolAttr!isUndefined();
 
-    derived Boolean dateIsDefinedFalse => self.`entity`.dateAttr!isDefined();
-    derived Boolean dateIsDefinedTrue => self.entityWithPrimitives.dateAttr!isDefined();
-    derived Boolean dateIsUndefinedTrue => self.`entity`.dateAttr!isUndefined();
-    derived Boolean dateIsUndefinedFalse => self.entityWithPrimitives.dateAttr!isUndefined();
+    field Boolean dateIsDefinedFalse <= self.`entity`.dateAttr!isDefined();
+    field Boolean dateIsDefinedTrue <= self.entityWithPrimitives.dateAttr!isDefined();
+    field Boolean dateIsUndefinedTrue <= self.`entity`.dateAttr!isUndefined();
+    field Boolean dateIsUndefinedFalse <= self.entityWithPrimitives.dateAttr!isUndefined();
 
-    derived Boolean timestampIsDefinedFalse => self.`entity`.timestampAttr!isDefined();
-    derived Boolean timestampIsDefinedTrue => self.entityWithPrimitives.timestampAttr!isDefined();
-    derived Boolean timestampIsUndefinedTrue => self.`entity`.timestampAttr!isUndefined();
-    derived Boolean timestampIsUndefinedFalse => self.entityWithPrimitives.timestampAttr!isUndefined();
+    field Boolean timestampIsDefinedFalse <= self.`entity`.timestampAttr!isDefined();
+    field Boolean timestampIsDefinedTrue <= self.entityWithPrimitives.timestampAttr!isDefined();
+    field Boolean timestampIsUndefinedTrue <= self.`entity`.timestampAttr!isUndefined();
+    field Boolean timestampIsUndefinedFalse <= self.entityWithPrimitives.timestampAttr!isUndefined();
 
-    derived Boolean timeIsDefinedFalse => self.`entity`.timeAttr!isDefined();
-    derived Boolean timeIsDefinedTrue => self.entityWithPrimitives.timeAttr!isDefined();
-    derived Boolean timeIsUndefinedTrue => self.`entity`.timeAttr!isUndefined();
-    derived Boolean timeIsUndefinedFalse => self.entityWithPrimitives.timeAttr!isUndefined();
+    field Boolean timeIsDefinedFalse <= self.`entity`.timeAttr!isDefined();
+    field Boolean timeIsDefinedTrue <= self.entityWithPrimitives.timeAttr!isDefined();
+    field Boolean timeIsUndefinedTrue <= self.`entity`.timeAttr!isUndefined();
+    field Boolean timeIsUndefinedFalse <= self.entityWithPrimitives.timeAttr!isUndefined();
 
-    derived String stringOrElse => "apple"!orElse(value = "grape");
-    derived Integer numberOrElse => 2!orElse(value = 1);
-    derived Integer numberOrElse2 => self.`entity`.integerAttr!orElse(value = 3);
-    derived Integer numberOrElse3 => self.`entity`.integerAttr!orElse(value = -4.9)!abs()!orElse(value = 0!abs())!floor();
+    field String stringOrElse <= "apple"!orElse(value = "grape");
+    field Integer numberOrElse <= 2!orElse(value = 1);
+    field Integer numberOrElse2 <= self.`entity`.integerAttr!orElse(value = 3);
+    field Integer numberOrElse3 <= self.`entity`.integerAttr!orElse(value = -4.9)!abs()!orElse(value = 0!abs())!floor();
 }
 
 entity StringFunctions {
     field String undefined;
 
-    derived Integer length => "apple"!size();
-    derived String first => "apple"!left(count = 2);
-    derived String last => "apple"!right(count = 1);
-    derived Integer position => "apple"!position(substring = "p");
-    derived String substring => "apple"!substring(count = 2, offset = 3);
-    derived String lower => "ApPlE"!lower();
-    derived String lowerCase => "ApPlE"!lower();
-    derived String upper => "ApPlE"!upper();
-    derived String upperCase => "ApPlE"!upper();
-    derived String capitalize => "apPlE"!capitalize();
-    derived Boolean matches => "apple"!matches(pattern = r".*pl.");
+    field Integer length <= "apple"!size();
+    field String first <= "apple"!left(count = 2);
+    field String last <= "apple"!right(count = 1);
+    field Integer position <= "apple"!position(substring = "p");
+    field String substring <= "apple"!substring(count = 2, offset = 3);
+    field String lower <= "ApPlE"!lower();
+    field String lowerCase <= "ApPlE"!lower();
+    field String upper <= "ApPlE"!upper();
+    field String upperCase <= "ApPlE"!upper();
+    field String capitalize <= "apPlE"!capitalize();
+    field Boolean matches <= "apple"!matches(pattern = r".*pl.");
 
-    derived Boolean like => "apple"!like(pattern = "%pl_");
-    derived Boolean likeFalse => "apple"!like(pattern = "%qwe%");
-    derived Boolean likeOnUndefined => self.undefined!like(pattern = "%qwe%");
-    derived Boolean ilike => "apple"!ilike(pattern = "%pL_");
-    derived Boolean ilikeFalse => "apple"!ilike(pattern = "%qWE%");
-    derived Boolean ilikeOnUndefined => self.undefined!ilike(pattern = "%qWE%");
+    field Boolean like <= "apple"!like(pattern = "%pl_");
+    field Boolean likeFalse <= "apple"!like(pattern = "%qwe%");
+    field Boolean likeOnUndefined <= self.undefined!like(pattern = "%qwe%");
+    field Boolean ilike <= "apple"!ilike(pattern = "%pL_");
+    field Boolean ilikeFalse <= "apple"!ilike(pattern = "%qWE%");
+    field Boolean ilikeOnUndefined <= self.undefined!ilike(pattern = "%qWE%");
 
-    derived String replace => "apple"!replace(oldstring = "le", newstring = "endix");
-    derived String trim => " apple "!trim();
-    derived String ltrim => " apple "!ltrim();
-    derived String rtrim => " apple "!rtrim();
+    field String replace <= "apple"!replace(oldstring = "le", newstring = "endix");
+    field String trim <= " apple "!trim();
+    field String ltrim <= " apple "!ltrim();
+    field String rtrim <= " apple "!rtrim();
 
-    derived String lpad => "apple"!lpad(size = 10);
-    derived Boolean lpadTrue => "apple"!lpad(size = 10)!isDefined();
-    derived Boolean lpadFalse => "apple"!lpad(size = 10)!isUndefined();
-    derived String lpad1 => "apple"!lpad(size = 10, padstring = "*");
-    derived String lpad2 => "apple"!lpad(size = 2);
-    derived String lpad3 => "apple"!lpad(size = 2, padstring = "*");
-    derived String rpad => "apple"!rpad(size = 10);
-    derived String rpad1 => "apple"!rpad(size = 10, padstring = "*");
-    derived String rpad2 => "apple"!rpad(size = 2);
-    derived String rpad3 => "apple"!rpad(size = 2, padstring = "*");
+    field String lpad <= "apple"!lpad(size = 10);
+    field Boolean lpadTrue <= "apple"!lpad(size = 10)!isDefined();
+    field Boolean lpadFalse <= "apple"!lpad(size = 10)!isUndefined();
+    field String lpad1 <= "apple"!lpad(size = 10, padstring = "*");
+    field String lpad2 <= "apple"!lpad(size = 2);
+    field String lpad3 <= "apple"!lpad(size = 2, padstring = "*");
+    field String rpad <= "apple"!rpad(size = 10);
+    field String rpad1 <= "apple"!rpad(size = 10, padstring = "*");
+    field String rpad2 <= "apple"!rpad(size = 2);
+    field String rpad3 <= "apple"!rpad(size = 2, padstring = "*");
 
-    derived String lpadUndefined => self.undefined!lpad(size = 10);
-    derived Boolean lpadUndefinedFalse => self.undefined!lpad(size = 10)!isDefined();
-    derived Boolean lpadUndefinedTrue => self.undefined!lpad(size = 10)!isUndefined();
-    derived String lpadUndefined1 => self.undefined!lpad(size = 10, padstring = "*");
-    derived String rpadUndefined => self.undefined!rpad(size = 10);
-    derived String rpadUndefined1 => self.undefined!rpad(size = 10, padstring = "*");
+    field String lpadUndefined <= self.undefined!lpad(size = 10);
+    field Boolean lpadUndefinedFalse <= self.undefined!lpad(size = 10)!isDefined();
+    field Boolean lpadUndefinedTrue <= self.undefined!lpad(size = 10)!isUndefined();
+    field String lpadUndefined1 <= self.undefined!lpad(size = 10, padstring = "*");
+    field String rpadUndefined <= self.undefined!rpad(size = 10);
+    field String rpadUndefined1 <= self.undefined!rpad(size = 10, padstring = "*");
 
-    derived String parenthizedAsString => (12 + 14)!asString();
+    field String parenthizedAsString <= (12 + 14)!asString();
 }
 
 entity NumericFunctions {
@@ -145,39 +145,39 @@ entity NumericFunctions {
     field Scaled neg3 = -2.9;
     field Integer neg4 = -3;
 
-    derived Integer roundInt => self.int!round();
-    derived Integer roundInt2 => 1!round();
-    derived Integer roundScaled1 => 1.23!round();
-    derived Integer roundScaled2 => 7.89!round();
-    derived Integer roundScaled3 => 2.50!round();
-    derived Integer roundScaledNegative1 => self.neg!round();
-    derived Integer roundScaledNegative2 => self.neg1!round();
-    derived Integer roundScaledNegative3 => self.neg2!round();
+    field Integer roundInt <= self.int!round();
+    field Integer roundInt2 <= 1!round();
+    field Integer roundScaled1 <= 1.23!round();
+    field Integer roundScaled2 <= 7.89!round();
+    field Integer roundScaled3 <= 2.50!round();
+    field Integer roundScaledNegative1 <= self.neg!round();
+    field Integer roundScaledNegative2 <= self.neg1!round();
+    field Integer roundScaledNegative3 <= self.neg2!round();
 
-    derived Scaled roundIntScaled => self.int!round(scale = 1);
-    derived Scaled roundInt2Scaled => 1!round(scale = 1);
-    derived Scaled roundScaled1Scaled => 1.23!round(scale = 1);
-    derived Scaled roundScaled2Scaled => 7.89!round(scale = 1);
-    derived Scaled roundScaled3Scaled => 2.50!round(scale = 1);
-    derived Scaled roundScaledNegative1Scaled => self.neg!round(scale = 1);
-    derived Scaled roundScaledNegative2Scaled => self.neg1!round(scale = 1);
-    derived Scaled roundScaledNegative3Scaled => self.neg2!round(scale = 1);
+    field Scaled roundIntScaled <= self.int!round(scale = 1);
+    field Scaled roundInt2Scaled <= 1!round(scale = 1);
+    field Scaled roundScaled1Scaled <= 1.23!round(scale = 1);
+    field Scaled roundScaled2Scaled <= 7.89!round(scale = 1);
+    field Scaled roundScaled3Scaled <= 2.50!round(scale = 1);
+    field Scaled roundScaledNegative1Scaled <= self.neg!round(scale = 1);
+    field Scaled roundScaledNegative2Scaled <= self.neg1!round(scale = 1);
+    field Scaled roundScaledNegative3Scaled <= self.neg2!round(scale = 1);
 
-    derived Integer floorInt => 1!floor();
-    derived Integer floorScaled1 => 2.9!floor();
-    derived Integer floorScaled2 => self.neg3!floor();
+    field Integer floorInt <= 1!floor();
+    field Integer floorScaled1 <= 2.9!floor();
+    field Integer floorScaled2 <= self.neg3!floor();
 
-    derived Integer ceilInt => 1!ceil();
-    derived Integer ceilScaled1 => 2.9!ceil();
-    derived Integer ceilScaled2 => self.neg3!ceil();
+    field Integer ceilInt <= 1!ceil();
+    field Integer ceilScaled1 <= 2.9!ceil();
+    field Integer ceilScaled2 <= self.neg3!ceil();
 
-    derived Integer absInt => 1!abs();
-    derived Integer absInt2 => self.neg4!abs();
-    derived Scaled absScaled1 => 2.9!abs();
-    derived Scaled absScaled2 => self.neg3!abs();
+    field Integer absInt <= 1!abs();
+    field Integer absInt2 <= self.neg4!abs();
+    field Scaled absScaled1 <= 2.9!abs();
+    field Scaled absScaled2 <= self.neg3!abs();
 
-    derived String intAsString => 1!asString();
-    derived String scaledAsString => 123456.789!asString();
+    field String intAsString <= 1!asString();
+    field String scaledAsString <= 123456.789!asString();
 }
 
 
@@ -199,78 +199,78 @@ entity Kleene {
 	field Boolean undefined;
 	field Boolean bool = true;
 	
-	derived Boolean trueOrTrue => (true or true);
-	derived Boolean trueOrFalse => (true or false);
-	derived Boolean trueOrUndefined => (true or self.undefined);
-	derived Boolean falseOrTrue => (false or true);
-	derived Boolean falseOrFalse => (false or false);
-	derived Boolean falseOrUndefined => (false or self.undefined);
-	derived Boolean undefinedOrTrue => (self.undefined or true);
-	derived Boolean undefinedOrFalse => (self.undefined or false);
-	derived Boolean undefinedOrUndefined => (self.undefined or self.undefined);
+	field Boolean trueOrTrue <= (true or true);
+	field Boolean trueOrFalse <= (true or false);
+	field Boolean trueOrUndefined <= (true or self.undefined);
+	field Boolean falseOrTrue <= (false or true);
+	field Boolean falseOrFalse <= (false or false);
+	field Boolean falseOrUndefined <= (false or self.undefined);
+	field Boolean undefinedOrTrue <= (self.undefined or true);
+	field Boolean undefinedOrFalse <= (self.undefined or false);
+	field Boolean undefinedOrUndefined <= (self.undefined or self.undefined);
 
-	derived Boolean trueAndTrue => (true and true);
-	derived Boolean trueAndFalse => (true and false);
-	derived Boolean trueAndUndefined => (true and self.undefined);
-	derived Boolean falseAndTrue => (false and true);
-	derived Boolean falseAndFalse => (false and false);
-	derived Boolean falseAndUndefined => (false and self.undefined);
-	derived Boolean undefinedAndTrue => (self.undefined and true);
-	derived Boolean undefinedAndFalse => (self.undefined and false);
-	derived Boolean undefinedAndUndefined => (self.undefined and self.undefined);
+	field Boolean trueAndTrue <= (true and true);
+	field Boolean trueAndFalse <= (true and false);
+	field Boolean trueAndUndefined <= (true and self.undefined);
+	field Boolean falseAndTrue <= (false and true);
+	field Boolean falseAndFalse <= (false and false);
+	field Boolean falseAndUndefined <= (false and self.undefined);
+	field Boolean undefinedAndTrue <= (self.undefined and true);
+	field Boolean undefinedAndFalse <= (self.undefined and false);
+	field Boolean undefinedAndUndefined <= (self.undefined and self.undefined);
 
-	derived Boolean trueXorTrue => (true xor true);
-	derived Boolean trueXorFalse => (true xor false);
-	derived Boolean trueXorUndefined => (true xor self.undefined);
-	derived Boolean falseXorTrue => (false xor true);
-	derived Boolean falseXorFalse => (false xor false);
-	derived Boolean falseXorUndefined => (false xor self.undefined);
-	derived Boolean undefinedXorTrue => (self.undefined xor true);
-	derived Boolean undefinedXorFalse => (self.undefined xor false);
-	derived Boolean undefinedXorUndefined => (self.undefined xor self.undefined);
+	field Boolean trueXorTrue <= (true xor true);
+	field Boolean trueXorFalse <= (true xor false);
+	field Boolean trueXorUndefined <= (true xor self.undefined);
+	field Boolean falseXorTrue <= (false xor true);
+	field Boolean falseXorFalse <= (false xor false);
+	field Boolean falseXorUndefined <= (false xor self.undefined);
+	field Boolean undefinedXorTrue <= (self.undefined xor true);
+	field Boolean undefinedXorFalse <= (self.undefined xor false);
+	field Boolean undefinedXorUndefined <= (self.undefined xor self.undefined);
 
-	derived Boolean trueImpliesTrue => (true implies true);
-	derived Boolean trueImpliesFalse => (true implies false);
-	derived Boolean trueImpliesUndefined => (true implies self.undefined);
-	derived Boolean falseImpliesTrue => (false implies true);
-	derived Boolean falseImpliesFalse => (false implies false);
-	derived Boolean falseImpliesUndefined => (false implies self.undefined);
-	derived Boolean undefinedImpliesTrue => (self.undefined implies true);
-	derived Boolean undefinedImpliesFalse => (self.undefined implies false);
-	derived Boolean undefinedImpliesUndefined => (self.undefined implies self.undefined);
+	field Boolean trueImpliesTrue <= (true implies true);
+	field Boolean trueImpliesFalse <= (true implies false);
+	field Boolean trueImpliesUndefined <= (true implies self.undefined);
+	field Boolean falseImpliesTrue <= (false implies true);
+	field Boolean falseImpliesFalse <= (false implies false);
+	field Boolean falseImpliesUndefined <= (false implies self.undefined);
+	field Boolean undefinedImpliesTrue <= (self.undefined implies true);
+	field Boolean undefinedImpliesFalse <= (self.undefined implies false);
+	field Boolean undefinedImpliesUndefined <= (self.undefined implies self.undefined);
 }
 
 entity BooleanFunctions {
     field Boolean bool = true;
 
-    derived String ownBoolAsString => self.bool!asString();
-    derived String trueAsString => true!asString();
-    derived String falseAsString => false!asString();
-    derived String logicalExpressionAsString => (true or true)!asString();
+    field String ownBoolAsString <= self.bool!asString();
+    field String trueAsString <= true!asString();
+    field String falseAsString <= false!asString();
+    field String logicalExpressionAsString <= (true or true)!asString();
 }
 
 entity DateFunctions {
     field Date `date` = `2022-07-11`;
     field Date undefined;
 
-    derived String ownDateAsString => self.`date`!asString();
-    derived String dateAsString => `2021-03-02`!asString();
-    derived Integer year => `2021-03-02`!year();
-    derived Integer month => `2021-03-02`!month();
-    derived Integer day => `2021-03-02`!day();
-    derived Date of => Date!of(year = 2011, month = 1, day = 28);
+    field String ownDateAsString <= self.`date`!asString();
+    field String dateAsString <= `2021-03-02`!asString();
+    field Integer year <= `2021-03-02`!year();
+    field Integer month <= `2021-03-02`!month();
+    field Integer day <= `2021-03-02`!day();
+    field Date of <= Date!of(year = 2011, month = 1, day = 28);
 
-    derived Integer dayOfYear => `2022-10-07`!dayOfYear();
-    derived Integer dayOfWeekMonday => `2022-10-03`!dayOfWeek();
-    derived Integer dayOfWeekTuesday => `2022-10-04`!dayOfWeek();
-    derived Integer dayOfWeekWednesday => `2022-10-05`!dayOfWeek();
-    derived Integer dayOfWeekThursday => `2022-10-06`!dayOfWeek();
-    derived Integer dayOfWeekFriday => `2022-10-07`!dayOfWeek();
-    derived Integer dayOfWeekSaturday => `2022-10-08`!dayOfWeek();
-    derived Integer dayOfWeekSunday => `2022-10-09`!dayOfWeek();
+    field Integer dayOfYear <= `2022-10-07`!dayOfYear();
+    field Integer dayOfWeekMonday <= `2022-10-03`!dayOfWeek();
+    field Integer dayOfWeekTuesday <= `2022-10-04`!dayOfWeek();
+    field Integer dayOfWeekWednesday <= `2022-10-05`!dayOfWeek();
+    field Integer dayOfWeekThursday <= `2022-10-06`!dayOfWeek();
+    field Integer dayOfWeekFriday <= `2022-10-07`!dayOfWeek();
+    field Integer dayOfWeekSaturday <= `2022-10-08`!dayOfWeek();
+    field Integer dayOfWeekSunday <= `2022-10-09`!dayOfWeek();
 
-    derived Integer dayOfYearUndefined => self.undefined!dayOfYear();
-    derived Integer dayOfWeekUndefined => self.undefined!dayOfWeek();
+    field Integer dayOfYearUndefined <= self.undefined!dayOfYear();
+    field Integer dayOfWeekUndefined <= self.undefined!dayOfWeek();
 }
 
 entity TimeFunctions {
@@ -287,61 +287,61 @@ entity TimeFunctions {
     field Integer number;
 
     // self
-    derived String selfTimeHMAsString => self.timeHM!asString();
-    derived Integer selfTimeHMHour => self.timeHM!hour();
-    derived Integer selfTimeHMMinute => self.timeHM!minute();
-    derived Integer selfTimeHMSecond => self.timeHM!second();
-    derived Integer selfTimeHMMillisecond => self.timeHM!millisecond();
-    derived Integer selfTimeHMAsMillisecond => self.timeHM!asMilliseconds();
+    field String selfTimeHMAsString <= self.timeHM!asString();
+    field Integer selfTimeHMHour <= self.timeHM!hour();
+    field Integer selfTimeHMMinute <= self.timeHM!minute();
+    field Integer selfTimeHMSecond <= self.timeHM!second();
+    field Integer selfTimeHMMillisecond <= self.timeHM!millisecond();
+    field Integer selfTimeHMAsMillisecond <= self.timeHM!asMilliseconds();
 
-    derived String selfTimeHMSAsString => self.timeHMS!asString();
-    derived Integer selfTimeHMSHour => self.timeHMS!hour();
-    derived Integer selfTimeHMSMinute => self.timeHMS!minute();
-    derived Integer selfTimeHMSSecond => self.timeHMS!second();
-    derived Integer selfTimeHMSMillisecond => self.timeHMS!millisecond();
-    derived Integer selfTimeHMSAsMillisecond => self.timeHMS!asMilliseconds();
+    field String selfTimeHMSAsString <= self.timeHMS!asString();
+    field Integer selfTimeHMSHour <= self.timeHMS!hour();
+    field Integer selfTimeHMSMinute <= self.timeHMS!minute();
+    field Integer selfTimeHMSSecond <= self.timeHMS!second();
+    field Integer selfTimeHMSMillisecond <= self.timeHMS!millisecond();
+    field Integer selfTimeHMSAsMillisecond <= self.timeHMS!asMilliseconds();
 
-    derived String selfTimeHMSFAsString => self.timeHMSF!asString();
-    derived Integer selfTimeHMSFHour => self.timeHMSF!hour();
-    derived Integer selfTimeHMSFMinute => self.timeHMSF!minute();
-    derived Integer selfTimeHMSFSecond => self.timeHMSF!second();
-    derived Integer selfTimeHMSFMillisecond => self.timeHMSF!millisecond();
-    derived Integer selfTimeHMSFAsMillisecond => self.timeHMSF!asMilliseconds();
+    field String selfTimeHMSFAsString <= self.timeHMSF!asString();
+    field Integer selfTimeHMSFHour <= self.timeHMSF!hour();
+    field Integer selfTimeHMSFMinute <= self.timeHMSF!minute();
+    field Integer selfTimeHMSFSecond <= self.timeHMSF!second();
+    field Integer selfTimeHMSFMillisecond <= self.timeHMSF!millisecond();
+    field Integer selfTimeHMSFAsMillisecond <= self.timeHMSF!asMilliseconds();
 
     // undefined
-    derived String selfUndefinedTimeAsString => self.undefinedTime!asString();
-    derived Integer selfUndefinedTimeHour => self.undefinedTime!hour();
-    derived Integer selfUndefinedTimeMinute => self.undefinedTime!minute();
-    derived Integer selfUndefinedTimeSecond => self.undefinedTime!second();
-    derived Integer selfUndefinedTimeMillisecond => self.undefinedTime!millisecond();
-    derived Integer selfUndefinedTimeAsMillisecond => self.undefinedTime!asMilliseconds();
+    field String selfUndefinedTimeAsString <= self.undefinedTime!asString();
+    field Integer selfUndefinedTimeHour <= self.undefinedTime!hour();
+    field Integer selfUndefinedTimeMinute <= self.undefinedTime!minute();
+    field Integer selfUndefinedTimeSecond <= self.undefinedTime!second();
+    field Integer selfUndefinedTimeMillisecond <= self.undefinedTime!millisecond();
+    field Integer selfUndefinedTimeAsMillisecond <= self.undefinedTime!asMilliseconds();
 
     // constant
-    derived String timeConstantHMAsString => `12:34`!asString();
-    derived Integer timeConstantHMHour => `12:34`!hour();
-    derived Integer timeConstantHMMinute => `12:34`!minute();
-    derived Integer timeConstantHMSecond => `12:34`!second();
-    derived Integer timeConstantHMMillisecond => `12:34`!millisecond();
-    derived Integer timeConstantHMAsMillisecond => `12:34`!asMilliseconds();
+    field String timeConstantHMAsString <= `12:34`!asString();
+    field Integer timeConstantHMHour <= `12:34`!hour();
+    field Integer timeConstantHMMinute <= `12:34`!minute();
+    field Integer timeConstantHMSecond <= `12:34`!second();
+    field Integer timeConstantHMMillisecond <= `12:34`!millisecond();
+    field Integer timeConstantHMAsMillisecond <= `12:34`!asMilliseconds();
     
-    derived String timeConstantHMSAsString => `12:34:56`!asString();
-    derived Integer timeConstantHMSHour => `12:34:56`!hour();
-    derived Integer timeConstantHMSMinute => `12:34:56`!minute();
-    derived Integer timeConstantHMSSecond => `12:34:56`!second();
-    derived Integer timeConstantHMSMillisecond => `12:34:56`!millisecond();
-    derived Integer timeConstantHMSAsMillisecond => `12:34:56`!asMilliseconds();
+    field String timeConstantHMSAsString <= `12:34:56`!asString();
+    field Integer timeConstantHMSHour <= `12:34:56`!hour();
+    field Integer timeConstantHMSMinute <= `12:34:56`!minute();
+    field Integer timeConstantHMSSecond <= `12:34:56`!second();
+    field Integer timeConstantHMSMillisecond <= `12:34:56`!millisecond();
+    field Integer timeConstantHMSAsMillisecond <= `12:34:56`!asMilliseconds();
     
-    derived String timeConstantHMSFAsString => `12:34:56.789`!asString();
-    derived Integer timeConstantHMSFHour => `12:34:56.789`!hour();
-    derived Integer timeConstantHMSFMinute => `12:34:56.789`!minute();
-    derived Integer timeConstantHMSFSecond => `12:34:56.789`!second();
-    derived Integer timeConstantHMSFMillisecond => `12:34:56.789`!millisecond();
-    derived Integer timeConstantHMSFAsMillisecond => `12:34:56.789`!asMilliseconds();
+    field String timeConstantHMSFAsString <= `12:34:56.789`!asString();
+    field Integer timeConstantHMSFHour <= `12:34:56.789`!hour();
+    field Integer timeConstantHMSFMinute <= `12:34:56.789`!minute();
+    field Integer timeConstantHMSFSecond <= `12:34:56.789`!second();
+    field Integer timeConstantHMSFMillisecond <= `12:34:56.789`!millisecond();
+    field Integer timeConstantHMSFAsMillisecond <= `12:34:56.789`!asMilliseconds();
 
     // from millisecond
-    derived Time timeFromMillisecondOfUndefined => Time!fromMilliseconds(milliseconds = self.undefinedNumber);
-    derived Time timeFromMillisecondOfSelfNumber => Time!fromMilliseconds(milliseconds = self.number);
-    derived Time timeFromMillisecondOfConstant => Time!fromMilliseconds(milliseconds = 999999);
+    field Time timeFromMillisecondOfUndefined <= Time!fromMilliseconds(milliseconds = self.undefinedNumber);
+    field Time timeFromMillisecondOfSelfNumber <= Time!fromMilliseconds(milliseconds = self.number);
+    field Time timeFromMillisecondOfConstant <= Time!fromMilliseconds(milliseconds = 999999);
 
 }
 
@@ -349,36 +349,36 @@ entity TimestampFunctions {
     field Timestamp timestamp1 = `2019-07-18T01:11:12+02:00`;
     field Timestamp timestamp2 = `2019-07-18T01:11:12Z`;
 
-    derived Timestamp timestampOfDate => Timestamp!of(date = `2022-09-29`);
-    derived Timestamp timestampOfDateAndTime => Timestamp!of(date = `2022-09-29`, time = `11:11:11`);
+    field Timestamp timestampOfDate <= Timestamp!of(date = `2022-09-29`);
+    field Timestamp timestampOfDateAndTime <= Timestamp!of(date = `2022-09-29`, time = `11:11:11`);
 
-    derived Date dateOfTimestampWithDate => Timestamp!of(date = `2022-09-29`)!date();
-    derived Date dateOfTimestampWithDateAndTime => Timestamp!of(date = `2022-09-29`, time = `11:11:11`)!date();
-    derived Date dateOfTimestampSelf => self.timestamp2!date();
-    derived Time timeOfTimestampWithDate => Timestamp!of(date = `2022-09-29`)!time();
-    derived Time timeOfTimestampWithDateAndTime => Timestamp!of(date = `2022-09-29`, time =`11:11:11`)!time();
-    derived Time timeOfTimestampSelf => self.timestamp2!time();
+    field Date dateOfTimestampWithDate <= Timestamp!of(date = `2022-09-29`)!date();
+    field Date dateOfTimestampWithDateAndTime <= Timestamp!of(date = `2022-09-29`, time = `11:11:11`)!date();
+    field Date dateOfTimestampSelf <= self.timestamp2!date();
+    field Time timeOfTimestampWithDate <= Timestamp!of(date = `2022-09-29`)!time();
+    field Time timeOfTimestampWithDateAndTime <= Timestamp!of(date = `2022-09-29`, time =`11:11:11`)!time();
+    field Time timeOfTimestampSelf <= self.timestamp2!time();
 
-    derived Integer asMilliseconds => Timestamp!of(date = `2022-09-29`)!asMilliseconds();
-    derived Integer asMilliseconds2 => Timestamp!of(date = `2022-09-29`, time = `11:11:11`)!asMilliseconds();
+    field Integer asMilliseconds <= Timestamp!of(date = `2022-09-29`)!asMilliseconds();
+    field Integer asMilliseconds2 <= Timestamp!of(date = `2022-09-29`, time = `11:11:11`)!asMilliseconds();
 
-    derived Timestamp fromMilliseconds => Timestamp!fromMilliseconds(milliseconds = 1664449871000);
+    field Timestamp fromMilliseconds <= Timestamp!fromMilliseconds(milliseconds = 1664449871000);
 
-    derived Timestamp plusAll => Timestamp!of(date = `2022-09-29`, time = `11:11:11`)!plus(years = 1, months = 1, days = 1, hours = 1, minutes = 1, seconds = 1, milliseconds = 1);
-    derived Timestamp plusDate => Timestamp!of(date = `2022-09-29`, time = `11:11:11`)!plus(years = 1, months = 1, days = 1);
+    field Timestamp plusAll <= Timestamp!of(date = `2022-09-29`, time = `11:11:11`)!plus(years = 1, months = 1, days = 1, hours = 1, minutes = 1, seconds = 1, milliseconds = 1);
+    field Timestamp plusDate <= Timestamp!of(date = `2022-09-29`, time = `11:11:11`)!plus(years = 1, months = 1, days = 1);
 
-    derived Timestamp plusAllReversed => Timestamp!of(date = `2022-09-29`, time = `11:11:11`)!plus(milliseconds = 1, seconds = 1, hours = 1, days = 1, months = 1, minutes = 1, years = 1);
-    derived Timestamp plusDateReversed => Timestamp!of(date = `2022-09-29`, time = `11:11:11`)!plus(days = 1, months = 1, years = 1);
+    field Timestamp plusAllReversed <= Timestamp!of(date = `2022-09-29`, time = `11:11:11`)!plus(milliseconds = 1, seconds = 1, hours = 1, days = 1, months = 1, minutes = 1, years = 1);
+    field Timestamp plusDateReversed <= Timestamp!of(date = `2022-09-29`, time = `11:11:11`)!plus(days = 1, months = 1, years = 1);
 
-    derived Timestamp plusMilliseconds => Timestamp!of(date = `2022-09-29`, time = `11:11:11`)!plus(milliseconds = 1);
+    field Timestamp plusMilliseconds <= Timestamp!of(date = `2022-09-29`, time = `11:11:11`)!plus(milliseconds = 1);
 
-    derived Timestamp minusAll => Timestamp!of(date = `2022-09-29`, time = `11:11:11`)!plus(years = -1, months = -1, days = -1, hours = -1, minutes = -1, seconds = -1, milliseconds = -1);
-    derived Timestamp minusDate => Timestamp!of(date = `2022-09-29`, time = `11:11:11`)!plus(years = -1, months = -1, days = -1);
+    field Timestamp minusAll <= Timestamp!of(date = `2022-09-29`, time = `11:11:11`)!plus(years = -1, months = -1, days = -1, hours = -1, minutes = -1, seconds = -1, milliseconds = -1);
+    field Timestamp minusDate <= Timestamp!of(date = `2022-09-29`, time = `11:11:11`)!plus(years = -1, months = -1, days = -1);
 
-    derived Timestamp minusAllReversed => Timestamp!of(date = `2022-09-29`, time = `11:11:11`)!plus(milliseconds = -1, seconds = -1, hours = -1, days = -1, months = -1, minutes = -1, years = -1);
-    derived Timestamp minusDateReversed => Timestamp!of(date = `2022-09-29`, time = `11:11:11`)!plus(days = -1, months = -1, years = -1);
+    field Timestamp minusAllReversed <= Timestamp!of(date = `2022-09-29`, time = `11:11:11`)!plus(milliseconds = -1, seconds = -1, hours = -1, days = -1, months = -1, minutes = -1, years = -1);
+    field Timestamp minusDateReversed <= Timestamp!of(date = `2022-09-29`, time = `11:11:11`)!plus(days = -1, months = -1, years = -1);
 
-    derived Timestamp minusMilliseconds => Timestamp!of(date = `2022-09-29`, time = `11:11:11`)!plus(milliseconds = -1);
+    field Timestamp minusMilliseconds <= Timestamp!of(date = `2022-09-29`, time = `11:11:11`)!plus(milliseconds = -1);
 }
 
 entity TimestampAsString {
@@ -397,53 +397,53 @@ entity TimestampAsString {
     field Timestamp timestamp14 = `2022-03-03T14:00:00.123-03:00`;
     field Timestamp timestamp15 = `2022-03-03T14:00:00.123-03:03`;
 
-    derived String timestamp1AsString => `2022-03-03T14:00:00Z`!asString();
-    derived String timestamp1AsString1 => self.timestamp1!asString();
-    derived String timestamp2AsString => `2022-03-03T14:00:00.123Z`!asString();
-    derived String timestamp2AsString1 => self.timestamp2!asString();
-    derived String timestamp3AsString => `2022-03-03T14:00:00+00:03`!asString();
-    derived String timestamp3AsString1 => self.timestamp3!asString();
-    derived String timestamp4AsString => `2022-03-03T14:00:00+03:00`!asString();
-    derived String timestamp4AsString1 => self.timestamp4!asString();
-    derived String timestamp5AsString => `2022-03-03T14:00:00+03:03`!asString();
-    derived String timestamp5AsString1 => self.timestamp5!asString();
-    derived String timestamp6AsString => `2022-03-03T14:00:00-00:03`!asString();
-    derived String timestamp6AsString1 => self.timestamp6!asString();
-    derived String timestamp7AsString => `2022-03-03T14:00:00-03:00`!asString();
-    derived String timestamp7AsString1 => self.timestamp7!asString();
-    derived String timestamp8AsString => `2022-03-03T14:00:00-03:03`!asString();
-    derived String timestamp8AsString1 => self.timestamp8!asString();
-    derived String timestamp9AsString => `2022-03-03T14:00:00.123+00:03`!asString();
-    derived String timestamp9AsString1 => self.timestamp9!asString();
-    derived String timestamp10AsString => `2022-03-03T14:00:00.123+03:00`!asString();
-    derived String timestamp10AsString1 => self.timestamp10!asString();
-    derived String timestamp12AsString => `2022-03-03T14:00:00.123+03:03`!asString();
-    derived String timestamp12AsString1 => self.timestamp12!asString();
-    derived String timestamp13AsString => `2022-03-03T14:00:00.123-00:03`!asString();
-    derived String timestamp13AsString1 => self.timestamp13!asString();
-    derived String timestamp14AsString => `2022-03-03T14:00:00.123-03:00`!asString();
-    derived String timestamp14AsString1 => self.timestamp14!asString();
-    derived String timestamp15AsString => `2022-03-03T14:00:00.123-03:03`!asString();
-    derived String timestamp15AsString1 => self.timestamp15!asString();
+    field String timestamp1AsString <= `2022-03-03T14:00:00Z`!asString();
+    field String timestamp1AsString1 <= self.timestamp1!asString();
+    field String timestamp2AsString <= `2022-03-03T14:00:00.123Z`!asString();
+    field String timestamp2AsString1 <= self.timestamp2!asString();
+    field String timestamp3AsString <= `2022-03-03T14:00:00+00:03`!asString();
+    field String timestamp3AsString1 <= self.timestamp3!asString();
+    field String timestamp4AsString <= `2022-03-03T14:00:00+03:00`!asString();
+    field String timestamp4AsString1 <= self.timestamp4!asString();
+    field String timestamp5AsString <= `2022-03-03T14:00:00+03:03`!asString();
+    field String timestamp5AsString1 <= self.timestamp5!asString();
+    field String timestamp6AsString <= `2022-03-03T14:00:00-00:03`!asString();
+    field String timestamp6AsString1 <= self.timestamp6!asString();
+    field String timestamp7AsString <= `2022-03-03T14:00:00-03:00`!asString();
+    field String timestamp7AsString1 <= self.timestamp7!asString();
+    field String timestamp8AsString <= `2022-03-03T14:00:00-03:03`!asString();
+    field String timestamp8AsString1 <= self.timestamp8!asString();
+    field String timestamp9AsString <= `2022-03-03T14:00:00.123+00:03`!asString();
+    field String timestamp9AsString1 <= self.timestamp9!asString();
+    field String timestamp10AsString <= `2022-03-03T14:00:00.123+03:00`!asString();
+    field String timestamp10AsString1 <= self.timestamp10!asString();
+    field String timestamp12AsString <= `2022-03-03T14:00:00.123+03:03`!asString();
+    field String timestamp12AsString1 <= self.timestamp12!asString();
+    field String timestamp13AsString <= `2022-03-03T14:00:00.123-00:03`!asString();
+    field String timestamp13AsString1 <= self.timestamp13!asString();
+    field String timestamp14AsString <= `2022-03-03T14:00:00.123-03:00`!asString();
+    field String timestamp14AsString1 <= self.timestamp14!asString();
+    field String timestamp15AsString <= `2022-03-03T14:00:00.123-03:03`!asString();
+    field String timestamp15AsString1 <= self.timestamp15!asString();
 
     field Timestamp timestampOfDate = Timestamp!of(date = `2022-09-29`);
-    derived String timestampOfDateAsString => Timestamp!of(date = `2022-09-29`)!asString();
-    derived String timestampOfDateAsString1 => self.timestampOfDate!asString();
+    field String timestampOfDateAsString <= Timestamp!of(date = `2022-09-29`)!asString();
+    field String timestampOfDateAsString1 <= self.timestampOfDate!asString();
 
     field Timestamp timestampOfDateAndTime = Timestamp!of(date = `2022-09-29`, time = `11:11:11`);
-    derived String timestampOfDateAndTimeAsString => Timestamp!of(date = `2022-09-29`, time = `11:11:11`)!asString();
-    derived String timestampOfDateAndTimeAsString1 => self.timestampOfDateAndTime!asString();
+    field String timestampOfDateAndTimeAsString <= Timestamp!of(date = `2022-09-29`, time = `11:11:11`)!asString();
+    field String timestampOfDateAndTimeAsString1 <= self.timestampOfDateAndTime!asString();
 
     field Timestamp fromMilliseconds = Timestamp!fromMilliseconds(milliseconds = 1664449871000);
-    derived String fromMillisecondsAsString => Timestamp!fromMilliseconds(milliseconds = 1664449871000)!asString();
-    derived String fromMillisecondsAsString1 => self.fromMilliseconds!asString();
+    field String fromMillisecondsAsString <= Timestamp!fromMilliseconds(milliseconds = 1664449871000)!asString();
+    field String fromMillisecondsAsString1 <= self.fromMilliseconds!asString();
 }
 
 entity EnumFunctions {
     field MyEnum `enum` = MyEnum#Atomic;
 
-    derived String ownEnumAsString => self.`enum`!asString();
-    derived String enumAsString => (MyEnum#Atomic)!asString();
+    field String ownEnumAsString <= self.`enum`!asString();
+    field String enumAsString <= (MyEnum#Atomic)!asString();
 }
 
 entity InstanceFunctions {
@@ -455,22 +455,22 @@ entity InstanceFunctions {
     relation Parent[] parents;
     relation Child[] children;
 
-    derived Boolean typeOfParent => self.parent!typeOf(entityType = Parent);
-    derived Boolean notTypeOfChild => self.parent!typeOf(entityType = Child);
+    field Boolean typeOfParent <= self.parent!typeOf(entityType = Parent);
+    field Boolean notTypeOfChild <= self.parent!typeOf(entityType = Child);
 
-    derived Boolean kindOfParent => self.parent!kindOf(entityType = Parent);
-    derived Boolean kindOfChild => self.parent!kindOf(entityType = Child);
+    field Boolean kindOfParent <= self.parent!kindOf(entityType = Parent);
+    field Boolean kindOfChild <= self.parent!kindOf(entityType = Child);
 
-    derived Parent asParentType => self.child;
-    derived Child asChildType => self.parent!asType(entityType = Child);
+    relation Parent asParentType <= self.child;
+    relation Child asChildType <= self.parent!asType(entityType = Child);
 
-    derived Boolean parentMemberOfParents => self.parent!memberOf(instances = self.parents);
-    derived Boolean parentMemberOfParentsExtra => self.parent!memberOf(instances = self.parents!filter(p | p!memberOf(instances = Parent!all())));
-    derived Boolean parentMemberOfChildren => self.parent!memberOf(instances = self.children);
-    derived Boolean childMemberOfParents => self.child!memberOf(instances = self.parents);
-    derived Boolean childMemberOfChildren => self.child!memberOf(instances = self.children);
+    field Boolean parentMemberOfParents <= self.parent!memberOf(instances = self.parents);
+    field Boolean parentMemberOfParentsExtra <= self.parent!memberOf(instances = self.parents!filter(p | p!memberOf(instances = Parent!all())));
+    field Boolean parentMemberOfChildren <= self.parent!memberOf(instances = self.children);
+    field Boolean childMemberOfParents <= self.child!memberOf(instances = self.parents);
+    field Boolean childMemberOfChildren <= self.child!memberOf(instances = self.children);
 
-	derived Integer navigationWithCalls => self.parents!any().name!size();
+	field Integer navigationWithCalls <= self.parents!any().name!size();
 }
 
 entity Booler {
@@ -478,10 +478,10 @@ entity Booler {
 }
 
 entity BoolerTester {
-    derived Boolean anyTrue => Booler!all()!anyTrue(b | b.b);
-    derived Boolean allTrue => Booler!all()!allTrue(b | b.b);
-    derived Boolean anyFalse => Booler!all()!anyFalse(b | b.b);
-    derived Boolean allFalse => Booler!all()!allFalse(b | b.b);
+    field Boolean anyTrue <= Booler!all()!anyTrue(b | b.b);
+    field Boolean allTrue <= Booler!all()!allTrue(b | b.b);
+    field Boolean anyFalse <= Booler!all()!anyFalse(b | b.b);
+    field Boolean allFalse <= Booler!all()!allFalse(b | b.b);
 }
 
 entity CollectionFunctions {
@@ -491,63 +491,63 @@ entity CollectionFunctions {
     relation Parent[] parentsRelation;
     relation Child[] childrenRelation;
 
-    derived Parent anyParentsField => self.parentsField!any();
-    derived Parent anyParentsRelation => self.parentsRelation!any();
+    relation Parent anyParentsField <= self.parentsField!any();
+    relation Parent anyParentsRelation <= self.parentsRelation!any();
 
-    derived Integer sizeParentsField => self.parentsField!size();
-    derived Integer sizeParentsRelation => self.parentsRelation!size();
+    field Integer sizeParentsField <= self.parentsField!size();
+    field Integer sizeParentsRelation <= self.parentsRelation!size();
 
-    derived Parent[] asCollectionChildrenParentField => self.parentsField!asCollection(entityType = Parent);
-    derived Parent[] asCollectionChildrenParentRelation => self.parentsRelation!asCollection(entityType = Parent);
-    derived Child[] asCollectionChildrenChildField => self.parentsField!asCollection(entityType = Child);
-    derived Child[] asCollectionChildrenChildRelation => self.parentsRelation!asCollection(entityType = Child);
+    relation Parent[] asCollectionChildrenParentField <= self.parentsField!asCollection(entityType = Parent);
+    relation Parent[] asCollectionChildrenParentRelation <= self.parentsRelation!asCollection(entityType = Parent);
+    relation Child[] asCollectionChildrenChildField <= self.parentsField!asCollection(entityType = Child);
+    relation Child[] asCollectionChildrenChildRelation <= self.parentsRelation!asCollection(entityType = Child);
 
-    derived Boolean containsParent => self.parentsField!contains(instance = Parent!all()!filter(p | p.name == "John")!any());
+    field Boolean containsParent <= self.parentsField!contains(instance = Parent!all()!filter(p | p.name == "John")!any());
 
-    derived Parent[] filterParentsField => self.parentsField!filter(p | p.name == "John");
-    derived Parent[] filterParentsRelation => self.parentsRelation!filter(p | p.name == "Mark");
-    derived Child[] filterChildrenField => self.childrenField!filter(p | p.name == "Cindy");
-    derived Child[] filterChildrenRelation => self.childrenRelation!filter(p | p.name == "Anna");
+    relation Parent[] filterParentsField <= self.parentsField!filter(p | p.name == "John");
+    relation Parent[] filterParentsRelation <= self.parentsRelation!filter(p | p.name == "Mark");
+    relation Child[] filterChildrenField <= self.childrenField!filter(p | p.name == "Cindy");
+    relation Child[] filterChildrenRelation <= self.childrenRelation!filter(p | p.name == "Anna");
 
-    derived Boolean anyTrueChildrenField => self.childrenField!anyTrue(p | p.age  > 40);
-    derived Boolean anyTrueChildrenRelation => self.childrenRelation!anyTrue(p | p.age  > 40);
+    field Boolean anyTrueChildrenField <= self.childrenField!anyTrue(p | p.age  > 40);
+    field Boolean anyTrueChildrenRelation <= self.childrenRelation!anyTrue(p | p.age  > 40);
 
-    derived Boolean allTrueChildrenField => self.childrenField!allTrue(p | p.age  > 16);
-    derived Boolean allTrueChildrenRelation => self.childrenRelation!allTrue(p | p.age  > 16);
+    field Boolean allTrueChildrenField <= self.childrenField!allTrue(p | p.age  > 16);
+    field Boolean allTrueChildrenRelation <= self.childrenRelation!allTrue(p | p.age  > 16);
 
-    derived Boolean anyFalseChildrenField => self.childrenField!anyFalse(p | p.age  > 16);
-    derived Boolean anyFalseChildrenRelation => self.childrenRelation!anyFalse(p | p.age  > 16);
+    field Boolean anyFalseChildrenField <= self.childrenField!anyFalse(p | p.age  > 16);
+    field Boolean anyFalseChildrenRelation <= self.childrenRelation!anyFalse(p | p.age  > 16);
 
-    derived Boolean allFalseChildrenField => self.childrenField!allFalse(p | p.age  > 16);
-    derived Boolean allFalseChildrenRelation => self.childrenRelation!allFalse(p | p.age  < 2);
+    field Boolean allFalseChildrenField <= self.childrenField!allFalse(p | p.age  > 16);
+    field Boolean allFalseChildrenRelation <= self.childrenRelation!allFalse(p | p.age  < 2);
 
-    derived Integer minChildrenField => self.childrenField!min(f | f.age);
-    derived Integer minChildrenRelation => self.childrenRelation!min(f | f.age);
+    field Integer minChildrenField <= self.childrenField!min(f | f.age);
+    field Integer minChildrenRelation <= self.childrenRelation!min(f | f.age);
 
-    derived Integer maxChildrenField => self.childrenField!max(f | f.age);
-    derived Integer maxChildrenRelation => self.childrenRelation!max(f | f.age);
+    field Integer maxChildrenField <= self.childrenField!max(f | f.age);
+    field Integer maxChildrenRelation <= self.childrenRelation!max(f | f.age);
 
-    derived Integer sumChildrenField => self.childrenField!sum(f | f.age);
-    derived Integer sumChildrenRelation => self.childrenRelation!sum(f | f.age);
+    field Integer sumChildrenField <= self.childrenField!sum(f | f.age);
+    field Integer sumChildrenRelation <= self.childrenRelation!sum(f | f.age);
 
-    derived Integer avgChildrenField => self.childrenField!avg(f | f.age);
-    derived Integer avgChildrenRelation => self.childrenRelation!avg(f | f.age);
-    derived Scaled avgScaledChildrenField => self.childrenField!avg(f | f.age);
-    derived Scaled avgScaledChildrenRelation => self.childrenRelation!avg(f | f.age);
-    derived Integer divisionConst => 69 / 2;
-    derived Integer roundConst => (69 / 2)!round();
+    field Integer avgChildrenField <= self.childrenField!avg(f | f.age);
+    field Integer avgChildrenRelation <= self.childrenRelation!avg(f | f.age);
+    field Scaled avgScaledChildrenField <= self.childrenField!avg(f | f.age);
+    field Scaled avgScaledChildrenRelation <= self.childrenRelation!avg(f | f.age);
+    field Integer divisionConst <= 69 / 2;
+    field Integer roundConst <= (69 / 2)!round();
 
-    derived Child[] firstChildrenField => self.childrenField!first(f | f.age);
-    derived Child[] firstChildrenRelation => self.childrenRelation!first(f | f.age);
+    relation Child[] firstChildrenField <= self.childrenField!first(f | f.age);
+    relation Child[] firstChildrenRelation <= self.childrenRelation!first(f | f.age);
 
-    derived Child[] lastChildrenField => self.childrenField!last(f | f.age);
-    derived Child[] lastChildrenRelation => self.childrenRelation!last(f | f.age);
+    relation Child[] lastChildrenField <= self.childrenField!last(f | f.age);
+    relation Child[] lastChildrenRelation <= self.childrenRelation!last(f | f.age);
 
-    derived Child[] frontChildrenField => self.childrenField!front(f | f.age);
-    derived Child[] frontChildrenRelation => self.childrenRelation!front(f | f.age);
+    relation Child[] frontChildrenField <= self.childrenField!front(f | f.age);
+    relation Child[] frontChildrenRelation <= self.childrenRelation!front(f | f.age);
 
-    derived Child[] backChildrenField => self.childrenField!back(f | f.age);
-    derived Child[] backChildrenRelation => self.childrenRelation!back(f | f.age);
+    relation Child[] backChildrenField <= self.childrenField!back(f | f.age);
+    relation Child[] backChildrenRelation <= self.childrenRelation!back(f | f.age);
 
 }
 
@@ -572,5 +572,5 @@ entity Tester {
     relation Member member;
     relation Member[] members;
 
-    derived Boolean memberMemberOfMembers => self.member!memberOf(instances = self.members);
+    field Boolean memberMemberOfMembers <= self.member!memberOf(instances = self.members);
 }

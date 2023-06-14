@@ -4,8 +4,8 @@ type boolean Boolean;
 type date Date;
 type time Time;
 type timestamp Timestamp;
-type numeric Integer(precision = 5, scale = 0);
-type string String(min-size = 1,max-size = 4000);
+type numeric Integer precision:5 scale:0;
+type string String min-size:1 max-size:4000;
 
 enum Behaviours {
     NATURAL=1;
@@ -16,20 +16,20 @@ enum Behaviours {
 entity Person {
 	field String firstName;
 	field String lastName;
-	derived	String fullName => self.firstName + " "+ self.lastName ;
-    relation Workplace workplace opposite persons;
+	field	String fullName <= self.firstName + " "+ self.lastName ;
+    relation Workplace workplace opposite:persons;
     relation Task[] tasks;
 
-    derived Integer allTaskLong => self.tasks!sum(l|l.taskTimeInDay);
+    field Integer allTaskLong <= self.tasks!sum(l|l.taskTimeInDay);
 }
 
 entity Workplace {
-    relation Person[] persons opposite workplace;
+    relation Person[] persons opposite:workplace;
     field required String name;
     identifier String address;
 
     //ERROR WHEN THIS COMPILED
-    derived Integer allTime => self.persons!sum(p | p.allTaskLong);
+    field Integer allTime <= self.persons!sum(p | p.allTaskLong);
 }
 
 entity Task {
@@ -39,12 +39,12 @@ entity Task {
 
 entity SalesPerson{
     field Integer num;
-    relation MarketPlace workplace opposite salesPersons;
-    derived Integer allTaskLong => 1;
+    relation MarketPlace workplace opposite:salesPersons;
+    field Integer allTaskLong <= 1;
 }
 
 entity MarketPlace{
-    relation SalesPerson[] salesPersons opposite workplace;
+    relation SalesPerson[] salesPersons opposite:workplace;
     // Compile Error
-    derived Integer allTime => self.salesPersons!sum(p| p.allTaskLong);
+    field Integer allTime <= self.salesPersons!sum(p| p.allTaskLong);
 }
