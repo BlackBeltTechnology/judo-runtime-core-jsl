@@ -13,8 +13,10 @@ entity EntityB {
 }
 
 transfer TransferA (EntityA a) {
-    field TransferB singleEntityB <=> a.singleEntityB;
-    field TransferB[] multiEntityB <=> a.multiEntityB;
+	@Eager
+    relation TransferB singleEntityB <=> a.singleEntityB;
+    @Eager
+    relation TransferB[] multiEntityB <=> a.multiEntityB;
 }
 
 transfer TransferB (EntityB b) {
@@ -32,7 +34,8 @@ entity EntityD {
 }
 
 transfer TransferC (EntityC c) {
-    field required TransferD singleRequiredEntityD <=> c.singleRequiredEntityD;
+    @Eager
+    relation required TransferD singleRequiredEntityD <=> c.singleRequiredEntityD;
 
 }
 
@@ -55,11 +58,13 @@ entity EntityG {
 }
 
 transfer TransferE (EntityE e) {
-    field TransferF singleEntityF <=> e.singleEntityF;
+    @Eager
+    relation TransferF singleEntityF <=> e.singleEntityF;
 }
 
 transfer TransferF (EntityF f) {
-    field TransferG[] multiEntityG <=> f.multiEntityG;
+    @Eager
+    relation TransferG[] multiEntityG <=> f.multiEntityG;
 }
 
 transfer TransferG (EntityG g) {
