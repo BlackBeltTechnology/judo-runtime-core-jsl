@@ -385,6 +385,27 @@
                             <sources>${basedir}/src/test/resources/model/TransferConstructorModel</sources>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>generate-psm-test-model-from-artifact-AutoMappedTransferSingleEntityModel</id>
+                        <goals>
+                            <goal>parser-workflow</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <sources>${basedir}/src/test/resources/model/AutoMappedTransferSingleEntityModel</sources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-psm-test-model-from-artifact-Abstract</id>
+
+                        <goals>
+                            <goal>parser-workflow</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <sources>${basedir}/src/test/resources/model/Abstract</sources>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
 
@@ -845,6 +866,33 @@
                             <destination>${basedir}/target/generated-test-sources/sdk-core/TransferConstructor</destination>
                         </configuration>
                     </execution>
+
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-AutoMappedTransferSingleEntity</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/AutoMappedTransferSingleEntity-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/sdk-core/AutoMappedTransferSingleEntity</destination>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-Abstract</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/Abstract-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/sdk-core/Abstract</destination>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
 
@@ -894,6 +942,8 @@
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/MappedTransferAssociation</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/MappedTransferAggregation</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/TransferConstructor</source>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/Abstract</source>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/AutoMappedTransferSingleEntity</source>
                             </sources>
                         </configuration>
                    </execution>

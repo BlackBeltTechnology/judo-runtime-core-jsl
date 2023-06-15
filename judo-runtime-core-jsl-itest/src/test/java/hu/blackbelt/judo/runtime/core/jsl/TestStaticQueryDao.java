@@ -417,17 +417,131 @@ public class TestStaticQueryDao extends AbstractJslTest {
                 containsInAnyOrder(d.identifier())
         );
 
-        // With parameter and limit
-        assertEquals(
-                1,
-                entityCollectionWithValueParamQueryDao
+        // With parameter, limit and offset
+        List<EntityQueryElement> list = entityCollectionWithValueParamQueryDao
+                .query(EntityCollectionWithValueParamQueryParameter
+                        .builder()
+                        .withValue(4)
+                        .build())
+                .orderByDescending(EntityQueryElementAttribute.NAME)
+                .execute(1);
+
+        assertEquals(1, list.size());
+        assertEquals(e.identifier(), list.get(0).identifier());
+
+        list = entityCollectionWithValueParamQueryDao
+                .query(EntityCollectionWithValueParamQueryParameter
+                        .builder()
+                        .withValue(4)
+                        .build())
+                .orderByDescending(EntityQueryElementAttribute.NAME)
+                .execute(null);
+
+        assertEquals(2, list.size());
+        assertEquals(e.identifier(), list.get(0).identifier());
+        assertEquals(d.identifier(), list.get(1).identifier());
+
+        list = entityCollectionWithValueParamQueryDao
+                .query(EntityCollectionWithValueParamQueryParameter
+                        .builder()
+                        .withValue(4)
+                        .build())
+                .orderByDescending(EntityQueryElementAttribute.NAME)
+                .execute(0);
+
+        assertEquals(2, list.size());
+        assertEquals(e.identifier(), list.get(0).identifier());
+        assertEquals(d.identifier(), list.get(1).identifier());
+
+        list = entityCollectionWithValueParamQueryDao
+                .query(EntityCollectionWithValueParamQueryParameter
+                        .builder()
+                        .withValue(4)
+                        .build())
+                .orderByDescending(EntityQueryElementAttribute.NAME)
+                .execute(2);
+
+        list = entityCollectionWithValueParamQueryDao
                         .query(EntityCollectionWithValueParamQueryParameter
                                 .builder()
                                 .withValue(4)
                                 .build())
-                        .limit(1)
-                        .execute().size()
-        );
+                        .orderByDescending(EntityQueryElementAttribute.NAME)
+                        .execute(1, null);
+
+        assertEquals(1, list.size());
+        assertEquals(e.identifier(), list.get(0).identifier());
+
+        list = entityCollectionWithValueParamQueryDao
+                .query(EntityCollectionWithValueParamQueryParameter
+                        .builder()
+                        .withValue(4)
+                        .build())
+                .orderByDescending(EntityQueryElementAttribute.NAME)
+                .execute(null, null);
+
+        assertEquals(2, list.size());
+        assertEquals(e.identifier(), list.get(0).identifier());
+        assertEquals(d.identifier(), list.get(1).identifier());
+
+        list = entityCollectionWithValueParamQueryDao
+                .query(EntityCollectionWithValueParamQueryParameter
+                        .builder()
+                        .withValue(4)
+                        .build())
+                .orderByDescending(EntityQueryElementAttribute.NAME)
+                .execute(0, null);
+
+        assertEquals(2, list.size());
+        assertEquals(e.identifier(), list.get(0).identifier());
+        assertEquals(d.identifier(), list.get(1).identifier());
+
+        list = entityCollectionWithValueParamQueryDao
+                .query(EntityCollectionWithValueParamQueryParameter
+                        .builder()
+                        .withValue(4)
+                        .build())
+                .orderByDescending(EntityQueryElementAttribute.NAME)
+                .execute(2, null);
+
+        assertEquals(2, list.size());
+        assertEquals(e.identifier(), list.get(0).identifier());
+        assertEquals(d.identifier(), list.get(1).identifier());
+
+        list = entityCollectionWithValueParamQueryDao
+                .query(EntityCollectionWithValueParamQueryParameter
+                        .builder()
+                        .withValue(4)
+                        .build())
+                .orderByDescending(EntityQueryElementAttribute.NAME)
+                .execute(2, 0);
+
+        assertEquals(2, list.size());
+        assertEquals(e.identifier(), list.get(0).identifier());
+        assertEquals(d.identifier(), list.get(1).identifier());
+
+
+        list = entityCollectionWithValueParamQueryDao
+                .query(EntityCollectionWithValueParamQueryParameter
+                        .builder()
+                        .withValue(4)
+                        .build())
+                .orderByDescending(EntityQueryElementAttribute.NAME)
+                .execute(2, 1);
+
+        assertEquals(1, list.size());
+        assertEquals(d.identifier(), list.get(0).identifier());
+
+
+        list = entityCollectionWithValueParamQueryDao
+                .query(EntityCollectionWithValueParamQueryParameter
+                        .builder()
+                        .withValue(4)
+                        .build())
+                .orderByDescending(EntityQueryElementAttribute.NAME)
+                .execute(2, 2);
+
+        assertEquals(0, list.size());
 
         // With parameter and maskedBy
         List<EntityQueryElement> maskedList = entityCollectionWithValueParamQueryDao

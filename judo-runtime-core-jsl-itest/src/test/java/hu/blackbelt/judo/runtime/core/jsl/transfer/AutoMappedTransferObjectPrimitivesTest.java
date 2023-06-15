@@ -245,7 +245,7 @@ public class AutoMappedTransferObjectPrimitivesTest extends AbstractJslTest {
      *
      */
     @Test
-    @Disabled("JNG-4888")
+    @Disabled("JNG-4902")
     @TestCase("AutoMappedTransferCreationWithValidOptionalPrimitiveDefaultFields")
     @Requirement(reqs = {
             "REQ-TYPE-001",
@@ -434,7 +434,7 @@ public class AutoMappedTransferObjectPrimitivesTest extends AbstractJslTest {
      *
      */
     @Test
-    @Disabled("JNG-4888")
+    @Disabled("JNG-4902")
     @TestCase("AutoMappedTransferCreationWithValidRequiredPrimitiveDefaultFields")
     @Requirement(reqs = {
             "REQ-TYPE-001",
@@ -604,7 +604,7 @@ public class AutoMappedTransferObjectPrimitivesTest extends AbstractJslTest {
      *
      */
     @Test
-    @Disabled("JNG-4888")
+    @Disabled("JNG-4902")
     @TestCase("AutoMappedTransferCreationValidDerivedWithDefaultFieldsExpression")
     @Requirement(reqs = {
             "REQ-TYPE-001",

@@ -127,13 +127,100 @@ public class TransferPrimitiveDaoFunctionsTest extends AbstractJslTest {
             "REQ-MDL-003",
             "REQ-SRV-002",
     })
-    public void testLimit() {
+    public void testLimitAndOffset() {
         List<TransferOptionalPrimitives> list = transferOptionalPrimitivesDao
                 .query()
-                .limit(1)
-                .execute();
+                .orderBy(TransferOptionalPrimitivesAttribute.INTEGER_ATTR)
+                .execute(1);
 
         assertEquals(1, list.size());
+        assertEquals(transf2.identifier(), list.get(0).identifier());
+
+        list = transferOptionalPrimitivesDao
+                .query()
+                .orderBy(TransferOptionalPrimitivesAttribute.INTEGER_ATTR)
+                .execute(null);
+
+        assertEquals(2, list.size());
+        assertEquals(transf2.identifier(), list.get(0).identifier());
+        assertEquals(transf1.identifier(), list.get(1).identifier());
+
+        list = transferOptionalPrimitivesDao
+                .query()
+                .orderBy(TransferOptionalPrimitivesAttribute.INTEGER_ATTR)
+                .execute(0);
+
+        assertEquals(2, list.size());
+        assertEquals(transf2.identifier(), list.get(0).identifier());
+        assertEquals(transf1.identifier(), list.get(1).identifier());
+
+        list = transferOptionalPrimitivesDao
+                .query()
+                .orderBy(TransferOptionalPrimitivesAttribute.INTEGER_ATTR)
+                .execute(3);
+
+        assertEquals(2, list.size());
+        assertEquals(transf2.identifier(), list.get(0).identifier());
+        assertEquals(transf1.identifier(), list.get(1).identifier());
+
+        list = transferOptionalPrimitivesDao
+                .query()
+                .orderBy(TransferOptionalPrimitivesAttribute.INTEGER_ATTR)
+                .execute(1, null);
+
+        assertEquals(1, list.size());
+        assertEquals(transf2.identifier(), list.get(0).identifier());
+
+        list = transferOptionalPrimitivesDao
+                .query()
+                .orderBy(TransferOptionalPrimitivesAttribute.INTEGER_ATTR)
+                .execute(null, null);
+
+        assertEquals(2, list.size());
+        assertEquals(transf2.identifier(), list.get(0).identifier());
+        assertEquals(transf1.identifier(), list.get(1).identifier());
+
+        list = transferOptionalPrimitivesDao
+                .query()
+                .orderBy(TransferOptionalPrimitivesAttribute.INTEGER_ATTR)
+                .execute(0, null);
+
+        assertEquals(2, list.size());
+        assertEquals(transf2.identifier(), list.get(0).identifier());
+        assertEquals(transf1.identifier(), list.get(1).identifier());
+
+        list = transferOptionalPrimitivesDao
+                .query()
+                .orderBy(TransferOptionalPrimitivesAttribute.INTEGER_ATTR)
+                .execute(3, null);
+
+        assertEquals(2, list.size());
+        assertEquals(transf2.identifier(), list.get(0).identifier());
+        assertEquals(transf1.identifier(), list.get(1).identifier());
+
+        list = transferOptionalPrimitivesDao
+                .query()
+                .orderBy(TransferOptionalPrimitivesAttribute.INTEGER_ATTR)
+                .execute(2, 0);
+
+        assertEquals(2, list.size());
+        assertEquals(transf2.identifier(), list.get(0).identifier());
+        assertEquals(transf1.identifier(), list.get(1).identifier());
+
+        list = transferOptionalPrimitivesDao
+                .query()
+                .orderBy(TransferOptionalPrimitivesAttribute.INTEGER_ATTR)
+                .execute(2, 1);
+
+        assertEquals(1, list.size());
+        assertEquals(transf1.identifier(), list.get(0).identifier());
+
+        list = transferOptionalPrimitivesDao
+                .query()
+                .orderBy(TransferOptionalPrimitivesAttribute.INTEGER_ATTR)
+                .execute(2, 2);
+
+        assertEquals(0, list.size());
     }
 
     /**
