@@ -1,7 +1,7 @@
 model SalesModelContract;
 
 type date Date;
-type string String(min-size = 0, max-size = 128);
+type string String min-size:0 max-size:128;
 
 entity ContractDetail {
     field String details;

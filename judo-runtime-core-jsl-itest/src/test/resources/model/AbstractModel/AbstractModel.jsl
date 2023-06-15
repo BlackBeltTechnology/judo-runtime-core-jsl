@@ -1,6 +1,6 @@
 model AbstractModel;
 
-type string String(min-size = 0, max-size = 128);
+type string String min-size:0 max-size:128;
 
 entity abstract A {
 }
@@ -62,13 +62,17 @@ entity L extends K {
 }
 
 entity abstract O {
-    query O Oany() => O!all()!any();
+	@Lazy
+    relation O Oany <= O!all()!any();
 }
 
 entity abstract P {
-    query P Pany() => P!all()!any();
-    query P PQany() => Q!all()!any();
-    query Q Qany() => Q!all()!any();
+	@Lazy
+    relation P Pany <= P!all()!any();
+	@Lazy
+    relation P PQany <= Q!all()!any();
+	@Lazy
+    relation Q Qany <= Q!all()!any();
 }
 
 entity Q extends P {

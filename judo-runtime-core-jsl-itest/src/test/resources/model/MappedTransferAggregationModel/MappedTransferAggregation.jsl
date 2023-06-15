@@ -13,12 +13,14 @@ entity EntityB {
 }
 
 transfer TransferA (EntityA a) {
-    field TransferB singleEntityB maps a.singleEntityB;
-    field TransferB[] multiEntityB maps a.multiEntityB;
+	@Eager
+    relation TransferB singleEntityB <=> a.singleEntityB;
+    @Eager
+    relation TransferB[] multiEntityB <=> a.multiEntityB;
 }
 
 transfer TransferB (EntityB b) {
-    field String nameB maps b.nameB;
+    field String nameB <=> b.nameB;
 }
 
 // required single
@@ -32,12 +34,13 @@ entity EntityD {
 }
 
 transfer TransferC (EntityC c) {
-    field required TransferD singleRequiredEntityD maps c.singleRequiredEntityD;
+    @Eager
+    relation required TransferD singleRequiredEntityD <=> c.singleRequiredEntityD;
 
 }
 
 transfer TransferD (EntityD d) {
-    field String nameD maps d.nameD;
+    field String nameD <=> d.nameD;
 }
 
 // Navigation trough transfers
@@ -55,13 +58,15 @@ entity EntityG {
 }
 
 transfer TransferE (EntityE e) {
-    field TransferF singleEntityF maps e.singleEntityF;
+    @Eager
+    relation TransferF singleEntityF <=> e.singleEntityF;
 }
 
 transfer TransferF (EntityF f) {
-    field TransferG[] multiEntityG maps f.multiEntityG;
+    @Eager
+    relation TransferG[] multiEntityG <=> f.multiEntityG;
 }
 
 transfer TransferG (EntityG g) {
-        field String nameG maps g.nameG;
+        field String nameG <=> g.nameG;
 }

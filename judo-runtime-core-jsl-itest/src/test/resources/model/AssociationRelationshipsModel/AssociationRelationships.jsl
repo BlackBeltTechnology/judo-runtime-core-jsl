@@ -4,9 +4,9 @@ import judo::types;
 
 entity EntityA {
     relation EntityC singleConA;
-    relation required EntityC singleRequiredConA opposite twoWayMultipleAonC;
-    relation EntityD[] multipleDonA opposite multipleAonD;
-    derived Integer countD => self.multipleDonA!size();
+    relation required EntityC singleRequiredConA opposite:twoWayMultipleAonC;
+    relation EntityD[] multipleDonA opposite:multipleAonD;
+    field Integer countD <= self.multipleDonA!size();
 }
 
 entity abstract EntityB {
@@ -15,16 +15,16 @@ entity abstract EntityB {
 
 entity EntityC extends EntityB {
     relation EntityD[] multipleDonC;
-    relation EntityA[] twoWayMultipleAonC opposite singleRequiredConA;
+    relation EntityA[] twoWayMultipleAonC opposite:singleRequiredConA;
 }
 
 entity EntityD {
-    relation EntityA[] multipleAonD opposite multipleDonA;
-    derived Integer countA => self.multipleAonD!size();
+    relation EntityA[] multipleAonD opposite:multipleDonA;
+    field Integer countA <= self.multipleAonD!size();
 }
 
 entity EntityE {
-    relation EntityF[] multipleFOnE opposite-add singleEAdded;
+    relation EntityF[] multipleFOnE opposite-add:singleEAdded;
 }
 
 entity EntityF {

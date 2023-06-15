@@ -2,8 +2,8 @@ model AutoMappedTransferPrimitives;
 
 import judo::types;
 
-type numeric Scaled(precision = 9, scale = 2);
-type string PhoneNumber(min-size = 0, max-size = 32, regex = "^(\\+\\d{1,2}\\s)?\\(?\\d{2,3}\\)?[\\s.-]\\d{3}[\\s.-]\\d{4}$");
+type numeric Scaled precision:9 scale:2;
+type string PhoneNumber min-size:0 max-size:32 regex:"^(\\+\\d{1,2}\\s)?\\(?\\d{2,3}\\)?[\\s.-]\\d{3}[\\s.-]\\d{4}$";
 
 enum MyEnum {
     Atomic = 0;
@@ -105,15 +105,15 @@ entity DerivedWithFieldsExpression {
     field Time timeAttr;
     field MyEnum enumAttr;
 
-    derived Integer integerDerived => self.integerAttr;
-    derived Scaled scaledDerived => self.scaledAttr;
-    derived String stringDerived => self.stringAttr;
-    derived PhoneNumber regexDerived => self.regexAttr;
-    derived Boolean boolDerived => self.boolAttr;
-    derived Date dateDerived => self.dateAttr;
-    derived Timestamp timestampDerived => self.timestampAttr;
-    derived Time timeDerived => self.timeAttr;
-    derived MyEnum enumDerived => self.enumAttr;
+    field Integer integerDerived <= self.integerAttr;
+    field Scaled scaledDerived <= self.scaledAttr;
+    field String stringDerived <= self.stringAttr;
+    field PhoneNumber regexDerived <= self.regexAttr;
+    field Boolean boolDerived <= self.boolAttr;
+    field Date dateDerived <= self.dateAttr;
+    field Timestamp timestampDerived <= self.timestampAttr;
+    field Time timeDerived <= self.timeAttr;
+    field MyEnum enumDerived <= self.enumAttr;
 
 }
 
@@ -130,15 +130,15 @@ entity DerivedWithDefaultFieldsExpression {
     field Time timeAttr = `23:59:59`;
     field MyEnum enumAttr = MyEnum#Bombastic;
 
-    derived Integer integerDerived => self.integerAttr;
-    derived Scaled scaledDerived => self.scaledAttr;
-    derived String stringDerived => self.stringAttr;
-    derived PhoneNumber regexDerived => self.regexAttr;
-    derived Boolean boolDerived => self.boolAttr;
-    derived Date dateDerived => self.dateAttr;
-    derived Timestamp timestampDerived => self.timestampAttr;
-    derived Time timeDerived => self.timeAttr;
-    derived MyEnum enumDerived => self.enumAttr;
+    field Integer integerDerived <= self.integerAttr;
+    field Scaled scaledDerived <= self.scaledAttr;
+    field String stringDerived <= self.stringAttr;
+    field PhoneNumber regexDerived <= self.regexAttr;
+    field Boolean boolDerived <= self.boolAttr;
+    field Date dateDerived <= self.dateAttr;
+    field Timestamp timestampDerived <= self.timestampAttr;
+    field Time timeDerived <= self.timeAttr;
+    field MyEnum enumDerived <= self.enumAttr;
 
 }
 
@@ -146,15 +146,15 @@ transfer AutoMappedTransferOnDerivedWithDefaultFieldsExpression (DerivedWithDefa
 
 entity DerivedWithSimplePrimitiveExpression {
 
-    derived Integer integerDerived => 1;
-    derived Scaled scaledDerived => 2.34;
-    derived String stringDerived => "test";
-    derived PhoneNumber regexDerived => "+36 (30) 123 1234";
-    derived Boolean boolDerived => true;
-    derived Date dateDerived => `2022-07-11`;
-    derived Timestamp timestampDerived => `2022-07-11T19:09:33Z`;
-    derived Time timeDerived => `23:59:59`;
-    derived MyEnum enumDerived => MyEnum#Bombastic;
+    field Integer integerDerived <= 1;
+    field Scaled scaledDerived <= 2.34;
+    field String stringDerived <= "test";
+    field PhoneNumber regexDerived <= "+36 (30) 123 1234";
+    field Boolean boolDerived <= true;
+    field Date dateDerived <= `2022-07-11`;
+    field Timestamp timestampDerived <= `2022-07-11T19:09:33Z`;
+    field Time timeDerived <= `23:59:59`;
+    field MyEnum enumDerived <= MyEnum#Bombastic;
 
 }
 
@@ -162,12 +162,12 @@ transfer AutoMappedTransferOnDerivedWithSimplePrimitiveExpression (DerivedWithSi
 
 entity DerivedWithComplexPrimitiveExpression {
 
-    derived Integer integerDerived => 1.23!round();
-    derived Scaled scaledDerived => 2.34!abs();
-    derived Boolean boolDerived => 2 > -1;
-    derived Date dateDerived => Date!of(year = 2022, month = 7, day = 11);
-    derived Timestamp timestampDerived => Timestamp!of(date = `2022-07-11`, time = `19:09:33`);
-    derived Time timeDerived => Time!of(hour = 23, minute = 59, second = 59);
+    field Integer integerDerived <= 1.23!round();
+    field Scaled scaledDerived <= 2.34!abs();
+    field Boolean boolDerived <= 2 > -1;
+    field Date dateDerived <= Date!of(year = 2022, month = 7, day = 11);
+    field Timestamp timestampDerived <= Timestamp!of(date = `2022-07-11`, time = `19:09:33`);
+    field Time timeDerived <= Time!of(hour = 23, minute = 59, second = 59);
 
 }
 
@@ -175,25 +175,34 @@ transfer AutoMappedTransferOnDerivedWithComplexPrimitiveExpression (DerivedWithC
 
 entity DerivedWithQueryExpression {
 
-    derived Integer integerDerived => self.integerQuery();
-    derived Scaled scaledDerived => self.scaledQuery();
-    derived String stringDerived => self.stringQuery();
-    derived PhoneNumber regexDerived => self.regexQuery();
-    derived Boolean boolDerived => self.boolQuery();
-    derived Date dateDerived => self.dateQuery();
-    derived Timestamp timestampDerived => self.timestampQuery();
-    derived Time timeDerived => self.timeQuery();
-    derived MyEnum enumDerived => self.enumQuery();
+    field Integer integerDerived <= self.integerQuery();
+    field Scaled scaledDerived <= self.scaledQuery();
+    field String stringDerived <= self.stringQuery();
+    field PhoneNumber regexDerived <= self.regexQuery();
+    field Boolean boolDerived <= self.boolQuery();
+    field Date dateDerived <= self.dateQuery();
+    field Timestamp timestampDerived <= self.timestampQuery();
+    field Time timeDerived <= self.timeQuery();
+    field MyEnum enumDerived <= self.enumQuery();
 
-    query Integer integerQuery() => 1;
-    query Scaled scaledQuery() => 2.34;
-    query String stringQuery() => "test";
-    query PhoneNumber regexQuery() => "+36 (30) 123 1234";
-    query Boolean boolQuery() => true;
-    query Date dateQuery() => `2022-07-11`;
-    query Timestamp timestampQuery() => `2022-07-11T19:09:33Z`;
-    query Time timeQuery() => `23:59:59`;
-    query MyEnum enumQuery() => MyEnum#Bombastic;
+	@Lazy
+    field Integer integerQuery <= 1;
+	@Lazy
+    field Scaled scaledQuery <= 2.34;
+	@Lazy
+    field String stringQuery <= "test";
+	@Lazy
+    field PhoneNumber regexQuery <= "+36 (30) 123 1234";
+	@Lazy
+    field Boolean boolQuery <= true;
+	@Lazy
+    field Date dateQuery <= `2022-07-11`;
+	@Lazy
+    field Timestamp timestampQuery <= `2022-07-11T19:09:33Z`;
+	@Lazy
+    field Time timeQuery <= `23:59:59`;
+	@Lazy
+    field MyEnum enumQuery <= MyEnum#Bombastic;
 
 }
 

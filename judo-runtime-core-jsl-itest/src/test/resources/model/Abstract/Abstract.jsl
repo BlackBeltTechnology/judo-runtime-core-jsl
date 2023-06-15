@@ -2,10 +2,10 @@ model Abstract;
 
 import judo::types;
 
-type numeric Scaled(precision = 9, scale = 2);
-type string PhoneNumber(min-size = 0, max-size = 32, regex = "^(\\+\\d{1,2}\\s)?\\(?\\d{2,3}\\)?[\\s.-]\\d{3}[\\s.-]\\d{4}$");
-type binary Binary(mime-types = ["text/plain"], max-file-size=1 GB);
-type string SmallString(min-size = 0, max-size = 128);
+type numeric Scaled precision:9 scale:2;
+type string PhoneNumber min-size:0 max-size:32 regex:"^(\\+\\d{1,2}\\s)?\\(?\\d{2,3}\\)?[\\s.-]\\d{3}[\\s.-]\\d{4}$";
+type binary Binary mime-type:["text/plain"] max-file-size:1 GB;
+type string SmallString min-size:0 max-size:128;
 
 enum Enum {
     EnumA = 0;
