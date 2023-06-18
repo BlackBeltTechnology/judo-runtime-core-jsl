@@ -1,6 +1,6 @@
 model CastingFunctionsModel;
 
-type string String(min-size = 0, max-size = 255);
+type string String min-size:0 max-size:255;
 type boolean Boolean;
 
 entity A {
@@ -26,31 +26,31 @@ entity Tester {
     relation B[] caAsBs;
 
     // kind of
-    derived Boolean kindOfA => self.b!kindOf(entityType = A);        // true
-    derived Boolean kindOfB => self.b!kindOf(entityType = B);        // true
-    derived Boolean kindOfCA => self.b!kindOf(entityType = CA);      // false
-    derived Boolean kindOfCA1 => self.caAsB!kindOf(entityType = CA); // true
-    derived Boolean kindOfCB => self.b!kindOf(entityType = CB);      // false
+    field Boolean kindOfA <= self.b!kindOf(entityType = A);        // true
+    field Boolean kindOfB <= self.b!kindOf(entityType = B);        // true
+    field Boolean kindOfCA <= self.b!kindOf(entityType = CA);      // false
+    field Boolean kindOfCA1 <= self.caAsB!kindOf(entityType = CA); // true
+    field Boolean kindOfCB <= self.b!kindOf(entityType = CB);      // false
 
     // type of
-    derived Boolean typeOfA => self.b!typeOf(entityType = A);        // false
-    derived Boolean typeOfB => self.b!typeOf(entityType = B);        // true
-    derived Boolean typeOfCA => self.b!typeOf(entityType = CA);      // false
-    derived Boolean typeOfCA1 => self.caAsB!typeOf(entityType = CA); // true
-    derived Boolean typeOfCB => self.b!typeOf(entityType = CB);      // false
+    field Boolean typeOfA <= self.b!typeOf(entityType = A);        // false
+    field Boolean typeOfB <= self.b!typeOf(entityType = B);        // true
+    field Boolean typeOfCA <= self.b!typeOf(entityType = CA);      // false
+    field Boolean typeOfCA1 <= self.caAsB!typeOf(entityType = CA); // true
+    field Boolean typeOfCB <= self.b!typeOf(entityType = CB);      // false
 
     // as type
-    derived A asTypeA => self.b!asType(entityType = A);         // B
-    derived B asTypeB => self.b!asType(entityType = B);         // B
-    derived CA asTypeCA => self.b!asType(entityType = CA);      // undefined
-    derived CA asTypeCA1 => self.caAsB!asType(entityType = CA); // CA
-    derived CB asTypeCB => self.b!asType(entityType = CB);      // undefined
+    relation A asTypeA <= self.b!asType(entityType = A);         // B
+    relation B asTypeB <= self.b!asType(entityType = B);         // B
+    relation CA asTypeCA <= self.b!asType(entityType = CA);      // undefined
+    relation CA asTypeCA1 <= self.caAsB!asType(entityType = CA); // CA
+    relation CB asTypeCB <= self.b!asType(entityType = CB);      // undefined
 
     // as collection
-    derived A[] asCollectionA => self.bs!asCollection(entityType = A);         // B-s
-    derived B[] asCollectionB => self.bs!asCollection(entityType = B);         // B-s
-    derived CA[] asCollectionCA => self.bs!asCollection(entityType = CA);      // empty
-    derived CA[] asCollectionCA1 => self.caAsBs!asCollection(entityType = CA); // CA-s
-    derived CB[] asCollectionCB => self.bs!asCollection(entityType = CB);      // empty
+    relation A[] asCollectionA <= self.bs!asCollection(entityType = A);         // B-s
+    relation B[] asCollectionB <= self.bs!asCollection(entityType = B);         // B-s
+    relation CA[] asCollectionCA <= self.bs!asCollection(entityType = CA);      // empty
+    relation CA[] asCollectionCA1 <= self.caAsBs!asCollection(entityType = CA); // CA-s
+    relation CB[] asCollectionCB <= self.bs!asCollection(entityType = CB);      // empty
 
 }

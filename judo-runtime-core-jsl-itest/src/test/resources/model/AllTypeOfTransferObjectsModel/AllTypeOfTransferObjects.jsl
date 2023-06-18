@@ -17,7 +17,7 @@ entity B {
 
 transfer TransferB (B b) {
     field String attributeTransferB;
-    field String mappedNameB maps b.nameB;
+    field String mappedNameB <=> b.nameB;
 }
 
 entity C {
@@ -26,7 +26,7 @@ entity C {
 
 transfer TransferC maps C as c {
     field String attributeTransferC;
-    field String readCName reads c.nameC;
+    field String readCName <= c.nameC;
 }
 
 entity D {

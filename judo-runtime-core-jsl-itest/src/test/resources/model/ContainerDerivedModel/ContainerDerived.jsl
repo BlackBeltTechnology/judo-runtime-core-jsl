@@ -9,7 +9,7 @@ entity B {
 }
 
 entity C {
-	derived A allCfromAPlainName => self!container(entityType = A);
-	derived A allCfromAFqName => self!container(entityType = ContainerDerived::A);
+	relation A allCfromAPlainName <= self!container(entityType = A);
+	relation A allCfromAFqName <= self!container(entityType = ContainerDerived::A);
 }
 

@@ -28,7 +28,7 @@ transfer AutoMappedTwoWayReferenceEntity(TwoWayReferenceEntity mappedEntity);
 entity ContainerSingleAssociationEntity {
     relation ReferenceEntity singleCompositionEntity;
     relation required ReferenceEntity singleRequiredCompositionEntity;
-    relation TwoWayReferenceEntity twoWayReferenceEntityRelation opposite-add twoWayContainerRelation;
+    relation TwoWayReferenceEntity twoWayReferenceEntityRelation opposite-add:twoWayContainerRelation;
 
 }
 
