@@ -3,7 +3,7 @@ model TestStaticQueriesWithConstantParameters;
 import judo::types;
 
 // my decimal
-type numeric Decimal(precision = 13, scale = 4);
+type numeric Decimal precision:13 scale:4;
 
 // my enum
 enum MyEnum {
@@ -45,46 +45,46 @@ entity Snapshot1 {
 entity Snapshot2 {
     field Timestamp created = Timestamp!now();
     // derived
-    derived Boolean   ffBool      => anyMyEntityFBool(str = "ABC");
-    derived Date      ffDate      => anyMyEntityFDate(min = -12.2301, max = 10000.9999);
-    derived Time      ffTime      => anyMyEntityFTime(ll = 1234567890, me = MyEnum#A02);
-    derived Timestamp ffTimestamp => anyMyEntityFTimestamp(str = "AAA", min = 2.71);
-    derived Long      ffLong      => anyMyEntityFLong(d = `2023-01-01`, t = `12:00:13`);
-    derived String    ffString    => anyMyEntityFString(l = 1234567890, ts = `2020-01-01T01:11:12-12:00`);
-    derived Decimal   ffDecimal   => anyMyEntityFDecimal(str = "cbaaa", d = `2023-01-05`, b = false);
-    derived MyEnum    ffEnum      => anyMyEntityFEnum(d = 3.14, t1 = `08:00:00`, t2 = `09:00:00`);
+    field Boolean   ffBool      <= anyMyEntityFBool(str = "ABC");
+    field Date      ffDate      <= anyMyEntityFDate(min = -12.2301, max = 10000.9999);
+    field Time      ffTime      <= anyMyEntityFTime(ll = 1234567890, me = MyEnum#A02);
+    field Timestamp ffTimestamp <= anyMyEntityFTimestamp(str = "AAA", min = 2.71);
+    field Long      ffLong      <= anyMyEntityFLong(d = `2023-01-01`, t = `12:00:13`);
+    field String    ffString    <= anyMyEntityFString(l = 1234567890, ts = `2020-01-01T01:11:12-12:00`);
+    field Decimal   ffDecimal   <= anyMyEntityFDecimal(str = "cbaaa", d = `2023-01-05`, b = false);
+    field MyEnum    ffEnum      <= anyMyEntityFEnum(d = 3.14, t1 = `08:00:00`, t2 = `09:00:00`);
 
     // relations
-    derived MyEntity[] entities => listOfMyEntities(l = 5555555555, b = false, d = `2023-01-01`, str = "abc");
+    relation MyEntity[] entities <= listOfMyEntities(l = 5555555555, b = false, d = `2023-01-01`, str = "abc");
 }
 
 // static queries
-query Boolean    anyMyEntityFBool(String str) =>
+query Boolean    anyMyEntityFBool(String str) <=
                     MyEntity!all()!filter(e | e.ffString == str)!any().ffBool;
 
-query Date       anyMyEntityFDate(Decimal min, Decimal max) =>
+query Date       anyMyEntityFDate(Decimal min, Decimal max) <=
                     MyEntity!all()!filter(e | min <= e.ffDecimal and e.ffDecimal <= max)!any().ffDate;
 
-query Time       anyMyEntityFTime(Long ll, MyEnum me) =>
+query Time       anyMyEntityFTime(Long ll, MyEnum me) <=
                     MyEntity!all()!filter(e | e.ffLong != ll and e.ffEnum == me)!any().ffTime;
 
-query Timestamp  anyMyEntityFTimestamp(String str, Decimal min) =>
+query Timestamp  anyMyEntityFTimestamp(String str, Decimal min) <=
                     MyEntity!all()!filter(e | e.ffString == str and min < e.ffDecimal)!any().ffTimestamp;
 
-query Long       anyMyEntityFLong(Date d, Time t) =>
+query Long       anyMyEntityFLong(Date d, Time t) <=
                     MyEntity!all()!filter(e | e.ffDate == d and e.ffTime < t)!any().ffLong;
 
-query String     anyMyEntityFString(Timestamp ts, Long l) =>
+query String     anyMyEntityFString(Timestamp ts, Long l) <=
                     MyEntity!all()!filter(e | e.ffTimestamp <= ts and l == e.ffLong)!any().ffString;
 
-query Decimal    anyMyEntityFDecimal(String str, Date d, Boolean b) =>
+query Decimal    anyMyEntityFDecimal(String str, Date d, Boolean b) <=
                     MyEntity!all()!filter(e | e.ffString == str and e.ffDate == d and e.ffBool == b)!any().ffDecimal;
 
-query MyEnum     anyMyEntityFEnum(Decimal d, Time t1, Time t2) =>
+query MyEnum     anyMyEntityFEnum(Decimal d, Time t1, Time t2) <=
                     MyEntity!all()!filter(e | e.ffDecimal == d or (t1 <= e.ffTime and e.ffTime < t2))!any().ffEnum;
 
-query MyEntity[] listOfMyEntities(String str, Date d, Boolean b, Long l) =>
+query MyEntity[] listOfMyEntities(String str, Date d, Boolean b, Long l) <=
                     MyEntity!all()!filter(e | (e.ffString!lower() == str and e.ffDate == d) or (e.ffBool == b and e.ffLong < l));
 
-query MyEntity   lastAddedMyEntity() =>
+query MyEntity   lastAddedMyEntity() <=
                     MyEntity!all()!last(e | e.ffCreated)!any();

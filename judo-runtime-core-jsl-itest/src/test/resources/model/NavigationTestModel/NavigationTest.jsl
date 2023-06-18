@@ -1,32 +1,32 @@
 model NavigationTest;
 
-type string String(min-size = 0, max-size = 255);
+type string String min-size:0 max-size:255;
 
 entity A {
     relation B[]    blist;
-    derived  C[]    clist               => self.blist.c;
+    relation  C[]    clist               <= self.blist.c;
 
-    derived  B[]    bbAll                => B!all();
-    derived  B      bbAny                => B!any();
+    relation  B[]    bbAll                <= B!all();
+    relation  B      bbAny                <= B!any();
 
-    derived  String bbAnyName           => B!any().name;
-    derived  String selfBName           => self.bbAny.name;
+    field  String bbAnyName           <= B!any().name;
+    field  String selfBName           <= self.bbAny.name;
 
-    derived  B[]    bbAllFilter          => B!all()!filter(b | b.name == "b");
-    derived  B      bbAllFilterAny       => B!all()!filter(b | b.name == "b")!any();
-    derived  B      bbAllFilterAny1      => self.bbAllFilter!any();
+    relation  B[]    bbAllFilter          <= B!all()!filter(b | b.name == "b");
+    relation  B      bbAllFilterAny       <= B!all()!filter(b | b.name == "b")!any();
+    relation  B      bbAllFilterAny1      <= self.bbAllFilter!any();
 
-    derived  String bbAllFilterAnyName  => B!all()!filter(b | b.name == "b")!any().name;
-    derived  String bbAllFilterAnyName1 => self.bbAllFilter!any().name;
-    derived  String bbAllFilterAnyName2 => self.bbAllFilterAny1.name;
+    field  String bbAllFilterAnyName  <= B!all()!filter(b | b.name == "b")!any().name;
+    field  String bbAllFilterAnyName1 <= self.bbAllFilter!any().name;
+    field  String bbAllFilterAnyName2 <= self.bbAllFilterAny1.name;
 
-    derived  C[]    selfbAllC           => self.bbAll.c;
-    derived  C      selfbAllCAny        => self.bbAll.c!any();
-    derived  String selfbAllCAnyName    => self.bbAll.c!any().name;
+    relation  C[]    selfbAllC           <= self.bbAll.c;
+    relation  C      selfbAllCAny        <= self.bbAll.c!any();
+    field  String selfbAllCAnyName    <= self.bbAll.c!any().name;
 
-    derived  C[]    bbAllC               => B!all().c;
-    derived  C      bbAllCAny            => B!all().c!any();
-    derived  String bbAllCAnyName       => B!all().c!any().name;
+    relation  C[]    bbAllC               <= B!all().c;
+    relation  C      bbAllCAny            <= B!all().c!any();
+    field  String bbAllCAnyName       <= B!all().c!any().name;
 }
 
 entity B {
