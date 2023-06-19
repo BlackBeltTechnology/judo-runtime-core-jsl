@@ -113,7 +113,6 @@ public class MappedTransferAssociationTest extends AbstractJslTest {
     @Inject
     TransferJDao transferJDao;
 
-
     @Override
     public Module getModelDaoModule() {
         return new MappedTransferAssociationDaoModules();

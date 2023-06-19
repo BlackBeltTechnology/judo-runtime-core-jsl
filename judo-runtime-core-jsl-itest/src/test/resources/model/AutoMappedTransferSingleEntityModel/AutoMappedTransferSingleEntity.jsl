@@ -37,12 +37,16 @@ entity ContainerSingleCompositionDerivedEntity {
 
     field ReferenceEntity singleCompositionEntity;
     field required ReferenceEntity singleRequiredCompositionEntity;
+    field ReferenceEntity singleCompositionDefaultEntity = ReferenceEntity!all()!filter(e | e.name == "CompositionDefault")!any();
+//     field required ReferenceEntity singleRequiredCompositionDefaultEntity = ReferenceEntity!all()!filter(e | e.name == "RequiredCompositionDefault")!any(); //error
 
-
-    relation ReferenceEntity singleCompositionEntityExpressionDerived <= referenceEntityWithName(name ="CompositionDefault");
-
+    relation ReferenceEntity singleCompositionEntityExpressionDerived <= referenceEntityWithNameQuery(name ="singleComposition");
     relation ReferenceEntity singleCompositionEntityMemberDerived <= self.singleRequiredCompositionEntity;
     relation ReferenceEntity singleCompositionEntityRequiredMemberDerived <= self.singleRequiredCompositionEntity;
+
+
+// error during compilation
+//     relation ReferenceEntity singleCompositionEntityExpressionQuery(String name1) <= referenceEntityWithNameQuery(name = name1);
 
 }
 
