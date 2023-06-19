@@ -28,8 +28,24 @@ transfer AutoMappedTwoWayReferenceEntity(TwoWayReferenceEntity mappedEntity);
 entity ContainerSingleAssociationEntity {
     relation ReferenceEntity singleCompositionEntity;
     relation required ReferenceEntity singleRequiredCompositionEntity;
-    relation TwoWayReferenceEntity twoWayReferenceEntityRelation opposite-add:twoWayContainerRelation;
-
+    relation TwoWayReferenceEntity twoWayReferenceEntityRelation opposite-add : twoWayContainerRelation;
 }
 
 transfer AutoMappedContainerSingleAssociation(ContainerSingleAssociationEntity mappedEntity);
+
+entity ContainerSingleCompositionDerivedEntity {
+
+    field ReferenceEntity singleCompositionEntity;
+    field required ReferenceEntity singleRequiredCompositionEntity;
+
+
+    relation ReferenceEntity singleCompositionEntityExpressionDerived <= referenceEntityWithName(name ="CompositionDefault");
+
+    relation ReferenceEntity singleCompositionEntityMemberDerived <= self.singleRequiredCompositionEntity;
+    relation ReferenceEntity singleCompositionEntityRequiredMemberDerived <= self.singleRequiredCompositionEntity;
+
+}
+
+query ReferenceEntity referenceEntityWithName(String name) <= ReferenceEntity!all()!filter(e | e.name == name)!any();
+
+transfer AutoMappedContainerSingleCompositionDerivedEntity(ContainerSingleCompositionDerivedEntity mappedEntity);

@@ -198,7 +198,7 @@ public class AutoMappedTransferObjectSingleEntityTest extends AbstractJslTest {
     // TODO JNG-4906
 
 //        AutoMappedContainerSingleAssociation containerSingleAssociation =
-//                autoMappedContainerSingleAssociationDao.
+//                autoMappedContainerSingleAssociationDao.create(AutoMappedContainerSingleAssociation.builder().build());
 
     }
 
