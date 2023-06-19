@@ -46,6 +46,6 @@ entity ContainerSingleCompositionDerivedEntity {
 
 }
 
-query ReferenceEntity referenceEntityWithName(String name) <= ReferenceEntity!all()!filter(e | e.name == name)!any();
+query ReferenceEntity referenceEntityWithNameQuery(String name) <= ReferenceEntity!all()!filter(e | e.name == name)!any();
 
 transfer AutoMappedContainerSingleCompositionDerivedEntity(ContainerSingleCompositionDerivedEntity mappedEntity);
