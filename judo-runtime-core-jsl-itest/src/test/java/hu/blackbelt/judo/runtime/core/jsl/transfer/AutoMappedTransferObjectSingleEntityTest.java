@@ -3,6 +3,7 @@ package hu.blackbelt.judo.runtime.core.jsl.transfer;
 import com.google.inject.Inject;
 import com.google.inject.Module;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfersingleentity.automappedtransfersingleentity.automappedcontainersingleassociation.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfersingleentity.automappedtransfersingleentity.automappedcontainersinglecompositionderivedentity.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfersingleentity.automappedtransfersingleentity.containersingleassociationentity.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfersingleentity.automappedtransfersingleentity.containersinglecompositionentity.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfersingleentity.automappedtransfersingleentity.referenceentity.*;
@@ -49,6 +50,9 @@ public class AutoMappedTransferObjectSingleEntityTest extends AbstractJslTest {
 
     @Inject
     AutoMappedContainerSingleCompositionDao autoMappedContainerSingleCompositionDao;
+
+    @Inject
+    AutoMappedContainerSingleCompositionDerivedEntityDao autoMappedContainerSingleCompositionDerivedEntityDao;
 
     /**
      * This test checks the auto mapped transfer object on single entity composition fields.
@@ -198,7 +202,55 @@ public class AutoMappedTransferObjectSingleEntityTest extends AbstractJslTest {
     // TODO JNG-4906
 
 //        AutoMappedContainerSingleAssociation containerSingleAssociation =
-//                autoMappedContainerSingleAssociationDao.
+//                autoMappedContainerSingleAssociationDao.create(AutoMappedContainerSingleAssociation.builder().build());
+
+    }
+
+    /**
+     *  This test checks the auto mapped transfer object on single entity derived members that refer composition fields.
+     *
+     * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
+     *
+     * @type Behaviour
+     *
+     * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
+     *
+     * @jslModel AutoMappedTransferSingleEntity.jsl
+     *
+     *
+     * @scenario
+     *
+     */
+    @Test
+    @TestCase("AutoMappedTransferWithCompositionDerivedVariations")
+    @Requirement(reqs = {
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-SRV-006"
+
+    })
+    void testAutoMappedTransferWithCompositionDerivedVariations() {
+
+        AutoMappedContainerSingleCompositionDerivedEntity autoMappedContainerSingleCompositionDerivedEntity =
+                autoMappedContainerSingleCompositionDerivedEntityDao.create(AutoMappedContainerSingleCompositionDerivedEntity
+                        .builder()
+                        .withSingleCompositionEntity(AutoMappedReferenceEntity.builder().withName("singleComposition").build())
+                        .withSingleRequiredCompositionEntity(AutoMappedReferenceEntity.builder().withName("singleRequiredComposition").build())
+                        .build()
+        );
+
+
+        assertEquals(autoMappedContainerSingleCompositionDerivedEntityDao.querySingleCompositionEntityExpressionDerived(autoMappedContainerSingleCompositionDerivedEntity).orElseThrow().identifier(),autoMappedContainerSingleCompositionDerivedEntity.getSingleCompositionEntity().orElseThrow().identifier());
+        assertEquals(autoMappedContainerSingleCompositionDerivedEntityDao.querySingleCompositionEntity(autoMappedContainerSingleCompositionDerivedEntity).orElseThrow().identifier(),autoMappedContainerSingleCompositionDerivedEntity.getSingleCompositionEntity().orElseThrow().identifier());
+        assertEquals(autoMappedContainerSingleCompositionDerivedEntityDao.querySingleRequiredCompositionEntity(autoMappedContainerSingleCompositionDerivedEntity).identifier(),autoMappedContainerSingleCompositionDerivedEntity.getSingleRequiredCompositionEntity().identifier());
+
 
     }
 

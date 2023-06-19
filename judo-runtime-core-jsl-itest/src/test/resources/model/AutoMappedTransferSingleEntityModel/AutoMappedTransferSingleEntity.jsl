@@ -28,8 +28,28 @@ transfer AutoMappedTwoWayReferenceEntity(TwoWayReferenceEntity mappedEntity);
 entity ContainerSingleAssociationEntity {
     relation ReferenceEntity singleCompositionEntity;
     relation required ReferenceEntity singleRequiredCompositionEntity;
-    relation TwoWayReferenceEntity twoWayReferenceEntityRelation opposite-add:twoWayContainerRelation;
-
+    relation TwoWayReferenceEntity twoWayReferenceEntityRelation opposite-add : twoWayContainerRelation;
 }
 
 transfer AutoMappedContainerSingleAssociation(ContainerSingleAssociationEntity mappedEntity);
+
+entity ContainerSingleCompositionDerivedEntity {
+
+    field ReferenceEntity singleCompositionEntity;
+    field required ReferenceEntity singleRequiredCompositionEntity;
+    field ReferenceEntity singleCompositionDefaultEntity = ReferenceEntity!all()!filter(e | e.name == "CompositionDefault")!any();
+//     field required ReferenceEntity singleRequiredCompositionDefaultEntity = ReferenceEntity!all()!filter(e | e.name == "RequiredCompositionDefault")!any(); //error
+
+    relation ReferenceEntity singleCompositionEntityExpressionDerived <= referenceEntityWithNameQuery(name ="singleComposition");
+    relation ReferenceEntity singleCompositionEntityMemberDerived <= self.singleRequiredCompositionEntity;
+    relation ReferenceEntity singleCompositionEntityRequiredMemberDerived <= self.singleRequiredCompositionEntity;
+
+
+// error during compilation
+//     relation ReferenceEntity singleCompositionEntityExpressionQuery(String name1) <= referenceEntityWithNameQuery(name = name1);
+
+}
+
+query ReferenceEntity referenceEntityWithNameQuery(String name) <= ReferenceEntity!all()!filter(e | e.name == name)!any();
+
+transfer AutoMappedContainerSingleCompositionDerivedEntity(ContainerSingleCompositionDerivedEntity mappedEntity);
