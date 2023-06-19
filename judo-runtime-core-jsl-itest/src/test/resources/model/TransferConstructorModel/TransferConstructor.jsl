@@ -156,3 +156,42 @@ transfer TransferRequiredPrimitivesDefaultsWithConstructor (EntityWithRequiredPr
         self.enumAttr = Enum#EnumA;
     }
 }
+
+//constructor with relation
+
+entity EntityWithSingleRelation {
+	field String name;
+	relation EntityWithMultiRelation association;
+	relation EntityWithMultiRelation[] associationCollection;
+}
+
+entity EntityWithMultiRelation {
+	field String name;
+	relation EntityWithSingleRelation twoWaySingleRelation opposite-add : entityWithTwoWayOpposite;
+	relation EntityWithSingleRelation twoWayCollectionRelation opposite-add : entityWithTwoWayOppositeCollection[];
+}
+
+transfer MappedEntityWithSingleRelation maps EntityWithSingleRelation as e {
+
+	relation MappedEntityWithMultiRelation mappedAssociation <=> e.association;
+	relation MappedEntityWithMultiRelation[] mappedAssociationCollection <=> e.associationCollection;
+    relation MappedEntityWithMultiRelation mappedAssociationOpposite <=> e.entityWithTwoWayOpposite;
+    relation MappedEntityWithMultiRelation[] mappedAssociationOppositeCollection <=> e.entityWithTwoWayOppositeCollection;
+
+    relation MappedEntityWithMultiRelation transientRelation;
+    relation MappedEntityWithMultiRelation[] transientRelationCollection;
+
+	constructor {
+		self.mappedAssociation = EntityWithMultiRelation!any();
+		self.mappedAssociationCollection = EntityWithMultiRelation!all();
+		self.mappedAssociationOpposite = EntityWithMultiRelation!any();
+		self.mappedAssociationOppositeCollection = EntityWithMultiRelation!all();
+		self.transientRelation = EntityWithMultiRelation!any();
+		self.transientRelationCollection = EntityWithMultiRelation!all();
+	}
+}
+
+transfer MappedEntityWithMultiRelation maps EntityWithMultiRelation as e {
+	field String name <=> e.name;
+}
+
