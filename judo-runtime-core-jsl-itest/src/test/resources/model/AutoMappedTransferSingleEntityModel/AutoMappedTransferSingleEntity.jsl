@@ -67,7 +67,7 @@ entity ContainerSingleRelationDerivedEntity {
     relation ReferenceEntity singleCompositionEntityQueryMemberDerived <= self.singleCompositionEntityExpressionQuery(name ="singleRelation");
 
     @Lazy
-    relation ReferenceEntity singleCompositionEntityExpressionQuery(String name) <= referenceEntityWithNameQuery(name = name);
+    relation ReferenceEntity singleRelationEntityExpressionQuery(String name) <= referenceEntityWithNameQuery(name = name);
 
 }
 
