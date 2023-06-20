@@ -3,6 +3,8 @@ package hu.blackbelt.judo.runtime.core.jsl.transfer;
 import com.google.inject.Inject;
 import com.google.inject.Module;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfersingleentity.automappedtransfersingleentity.automappedcontainersingleassociation.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfersingleentity.automappedtransfersingleentity.automappedcontainersinglecompositionderivedentity.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfersingleentity.automappedtransfersingleentity.automappedcontainersinglerelationderivedentity.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfersingleentity.automappedtransfersingleentity.containersingleassociationentity.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfersingleentity.automappedtransfersingleentity.containersinglecompositionentity.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfersingleentity.automappedtransfersingleentity.referenceentity.*;
@@ -50,6 +52,12 @@ public class AutoMappedTransferObjectSingleEntityTest extends AbstractJslTest {
     @Inject
     AutoMappedContainerSingleCompositionDao autoMappedContainerSingleCompositionDao;
 
+    @Inject
+    AutoMappedContainerSingleCompositionDerivedEntityDao autoMappedContainerSingleCompositionDerivedEntityDao;
+
+    @Inject
+    AutoMappedContainerSingleRelationDerivedEntityDao autoMappedContainerSingleRelationDerivedEntityDao;
+
     /**
      * This test checks the auto mapped transfer object on single entity composition fields.
      *
@@ -87,8 +95,8 @@ public class AutoMappedTransferObjectSingleEntityTest extends AbstractJslTest {
         AutoMappedContainerSingleComposition autoMappedContainerSingleComposition =
                 autoMappedContainerSingleCompositionDao.create(AutoMappedContainerSingleComposition
                         .builder()
-                        .withSingleCompositionEntity(AutoMappedReferenceEntity.builder().withName("singleComposition").build())
-                        .withSingleRequiredCompositionEntity(AutoMappedReferenceEntity.builder().withName("singleRequiredComposition").build())
+                        .withSingleComposition(AutoMappedReferenceEntity.builder().withName("singleComposition").build())
+                        .withSingleRequiredComposition(AutoMappedReferenceEntity.builder().withName("singleRequiredComposition").build())
                         .build()
                 );
 
@@ -97,28 +105,28 @@ public class AutoMappedTransferObjectSingleEntityTest extends AbstractJslTest {
 //        autoMappedContainerSingleComposition = autoMappedContainerSingleCompositionDao.update(autoMappedContainerSingleComposition);
 //        assertEquals(autoMappedReferenceEntityRequiredCompositionDefault.identifier(), autoMappedContainerSingleComposition.getSingleCompositionDefaultEntity().orElseThrow().identifier());
 
-        assertEquals(Optional.of("singleComposition"), autoMappedContainerSingleComposition.getSingleCompositionEntity().orElseThrow().getName());
-        assertEquals(Optional.of("singleRequiredComposition"), autoMappedContainerSingleComposition.getSingleRequiredCompositionEntity().getName());
+        assertEquals(Optional.of("singleComposition"), autoMappedContainerSingleComposition.getSingleComposition().orElseThrow().getName());
+        assertEquals(Optional.of("singleRequiredComposition"), autoMappedContainerSingleComposition.getSingleRequiredComposition().getName());
 
         // update the name of the compositions
 
-        autoMappedContainerSingleComposition.getSingleCompositionEntity().orElseThrow().setName("singleCompositionRenamed");
-        autoMappedContainerSingleComposition.getSingleRequiredCompositionEntity().setName("singleRequiredCompositionRenamed");
+        autoMappedContainerSingleComposition.getSingleComposition().orElseThrow().setName("singleCompositionRenamed");
+        autoMappedContainerSingleComposition.getSingleRequiredComposition().setName("singleRequiredCompositionRenamed");
 
         autoMappedContainerSingleComposition = autoMappedContainerSingleCompositionDao.update(autoMappedContainerSingleComposition);
 
-        assertEquals(Optional.of("singleCompositionRenamed"), autoMappedContainerSingleComposition.getSingleCompositionEntity().orElseThrow().getName());
-        assertEquals(Optional.of("singleRequiredCompositionRenamed"), autoMappedContainerSingleComposition.getSingleRequiredCompositionEntity().getName());
+        assertEquals(Optional.of("singleCompositionRenamed"), autoMappedContainerSingleComposition.getSingleComposition().orElseThrow().getName());
+        assertEquals(Optional.of("singleRequiredCompositionRenamed"), autoMappedContainerSingleComposition.getSingleRequiredComposition().getName());
 
         // composition deletion
 
-        autoMappedContainerSingleComposition.setSingleCompositionEntity(null);
+        autoMappedContainerSingleComposition.setSingleComposition(null);
 
         autoMappedContainerSingleComposition = autoMappedContainerSingleCompositionDao.update(autoMappedContainerSingleComposition);
 
         assertTrue(autoMappedReferenceEntityDao.query().execute().stream().filter(t -> t.getName().equals(Optional.of("singleCompositionRenamed"))).toList().isEmpty());
 
-        autoMappedContainerSingleComposition.setSingleCompositionEntity(autoMappedReferenceEntityDao.create(AutoMappedReferenceEntity.builder().withName("singleCompositionBind").build()));
+        autoMappedContainerSingleComposition.setSingleComposition(autoMappedReferenceEntityDao.create(AutoMappedReferenceEntity.builder().withName("singleCompositionBind").build()));
 
         AutoMappedContainerSingleComposition referenceForLambda = autoMappedContainerSingleComposition;
         IllegalStateException thrown = assertThrows(
@@ -127,10 +135,10 @@ public class AutoMappedTransferObjectSingleEntityTest extends AbstractJslTest {
         );
 
         assertTrue(thrown.getMessage().contains("Identifier cannot be set on new association reference element"));
-        assertTrue(thrown.getMessage().contains("#singleCompositionEntity"));
+        assertTrue(thrown.getMessage().contains("#singleComposition"));
 
 
-        autoMappedContainerSingleComposition.setSingleRequiredCompositionEntity(null);
+        autoMappedContainerSingleComposition.setSingleRequiredComposition(null);
         AutoMappedContainerSingleComposition referenceForLambda1 = autoMappedContainerSingleComposition;
         ValidationException thrown1 = assertThrows(
                 ValidationException.class,
@@ -139,7 +147,7 @@ public class AutoMappedTransferObjectSingleEntityTest extends AbstractJslTest {
 
         assertThat(thrown1.getValidationResults(), containsInAnyOrder(allOf(
                 hasProperty("code", equalTo("MISSING_REQUIRED_RELATION")),
-                hasProperty("location", equalTo("singleRequiredCompositionEntity")))
+                hasProperty("location", equalTo("singleRequiredComposition")))
         ));
 
     }
@@ -198,7 +206,131 @@ public class AutoMappedTransferObjectSingleEntityTest extends AbstractJslTest {
     // TODO JNG-4906
 
 //        AutoMappedContainerSingleAssociation containerSingleAssociation =
-//                autoMappedContainerSingleAssociationDao.
+//                autoMappedContainerSingleAssociationDao.create(AutoMappedContainerSingleAssociation.builder().build());
+
+    }
+
+    /**
+     *  This test checks the auto mapped transfer object on single entity derived members that refer composition fields.
+     *
+     * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
+     *
+     * @type Behaviour
+     *
+     * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
+     *
+     * @jslModel AutoMappedTransferSingleEntity.jsl
+     *
+     *
+     * @scenario
+     *
+     *  Create an auto mapped transfer object that contains derived members that refer composition fields.
+     *
+     *  Check the derived member contains the expressions.
+     *
+     */
+    @Test
+    @TestCase("AutoMappedTransferWithCompositionDerivedVariations")
+    @Requirement(reqs = {
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-008",
+            "REQ-ENT-009",
+            "REQ-SRV-006"
+
+    })
+    void testAutoMappedTransferWithCompositionDerivedVariations() {
+
+        AutoMappedContainerSingleCompositionDerivedEntity autoMappedContainerSingleCompositionDerivedEntity =
+                autoMappedContainerSingleCompositionDerivedEntityDao.create(AutoMappedContainerSingleCompositionDerivedEntity
+                        .builder()
+                        .withSingleComposition(AutoMappedReferenceEntity.builder().withName("singleComposition").build())
+                        .withSingleRequiredComposition(AutoMappedReferenceEntity.builder().withName("singleRequiredComposition").build())
+                        .build()
+        );
+
+        assertEquals(autoMappedContainerSingleCompositionDerivedEntityDao
+                .querySingleCompositionEntityExpressionDerived(autoMappedContainerSingleCompositionDerivedEntity).orElseThrow().identifier(),
+                autoMappedContainerSingleCompositionDerivedEntity.getSingleComposition().orElseThrow().identifier()
+        );
+        assertEquals(autoMappedContainerSingleCompositionDerivedEntityDao
+                .querySingleComposition(autoMappedContainerSingleCompositionDerivedEntity).orElseThrow().identifier(),
+                autoMappedContainerSingleCompositionDerivedEntity.getSingleComposition().orElseThrow().identifier()
+        );
+        assertEquals(autoMappedContainerSingleCompositionDerivedEntityDao
+                .querySingleRequiredComposition(autoMappedContainerSingleCompositionDerivedEntity).identifier(),
+                 autoMappedContainerSingleCompositionDerivedEntity.getSingleRequiredComposition().identifier()
+        );
+        assertEquals(autoMappedContainerSingleCompositionDerivedEntityDao
+                        .querySingleCompositionEntityQueryMemberDerived(autoMappedContainerSingleCompositionDerivedEntity).orElseThrow().identifier(),
+                autoMappedContainerSingleCompositionDerivedEntity.getSingleComposition().orElseThrow().identifier()
+        );
+
+
+
+    }
+
+    /**
+     *  This test checks the auto mapped transfer object on single entity derived members that refer relation fields.
+     *
+     * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
+     *
+     * @type Behaviour
+     *
+     * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
+     *
+     * @jslModel AutoMappedTransferSingleEntity.jsl
+     *
+     *
+     * @scenario
+     *
+     *  Create an auto mapped transfer object that contains derived members that refer composition fields.
+     *
+     *  Check the derived member contains the expressions.
+     */
+    @Test
+    @Disabled("JNG-4906")
+    @TestCase("AutoMappedTransferWithRelationOnDerivedVariations")
+    @Requirement(reqs = {
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-ENT-008",
+            "REQ-ENT-009",
+            "REQ-SRV-006"
+
+    })
+    void testAutoMappedTransferWithRelationOnDerivedVariations() {
+
+        AutoMappedReferenceEntity  singleRelation = autoMappedReferenceEntityDao.create(
+                AutoMappedReferenceEntity
+                        .builder()
+                        .withName("SingleRelation")
+                        .build()
+        );
+
+        AutoMappedReferenceEntity  singleRequiredRelation = autoMappedReferenceEntityDao.create(
+                AutoMappedReferenceEntity
+                        .builder()
+                        .withName("SingleRequiredRelation")
+                        .build()
+        );
+
+        //TODO JNG-4906
+        //TODO JNG-4917
+//        autoMappedContainerSingleRelationDerivedEntityDao.create(AutoMappedContainerSingleRelationDerivedEntity.builder().build(),
+//                AutoMappedContainerSingleRelationDerivedEntityAttachedRelationsForCreate.builder()..build());
 
     }
 
