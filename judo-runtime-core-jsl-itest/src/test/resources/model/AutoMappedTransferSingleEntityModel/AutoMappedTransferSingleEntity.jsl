@@ -7,11 +7,11 @@ entity ReferenceEntity {
 }
 
 entity ContainerSingleCompositionEntity {
-    field ReferenceEntity singleCompositionEntity;
-    field required ReferenceEntity singleRequiredCompositionEntity;
+    field ReferenceEntity singleComposition;
+    field required ReferenceEntity singleRequiredComposition;
     //TODO JNG-4909
-    field ReferenceEntity singleCompositionDefaultEntity = ReferenceEntity!all()!filter(e | e.name == "CompositionDefault")!any();
-//     field required ReferenceEntity singleRequiredCompositionDefaultEntity = ReferenceEntity!all()!filter(e | e.name == "RequiredCompositionDefault")!any(); //error
+    field ReferenceEntity singleCompositionDefault = ReferenceEntity!all()!filter(e | e.name == "CompositionDefault")!any();
+//     field required ReferenceEntity singleRequiredCompositionDefault = ReferenceEntity!all()!filter(e | e.name == "RequiredCompositionDefault")!any(); //error
 }
 
 transfer AutoMappedReferenceEntity(ReferenceEntity mappedEntity);
@@ -26,8 +26,8 @@ entity TwoWayReferenceEntity {
 transfer AutoMappedTwoWayReferenceEntity(TwoWayReferenceEntity mappedEntity);
 
 entity ContainerSingleAssociationEntity {
-    relation ReferenceEntity singleCompositionEntity;
-    relation required ReferenceEntity singleRequiredCompositionEntity;
+    relation ReferenceEntity singleRelation;
+    relation required ReferenceEntity singleRequiredRelation;
     relation TwoWayReferenceEntity twoWayReferenceEntityRelation opposite-add : twoWayContainerRelation;
 }
 
@@ -35,21 +35,40 @@ transfer AutoMappedContainerSingleAssociation(ContainerSingleAssociationEntity m
 
 entity ContainerSingleCompositionDerivedEntity {
 
-    field ReferenceEntity singleCompositionEntity;
-    field required ReferenceEntity singleRequiredCompositionEntity;
-    field ReferenceEntity singleCompositionDefaultEntity = ReferenceEntity!all()!filter(e | e.name == "CompositionDefault")!any();
+    field ReferenceEntity singleComposition;
+    field required ReferenceEntity singleRequiredComposition;
+    field ReferenceEntity singleCompositionDefault = ReferenceEntity!all()!filter(e | e.name == "CompositionDefault")!any();
+    // TODO JNG-4909
 //     field required ReferenceEntity singleRequiredCompositionDefaultEntity = ReferenceEntity!all()!filter(e | e.name == "RequiredCompositionDefault")!any(); //error
 
     relation ReferenceEntity singleCompositionEntityExpressionDerived <= referenceEntityWithNameQuery(name ="singleComposition");
-    relation ReferenceEntity singleCompositionEntityMemberDerived <= self.singleRequiredCompositionEntity;
-    relation ReferenceEntity singleCompositionEntityRequiredMemberDerived <= self.singleRequiredCompositionEntity;
+    relation ReferenceEntity singleCompositionEntityMemberDerived <= self.singleRequiredComposition;
+    relation ReferenceEntity singleCompositionEntityRequiredMemberDerived <= self.singleRequiredComposition;
+    relation ReferenceEntity singleCompositionEntityQueryMemberDerived <= self.singleCompositionEntityExpressionQuery(name ="singleComposition");
 
-
-// error during compilation
-//     relation ReferenceEntity singleCompositionEntityExpressionQuery(String name1) <= referenceEntityWithNameQuery(name = name1);
+    @Lazy
+    relation ReferenceEntity singleCompositionEntityExpressionQuery(String name) <= referenceEntityWithNameQuery(name = name);
 
 }
 
+transfer AutoMappedContainerSingleCompositionDerivedEntity(ContainerSingleCompositionDerivedEntity mappedEntity);
+
 query ReferenceEntity referenceEntityWithNameQuery(String name) <= ReferenceEntity!all()!filter(e | e.name == name)!any();
 
-transfer AutoMappedContainerSingleCompositionDerivedEntity(ContainerSingleCompositionDerivedEntity mappedEntity);
+entity ContainerSingleRelationDerivedEntity {
+
+    relation ReferenceEntity singleComposition;
+    relation required ReferenceEntity singleRequiredComposition;
+    relation TwoWayReferenceEntity twoWayReferenceEntityRelation opposite-add : twoWayContainerRelationOnDerived;
+
+    relation ReferenceEntity singleCompositionEntityExpressionDerived <= referenceEntityWithNameQuery(name ="singleRelation");
+    relation ReferenceEntity singleCompositionEntityMemberDerived <= self.singleRequiredComposition;
+    relation ReferenceEntity singleCompositionEntityRequiredMemberDerived <= self.singleRequiredComposition;
+    relation ReferenceEntity singleCompositionEntityQueryMemberDerived <= self.singleCompositionEntityExpressionQuery(name ="singleRelation");
+
+    @Lazy
+    relation ReferenceEntity singleCompositionEntityExpressionQuery(String name) <= referenceEntityWithNameQuery(name = name);
+
+}
+
+transfer AutoMappedContainerSingleRelationDerivedEntity(ContainerSingleRelationDerivedEntity mappedEntity);
