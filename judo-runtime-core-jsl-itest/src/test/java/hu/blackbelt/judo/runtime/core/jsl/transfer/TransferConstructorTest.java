@@ -177,7 +177,7 @@ public class TransferConstructorTest extends AbstractJslTest {
      *
      */
     @Test
-    @TestCase("TransferOptionalPrimitives")
+    @TestCase("EntityOptionalPrimitives")
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-TYPE-002",
@@ -337,7 +337,7 @@ public class TransferConstructorTest extends AbstractJslTest {
     *
     */
     @Test
-    @TestCase("TransferRequiredPrimitives")
+    @TestCase("EntityRequiredPrimitives")
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-TYPE-002",
@@ -357,7 +357,7 @@ public class TransferConstructorTest extends AbstractJslTest {
             "REQ-SRV-004",
             "REQ-EXPR-001"
     })
-    void testTransferMapsEntityWithOptionalFieldsWithDefaultValues() {
+    void testTransferMapsEntityWithRequiredFields() {
         ValidationException exception = assertThrows(ValidationException.class, () -> transferWithOptionalFieldsMapsEntityWithRequiredFieldsDao.create(TransferWithOptionalFieldsMapsEntityWithRequiredFields.builder().build()));
 
         TransferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFields t1 = transferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsDao.create(TransferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFields.builder().build());
@@ -476,7 +476,7 @@ public class TransferConstructorTest extends AbstractJslTest {
      *
      */
     @Test
-    @TestCase("TransferOptionalPrimitivesWithDefaultValue")
+    @TestCase("EntityOptionalPrimitivesWithDefaultValue")
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-TYPE-002",
@@ -496,7 +496,7 @@ public class TransferConstructorTest extends AbstractJslTest {
             "REQ-SRV-004",
             "REQ-EXPR-001"
     })
-    void testTransferMapsEntityWithRequiredFields() {
+    void testTransferMapsEntityWithOptionalFieldsWithDefaultValues() {
         TransferWithOptionalFieldsMapsEntityWithOptionalFieldsWithDefault t1 = transferWithOptionalFieldsMapsEntityWithOptionalFieldsWithDefaultDao.create(TransferWithOptionalFieldsMapsEntityWithOptionalFieldsWithDefault.builder().build());
 
         // TODO: JNG-4921
@@ -671,7 +671,7 @@ public class TransferConstructorTest extends AbstractJslTest {
      *
      */
     @Test
-    @TestCase("TransferRequiredPrimitivesWithDefaultValue")
+    @TestCase("EntityRequiredPrimitivesWithDefaultValue")
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-TYPE-002",
