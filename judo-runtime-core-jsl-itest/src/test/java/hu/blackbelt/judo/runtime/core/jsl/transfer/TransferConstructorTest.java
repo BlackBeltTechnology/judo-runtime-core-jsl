@@ -147,9 +147,29 @@ public class TransferConstructorTest extends AbstractJslTest {
      *
      * @scenario
      *
-     *  Create one instance of TransferOptionalPrimitivesWithConstructor.
+     *  Create one instance of TransferWithOptionalFieldsMapsEntityWithOptionalFields.
      *
-     *  Check the transfer instance contains the constructor assigned values.
+     *  Check the transfer instance contains the mapped values.
+     *
+     *  Get the entity representation the transfer instance.
+     *
+     *  Check the entity representation contains the constructor assigned values.
+     *
+     *  Create one instance of TransferWithOptionalFieldsWithDefaultMapsEntityWithOptionalFields.
+     *
+     *  Check the transfer instance contains the mapped values.
+     *
+     *  Get the entity representation the transfer instance.
+     *
+     *  Check the entity representation contains the constructor assigned values.
+     *
+     *  Create one instance of TransferWithOptionalFieldsWithDefaultMapsEntityWithOptionalFields.
+     *
+     *  Check that the creation throws ValidationException.
+     *
+     *  Create one instance of TransferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFields.
+     *
+     *  Check the transfer instance contains the mapped values.
      *
      *  Get the entity representation the transfer instance.
      *
@@ -291,9 +311,25 @@ public class TransferConstructorTest extends AbstractJslTest {
     *
     * @scenario
     *
-    *  Create one instance of TransferOptionalPrimitivesWithConstructor.
+    *  Create one instance of TransferWithOptionalFieldsMapsEntityWithRequiredFields.
     *
-    *  Check the transfer instance contains the constructor assigned values.
+    *  Check that the creation throws ValidationException.
+    *
+    *  Create one instance of TransferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFields.
+    *
+    *  Check the transfer instance contains the mapped values.
+    *
+    *  Get the entity representation the transfer instance.
+    *
+    *  Check the entity representation contains the constructor assigned values.
+    *
+    *  Create one instance of TransferWithRequiredFieldsMapsEntityWithRequiredFields.
+    *
+    *  Check that the creation throws ValidationException.
+    *
+    *  Create one instance of TransferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFields.
+    *
+    *  Check the transfer instance contains the mapped values.
     *
     *  Get the entity representation the transfer instance.
     *
@@ -406,9 +442,33 @@ public class TransferConstructorTest extends AbstractJslTest {
      *
      * @scenario
      *
-     *  Create one instance of TransferRequiredPrimitivesWithConstructor.
+     *  Create one instance of TransferWithOptionalFieldsMapsEntityWithOptionalFieldsWithDefault.
      *
-     *  Check the transfer instance contains the constructor assigned values.
+     *  Check the transfer instance contains the mapped values.
+     *
+     *  Get the entity representation the transfer instance.
+     *
+     *  Check the entity representation contains the constructor assigned values.
+     *
+     *  Create one instance of TransferWithOptionalFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefault.
+     *
+     *  Check the transfer instance contains the mapped values.
+     *
+     *  Get the entity representation the transfer instance.
+     *
+     *  Check the entity representation contains the constructor assigned values.
+     *
+     *  Create one instance of TransferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefault.
+     *
+     *  Check the transfer instance contains the mapped values.
+     *
+     *  Get the entity representation the transfer instance.
+     *
+     *  Check the entity representation contains the constructor assigned values.
+     *
+     *  Create one instance of TransferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefault.
+     *
+     *  Check the transfer instance contains the mapped values.
      *
      *  Get the entity representation the transfer instance.
      *
@@ -577,9 +637,33 @@ public class TransferConstructorTest extends AbstractJslTest {
      *
      * @scenario
      *
-     *  Create one instance of TransferRequiredPrimitivesWithConstructor.
+     *  Create one instance of TransferWithOptionalFieldsMapsEntityWithOptionalFieldsWithDefault.
      *
-     *  Check the transfer instance contains the constructor assigned values.
+     *  Check the transfer instance contains the mapped values.
+     *
+     *  Get the entity representation the transfer instance.
+     *
+     *  Check the entity representation contains the constructor assigned values.
+     *
+     *  Create one instance of TransferWithOptionalFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefault.
+     *
+     *  Check the transfer instance contains the mapped values.
+     *
+     *  Get the entity representation the transfer instance.
+     *
+     *  Check the entity representation contains the constructor assigned values.
+     *
+     *  Create one instance of TransferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefault.
+     *
+     *  Check the transfer instance contains the mapped values.
+     *
+     *  Get the entity representation the transfer instance.
+     *
+     *  Check the entity representation contains the constructor assigned values.
+     *
+     *  Create one instance of TransferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefault.
+     *
+     *  Check the transfer instance contains the mapped values.
      *
      *  Get the entity representation the transfer instance.
      *
