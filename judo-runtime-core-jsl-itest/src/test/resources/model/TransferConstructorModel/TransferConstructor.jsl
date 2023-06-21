@@ -302,15 +302,15 @@ transfer TransferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsWithDe
 ////////////////////////////////////////////////////////////////////////////////////////
 
 entity EntityWithRequiredFieldsWithDefault {
-    field Integer integerAttr = 1;
-    field Scaled scaledAttr = 2.34;
-    field String stringAttr = "Hello there";
-    field PhoneNumber regexAttr = "+36-1-223-123";
-    field Boolean boolAttr = true;
-    field Date dateAttr = `2021-07-11`;
-    field Timestamp timestampAttr = `2021-07-11T19:09:33Z`;
-    field Time timeAttr = `23:59:59`;
-    field Enum enumAttr = Enum#EnumA;
+    field required Integer integerAttr = 1;
+    field required Scaled scaledAttr = 2.34;
+    field required String stringAttr = "Hello there";
+    field required PhoneNumber regexAttr = "+36-1-223-123";
+    field required Boolean boolAttr = true;
+    field required Date dateAttr = `2021-07-11`;
+    field required Timestamp timestampAttr = `2021-07-11T19:09:33Z`;
+    field required Time timeAttr = `23:59:59`;
+    field required Enum enumAttr = Enum#EnumA;
 }
 
 
