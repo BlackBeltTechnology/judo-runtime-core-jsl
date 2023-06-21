@@ -140,7 +140,7 @@ public class TransferConstructorTest extends AbstractJslTest {
      *
      */
     @Test
-    @TestCase("TransferOptionalPrimitivesWithConstructor")
+    @TestCase("TransferOptionalPrimitives")
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-TYPE-002",
@@ -284,7 +284,7 @@ public class TransferConstructorTest extends AbstractJslTest {
     *
     */
     @Test
-    @TestCase("TransferRequiredPrimitivesWithConstructor")
+    @TestCase("TransferRequiredPrimitives")
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-TYPE-002",
@@ -399,7 +399,7 @@ public class TransferConstructorTest extends AbstractJslTest {
      *
      */
     @Test
-    @TestCase("TransferRequiredPrimitivesWithConstructor")
+    @TestCase("TransferOptionalPrimitivesWithDefaultValue")
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-TYPE-002",
@@ -570,7 +570,7 @@ public class TransferConstructorTest extends AbstractJslTest {
      *
      */
     @Test
-    @TestCase("TransferRequiredPrimitivesWithConstructor")
+    @TestCase("TransferRequiredPrimitivesWithDefaultValue")
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-TYPE-002",
