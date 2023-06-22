@@ -27,7 +27,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.salesmodel.salesmodel.c
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.salesmodel.salesmodel.lead.Lead;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.salesmodel.salesmodel.lead.LeadAttachedRelationsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.salesmodel.salesmodel.lead.LeadDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.salesmodel.salesmodel.leadsover.LeadsOverParameter;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.salesmodel.salesmodel.salesperson.leadsover.SalesPersonLeadsOverParameter;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.salesmodel.salesmodel.myextendederror.MyExtendedError;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.salesmodel.salesmodel.person.PersonDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.salesmodel.salesmodel.salesperson.SalesPerson;
@@ -132,7 +132,7 @@ class SalesModelTest extends AbstractJslTest {
         assertEquals(Optional.of("Test"), leadDao.querySalesPerson(lead2).getFirstName());
 
         List<Lead> leadListOfQuery = salesPersonDao
-                .queryLeadsOver(createdSalesPerson, LeadsOverParameter.builder()
+                .queryLeadsOver(createdSalesPerson, SalesPersonLeadsOverParameter.builder()
                         .withLimit(10)
                         .build())
                     .execute();

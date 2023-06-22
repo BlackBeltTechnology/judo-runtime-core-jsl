@@ -1,0 +1,15 @@
+model EntityWithSameQueryName;
+
+import judo::types;
+
+entity ReferenceEntity {
+    field String name;
+}
+entity entityA {
+    @Lazy
+    relation ReferenceEntity querySameName(String name) <= ReferenceEntity!any();
+}
+entity entityB {
+    @Lazy
+    relation ReferenceEntity querySameName(String name) <= ReferenceEntity!any();
+}
