@@ -91,7 +91,7 @@ public class EntityWithTheSameQueryNamesTest extends AbstractJslTest {
             "REQ-TYPE-004",
             "REQ-ENT-001",
             "REQ-ENT-002",
-            "REQ-SRV-006"
+            "REQ-ENT-009",
     })
     public void testEntityWithTheSameQueryName() {
 
