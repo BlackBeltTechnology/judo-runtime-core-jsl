@@ -23,7 +23,7 @@ package hu.blackbelt.judo.runtime.core.jsl.spring;
 import hu.blackbelt.judo.runtime.core.jsl.spring.test.api.salesmodel.salesmodel.lead.Lead;
 import hu.blackbelt.judo.runtime.core.jsl.spring.test.api.salesmodel.salesmodel.lead.LeadAttachedRelationsForCreate;
 import hu.blackbelt.judo.runtime.core.jsl.spring.test.api.salesmodel.salesmodel.lead.LeadDao;
-import hu.blackbelt.judo.runtime.core.jsl.spring.test.api.salesmodel.salesmodel.leadsover.LeadsOverParameter;
+import hu.blackbelt.judo.runtime.core.jsl.spring.test.api.salesmodel.salesmodel.salesperson.leadsover.SalesPersonLeadsOverParameter;
 import hu.blackbelt.judo.runtime.core.jsl.spring.test.api.salesmodel.salesmodel.person.PersonDao;
 import hu.blackbelt.judo.runtime.core.jsl.spring.test.api.salesmodel.salesmodel.rootallleads.RootAllLeadsDao;
 import hu.blackbelt.judo.runtime.core.jsl.spring.test.api.salesmodel.salesmodel.rootonelead.RootOneLeadDao;
@@ -117,7 +117,7 @@ class JudoRuntimeCoreSpringApplicationTests {
         assertEquals(Optional.of("Test"), leadDao.querySalesPerson(lead2).getFirstName());
 
         List<Lead> leadListOfQuery = salesPersonDao
-                .queryLeadsOver(createdSalesPerson, LeadsOverParameter.builder()
+                .queryLeadsOver(createdSalesPerson, SalesPersonLeadsOverParameter.builder()
                         .withLimit(10)
                         .build())
                 .execute();
