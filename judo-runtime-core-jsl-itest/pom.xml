@@ -376,6 +376,16 @@
                         </configuration>
                     </execution>
                     <execution>
+                        <id>generate-psm-test-model-from-artifact-MappedTransferAssociationAssociationModel</id>
+                        <goals>
+                            <goal>parser-workflow</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <sources>${basedir}/src/test/resources/model/MappedTransferAssociationAssociationModel</sources>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>generate-psm-test-model-from-artifact-TransferConstructorModel</id>
                         <goals>
                             <goal>parser-workflow</goal>
@@ -863,6 +873,19 @@
                         </configuration>
                     </execution>
                     <execution>
+                        <id>execute-psm-test-model-from-artifact-MappedTransferAssociationAssociation</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/MappedTransferAssociationAssociation-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/sdk-core/MappedTransferAssociationAssociation</destination>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>execute-psm-test-model-from-artifact-TransferConstructor</id>
                         <phase>generate-test-sources</phase>
                         <goals>
@@ -963,6 +986,7 @@
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/StaticQueryDaoTest</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/MappedTransferAssociationAggregation</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/MappedTransferCompositonAggregation</source>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/MappedTransferAssociationAssociation</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/TransferConstructor</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/Abstract</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/AutoMappedTransferSingleEntity</source>

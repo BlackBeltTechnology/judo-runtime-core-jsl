@@ -1,0 +1,116 @@
+model MappedTransferAssociationAssociation;
+
+import judo::types;
+
+// Single relation
+
+entity EntityA {
+    field String nameA;
+    relation EntityB relationBonA;
+}
+
+entity EntityB {
+    field String nameB;
+}
+
+transfer TransferA (EntityA a) {
+    field String nameB <=> a.nameA;
+    relation TransferB relationBonA <=> a.relationBonA;
+}
+
+transfer TransferB (EntityB b) {
+    field String nameB <=> b.nameB;
+}
+
+// Single required relation
+entity EntityC {
+    field String nameC;
+    relation required EntityD relationDonC;
+}
+
+entity EntityD {
+    field String nameD;
+}
+
+transfer TransferC (EntityC c) {
+    field String nameC <=> c.nameC;
+    relation required TransferD relationDonC <=> c.relationDonC;
+}
+
+transfer TransferD (EntityD d) {
+    field String nameD <=> d.nameD;
+}
+
+// Multi relation
+entity EntityE {
+    field String nameE;
+    relation EntityF[] relationFonE;
+}
+
+entity EntityF {
+    field String nameF;
+}
+
+transfer TransferE (EntityE e) {
+    field String nameE <=> e.nameE;
+    relation TransferF[] relationFonE <=> e.relationFonE;
+}
+
+transfer TransferF (EntityF f) {
+    field String nameF <=> f.nameF;
+}
+
+// TwoWay Relations
+
+/*
+Two way relation pattern
+
+optional <-> optional
+optional <-> required
+optional <-> collection
+
+required <-> optional
+required <-> required
+required <-> collection
+
+collection <-> optional
+collection <-> required
+collection <-> collection
+
+*/
+
+entity entityG {
+    field String nameG;
+    relation entityH relationOptionalH opposite-add: relationGForOptionalH;
+    relation required entityH relationRequiredH opposite-add: relationGForRequiredH;
+    relation entityH[] relationCollectionH opposite-add: relationGForCollectionH;
+}
+
+entity entityH {
+    field String nameH;
+}
+
+entity entityI {
+    field String nameI;
+    relation entityJ relationOptionalJ opposite: relationRequiredIForOptionalJ;
+    relation required entityJ relationRequiredJ opposite: relationRequiredIForRequiredJ;
+    relation entityJ[] relationCollectionJ opposite: relationRequiredIorCollectionJ;
+}
+
+entity entityJ {
+    field String nameJ;
+    relation required entityI relationRequiredIForOptionalJ opposite: relationOptionalJ;
+    relation required entityI relationRequiredIForRequiredJ opposite: relationRequiredJ;
+    relation required entityI relationRequiredIorCollectionJ opposite: relationCollectionJ;
+}
+
+entity entityK {
+    field String nameK;
+    relation entityL relationOptionalL opposite-add: relationCollectionKForOptionalL[];
+    relation required entityL relationRequiredL opposite-add: relationCollectionForRequiredL[];
+    relation entityL[] relationCollectionL opposite-add: relationCollectionKForCollectionL[];
+}
+
+entity entityL {
+    field String nameL;
+}
