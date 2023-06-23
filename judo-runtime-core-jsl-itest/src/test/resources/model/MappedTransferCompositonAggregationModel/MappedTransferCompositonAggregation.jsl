@@ -1,4 +1,4 @@
-model MappedTransferAggregation;
+model MappedTransferCompositonAggregation;
 
 import judo::types;
 
