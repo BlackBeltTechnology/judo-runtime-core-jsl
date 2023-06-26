@@ -79,38 +79,79 @@ collection <-> collection
 
 */
 
-entity entityG {
+entity EntityG {
     field String nameG;
-    relation entityH relationOptionalH opposite-add: relationGForOptionalH;
-    relation required entityH relationRequiredH opposite-add: relationGForRequiredH;
-    relation entityH[] relationCollectionH opposite-add: relationGForCollectionH;
+    relation EntityH relationOptionalH opposite-add: relationGForOptionalH;
+    relation required EntityH relationRequiredH opposite-add: relationGForRequiredH;
+    relation EntityH[] relationCollectionH opposite-add: relationGForCollectionH;
 }
 
-entity entityH {
+entity EntityH {
     field String nameH;
 }
 
-entity entityI {
+transfer TransferG (EntityG g) {
+    field String nameG <=> g.nameG;
+    relation TransferH relationOptionalH <=> g.relationOptionalH;
+    relation required TransferH relationRequiredH <=> g.relationRequiredH;
+    relation TransferH[] relationCollectionH <=> g.relationCollectionH;
+}
+
+transfer TransferH (EntityH h) {
+    field String nameH <=> h.nameH;
+    relation TransferG relationGForOptionalH <=> h.relationGForOptionalH;
+    relation TransferG relationGForRequiredH <=> h.relationGForRequiredH;
+    relation TransferG relationGForCollectionH <=> h.relationGForCollectionH;
+}
+
+entity EntityI {
     field String nameI;
-    relation entityJ relationOptionalJ opposite: relationRequiredIForOptionalJ;
-    relation required entityJ relationRequiredJ opposite: relationRequiredIForRequiredJ;
-    relation entityJ[] relationCollectionJ opposite: relationRequiredIorCollectionJ;
+    relation EntityJ relationOptionalJ opposite: relationRequiredIForOptionalJ;
+    relation required EntityJ relationRequiredJ opposite: relationRequiredIForRequiredJ;
+    relation EntityJ[] relationCollectionJ opposite: relationRequiredIorCollectionJ;
 }
 
-entity entityJ {
+entity EntityJ {
     field String nameJ;
-    relation required entityI relationRequiredIForOptionalJ opposite: relationOptionalJ;
-    relation required entityI relationRequiredIForRequiredJ opposite: relationRequiredJ;
-    relation required entityI relationRequiredIorCollectionJ opposite: relationCollectionJ;
+    relation required EntityI relationRequiredIForOptionalJ opposite: relationOptionalJ;
+    relation required EntityI relationRequiredIForRequiredJ opposite: relationRequiredJ;
+    relation required EntityI relationRequiredIorCollectionJ opposite: relationCollectionJ;
 }
 
-entity entityK {
+transfer TransferI (EntityI i) {
+    field String nameI <=> i.nameI;
+    relation TransferJ relationOptionalJ <=> i.relationOptionalJ;
+    relation TransferJ[] relationCollectionJ <=> i.relationCollectionJ;
+}
+
+transfer TransferJ (EntityJ j) {
+    field String nameJ <=> j.nameJ;
+    relation required TransferI relationRequiredIForOptionalJ <=> j.relationRequiredIForOptionalJ;
+    relation required TransferI relationRequiredIorCollectionJ <=> j.relationRequiredIorCollectionJ;
+}
+
+entity EntityK {
     field String nameK;
-    relation entityL relationOptionalL opposite-add: relationCollectionKForOptionalL[];
-    relation required entityL relationRequiredL opposite-add: relationCollectionForRequiredL[];
-    relation entityL[] relationCollectionL opposite-add: relationCollectionKForCollectionL[];
+    relation EntityL relationOptionalL opposite-add: relationCollectionKForOptionalL[];
+    relation required EntityL relationRequiredL opposite-add: relationCollectionForRequiredL[];
+    relation EntityL[] relationCollectionL opposite-add: relationCollectionKForCollectionL[];
 }
 
-entity entityL {
+entity EntityL {
     field String nameL;
 }
+
+transfer TransferK (EntityK k) {
+    field String nameK <=> k.nameK;
+    relation TransferL relationOptionalL <=> k.relationOptionalL;
+    relation required TransferL relationRequiredL <=> k.relationRequiredL;
+    relation TransferL[] relationCollectionL <=> k.relationCollectionL;
+}
+
+transfer TransferL (EntityL l) {
+    field String nameL <=> l.nameL;
+    relation TransferK[] relationCollectionKForOptionalL <=> l.relationCollectionKForOptionalL;
+    relation TransferK[] relationCollectionForRequiredL <=> l.relationCollectionForRequiredL;
+    relation TransferK[] relationCollectionKForCollectionL <=> l.relationCollectionKForCollectionL;
+}
+
