@@ -35,7 +35,7 @@ entity abstract Person {
 
 entity SalesPerson extends Person {
 	relation Lead[] leads opposite:salesPerson;
-	@Lazy
+	@Query
 	relation Lead[] leadsOver(Integer limit = 100) <= self.leads!filter(lead | lead.value > limit);
 	relation Lead[] leadsOver10 <= self.leadsOver(limit = 10);
 }
