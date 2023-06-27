@@ -743,60 +743,125 @@ public class MappedTransferAssociationAssociationTest extends AbstractJslTest {
     })
     public void testTwoWayAssAssRelationOneSideIsRequiredCreate() {
         /*
-        optional <-> optional
-        optional <-> required
-        optional <-> collection
+        required <-> optional
+        required <-> required
+        required <-> collection
          */
 
-        TransferH th1 = transferHDao.create(TransferH.builder().withNameH("TH1").build());
-        TransferH th2 = transferHDao.create(TransferH.builder().withNameH("TH2").build());
-        // for collection
-        TransferH th3 = transferHDao.create(TransferH.builder().withNameH("TH3").build());
-        TransferH th4 = transferHDao.create(TransferH.builder().withNameH("TH4").build());
-        TransferH th5 = transferHDao.create(TransferH.builder().withNameH("TH5").build());
+        TransferI ti1 = transferIDao.create(TransferI.builder().withNameI("TI1").build());
+        TransferI ti2 = transferIDao.create(TransferI.builder().withNameI("TI2").build());
+        TransferI tiCollect = transferIDao.create(TransferI.builder().withNameI("TICollect").build());
 
-        TransferG tg = transferGDao.create(
-                TransferG.builder().withNameG("G").build(),
-                TransferGAttachedRelationsForCreate
+        TransferJ tj1 = transferJDao.create(
+                TransferJ.builder().withNameJ("J1").build(),
+                TransferJAttachedRelationsForCreate
                         .builder()
-                        .withRelationOptionalH(th1)
-                        .withRelationRequiredH(th2)
-                        .withRelationCollectionH(List.of(th3, th4, th5))
+                        .withRelationRequiredIForOptionalJ(ti1)
+                        .withRelationRequiredIorCollectionJ(tiCollect)
                         .build()
         );
 
+        TransferJ tj2 = transferJDao.create(
+                TransferJ.builder().withNameJ("J2").build(),
+                TransferJAttachedRelationsForCreate
+                        .builder()
+                        .withRelationRequiredIForOptionalJ(ti2)
+                        .withRelationRequiredIorCollectionJ(tiCollect)
+                        .build()
+        );
 
         // check the relation is good in both sides
-        // tg side
-        assertEquals(th1.identifier(), transferGDao.queryRelationOptionalH(tg).orElseThrow().identifier());
-        assertEquals(th2.identifier(), transferGDao.queryRelationRequiredH(tg).identifier());
-        assertThat(transferGDao.queryRelationCollectionH(tg).execute(), containsInAnyOrder(th3, th4, th5));
-        // th side
-        assertEquals(tg.identifier(), transferHDao.queryRelationGForOptionalH(th1).orElseThrow().identifier());
-        assertEquals(tg.identifier(), transferHDao.queryRelationGForRequiredH(th2).orElseThrow().identifier());
-        assertEquals(tg.identifier(), transferHDao.queryRelationGForCollectionH(th3).orElseThrow().identifier());
-        assertEquals(tg.identifier(), transferHDao.queryRelationGForCollectionH(th4).orElseThrow().identifier());
-        assertEquals(tg.identifier(), transferHDao.queryRelationGForCollectionH(th5).orElseThrow().identifier());
+        // ti side
+        assertEquals(tj1.identifier(), transferIDao.queryRelationOptionalJ(ti1).orElseThrow().identifier());
+        assertEquals(tj2.identifier(), transferIDao.queryRelationOptionalJ(ti2).orElseThrow().identifier());
+        assertThat(transferIDao.queryRelationCollectionJ(tiCollect).execute(), containsInAnyOrder(tj1, tj2));
+
+        // tj side
+        assertEquals(ti1.identifier(), transferJDao.queryRelationRequiredIForOptionalJ(tj1).identifier());
+        assertEquals(ti2.identifier(), transferJDao.queryRelationRequiredIForOptionalJ(tj2).identifier());
+        assertEquals(tiCollect.identifier(), transferJDao.queryRelationRequiredIorCollectionJ(tj1).identifier());
+        assertEquals(tiCollect.identifier(), transferJDao.queryRelationRequiredIorCollectionJ(tj2).identifier());
 
         // entity representation
-        // g side
-        EntityH h1 = entityHDao.getById(th1.adaptTo(EntityHIdentifier.class)).orElseThrow();
-        EntityH h2 = entityHDao.getById(th2.adaptTo(EntityHIdentifier.class)).orElseThrow();
-        EntityH h3 = entityHDao.getById(th3.adaptTo(EntityHIdentifier.class)).orElseThrow();
-        EntityH h4 = entityHDao.getById(th4.adaptTo(EntityHIdentifier.class)).orElseThrow();
-        EntityH h5 = entityHDao.getById(th5.adaptTo(EntityHIdentifier.class)).orElseThrow();
+        // t side
+        EntityI i1 = entityIDao.getById(ti1.adaptTo(EntityIIdentifier.class)).orElseThrow();
+        EntityI i2 = entityIDao.getById(ti2.adaptTo(EntityIIdentifier.class)).orElseThrow();
+        EntityI iCollect = entityIDao.getById(tiCollect.adaptTo(EntityIIdentifier.class)).orElseThrow();
 
-        EntityG g = entityGDao.getById(tg.adaptTo(EntityGIdentifier.class)).orElseThrow();
+        EntityJ j1 = entityJDao.getById(tj1.adaptTo(EntityJIdentifier.class)).orElseThrow();
+        EntityJ j2 = entityJDao.getById(tj2.adaptTo(EntityJIdentifier.class)).orElseThrow();
 
-        assertEquals(h1.identifier(), entityGDao.queryRelationOptionalH(g).orElseThrow().identifier());
-        assertEquals(h2.identifier(), entityGDao.queryRelationRequiredH(g).identifier());
-        assertThat(entityGDao.queryRelationCollectionH(g).execute(), containsInAnyOrder(h3, h4, h5));
-        // h side
-        assertEquals(g.identifier(), entityHDao.queryRelationGForOptionalH(h1).orElseThrow().identifier());
-        assertEquals(g.identifier(), entityHDao.queryRelationGForRequiredH(h2).orElseThrow().identifier());
-        assertEquals(g.identifier(), entityHDao.queryRelationGForCollectionH(h3).orElseThrow().identifier());
-        assertEquals(g.identifier(), entityHDao.queryRelationGForCollectionH(h4).orElseThrow().identifier());
-        assertEquals(g.identifier(), entityHDao.queryRelationGForCollectionH(h5).orElseThrow().identifier());
+        // ti side
+        assertEquals(j1.identifier(), entityIDao.queryRelationOptionalJ(i1).orElseThrow().identifier());
+        assertEquals(j2.identifier(), entityIDao.queryRelationOptionalJ(i2).orElseThrow().identifier());
+        assertThat(entityIDao.queryRelationCollectionJ(iCollect).execute(), containsInAnyOrder(j1, j2));
+
+        // tj side
+        assertEquals(i1.identifier(), entityJDao.queryRelationRequiredIForOptionalJ(j1).identifier());
+        assertEquals(i2.identifier(), entityJDao.queryRelationRequiredIForOptionalJ(j2).identifier());
+        assertEquals(iCollect.identifier(), entityJDao.queryRelationRequiredIorCollectionJ(j1).identifier());
+        assertEquals(iCollect.identifier(), entityJDao.queryRelationRequiredIorCollectionJ(j2).identifier());
+
+    }
+
+    /**
+     * The test checks the two-way relation with one side is optional work well on a transfer object.
+     *
+     * @prerequisites The test must start and finish on the same day. Therefore, don't run this test close to midnight.
+     *
+     * @type Behaviour
+     *
+     * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
+     *
+     * @jslModel MappedTransferAssociationAssociation.jsl
+     *
+     * @positiveRequirements
+     *
+     */
+    @Test
+    @TestCase("TwoWayAssAssRelationOneSideIsRequiredDaoFunctionality")
+    @Requirement(reqs = {
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-SRV-001"
+    })
+    public void testTwoWayAssAssRelationOneSideIsRequiredDaoFunctionality() {
+
+        /*
+        required <-> optional
+        required <-> required
+        required <-> collection
+         */
+
+        TransferI ti1 = transferIDao.create(TransferI.builder().withNameI("TI1").build());
+        TransferI ti2 = transferIDao.create(TransferI.builder().withNameI("TI2").build());
+        TransferI tiCollect = transferIDao.create(TransferI.builder().withNameI("TICollect").build());
+
+        TransferJ tj1 = transferJDao.create(
+                TransferJ.builder().withNameJ("J1").build(),
+                TransferJAttachedRelationsForCreate
+                        .builder()
+                        .withRelationRequiredIForOptionalJ(ti1)
+                        .withRelationRequiredIorCollectionJ(tiCollect)
+                        .build()
+        );
+
+        TransferJ tj2 = transferJDao.create(
+                TransferJ.builder().withNameJ("J2").build(),
+                TransferJAttachedRelationsForCreate
+                        .builder()
+                        .withRelationRequiredIForOptionalJ(ti2)
+                        .withRelationRequiredIorCollectionJ(tiCollect)
+                        .build()
+        );
+
 
     }
 

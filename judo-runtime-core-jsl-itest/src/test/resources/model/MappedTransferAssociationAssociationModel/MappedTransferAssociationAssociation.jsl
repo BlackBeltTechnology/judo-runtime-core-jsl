@@ -107,14 +107,12 @@ transfer TransferH (EntityH h) {
 entity EntityI {
     field String nameI;
     relation EntityJ relationOptionalJ opposite: relationRequiredIForOptionalJ;
-    relation required EntityJ relationRequiredJ opposite: relationRequiredIForRequiredJ;
     relation EntityJ[] relationCollectionJ opposite: relationRequiredIorCollectionJ;
 }
 
 entity EntityJ {
     field String nameJ;
     relation required EntityI relationRequiredIForOptionalJ opposite: relationOptionalJ;
-    relation required EntityI relationRequiredIForRequiredJ opposite: relationRequiredJ;
     relation required EntityI relationRequiredIorCollectionJ opposite: relationCollectionJ;
 }
 
