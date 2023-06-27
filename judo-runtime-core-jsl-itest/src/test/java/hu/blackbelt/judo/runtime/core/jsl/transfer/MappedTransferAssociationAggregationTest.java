@@ -22,25 +22,25 @@ package hu.blackbelt.judo.runtime.core.jsl.transfer;
 
 import com.google.inject.Inject;
 import com.google.inject.Module;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociation.mappedtransferassociation.entitya.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociation.mappedtransferassociation.entityb.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociation.mappedtransferassociation.entityc.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociation.mappedtransferassociation.entityd.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociation.mappedtransferassociation.entitye.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociation.mappedtransferassociation.entityf.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociation.mappedtransferassociation.entityg.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociation.mappedtransferassociation.entityh.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociation.mappedtransferassociation.entityj.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociation.mappedtransferassociation.transfera.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociation.mappedtransferassociation.transferb.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociation.mappedtransferassociation.transferc.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociation.mappedtransferassociation.transferd.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociation.mappedtransferassociation.transfere.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociation.mappedtransferassociation.transferf.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociation.mappedtransferassociation.transferg.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociation.mappedtransferassociation.transferh.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociation.mappedtransferassociation.transferj.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.MappedTransferAssociationDaoModules;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationaggregation.mappedtransferassociationaggregation.entitya.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationaggregation.mappedtransferassociationaggregation.entityb.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationaggregation.mappedtransferassociationaggregation.entityc.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationaggregation.mappedtransferassociationaggregation.entityd.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationaggregation.mappedtransferassociationaggregation.entitye.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationaggregation.mappedtransferassociationaggregation.entityf.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationaggregation.mappedtransferassociationaggregation.entityg.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationaggregation.mappedtransferassociationaggregation.entityh.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationaggregation.mappedtransferassociationaggregation.entityj.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationaggregation.mappedtransferassociationaggregation.transfera.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationaggregation.mappedtransferassociationaggregation.transferb.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationaggregation.mappedtransferassociationaggregation.transferc.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationaggregation.mappedtransferassociationaggregation.transferd.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationaggregation.mappedtransferassociationaggregation.transfere.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationaggregation.mappedtransferassociationaggregation.transferf.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationaggregation.mappedtransferassociationaggregation.transferg.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationaggregation.mappedtransferassociationaggregation.transferh.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationaggregation.mappedtransferassociationaggregation.transferj.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.MappedTransferAssociationAggregationDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
@@ -57,7 +57,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
-public class MappedTransferAssociationTest extends AbstractJslTest {
+public class MappedTransferAssociationAggregationTest extends AbstractJslTest {
 
     @Inject
     EntityADao entityADao;
@@ -115,12 +115,12 @@ public class MappedTransferAssociationTest extends AbstractJslTest {
 
     @Override
     public Module getModelDaoModule() {
-        return new MappedTransferAssociationDaoModules();
+        return new MappedTransferAssociationAggregationDaoModules();
     }
 
     @Override
     public String getModelName() {
-        return "MappedTransferAssociation";
+        return "MappedTransferAssociationAggregation";
     }
 
     /**
