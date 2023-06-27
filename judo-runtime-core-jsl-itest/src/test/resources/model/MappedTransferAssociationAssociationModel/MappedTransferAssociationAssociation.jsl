@@ -130,8 +130,6 @@ transfer TransferJ (EntityJ j) {
 
 entity EntityK {
     field String nameK;
-    relation EntityL relationOptionalL opposite-add: relationCollectionKForOptionalL[];
-    relation required EntityL relationRequiredL opposite-add: relationCollectionForRequiredL[];
     relation EntityL[] relationCollectionL opposite-add: relationCollectionKForCollectionL[];
 }
 
@@ -141,15 +139,11 @@ entity EntityL {
 
 transfer TransferK (EntityK k) {
     field String nameK <=> k.nameK;
-    relation TransferL relationOptionalL <=> k.relationOptionalL;
-    relation required TransferL relationRequiredL <=> k.relationRequiredL;
     relation TransferL[] relationCollectionL <=> k.relationCollectionL;
 }
 
 transfer TransferL (EntityL l) {
     field String nameL <=> l.nameL;
-    relation TransferK[] relationCollectionKForOptionalL <=> l.relationCollectionKForOptionalL;
-    relation TransferK[] relationCollectionForRequiredL <=> l.relationCollectionForRequiredL;
     relation TransferK[] relationCollectionKForCollectionL <=> l.relationCollectionKForCollectionL;
 }
 

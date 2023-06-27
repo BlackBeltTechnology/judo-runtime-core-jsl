@@ -42,6 +42,8 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociati
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationassociation.mappedtransferassociationassociation.entityh.EntityHIdentifier;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationassociation.mappedtransferassociationassociation.entityi.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationassociation.mappedtransferassociationassociation.entityj.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationassociation.mappedtransferassociationassociation.entityk.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationassociation.mappedtransferassociationassociation.entityl.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationassociation.mappedtransferassociationassociation.transfera.TransferA;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationassociation.mappedtransferassociationassociation.transfera.TransferAAttachedRelationsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationassociation.mappedtransferassociationassociation.transfera.TransferADao;
@@ -61,6 +63,8 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociati
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationassociation.mappedtransferassociationassociation.transferh.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationassociation.mappedtransferassociationassociation.transferi.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationassociation.mappedtransferassociationassociation.transferj.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationassociation.mappedtransferassociationassociation.transferk.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationassociation.mappedtransferassociationassociation.transferl.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.MappedTransferAssociationAssociationDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
@@ -141,6 +145,19 @@ public class MappedTransferAssociationAssociationTest extends AbstractJslTest {
 
     @Inject
     TransferJDao transferJDao;
+
+    @Inject
+    EntityLDao entityLDao;
+
+    @Inject
+    TransferLDao transferLDao;
+
+    @Inject
+    EntityKDao entityKDao;
+
+    @Inject
+    TransferKDao transferKDao;
+
 
     @Override
     public Module getModelDaoModule() {
@@ -431,7 +448,7 @@ public class MappedTransferAssociationAssociationTest extends AbstractJslTest {
 
 
     /**
-     * The test checks the two-way relation with one side is optional work well on a transfer object.
+     * The test checks the two-way relation with one side is optional to be created well on a transfer object.
      *
      * @prerequisites The test must start and finish on the same day. Therefore, don't run this test close to midnight.
      *
@@ -518,7 +535,7 @@ public class MappedTransferAssociationAssociationTest extends AbstractJslTest {
     }
 
     /**
-     * The test checks the two-way relation with one side is optional work well on a transfer object.
+     * The test checks the two-way relation with one side is optional sdk functionality work well on a transfer object.
      *
      * @prerequisites The test must start and finish on the same day. Therefore, don't run this test close to midnight.
      *
@@ -576,6 +593,7 @@ public class MappedTransferAssociationAssociationTest extends AbstractJslTest {
         EntityH h5 = entityHDao.getById(th5.adaptTo(EntityHIdentifier.class)).orElseThrow();
         EntityG g1 = entityGDao.getById(tg1.adaptTo(EntityGIdentifier.class)).orElseThrow();
 
+        // update
         TransferG tgRef = transferHDao.queryRelationGForOptionalH(th1).orElseThrow();
         tgRef.setNameG("CG1");
         transferGDao.update(tgRef);
@@ -609,7 +627,6 @@ public class MappedTransferAssociationAssociationTest extends AbstractJslTest {
         assertTrue(thrown.getMessage().contains("There is reference remove which let referrer violate mandatory constraint"));
 
         // collection unset
-
         transferHDao.unsetRelationGForCollectionH(th3);
         assertTrue(transferHDao.queryRelationGForCollectionH(th3).isEmpty());
         assertEquals(2, transferGDao.queryRelationCollectionH(tg1).count());
@@ -714,7 +731,7 @@ public class MappedTransferAssociationAssociationTest extends AbstractJslTest {
     }
 
     /**
-     * The test checks the two-way relation with one side is optional work well on a transfer object.
+     * The test checks the two-way relation with one side is required to be created well on a transfer object.
      *
      * @prerequisites The test must start and finish on the same day. Therefore, don't run this test close to midnight.
      *
@@ -725,6 +742,8 @@ public class MappedTransferAssociationAssociationTest extends AbstractJslTest {
      * @jslModel MappedTransferAssociationAssociation.jsl
      *
      * @positiveRequirements
+     *
+     *
      *
      */
     @Test
@@ -744,7 +763,6 @@ public class MappedTransferAssociationAssociationTest extends AbstractJslTest {
     public void testTwoWayAssAssRelationOneSideIsRequiredCreate() {
         /*
         required <-> optional
-        required <-> required
         required <-> collection
          */
 
@@ -805,7 +823,7 @@ public class MappedTransferAssociationAssociationTest extends AbstractJslTest {
     }
 
     /**
-     * The test checks the two-way relation with one side is optional work well on a transfer object.
+     * The test checks the two-way relation with one side is required sdk functionality work well on a transfer object.
      *
      * @prerequisites The test must start and finish on the same day. Therefore, don't run this test close to midnight.
      *
@@ -836,7 +854,6 @@ public class MappedTransferAssociationAssociationTest extends AbstractJslTest {
 
         /*
         required <-> optional
-        required <-> required
         required <-> collection
          */
 
@@ -862,8 +879,77 @@ public class MappedTransferAssociationAssociationTest extends AbstractJslTest {
                         .build()
         );
 
+        EntityI i1 = entityIDao.getById(ti1.adaptTo(EntityIIdentifier.class)).orElseThrow();
+        EntityI i2 = entityIDao.getById(ti2.adaptTo(EntityIIdentifier.class)).orElseThrow();
+        EntityI iCollect = entityIDao.getById(tiCollect.adaptTo(EntityIIdentifier.class)).orElseThrow();
+        EntityJ j1 = entityJDao.getById(tj1.adaptTo(EntityJIdentifier.class)).orElseThrow();
+        EntityJ j2 = entityJDao.getById(tj2.adaptTo(EntityJIdentifier.class)).orElseThrow();
+
+        // update
+        tj1.setNameJ("CT1");
+        tj2.setNameJ("CT2");
+        tj1 = transferJDao.update(tj1);
+        tj2 = transferJDao.update(tj2);
+
+        assertEquals(Optional.of("CT1"), transferIDao.queryRelationOptionalJ(ti1).orElseThrow().getNameJ());
+        assertEquals(Optional.of("CT2"), transferIDao.queryRelationOptionalJ(ti2).orElseThrow().getNameJ());
+        assertThat(transferIDao.queryRelationCollectionJ(tiCollect).execute().stream().map(t -> t.getNameJ()).filter(Optional::isPresent).map(Optional::get).toList(), containsInAnyOrder("CT1", "CT2"));
+
+        assertEquals(Optional.of("CT1"), entityIDao.queryRelationOptionalJ(i1).orElseThrow().getNameJ());
+        assertEquals(Optional.of("CT2"), entityIDao.queryRelationOptionalJ(i2).orElseThrow().getNameJ());
+        assertThat(entityIDao.queryRelationCollectionJ(iCollect).execute().stream().map(t -> t.getNameJ()).filter(Optional::isPresent).map(Optional::get).toList(), containsInAnyOrder("CT1", "CT2"));
+
+        // set another t
+
+        TransferI ti3 = transferIDao.create(TransferI.builder().withNameI("TI3").build());
+        EntityI i3 = entityIDao.getById(ti3.adaptTo(EntityIIdentifier.class)).orElseThrow();
+
+        transferJDao.setRelationRequiredIForOptionalJ(tj1, ti3);
+        assertEquals(ti3.identifier(), transferJDao.queryRelationRequiredIForOptionalJ(tj1).identifier());
+        assertTrue(transferIDao.queryRelationOptionalJ(ti1).isEmpty());
+        assertEquals(i3.identifier(), entityJDao.queryRelationRequiredIForOptionalJ(j1).identifier());
+        assertTrue(entityIDao.queryRelationOptionalJ(i1).isEmpty());
+
+        // set with the other side error
+
+        TransferJ refertj1 = tj1;
+        IllegalStateException thrown = assertThrows(IllegalStateException.class, () -> transferIDao.setRelationOptionalJ(ti1, refertj1));
+        assertTrue(thrown.getMessage().contains("There is reference add which let referrer violate mandatory constraint"));
+
+        IllegalStateException thrown1 = assertThrows(IllegalStateException.class, () -> transferIDao.unsetRelationOptionalJ(ti3));
+        assertTrue(thrown1.getMessage().contains("There is reference remove which let referrer violate mandatory constraint"));
+
+        // collection
+
+        TransferI ti4 = transferIDao.create(TransferI.builder().withNameI("TI4").build());
+        EntityI i4 = entityIDao.getById(ti4.adaptTo(EntityIIdentifier.class)).orElseThrow();
+
+        transferJDao.setRelationRequiredIorCollectionJ(tj1, ti4);
+        assertEquals(ti4.identifier(), transferJDao.queryRelationRequiredIorCollectionJ(tj1).identifier());
+        assertEquals(1, transferIDao.queryRelationCollectionJ(tiCollect).count());
+        assertEquals(i4.identifier(), entityJDao.queryRelationRequiredIorCollectionJ(j1).identifier());
+        assertEquals(1, entityIDao.queryRelationCollectionJ(iCollect).count());
+
+        // remove throw error
+
+        TransferJ refertj2 = tj2;
+        IllegalStateException thrown2 = assertThrows(IllegalStateException.class, () -> transferIDao.removeRelationCollectionJ(tiCollect, List.of(refertj2)));
+        assertTrue(thrown2.getMessage().contains("There is reference remove which let referrer violate mandatory constraint"));
+
+        // delete
+        IllegalStateException thrown3 = assertThrows(IllegalStateException.class, () ->  transferIDao.delete(ti2));
+        assertTrue(thrown3.getMessage().contains("There are mandatory references that cannot be removed"));
+
+        transferJDao.delete(tj2);
+        assertTrue(transferJDao.getById(tj2.identifier()).isEmpty());
+        assertTrue(entityJDao.getById(j2.identifier()).isEmpty());
+
+        transferIDao.delete(ti2);
+        assertTrue(transferIDao.getById(ti2.identifier()).isEmpty());
+        assertTrue(entityIDao.getById(i2.identifier()).isEmpty());
 
     }
+
 
 
 }
