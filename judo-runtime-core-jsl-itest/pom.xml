@@ -407,13 +407,22 @@
                     </execution>
                     <execution>
                         <id>generate-psm-test-model-from-artifact-Abstract</id>
-
                         <goals>
                             <goal>parser-workflow</goal>
                         </goals>
                         <phase>generate-test-sources</phase>
                         <configuration>
                             <sources>${basedir}/src/test/resources/model/Abstract</sources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-psm-test-model-from-artifact-EntityWithSameQueryNameModel</id>
+                        <goals>
+                            <goal>parser-workflow</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <sources>${basedir}/src/test/resources/model/EntityWithSameQueryNameModel</sources>
                         </configuration>
                     </execution>
                 </executions>
@@ -917,6 +926,19 @@
                             <destination>${basedir}/target/generated-test-sources/sdk-core/Abstract</destination>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-EntityWithSameQueryName</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/EntityWithSameQueryName-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/sdk-core/EntityWithSameQueryName</destination>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
 
@@ -969,9 +991,10 @@
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/Abstract</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/AutoMappedTransferSingleEntity</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/TestDefaultAndRequiredFieldsOnMappedTO</source>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/EntityWithSameQueryName</source>
                             </sources>
                         </configuration>
-                   </execution>
+                    </execution>
                 </executions>
             </plugin>
 
@@ -1042,8 +1065,8 @@
             <groupId>hu.blackbelt.judo</groupId>
             <artifactId>judo-requirement-report-processor</artifactId>
         </dependency>
-        
-      	<dependency>
+
+        <dependency>
             <groupId>uk.org.webcompere</groupId>
             <artifactId>system-stubs-jupiter</artifactId>
             <version>2.0.2</version>
