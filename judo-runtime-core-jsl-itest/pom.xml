@@ -396,6 +396,16 @@
                         </configuration>
                     </execution>
                     <execution>
+                        <id>generate-psm-test-model-from-artifact-TestDefaultAndRequiredFieldsOnMappedTOModel</id>
+                        <goals>
+                            <goal>parser-workflow</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <sources>${basedir}/src/test/resources/model/TestDefaultAndRequiredFieldsOnMappedTOModel</sources>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>generate-psm-test-model-from-artifact-Abstract</id>
                         <goals>
                             <goal>parser-workflow</goal>
@@ -889,6 +899,20 @@
                             <destination>${basedir}/target/generated-test-sources/sdk-core/AutoMappedTransferSingleEntity</destination>
                         </configuration>
                     </execution>
+
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-TestDefaultAndRequiredFieldsOnMappedTO</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/TestDefaultAndRequiredFieldsOnMappedTO-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/sdk-core/TestDefaultAndRequiredFieldsOnMappedTO</destination>
+                        </configuration>
+                    </execution>
                     <execution>
                         <id>execute-psm-test-model-from-artifact-Abstract</id>
                         <phase>generate-test-sources</phase>
@@ -966,6 +990,7 @@
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/TransferConstructor</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/Abstract</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/AutoMappedTransferSingleEntity</source>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/TestDefaultAndRequiredFieldsOnMappedTO</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/EntityWithSameQueryName</source>
                             </sources>
                         </configuration>
