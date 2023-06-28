@@ -6,10 +6,10 @@ entity ReferenceEntity {
     field String name;
 }
 entity entityA {
-    @Lazy
+    @Query
     relation ReferenceEntity querySameName(String name) <= ReferenceEntity!any();
 }
 entity entityB {
-    @Lazy
+    @Query
     relation ReferenceEntity querySameName(String name) <= ReferenceEntity!any();
 }
