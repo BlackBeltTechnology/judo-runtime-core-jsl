@@ -699,15 +699,15 @@ public class TestDefaultAndRequiredFieldsOnMappedTO extends AbstractJslTest {
 //
         //e1 = e1Optional.orElseThrow();
 //
-        //assertEquals(1, e1.getIntegerAttr());
-        //assertEquals(2.34, e1.getScaledAttr());
-        //assertEquals("Hello there", e1.getStringAttr());
-        //assertEquals("+36 30 123 1234", e1.getRegexAttr());
-        //assertEquals(true, e1.getBoolAttr());
-        //assertEquals(LocalDate.of(2022, 7, 11), e1.getDateAttr());
-        //assertEquals(LocalDateTime.parse("2022-07-11T19:09:33"), e1.getTimestampAttr());
-        //assertEquals(LocalTime.parse("23:59:59"), e1.getTimeAttr());
-        //assertEquals(Enum.EnumA, e1.getEnumAttr());
+        //assertEquals(Optional.of(1), e1.getIntegerAttr());
+        //assertEquals(Optional.of(2.34), e1.getScaledAttr());
+        //assertEquals(Optional.of("Hello there"), e1.getStringAttr());
+        //assertEquals(Optional.of("+36-1-223-123"), e1.getRegexAttr());
+        //assertEquals(Optional.of(true), e1.getBoolAttr());
+        //assertEquals(Optional.of(LocalDate.of(2021, 7, 11)), e1.getDateAttr());
+        //assertEquals(Optional.of(LocalDateTime.parse("2021-07-11T19:09:33")), e1.getTimestampAttr());
+        //assertEquals(Optional.of(LocalTime.parse("23:59:59")), e1.getTimeAttr());
+        //assertEquals(Optional.of(Enum.EnumA), e1.getEnumAttr());
 
 
         TransferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefault t4 = transferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefaultDao.create(TransferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefault.builder().build());
@@ -943,15 +943,15 @@ public class TestDefaultAndRequiredFieldsOnMappedTO extends AbstractJslTest {
 //
         //e1 = e1Optional.orElseThrow();
 //
-        //assertEquals(Optional.of(2), e1.getIntegerAttr());
-        //assertEquals(Optional.of(3.34), e1.getScaledAttr());
-        //assertEquals(Optional.of("Lorem Ipsum"), e1.getStringAttr());
-        //assertEquals(Optional.of("+36 30 123 5678"), e1.getRegexAttr());
-        //assertEquals(Optional.of(false), e1.getBoolAttr());
-        //assertEquals(Optional.of(LocalDate.of(2022, 7, 12)), e1.getDateAttr());
-        //assertEquals(Optional.of(LocalDateTime.parse("2022-07-12T19:09:33")), e1.getTimestampAttr());
-        //assertEquals(Optional.of(LocalTime.parse("23:59:58")), e1.getTimeAttr());
-        //assertEquals(Optional.of(Enum.EnumB), e1.getEnumAttr());
+        //assertEquals(1, e1.getIntegerAttr());
+        //assertEquals(2.34, e1.getScaledAttr());
+        //assertEquals("Hello there", e1.getStringAttr());
+        //assertEquals("+36-1-223-123", e1.getRegexAttr());
+        //assertEquals(true, e1.getBoolAttr());
+        //assertEquals(LocalDate.of(2021, 7, 11), e1.getDateAttr());
+        //assertEquals(LocalDateTime.parse("2021-07-11T19:09:33"), e1.getTimestampAttr());
+        //assertEquals(LocalTime.parse("23:59:59"), e1.getTimeAttr());
+        //assertEquals(Enum.EnumA, e1.getEnumAttr());
 
 
         TransferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsWithDefault t4 = transferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsWithDefaultDao.create(TransferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsWithDefault.builder().build());
