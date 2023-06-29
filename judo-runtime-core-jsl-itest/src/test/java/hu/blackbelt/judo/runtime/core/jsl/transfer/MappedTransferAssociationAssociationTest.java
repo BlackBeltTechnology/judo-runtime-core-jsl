@@ -170,9 +170,9 @@ public class MappedTransferAssociationAssociationTest extends AbstractJslTest {
     }
 
     /**
-     * The test checks the single relation work well on transfer object.
+     * The test checks the association mapped single relation work well on a transfer object.
      *
-     * @prerequisites The test must start and finish on the same day. Therefore, don't run this test close to midnight.
+     * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
      * @type Behaviour
      *
@@ -182,6 +182,10 @@ public class MappedTransferAssociationAssociationTest extends AbstractJslTest {
      *
      * @positiveRequirements REQ-ENT-005
      *
+     * @scenario 
+     *  
+     *  
+     *  
      */
     @Test
     @TestCase("SingleAssociationAssociationRelationOnTransfer")
@@ -248,15 +252,13 @@ public class MappedTransferAssociationAssociationTest extends AbstractJslTest {
     }
 
     /**
-     * The test checks the single required relation work well on transfer object.
+     * The test checks the association mapped single-required relation work well on a transfer object.
      *
-     * @prerequisites The test must start and finish on the same day. Therefore, don't run this test close to midnight.
+     * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
      * @type Behaviour
      *
      * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
-     *
-     * @positiveRequirements REQ-ENT-005
      *
      */
     @Test
@@ -331,17 +333,15 @@ public class MappedTransferAssociationAssociationTest extends AbstractJslTest {
     }
 
     /**
-     * The test checks the multi relation work well on transfer object.
+     * The test checks the association mapped multi relation work well on a transfer object.
      *
-     * @prerequisites The test must start and finish on the same day. Therefore, don't run this test close to midnight.
+     * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
      * @type Behaviour
      *
      * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
      *
      * @jslModel MappedTransferAssociationAssociation.jsl
-     *
-     * @positiveRequirements
      *
      */
     @Test
@@ -448,9 +448,9 @@ public class MappedTransferAssociationAssociationTest extends AbstractJslTest {
 
 
     /**
-     * The test checks the two-way relation with one side is optional to be created well on a transfer object.
+     * The test checks the two-way association mapped relation with one side is optional to be created well on a transfer object.
      *
-     * @prerequisites The test must start and finish on the same day. Therefore, don't run this test close to midnight.
+     * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
      * @type Behaviour
      *
@@ -458,11 +458,9 @@ public class MappedTransferAssociationAssociationTest extends AbstractJslTest {
      *
      * @jslModel MappedTransferAssociationAssociation.jsl
      *
-     * @positiveRequirements
-     *
      */
     @Test
-    @TestCase("TwoWayAssAssRelationOneSideIsOptionalCreate")
+    @TestCase("TwoWayAssAssRelationOneSideIsOptionalOnTransferCreate")
     @Requirement(reqs = {
             "REQ-MDL-001",
             "REQ-MDL-002",
@@ -472,10 +470,10 @@ public class MappedTransferAssociationAssociationTest extends AbstractJslTest {
             "REQ-ENT-001",
             "REQ-ENT-002",
             "REQ-ENT-004",
-            "REQ-ENT-005",
+            "REQ-ENT-006",
             "REQ-SRV-001"
     })
-    public void testTwoWayAssAssRelationOneSideIsOptionalCreate() {
+    public void testTwoWayAssAssRelationOneSideIsOptionalOnTransferCreate() {
         /*
         optional <-> optional
         optional <-> required
@@ -535,9 +533,9 @@ public class MappedTransferAssociationAssociationTest extends AbstractJslTest {
     }
 
     /**
-     * The test checks the two-way relation with one side is optional sdk functionality work well on a transfer object.
+     * The test checks the two-way association mapped relation with one side is optional sdk functionality work well on a transfer object.
      *
-     * @prerequisites The test must start and finish on the same day. Therefore, don't run this test close to midnight.
+     * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
      * @type Behaviour
      *
@@ -545,11 +543,9 @@ public class MappedTransferAssociationAssociationTest extends AbstractJslTest {
      *
      * @jslModel MappedTransferAssociationAssociation.jsl
      *
-     * @positiveRequirements
-     *
      */
     @Test
-    @TestCase("TwoWayAssAssRelationOneSideIsOptionalDaoFunctionality")
+    @TestCase("TwoWayAssAssRelationOneSideIsOptionalOnTransferDaoFunctionality")
     @Requirement(reqs = {
             "REQ-MDL-001",
             "REQ-MDL-002",
@@ -559,10 +555,10 @@ public class MappedTransferAssociationAssociationTest extends AbstractJslTest {
             "REQ-ENT-001",
             "REQ-ENT-002",
             "REQ-ENT-004",
-            "REQ-ENT-005",
+            "REQ-ENT-006",
             "REQ-SRV-001"
     })
-    public void testTwoWayAssAssRelationOneSideIsOptionalDaoFunctionality() {
+    public void testTwoWayAssAssRelationOneSideIsOptionalOnTransferDaoFunctionality() {
         /*
         optional <-> optional
         optional <-> required
@@ -731,9 +727,9 @@ public class MappedTransferAssociationAssociationTest extends AbstractJslTest {
     }
 
     /**
-     * The test checks the two-way relation with one side is required to be created well on a transfer object.
+     * The test checks the two-way association mapped relation with one side is required to be created well on a transfer object.
      *
-     * @prerequisites The test must start and finish on the same day. Therefore, don't run this test close to midnight.
+     * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
      * @type Behaviour
      *
@@ -741,13 +737,9 @@ public class MappedTransferAssociationAssociationTest extends AbstractJslTest {
      *
      * @jslModel MappedTransferAssociationAssociation.jsl
      *
-     * @positiveRequirements
-     *
-     *
-     *
      */
     @Test
-    @TestCase("TwoWayAssAssRelationOneSideIsRequiredCreate")
+    @TestCase("TwoWayAssAssRelationOneSideIsRequiredOnTransferCreate")
     @Requirement(reqs = {
             "REQ-MDL-001",
             "REQ-MDL-002",
@@ -757,10 +749,10 @@ public class MappedTransferAssociationAssociationTest extends AbstractJslTest {
             "REQ-ENT-001",
             "REQ-ENT-002",
             "REQ-ENT-004",
-            "REQ-ENT-005",
+            "REQ-ENT-006",
             "REQ-SRV-001"
     })
-    public void testTwoWayAssAssRelationOneSideIsRequiredCreate() {
+    public void testTwoWayAssAssRelationOneSideIsRequiredOnTransferCreate() {
         /*
         required <-> optional
         required <-> collection
@@ -823,9 +815,9 @@ public class MappedTransferAssociationAssociationTest extends AbstractJslTest {
     }
 
     /**
-     * The test checks the two-way relation with one side is required sdk functionality work well on a transfer object.
+     * The test checks the two-way association mapped relation with one side is required sdk functionality work well on a transfer object.
      *
-     * @prerequisites The test must start and finish on the same day. Therefore, don't run this test close to midnight.
+     * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
      * @type Behaviour
      *
@@ -833,11 +825,9 @@ public class MappedTransferAssociationAssociationTest extends AbstractJslTest {
      *
      * @jslModel MappedTransferAssociationAssociation.jsl
      *
-     * @positiveRequirements
-     *
      */
     @Test
-    @TestCase("TwoWayAssAssRelationOneSideIsRequiredDaoFunctionality")
+    @TestCase("TwoWayAssAssRelationOneSideIsRequiredOnTransferDaoFunctionality")
     @Requirement(reqs = {
             "REQ-MDL-001",
             "REQ-MDL-002",
@@ -847,7 +837,7 @@ public class MappedTransferAssociationAssociationTest extends AbstractJslTest {
             "REQ-ENT-001",
             "REQ-ENT-002",
             "REQ-ENT-004",
-            "REQ-ENT-005",
+            "REQ-ENT-006",
             "REQ-SRV-001"
     })
     public void testTwoWayAssAssRelationOneSideIsRequiredDaoFunctionality() {
@@ -951,9 +941,9 @@ public class MappedTransferAssociationAssociationTest extends AbstractJslTest {
     }
 
     /**
-     * The test checks the two-way relation with one side is collection to be created well on a transfer object.
+     * The test checks the two-way association mapped relation with one side is collection to be created well on a transfer object.
      *
-     * @prerequisites The test must start and finish on the same day. Therefore, don't run this test close to midnight.
+     * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
      * @type Behaviour
      *
@@ -961,13 +951,9 @@ public class MappedTransferAssociationAssociationTest extends AbstractJslTest {
      *
      * @jslModel MappedTransferAssociationAssociation.jsl
      *
-     * @positiveRequirements
-     *
-     *
-     *
      */
     @Test
-    @TestCase("TwoWayAssAssRelationOneSideIsCollectionCreate")
+    @TestCase("TwoWayAssAssRelationOneSideIsCollectionOnTransferCreate")
     @Requirement(reqs = {
             "REQ-MDL-001",
             "REQ-MDL-002",
@@ -977,7 +963,7 @@ public class MappedTransferAssociationAssociationTest extends AbstractJslTest {
             "REQ-ENT-001",
             "REQ-ENT-002",
             "REQ-ENT-004",
-            "REQ-ENT-005",
+            "REQ-ENT-006",
             "REQ-SRV-001"
     })
     public void testTwoWayAssAssRelationOneSideIsCollectionCreate() {
@@ -1043,18 +1029,15 @@ public class MappedTransferAssociationAssociationTest extends AbstractJslTest {
     }
 
     /**
-     * The test checks the two-way relation with one side is collection sdk functionality work well on a transfer object.
+     * The test checks the two-way association mapped relation with one side is collection sdk functionality work well on a transfer object.
      *
-     * @prerequisites The test must start and finish on the same day. Therefore, don't run this test close to midnight.
+     * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
      * @type Behaviour
      *
      * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
      *
      * @jslModel MappedTransferAssociationAssociation.jsl
-     *
-     * @positiveRequirements
-     *
      *
      */
     @Test
@@ -1068,10 +1051,10 @@ public class MappedTransferAssociationAssociationTest extends AbstractJslTest {
             "REQ-ENT-001",
             "REQ-ENT-002",
             "REQ-ENT-004",
-            "REQ-ENT-005",
+            "REQ-ENT-006",
             "REQ-SRV-001"
     })
-    public void testTwoWayAssAssRelationOneSideIsCollectionDaoFunctionality() {
+    public void testTwoWayAssAssRelationOneSideIsCollectionOnTransferDaoFunctionality() {
         /*
         collection <-> collection
          */

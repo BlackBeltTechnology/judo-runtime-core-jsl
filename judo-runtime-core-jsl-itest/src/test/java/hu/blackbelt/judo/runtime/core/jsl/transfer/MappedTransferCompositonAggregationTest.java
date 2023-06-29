@@ -111,7 +111,7 @@ public class MappedTransferCompositonAggregationTest extends AbstractJslTest {
     /**
      * The test checks the single aggregation work well on transfer object.
      *
-     * @prerequisites The test must start and finish on the same day. Therefore, don't run this test close to midnight.
+     * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
      * @type Behaviour
      *
@@ -200,7 +200,7 @@ public class MappedTransferCompositonAggregationTest extends AbstractJslTest {
     /**
      * The test checks the single required aggregation work well on transfer object.
      *
-     * @prerequisites The test must start and finish on the same day. Therefore, don't run this test close to midnight.
+     * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
      * @type Behaviour
      *
@@ -275,7 +275,7 @@ public class MappedTransferCompositonAggregationTest extends AbstractJslTest {
     /**
      * The test checks the multi aggregation work well on transfer object.
      *
-     * @prerequisites The test must start and finish on the same day. Therefore, don't run this test close to midnight.
+     * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
      * @type Behaviour
      *
@@ -359,7 +359,7 @@ public class MappedTransferCompositonAggregationTest extends AbstractJslTest {
     /**
      * The test checks the navigation between aggregations work well on transfer object.
      *
-     * @prerequisites The test must start and finish on the same day. Therefore, don't run this test close to midnight.
+     * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
      * @type Behaviour
      *

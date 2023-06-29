@@ -126,7 +126,7 @@ public class MappedTransferAssociationAggregationTest extends AbstractJslTest {
     /**
      * The test checks the single relation work well on transfer object.
      *
-     * @prerequisites The test must start and finish on the same day. Therefore, don't run this test close to midnight.
+     * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
      * @type Behaviour
      *
@@ -200,7 +200,7 @@ public class MappedTransferAssociationAggregationTest extends AbstractJslTest {
     /**
      * The test checks the single required relation work well on transfer object.
      *
-     * @prerequisites The test must start and finish on the same day. Therefore, don't run this test close to midnight.
+     * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
      * @type Behaviour
      *
@@ -282,15 +282,13 @@ public class MappedTransferAssociationAggregationTest extends AbstractJslTest {
     /**
      * The test checks the multi relation work well on transfer object.
      *
-     * @prerequisites The test must start and finish on the same day. Therefore, don't run this test close to midnight.
+     * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
      * @type Behaviour
      *
      * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
      *
      * @jslModel MappedTransferAssociation.jsl
-     *
-     * @positiveRequirements
      *
      */
     @Test
@@ -390,7 +388,7 @@ public class MappedTransferAssociationAggregationTest extends AbstractJslTest {
     /**
      * The test checks the navigation between relations work well on transfer object.
      *
-     * @prerequisites The test must start and finish on the same day. Therefore, don't run this test close to midnight.
+     * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
      * @type Behaviour
      *
@@ -398,7 +396,6 @@ public class MappedTransferAssociationAggregationTest extends AbstractJslTest {
      *
      * @jslModel MappedTransferAssociation.jsl
      *
-     * @positiveRequirements
      *
      */
     @Test
