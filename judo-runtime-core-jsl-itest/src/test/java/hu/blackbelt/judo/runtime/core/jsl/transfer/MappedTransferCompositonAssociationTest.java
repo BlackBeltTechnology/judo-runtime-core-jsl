@@ -22,21 +22,15 @@ package hu.blackbelt.judo.runtime.core.jsl.transfer;
 
 import com.google.inject.Inject;
 import com.google.inject.Module;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.entitya.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.entityb.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.entityc.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.entityd.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.entitye.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.entityf.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.entityg.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.transfera.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.transferb.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.transferc.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.transferd.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.transfere.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.transferf.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.transferg.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.MappedTransferCompositonAggregationDaoModules;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonassociation.mappedtransfercompositonassociation.entitya.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonassociation.mappedtransfercompositonassociation.entityb.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonassociation.mappedtransfercompositonassociation.entityc.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonassociation.mappedtransfercompositonassociation.entityd.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonassociation.mappedtransfercompositonassociation.transfera.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonassociation.mappedtransfercompositonassociation.transferb.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonassociation.mappedtransfercompositonassociation.transferc.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonassociation.mappedtransfercompositonassociation.transferd.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.MappedTransferCompositonAssociationDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
@@ -46,13 +40,12 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.hamcrest.Matchers.*;
-import static org.hamcrest.Matchers.equalTo;
-import static  org.junit.jupiter.api.Assertions.*;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
-public class MappedTransferCompositonAggregationTest extends AbstractJslTest {
+public class MappedTransferCompositonAssociationTest extends AbstractJslTest {
 
     @Inject
     EntityADao entityADao;
@@ -78,38 +71,19 @@ public class MappedTransferCompositonAggregationTest extends AbstractJslTest {
     @Inject
     TransferDDao transferDDao;
 
-    @Inject
-    EntityEDao entityEDao;
-
-    @Inject
-    TransferEDao transferEDao;
-
-    @Inject
-    EntityFDao entityFDao;
-
-    @Inject
-    TransferFDao transferFDao;
-
-
-    @Inject
-    EntityGDao entityGDao;
-
-    @Inject
-    TransferGDao transferGDao;
-
 
     @Override
     public Module getModelDaoModule() {
-        return new MappedTransferCompositonAggregationDaoModules();
+        return new MappedTransferCompositonAssociationDaoModules();
     }
 
     @Override
     public String getModelName() {
-        return "MappedTransferCompositonAggregation";
+        return "MappedTransferCompositonAssociation";
     }
 
     /**
-     * The test checks the aggregation mapped single field with entity type work well on transfer object.
+     * The test checks the association mapped single field with entity type work well on transfer object.
      *
      * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
@@ -123,7 +97,7 @@ public class MappedTransferCompositonAggregationTest extends AbstractJslTest {
      *
      */
     @Test
-    @TestCase("SingleCompositionAggregationOnTransfer")
+    @TestCase("SingleCompositionAssociationOnTransfer")
     @Requirement(reqs = {
             "REQ-MDL-001",
             "REQ-MDL-002",
@@ -136,15 +110,15 @@ public class MappedTransferCompositonAggregationTest extends AbstractJslTest {
             "REQ-ENT-005",
             "REQ-SRV-001"
     })
-    public void testSingleCompositionAggregationOnTransfer() {
+    public void testSingleCompositionAssociationOnTransfer() {
 
         TransferB transferB = transferBDao.create(TransferB.builder().withNameB("B1").build());
 
         assertEquals(1, transferBDao.query().execute().size());
 
         TransferA transferA = transferADao.create(TransferA.builder()
-                .withSingleEntityB(transferB)
-                .build()
+                .build(),
+                TransferAAttachedRelationsForCreate.builder().withSingleEntityB(transferB).build()
         );
 
         // TODO JNG-4317 Composition should copy the composition element or not allow to bind an existed element.
@@ -152,44 +126,30 @@ public class MappedTransferCompositonAggregationTest extends AbstractJslTest {
 //        assertEquals(2,entityBDao.query().execute().size());
 
         // Check transferA contains transferB
-        assertEquals(transferB.identifier(),transferA.getSingleEntityB().orElseThrow().identifier());
+        assertEquals(transferB.identifier(), transferADao.querySingleEntityB(transferA).orElseThrow().identifier());
         assertEquals(
                 entityBDao.getById(transferB.adaptTo(EntityBIdentifier.class)).orElseThrow().identifier(),
-                entityADao.getById(transferA.adaptTo(EntityAIdentifier.class)).orElseThrow().getSingleEntityB().orElseThrow().identifier()
+                entityADao.querySingleEntityB((entityADao.getById(transferA.adaptTo(EntityAIdentifier.class)).orElseThrow())).orElseThrow().identifier()
         );
 
         // Check transferA cannot bind a different B element
-        transferA.setSingleEntityB(transferBDao.create(TransferB.builder().withNameB("B2").build()));
-
-        TransferA referenceForLambda = transferA;
-        IllegalStateException thrown = assertThrows(
-                IllegalStateException.class,
-                () -> transferADao.update(referenceForLambda)
-        );
-        assertTrue(thrown.getMessage().contains("Identifier cannot be different on containment reference element"));
-        assertTrue(thrown.getMessage().contains("#singleEntityB"));
+        //TODO JNG-4877 create dao function throw error
+//        TransferA referenceForLambda = transferA;
+//        IllegalStateException thrown = assertThrows(
+//                IllegalStateException.class,
+//                () -> transferADao.createSingleEntityB(referenceForLambda, TransferB.builder().withNameB("B2").build())
+//        );
+//        assertTrue(thrown.getMessage().contains("Identifier cannot be different on containment reference element"));
+//        assertTrue(thrown.getMessage().contains("#singleEntityB"));
 
         // Check transferA can set to null
-        transferA.setSingleEntityB(null);
+        transferBDao.delete(transferB);
         transferA = transferADao.update(transferA);
 
-        assertTrue(transferA.getSingleEntityB().isEmpty());
+        assertTrue(transferADao.querySingleEntityB(transferA).isEmpty());
         assertTrue(entityADao.getById(transferA.adaptTo(EntityAIdentifier.class)).orElseThrow().getSingleEntityB().isEmpty());
         assertTrue(transferBDao.getById(transferB.identifier()).isEmpty());
         assertTrue(entityBDao.getById(transferB.identifier().adaptTo(EntityBIdentifier.class)).isEmpty());
-
-        // Check transferA cannot bind a new B element
-        TransferA referenceForLambda1 = transferA;
-        transferB = transferBDao.create(TransferB.builder().withNameB("B2").build());
-        transferA.setSingleEntityB(transferB);
-
-        IllegalStateException thrown1 = assertThrows(
-                IllegalStateException.class,
-                () -> transferADao.update(referenceForLambda1)
-        );
-        assertTrue(thrown1.getMessage().contains("Identifier cannot be set on new association reference element"));
-        assertTrue(thrown1.getMessage().contains("#singleEntityB"));
-
 
         //TODO JNG-4877 create dao function throw error
 //        transferADao.createSingleEntityB(transferA, TransferB.builder().withNameB("B2").build());
@@ -197,8 +157,9 @@ public class MappedTransferCompositonAggregationTest extends AbstractJslTest {
 
     }
 
+
     /**
-     * The test checks the aggregation mapped single reqiured field with entity type work well on transfer object.
+     * The test checks the association mapped single reqiured field with entity type work well on transfer object.
      *
      * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
@@ -212,7 +173,7 @@ public class MappedTransferCompositonAggregationTest extends AbstractJslTest {
      *
      */
     @Test
-    @TestCase("SingleRequiredCompositionAggregationOnTransfer")
+    @TestCase("SingleRequiredCompositionAssociationOnTransfer")
     @Requirement(reqs = {
             "REQ-MDL-001",
             "REQ-MDL-002",
@@ -225,15 +186,14 @@ public class MappedTransferCompositonAggregationTest extends AbstractJslTest {
             "REQ-ENT-005",
             "REQ-SRV-001"
     })
-    public void testSingleRequiredCompositionAggregationOnTransfer() {
+    public void testSingleRequiredCompositionAssociationOnTransfer() {
 
         TransferD transferD = transferDDao.create(TransferD.builder().withNameD("D1").build());
 
         assertEquals(1, transferDDao.query().execute().size());
 
-        TransferC transferC = transferCDao.create(TransferC.builder()
-                .withSingleRequiredEntityD(transferD)
-                .build()
+        TransferC transferC = transferCDao.create(TransferC.builder().build(),
+                TransferCAttachedRelationsForCreate.builder().withSingleRequiredEntityD(transferD).build()
         );
 
         // TODO JNG-4317 Composition should copy the composition element or not allow to bind an existed element.
@@ -241,16 +201,13 @@ public class MappedTransferCompositonAggregationTest extends AbstractJslTest {
 //        assertEquals(2,entityDDao.query().execute().size());
 
         //Try to create without required element
-
-        ValidationException thrown = assertThrows(
-                ValidationException.class,
+        IllegalArgumentException thrown = assertThrows(
+                IllegalArgumentException.class,
                 () -> transferCDao.create(TransferC.builder().build())
         );
 
-        assertThat(thrown.getValidationResults(), containsInAnyOrder(allOf(
-                hasProperty("code", equalTo("MISSING_REQUIRED_RELATION")),
-                hasProperty("location", equalTo("singleRequiredEntityD")))
-        ));
+        assertTrue(thrown.getMessage().contains("There is missing mandatory attribute/reference on"));
+        assertTrue(thrown.getMessage().contains("singleRequiredEntityD"));
 
         //Try to delete the required element
 
@@ -273,7 +230,7 @@ public class MappedTransferCompositonAggregationTest extends AbstractJslTest {
     }
 
     /**
-     * The test checks the aggregation mapped multi field with entity type work well on transfer object.
+     * The test checks the association mapped multi field with entity type work well on transfer object.
      *
      * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
@@ -287,7 +244,7 @@ public class MappedTransferCompositonAggregationTest extends AbstractJslTest {
      *
      */
     @Test
-    @TestCase("MultiCompositionAggregationOnTransfer")
+    @TestCase("MultiCompositionAssociationOnTransfer")
     @Requirement(reqs = {
             "REQ-MDL-001",
             "REQ-MDL-002",
@@ -300,7 +257,7 @@ public class MappedTransferCompositonAggregationTest extends AbstractJslTest {
             "REQ-ENT-005",
             "REQ-SRV-001"
     })
-    public void testMultiCompositionAggregationOnTransfer() {
+    public void testMultiCompositionAssociationOnTransfer() {
 
         TransferB transferB1 = transferBDao.create(TransferB.builder().withNameB("B1").build());
         TransferB transferB2 = transferBDao.create(TransferB.builder().withNameB("B2").build());
@@ -308,9 +265,8 @@ public class MappedTransferCompositonAggregationTest extends AbstractJslTest {
 
         assertEquals(3, transferBDao.query().execute().size());
 
-        TransferA transferA = transferADao.create(TransferA.builder()
-                .withMultiEntityB(List.of(transferB1, transferB2, transferB3))
-                .build()
+        TransferA transferA = transferADao.create(TransferA.builder().build(),
+                TransferAAttachedRelationsForCreate.builder().withMultiEntityB(List.of(transferB1, transferB2, transferB3)).build()
         );
 
         // TODO JNG-4317 Composition should copy the composition element or not allow to bind an existed element.
@@ -318,8 +274,7 @@ public class MappedTransferCompositonAggregationTest extends AbstractJslTest {
 //        assertEquals(6, entityBDao.query().execute().size());
 
         // Check transferA contains transferB
-        assertThat(transferA.getMultiEntityB().stream().map(t -> t.identifier()).toList(), containsInAnyOrder( transferB1.identifier(), transferB2.identifier(), transferB3.identifier()));
-
+        assertThat(transferADao.queryMultiEntityB(transferA).execute().stream().map(t -> t.identifier()).toList(), containsInAnyOrder( transferB1.identifier(), transferB2.identifier(), transferB3.identifier()));
 
         // Check the entity level
         EntityB entityB1 = entityBDao.getById(transferB1.adaptTo(EntityBIdentifier.class)).orElseThrow();
@@ -355,58 +310,4 @@ public class MappedTransferCompositonAggregationTest extends AbstractJslTest {
 //        assertEquals(1, transferADao.countMultiEntityB(transferA));
 
     }
-
-    /**
-     * The test checks the navigation between compositon association work well on transfer object.
-     *
-     * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
-     *
-     * @type Behaviour
-     *
-     * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
-     *
-     * @jslModel MappedTransferAggregation.jsl
-     *
-     * @positiveRequirements REQ-ENT-005
-     *
-     *
-     */
-    @Test
-    @TestCase("CompositionAggregationNavigationOnTransfer")
-    @Requirement(reqs = {
-            "REQ-MDL-001",
-            "REQ-MDL-002",
-            "REQ-MDL-003",
-            "REQ-TYPE-001",
-            "REQ-TYPE-004",
-            "REQ-ENT-001",
-            "REQ-ENT-002",
-            "REQ-ENT-004",
-            "REQ-ENT-005",
-            "REQ-SRV-001"
-    })
-    public void testCompositionAggregationNavigationOnTransfer() {
-
-        TransferE transferE = transferEDao.create(TransferE
-                .builder()
-                .withSingleEntityF(transferFDao.create(TransferF
-                        .builder()
-                        .withMultiEntityG(List.of(
-                                transferGDao.create(TransferG.builder().build()),
-                                transferGDao.create(TransferG.builder().build()),
-                                transferGDao.create(TransferG.builder().build())
-                        ))
-                        .build())
-                )
-                .build());
-
-        TransferF transferF = transferE.getSingleEntityF().get();
-        List<TransferGIdentifier> listOfG = transferE.getSingleEntityF().get().getMultiEntityG().stream().map(t -> t.identifier()).toList();
-
-        assertThat(
-                transferF.getMultiEntityG().stream().map(t -> t.identifier()).toList(),
-                containsInAnyOrder(listOfG.toArray())
-        );
-    }
-
 }
