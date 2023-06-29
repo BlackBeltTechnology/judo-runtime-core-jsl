@@ -1,4 +1,4 @@
-model MappedTransferAssociation;
+model MappedTransferAssociationAggregation;
 
 import judo::types;
 
