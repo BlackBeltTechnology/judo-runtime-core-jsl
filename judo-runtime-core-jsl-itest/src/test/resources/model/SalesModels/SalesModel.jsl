@@ -47,9 +47,9 @@ entity Queries {
 
 entity SalesPerson extends Person {
 	relation Lead[] leads opposite:salesPerson;
-	@Lazy
+	@Query
 	relation Lead[] leadsOver(Integer limit = 100) <= self.leads!filter(lead | lead.value > limit);
-	@Lazy
+	@Query
 	relation Lead[] leadsBetween(Integer min = 0, Integer max = 100) <=
     SalesPerson.leads!filter(l | l.value > min and  l.value < max);
 	relation Lead[] leadsOver10 <= self.leadsOver(limit = 10);

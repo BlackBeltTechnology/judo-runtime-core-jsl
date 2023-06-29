@@ -15,7 +15,7 @@ entity EntityB {
 
 transfer TransferA (EntityA a) {
     field String nameB <=> a.nameA;
-    @Eager
+    @Embedded
     relation TransferB relationBonA <=> a.relationBonA;
 }
 
@@ -35,7 +35,7 @@ entity EntityD {
 
 transfer TransferC (EntityC c) {
     field String nameC <=> c.nameC;
-    @Eager
+    @Embedded
     relation required TransferD relationDonC <=> c.relationDonC;
 }
 
@@ -55,7 +55,7 @@ entity EntityF {
 
 transfer TransferE (EntityE e) {
     field String nameE <=> e.nameE;
-    @Eager
+    @Embedded
     relation TransferF[] relationFonE <=> e.relationFonE;
 }
 
@@ -80,12 +80,12 @@ entity EntityJ {
 
 transfer TransferG (EntityG g) {
     field String nameF <=> g.nameG;
-    @Eager
+    @Embedded
     relation TransferH relationHonG <=> g.relationHonG;
 }
 
 transfer TransferH (EntityH h) {
-    @Eager
+    @Embedded
     relation TransferJ[] relationJonH <=> h.relationJonH;
 }
 
