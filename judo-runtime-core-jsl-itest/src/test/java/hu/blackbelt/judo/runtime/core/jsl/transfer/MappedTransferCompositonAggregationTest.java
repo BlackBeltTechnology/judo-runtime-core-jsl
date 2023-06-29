@@ -22,23 +22,21 @@ package hu.blackbelt.judo.runtime.core.jsl.transfer;
 
 import com.google.inject.Inject;
 import com.google.inject.Module;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferaggregation.mappedtransferaggregation.entitya.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferaggregation.mappedtransferaggregation.entityb.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferaggregation.mappedtransferaggregation.entityc.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferaggregation.mappedtransferaggregation.entityd.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferaggregation.mappedtransferaggregation.entitye.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferaggregation.mappedtransferaggregation.entityf.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferaggregation.mappedtransferaggregation.entityg.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferaggregation.mappedtransferaggregation.transfera.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferaggregation.mappedtransferaggregation.transferb.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferaggregation.mappedtransferaggregation.transferc.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferaggregation.mappedtransferaggregation.transferd.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferaggregation.mappedtransferaggregation.transfere.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferaggregation.mappedtransferaggregation.transferf.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferaggregation.mappedtransferaggregation.transferg.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociation.mappedtransferassociation.transferh.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociation.mappedtransferassociation.transferj.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.MappedTransferAggregationDaoModules;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.entitya.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.entityb.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.entityc.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.entityd.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.entitye.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.entityf.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.entityg.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.transfera.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.transferb.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.transferc.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.transferd.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.transfere.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.transferf.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.transferg.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.MappedTransferCompositonAggregationDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
@@ -54,7 +52,7 @@ import static  org.junit.jupiter.api.Assertions.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 @Slf4j
-public class MappedTransferAggregationTest extends AbstractJslTest {
+public class MappedTransferCompositonAggregationTest extends AbstractJslTest {
 
     @Inject
     EntityADao entityADao;
@@ -102,18 +100,18 @@ public class MappedTransferAggregationTest extends AbstractJslTest {
 
     @Override
     public Module getModelDaoModule() {
-        return new MappedTransferAggregationDaoModules();
+        return new MappedTransferCompositonAggregationDaoModules();
     }
 
     @Override
     public String getModelName() {
-        return "MappedTransferAggregation";
+        return "MappedTransferCompositonAggregation";
     }
 
     /**
      * The test checks the single aggregation work well on transfer object.
      *
-     * @prerequisites The test must start and finish on the same day. Therefore, don't run this test close to midnight.
+     * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
      * @type Behaviour
      *
@@ -202,7 +200,7 @@ public class MappedTransferAggregationTest extends AbstractJslTest {
     /**
      * The test checks the single required aggregation work well on transfer object.
      *
-     * @prerequisites The test must start and finish on the same day. Therefore, don't run this test close to midnight.
+     * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
      * @type Behaviour
      *
@@ -277,7 +275,7 @@ public class MappedTransferAggregationTest extends AbstractJslTest {
     /**
      * The test checks the multi aggregation work well on transfer object.
      *
-     * @prerequisites The test must start and finish on the same day. Therefore, don't run this test close to midnight.
+     * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
      * @type Behaviour
      *
@@ -361,7 +359,7 @@ public class MappedTransferAggregationTest extends AbstractJslTest {
     /**
      * The test checks the navigation between aggregations work well on transfer object.
      *
-     * @prerequisites The test must start and finish on the same day. Therefore, don't run this test close to midnight.
+     * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
      * @type Behaviour
      *
