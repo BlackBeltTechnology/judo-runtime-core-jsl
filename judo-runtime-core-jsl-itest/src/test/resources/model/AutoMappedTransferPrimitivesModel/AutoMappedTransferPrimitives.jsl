@@ -185,23 +185,23 @@ entity DerivedWithQueryExpression {
     field Time timeDerived <= self.timeQuery();
     field MyEnum enumDerived <= self.enumQuery();
 
-	@Lazy
+	@Query
     field Integer integerQuery <= 1;
-	@Lazy
+	@Query
     field Scaled scaledQuery <= 2.34;
-	@Lazy
+	@Query
     field String stringQuery <= "test";
-	@Lazy
+	@Query
     field PhoneNumber regexQuery <= "+36 (30) 123 1234";
-	@Lazy
+	@Query
     field Boolean boolQuery <= true;
-	@Lazy
+	@Query
     field Date dateQuery <= `2022-07-11`;
-	@Lazy
+	@Query
     field Timestamp timestampQuery <= `2022-07-11T19:09:33Z`;
-	@Lazy
+	@Query
     field Time timeQuery <= `23:59:59`;
-	@Lazy
+	@Query
     field MyEnum enumQuery <= MyEnum#Bombastic;
 
 }
