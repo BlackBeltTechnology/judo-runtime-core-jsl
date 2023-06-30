@@ -63,32 +63,132 @@ transfer TransferF (EntityF f) {
     field String nameF <=> f.nameF;
 }
 
-// Navigation trough transfers
+
+// TwoWay Relations
+
+/*
+Two way relation pattern
+
+optional <-> optional
+optional <-> required
+optional <-> collection
+
+required <-> optional
+required <-> required
+required <-> collection
+
+collection <-> optional
+collection <-> required
+collection <-> collection
+
+*/
 
 entity EntityG {
     field String nameG;
-    relation EntityH relationHonG;
+    relation EntityH relationOptionalH opposite-add: relationGForOptionalH;
+    relation required EntityH relationRequiredH opposite-add: relationGForRequiredH;
+    relation EntityH[] relationCollectionH opposite-add: relationGForCollectionH;
 }
 
 entity EntityH {
-    relation EntityJ[] relationJonH;
+    field String nameH;
+}
+
+transfer TransferG (EntityG g) {
+    field String nameG <=> g.nameG;
+    @Embedded
+    relation TransferH relationOptionalH <=> g.relationOptionalH;
+    @Embedded
+    relation required TransferH relationRequiredH <=> g.relationRequiredH;
+    @Embedded
+    relation TransferH[] relationCollectionH <=> g.relationCollectionH;
+}
+
+transfer TransferH (EntityH h) {
+    field String nameH <=> h.nameH;
+    @Embedded
+    relation TransferG relationGForOptionalH <=> h.relationGForOptionalH;
+    @Embedded
+    relation TransferG relationGForRequiredH <=> h.relationGForRequiredH;
+    @Embedded
+    relation TransferG relationGForCollectionH <=> h.relationGForCollectionH;
+}
+
+entity EntityI {
+    field String nameI;
+    relation EntityJ relationOptionalJ opposite: relationRequiredIForOptionalJ;
+    relation EntityJ[] relationCollectionJ opposite: relationRequiredIorCollectionJ;
 }
 
 entity EntityJ {
     field String nameJ;
+    relation required EntityI relationRequiredIForOptionalJ opposite: relationOptionalJ;
+    relation required EntityI relationRequiredIorCollectionJ opposite: relationCollectionJ;
 }
 
-transfer TransferG (EntityG g) {
-    field String nameF <=> g.nameG;
+transfer TransferI (EntityI i) {
+    field String nameI <=> i.nameI;
     @Embedded
-    relation TransferH relationHonG <=> g.relationHonG;
-}
-
-transfer TransferH (EntityH h) {
+    relation TransferJ relationOptionalJ <=> i.relationOptionalJ;
     @Embedded
-    relation TransferJ[] relationJonH <=> h.relationJonH;
+    relation TransferJ[] relationCollectionJ <=> i.relationCollectionJ;
 }
 
 transfer TransferJ (EntityJ j) {
-        field String nameJ <=> j.nameJ;
+    field String nameJ <=> j.nameJ;
+    @Embedded
+    relation required TransferI relationRequiredIForOptionalJ <=> j.relationRequiredIForOptionalJ;
+    @Embedded
+    relation required TransferI relationRequiredIorCollectionJ <=> j.relationRequiredIorCollectionJ;
+}
+
+entity EntityK {
+    field String nameK;
+    relation EntityL[] relationCollectionL opposite-add: relationCollectionKForCollectionL[];
+}
+
+entity EntityL {
+    field String nameL;
+}
+
+transfer TransferK (EntityK k) {
+    field String nameK <=> k.nameK;
+    @Embedded
+    relation TransferL[] relationCollectionL <=> k.relationCollectionL;
+}
+
+transfer TransferL (EntityL l) {
+    field String nameL <=> l.nameL;
+    @Embedded
+    relation TransferK[] relationCollectionKForCollectionL <=> l.relationCollectionKForCollectionL;
+}
+
+// Navigation trough transfers
+
+entity EntityM {
+    field String nameM;
+    relation EntityN relationNonM;
+}
+
+entity EntityN {
+    relation EntityO[] relationOonN;
+}
+
+entity EntityO {
+    field String nameO;
+}
+
+transfer TransferM (EntityM m) {
+    field String nameM <=> m.nameM;
+    @Embedded
+    relation TransferN relationNonM <=> m.relationNonM;
+}
+
+transfer TransferN (EntityN n) {
+    @Embedded
+    relation TransferO[] relationOonN <=> n.relationOonN;
+}
+
+transfer TransferO (EntityO o) {
+        field String nameO <=> o.nameO;
 }
