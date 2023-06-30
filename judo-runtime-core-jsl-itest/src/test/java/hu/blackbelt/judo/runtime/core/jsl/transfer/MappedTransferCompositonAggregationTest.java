@@ -45,6 +45,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.Matchers.equalTo;
@@ -190,10 +191,9 @@ public class MappedTransferCompositonAggregationTest extends AbstractJslTest {
         assertTrue(thrown1.getMessage().contains("Identifier cannot be set on new association reference element"));
         assertTrue(thrown1.getMessage().contains("#singleEntityB"));
 
-
-        //TODO JNG-4877 create dao function throw error
-//        transferADao.createSingleEntityB(transferA, TransferB.builder().withNameB("B2").build());
-//        assertTrue(transferA.getSingleEntityB().isPresent());
+        transferADao.createSingleEntityB(transferA, TransferB.builder().withNameB("B2").build());
+        assertTrue(transferA.getSingleEntityB().isPresent());
+        assertEquals(Optional.of("B2"), transferADao.querySingleEntityB(transferA).orElseThrow().getNameB());
 
     }
 
@@ -264,11 +264,11 @@ public class MappedTransferCompositonAggregationTest extends AbstractJslTest {
 
         //Create new required element and check the old is deleted
 
-        //TODO JNG-4877 create dao function throw error
-//        transferCDao.createSingleRequiredEntityD(transferC, TransferD.builder().build());
-
-//        assertTrue(transferDDao.getById(transferD.identifier()).isEmpty());
-//        assertTrue(entityDDao.getById(transferD.adaptTo(EntityDIdentifier.class)).isEmpty());
+        IllegalArgumentException thrown2 = assertThrows(
+                IllegalArgumentException.class,
+                () -> transferCDao.createSingleRequiredEntityD(transferC, TransferD.builder().build())
+        );
+        assertTrue(thrown2.getMessage().contains("Containment already set"));
 
     }
 
@@ -344,15 +344,13 @@ public class MappedTransferCompositonAggregationTest extends AbstractJslTest {
 
         // Add new List empty
 
-        // TODO JNG-4877
-//        transferADao.createMultiEntityB(transferA, List.of());
-//        assertEquals(0, transferADao.countMultiEntityB(transferA));
+        // Add new List empty
+        transferADao.createMultiEntityB(transferA, List.of());
+        assertEquals(2, transferADao.countMultiEntityB(transferA));
 
         // Create new List with elements
-
-        // TODO JNG-4877
-//        transferADao.createMultiEntityB(transferA, List.of(TransferB.builder().build()));
-//        assertEquals(1, transferADao.countMultiEntityB(transferA));
+        transferADao.createMultiEntityB(transferA, List.of(TransferB.builder().build()));
+        assertEquals(3, transferADao.countMultiEntityB(transferA));
 
     }
 

@@ -39,6 +39,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -133,14 +134,12 @@ public class MappedTransferCompositonAssociationTest extends AbstractJslTest {
         );
 
         // Check transferA cannot bind a different B element
-        //TODO JNG-4877 create dao function throw error
-//        TransferA referenceForLambda = transferA;
-//        IllegalStateException thrown = assertThrows(
-//                IllegalStateException.class,
-//                () -> transferADao.createSingleEntityB(referenceForLambda, TransferB.builder().withNameB("B2").build())
-//        );
-//        assertTrue(thrown.getMessage().contains("Identifier cannot be different on containment reference element"));
-//        assertTrue(thrown.getMessage().contains("#singleEntityB"));
+        TransferA referenceForLambda = transferA;
+        IllegalArgumentException thrown = assertThrows(
+                IllegalArgumentException.class,
+                () -> transferADao.createSingleEntityB(referenceForLambda, TransferB.builder().withNameB("B2").build())
+        );
+        assertTrue(thrown.getMessage().contains("Upper cardinality violated"));
 
         // Check transferA can set to null
         transferBDao.delete(transferB);
@@ -151,9 +150,9 @@ public class MappedTransferCompositonAssociationTest extends AbstractJslTest {
         assertTrue(transferBDao.getById(transferB.identifier()).isEmpty());
         assertTrue(entityBDao.getById(transferB.identifier().adaptTo(EntityBIdentifier.class)).isEmpty());
 
-        //TODO JNG-4877 create dao function throw error
-//        transferADao.createSingleEntityB(transferA, TransferB.builder().withNameB("B2").build());
-//        assertTrue(transferA.getSingleEntityB().isPresent());
+        transferADao.createSingleEntityB(transferA, TransferB.builder().withNameB("B3").build());
+        assertTrue(transferADao.querySingleEntityB(transferA).isPresent());
+        assertEquals(Optional.of("B3"), transferADao.querySingleEntityB(transferA).orElseThrow().getNameB());
 
     }
 
@@ -221,11 +220,11 @@ public class MappedTransferCompositonAssociationTest extends AbstractJslTest {
 
         //Create new required element and check the old is deleted
 
-        //TODO JNG-4877 create dao function throw error
-//        transferCDao.createSingleRequiredEntityD(transferC, TransferD.builder().build());
-
-//        assertTrue(transferDDao.getById(transferD.identifier()).isEmpty());
-//        assertTrue(entityDDao.getById(transferD.adaptTo(EntityDIdentifier.class)).isEmpty());
+        IllegalArgumentException thrown2 = assertThrows(
+                IllegalArgumentException.class,
+                () -> transferCDao.createSingleRequiredEntityD(transferC, TransferD.builder().build())
+        );
+        assertTrue(thrown2.getMessage().contains("Upper cardinality violated"));
 
     }
 
@@ -287,7 +286,6 @@ public class MappedTransferCompositonAssociationTest extends AbstractJslTest {
         );
 
         //Delete one element
-
         transferBDao.delete(transferB3);
 
         assertTrue(transferBDao.getById(transferB3.identifier()).isEmpty());
@@ -298,16 +296,13 @@ public class MappedTransferCompositonAssociationTest extends AbstractJslTest {
         assertEquals(2, transferADao.countMultiEntityB(transferA));
 
         // Add new List empty
-
-        // TODO JNG-4877
-//        transferADao.createMultiEntityB(transferA, List.of());
-//        assertEquals(0, transferADao.countMultiEntityB(transferA));
+        transferADao.createMultiEntityB(transferA, List.of());
+        assertEquals(2, transferADao.countMultiEntityB(transferA));
 
         // Create new List with elements
+        transferADao.createMultiEntityB(transferA, List.of(TransferB.builder().build()));
+        assertEquals(3, transferADao.countMultiEntityB(transferA));
 
-        // TODO JNG-4877
-//        transferADao.createMultiEntityB(transferA, List.of(TransferB.builder().build()));
-//        assertEquals(1, transferADao.countMultiEntityB(transferA));
 
     }
 }
