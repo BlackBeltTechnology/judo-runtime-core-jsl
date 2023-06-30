@@ -173,7 +173,7 @@ public class MappedTransferAssociationAggregationTest extends AbstractJslTest {
     }
 
     /**
-     * The test checks the single relation work well on transfer object.
+     * The test checks the aggregation mapped single relation work well on transfer object.
      *
      * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
@@ -187,7 +187,7 @@ public class MappedTransferAssociationAggregationTest extends AbstractJslTest {
      *
      */
     @Test
-    @TestCase("SingleRelationOnTransfer")
+    @TestCase("SingleAssociationAggregationRelationOnTransfer")
     @Requirement(reqs = {
             "REQ-MDL-001",
             "REQ-MDL-002",
@@ -200,7 +200,7 @@ public class MappedTransferAssociationAggregationTest extends AbstractJslTest {
             "REQ-ENT-005",
             "REQ-SRV-001"
     })
-    public void testSingleRelationOnTransfer() {
+    public void testSingleAssociationAggregationRelationOnTransfer() {
 
         TransferB tb1 = transferBDao.create(TransferB.builder().build());
         TransferB tb2 = transferBDao.create(TransferB.builder().build());
@@ -247,7 +247,7 @@ public class MappedTransferAssociationAggregationTest extends AbstractJslTest {
     }
 
     /**
-     * The test checks the single required relation work well on transfer object.
+     * The test checks the aggregation mapped single-required relation work well on transfer object.
      *
      * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
@@ -259,7 +259,7 @@ public class MappedTransferAssociationAggregationTest extends AbstractJslTest {
      *
      */
     @Test
-    @TestCase("SingleRequiredRelationOnTransfer")
+    @TestCase("SingleRequiredAssociationAggregationRelationOnTransfer")
     @Requirement(reqs = {
             "REQ-MDL-001",
             "REQ-MDL-002",
@@ -272,7 +272,7 @@ public class MappedTransferAssociationAggregationTest extends AbstractJslTest {
             "REQ-ENT-005",
             "REQ-SRV-001"
     })
-    public void testSingleRequiredRelationOnTransfer() {
+    public void testSingleRequiredAssociationAggregationRelationOnTransfer() {
 
         TransferD td1 = transferDDao.create(TransferD.builder().build());
         TransferD td2 = transferDDao.create(TransferD.builder().build());
@@ -329,7 +329,7 @@ public class MappedTransferAssociationAggregationTest extends AbstractJslTest {
     }
 
     /**
-     * The test checks the multi relation work well on transfer object.
+     * The test checks the aggregation mapped multi relation work well on transfer object.
      *
      * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
@@ -341,7 +341,7 @@ public class MappedTransferAssociationAggregationTest extends AbstractJslTest {
      *
      */
     @Test
-    @TestCase("MultiRelationOnTransfer")
+    @TestCase("MultiAssociationAggregationRelationOnTransfer")
     @Requirement(reqs = {
             "REQ-MDL-001",
             "REQ-MDL-002",
@@ -354,7 +354,7 @@ public class MappedTransferAssociationAggregationTest extends AbstractJslTest {
             "REQ-ENT-005",
             "REQ-SRV-001"
     })
-    public void testMultiRelationOnTransfer() {
+    public void testMultiAssociationAggregationRelationOnTransfer() {
 
         TransferF tf1 = transferFDao.create(TransferF.builder().build());
         TransferF tf2 = transferFDao.create(TransferF.builder().build());
@@ -467,6 +467,7 @@ public class MappedTransferAssociationAggregationTest extends AbstractJslTest {
         optional <-> required
         optional <-> collection
          */
+        //TODO After JNG-4936 must refactor the Dao query members to instance member.
 
         TransferH th1 = transferHDao.create(TransferH.builder().withNameH("TH1").build());
         TransferH th2 = transferHDao.create(TransferH.builder().withNameH("TH2").build());
@@ -551,6 +552,7 @@ public class MappedTransferAssociationAggregationTest extends AbstractJslTest {
         optional <-> required
         optional <-> collection
          */
+        //TODO After JNG-4936 must refactor the Dao query members to instance member.
 
         TransferH th1 = transferHDao.create(TransferH.builder().withNameH("TH1").build());
         TransferH th2 = transferHDao.create(TransferH.builder().withNameH("TH2").build());
@@ -741,6 +743,7 @@ public class MappedTransferAssociationAggregationTest extends AbstractJslTest {
         required <-> optional
         required <-> collection
          */
+        //TODO After JNG-4936 must refactor the Dao query members to instance member.
 
         TransferI ti1 = transferIDao.create(TransferI.builder().withNameI("TI1").build());
         TransferI ti2 = transferIDao.create(TransferI.builder().withNameI("TI2").build());
@@ -827,6 +830,7 @@ public class MappedTransferAssociationAggregationTest extends AbstractJslTest {
         required <-> optional
         required <-> collection
          */
+        //TODO After JNG-4936 must refactor the Dao query members to instance member.
 
         TransferI ti1 = transferIDao.create(TransferI.builder().withNameI("TI1").build());
         TransferI ti2 = transferIDao.create(TransferI.builder().withNameI("TI2").build());
@@ -948,6 +952,7 @@ public class MappedTransferAssociationAggregationTest extends AbstractJslTest {
         /*
         collection <-> collection
          */
+        //TODO After JNG-4936 must refactor the Dao query members to instance member.
 
         TransferK tk1 = transferKDao.create(TransferK.builder().withNameK("TK1").build());
         TransferL tl1 = transferLDao.create(
@@ -1032,6 +1037,7 @@ public class MappedTransferAssociationAggregationTest extends AbstractJslTest {
         /*
         collection <-> collection
          */
+        //TODO After JNG-4936 must refactor the Dao query members to instance member.
 
         TransferK tk1 = transferKDao.create(TransferK.builder().withNameK("TK1").build());
         TransferL tl1 = transferLDao.create(
