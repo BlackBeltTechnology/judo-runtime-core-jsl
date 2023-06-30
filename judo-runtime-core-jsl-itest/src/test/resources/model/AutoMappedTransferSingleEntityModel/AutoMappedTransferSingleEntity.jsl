@@ -55,6 +55,8 @@ transfer AutoMappedContainerSingleCompositionDerivedEntity(ContainerSingleCompos
 
 query ReferenceEntity referenceEntityWithNameQuery(String name) <= ReferenceEntity!all()!filter(e | e.name == name)!any();
 
+query Integer countReferenceEntityWithNameQuery(String name) <= ReferenceEntity!all()!filter(e | e.name == name)!size();
+
 entity ContainerSingleRelationDerivedEntity {
 
     relation ReferenceEntity singleComposition;
@@ -68,6 +70,9 @@ entity ContainerSingleRelationDerivedEntity {
 
     @Query
     relation ReferenceEntity singleRelationEntityExpressionQuery(String name) <= referenceEntityWithNameQuery(name = name);
+
+    @Query
+    field Integer primitiveQuery(String name) <= countReferenceEntityWithNameQuery(name = name);
 
 }
 
