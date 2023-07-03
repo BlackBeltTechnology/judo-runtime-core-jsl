@@ -32,6 +32,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercastingfu
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercastingfunctions.mappedtransfercastingfunctions.transfertester.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.MappedTransferCastingFunctionsDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
+import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
 import lombok.extern.slf4j.Slf4j;
@@ -102,7 +103,22 @@ public class MappedTransferCastingFunctionsTest extends AbstractJslTest {
 
     }
 
+    /**
+     * The test checks the KindOf Instance function work well on transfer object.
+     *
+     * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
+     *
+     * @type Behaviour
+     *
+     * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
+     *
+     * @jslModel MappedTransferCastingFunctions.jsl
+     *
+     * @positiveRequirements REQ-EXPR-021
+     *
+     */
     @Test
+    @TestCase("KindOfOnTransfer")
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-TYPE-004",
@@ -115,7 +131,7 @@ public class MappedTransferCastingFunctionsTest extends AbstractJslTest {
             "REQ-EXPR-003",
             "REQ-EXPR-021"
     })
-    public void testKindOf() {
+    public void testKindOfOnTransfer() {
         assertTrue(transferTester.getKindOfA().orElseThrow());
         assertTrue(transferTester.getKindOfB().orElseThrow());
         assertFalse(transferTester.getKindOfCA().orElseThrow());
@@ -132,7 +148,22 @@ public class MappedTransferCastingFunctionsTest extends AbstractJslTest {
 
     }
 
+    /**
+     * The test checks the TypeOf Instance function work well on transfer object.
+     *
+     * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
+     *
+     * @type Behaviour
+     *
+     * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
+     *
+     * @jslModel MappedTransferCastingFunctions.jsl
+     *
+     * @positiveRequirements REQ-EXPR-021
+     *
+     */
     @Test
+    @TestCase("TypeOfOnTransfer")
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-TYPE-004",
@@ -143,9 +174,10 @@ public class MappedTransferCastingFunctionsTest extends AbstractJslTest {
             "REQ-ENT-005",
             "REQ-ENT-008",
             "REQ-EXPR-003",
-            "REQ-EXPR-021"
+            "REQ-EXPR-021",
+            "REQ-SRV-002"
     })
-    public void testTypeOf() {
+    public void testTypeOfOnTransfer() {
         assertFalse(transferTester.getTypeOfA().orElseThrow());
         assertTrue(transferTester.getTypeOfB().orElseThrow());
         assertFalse(transferTester.getTypeOfCA().orElseThrow());
@@ -161,7 +193,22 @@ public class MappedTransferCastingFunctionsTest extends AbstractJslTest {
         assertFalse(tester.getTypeOfCB().orElseThrow());
     }
 
+    /**
+     * The test checks the asType Instance function work well on transfer object.
+     *
+     * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
+     *
+     * @type Behaviour
+     *
+     * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
+     *
+     * @jslModel MappedTransferCastingFunctions.jsl
+     *
+     * @positiveRequirements REQ-EXPR-021
+     *
+     */
     @Test
+    @TestCase("AsTypeOnTransfer")
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-TYPE-004",
@@ -172,9 +219,10 @@ public class MappedTransferCastingFunctionsTest extends AbstractJslTest {
             "REQ-ENT-005",
             "REQ-ENT-008",
             "REQ-EXPR-003",
-            "REQ-EXPR-021"
+            "REQ-EXPR-021",
+            "REQ-SRV-002"
     })
-    public void testAsType() {
+    public void testAsTypeOnTransfer() {
         assertEquals("ab", transferTesterDao.queryAsTypeA(transferTester).orElseThrow().getNameA().orElseThrow());
 
         TB tb = transferTesterDao.queryAsTypeB(transferTester).orElseThrow();
@@ -209,7 +257,22 @@ public class MappedTransferCastingFunctionsTest extends AbstractJslTest {
 
     }
 
+    /**
+     * The test checks the asCollection Collection function work well on transfer object.
+     *
+     * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
+     *
+     * @type Behaviour
+     *
+     * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
+     *
+     * @jslModel MappedTransferCastingFunctions.jsl
+     *
+     * @positiveRequirements REQ-EXPR-022
+     *
+     */
     @Test
+    @TestCase("AsCollectionOnTransfer")
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-TYPE-004",
@@ -220,9 +283,10 @@ public class MappedTransferCastingFunctionsTest extends AbstractJslTest {
             "REQ-ENT-005",
             "REQ-ENT-008",
             "REQ-EXPR-003",
-            "REQ-EXPR-022"
+            "REQ-EXPR-022",
+            "REQ-SRV-002"
     })
-    public void testAsCollection() {
+    public void testAsCollectionOnTransfer() {
         List<TA> asCollectionTA = transferTesterDao.queryAsCollectionA(transferTester).execute();
         assertEquals(2, asCollectionTA.size());
         assertTrue(asCollectionTA.stream().anyMatch(a -> a.getNameA().orElseThrow().equals("ab1")));
