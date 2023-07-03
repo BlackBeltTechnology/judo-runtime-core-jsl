@@ -22,9 +22,13 @@ package hu.blackbelt.judo.runtime.core.jsl.transfer;
 
 import com.google.inject.Inject;
 import com.google.inject.Module;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercastingfunctions.mappedtransfercastingfunctions.a.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercastingfunctions.mappedtransfercastingfunctions.ta.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercastingfunctions.mappedtransfercastingfunctions.b.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercastingfunctions.mappedtransfercastingfunctions.tb.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercastingfunctions.mappedtransfercastingfunctions.ca.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercastingfunctions.mappedtransfercastingfunctions.tca.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercastingfunctions.mappedtransfercastingfunctions.tester.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercastingfunctions.mappedtransfercastingfunctions.transfertester.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.MappedTransferCastingFunctionsDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
@@ -42,6 +46,13 @@ import static org.junit.jupiter.api.Assertions.*;
 public class MappedTransferCastingFunctionsTest extends AbstractJslTest {
 
     @Inject
+    BDao bDao;
+    @Inject
+    CADao caDao;
+    @Inject
+    TesterDao testerDao;
+
+    @Inject
     TBDao tbDao;
     @Inject
     TCADao tcaDao;
@@ -49,6 +60,8 @@ public class MappedTransferCastingFunctionsTest extends AbstractJslTest {
     TransferTesterDao transferTesterDao;
 
     private TransferTester transferTester;
+
+    private Tester tester;
 
     @Override
     public Module getModelDaoModule() {
@@ -64,12 +77,12 @@ public class MappedTransferCastingFunctionsTest extends AbstractJslTest {
     @BeforeEach
     protected void init(JudoDatasourceFixture datasource) throws Exception {
         super.init(datasource);
-        TCA ca = tcaDao.create(TCA.builder().withNameA("aca1").withNameB("bca1").withNameCA("ca1").build());
-        TCA ca1 = tcaDao.create(TCA.builder().withNameA("aca2").withNameB("bca2").withNameCA("ca2").build());
-        TCA ca2 = tcaDao.create(TCA.builder().withNameA("aca3").withNameB("bca3").withNameCA("ca3").build());
-        TB caAsB = tbDao.getById(ca.identifier().adaptTo(TBIdentifier.class)).orElseThrow();
-        TB caAsB1 = tbDao.getById(ca1.identifier().adaptTo(TBIdentifier.class)).orElseThrow();
-        TB caAsB2 = tbDao.getById(ca2.identifier().adaptTo(TBIdentifier.class)).orElseThrow();
+        TCA tca = tcaDao.create(TCA.builder().withNameA("aca1").withNameB("bca1").withNameCA("ca1").build());
+        TCA tca1 = tcaDao.create(TCA.builder().withNameA("aca2").withNameB("bca2").withNameCA("ca2").build());
+        TCA tca2 = tcaDao.create(TCA.builder().withNameA("aca3").withNameB("bca3").withNameCA("ca3").build());
+        TB tcaAsB = tbDao.getById(tca.identifier().adaptTo(TBIdentifier.class)).orElseThrow();
+        TB tcaAsB1 = tbDao.getById(tca1.identifier().adaptTo(TBIdentifier.class)).orElseThrow();
+        TB tcaAsB2 = tbDao.getById(tca2.identifier().adaptTo(TBIdentifier.class)).orElseThrow();
 
         transferTester = transferTesterDao.create(
                                     TransferTester.builder()
@@ -81,9 +94,12 @@ public class MappedTransferCastingFunctionsTest extends AbstractJslTest {
                                                 tbDao.create(TB.builder().withNameA("ab1").withNameB("b1").build()),
                                                 tbDao.create(TB.builder().withNameA("ab2").withNameB("b2").build())
                                         ))
-                                        .withCaAsB(caAsB)
-                                        .withCaAsBs(List.of(caAsB1, caAsB2))
+                                        .withCaAsB(tcaAsB)
+                                        .withCaAsBs(List.of(tcaAsB1, tcaAsB2))
                                         .build());
+
+        tester = testerDao.getById(transferTester.identifier().adaptTo(TesterIdentifier.class)).orElseThrow();
+
     }
 
     @Test
@@ -105,6 +121,15 @@ public class MappedTransferCastingFunctionsTest extends AbstractJslTest {
         assertFalse(transferTester.getKindOfCA().orElseThrow());
         assertTrue(transferTester.getKindOfCA1().orElseThrow());
         assertFalse(transferTester.getKindOfCB().orElseThrow());
+
+        //representation
+
+        assertTrue(tester.getKindOfA().orElseThrow());
+        assertTrue(tester.getKindOfB().orElseThrow());
+        assertFalse(tester.getKindOfCA().orElseThrow());
+        assertTrue(tester.getKindOfCA1().orElseThrow());
+        assertFalse(tester.getKindOfCB().orElseThrow());
+
     }
 
     @Test
@@ -126,6 +151,14 @@ public class MappedTransferCastingFunctionsTest extends AbstractJslTest {
         assertFalse(transferTester.getTypeOfCA().orElseThrow());
         assertTrue(transferTester.getTypeOfCA1().orElseThrow());
         assertFalse(transferTester.getTypeOfCB().orElseThrow());
+
+        //representation
+
+        assertFalse(tester.getTypeOfA().orElseThrow());
+        assertTrue(tester.getTypeOfB().orElseThrow());
+        assertFalse(tester.getTypeOfCA().orElseThrow());
+        assertTrue(tester.getTypeOfCA1().orElseThrow());
+        assertFalse(tester.getTypeOfCB().orElseThrow());
     }
 
     @Test
@@ -144,18 +177,36 @@ public class MappedTransferCastingFunctionsTest extends AbstractJslTest {
     public void testAsType() {
         assertEquals("ab", transferTesterDao.queryAsTypeA(transferTester).orElseThrow().getNameA().orElseThrow());
 
-        TB b = transferTesterDao.queryAsTypeB(transferTester).orElseThrow();
-        assertEquals("ab", b.getNameA().orElseThrow());
-        assertEquals("b", b.getNameB().orElseThrow());
+        TB tb = transferTesterDao.queryAsTypeB(transferTester).orElseThrow();
+        assertEquals("ab", tb.getNameA().orElseThrow());
+        assertEquals("b", tb.getNameB().orElseThrow());
 
         assertTrue(transferTesterDao.queryAsTypeCA(transferTester).isEmpty());
 
-        TCA caFromT = transferTesterDao.queryAsTypeCA1(transferTester).orElseThrow();
+        TCA tcaFromT = transferTesterDao.queryAsTypeCA1(transferTester).orElseThrow();
+        assertEquals("aca1", tcaFromT.getNameA().orElseThrow());
+        assertEquals("bca1", tcaFromT.getNameB().orElseThrow());
+        assertEquals("ca1", tcaFromT.getNameCA().orElseThrow());
+
+        assertTrue(transferTesterDao.queryAsTypeCB(transferTester).isEmpty());
+
+        // representation
+
+        assertEquals("ab", testerDao.queryAsTypeA(tester).orElseThrow().getNameA().orElseThrow());
+
+        B b = testerDao.queryAsTypeB(tester).orElseThrow();
+        assertEquals("ab", b.getNameA().orElseThrow());
+        assertEquals("b", b.getNameB().orElseThrow());
+
+        assertTrue(testerDao.queryAsTypeCA(tester).isEmpty());
+
+        CA caFromT = testerDao.queryAsTypeCA1(tester).orElseThrow();
         assertEquals("aca1", caFromT.getNameA().orElseThrow());
         assertEquals("bca1", caFromT.getNameB().orElseThrow());
         assertEquals("ca1", caFromT.getNameCA().orElseThrow());
 
-        assertTrue(transferTesterDao.queryAsTypeCB(transferTester).isEmpty());
+        assertTrue(testerDao.queryAsTypeCB(tester).isEmpty());
+
     }
 
     @Test
@@ -172,28 +223,53 @@ public class MappedTransferCastingFunctionsTest extends AbstractJslTest {
             "REQ-EXPR-022"
     })
     public void testAsCollection() {
-        List<TA> asCollectionA = transferTesterDao.queryAsCollectionA(transferTester).execute();
-        assertEquals(2, asCollectionA.size());
-        assertTrue(asCollectionA.stream().anyMatch(a -> a.getNameA().orElseThrow().equals("ab1")));
-        assertTrue(asCollectionA.stream().anyMatch(a -> a.getNameA().orElseThrow().equals("ab2")));
+        List<TA> asCollectionTA = transferTesterDao.queryAsCollectionA(transferTester).execute();
+        assertEquals(2, asCollectionTA.size());
+        assertTrue(asCollectionTA.stream().anyMatch(a -> a.getNameA().orElseThrow().equals("ab1")));
+        assertTrue(asCollectionTA.stream().anyMatch(a -> a.getNameA().orElseThrow().equals("ab2")));
 
-        List<TB> asCollectionB = transferTesterDao.queryAsCollectionB(transferTester).execute();
-        assertEquals(2, asCollectionB.size());
-        assertTrue(asCollectionB.stream().anyMatch(lb -> lb.getNameA().orElseThrow().equals("ab1") &&
+        List<TB> asCollectionTB = transferTesterDao.queryAsCollectionB(transferTester).execute();
+        assertEquals(2, asCollectionTB.size());
+        assertTrue(asCollectionTB.stream().anyMatch(lb -> lb.getNameA().orElseThrow().equals("ab1") &&
                                                          lb.getNameB().orElseThrow().equals("b1")));
-        assertTrue(asCollectionB.stream().anyMatch(lb -> lb.getNameA().orElseThrow().equals("ab2") &&
+        assertTrue(asCollectionTB.stream().anyMatch(lb -> lb.getNameA().orElseThrow().equals("ab2") &&
                                                          lb.getNameB().orElseThrow().equals("b2")));
 
         assertEquals(0, transferTesterDao.queryAsCollectionCA(transferTester).execute().size());
 
-        List<TCA> asCollectionCA1 = transferTesterDao.queryAsCollectionCA1(transferTester).execute();
-        assertEquals(2, asCollectionCA1.size());
-        assertTrue(asCollectionCA1.stream().anyMatch(lca -> lca.getNameA().orElseThrow().equals("aca2") &&
+        List<TCA> asCollectionTCA1 = transferTesterDao.queryAsCollectionCA1(transferTester).execute();
+        assertEquals(2, asCollectionTCA1.size());
+        assertTrue(asCollectionTCA1.stream().anyMatch(lca -> lca.getNameA().orElseThrow().equals("aca2") &&
                                                             lca.getNameB().orElseThrow().equals("bca2") &&
                                                             lca.getNameCA().orElseThrow().equals("ca2")));
-        assertTrue(asCollectionCA1.stream().anyMatch(lca -> lca.getNameA().orElseThrow().equals("aca3") &&
+        assertTrue(asCollectionTCA1.stream().anyMatch(lca -> lca.getNameA().orElseThrow().equals("aca3") &&
                                                             lca.getNameB().orElseThrow().equals("bca3") &&
                                                             lca.getNameCA().orElseThrow().equals("ca3")));
+
+        // representation
+
+        List<A> asCollectionA = testerDao.queryAsCollectionA(tester).execute();
+        assertEquals(2, asCollectionA.size());
+        assertTrue(asCollectionA.stream().anyMatch(a -> a.getNameA().orElseThrow().equals("ab1")));
+        assertTrue(asCollectionA.stream().anyMatch(a -> a.getNameA().orElseThrow().equals("ab2")));
+
+        List<B> asCollectionB = testerDao.queryAsCollectionB(tester).execute();
+        assertEquals(2, asCollectionB.size());
+        assertTrue(asCollectionB.stream().anyMatch(lb -> lb.getNameA().orElseThrow().equals("ab1") &&
+                lb.getNameB().orElseThrow().equals("b1")));
+        assertTrue(asCollectionB.stream().anyMatch(lb -> lb.getNameA().orElseThrow().equals("ab2") &&
+                lb.getNameB().orElseThrow().equals("b2")));
+
+        assertEquals(0, testerDao.queryAsCollectionCA(tester).execute().size());
+
+        List<CA> asCollectionCA1 = testerDao.queryAsCollectionCA1(tester).execute();
+        assertEquals(2, asCollectionCA1.size());
+        assertTrue(asCollectionCA1.stream().anyMatch(lca -> lca.getNameA().orElseThrow().equals("aca2") &&
+                lca.getNameB().orElseThrow().equals("bca2") &&
+                lca.getNameCA().orElseThrow().equals("ca2")));
+        assertTrue(asCollectionCA1.stream().anyMatch(lca -> lca.getNameA().orElseThrow().equals("aca3") &&
+                lca.getNameB().orElseThrow().equals("bca3") &&
+                lca.getNameCA().orElseThrow().equals("ca3")));
     }
 
 }
