@@ -222,6 +222,8 @@ public class TestDefaultAndRequiredFieldsOnMappedTO extends AbstractJslTest {
 
         EntityWithOptionalFields e1 = e1Optional.orElseThrow();
 
+        EntityWithOptionalFieldsWithDefault ent = entityWithOptionalFieldsWithDefaultDao.create(EntityWithOptionalFieldsWithDefault.builder().build());
+
         assertEquals(Optional.empty(), e1.getIntegerAttr());
         assertEquals(Optional.empty(), e1.getScaledAttr());
         assertEquals(Optional.empty(), e1.getStringAttr());

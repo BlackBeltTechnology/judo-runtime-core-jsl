@@ -1,0 +1,12 @@
+model TestRegexValidation;
+
+import judo::types;
+
+type numeric Integer precision:3 scale:0;
+
+type string PhoneNumber min-size:0 max-size:32 regex:"^(\\+\\d{1,2})[\\s.-]?(\\d{1,3})?[\\s.-]\\d{3}[\\s.-]\\d{3,4}$";
+
+entity TextRegexEntity {
+    field PhoneNumber regexAttr = "+36-1-223-12";
+    field Integer attr = 1111111111111;
+}
