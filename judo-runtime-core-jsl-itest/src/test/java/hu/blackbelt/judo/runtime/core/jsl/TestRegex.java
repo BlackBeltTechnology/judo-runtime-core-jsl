@@ -58,7 +58,7 @@ public class TestRegex extends AbstractJslTest {
     public void testRegexValidation() {
         TextRegexEntity entity = textRegexEntityDao.create(TextRegexEntity.builder().build());
         System.out.println(entity.getRegexAttr());
-        entity.setRegexAttr("+36");
-        //textRegexEntityDao.update(entity);
+        entity.setAttr(100);
+        textRegexEntityDao.update(entity);
     }
 }
