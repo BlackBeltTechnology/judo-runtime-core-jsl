@@ -1063,6 +1063,7 @@
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/AutoMappedTransferSingleEntity</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/TestDefaultAndRequiredFieldsOnMappedTO</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/EntityWithSameQueryName</source>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/MappedTransferCastingFunctions</source>
                             </sources>
                         </configuration>
                     </execution>
