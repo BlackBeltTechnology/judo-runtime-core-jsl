@@ -129,7 +129,8 @@ public class MappedTransferCastingFunctionsTest extends AbstractJslTest {
             "REQ-ENT-005",
             "REQ-ENT-008",
             "REQ-EXPR-003",
-            "REQ-EXPR-021"
+            "REQ-EXPR-021",
+            "REQ-SRV-002"
     })
     public void testKindOfOnTransfer() {
         assertTrue(transferTester.getKindOfA().orElseThrow());
