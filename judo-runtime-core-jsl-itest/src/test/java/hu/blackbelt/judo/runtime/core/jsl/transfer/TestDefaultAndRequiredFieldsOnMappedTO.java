@@ -679,7 +679,7 @@ public class TestDefaultAndRequiredFieldsOnMappedTO extends AbstractJslTest {
         assertEquals(0, transferWithOptionalFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefaultDao.query().filterByEnumAttr(EnumerationFilter.equalTo(Enum.EnumB)).count());
         transferWithOptionalFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefaultDao.delete(t2);
         EntityWithRequiredFieldsWithDefault ent = entityWithRequiredFieldsWithDefaultDao.create(EntityWithRequiredFieldsWithDefault.builder().build());
-        // TODO: JNG-4922
+
         TransferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefault t3 = transferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefaultDao.create(TransferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefault.builder().build());
 
         assertEquals(1, transferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefaultDao.countAll());
@@ -941,7 +941,6 @@ public class TestDefaultAndRequiredFieldsOnMappedTO extends AbstractJslTest {
         assertThrows(ValidationException.class, () -> transferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsWithDefaultDao.update(finalT2));
         transferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsWithDefaultDao.delete(t2);
 
-        // TODO: JNG-4922
         TransferWithRequiredFieldsMapsEntityWithRequiredFieldsWithDefault t3 = transferWithRequiredFieldsMapsEntityWithRequiredFieldsWithDefaultDao.create(TransferWithRequiredFieldsMapsEntityWithRequiredFieldsWithDefault.builder().build());
         assertEquals(1, transferWithRequiredFieldsMapsEntityWithRequiredFieldsWithDefaultDao.countAll());
         assertEquals(1, t3.getIntegerAttr());
@@ -1032,111 +1031,6 @@ public class TestDefaultAndRequiredFieldsOnMappedTO extends AbstractJslTest {
         t4.setStringAttr(null);
         final TransferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsWithDefault finalT4 = t4;
         assertThrows(ValidationException.class, () -> transferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsWithDefaultDao.update(finalT4));
-
-    }
-
-    /**
-     * This test check the mapped transfer object maps an entity with contains primitive optional field with default values.
-     *
-     * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
-     *
-     * @type Behaviour
-     *
-     * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
-     *
-     * @jslModel TransferConstructor.jsl
-     *
-     * @positiveRequirements
-     *
-     * @scenario
-     *
-     *  Create one instance of TransferWithOptionalFieldsMapsEntityWithOptionalFieldsWithDefault.
-     *
-     *  Check the transfer instance contains the mapped values.
-     *
-     *  Get the entity representation the transfer instance.
-     *
-     *  Check the entity representation contains the constructor assigned values.
-     *
-     *  Create one instance of TransferWithOptionalFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefault.
-     *
-     *  Check the transfer instance contains the mapped values.
-     *
-     *  Get the entity representation the transfer instance.
-     *
-     *  Check the entity representation contains the constructor assigned values.
-     *
-     *  Create one instance of TransferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefault.
-     *
-     *  Check the transfer instance contains the mapped values.
-     *
-     *  Get the entity representation the transfer instance.
-     *
-     *  Check the entity representation contains the constructor assigned values.
-     *
-     *  Create one instance of TransferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefault.
-     *
-     *  Check the transfer instance contains the mapped values.
-     *
-     *  Get the entity representation the transfer instance.
-     *
-     *  Check the entity representation contains the constructor assigned values.
-     *
-     */
-    @Test
-    @TestCase("test")
-    @Requirement(reqs = {
-            "REQ-TYPE-001",
-            "REQ-TYPE-002",
-            "REQ-TYPE-004",
-            "REQ-TYPE-005",
-            "REQ-TYPE-006",
-            "REQ-TYPE-007",
-            "REQ-TYPE-008",
-            "REQ-TYPE-009",
-            "REQ-ENT-001",
-            "REQ-ENT-002",
-            "REQ-MDL-001",
-            "REQ-MDL-002",
-            "REQ-MDL-003",
-            "REQ-SRV-002",
-            "REQ-SRV-003",
-            "REQ-SRV-004",
-            "REQ-EXPR-001"
-    })
-    void test() {
-        //TransferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsWithDefault t4 = transferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsWithDefaultDao.create(TransferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsWithDefault.builder().build());
-        //TransferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefault t1 = transferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefaultDao.create(TransferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefault.builder().build());
-        // TODO: JNG-4922
-        //TransferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefault t3 = transferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefaultDao.create(TransferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefault.builder().build());
-//
-        //assertEquals(1, transferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefaultDao.countAll());
-        //assertEquals(1, t3.getIntegerAttr());
-        //assertEquals(2.34, t3.getScaledAttr());
-        //assertEquals("Hello there", t3.getStringAttr());
-        //assertEquals("+36 30 123 1234", t3.getRegexAttr());
-        //assertEquals(true, t3.getBoolAttr());
-        //assertEquals(LocalDate.of(2022, 7, 11), t3.getDateAttr());
-        //assertEquals(LocalDateTime.parse("2022-07-11T19:09:33"), t3.getTimestampAttr());
-        //assertEquals(LocalTime.parse("23:59:59"), t3.getTimeAttr());
-        //assertEquals(Enum.EnumA, t3.getEnumAttr());
-//
-        //e1Optional = entityWithOptionalFieldsWithDefaultDao.getById(t3.adaptTo(EntityWithOptionalFieldsWithDefaultIdentifier.class));
-//
-        //assertTrue(e1Optional.isPresent());
-//
-        //e1 = e1Optional.orElseThrow();
-//
-        //assertEquals(Optional.of(1), e1.getIntegerAttr());
-        //assertEquals(Optional.of(2.34), e1.getScaledAttr());
-        //assertEquals(Optional.of("Hello there"), e1.getStringAttr());
-        //assertEquals(Optional.of("+36-1-223-123"), e1.getRegexAttr());
-        //assertEquals(Optional.of(true), e1.getBoolAttr());
-        //assertEquals(Optional.of(LocalDate.of(2021, 7, 11)), e1.getDateAttr());
-        //assertEquals(Optional.of(LocalDateTime.parse("2021-07-11T19:09:33")), e1.getTimestampAttr());
-        //assertEquals(Optional.of(LocalTime.parse("23:59:59")), e1.getTimeAttr());
-        //assertEquals(Optional.of(Enum.EnumA), e1.getEnumAttr());
-
 
     }
 }
