@@ -445,6 +445,26 @@
                             <sources>${basedir}/src/test/resources/model/EntityWithSameQueryNameModel</sources>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>generate-psm-test-model-from-artifact-MappedTransferCastingFunctionsModel</id>
+                        <goals>
+                            <goal>parser-workflow</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <sources>${basedir}/src/test/resources/model/MappedTransferCastingFunctionsModel</sources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-psm-test-model-from-artifact-MappedTransferContainerTestModel</id>
+                        <goals>
+                            <goal>parser-workflow</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <sources>${basedir}/src/test/resources/model/MappedTransferContainerTestModel</sources>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
 
@@ -985,6 +1005,32 @@
                             <destination>${basedir}/target/generated-test-sources/sdk-core/EntityWithSameQueryName</destination>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-MappedTransferCastingFunctions</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/MappedTransferCastingFunctions-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/sdk-core/MappedTransferCastingFunctions</destination>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-MappedTransferContainerTest</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/MappedTransferContainerTest-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/sdk-core/MappedTransferContainerTest</destination>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
 
@@ -1040,6 +1086,8 @@
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/AutoMappedTransferSingleEntity</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/TestDefaultAndRequiredFieldsOnMappedTO</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/EntityWithSameQueryName</source>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/MappedTransferCastingFunctions</source>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/MappedTransferContainerTest</source>
                             </sources>
                         </configuration>
                     </execution>

@@ -328,9 +328,8 @@ public class AutoMappedTransferObjectSingleEntityTest extends AbstractJslTest {
         );
 
         //TODO JNG-4906
-        //TODO JNG-4917
-//        autoMappedContainerSingleRelationDerivedEntityDao.create(AutoMappedContainerSingleRelationDerivedEntity.builder().build(),
-//                AutoMappedContainerSingleRelationDerivedEntityAttachedRelationsForCreate.builder()..build());
+        autoMappedContainerSingleRelationDerivedEntityDao.create(AutoMappedContainerSingleRelationDerivedEntity.builder().build(),
+                AutoMappedContainerSingleRelationDerivedEntityAttachedRelationsForCreate.builder().build());
 
     }
 
