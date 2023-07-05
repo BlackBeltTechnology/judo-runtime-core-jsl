@@ -23,7 +23,7 @@ entity Simple {
 	field Integer firstNum <= Simple!all()!first(s | s.stringAttr)!size();
 }
 
-transfer TSimple (Simple mapped) {
+transfer TransferSimple (Simple mapped) {
 	field String stringAttr <=> mapped.stringAttr;
 	field Integer firstNum <= mapped.firstNum;
 }
@@ -38,7 +38,7 @@ entity Entity {
     field Time timeAttr;
 }
 
-transfer TEntity (Entity mapped) {
+transfer TransferEntity (Entity mapped) {
     field Integer integerAttr <=> mapped.integerAttr;
     field Scaled scaledAttr <=> mapped.scaledAttr;
     field String stringAttr <=> mapped.stringAttr;
@@ -58,7 +58,7 @@ entity EntityWithPrimitiveDefaults {
     field Time timeAttr = `23:59:59`;
 }
 
-transfer TEntityWithPrimitiveDefaults (EntityWithPrimitiveDefaults mapped) {
+transfer TransferEntityWithPrimitiveDefaults (EntityWithPrimitiveDefaults mapped) {
     field Integer integerAttr <=> mapped.integerAttr;
     field Scaled scaledAttr <=> mapped.scaledAttr;
     field String stringAttr <=> mapped.stringAttr;
@@ -73,11 +73,11 @@ entity Functions {
     field EntityWithPrimitiveDefaults entityWithPrimitives;
 }
 
-transfer TFunctions (Functions mapped) {
+transfer TransferFunctions (Functions mapped) {
     @Embedded
-    relation TEntity `entity` <=> mapped.entity;
+    relation TransferEntity `entity` <=> mapped.entity;
     @Embedded
-    relation TEntityWithPrimitiveDefaults entityWithPrimitives <=> mapped.entityWithPrimitives;
+    relation TransferEntityWithPrimitiveDefaults entityWithPrimitives <=> mapped.entityWithPrimitives;
 }
 
 entity AnyTypeFunctions extends Functions {
@@ -123,12 +123,12 @@ entity AnyTypeFunctions extends Functions {
     field Integer numberOrElse3 <= self.`entity`.integerAttr!orElse(value = -4.9)!abs()!orElse(value = 0!abs())!floor();
 }
 
-transfer TAnyTypeFunctions (AnyTypeFunctions mapped) {
+transfer TransferAnyTypeFunctions (AnyTypeFunctions mapped) {
 
     @Embedded
-    relation TEntity `entity` <=> mapped.entity;
+    relation TransferEntity `entity` <=> mapped.entity;
     @Embedded
-    relation TEntityWithPrimitiveDefaults entityWithPrimitives <=> mapped.entityWithPrimitives;
+    relation TransferEntityWithPrimitiveDefaults entityWithPrimitives <=> mapped.entityWithPrimitives;
 
     field Boolean integerIsDefinedFalse  <= mapped.integerIsDefinedFalse;
     field Boolean integerIsDefinedTrue  <= mapped.integerIsDefinedTrue;
@@ -219,7 +219,7 @@ entity StringFunctions {
     field String parenthizedAsString <= (12 + 14)!asString();
 }
 
-transfer TStringFunctions (StringFunctions mapped) {
+transfer TransferStringFunctions (StringFunctions mapped) {
     field String undefined <= mapped.undefined;
 
     field Integer length <= mapped.length;
@@ -310,7 +310,7 @@ entity NumericFunctions {
     field String scaledAsString <= 123456.789!asString();
 }
 
-transfer TNumericFunctions (NumericFunctions mapped) {
+transfer TransferNumericFunctions (NumericFunctions mapped) {
     field Integer int <=> mapped.int;
     field Scaled neg <=> mapped.neg;
     field Scaled neg1 <=> mapped.neg1;
@@ -412,7 +412,7 @@ entity Kleene {
 	field Boolean undefinedImpliesUndefined <= (self.undefined implies self.undefined);
 }
 
-transfer TKleene (Kleene mapped) {
+transfer TransferKleene (Kleene mapped) {
 	field Boolean undefined <=> mapped.undefined;
 	field Boolean bool <=> mapped.bool;
 
@@ -466,7 +466,7 @@ entity BooleanFunctions {
     field String logicalExpressionAsString <= (true or true)!asString();
 }
 
-transfer TBooleanFunctions (BooleanFunctions mapped) {
+transfer TransferBooleanFunctions (BooleanFunctions mapped) {
     field Boolean bool <=> mapped.bool;
 
     field String ownBoolAsString <= mapped.ownBoolAsString;
@@ -500,7 +500,7 @@ entity DateFunctions {
     field Integer dayOfWeekUndefined <= self.undefined!dayOfWeek();
 }
 
-transfer TDateFunctions (DateFunctions mapped ) {
+transfer TransferDateFunctions (DateFunctions mapped ) {
     field Date `date` <= mapped.date;
     field Date undefined <= mapped.undefined;
 
@@ -596,7 +596,7 @@ entity TimeFunctions {
 
 }
 
-transfer TTimeFunctions (TimeFunctions mapped) {
+transfer TransferTimeFunctions (TimeFunctions mapped) {
     field Time timeHM <=> mapped.timeHM;
     field Time timeHM1 <=> mapped.timeHM1;
     field Time timeHMS <=> mapped.timeHMS;
@@ -704,7 +704,7 @@ entity TimestampFunctions {
     field Timestamp minusMilliseconds <= Timestamp!of(date = `2022-09-29`, time = `11:11:11`)!plus(milliseconds = -1);
 }
 
-transfer TTimestampFunctions (TimestampFunctions mapped) {
+transfer TransferTimestampFunctions (TimestampFunctions mapped) {
     field Timestamp timestamp1 <=> mapped.timestamp1;
     field Timestamp timestamp2 <=> mapped.timestamp2;
 
@@ -798,7 +798,7 @@ entity TimestampAsString {
     field String fromMillisecondsAsString1 <= self.fromMilliseconds!asString();
 }
 
-transfer TTimestampAsString (TimestampAsString mapped) {
+transfer TransferTimestampAsString (TimestampAsString mapped) {
     field Timestamp timestamp1 <=> mapped.timestamp1;
     field Timestamp timestamp2 <=> mapped.timestamp2;
     field Timestamp timestamp3 <=> mapped.timestamp3;
@@ -863,7 +863,7 @@ entity EnumFunctions {
     field String enumAsString <= (MyEnum#Atomic)!asString();
 }
 
-transfer TEnumFunctions (EnumFunctions mapped) {
+transfer TransferEnumFunctions (EnumFunctions mapped) {
     field MyEnum `enum` <=> mapped.enum;
 
     field String ownEnumAsString <= mapped.ownEnumAsString;
@@ -897,18 +897,18 @@ entity InstanceFunctions {
 	field Integer navigationWithCalls <= self.parents!any().name!size();
 }
 
-transfer TInstanceFunctions (InstanceFunctions mapped){
+transfer TransferInstanceFunctions (InstanceFunctions mapped){
     field String instanceField <=> mapped.instanceField;
 
     @Embedded
-    relation FE::TExternalEntity external <=> mapped.external;
+    relation FE::TransferExternalEntity external <=> mapped.external;
     @Embedded
-    relation TParent parent <=> mapped.parent;
+    relation TransferParent parent <=> mapped.parent;
     @Embedded
-    relation TChild child <=> mapped.child;
+    relation TransferChild child <=> mapped.child;
 
-    relation TParent[] parents <=> mapped.parents;
-    relation TChild[] children <=> mapped.children;
+    relation TransferParent[] parents <=> mapped.parents;
+    relation TransferChild[] children <=> mapped.children;
 
     field Boolean typeOfParent <= mapped.typeOfParent;
     field Boolean notTypeOfChild <= mapped.notTypeOfChild;
@@ -916,8 +916,8 @@ transfer TInstanceFunctions (InstanceFunctions mapped){
     field Boolean kindOfParent <= mapped.kindOfParent;
     field Boolean kindOfChild <= mapped.kindOfChild;
 
-    relation TParent asParentType <= mapped.asParentType;
-    relation TChild asChildType <= mapped.asChildType;
+    relation TransferParent asParentType <= mapped.asParentType;
+    relation TransferChild asChildType <= mapped.asChildType;
 
     field Boolean parentMemberOfParents <= mapped.parentMemberOfParents;
     field Boolean parentMemberOfParentsExtra <= mapped.parentMemberOfParentsExtra;
@@ -932,7 +932,7 @@ entity Booler {
     field Boolean b;
 }
 
-transfer TBooler (Booler mapped) {
+transfer TransferBooler (Booler mapped) {
     field Boolean b <=> mapped.b;
 }
 
@@ -943,7 +943,7 @@ entity BoolerTester {
     field Boolean allFalse <= Booler!all()!allFalse(b | b.b);
 }
 
-transfer TBoolerTester (BoolerTester mapped) {
+transfer TransferBoolerTester (BoolerTester mapped) {
     field Boolean anyTrue <= mapped.anyTrue;
     field Boolean allTrue <= mapped.allTrue;
     field Boolean anyFalse <= mapped.anyFalse;
@@ -1017,32 +1017,32 @@ entity CollectionFunctions {
 
 }
 
-transfer TCollectionFunctions (CollectionFunctions mapped) {
+transfer TransferCollectionFunctions (CollectionFunctions mapped) {
     @Embedded
-    relation TParent[] parentsField <=> mapped.parentsField;
+    relation TransferParent[] parentsField <=> mapped.parentsField;
     @Embedded
-    relation TChild[] childrenField <=> mapped.childrenField;
+    relation TransferChild[] childrenField <=> mapped.childrenField;
 
-    relation TParent[] parentsRelation <=> mapped.parentsRelation;
-    relation TChild[] childrenRelation <=> mapped.childrenRelation;
+    relation TransferParent[] parentsRelation <=> mapped.parentsRelation;
+    relation TransferChild[] childrenRelation <=> mapped.childrenRelation;
 
-    relation TParent anyParentsField <= mapped.anyParentsField;
-    relation TParent anyParentsRelation <= mapped.anyParentsRelation;
+    relation TransferParent anyParentsField <= mapped.anyParentsField;
+    relation TransferParent anyParentsRelation <= mapped.anyParentsRelation;
 
     field Integer sizeParentsField <= mapped.sizeParentsField;
     field Integer sizeParentsRelation <= mapped.sizeParentsRelation;
 
-    relation TParent[] asCollectionChildrenParentField <= mapped.asCollectionChildrenParentField;
-    relation TParent[] asCollectionChildrenParentRelation <= mapped.asCollectionChildrenParentRelation;
-    relation TChild[] asCollectionChildrenChildField <= mapped.asCollectionChildrenChildField;
-    relation TChild[] asCollectionChildrenChildRelation <= mapped.asCollectionChildrenChildRelation;
+    relation TransferParent[] asCollectionChildrenParentField <= mapped.asCollectionChildrenParentField;
+    relation TransferParent[] asCollectionChildrenParentRelation <= mapped.asCollectionChildrenParentRelation;
+    relation TransferChild[] asCollectionChildrenChildField <= mapped.asCollectionChildrenChildField;
+    relation TransferChild[] asCollectionChildrenChildRelation <= mapped.asCollectionChildrenChildRelation;
 
     field Boolean containsParent <= mapped.containsParent;
 
-    relation TParent[] filterParentsField <= mapped.filterParentsField;
-    relation TParent[] filterParentsRelation <= mapped.filterParentsRelation;
-    relation TChild[] filterChildrenField <= mapped.filterChildrenField;
-    relation TChild[] filterChildrenRelation <= mapped.filterChildrenRelation;
+    relation TransferParent[] filterParentsField <= mapped.filterParentsField;
+    relation TransferParent[] filterParentsRelation <= mapped.filterParentsRelation;
+    relation TransferChild[] filterChildrenField <= mapped.filterChildrenField;
+    relation TransferChild[] filterChildrenRelation <= mapped.filterChildrenRelation;
 
     field Boolean anyTrueChildrenField <= mapped.anyTrueChildrenField;
     field Boolean anyTrueChildrenRelation <= mapped.anyTrueChildrenRelation;
@@ -1072,17 +1072,17 @@ transfer TCollectionFunctions (CollectionFunctions mapped) {
     field Integer divisionConst <= mapped.divisionConst;
     field Integer roundConst <= mapped.roundConst;
 
-    relation TChild[] firstChildrenField <= mapped.firstChildrenField;
-    relation TChild[] firstChildrenRelation <= mapped.firstChildrenRelation;
+    relation TransferChild[] firstChildrenField <= mapped.firstChildrenField;
+    relation TransferChild[] firstChildrenRelation <= mapped.firstChildrenRelation;
 
-    relation TChild[] lastChildrenField <= mapped.lastChildrenField;
-    relation TChild[] lastChildrenRelation <= mapped.lastChildrenRelation;
+    relation TransferChild[] lastChildrenField <= mapped.lastChildrenField;
+    relation TransferChild[] lastChildrenRelation <= mapped.lastChildrenRelation;
 
-    relation TChild[] frontChildrenField <= mapped.frontChildrenField;
-    relation TChild[] frontChildrenRelation <= mapped.frontChildrenRelation;
+    relation TransferChild[] frontChildrenField <= mapped.frontChildrenField;
+    relation TransferChild[] frontChildrenRelation <= mapped.frontChildrenRelation;
 
-    relation TChild[] backChildrenField <= mapped.backChildrenField;
-    relation TChild[] backChildrenRelation <= mapped.backChildrenRelation;
+    relation TransferChild[] backChildrenField <= mapped.backChildrenField;
+    relation TransferChild[] backChildrenRelation <= mapped.backChildrenRelation;
 
 }
 
@@ -1090,7 +1090,7 @@ entity Parent {
     field String name;
 }
 
-transfer TParent (Parent mapped){
+transfer TransferParent (Parent mapped){
     field String name <=> mapped.name;
 }
 
@@ -1099,26 +1099,27 @@ entity Child extends Parent {
     relation Parent mother;
 }
 
-transfer TChild (Child mapped) {
+transfer TransferChild (Child mapped) {
     field String name <=> mapped.name;
     field Integer age <=> mapped.age;
-    relation TParent mother <=> mapped.mother;
+    relation TransferParent mother <=> mapped.mother;
 }
 
 entity ExternalChild extends FE::ExternalEntity {
     field Integer age;
 }
 
-transfer TExternalChild (ExternalChild mapped) {
+transfer TransferExternalChild (ExternalChild mapped) {
     field String name <=> mapped.name;
     field Integer age <=> mapped.age;
+
 }
 
 entity Member {
     field String name;
 }
 
-transfer TMember (Member mapped){
+transfer TransferMember (Member mapped){
     field String name <=> mapped.name;
 }
 
@@ -1129,9 +1130,9 @@ entity Tester {
     field Boolean memberMemberOfMembers <= self.member!memberOf(instances = self.members);
 }
 
-transfer TTester (Tester mapped) {
-    relation TMember member <=> mapped.member;
-    relation TMember[] members <=> mapped.members;
+transfer TransferTester (Tester mapped) {
+    relation TransferMember member <=> mapped.member;
+    relation TransferMember[] members <=> mapped.members;
 
     field Boolean memberMemberOfMembers <= mapped.memberMemberOfMembers;
 }
