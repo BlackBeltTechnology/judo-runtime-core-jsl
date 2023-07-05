@@ -193,7 +193,9 @@ public class MappedTransferFunctionsTest extends AbstractJslTest {
             "REQ-ENT-008",
             "REQ-ENT-012",
             "REQ-EXPR-003",
-            "REQ-EXPR-010"
+            "REQ-EXPR-010",
+            "REQ-SRV-002"
+
     })
     public void testAnyTypeOnMappedTransfer() {
         assertEquals(Optional.of(false), transferAnyTypeFunctions.getIntegerIsDefinedFalse());
@@ -250,7 +252,8 @@ public class MappedTransferFunctionsTest extends AbstractJslTest {
             "REQ-EXPR-006",
             "REQ-EXPR-010",
             "REQ-EXPR-013",
-            "REQ-EXPR-014"
+            "REQ-EXPR-014",
+            "REQ-SRV-002"
     })
     public void testStringsOnMappedTransfer() {
         TransferStringFunctions str = transferStringFunctionsDao.create(TransferStringFunctions.builder().build());
@@ -325,7 +328,8 @@ public class MappedTransferFunctionsTest extends AbstractJslTest {
             "REQ-ENT-008",
             "REQ-EXPR-004",
             "REQ-EXPR-006",
-            "REQ-EXPR-014"
+            "REQ-EXPR-014",
+            "REQ-SRV-002"
     })
     public void testNumericsOnMappedTransfer() {
         TransferNumericFunctions numericFunctions = transferNumericFunctionsDao.create(TransferNumericFunctions.builder().build());
@@ -387,7 +391,8 @@ public class MappedTransferFunctionsTest extends AbstractJslTest {
 
     @Test
     @Requirement(reqs = {
-            "REQ-EXPR-015"
+            "REQ-EXPR-015",
+            "REQ-SRV-002"
     })
     public void testBooleansOnMappedTransfer() {
         TransferBooleanFunctions bool = transferBooleanFunctionsDao.create(TransferBooleanFunctions.builder().build());
@@ -401,7 +406,8 @@ public class MappedTransferFunctionsTest extends AbstractJslTest {
     @Test
     @Requirement(reqs = {
             "REQ-TYPE-001",
-            "REQ-TYPE-006"
+            "REQ-TYPE-006",
+            "REQ-SRV-002"
     })
     public void testKleeneOnMappedTransfer() {
         TransferKleene kleene = transferKleeneDao.create(TransferKleene.builder().build());
@@ -465,7 +471,8 @@ public class MappedTransferFunctionsTest extends AbstractJslTest {
     @Test
     @Requirement(reqs = {
             "REQ-EXPR-010",
-            "REQ-EXPR-016"
+            "REQ-EXPR-016",
+            "REQ-SRV-002"
     })
     public void testDatesOnMappedTransfer() {
         TransferDateFunctions date = transferDateFunctionsDao.create(TransferDateFunctions.builder().build());
@@ -494,7 +501,8 @@ public class MappedTransferFunctionsTest extends AbstractJslTest {
     @Test
     @Requirement(reqs = {
             "REQ-EXPR-010",
-            "REQ-EXPR-017"
+            "REQ-EXPR-017",
+            "REQ-SRV-002"
     })
     public void testTimeOnMappedTransfer() {
         LocalTime timeHM = LocalTime.parse("12:34");
@@ -578,7 +586,8 @@ public class MappedTransferFunctionsTest extends AbstractJslTest {
             "REQ-TYPE-008",
             "REQ-TYPE-009",
             "REQ-EXPR-010",
-            "REQ-EXPR-018"
+            "REQ-EXPR-018",
+            "REQ-SRV-002"
     })
     public void testTimestampOnMappedTransfer() {
         TransferTimestampFunctions timestampFunctions = transferTimestampFunctionsDao.create(TransferTimestampFunctions.builder().build());
@@ -623,7 +632,8 @@ public class MappedTransferFunctionsTest extends AbstractJslTest {
             "REQ-TYPE-008",
             "REQ-TYPE-009",
             "REQ-EXPR-010",
-            "REQ-EXPR-018"
+            "REQ-EXPR-018",
+            "REQ-SRV-002"
     })
     public void testTimestampAsStringOnMappedTransfer() {
         TransferTimestampAsString timestampAsString = transferTimestampAsStringDao.create(TransferTimestampAsString.builder().build());
@@ -674,7 +684,8 @@ public class MappedTransferFunctionsTest extends AbstractJslTest {
     @Test
     @Requirement(reqs = {
             "REQ-MDL-001",
-            "REQ-EXPR-020"
+            "REQ-EXPR-020",
+            "REQ-SRV-002"
     })
     public void testEnumOnMappedTransfer() {
         TransferEnumFunctions myEnum = transferEnumFunctionsDao.create(TransferEnumFunctions.builder().build());
@@ -689,7 +700,8 @@ public class MappedTransferFunctionsTest extends AbstractJslTest {
             "REQ-ENT-004",
             "REQ-ENT-007",
             "REQ-EXPR-021",
-            "REQ-EXPR-022"
+            "REQ-EXPR-022",
+            "REQ-SRV-002"
     })
     public void testInstanceOnMappedTransfer() {
         TransferParent parent1 = transferParentDao.create(TransferParent.builder().withName("James Webb").build());
@@ -742,7 +754,8 @@ public class MappedTransferFunctionsTest extends AbstractJslTest {
 
     @Test
     @Requirement(reqs = {
-            "REQ-EXPR-022"
+            "REQ-EXPR-022",
+            "REQ-SRV-002"
     })
     public void testCollectionOnMappedTransfer() {
         TransferCollectionFunctions collectionFunctions = transferCollectionFunctionsDao.create(TransferCollectionFunctions.builder()
@@ -860,7 +873,8 @@ public class MappedTransferFunctionsTest extends AbstractJslTest {
 
     @Test
     @Requirement(reqs = {
-            "REQ-EXPR-022"
+            "REQ-EXPR-022",
+            "REQ-SRV-002"
     })
     public void testBooleanAggregatorFunctionsOnMappedTransfer() {
         /*
@@ -979,7 +993,8 @@ public class MappedTransferFunctionsTest extends AbstractJslTest {
 
     @Test
     @Requirement(reqs = {
-            "REQ-EXPR-021"
+            "REQ-EXPR-021",
+            "REQ-SRV-002"
     })
     public void testMemberOnMappedTransfer() {
         TransferMember m1 = transferMemberDao.create(TransferMember.builder().withName("M1").build());
