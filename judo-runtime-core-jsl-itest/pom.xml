@@ -475,6 +475,16 @@
                             <sources>${basedir}/src/test/resources/model/MappedTransferContainsTestModel</sources>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>generate-psm-test-model-from-artifact-MappedTransferFunctionsModels</id>
+                        <goals>
+                            <goal>parser-workflow</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <sources>${basedir}/src/test/resources/model/MappedTransferFunctionsModels</sources>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
 
@@ -1054,6 +1064,32 @@
                             <destination>${basedir}/target/generated-test-sources/sdk-core/MappedTransferContains</destination>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-MappedTransferFunctionsExternals</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/MappedTransferFunctionsExternals-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/sdk-core/MappedTransferFunctionsExternals</destination>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-MappedTransferFunctions</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/MappedTransferFunctions-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/sdk-core/MappedTransferFunctions</destination>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
 
@@ -1112,6 +1148,8 @@
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/MappedTransferCastingFunctions</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/MappedTransferContainerTest</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/MappedTransferContains</source>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/MappedTransferFunctions</source>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/MappedTransferFunctionsExternals</source>
                             </sources>
                         </configuration>
                     </execution>
