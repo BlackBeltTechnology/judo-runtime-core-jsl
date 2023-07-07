@@ -485,6 +485,16 @@
                             <sources>${basedir}/src/test/resources/model/MappedTransferFunctionsModels</sources>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>generate-psm-test-model-from-artifact-MappedTransferOperatorsModel</id>
+                        <goals>
+                            <goal>parser-workflow</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <sources>${basedir}/src/test/resources/model/MappedTransferOperatorsModel</sources>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
 
@@ -1090,6 +1100,19 @@
                             <destination>${basedir}/target/generated-test-sources/sdk-core/MappedTransferFunctions</destination>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-MappedTransferOperators</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/MappedTransferOperators-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/sdk-core/MappedTransferOperators</destination>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
 
@@ -1150,6 +1173,7 @@
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/MappedTransferContains</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/MappedTransferFunctions</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/MappedTransferFunctionsExternals</source>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/MappedTransferOperators</source>
                             </sources>
                         </configuration>
                     </execution>
