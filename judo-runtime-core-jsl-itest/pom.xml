@@ -505,6 +505,16 @@
                             <sources>${basedir}/src/test/resources/model/MappedTransferOperatorAndFunctionOfEnumTestModel</sources>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>generate-psm-test-model-from-artifact-MappedTransferNavigationTestModel</id>
+                        <goals>
+                            <goal>parser-workflow</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <sources>${basedir}/src/test/resources/model/MappedTransferNavigationTestModel</sources>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
 
@@ -1136,6 +1146,19 @@
                             <destination>${basedir}/target/generated-test-sources/sdk-core/MappedTransferOperatorAndFunctionOfEnumTest</destination>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-MappedTransferNavigationTest</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/MappedTransferNavigationTest-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/sdk-core/MappedTransferNavigationTest</destination>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
 
@@ -1198,6 +1221,7 @@
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/MappedTransferFunctionsExternals</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/MappedTransferOperatorAndFunctionOfEnumTest</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/MappedTransferOperators</source>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/MappedTransferNavigationTest</source>
                             </sources>
                         </configuration>
                     </execution>
