@@ -495,6 +495,16 @@
                             <sources>${basedir}/src/test/resources/model/MappedTransferOperatorsModel</sources>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>generate-psm-test-model-from-artifact-MappedTransferOperatorAndFunctionOfEnumTestModel</id>
+                        <goals>
+                            <goal>parser-workflow</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <sources>${basedir}/src/test/resources/model/MappedTransferOperatorAndFunctionOfEnumTestModel</sources>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
 
@@ -1113,6 +1123,19 @@
                             <destination>${basedir}/target/generated-test-sources/sdk-core/MappedTransferOperators</destination>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-MappedTransferOperatorAndFunctionOfEnumTest</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/MappedTransferOperatorAndFunctionOfEnumTest-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/sdk-core/MappedTransferOperatorAndFunctionOfEnumTest</destination>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
 
@@ -1173,6 +1196,7 @@
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/MappedTransferContains</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/MappedTransferFunctions</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/MappedTransferFunctionsExternals</source>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/MappedTransferOperatorAndFunctionOfEnumTest</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/MappedTransferOperators</source>
                             </sources>
                         </configuration>
