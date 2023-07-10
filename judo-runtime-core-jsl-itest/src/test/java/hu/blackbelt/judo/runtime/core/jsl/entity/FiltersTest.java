@@ -23,10 +23,10 @@ package hu.blackbelt.judo.runtime.core.jsl.entity;
 import com.google.inject.Inject;
 import com.google.inject.Module;
 import hu.blackbelt.judo.dispatcher.api.FileType;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.myentitywithoptionalfields.MyEntityWithOptionalFields;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.myentitywithoptionalfields.MyEntityWithOptionalFieldsDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.myenum.MyEnum;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.PrimitivesDaoModules;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.myentitywithoptionalfields.MyEntityWithOptionalFields;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.myentitywithoptionalfields.MyEntityWithOptionalFieldsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.myenum.MyEnum;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.FilterDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
@@ -39,6 +39,7 @@ import java.time.*;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Slf4j
 public class FiltersTest extends AbstractJslTest {
@@ -48,6 +49,8 @@ public class FiltersTest extends AbstractJslTest {
     MyEntityWithOptionalFields entity1;
 
     MyEntityWithOptionalFields entity2;
+
+    MyEntityWithOptionalFields entity3;
 
     static final int INTEGER_1 = 1;
     static final int INTEGER_2 = 2;
@@ -97,16 +100,20 @@ public class FiltersTest extends AbstractJslTest {
                 .withBinaryAttr(FileType.builder().fileName("test.txt").build())
                 .withEnumAttr(ENUM_2)
                 .build());
+
+        entity3 = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
+                .withRegexAttr("+36 333-333-3336")
+                .build());
     }
 
     @Override
     public Module getModelDaoModule() {
-        return new PrimitivesDaoModules();
+        return new FilterDaoModules();
     }
 
     @Override
     public String getModelName() {
-        return "Primitives";
+        return "Filter";
     }
 
     @Test
@@ -127,7 +134,7 @@ public class FiltersTest extends AbstractJslTest {
     public void testFilterWithMultipleFilters() {
         List<MyEntityWithOptionalFields> list = myEntityWithOptionalFieldsDao.query().execute();
 
-        assertEquals(2, list.size());
+        assertEquals(3, list.size());
 
         List<MyEntityWithOptionalFields> multiFilter = myEntityWithOptionalFieldsDao
                 .query()
@@ -159,7 +166,7 @@ public class FiltersTest extends AbstractJslTest {
     public void testIntegerNumberFilter() {
         List<MyEntityWithOptionalFields> list = myEntityWithOptionalFieldsDao.query().execute();
 
-        assertEquals(2, list.size());
+        assertEquals(3, list.size());
 
         MyEntityWithOptionalFields filteredByString = myEntityWithOptionalFieldsDao
                 .query()
@@ -214,6 +221,109 @@ public class FiltersTest extends AbstractJslTest {
                 .get(0);
 
         assertEquals(entity1.identifier(), less.identifier());
+
+        // Zero element
+
+        List<MyEntityWithOptionalFields> zeroResult = myEntityWithOptionalFieldsDao
+                .query()
+                .filterByIntegerAttr(NumberFilter.lessThan(INTEGER_1))
+                .filterByIntegerAttr(NumberFilter.lessThan(INTEGER_2))
+                .execute();
+
+        assertTrue(zeroResult.isEmpty());
+
+        List<MyEntityWithOptionalFields> filteredByZeroResultString = myEntityWithOptionalFieldsDao
+                .query()
+                .filterBy("this.integerAttr > 1 and this.integerAttr < 2")
+                .execute();
+
+        assertTrue(filteredByZeroResultString.isEmpty());
+
+
+        // filter for undefined
+
+//        MyEntityWithOptionalFields undefinedResult = myEntityWithOptionalFieldsDao
+//                .query()
+//                .filterBy("this.integerAttr!isDefined()")
+//                .execute()
+//                .get(0);
+//
+//        assertEquals(entity3.identifier(),
+//                undefinedResult.identifier());
+
+        // Derived attributes
+
+        MyEntityWithOptionalFields filteredByStringDerived = myEntityWithOptionalFieldsDao
+                .query()
+                .filterBy("this.integerAttr >= 1 and this.integerAttr < 2")
+                .execute()
+                .get(0);
+
+        assertEquals(entity1.identifier(), filteredByStringDerived.identifier());
+
+        List<MyEntityWithOptionalFields> filteredByZeroResultStringDerived = myEntityWithOptionalFieldsDao
+                .query()
+                .filterBy("this.derivedIntegerAttr > 1 and this.derivedIntegerAttr < 2")
+                .execute();
+
+
+        assertTrue(filteredByZeroResultStringDerived.isEmpty());
+
+        MyEntityWithOptionalFields equalsDerived = myEntityWithOptionalFieldsDao
+                .query()
+                .filterByDerivedIntegerAttr(NumberFilter.equalTo(INTEGER_1))
+                .execute()
+                .get(0);
+
+        assertEquals(entity1.identifier(), equalsDerived.identifier());
+
+        MyEntityWithOptionalFields notEqualsDerived = myEntityWithOptionalFieldsDao
+                .query()
+                .filterByDerivedIntegerAttr(NumberFilter.notEqualTo(INTEGER_1))
+                .execute()
+                .get(0);
+
+        assertEquals(entity2.identifier(), notEqualsDerived.identifier());
+
+        List<MyEntityWithOptionalFields> greaterOrEqualsDerived = myEntityWithOptionalFieldsDao
+                .query()
+                .filterByDerivedIntegerAttr(NumberFilter.greaterOrEqualThan(INTEGER_1))
+                .execute();
+
+        assertEquals(2, greaterOrEqualsDerived.size());
+
+        MyEntityWithOptionalFields greaterDerived = myEntityWithOptionalFieldsDao
+                .query()
+                .filterByDerivedIntegerAttr(NumberFilter.greaterThan(INTEGER_1))
+                .execute()
+                .get(0);
+
+        assertEquals(entity2.identifier(), greaterDerived.identifier());
+
+        List<MyEntityWithOptionalFields> lessOrEqualDerived = myEntityWithOptionalFieldsDao
+                .query()
+                .filterByDerivedIntegerAttr(NumberFilter.lessOrEqualThan(INTEGER_2))
+                .execute();
+
+        assertEquals(2, lessOrEqualDerived.size());
+
+
+        MyEntityWithOptionalFields lessDerived = myEntityWithOptionalFieldsDao
+                .query()
+                .filterByDerivedIntegerAttr(NumberFilter.lessThan(INTEGER_2))
+                .execute()
+                .get(0);
+
+        assertEquals(entity1.identifier(), lessDerived.identifier());
+
+        List<MyEntityWithOptionalFields> zeroResultDerived = myEntityWithOptionalFieldsDao
+                .query()
+                .filterByDerivedIntegerAttr(NumberFilter.lessThan(INTEGER_1))
+                .filterByDerivedIntegerAttr(NumberFilter.lessThan(INTEGER_2))
+                .execute();
+
+        assertTrue(zeroResultDerived.isEmpty());
+
     }
 
     @Test
@@ -233,8 +343,7 @@ public class FiltersTest extends AbstractJslTest {
     })
     public void testScaledNumberFilter() {
         List<MyEntityWithOptionalFields> list = myEntityWithOptionalFieldsDao.query().execute();
-
-        assertEquals(2, list.size());
+        assertEquals(3, list.size());
 
         MyEntityWithOptionalFields filteredByString = myEntityWithOptionalFieldsDao
                 .query()
@@ -243,6 +352,13 @@ public class FiltersTest extends AbstractJslTest {
                 .get(0);
 
         assertEquals(entity1.identifier(), filteredByString.identifier());
+
+        List<MyEntityWithOptionalFields> filteredByZeroResultString = myEntityWithOptionalFieldsDao
+                .query()
+                .filterBy("this.scaledAttr > 0 and this.scaledAttr < 1")
+                .execute();
+
+        assertTrue(filteredByZeroResultString.isEmpty());
 
         MyEntityWithOptionalFields equals = myEntityWithOptionalFieldsDao
                 .query()
@@ -289,6 +405,71 @@ public class FiltersTest extends AbstractJslTest {
                 .get(0);
 
         assertEquals(entity1.identifier(), less.identifier());
+
+        // Derived
+
+        MyEntityWithOptionalFields filteredByStringDerived = myEntityWithOptionalFieldsDao
+                .query()
+                .filterBy("this.derivedScaledAttr >= 1 and this.derivedScaledAttr <= 2")
+                .execute()
+                .get(0);
+
+        assertEquals(entity1.identifier(), filteredByStringDerived.identifier());
+
+        List<MyEntityWithOptionalFields> filteredByZeroResultStringDerived = myEntityWithOptionalFieldsDao
+                .query()
+                .filterBy("this.derivedScaledAttr > 0 and this.derivedScaledAttr < 1")
+                .execute();
+
+        assertTrue(filteredByZeroResultStringDerived.isEmpty());
+
+        MyEntityWithOptionalFields equalsDerived = myEntityWithOptionalFieldsDao
+                .query()
+                .filterByDerivedScaledAttr(NumberFilter.equalTo(SCALED_1))
+                .execute()
+                .get(0);
+
+        assertEquals(entity1.identifier(), equalsDerived.identifier());
+
+        MyEntityWithOptionalFields notEqualsDerived = myEntityWithOptionalFieldsDao
+                .query()
+                .filterByDerivedScaledAttr(NumberFilter.notEqualTo(SCALED_1))
+                .execute()
+                .get(0);
+
+        assertEquals(entity2.identifier(), notEqualsDerived.identifier());
+
+        List<MyEntityWithOptionalFields> greaterOrEqualsDerived = myEntityWithOptionalFieldsDao
+                .query()
+                .filterByDerivedScaledAttr(NumberFilter.greaterOrEqualThan(SCALED_1))
+                .execute();
+
+        assertEquals(2, greaterOrEqualsDerived.size());
+
+        MyEntityWithOptionalFields greaterDerived = myEntityWithOptionalFieldsDao
+                .query()
+                .filterByDerivedScaledAttr(NumberFilter.greaterThan(SCALED_1))
+                .execute()
+                .get(0);
+
+        assertEquals(entity2.identifier(), greaterDerived.identifier());
+
+        List<MyEntityWithOptionalFields> lessOrEqualDerived = myEntityWithOptionalFieldsDao
+                .query()
+                .filterByDerivedScaledAttr(NumberFilter.lessOrEqualThan(SCALED_2))
+                .execute();
+
+        assertEquals(2, lessOrEqualDerived.size());
+
+        MyEntityWithOptionalFields lessDerived = myEntityWithOptionalFieldsDao
+                .query()
+                .filterByDerivedScaledAttr(NumberFilter.lessThan(SCALED_2))
+                .execute()
+                .get(0);
+
+        assertEquals(entity1.identifier(), lessDerived.identifier());
+
+
     }
 
     @Test
@@ -309,15 +490,15 @@ public class FiltersTest extends AbstractJslTest {
     public void testStringFilter() {
         List<MyEntityWithOptionalFields> list = myEntityWithOptionalFieldsDao.query().execute();
 
-        assertEquals(2, list.size());
+        assertEquals(3, list.size());
+
+        // costume filter
 
         MyEntityWithOptionalFields filteredByString = myEntityWithOptionalFieldsDao
                 .query()
-                .filterBy("this.stringAttr!matches('test')")
+                .filterBy("this.stringAttr!matches('te.*')")
                 .execute()
                 .get(0);
-
-        assertEquals(entity1.identifier(), filteredByString.identifier());
 
         MyEntityWithOptionalFields equals = myEntityWithOptionalFieldsDao
                 .query()
@@ -398,7 +579,7 @@ public class FiltersTest extends AbstractJslTest {
     public void testBooleanFilter() {
         List<MyEntityWithOptionalFields> list = myEntityWithOptionalFieldsDao.query().execute();
 
-        assertEquals(2, list.size());
+        assertEquals(3, list.size());
 
         MyEntityWithOptionalFields filteredByString = myEntityWithOptionalFieldsDao
                 .query()
@@ -423,6 +604,32 @@ public class FiltersTest extends AbstractJslTest {
                 .get(0);
 
         assertEquals(entity2.identifier(), isFalse.identifier());
+
+        // derived
+
+        MyEntityWithOptionalFields filteredByStringDerived = myEntityWithOptionalFieldsDao
+                .query()
+                .filterBy("this.derivedBoolAttr == true")
+                .execute()
+                .get(0);
+
+        assertEquals(entity1.identifier(), filteredByStringDerived.identifier());
+
+        MyEntityWithOptionalFields isTrueDerived = myEntityWithOptionalFieldsDao
+                .query()
+                .filterByDerivedBoolAttr(BooleanFilter.isTrue())
+                .execute()
+                .get(0);
+
+        assertEquals(entity1.identifier(), isTrueDerived.identifier());
+
+        MyEntityWithOptionalFields isFalseDerived = myEntityWithOptionalFieldsDao
+                .query()
+                .filterByDerivedBoolAttr(BooleanFilter.isFalse())
+                .execute()
+                .get(0);
+
+        assertEquals(entity2.identifier(), isFalseDerived.identifier());
     }
 
     @Test
@@ -443,7 +650,7 @@ public class FiltersTest extends AbstractJslTest {
     public void testDateFilter() {
         List<MyEntityWithOptionalFields> list = myEntityWithOptionalFieldsDao.query().execute();
 
-        assertEquals(2, list.size());
+        assertEquals(3, list.size());
 
         MyEntityWithOptionalFields equalTo = myEntityWithOptionalFieldsDao
                 .query()
@@ -508,7 +715,7 @@ public class FiltersTest extends AbstractJslTest {
     public void testTimestampFilter() {
         List<MyEntityWithOptionalFields> list = myEntityWithOptionalFieldsDao.query().execute();
 
-        assertEquals(2, list.size());
+        assertEquals(3, list.size());
 
         MyEntityWithOptionalFields equalTo = myEntityWithOptionalFieldsDao
                 .query()
@@ -573,7 +780,7 @@ public class FiltersTest extends AbstractJslTest {
     public void testTimeFilter() {
         List<MyEntityWithOptionalFields> list = myEntityWithOptionalFieldsDao.query().execute();
 
-        assertEquals(2, list.size());
+        assertEquals(3, list.size());
 
         MyEntityWithOptionalFields equalTo = myEntityWithOptionalFieldsDao
                 .query()
@@ -638,7 +845,15 @@ public class FiltersTest extends AbstractJslTest {
     public void testEnumFilter() {
         List<MyEntityWithOptionalFields> list = myEntityWithOptionalFieldsDao.query().execute();
 
-        assertEquals(2, list.size());
+        assertEquals(3, list.size());
+
+        MyEntityWithOptionalFields filteredByString = myEntityWithOptionalFieldsDao
+                .query()
+                .filterBy("this.enumAttr == MyEnum#Bombastic")
+                .execute()
+                .get(0);
+
+        assertEquals(entity1.identifier(), filteredByString.identifier());
 
         MyEntityWithOptionalFields equalTo = myEntityWithOptionalFieldsDao
                 .query()
@@ -655,5 +870,26 @@ public class FiltersTest extends AbstractJslTest {
                 .get(0);
 
         assertEquals(entity2.identifier(), notEqualTo.identifier());
+
+        // Derived
+
+        MyEntityWithOptionalFields equalToDerived = myEntityWithOptionalFieldsDao
+                .query()
+                .filterByDerivedEnumAttr(EnumerationFilter.equalTo(MyEnum.Bombastic))
+                .execute()
+                .get(0);
+
+        assertEquals(entity1.identifier(), equalToDerived.identifier());
+
+        MyEntityWithOptionalFields notEqualToDerived = myEntityWithOptionalFieldsDao
+                .query()
+                .filterByDerivedEnumAttr(EnumerationFilter.notEqualTo(MyEnum.Bombastic))
+                .execute()
+                .get(0);
+
+        assertEquals(entity2.identifier(), notEqualToDerived.identifier());
+
     }
+
+
 }
