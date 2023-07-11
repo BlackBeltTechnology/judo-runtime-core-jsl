@@ -140,7 +140,6 @@ public class TransferFiltersTest extends AbstractJslTest {
                 .execute();
 
         assertEquals(1, multiFilter.size());
-
         assertEquals(transf1.identifier(), multiFilter.get(0).identifier());
     }
 
