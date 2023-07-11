@@ -25,6 +25,7 @@ entity MyEntityWithOptionalFields {
     field Time timeAttr;
     field Timestamp timestampAttr;
     field MyEnum enumAttr;
+
     field Boolean derivedBoolAttr <= self.boolAttr;
     field Binary derivedBinaryAttr <= self.binaryAttr;
     field Integer derivedIntegerAttr <= self.integerAttr;
@@ -36,13 +37,12 @@ entity MyEntityWithOptionalFields {
     field Timestamp derivedTimestampAttr <= self.timestampAttr;
     field MyEnum derivedEnumAttr <= self.enumAttr;
 
-    field Boolean isEmptyBoolAttr <= self.boolAttr!isUndefined();
-    field Boolean isEmptyIntegerAttr <= self.integerAttr!isUndefined();
-    field Boolean isEmptyStringAttr <= self.stringAttr!isUndefined();
-    field Boolean isEmptyRegexAttr <= self.regexAttr!isUndefined();
-    field Boolean isEmptyScaledAttr <= self.scaledAttr!isUndefined();
-    field Boolean isEmptyDateAttr <= self.dateAttr!isUndefined();
-    field Boolean isEmptyTimeAttr <= self.timeAttr!isUndefined();
-    field Boolean isEmptyTimestampAttr <= self.timestampAttr!isUndefined();
-    field Boolean isEmptyEnumAttr <= self.enumAttr!isUndefined();
+}
+
+entity FilterEntity {
+    relation MyEntityWithOptionalFields[] haveTOnTheStringAttr <= MyEntityWithOptionalFields!all()!filter(e | e.stringAttr!matches(pattern = ".*t.*"));
+    relation MyEntityWithOptionalFields[] TestIsTheStringAttr <= MyEntityWithOptionalFields!all()!filter(e | e.stringAttr!matches(pattern = "test"));
+    relation MyEntityWithOptionalFields[] haveNoMatchOnTheStringAttr <= MyEntityWithOptionalFields!all()!filter(e | e.stringAttr!matches(pattern = "noMatch"));
+    relation MyEntityWithOptionalFields[] haveUndefinedOnTheStringAttr <= MyEntityWithOptionalFields!all()!filter(e | e.stringAttr!isUndefined());
+    relation MyEntityWithOptionalFields[] haveDefinedOnTheStringAttr <= MyEntityWithOptionalFields!all()!filter(e | e.stringAttr!isDefined());
 }

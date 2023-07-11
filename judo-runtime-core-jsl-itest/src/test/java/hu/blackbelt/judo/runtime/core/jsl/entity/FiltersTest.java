@@ -23,6 +23,8 @@ package hu.blackbelt.judo.runtime.core.jsl.entity;
 import com.google.inject.Inject;
 import com.google.inject.Module;
 import hu.blackbelt.judo.dispatcher.api.FileType;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.filterentity.FilterEntity;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.filterentity.FilterEntityDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.myentitywithoptionalfields.MyEntityWithOptionalFields;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.myentitywithoptionalfields.MyEntityWithOptionalFieldsDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.myenum.MyEnum;
@@ -38,6 +40,8 @@ import org.junit.jupiter.api.Test;
 import java.time.*;
 import java.util.List;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -46,11 +50,16 @@ public class FiltersTest extends AbstractJslTest {
     @Inject
     MyEntityWithOptionalFieldsDao myEntityWithOptionalFieldsDao;
 
+    @Inject
+    FilterEntityDao filterEntityDao;
+
     MyEntityWithOptionalFields entity1;
 
     MyEntityWithOptionalFields entity2;
 
     MyEntityWithOptionalFields entity3;
+
+    FilterEntity filterEntity;
 
     static final int INTEGER_1 = 1;
     static final int INTEGER_2 = 2;
@@ -103,6 +112,8 @@ public class FiltersTest extends AbstractJslTest {
 
         entity3 = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
                 .build());
+
+        filterEntity = filterEntityDao.create(FilterEntity.builder().build());
     }
 
     @Override
@@ -1706,6 +1717,31 @@ public class FiltersTest extends AbstractJslTest {
                 .get(0);
 
         assertEquals(entity2.identifier(), notEqualToDerived.identifier());
+
+    }
+
+    @Test
+    void testDerivedWithFilter() {
+
+        assertEquals(3, myEntityWithOptionalFieldsDao.query().count());
+
+        assertEquals(2, filterEntityDao.queryHaveTOnTheStringAttr(filterEntity).count());
+        assertThat(filterEntityDao.queryHaveTOnTheStringAttr(filterEntity).execute().stream().map(e -> e.identifier()).toList(),
+                containsInAnyOrder(entity1.identifier(),entity2.identifier()));
+
+        assertEquals(1, filterEntityDao.queryTestIsTheStringAttr(filterEntity).count());
+        assertThat(filterEntityDao.queryTestIsTheStringAttr(filterEntity).execute().stream().map(e -> e.identifier()).toList(),
+                containsInAnyOrder(entity1.identifier()));
+
+        assertEquals(0, filterEntityDao.queryHaveNoMatchOnTheStringAttr(filterEntity).count());
+
+        assertEquals(1, filterEntityDao.queryHaveUndefinedOnTheStringAttr(filterEntity).count());
+        assertThat(filterEntityDao.queryHaveUndefinedOnTheStringAttr(filterEntity).execute().stream().map(e -> e.identifier()).toList(),
+                containsInAnyOrder(entity3.identifier()));
+
+        assertEquals(2, filterEntityDao.queryHaveDefinedOnTheStringAttr(filterEntity).count());
+        assertThat(filterEntityDao.queryHaveDefinedOnTheStringAttr(filterEntity).execute().stream().map(e -> e.identifier()).toList(),
+                containsInAnyOrder(entity1.identifier(), entity2.identifier()));
 
     }
 
