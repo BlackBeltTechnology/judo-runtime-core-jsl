@@ -742,7 +742,6 @@ public class FiltersTest extends AbstractJslTest {
 
         List<MyEntityWithOptionalFields> iLikeByStringFilter = myEntityWithOptionalFieldsDao
                 .query()
-                .filterByStringAttr(StringFilter.ilike(STRING_1.toUpperCase()))
                 .filterBy("this.stringAttr!ilike('TEST')")
                 .execute();
 
@@ -773,7 +772,6 @@ public class FiltersTest extends AbstractJslTest {
 
         Long greaterOrEqualThanByStringFilter = myEntityWithOptionalFieldsDao
                 .query()
-                .filterByStringAttr(StringFilter.greaterOrEqualThan(STRING_2))
                 .filterBy("this.stringAttr >= 'Another'")
                 .count();
 
@@ -874,7 +872,6 @@ public class FiltersTest extends AbstractJslTest {
 
         List<MyEntityWithOptionalFields> iLikeByStringFilterDerived = myEntityWithOptionalFieldsDao
                 .query()
-                .filterByStringAttr(StringFilter.ilike(STRING_1.toUpperCase()))
                 .filterBy("this.derivedStringAttr!ilike('TEST')")
                 .execute();
 
@@ -905,7 +902,6 @@ public class FiltersTest extends AbstractJslTest {
 
         Long greaterOrEqualThanByStringFilterDerived = myEntityWithOptionalFieldsDao
                 .query()
-                .filterByStringAttr(StringFilter.greaterOrEqualThan(STRING_2))
                 .filterBy("this.derivedStringAttr >= 'Another'")
                 .count();
 
@@ -1308,7 +1304,6 @@ public class FiltersTest extends AbstractJslTest {
 
         MyEntityWithOptionalFields equalToByStringFilter = myEntityWithOptionalFieldsDao
                 .query()
-                .filterByTimestampAttr(TimestampFilter.equalTo(TIMESTAMP_1))
                 .filterBy("this.timestampAttr == `2022-07-11T19:09:33`")
                 .execute()
                 .get(0);
@@ -1340,7 +1335,6 @@ public class FiltersTest extends AbstractJslTest {
 
         List<MyEntityWithOptionalFields> greaterThanByStringFilter = myEntityWithOptionalFieldsDao
                 .query()
-                .filterByTimestampAttr(TimestampFilter.greaterThan(TIMESTAMP_2))
                 .filterBy("this.timestampAttr > `1999-09-19T09:09:09`")
                 .execute();
 
@@ -1401,7 +1395,6 @@ public class FiltersTest extends AbstractJslTest {
 
         MyEntityWithOptionalFields equalToByStringFilterDerived = myEntityWithOptionalFieldsDao
                 .query()
-                .filterByTimestampAttr(TimestampFilter.equalTo(TIMESTAMP_1))
                 .filterBy("this.derivedTimestampAttr == `2022-07-11T19:09:33`")
                 .execute()
                 .get(0);
@@ -1425,7 +1418,6 @@ public class FiltersTest extends AbstractJslTest {
 
         List<MyEntityWithOptionalFields> lessOrEqualByStringFilterDerived = myEntityWithOptionalFieldsDao
                 .query()
-                .filterByDerivedTimestampAttr(TimestampFilter.lessOrEqualThan(TIMESTAMP_1))
                 .filterBy("this.derivedTimestampAttr <= `2022-07-11T19:09:33`")
                 .execute();
 
@@ -1433,7 +1425,6 @@ public class FiltersTest extends AbstractJslTest {
 
         List<MyEntityWithOptionalFields> greaterThanByStringFilterDerived = myEntityWithOptionalFieldsDao
                 .query()
-                .filterByDerivedTimestampAttr(TimestampFilter.greaterThan(TIMESTAMP_2))
                 .filterBy("this.derivedTimestampAttr > `1999-09-19T09:09:09`")
                 .execute();
 

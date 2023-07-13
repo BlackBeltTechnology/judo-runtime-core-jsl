@@ -750,7 +750,6 @@ public class MappedTransferFiltersTest extends AbstractJslTest {
 
         List<TransferMyEntityWithOptionalFields> iLikeByStringFilter = transferMyEntityWithOptionalFieldsDao
                 .query()
-                .filterByStringAttr(StringFilter.ilike(STRING_1.toUpperCase()))
                 .filterBy("this.stringAttr!ilike('TEST')")
                 .execute();
 
@@ -781,7 +780,6 @@ public class MappedTransferFiltersTest extends AbstractJslTest {
 
         Long greaterOrEqualThanByStringFilter = transferMyEntityWithOptionalFieldsDao
                 .query()
-                .filterByStringAttr(StringFilter.greaterOrEqualThan(STRING_2))
                 .filterBy("this.stringAttr >= 'Another'")
                 .count();
 
@@ -882,7 +880,6 @@ public class MappedTransferFiltersTest extends AbstractJslTest {
 
         List<TransferMyEntityWithOptionalFields> iLikeByStringFilterDerived = transferMyEntityWithOptionalFieldsDao
                 .query()
-                .filterByStringAttr(StringFilter.ilike(STRING_1.toUpperCase()))
                 .filterBy("this.derivedStringAttr!ilike('TEST')")
                 .execute();
 
@@ -913,7 +910,6 @@ public class MappedTransferFiltersTest extends AbstractJslTest {
 
         Long greaterOrEqualThanByStringFilterDerived = transferMyEntityWithOptionalFieldsDao
                 .query()
-                .filterByStringAttr(StringFilter.greaterOrEqualThan(STRING_2))
                 .filterBy("this.derivedStringAttr >= 'Another'")
                 .count();
 
@@ -1229,7 +1225,6 @@ public class MappedTransferFiltersTest extends AbstractJslTest {
 
         List<TransferMyEntityWithOptionalFields> lessOrEqualByFilterStringDerived = transferMyEntityWithOptionalFieldsDao
                 .query()
-                .filterByDateAttr(DateFilter.lessOrEqualThan(DATE_1))
                 .filterBy("this.derivedDateAttr <= `2022-07-11`")
                 .execute();
 
@@ -1319,7 +1314,6 @@ public class MappedTransferFiltersTest extends AbstractJslTest {
 
         TransferMyEntityWithOptionalFields equalToByStringFilter = transferMyEntityWithOptionalFieldsDao
                 .query()
-                .filterByTimestampAttr(TimestampFilter.equalTo(TIMESTAMP_1))
                 .filterBy("this.timestampAttr == `2022-07-11T19:09:33`")
                 .execute()
                 .get(0);
@@ -1343,7 +1337,6 @@ public class MappedTransferFiltersTest extends AbstractJslTest {
 
         List<TransferMyEntityWithOptionalFields> lessOrEqualByStringFilter = transferMyEntityWithOptionalFieldsDao
                 .query()
-                .filterByTimestampAttr(TimestampFilter.lessOrEqualThan(TIMESTAMP_1))
                 .filterBy("this.timestampAttr <= `2022-07-11T19:09:33`")
                 .execute();
 
@@ -1351,7 +1344,6 @@ public class MappedTransferFiltersTest extends AbstractJslTest {
 
         List<TransferMyEntityWithOptionalFields> greaterThanByStringFilter = transferMyEntityWithOptionalFieldsDao
                 .query()
-                .filterByTimestampAttr(TimestampFilter.greaterThan(TIMESTAMP_2))
                 .filterBy("this.timestampAttr > `1999-09-19T09:09:09`")
                 .execute();
 
@@ -1412,7 +1404,6 @@ public class MappedTransferFiltersTest extends AbstractJslTest {
 
         TransferMyEntityWithOptionalFields equalToByStringFilterDerived = transferMyEntityWithOptionalFieldsDao
                 .query()
-                .filterByTimestampAttr(TimestampFilter.equalTo(TIMESTAMP_1))
                 .filterBy("this.derivedTimestampAttr == `2022-07-11T19:09:33`")
                 .execute()
                 .get(0);
@@ -1436,7 +1427,6 @@ public class MappedTransferFiltersTest extends AbstractJslTest {
 
         List<TransferMyEntityWithOptionalFields> lessOrEqualByStringFilterDerived = transferMyEntityWithOptionalFieldsDao
                 .query()
-                .filterByDerivedTimestampAttr(TimestampFilter.lessOrEqualThan(TIMESTAMP_1))
                 .filterBy("this.derivedTimestampAttr <= `2022-07-11T19:09:33`")
                 .execute();
 
@@ -1444,7 +1434,6 @@ public class MappedTransferFiltersTest extends AbstractJslTest {
 
         List<TransferMyEntityWithOptionalFields> greaterThanByStringFilterDerived = transferMyEntityWithOptionalFieldsDao
                 .query()
-                .filterByDerivedTimestampAttr(TimestampFilter.greaterThan(TIMESTAMP_2))
                 .filterBy("this.derivedTimestampAttr > `1999-09-19T09:09:09`")
                 .execute();
 
