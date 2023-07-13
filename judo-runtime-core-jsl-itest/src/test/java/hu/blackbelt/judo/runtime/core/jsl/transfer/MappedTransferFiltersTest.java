@@ -175,7 +175,7 @@ public class MappedTransferFiltersTest extends AbstractJslTest {
             "REQ-SRV-002"
 
     })
-    public void testFilterWithMultipleFilters() {
+    public void testFilterWithMultipleFiltersOnTransfer() {
         List<TransferMyEntityWithOptionalFields> list = transferMyEntityWithOptionalFieldsDao.query().execute();
 
         assertEquals(3, list.size());
@@ -208,7 +208,7 @@ public class MappedTransferFiltersTest extends AbstractJslTest {
             "REQ-ENT-008",
             "REQ-SRV-002"
     })
-    public void testIntegerNumberFilter() {
+    public void testIntegerNumberFilterOnTransfer() {
         List<TransferMyEntityWithOptionalFields> list = transferMyEntityWithOptionalFieldsDao.query().execute();
 
         assertEquals(3, list.size());
@@ -477,7 +477,7 @@ public class MappedTransferFiltersTest extends AbstractJslTest {
             "REQ-ENT-008",
             "REQ-SRV-002"
     })
-    public void testScaledNumberFilter() {
+    public void testScaledNumberFilterOnTransfer() {
         List<TransferMyEntityWithOptionalFields> list = transferMyEntityWithOptionalFieldsDao.query().execute();
         assertEquals(3, list.size());
 
@@ -716,7 +716,7 @@ public class MappedTransferFiltersTest extends AbstractJslTest {
             "REQ-ENT-008",
             "REQ-SRV-002"
     })
-    public void testStringFilter() {
+    public void testStringFilterOnTransfer() {
         List<TransferMyEntityWithOptionalFields> list = transferMyEntityWithOptionalFieldsDao.query().execute();
 
         assertEquals(3, list.size());
@@ -1003,7 +1003,7 @@ public class MappedTransferFiltersTest extends AbstractJslTest {
             "REQ-ENT-008",
             "REQ-SRV-002"
     })
-    public void testBooleanFilter() {
+    public void testBooleanFilterOnTransfer() {
         List<TransferMyEntityWithOptionalFields> list = transferMyEntityWithOptionalFieldsDao.query().execute();
 
         assertEquals(3, list.size());
@@ -1107,7 +1107,7 @@ public class MappedTransferFiltersTest extends AbstractJslTest {
             "REQ-ENT-008",
             "REQ-SRV-002"
     })
-    public void testDateFilter() {
+    public void testDateFilterOnTransfer() {
         List<TransferMyEntityWithOptionalFields> list = transferMyEntityWithOptionalFieldsDao.query().execute();
 
         assertEquals(3, list.size());
@@ -1311,7 +1311,7 @@ public class MappedTransferFiltersTest extends AbstractJslTest {
             "REQ-ENT-008",
             "REQ-SRV-002"
     })
-    public void testTimestampFilter() {
+    public void testTimestampFilterOnTransfer() {
         List<TransferMyEntityWithOptionalFields> list = transferMyEntityWithOptionalFieldsDao.query().execute();
 
         assertEquals(3, list.size());
@@ -1519,7 +1519,7 @@ public class MappedTransferFiltersTest extends AbstractJslTest {
             "REQ-ENT-008",
             "REQ-SRV-002"
     })
-    public void testTimeFilter() {
+    public void testTimeFilterOnTransfer() {
         List<TransferMyEntityWithOptionalFields> list = transferMyEntityWithOptionalFieldsDao.query().execute();
 
         assertEquals(3, list.size());
@@ -1721,7 +1721,7 @@ public class MappedTransferFiltersTest extends AbstractJslTest {
             "REQ-ENT-008",
             "REQ-SRV-002"
     })
-    public void testEnumFilter() {
+    public void testEnumFilterOnTransfer() {
         List<TransferMyEntityWithOptionalFields> list = transferMyEntityWithOptionalFieldsDao.query().execute();
 
         assertEquals(3, list.size());
@@ -1772,7 +1772,7 @@ public class MappedTransferFiltersTest extends AbstractJslTest {
             "REQ-ENT-008",
             "REQ-SRV-002"
     })
-    void testDerivedWithFilter() {
+    void testDerivedWithFilterOnTransfer() {
 
         assertEquals(3, transferMyEntityWithOptionalFieldsDao.query().count());
 
@@ -1807,7 +1807,7 @@ public class MappedTransferFiltersTest extends AbstractJslTest {
             "REQ-ENT-008",
             "REQ-SRV-002"
     })
-    void testNavigationOnFilter() {
+    void testNavigationOnFilterOnTransfer() {
 
         TransferCountry tcountry1 = transferCountryDao.create(TransferCountry.builder().withName("Hungary").withContinent(Continent.Europe).build());
         TransferCity tcity1 = transferCityDao.create(TransferCity.builder().withName("Budapest").build(), TransferCityAttachedRelationsForCreate.builder().withCountry(tcountry1).build());
