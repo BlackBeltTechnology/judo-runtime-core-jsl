@@ -324,6 +324,7 @@ public class FiltersTest extends AbstractJslTest {
 
         assertTrue(filteredByZeroResultString.isEmpty());
 
+        // TODO JNG-3980
         // filter for undefined
 
 //        MyEntityWithOptionalFields undefinedResult = myEntityWithOptionalFieldsDao

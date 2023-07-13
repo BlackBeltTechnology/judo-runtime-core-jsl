@@ -330,6 +330,7 @@ public class MappedTransferFiltersTest extends AbstractJslTest {
 
         assertTrue(filteredByZeroResultString.isEmpty());
 
+        // TODO JNG-3980
         // filter for undefined
 
 //        TransferMyEntityWithOptionalFields undefinedResult = transferMyEntityWithOptionalFieldsDao
