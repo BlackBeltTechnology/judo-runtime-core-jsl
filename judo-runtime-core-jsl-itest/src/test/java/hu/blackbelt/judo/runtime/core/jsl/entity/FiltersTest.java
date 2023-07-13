@@ -1124,7 +1124,6 @@ public class FiltersTest extends AbstractJslTest {
 
         List<MyEntityWithOptionalFields> lessOrEqualByFilterString = myEntityWithOptionalFieldsDao
                 .query()
-                .filterByDateAttr(DateFilter.lessOrEqualThan(DATE_1))
                 .filterBy("this.dateAttr <= `2022-07-11`")
                 .execute();
 
