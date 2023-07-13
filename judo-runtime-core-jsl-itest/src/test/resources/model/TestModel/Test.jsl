@@ -1,0 +1,10 @@
+model Test;
+
+import judo::types;
+
+entity A {
+    field String name;
+    @Query
+    field String stringQuery<= "Hello";
+    field String stringDerived <= "Hello";
+}
