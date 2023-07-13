@@ -23,11 +23,25 @@ package hu.blackbelt.judo.runtime.core.jsl.entity;
 import com.google.inject.Inject;
 import com.google.inject.Module;
 import hu.blackbelt.judo.dispatcher.api.FileType;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.car.Car;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.car.CarAttachedRelationsForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.car.CarDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.city.City;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.city.CityAttachedRelationsForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.city.CityDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.continent.Continent;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.country.Country;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.country.CountryDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.filterentity.FilterEntity;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.filterentity.FilterEntityDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.myentitywithoptionalfields.MyEntityWithOptionalFields;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.myentitywithoptionalfields.MyEntityWithOptionalFieldsDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.myenum.MyEnum;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.person.Person;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.person.PersonAttachedRelationsForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.person.PersonDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.tester.Tester;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.tester.TesterDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.FilterDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
@@ -52,6 +66,21 @@ public class FiltersTest extends AbstractJslTest {
 
     @Inject
     FilterEntityDao filterEntityDao;
+
+    @Inject
+    CountryDao countryDao;
+
+    @Inject
+    CityDao cityDao;
+
+    @Inject
+    PersonDao personDao;
+
+    @Inject
+    CarDao carDao;
+
+    @Inject
+    TesterDao testerDao;
 
     MyEntityWithOptionalFields entity1;
 
@@ -139,7 +168,7 @@ public class FiltersTest extends AbstractJslTest {
             "REQ-TYPE-010",
             "REQ-ENT-001",
             "REQ-ENT-002",
-            "REQ-ENT-012"
+            "REQ-ENT-008"
     })
     public void testFilterWithMultipleFilters() {
         List<MyEntityWithOptionalFields> list = myEntityWithOptionalFieldsDao.query().execute();
@@ -171,7 +200,7 @@ public class FiltersTest extends AbstractJslTest {
             "REQ-TYPE-010",
             "REQ-ENT-001",
             "REQ-ENT-002",
-            "REQ-ENT-012"
+            "REQ-ENT-008"
     })
     public void testIntegerNumberFilter() {
         List<MyEntityWithOptionalFields> list = myEntityWithOptionalFieldsDao.query().execute();
@@ -439,7 +468,7 @@ public class FiltersTest extends AbstractJslTest {
             "REQ-TYPE-010",
             "REQ-ENT-001",
             "REQ-ENT-002",
-            "REQ-ENT-012"
+            "REQ-ENT-008"
     })
     public void testScaledNumberFilter() {
         List<MyEntityWithOptionalFields> list = myEntityWithOptionalFieldsDao.query().execute();
@@ -677,7 +706,7 @@ public class FiltersTest extends AbstractJslTest {
             "REQ-TYPE-010",
             "REQ-ENT-001",
             "REQ-ENT-002",
-            "REQ-ENT-012"
+            "REQ-ENT-008"
     })
     public void testStringFilter() {
         List<MyEntityWithOptionalFields> list = myEntityWithOptionalFieldsDao.query().execute();
@@ -963,7 +992,7 @@ public class FiltersTest extends AbstractJslTest {
             "REQ-TYPE-010",
             "REQ-ENT-001",
             "REQ-ENT-002",
-            "REQ-ENT-012"
+            "REQ-ENT-008"
     })
     public void testBooleanFilter() {
         List<MyEntityWithOptionalFields> list = myEntityWithOptionalFieldsDao.query().execute();
@@ -1066,7 +1095,7 @@ public class FiltersTest extends AbstractJslTest {
             "REQ-TYPE-010",
             "REQ-ENT-001",
             "REQ-ENT-002",
-            "REQ-ENT-012"
+            "REQ-ENT-008"
     })
     public void testDateFilter() {
         List<MyEntityWithOptionalFields> list = myEntityWithOptionalFieldsDao.query().execute();
@@ -1269,7 +1298,7 @@ public class FiltersTest extends AbstractJslTest {
             "REQ-TYPE-010",
             "REQ-ENT-001",
             "REQ-ENT-002",
-            "REQ-ENT-012"
+            "REQ-ENT-008"
     })
     public void testTimestampFilter() {
         List<MyEntityWithOptionalFields> list = myEntityWithOptionalFieldsDao.query().execute();
@@ -1476,7 +1505,7 @@ public class FiltersTest extends AbstractJslTest {
             "REQ-TYPE-010",
             "REQ-ENT-001",
             "REQ-ENT-002",
-            "REQ-ENT-012"
+            "REQ-ENT-008"
     })
     public void testTimeFilter() {
         List<MyEntityWithOptionalFields> list = myEntityWithOptionalFieldsDao.query().execute();
@@ -1677,7 +1706,7 @@ public class FiltersTest extends AbstractJslTest {
             "REQ-TYPE-010",
             "REQ-ENT-001",
             "REQ-ENT-002",
-            "REQ-ENT-012"
+            "REQ-ENT-008"
     })
     public void testEnumFilter() {
         List<MyEntityWithOptionalFields> list = myEntityWithOptionalFieldsDao.query().execute();
@@ -1720,7 +1749,15 @@ public class FiltersTest extends AbstractJslTest {
 
     }
 
+
     @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-008"
+    })
     void testDerivedWithFilter() {
 
         assertEquals(3, myEntityWithOptionalFieldsDao.query().count());
@@ -1745,5 +1782,40 @@ public class FiltersTest extends AbstractJslTest {
 
     }
 
+    @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-005",
+            "REQ-ENT-008"
+    })
+    void testNavigationOnFilter() {
+
+        Country country1 = countryDao.create(Country.builder().withName("Hungary").withContinent(Continent.Europe).build());
+        City city1 = cityDao.create(City.builder().withName("Budapest").build(), CityAttachedRelationsForCreate.builder().withCountry(country1).build());
+        City city2 = cityDao.create(City.builder().withName("Debrecen").build(), CityAttachedRelationsForCreate.builder().withCountry(country1).build());
+        Person p1 = personDao.create(Person.builder().withName("Gibpsz Jakab").build(), PersonAttachedRelationsForCreate.builder().withCity(city1).build());
+        Person p2 = personDao.create(Person.builder().withName("Teszt Elek").build(), PersonAttachedRelationsForCreate.builder().withCity(city2).build());
+        Car c1 = carDao.create(Car.builder().withLicensePlate("ABC-123").build(), CarAttachedRelationsForCreate.builder().withOwner(p1).build());
+        Car c2 = carDao.create(Car.builder().withLicensePlate("ABC-124").build(), CarAttachedRelationsForCreate.builder().withOwner(p2).build());
+
+        Tester tester = testerDao.create(Tester.builder().build());
+
+        assertEquals(1, testerDao.countCarsOfTesztElek(tester));
+        assertThat(testerDao.queryCarsOfTesztElek(tester).execute(), containsInAnyOrder(c2));
+
+        assertEquals(1, testerDao.countCarsInBudapest(tester));
+        assertThat(testerDao.queryCarsInBudapest(tester).execute(), containsInAnyOrder(c1));
+
+        assertEquals(2, testerDao.countCarsInHungary(tester));
+        assertThat(testerDao.queryCarsInHungary(tester).execute(), containsInAnyOrder(c2, c1));
+
+        assertEquals(2, testerDao.countCarsOfKnownContinents(tester));
+        assertThat(testerDao.queryCarsInHungary(tester).execute(), containsInAnyOrder(c1, c2));
+
+    }
 
 }

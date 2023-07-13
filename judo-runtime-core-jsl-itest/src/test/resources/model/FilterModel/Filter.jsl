@@ -46,3 +46,44 @@ entity FilterEntity {
     relation MyEntityWithOptionalFields[] haveUndefinedOnTheStringAttr <= MyEntityWithOptionalFields!all()!filter(e | e.stringAttr!isUndefined());
     relation MyEntityWithOptionalFields[] haveDefinedOnTheStringAttr <= MyEntityWithOptionalFields!all()!filter(e | e.stringAttr!isDefined());
 }
+
+
+
+// navigation in a filter : Car test
+
+enum Continent {
+    Africa = 1;
+    Asia = 2;
+    Europe = 3;
+    America = 4;
+    Antartica = 5;
+    Australia = 6;
+}
+
+entity Country {
+    field String name;
+    field Continent continent;
+}
+
+entity City {
+    field String name;
+    relation Country country;
+}
+
+entity Person {
+    field String name;
+    relation City city;
+}
+
+entity Car {
+    field String licensePlate;
+    relation Person owner;
+}
+
+entity Tester {
+    relation Car[] carsOfTesztElek <= Car!all()!filter(c | c.owner.name == "Teszt Elek");
+    relation Car[] carsInBudapest <= Car!all()!filter(c | c.owner.city.name == "Budapest");
+    relation Car[] carsInHungary <= Car!all()!filter(c | c.owner.city.country.name == "Hungary");
+    relation Car[] carsOfKnownContinents <= Car!all()!filter(c | c.owner.city.country.continent!isDefined());
+}
+
