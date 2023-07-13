@@ -515,6 +515,26 @@
                             <sources>${basedir}/src/test/resources/model/MappedTransferNavigationTestModel</sources>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>generate-psm-test-model-from-artifact-FilterModel</id>
+                        <goals>
+                            <goal>parser-workflow</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <sources>${basedir}/src/test/resources/model/FilterModel</sources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-psm-test-model-from-artifact-MappedTransferFilterModel</id>
+                        <goals>
+                            <goal>parser-workflow</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <sources>${basedir}/src/test/resources/model/MappedTransferFilterModel</sources>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
 
@@ -1159,6 +1179,32 @@
                             <destination>${basedir}/target/generated-test-sources/sdk-core/MappedTransferNavigationTest</destination>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-Filter</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/Filter-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/sdk-core/Filter</destination>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-MappedTransferFilter</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/MappedTransferFilter-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/sdk-core/MappedTransferFilter</destination>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
 
@@ -1222,6 +1268,8 @@
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/MappedTransferOperatorAndFunctionOfEnumTest</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/MappedTransferOperators</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/MappedTransferNavigationTest</source>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/Filter</source>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/MappedTransferFilter</source>
                             </sources>
                         </configuration>
                     </execution>
