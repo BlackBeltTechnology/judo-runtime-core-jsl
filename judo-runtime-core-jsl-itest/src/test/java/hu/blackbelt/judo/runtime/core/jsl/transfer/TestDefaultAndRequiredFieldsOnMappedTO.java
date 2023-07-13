@@ -23,6 +23,14 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredf
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.transferwithoptionalfieldsmapsentitywithrequiredfields.TransferWithOptionalFieldsMapsEntityWithRequiredFieldsDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.transferwithoptionalfieldsmapsentitywithrequiredfieldswithdefault.TransferWithOptionalFieldsMapsEntityWithRequiredFieldsWithDefault;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.transferwithoptionalfieldsmapsentitywithrequiredfieldswithdefault.TransferWithOptionalFieldsMapsEntityWithRequiredFieldsWithDefaultDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.transferwithoptionalfieldswithdefaultexpressionmapsentitywithoptionalfields.TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFields;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.transferwithoptionalfieldswithdefaultexpressionmapsentitywithoptionalfields.TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.transferwithoptionalfieldswithdefaultexpressionmapsentitywithoptionalfieldswithdefault.TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefault;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.transferwithoptionalfieldswithdefaultexpressionmapsentitywithoptionalfieldswithdefault.TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefaultDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.transferwithoptionalfieldswithdefaultexpressionmapsentitywithrequiredfields.TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFields;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.transferwithoptionalfieldswithdefaultexpressionmapsentitywithrequiredfields.TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.transferwithoptionalfieldswithdefaultexpressionmapsentitywithrequiredfieldswithdefault.TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefault;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.transferwithoptionalfieldswithdefaultexpressionmapsentitywithrequiredfieldswithdefault.TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefaultDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.transferwithoptionalfieldswithdefaultmapsentitywithoptionalfields.TransferWithOptionalFieldsWithDefaultMapsEntityWithOptionalFields;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.transferwithoptionalfieldswithdefaultmapsentitywithoptionalfields.TransferWithOptionalFieldsWithDefaultMapsEntityWithOptionalFieldsDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.transferwithoptionalfieldswithdefaultmapsentitywithoptionalfieldswithdefault.TransferWithOptionalFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefault;
@@ -39,6 +47,14 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredf
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.transferwithrequiredfieldsmapsentitywithrequiredfields.TransferWithRequiredFieldsMapsEntityWithRequiredFieldsDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.transferwithrequiredfieldsmapsentitywithrequiredfieldswithdefault.TransferWithRequiredFieldsMapsEntityWithRequiredFieldsWithDefaultDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.transferwithrequiredfieldsmapsentitywithrequiredfieldswithdefault.TransferWithRequiredFieldsMapsEntityWithRequiredFieldsWithDefault;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.transferwithrequiredfieldswithdefaultexpressionmapsentitywithoptionalfields.TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFields;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.transferwithrequiredfieldswithdefaultexpressionmapsentitywithoptionalfields.TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.transferwithrequiredfieldswithdefaultexpressionmapsentitywithoptionalfieldswithdefault.TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefault;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.transferwithrequiredfieldswithdefaultexpressionmapsentitywithoptionalfieldswithdefault.TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefaultDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.transferwithrequiredfieldswithdefaultexpressionmapsentitywithrequiredfields.TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFields;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.transferwithrequiredfieldswithdefaultexpressionmapsentitywithrequiredfields.TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.transferwithrequiredfieldswithdefaultexpressionmapsentitywithrequiredfieldswithdefault.TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefault;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.transferwithrequiredfieldswithdefaultexpressionmapsentitywithrequiredfieldswithdefault.TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefaultDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.transferwithrequiredfieldswithdefaultmapsentitywithoptionalfields.TransferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFields;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.transferwithrequiredfieldswithdefaultmapsentitywithoptionalfields.TransferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.transferwithrequiredfieldswithdefaultmapsentitywithoptionalfieldswithdefault.TransferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefault;
@@ -47,7 +63,9 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredf
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.transferwithrequiredfieldswithdefaultmapsentitywithrequiredfields.TransferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.transferwithrequiredfieldswithdefaultmapsentitywithrequiredfieldswithdefault.TransferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsWithDefault;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.transferwithrequiredfieldswithdefaultmapsentitywithrequiredfieldswithdefault.TransferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsWithDefaultDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.querystringattribute.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.TestDefaultAndRequiredFieldsOnMappedTODaoModules;
+import hu.blackbelt.judo.dao.api.ValidationResult;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
@@ -85,12 +103,18 @@ public class TestDefaultAndRequiredFieldsOnMappedTO extends AbstractJslTest {
     @Inject
     TransferWithOptionalFieldsWithDefaultMapsEntityWithOptionalFieldsDao transferWithOptionalFieldsWithDefaultMapsEntityWithOptionalFieldsDao;
 
+    @Inject
+    TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsDao transferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsDao;
+
 
     @Inject
     TransferWithRequiredFieldsMapsEntityWithOptionalFieldsDao transferWithRequiredFieldsMapsEntityWithOptionalFieldsDao;
 
     @Inject
     TransferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsDao transferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsDao;
+
+    @Inject
+    TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsDao transferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsDao;
 
     @Inject
     EntityWithRequiredFieldsDao entityWithRequiredFieldsDao;
@@ -103,10 +127,15 @@ public class TestDefaultAndRequiredFieldsOnMappedTO extends AbstractJslTest {
     TransferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsDao transferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsDao;
 
     @Inject
+    TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsDao transferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsDao;
+
+    @Inject
     TransferWithRequiredFieldsMapsEntityWithRequiredFieldsDao transferWithRequiredFieldsMapsEntityWithRequiredFieldsDao;
 
     @Inject
     TransferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsDao transferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsDao;
+    @Inject
+    TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsDao transferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsDao;
 
     @Inject
     EntityWithOptionalFieldsWithDefaultDao entityWithOptionalFieldsWithDefaultDao;
@@ -118,10 +147,16 @@ public class TestDefaultAndRequiredFieldsOnMappedTO extends AbstractJslTest {
     TransferWithOptionalFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefaultDao transferWithOptionalFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefaultDao;
 
     @Inject
+    TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefaultDao transferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefaultDao;
+
+    @Inject
     TransferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefaultDao transferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefaultDao;
 
     @Inject
     TransferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefaultDao transferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefaultDao;
+
+    @Inject
+    TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefaultDao transferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefaultDao;
 
     @Inject
     EntityWithRequiredFieldsWithDefaultDao entityWithRequiredFieldsWithDefaultDao;
@@ -132,10 +167,19 @@ public class TestDefaultAndRequiredFieldsOnMappedTO extends AbstractJslTest {
     TransferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsWithDefaultDao transferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsWithDefaultDao;
 
     @Inject
+    TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefaultDao transferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefaultDao;
+
+    @Inject
     TransferWithRequiredFieldsMapsEntityWithRequiredFieldsWithDefaultDao transferWithRequiredFieldsMapsEntityWithRequiredFieldsWithDefaultDao;
 
     @Inject
     TransferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsWithDefaultDao transferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsWithDefaultDao;
+
+    @Inject
+    TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefaultDao transferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefaultDao;
+
+    @Inject
+    QueryStringAttributeDao queryStringAttributeDao;
 
     /**
      * This test check the mapped transfer object maps an entity with contains primitive optional field.
@@ -300,9 +344,27 @@ public class TestDefaultAndRequiredFieldsOnMappedTO extends AbstractJslTest {
         t2 = transferWithOptionalFieldsWithDefaultMapsEntityWithOptionalFieldsDao.update(t2);
         assertEquals(1, transferWithOptionalFieldsWithDefaultMapsEntityWithOptionalFieldsDao.countAll());
         assertEquals(0, transferWithOptionalFieldsWithDefaultMapsEntityWithOptionalFieldsDao.query().filterByStringAttr(StringFilter.equalTo("update")).count());
-
-        assertThrows(ValidationException.class, () -> transferWithRequiredFieldsMapsEntityWithOptionalFieldsDao.create(TransferWithRequiredFieldsMapsEntityWithOptionalFields.builder().build()));
         transferWithOptionalFieldsWithDefaultMapsEntityWithOptionalFieldsDao.delete(t2);
+
+        ValidationException exception = assertThrows(ValidationException.class, () -> transferWithRequiredFieldsMapsEntityWithOptionalFieldsDao.create(TransferWithRequiredFieldsMapsEntityWithOptionalFields.builder().build()));
+        assertEquals(9, exception.getValidationResults().size());
+        ValidationResult validationResult = exception.getValidationResults().stream().findAny().orElseThrow();
+        assertEquals("MISSING_REQUIRED_ATTRIBUTE", validationResult.getCode());
+
+        TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFields t2Expression = transferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsDao.create(TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFields.builder().build());
+
+        assertEquals( 1, transferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsDao.countAll());
+        assertEquals(Optional.empty(), t2Expression.getStringAttr());
+
+        e1Optional = entityWithOptionalFieldsDao.getById(t2Expression.adaptTo(EntityWithOptionalFieldsIdentifier.class));
+
+        assertTrue(e1Optional.isPresent());
+
+        e1 = e1Optional.orElseThrow();
+
+        assertEquals(Optional.empty(), e1.getStringAttr());
+
+        transferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsDao.delete(t2Expression);
 
         TransferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFields t3 = transferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsDao.create(TransferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFields.builder().build());
 
@@ -347,8 +409,17 @@ public class TestDefaultAndRequiredFieldsOnMappedTO extends AbstractJslTest {
 
         t3.setStringAttr(null);
         final TransferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFields t3updated = t3;
-        assertThrows(ValidationException.class, () -> transferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsDao.update(t3updated));
+        exception = assertThrows(ValidationException.class, () -> transferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsDao.update(t3updated));
+
+        assertEquals(1, exception.getValidationResults().size());
+        validationResult = exception.getValidationResults().stream().findAny().orElseThrow();
+        assertEquals("MISSING_REQUIRED_ATTRIBUTE", validationResult.getCode());
+        assertEquals("stringAttr", validationResult.getLocation());
         transferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsDao.delete(t3);
+
+        // TBD: Validation or IllegalStateException
+        //exception = assertThrows(ValidationException.class, () -> transferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsDao.create(TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFields.builder().build()));
+
     }
 
 
@@ -414,7 +485,10 @@ public class TestDefaultAndRequiredFieldsOnMappedTO extends AbstractJslTest {
             "REQ-EXPR-001"
     })
     void testTransferMapsEntityWithRequiredFields() {
-        assertThrows(ValidationException.class, () -> transferWithOptionalFieldsMapsEntityWithRequiredFieldsDao.create(TransferWithOptionalFieldsMapsEntityWithRequiredFields.builder().build()));
+        ValidationException exception = assertThrows(ValidationException.class, () -> transferWithOptionalFieldsMapsEntityWithRequiredFieldsDao.create(TransferWithOptionalFieldsMapsEntityWithRequiredFields.builder().build()));
+        assertEquals(9, exception.getValidationResults().size());
+        ValidationResult validationResult = exception.getValidationResults().stream().findAny().orElseThrow();
+        assertEquals("MISSING_REQUIRED_ATTRIBUTE", validationResult.getCode());
 
         TransferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFields t1 = transferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsDao.create(TransferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFields.builder().build());
 
@@ -460,10 +534,22 @@ public class TestDefaultAndRequiredFieldsOnMappedTO extends AbstractJslTest {
 
         t1.setStringAttr(null);
         final TransferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFields finalt1 = t1;
-        assertThrows(ValidationException.class, () -> transferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsDao.update(finalt1));
+        exception = assertThrows(ValidationException.class, () -> transferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsDao.update(finalt1));
+
+        assertEquals(1, exception.getValidationResults().size());
+        validationResult = exception.getValidationResults().stream().findAny().orElseThrow();
+        assertEquals("MISSING_REQUIRED_ATTRIBUTE", validationResult.getCode());
+        assertEquals("stringAttr", validationResult.getLocation());
         transferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsDao.delete(t1);
 
-        assertThrows(ValidationException.class, () -> transferWithRequiredFieldsMapsEntityWithRequiredFieldsDao.create(TransferWithRequiredFieldsMapsEntityWithRequiredFields.builder().build()));
+        // TBD: Validation or IllegalStateException
+        //exception = assertThrows(ValidationException.class, () -> transferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsDao.create(TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFields.builder().build()));
+
+
+        exception = assertThrows(ValidationException.class, () -> transferWithRequiredFieldsMapsEntityWithRequiredFieldsDao.create(TransferWithRequiredFieldsMapsEntityWithRequiredFields.builder().build()));
+        assertEquals(9, exception.getValidationResults().size());
+        validationResult = exception.getValidationResults().stream().findAny().orElseThrow();
+        assertEquals("MISSING_REQUIRED_ATTRIBUTE", validationResult.getCode());
 
         TransferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFields t2 = transferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsDao.create(TransferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFields.builder().build());
 
@@ -509,9 +595,17 @@ public class TestDefaultAndRequiredFieldsOnMappedTO extends AbstractJslTest {
 
         t2.setStringAttr(null);
         final TransferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFields finalt2 = t2;
-        assertThrows(ValidationException.class, () -> transferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsDao.update(finalt2));
+        exception = assertThrows(ValidationException.class, () -> transferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsDao.update(finalt2));
+
+        assertEquals(1, exception.getValidationResults().size());
+        validationResult = exception.getValidationResults().stream().findAny().orElseThrow();
+        assertEquals("MISSING_REQUIRED_ATTRIBUTE", validationResult.getCode());
+        assertEquals("stringAttr", validationResult.getLocation());
 
         transferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsDao.delete(t2);
+
+        // TBD: Validation or IllegalStateException
+        //assertThrows(ValidationException.class, () -> transferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsDao.create(TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFields.builder().build()));
     }
 
     /**
@@ -679,6 +773,24 @@ public class TestDefaultAndRequiredFieldsOnMappedTO extends AbstractJslTest {
         assertEquals(0, transferWithOptionalFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefaultDao.query().filterByEnumAttr(EnumerationFilter.equalTo(Enum.EnumB)).count());
         transferWithOptionalFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefaultDao.delete(t2);
 
+        // TODO: JNG-4985
+        //TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefault t2Expression = transferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefaultDao.create(TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefault.builder().build());
+//
+        //assertEquals(Optional.empty(), t2Expression.getStringAttr());
+
+        //assertEquals( 1, transferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefaultDao.countAll());
+        //System.out.println(queryStringAttributeDao.execute());
+//
+        //e1Optional = entityWithOptionalFieldsWithDefaultDao.getById(t2Expression.adaptTo(EntityWithOptionalFieldsWithDefaultIdentifier.class));
+//
+        //assertTrue(e1Optional.isPresent());
+//
+        //e1 = e1Optional.orElseThrow();
+//
+        //assertEquals(Optional.empty(), e1.getStringAttr());
+//
+        //transferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefaultDao.delete(t2Expression);
+
         // TODO: JNG-4922
         //TransferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefault t3 = transferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefaultDao.create(TransferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefault.builder().build());
 //
@@ -753,9 +865,17 @@ public class TestDefaultAndRequiredFieldsOnMappedTO extends AbstractJslTest {
 
         t4.setStringAttr(null);
         final TransferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefault finalT4 = t4;
-        assertThrows(ValidationException.class, () -> transferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefaultDao.update(finalT4));
+        ValidationException exception = assertThrows(ValidationException.class, () -> transferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefaultDao.update(finalT4));
+
+        assertEquals(1, exception.getValidationResults().size());
+        ValidationResult validationResult = exception.getValidationResults().stream().findAny().orElseThrow();
+        assertEquals("MISSING_REQUIRED_ATTRIBUTE", validationResult.getCode());
+        assertEquals("stringAttr", validationResult.getLocation());
 
         transferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefaultDao.delete(t4);
+
+        // TBD: Validation or IllegalStateException
+        //exception = assertThrows(ValidationException.class, () -> transferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefaultDao.create(TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefault.builder().build()));
 
     }
 
@@ -873,7 +993,12 @@ public class TestDefaultAndRequiredFieldsOnMappedTO extends AbstractJslTest {
 
         t1.setEnumAttr(null);
         final TransferWithOptionalFieldsMapsEntityWithRequiredFieldsWithDefault finalT1 = t1;
-        assertThrows(ValidationException.class, () -> transferWithOptionalFieldsMapsEntityWithRequiredFieldsWithDefaultDao.update(finalT1));
+        ValidationException exception = assertThrows(ValidationException.class, () -> transferWithOptionalFieldsMapsEntityWithRequiredFieldsWithDefaultDao.update(finalT1));
+
+        assertEquals(1, exception.getValidationResults().size());
+        ValidationResult validationResult = exception.getValidationResults().stream().findAny().orElseThrow();
+        assertEquals("MISSING_REQUIRED_ATTRIBUTE", validationResult.getCode());
+        assertEquals("enumAttr", validationResult.getLocation());
         transferWithOptionalFieldsMapsEntityWithRequiredFieldsWithDefaultDao.delete(t1);
 
         TransferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsWithDefault t2 = transferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsWithDefaultDao.create(TransferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsWithDefault.builder().build());
@@ -920,8 +1045,16 @@ public class TestDefaultAndRequiredFieldsOnMappedTO extends AbstractJslTest {
 
         t2.setStringAttr(null);
         final TransferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsWithDefault finalT2 = t2;
-        assertThrows(ValidationException.class, () -> transferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsWithDefaultDao.update(finalT2));
+        exception = assertThrows(ValidationException.class, () -> transferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsWithDefaultDao.update(finalT2));
+
+        assertEquals(1, exception.getValidationResults().size());
+        validationResult = exception.getValidationResults().stream().findAny().orElseThrow();
+        assertEquals("MISSING_REQUIRED_ATTRIBUTE", validationResult.getCode());
+        assertEquals("stringAttr", validationResult.getLocation());
         transferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsWithDefaultDao.delete(t2);
+
+        // TBD: Validation or IllegalStateException
+        //exception = assertThrows(ValidationException.class, () -> transferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefaultDao.create(TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefault.builder().build()));
 
         // TODO: JNG-4922
         //TransferWithRequiredFieldsMapsEntityWithRequiredFieldsWithDefault t3 = transferWithRequiredFieldsMapsEntityWithRequiredFieldsWithDefaultDao.create(TransferWithRequiredFieldsMapsEntityWithRequiredFieldsWithDefault.builder().build());
@@ -999,5 +1132,39 @@ public class TestDefaultAndRequiredFieldsOnMappedTO extends AbstractJslTest {
         final TransferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsWithDefault finalT4 = t4;
         assertThrows(ValidationException.class, () -> transferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsWithDefaultDao.update(finalT4));
 
+        assertEquals(1, exception.getValidationResults().size());
+        validationResult = exception.getValidationResults().stream().findAny().orElseThrow();
+        assertEquals("MISSING_REQUIRED_ATTRIBUTE", validationResult.getCode());
+        assertEquals("stringAttr", validationResult.getLocation());
+
+        // TBD: Validation or IllegalStateException
+        //exception = assertThrows(ValidationException.class, () -> transferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefaultDao.create(TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefault.builder().build()));
+
+    }
+
+    @Test
+    @TestCase("test")
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-SRV-002",
+            "REQ-SRV-003",
+            "REQ-SRV-004",
+            "REQ-EXPR-001"
+    })
+    void test() {
+        //TransferWithOptionalFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefault t2 = transferWithOptionalFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefaultDao.create(TransferWithOptionalFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefault.builder().build());
+        TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefault t2Expression = transferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefaultDao.create(TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefault.builder().build());
     }
 }
