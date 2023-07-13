@@ -714,7 +714,7 @@ public class FiltersTest extends AbstractJslTest {
 
         assertEquals(3, list.size());
 
-        // costume filter
+        // custom filter
 
         MyEntityWithOptionalFields filteredByString = myEntityWithOptionalFieldsDao
                 .query()
@@ -1215,7 +1215,6 @@ public class FiltersTest extends AbstractJslTest {
 
         List<MyEntityWithOptionalFields> lessOrEqualByFilterStringDerived = myEntityWithOptionalFieldsDao
                 .query()
-                .filterByDateAttr(DateFilter.lessOrEqualThan(DATE_1))
                 .filterBy("this.derivedDateAttr <= `2022-07-11`")
                 .execute();
 
@@ -1327,7 +1326,6 @@ public class FiltersTest extends AbstractJslTest {
 
         List<MyEntityWithOptionalFields> lessOrEqualByStringFilter = myEntityWithOptionalFieldsDao
                 .query()
-                .filterByTimestampAttr(TimestampFilter.lessOrEqualThan(TIMESTAMP_1))
                 .filterBy("this.timestampAttr <= `2022-07-11T19:09:33`")
                 .execute();
 

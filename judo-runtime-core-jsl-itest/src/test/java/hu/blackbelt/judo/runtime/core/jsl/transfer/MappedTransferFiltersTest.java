@@ -722,7 +722,7 @@ public class MappedTransferFiltersTest extends AbstractJslTest {
 
         assertEquals(3, list.size());
 
-        // costume filter
+        // custom filter
 
         TransferMyEntityWithOptionalFields filteredByString = transferMyEntityWithOptionalFieldsDao
                 .query()
@@ -1134,7 +1134,6 @@ public class MappedTransferFiltersTest extends AbstractJslTest {
 
         List<TransferMyEntityWithOptionalFields> lessOrEqualByFilterString = transferMyEntityWithOptionalFieldsDao
                 .query()
-                .filterByDateAttr(DateFilter.lessOrEqualThan(DATE_1))
                 .filterBy("this.dateAttr <= `2022-07-11`")
                 .execute();
 
