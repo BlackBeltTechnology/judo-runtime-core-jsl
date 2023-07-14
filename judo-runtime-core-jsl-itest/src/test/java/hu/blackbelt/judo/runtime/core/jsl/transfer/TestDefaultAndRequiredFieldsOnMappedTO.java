@@ -346,11 +346,6 @@ public class TestDefaultAndRequiredFieldsOnMappedTO extends AbstractJslTest {
         assertEquals(0, transferWithOptionalFieldsWithDefaultMapsEntityWithOptionalFieldsDao.query().filterByStringAttr(StringFilter.equalTo("update")).count());
         transferWithOptionalFieldsWithDefaultMapsEntityWithOptionalFieldsDao.delete(t2);
 
-        ValidationException exception = assertThrows(ValidationException.class, () -> transferWithRequiredFieldsMapsEntityWithOptionalFieldsDao.create(TransferWithRequiredFieldsMapsEntityWithOptionalFields.builder().build()));
-        assertEquals(9, exception.getValidationResults().size());
-        ValidationResult validationResult = exception.getValidationResults().stream().findAny().orElseThrow();
-        assertEquals("MISSING_REQUIRED_ATTRIBUTE", validationResult.getCode());
-
         TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFields t2Expression = transferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsDao.create(TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFields.builder().build());
 
         assertEquals( 1, transferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsDao.countAll());
@@ -366,9 +361,26 @@ public class TestDefaultAndRequiredFieldsOnMappedTO extends AbstractJslTest {
 
         transferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsDao.delete(t2Expression);
 
-        TransferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFields t3 = transferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsDao.create(TransferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFields.builder().build());
+        ValidationException exception = assertThrows(ValidationException.class, () -> transferWithRequiredFieldsMapsEntityWithOptionalFieldsDao.create(TransferWithRequiredFieldsMapsEntityWithOptionalFields.builder().build()));
+        assertEquals(9, exception.getValidationResults().size());
+        ValidationResult validationResult = exception.getValidationResults().stream().findAny().orElseThrow();
+        assertEquals("MISSING_REQUIRED_ATTRIBUTE", validationResult.getCode());
 
-        assertEquals(1, transferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsDao.countAll());
+
+        TransferWithRequiredFieldsMapsEntityWithOptionalFields t3 = transferWithRequiredFieldsMapsEntityWithOptionalFieldsDao.create(TransferWithRequiredFieldsMapsEntityWithOptionalFields.builder()
+                .withIntegerAttr(1)
+                .withScaledAttr(2.34)
+                .withStringAttr("Hello there")
+                .withEnumAttr(Enum.EnumA)
+                .withBoolAttr(true)
+                .withDateAttr(LocalDate.parse("2022-07-11"))
+                .withTimestampAttr(LocalDateTime.parse("2022-07-11T19:09:33"))
+                .withTimeAttr(LocalTime.parse("23:59:59"))
+                .withRegexAttr("+36 30 123 1234")
+                .build());
+
+
+        assertEquals(1, transferWithRequiredFieldsMapsEntityWithOptionalFieldsDao.countAll());
         assertEquals(1, t3.getIntegerAttr());
         assertEquals(2.34, t3.getScaledAttr());
         assertEquals("Hello there", t3.getStringAttr());
@@ -394,28 +406,76 @@ public class TestDefaultAndRequiredFieldsOnMappedTO extends AbstractJslTest {
         assertEquals(Optional.of(LocalDateTime.parse("2022-07-11T19:09:33")), e1.getTimestampAttr());
         assertEquals(Optional.of(LocalTime.parse("23:59:59")), e1.getTimeAttr());
         assertEquals(Optional.of(Enum.EnumA), e1.getEnumAttr());
-        transferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsDao.delete(t3);
 
-        t3 = transferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsDao.create(TransferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFields.builder().withStringAttr("init").build());
-        assertEquals("init", t3.getStringAttr());
-        assertEquals(1, transferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsDao.countAll());
-        assertEquals(1, transferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsDao.query().filterByStringAttr(StringFilter.equalTo("init")).count());
+        assertEquals(1, transferWithRequiredFieldsMapsEntityWithOptionalFieldsDao.query().filterByStringAttr(StringFilter.equalTo("Hello there")).count());
 
         t3.setStringAttr("update");
-        t3 = transferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsDao.update(t3);
-        assertEquals(1, transferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsDao.countAll());
-        assertEquals(1, transferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsDao.query().filterByStringAttr(StringFilter.equalTo("update")).count());
-        assertEquals(0, transferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsDao.query().filterByStringAttr(StringFilter.equalTo("init")).count());
+        t3 = transferWithRequiredFieldsMapsEntityWithOptionalFieldsDao.update(t3);
+        assertEquals(1, transferWithRequiredFieldsMapsEntityWithOptionalFieldsDao.countAll());
+        assertEquals(1, transferWithRequiredFieldsMapsEntityWithOptionalFieldsDao.query().filterByStringAttr(StringFilter.equalTo("update")).count());
+        assertEquals(0, transferWithRequiredFieldsMapsEntityWithOptionalFieldsDao.query().filterByStringAttr(StringFilter.equalTo("Hello there")).count());
 
         t3.setStringAttr(null);
-        final TransferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFields t3updated = t3;
-        exception = assertThrows(ValidationException.class, () -> transferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsDao.update(t3updated));
+        final TransferWithRequiredFieldsMapsEntityWithOptionalFields finalT3 = t3;
+
+        exception = assertThrows(ValidationException.class, () -> transferWithRequiredFieldsMapsEntityWithOptionalFieldsDao.update(finalT3));
 
         assertEquals(1, exception.getValidationResults().size());
         validationResult = exception.getValidationResults().stream().findAny().orElseThrow();
         assertEquals("MISSING_REQUIRED_ATTRIBUTE", validationResult.getCode());
         assertEquals("stringAttr", validationResult.getLocation());
-        transferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsDao.delete(t3);
+        transferWithRequiredFieldsMapsEntityWithOptionalFieldsDao.delete(t3);
+
+        TransferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFields t4 = transferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsDao.create(TransferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFields.builder().build());
+
+        assertEquals(1, transferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsDao.countAll());
+        assertEquals(1, t4.getIntegerAttr());
+        assertEquals(2.34, t4.getScaledAttr());
+        assertEquals("Hello there", t4.getStringAttr());
+        assertEquals("+36 30 123 1234", t4.getRegexAttr());
+        assertEquals(true, t4.getBoolAttr());
+        assertEquals(LocalDate.of(2022, 7, 11), t4.getDateAttr());
+        assertEquals(LocalDateTime.parse("2022-07-11T19:09:33"), t4.getTimestampAttr());
+        assertEquals(LocalTime.parse("23:59:59"), t4.getTimeAttr());
+        assertEquals(Enum.EnumA, t4.getEnumAttr());
+
+        e1Optional = entityWithOptionalFieldsDao.getById(t4.adaptTo(EntityWithOptionalFieldsIdentifier.class));
+
+        assertTrue(e1Optional.isPresent());
+
+        e1 = e1Optional.orElseThrow();
+
+        assertEquals(Optional.of(1), e1.getIntegerAttr());
+        assertEquals(Optional.of(2.34), e1.getScaledAttr());
+        assertEquals(Optional.of("Hello there"), e1.getStringAttr());
+        assertEquals(Optional.of("+36 30 123 1234"), e1.getRegexAttr());
+        assertEquals(Optional.of(true), e1.getBoolAttr());
+        assertEquals(Optional.of(LocalDate.of(2022, 7, 11)), e1.getDateAttr());
+        assertEquals(Optional.of(LocalDateTime.parse("2022-07-11T19:09:33")), e1.getTimestampAttr());
+        assertEquals(Optional.of(LocalTime.parse("23:59:59")), e1.getTimeAttr());
+        assertEquals(Optional.of(Enum.EnumA), e1.getEnumAttr());
+        transferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsDao.delete(t4);
+
+        t4 = transferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsDao.create(TransferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFields.builder().withStringAttr("init").build());
+        assertEquals("init", t4.getStringAttr());
+        assertEquals(1, transferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsDao.countAll());
+        assertEquals(1, transferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsDao.query().filterByStringAttr(StringFilter.equalTo("init")).count());
+
+        t4.setStringAttr("update");
+        t4 = transferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsDao.update(t4);
+        assertEquals(1, transferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsDao.countAll());
+        assertEquals(1, transferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsDao.query().filterByStringAttr(StringFilter.equalTo("update")).count());
+        assertEquals(0, transferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsDao.query().filterByStringAttr(StringFilter.equalTo("init")).count());
+
+        t4.setStringAttr(null);
+        final TransferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFields t4updated = t4;
+        exception = assertThrows(ValidationException.class, () -> transferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsDao.update(t4updated));
+
+        assertEquals(1, exception.getValidationResults().size());
+        validationResult = exception.getValidationResults().stream().findAny().orElseThrow();
+        assertEquals("MISSING_REQUIRED_ATTRIBUTE", validationResult.getCode());
+        assertEquals("stringAttr", validationResult.getLocation());
+        transferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsDao.delete(t4);
 
         // TBD: Where should we validate the null default value
         //exception = assertThrows(ValidationException.class, () -> transferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsDao.create(TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFields.builder().build()));
@@ -495,7 +555,18 @@ public class TestDefaultAndRequiredFieldsOnMappedTO extends AbstractJslTest {
         assertEquals("MISSING_REQUIRED_ATTRIBUTE", validationResult.getCode());
 
 
-        TransferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFields t1 = transferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsDao.create(TransferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFields.builder().build());
+        TransferWithOptionalFieldsMapsEntityWithRequiredFields t1 = transferWithOptionalFieldsMapsEntityWithRequiredFieldsDao.create(TransferWithOptionalFieldsMapsEntityWithRequiredFields.builder()
+                .withIntegerAttr(1)
+                .withScaledAttr(2.34)
+                .withStringAttr("Hello there")
+                .withEnumAttr(Enum.EnumA)
+                .withBoolAttr(true)
+                .withDateAttr(LocalDate.parse("2022-07-11"))
+                .withTimestampAttr(LocalDateTime.parse("2022-07-11T19:09:33"))
+                .withTimeAttr(LocalTime.parse("23:59:59"))
+                .withRegexAttr("+36 30 123 1234")
+                .build());
+
 
         assertEquals(1, transferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsDao.countAll());
         assertEquals(Optional.of(1), t1.getIntegerAttr());
@@ -524,55 +595,38 @@ public class TestDefaultAndRequiredFieldsOnMappedTO extends AbstractJslTest {
         assertEquals(LocalTime.parse("23:59:59"), entity.getTimeAttr());
         assertEquals(Enum.EnumA, entity.getEnumAttr());
 
-        transferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsDao.delete(t1);
-
-        t1 = transferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsDao.create(TransferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFields.builder().withStringAttr("init").build());
-        assertEquals(Optional.of("init"), t1.getStringAttr());
-        assertEquals(1, transferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsDao.countAll());
-        assertEquals(1, transferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsDao.query().filterByStringAttr(StringFilter.equalTo("init")).count());
+        assertEquals(1, transferWithOptionalFieldsMapsEntityWithRequiredFieldsDao.query().filterByStringAttr(StringFilter.equalTo("Hello there")).count());
 
         t1.setStringAttr("update");
-        t1 = transferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsDao.update(t1);
-        assertEquals(1, transferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsDao.countAll());
-        assertEquals(1, transferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsDao.query().filterByStringAttr(StringFilter.equalTo("update")).count());
-        assertEquals(0, transferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsDao.query().filterByStringAttr(StringFilter.equalTo("init")).count());
+        t1 = transferWithOptionalFieldsMapsEntityWithRequiredFieldsDao.update(t1);
+        assertEquals(1, transferWithOptionalFieldsMapsEntityWithRequiredFieldsDao.countAll());
+        assertEquals(1, transferWithOptionalFieldsMapsEntityWithRequiredFieldsDao.query().filterByStringAttr(StringFilter.equalTo("update")).count());
+        assertEquals(0, transferWithOptionalFieldsMapsEntityWithRequiredFieldsDao.query().filterByStringAttr(StringFilter.equalTo("Hello there")).count());
 
         t1.setStringAttr(null);
-        final TransferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFields finalt1 = t1;
+        final TransferWithOptionalFieldsMapsEntityWithRequiredFields finalT1 = t1;
 
-        exception = assertThrows(ValidationException.class, () -> transferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsDao.update(finalt1));
+        exception = assertThrows(ValidationException.class, () -> transferWithOptionalFieldsMapsEntityWithRequiredFieldsDao.update(finalT1));
 
         assertEquals(1, exception.getValidationResults().size());
         validationResult = exception.getValidationResults().stream().findAny().orElseThrow();
         assertEquals("MISSING_REQUIRED_ATTRIBUTE", validationResult.getCode());
         assertEquals("stringAttr", validationResult.getLocation());
-        transferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsDao.delete(t1);
-
-        // TBD: Where should we validate the null default value
-        //exception = assertThrows(ValidationException.class, () -> transferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsDao.create(TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFields.builder().build()));
-        //assertEquals(1, exception.getValidationResults().size());
-        //validationResult = exception.getValidationResults().stream().findAny().orElseThrow();
-        //assertEquals("MISSING_REQUIRED_ATTRIBUTE", validationResult.getCode());
-        //assertEquals("stringAttr", validationResult.getLocation());
+        transferWithOptionalFieldsMapsEntityWithRequiredFieldsDao.delete(t1);
 
 
-        exception = assertThrows(ValidationException.class, () -> transferWithRequiredFieldsMapsEntityWithRequiredFieldsDao.create(TransferWithRequiredFieldsMapsEntityWithRequiredFields.builder().build()));
-        assertEquals(9, exception.getValidationResults().size());
-        validationResult = exception.getValidationResults().stream().findAny().orElseThrow();
-        assertEquals("MISSING_REQUIRED_ATTRIBUTE", validationResult.getCode());
+        TransferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFields t2 = transferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsDao.create(TransferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFields.builder().build());
 
-        TransferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFields t2 = transferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsDao.create(TransferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFields.builder().build());
-
-        assertEquals(1, transferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsDao.countAll());
-        assertEquals(1, t2.getIntegerAttr());
-        assertEquals(2.34, t2.getScaledAttr());
-        assertEquals("Hello there", t2.getStringAttr());
-        assertEquals("+36 30 123 1234", t2.getRegexAttr());
-        assertEquals(true, t2.getBoolAttr());
-        assertEquals(LocalDate.of(2022, 7, 11), t2.getDateAttr());
-        assertEquals(LocalDateTime.parse("2022-07-11T19:09:33"), t2.getTimestampAttr());
-        assertEquals(LocalTime.parse("23:59:59"), t2.getTimeAttr());
-        assertEquals(Enum.EnumA, t2.getEnumAttr());
+        assertEquals(1, transferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsDao.countAll());
+        assertEquals(Optional.of(1), t2.getIntegerAttr());
+        assertEquals(Optional.of(2.34), t2.getScaledAttr());
+        assertEquals(Optional.of("Hello there"), t2.getStringAttr());
+        assertEquals(Optional.of("+36 30 123 1234"), t2.getRegexAttr());
+        assertEquals(Optional.of(true), t2.getBoolAttr());
+        assertEquals(Optional.of(LocalDate.of(2022, 7, 11)), t2.getDateAttr());
+        assertEquals(Optional.of(LocalDateTime.parse("2022-07-11T19:09:33")), t2.getTimestampAttr());
+        assertEquals(Optional.of(LocalTime.parse("23:59:59")), t2.getTimeAttr());
+        assertEquals(Optional.of(Enum.EnumA), t2.getEnumAttr());
 
         e1 = entityWithRequiredFieldsDao.getById(t2.adaptTo(EntityWithRequiredFieldsIdentifier.class));
 
@@ -590,30 +644,155 @@ public class TestDefaultAndRequiredFieldsOnMappedTO extends AbstractJslTest {
         assertEquals(LocalTime.parse("23:59:59"), entity.getTimeAttr());
         assertEquals(Enum.EnumA, entity.getEnumAttr());
 
-        transferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsDao.delete(t2);
+        transferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsDao.delete(t2);
 
-        t2 = transferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsDao.create(TransferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFields.builder().withStringAttr("init").build());
-        assertEquals("init", t2.getStringAttr());
+        t2 = transferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsDao.create(TransferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFields.builder().withStringAttr("init").build());
+        assertEquals(Optional.of("init"), t2.getStringAttr());
+        assertEquals(1, transferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsDao.countAll());
+        assertEquals(1, transferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsDao.query().filterByStringAttr(StringFilter.equalTo("init")).count());
+
+        t2.setStringAttr("update");
+        t2 = transferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsDao.update(t2);
+        assertEquals(1, transferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsDao.countAll());
+        assertEquals(1, transferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsDao.query().filterByStringAttr(StringFilter.equalTo("update")).count());
+        assertEquals(0, transferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsDao.query().filterByStringAttr(StringFilter.equalTo("init")).count());
+
+        t2.setStringAttr(null);
+        final TransferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFields finalT2 = t2;
+
+        exception = assertThrows(ValidationException.class, () -> transferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsDao.update(finalT2));
+
+        assertEquals(1, exception.getValidationResults().size());
+        validationResult = exception.getValidationResults().stream().findAny().orElseThrow();
+        assertEquals("MISSING_REQUIRED_ATTRIBUTE", validationResult.getCode());
+        assertEquals("stringAttr", validationResult.getLocation());
+        transferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsDao.delete(t2);
+
+        // TBD: Where should we validate the null default value
+        //exception = assertThrows(ValidationException.class, () -> transferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsDao.create(TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFields.builder().build()));
+        //assertEquals(1, exception.getValidationResults().size());
+        //validationResult = exception.getValidationResults().stream().findAny().orElseThrow();
+        //assertEquals("MISSING_REQUIRED_ATTRIBUTE", validationResult.getCode());
+        //assertEquals("stringAttr", validationResult.getLocation());
+
+
+        exception = assertThrows(ValidationException.class, () -> transferWithRequiredFieldsMapsEntityWithRequiredFieldsDao.create(TransferWithRequiredFieldsMapsEntityWithRequiredFields.builder().build()));
+        assertEquals(9, exception.getValidationResults().size());
+        validationResult = exception.getValidationResults().stream().findAny().orElseThrow();
+        assertEquals("MISSING_REQUIRED_ATTRIBUTE", validationResult.getCode());
+
+        TransferWithRequiredFieldsMapsEntityWithRequiredFields t3 = transferWithRequiredFieldsMapsEntityWithRequiredFieldsDao.create(TransferWithRequiredFieldsMapsEntityWithRequiredFields.builder()
+                .withIntegerAttr(1)
+                .withScaledAttr(2.34)
+                .withStringAttr("Hello there")
+                .withEnumAttr(Enum.EnumA)
+                .withBoolAttr(true)
+                .withDateAttr(LocalDate.parse("2022-07-11"))
+                .withTimestampAttr(LocalDateTime.parse("2022-07-11T19:09:33"))
+                .withTimeAttr(LocalTime.parse("23:59:59"))
+                .withRegexAttr("+36 30 123 1234")
+                .build());
+
+
+        assertEquals(1, transferWithRequiredFieldsMapsEntityWithRequiredFieldsDao.countAll());
+        assertEquals(1, t3.getIntegerAttr());
+        assertEquals(2.34, t3.getScaledAttr());
+        assertEquals("Hello there", t3.getStringAttr());
+        assertEquals("+36 30 123 1234", t3.getRegexAttr());
+        assertEquals(true, t3.getBoolAttr());
+        assertEquals(LocalDate.of(2022, 7, 11), t3.getDateAttr());
+        assertEquals(LocalDateTime.parse("2022-07-11T19:09:33"), t3.getTimestampAttr());
+        assertEquals(LocalTime.parse("23:59:59"), t3.getTimeAttr());
+        assertEquals(Enum.EnumA, t3.getEnumAttr());
+
+        e1 = entityWithRequiredFieldsDao.getById(t3.adaptTo(EntityWithRequiredFieldsIdentifier.class));
+
+        assertTrue(e1.isPresent());
+
+        entity = e1.orElseThrow();
+
+        assertEquals(1, entity.getIntegerAttr());
+        assertEquals(2.34, entity.getScaledAttr());
+        assertEquals("Hello there", entity.getStringAttr());
+        assertEquals("+36 30 123 1234", entity.getRegexAttr());
+        assertEquals(true, entity.getBoolAttr());
+        assertEquals(LocalDate.of(2022, 7, 11), entity.getDateAttr());
+        assertEquals(LocalDateTime.parse("2022-07-11T19:09:33"), entity.getTimestampAttr());
+        assertEquals(LocalTime.parse("23:59:59"), entity.getTimeAttr());
+        assertEquals(Enum.EnumA, entity.getEnumAttr());
+
+        assertEquals(1, transferWithRequiredFieldsMapsEntityWithRequiredFieldsDao.query().filterByStringAttr(StringFilter.equalTo("Hello there")).count());
+
+        t3.setStringAttr("update");
+        t3 = transferWithRequiredFieldsMapsEntityWithRequiredFieldsDao.update(t3);
+        assertEquals(1, transferWithRequiredFieldsMapsEntityWithRequiredFieldsDao.countAll());
+        assertEquals(1, transferWithRequiredFieldsMapsEntityWithRequiredFieldsDao.query().filterByStringAttr(StringFilter.equalTo("update")).count());
+        assertEquals(0, transferWithRequiredFieldsMapsEntityWithRequiredFieldsDao.query().filterByStringAttr(StringFilter.equalTo("Hello there")).count());
+
+        t3.setStringAttr(null);
+        final TransferWithRequiredFieldsMapsEntityWithRequiredFields finalT3 = t3;
+
+        exception = assertThrows(ValidationException.class, () -> transferWithRequiredFieldsMapsEntityWithRequiredFieldsDao.update(finalT3));
+
+        assertEquals(1, exception.getValidationResults().size());
+        validationResult = exception.getValidationResults().stream().findAny().orElseThrow();
+        assertEquals("MISSING_REQUIRED_ATTRIBUTE", validationResult.getCode());
+        assertEquals("stringAttr", validationResult.getLocation());
+        transferWithRequiredFieldsMapsEntityWithRequiredFieldsDao.delete(t3);
+
+        TransferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFields t4 = transferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsDao.create(TransferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFields.builder().build());
+
+        assertEquals(1, transferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsDao.countAll());
+        assertEquals(1, t4.getIntegerAttr());
+        assertEquals(2.34, t4.getScaledAttr());
+        assertEquals("Hello there", t4.getStringAttr());
+        assertEquals("+36 30 123 1234", t4.getRegexAttr());
+        assertEquals(true, t4.getBoolAttr());
+        assertEquals(LocalDate.of(2022, 7, 11), t4.getDateAttr());
+        assertEquals(LocalDateTime.parse("2022-07-11T19:09:33"), t4.getTimestampAttr());
+        assertEquals(LocalTime.parse("23:59:59"), t4.getTimeAttr());
+        assertEquals(Enum.EnumA, t4.getEnumAttr());
+
+        e1 = entityWithRequiredFieldsDao.getById(t4.adaptTo(EntityWithRequiredFieldsIdentifier.class));
+
+        assertTrue(e1.isPresent());
+
+        entity = e1.orElseThrow();
+
+        assertEquals(1, entity.getIntegerAttr());
+        assertEquals(2.34, entity.getScaledAttr());
+        assertEquals("Hello there", entity.getStringAttr());
+        assertEquals("+36 30 123 1234", entity.getRegexAttr());
+        assertEquals(true, entity.getBoolAttr());
+        assertEquals(LocalDate.of(2022, 7, 11), entity.getDateAttr());
+        assertEquals(LocalDateTime.parse("2022-07-11T19:09:33"), entity.getTimestampAttr());
+        assertEquals(LocalTime.parse("23:59:59"), entity.getTimeAttr());
+        assertEquals(Enum.EnumA, entity.getEnumAttr());
+
+        transferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsDao.delete(t4);
+
+        t4 = transferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsDao.create(TransferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFields.builder().withStringAttr("init").build());
+        assertEquals("init", t4.getStringAttr());
         assertEquals(1, transferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsDao.countAll());
         assertEquals(1, transferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsDao.query().filterByStringAttr(StringFilter.equalTo("init")).count());
 
-        t2.setStringAttr("update");
-        t2 = transferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsDao.update(t2);
+        t4.setStringAttr("update");
+        t4 = transferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsDao.update(t4);
         assertEquals(1, transferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsDao.countAll());
         assertEquals(1, transferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsDao.query().filterByStringAttr(StringFilter.equalTo("update")).count());
         assertEquals(0, transferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsDao.query().filterByStringAttr(StringFilter.equalTo("init")).count());
 
-        t2.setStringAttr(null);
-        final TransferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFields finalt2 = t2;
+        t4.setStringAttr(null);
+        final TransferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFields finalT4 = t4;
 
-        exception = assertThrows(ValidationException.class, () -> transferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsDao.update(finalt2));
+        exception = assertThrows(ValidationException.class, () -> transferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsDao.update(finalT4));
 
         assertEquals(1, exception.getValidationResults().size());
         validationResult = exception.getValidationResults().stream().findAny().orElseThrow();
         assertEquals("MISSING_REQUIRED_ATTRIBUTE", validationResult.getCode());
         assertEquals("stringAttr", validationResult.getLocation());
 
-        transferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsDao.delete(t2);
+        transferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsDao.delete(t4);
 
         // TBD: Where should we validate the null default value
         //assertThrows(ValidationException.class, () -> transferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsDao.create(TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFields.builder().build()));
