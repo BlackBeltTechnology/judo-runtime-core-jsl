@@ -419,6 +419,10 @@ public class TestDefaultAndRequiredFieldsOnMappedTO extends AbstractJslTest {
 
         // TBD: Validation or IllegalStateException
         //exception = assertThrows(ValidationException.class, () -> transferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsDao.create(TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFields.builder().build()));
+        //assertEquals(1, exception.getValidationResults().size());
+        //validationResult = exception.getValidationResults().stream().findAny().orElseThrow();
+        //assertEquals("MISSING_REQUIRED_ATTRIBUTE", validationResult.getCode());
+        //assertEquals("stringAttr", validationResult.getLocation());
 
     }
 
@@ -544,6 +548,10 @@ public class TestDefaultAndRequiredFieldsOnMappedTO extends AbstractJslTest {
 
         // TBD: Validation or IllegalStateException
         //exception = assertThrows(ValidationException.class, () -> transferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsDao.create(TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFields.builder().build()));
+        //assertEquals(1, exception.getValidationResults().size());
+        //validationResult = exception.getValidationResults().stream().findAny().orElseThrow();
+        //assertEquals("MISSING_REQUIRED_ATTRIBUTE", validationResult.getCode());
+        //assertEquals("stringAttr", validationResult.getLocation());
 
 
         exception = assertThrows(ValidationException.class, () -> transferWithRequiredFieldsMapsEntityWithRequiredFieldsDao.create(TransferWithRequiredFieldsMapsEntityWithRequiredFields.builder().build()));
@@ -606,6 +614,10 @@ public class TestDefaultAndRequiredFieldsOnMappedTO extends AbstractJslTest {
 
         // TBD: Validation or IllegalStateException
         //assertThrows(ValidationException.class, () -> transferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsDao.create(TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFields.builder().build()));
+        //assertEquals(1, exception.getValidationResults().size());
+        //validationResult = exception.getValidationResults().stream().findAny().orElseThrow();
+        //assertEquals("MISSING_REQUIRED_ATTRIBUTE", validationResult.getCode());
+        //assertEquals("stringAttr", validationResult.getLocation());
     }
 
     /**
@@ -773,23 +785,21 @@ public class TestDefaultAndRequiredFieldsOnMappedTO extends AbstractJslTest {
         assertEquals(0, transferWithOptionalFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefaultDao.query().filterByEnumAttr(EnumerationFilter.equalTo(Enum.EnumB)).count());
         transferWithOptionalFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefaultDao.delete(t2);
 
-        // TODO: JNG-4985
-        //TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefault t2Expression = transferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefaultDao.create(TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefault.builder().build());
-//
-        //assertEquals(Optional.empty(), t2Expression.getStringAttr());
+        TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefault t2Expression = transferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefaultDao.create(TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefault.builder().build());
 
-        //assertEquals( 1, transferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefaultDao.countAll());
-        //System.out.println(queryStringAttributeDao.execute());
-//
-        //e1Optional = entityWithOptionalFieldsWithDefaultDao.getById(t2Expression.adaptTo(EntityWithOptionalFieldsWithDefaultIdentifier.class));
-//
-        //assertTrue(e1Optional.isPresent());
-//
-        //e1 = e1Optional.orElseThrow();
-//
-        //assertEquals(Optional.empty(), e1.getStringAttr());
-//
-        //transferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefaultDao.delete(t2Expression);
+        assertEquals(Optional.empty(), t2Expression.getStringAttr());
+        assertEquals( 1, transferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefaultDao.countAll());
+        System.out.println(queryStringAttributeDao.execute());
+
+        e1Optional = entityWithOptionalFieldsWithDefaultDao.getById(t2Expression.adaptTo(EntityWithOptionalFieldsWithDefaultIdentifier.class));
+
+        assertTrue(e1Optional.isPresent());
+
+        e1 = e1Optional.orElseThrow();
+
+        assertEquals(Optional.empty(), e1.getStringAttr());
+
+        transferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefaultDao.delete(t2Expression);
 
         // TODO: JNG-4922
         //TransferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefault t3 = transferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefaultDao.create(TransferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefault.builder().build());
@@ -876,6 +886,10 @@ public class TestDefaultAndRequiredFieldsOnMappedTO extends AbstractJslTest {
 
         // TBD: Validation or IllegalStateException
         //exception = assertThrows(ValidationException.class, () -> transferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefaultDao.create(TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefault.builder().build()));
+        //assertEquals(1, exception.getValidationResults().size());
+        //validationResult = exception.getValidationResults().stream().findAny().orElseThrow();
+        //assertEquals("MISSING_REQUIRED_ATTRIBUTE", validationResult.getCode());
+        //assertEquals("stringAttr", validationResult.getLocation());
 
     }
 
@@ -1055,6 +1069,10 @@ public class TestDefaultAndRequiredFieldsOnMappedTO extends AbstractJslTest {
 
         // TBD: Validation or IllegalStateException
         //exception = assertThrows(ValidationException.class, () -> transferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefaultDao.create(TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefault.builder().build()));
+        //assertEquals(1, exception.getValidationResults().size());
+        //validationResult = exception.getValidationResults().stream().findAny().orElseThrow();
+        //assertEquals("MISSING_REQUIRED_ATTRIBUTE", validationResult.getCode());
+        //assertEquals("stringAttr", validationResult.getLocation());
 
         // TODO: JNG-4922
         //TransferWithRequiredFieldsMapsEntityWithRequiredFieldsWithDefault t3 = transferWithRequiredFieldsMapsEntityWithRequiredFieldsWithDefaultDao.create(TransferWithRequiredFieldsMapsEntityWithRequiredFieldsWithDefault.builder().build());
@@ -1139,6 +1157,10 @@ public class TestDefaultAndRequiredFieldsOnMappedTO extends AbstractJslTest {
 
         // TBD: Validation or IllegalStateException
         //exception = assertThrows(ValidationException.class, () -> transferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefaultDao.create(TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefault.builder().build()));
+        //assertEquals(1, exception.getValidationResults().size());
+        //validationResult = exception.getValidationResults().stream().findAny().orElseThrow();
+        //assertEquals("MISSING_REQUIRED_ATTRIBUTE", validationResult.getCode());
+        //assertEquals("stringAttr", validationResult.getLocation());
 
     }
 
@@ -1165,6 +1187,7 @@ public class TestDefaultAndRequiredFieldsOnMappedTO extends AbstractJslTest {
     })
     void test() {
         //TransferWithOptionalFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefault t2 = transferWithOptionalFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefaultDao.create(TransferWithOptionalFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefault.builder().build());
+        //TransferWithOptionalFieldsMapsEntityWithOptionalFieldsWithDefault t1 = transferWithOptionalFieldsMapsEntityWithOptionalFieldsWithDefaultDao.create(TransferWithOptionalFieldsMapsEntityWithOptionalFieldsWithDefault.builder().build());
         TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefault t2Expression = transferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefaultDao.create(TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefault.builder().build());
     }
 }
