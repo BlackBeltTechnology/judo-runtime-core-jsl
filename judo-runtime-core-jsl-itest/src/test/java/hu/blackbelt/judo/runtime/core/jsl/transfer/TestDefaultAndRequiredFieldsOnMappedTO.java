@@ -417,7 +417,7 @@ public class TestDefaultAndRequiredFieldsOnMappedTO extends AbstractJslTest {
         assertEquals("stringAttr", validationResult.getLocation());
         transferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsDao.delete(t3);
 
-        // TBD: Validation or IllegalStateException
+        // TBD: Where should we validate the null default value
         //exception = assertThrows(ValidationException.class, () -> transferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsDao.create(TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFields.builder().build()));
         //assertEquals(1, exception.getValidationResults().size());
         //validationResult = exception.getValidationResults().stream().findAny().orElseThrow();
@@ -548,7 +548,7 @@ public class TestDefaultAndRequiredFieldsOnMappedTO extends AbstractJslTest {
         assertEquals("stringAttr", validationResult.getLocation());
         transferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsDao.delete(t1);
 
-        // TBD: Validation or IllegalStateException
+        // TBD: Where should we validate the null default value
         //exception = assertThrows(ValidationException.class, () -> transferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsDao.create(TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFields.builder().build()));
         //assertEquals(1, exception.getValidationResults().size());
         //validationResult = exception.getValidationResults().stream().findAny().orElseThrow();
@@ -615,7 +615,7 @@ public class TestDefaultAndRequiredFieldsOnMappedTO extends AbstractJslTest {
 
         transferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsDao.delete(t2);
 
-        // TBD: Validation or IllegalStateException
+        // TBD: Where should we validate the null default value
         //assertThrows(ValidationException.class, () -> transferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsDao.create(TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFields.builder().build()));
         //assertEquals(1, exception.getValidationResults().size());
         //validationResult = exception.getValidationResults().stream().findAny().orElseThrow();
@@ -795,8 +795,7 @@ public class TestDefaultAndRequiredFieldsOnMappedTO extends AbstractJslTest {
         assertEquals(Optional.empty(), t2Expression.getStringAttr());
         assertEquals( 1, transferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefaultDao.countAll());
 
-
-        e1Optional = entityWithOptionalFieldsWithDefaultDao.getById(t2Expression.adaptTo(EntityWithOptionalFieldsWithDefaultIdentifier.class));e1Optional = entityWithOptionalFieldsWithDefaultDao.getById(t3.adaptTo(EntityWithOptionalFieldsWithDefaultIdentifier.class));
+        e1Optional = entityWithOptionalFieldsWithDefaultDao.getById(t2Expression.adaptTo(EntityWithOptionalFieldsWithDefaultIdentifier.class));
 
         assertTrue(e1Optional.isPresent());
 
@@ -805,7 +804,6 @@ public class TestDefaultAndRequiredFieldsOnMappedTO extends AbstractJslTest {
         assertEquals(Optional.empty(), e1.getStringAttr());
 
         transferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefaultDao.delete(t2Expression);
-
 
         TransferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefault t3 = transferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefaultDao.create(TransferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefault.builder().build());
 
@@ -850,7 +848,13 @@ public class TestDefaultAndRequiredFieldsOnMappedTO extends AbstractJslTest {
 
         t3.setStringAttr(null);
         final TransferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefault finalT3 = t3;
-        assertThrows(ValidationException.class, () -> transferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefaultDao.update(finalT3));
+
+        ValidationException exception = assertThrows(ValidationException.class, () -> transferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefaultDao.update(finalT3));
+
+        assertEquals(1, exception.getValidationResults().size());
+        ValidationResult validationResult = exception.getValidationResults().stream().findAny().orElseThrow();
+        assertEquals("MISSING_REQUIRED_ATTRIBUTE", validationResult.getCode());
+        assertEquals("stringAttr", validationResult.getLocation());
 
         transferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefaultDao.delete(t3);
 
@@ -898,16 +902,16 @@ public class TestDefaultAndRequiredFieldsOnMappedTO extends AbstractJslTest {
         t4.setStringAttr(null);
         final TransferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefault finalT4 = t4;
 
-        ValidationException exception = assertThrows(ValidationException.class, () -> transferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefaultDao.update(finalT4));
+        exception = assertThrows(ValidationException.class, () -> transferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefaultDao.update(finalT4));
 
         assertEquals(1, exception.getValidationResults().size());
-        ValidationResult validationResult = exception.getValidationResults().stream().findAny().orElseThrow();
+        validationResult = exception.getValidationResults().stream().findAny().orElseThrow();
         assertEquals("MISSING_REQUIRED_ATTRIBUTE", validationResult.getCode());
         assertEquals("stringAttr", validationResult.getLocation());
 
         transferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefaultDao.delete(t4);
 
-        // TBD: Validation or IllegalStateException
+        // TBD: Where should we validate the null default value
         //exception = assertThrows(ValidationException.class, () -> transferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefaultDao.create(TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefault.builder().build()));
         //assertEquals(1, exception.getValidationResults().size());
         //validationResult = exception.getValidationResults().stream().findAny().orElseThrow();
@@ -1091,7 +1095,7 @@ public class TestDefaultAndRequiredFieldsOnMappedTO extends AbstractJslTest {
         assertEquals("stringAttr", validationResult.getLocation());
         transferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsWithDefaultDao.delete(t2);
 
-        // TBD: Validation or IllegalStateException
+        // TBD: Where should we validate the null default value
         //exception = assertThrows(ValidationException.class, () -> transferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefaultDao.create(TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefault.builder().build()));
         //assertEquals(1, exception.getValidationResults().size());
         //validationResult = exception.getValidationResults().stream().findAny().orElseThrow();
@@ -1195,7 +1199,7 @@ public class TestDefaultAndRequiredFieldsOnMappedTO extends AbstractJslTest {
         assertEquals("MISSING_REQUIRED_ATTRIBUTE", validationResult.getCode());
         assertEquals("stringAttr", validationResult.getLocation());
 
-        // TBD: Validation or IllegalStateException
+        // TBD: Where should we validate the null default value
         //exception = assertThrows(ValidationException.class, () -> transferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefaultDao.create(TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefault.builder().build()));
         //assertEquals(1, exception.getValidationResults().size());
         //validationResult = exception.getValidationResults().stream().findAny().orElseThrow();
