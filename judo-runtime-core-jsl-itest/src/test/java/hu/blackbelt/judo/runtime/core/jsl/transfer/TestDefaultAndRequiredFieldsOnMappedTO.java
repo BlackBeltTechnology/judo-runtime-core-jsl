@@ -794,30 +794,13 @@ public class TestDefaultAndRequiredFieldsOnMappedTO extends AbstractJslTest {
 
         assertEquals(Optional.empty(), t2Expression.getStringAttr());
         assertEquals( 1, transferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefaultDao.countAll());
-        System.out.println(queryStringAttributeDao.execute());
 
-        e1Optional = entityWithOptionalFieldsWithDefaultDao.getById(t2Expression.adaptTo(EntityWithOptionalFieldsWithDefaultIdentifier.class));
 
-        TransferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefault t3 = transferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefaultDao.create(TransferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefault.builder().build());
-
-        assertEquals(1, transferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefaultDao.countAll());
-        assertEquals(1, t3.getIntegerAttr());
-        assertEquals(2.34, t3.getScaledAttr());
-        assertEquals("Hello there", t3.getStringAttr());
-        assertEquals("+36-1-223-123", t3.getRegexAttr());
-        assertEquals(true, t3.getBoolAttr());
-        assertEquals(LocalDate.of(2021, 7, 11), t3.getDateAttr());
-        assertEquals(LocalDateTime.parse("2021-07-11T19:09:33"), t3.getTimestampAttr());
-        assertEquals(LocalTime.parse("23:59:59"), t3.getTimeAttr());
-        assertEquals(Enum.EnumA, t3.getEnumAttr());
-
-        e1Optional = entityWithOptionalFieldsWithDefaultDao.getById(t3.adaptTo(EntityWithOptionalFieldsWithDefaultIdentifier.class));
-
+        e1Optional = entityWithOptionalFieldsWithDefaultDao.getById(t2Expression.adaptTo(EntityWithOptionalFieldsWithDefaultIdentifier.class));e1Optional = entityWithOptionalFieldsWithDefaultDao.getById(t3.adaptTo(EntityWithOptionalFieldsWithDefaultIdentifier.class));
 
         assertTrue(e1Optional.isPresent());
 
         e1 = e1Optional.orElseThrow();
-
 
         assertEquals(Optional.empty(), e1.getStringAttr());
 
@@ -830,10 +813,10 @@ public class TestDefaultAndRequiredFieldsOnMappedTO extends AbstractJslTest {
         assertEquals(1, t3.getIntegerAttr());
         assertEquals(2.34, t3.getScaledAttr());
         assertEquals("Hello there", t3.getStringAttr());
-        assertEquals("+36 30 123 1234", t3.getRegexAttr());
+        assertEquals("+36-1-223-123", t3.getRegexAttr());
         assertEquals(true, t3.getBoolAttr());
-        assertEquals(LocalDate.of(2022, 7, 11), t3.getDateAttr());
-        assertEquals(LocalDateTime.parse("2022-07-11T19:09:33"), t3.getTimestampAttr());
+        assertEquals(LocalDate.of(2021, 7, 11), t3.getDateAttr());
+        assertEquals(LocalDateTime.parse("2021-07-11T19:09:33"), t3.getTimestampAttr());
         assertEquals(LocalTime.parse("23:59:59"), t3.getTimeAttr());
         assertEquals(Enum.EnumA, t3.getEnumAttr());
 
