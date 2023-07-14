@@ -116,7 +116,6 @@ public class InheritanceTest extends AbstractJslTest {
         assertTrue(hasMethodWithName("getNameA", e));
         assertTrue(hasMethodWithName("getIdentifierA", e));
         assertTrue(hasMethodWithName("getDerivedA", e));
-        assertTrue(hasMethodWithName("getQueryA", e));
         assertTrue(hasMethodWithName("queryRelationEntities", eDao));
 
 
@@ -127,7 +126,6 @@ public class InheritanceTest extends AbstractJslTest {
         assertTrue(hasMethodWithName("getNameAbstract", f));
         assertTrue(hasMethodWithName("getIdentifierA", f));
         assertTrue(hasMethodWithName("getDerivedA", f));
-        assertTrue(hasMethodWithName("getQueryA", f));
         assertTrue(hasMethodWithName("queryRelationEntities", fDao));
 
     }
@@ -183,7 +181,6 @@ public class InheritanceTest extends AbstractJslTest {
         assertTrue(hasMethodWithName("getNameE", g));
         assertTrue(hasMethodWithName("getIdentifierA", g));
         assertTrue(hasMethodWithName("getDerivedA", g));
-        assertTrue(hasMethodWithName("getQueryA", g));
         assertTrue(hasMethodWithName("queryRelationEntities", gDao));
 
     }

@@ -75,6 +75,7 @@ import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Test;
 
 import java.time.*;
 import java.time.temporal.ChronoUnit;
