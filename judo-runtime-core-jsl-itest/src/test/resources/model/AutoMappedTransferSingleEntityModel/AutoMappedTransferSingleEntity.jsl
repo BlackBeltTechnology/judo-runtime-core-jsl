@@ -46,7 +46,7 @@ entity ContainerSingleCompositionDerivedEntity {
     relation ReferenceEntity singleCompositionEntityRequiredMemberDerived <= self.singleRequiredComposition;
     relation ReferenceEntity singleCompositionEntityQueryMemberDerived <= self.singleCompositionEntityExpressionQuery(name ="singleComposition");
 
-    @Lazy
+    @Query
     relation ReferenceEntity singleCompositionEntityExpressionQuery(String name) <= referenceEntityWithNameQuery(name = name);
 
 }
@@ -54,6 +54,8 @@ entity ContainerSingleCompositionDerivedEntity {
 transfer AutoMappedContainerSingleCompositionDerivedEntity(ContainerSingleCompositionDerivedEntity mappedEntity);
 
 query ReferenceEntity referenceEntityWithNameQuery(String name) <= ReferenceEntity!all()!filter(e | e.name == name)!any();
+
+query Integer countReferenceEntityWithNameQuery(String name) <= ReferenceEntity!all()!filter(e | e.name == name)!size();
 
 entity ContainerSingleRelationDerivedEntity {
 
@@ -66,8 +68,11 @@ entity ContainerSingleRelationDerivedEntity {
     relation ReferenceEntity singleCompositionEntityRequiredMemberDerived <= self.singleRequiredComposition;
     relation ReferenceEntity singleCompositionEntityQueryMemberDerived <= self.singleRelationEntityExpressionQuery(name ="singleRelation");
 
-    @Lazy
+    @Query
     relation ReferenceEntity singleRelationEntityExpressionQuery(String name) <= referenceEntityWithNameQuery(name = name);
+
+    @Query
+    field Integer primitiveQuery(String name) <= countReferenceEntityWithNameQuery(name = name);
 
 }
 

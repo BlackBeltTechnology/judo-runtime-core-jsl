@@ -356,23 +356,43 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <id>generate-psm-test-model-from-artifact-MappedTransferAssociationModel</id>
+                        <id>generate-psm-test-model-from-artifact-MappedTransferAssociationAggregationModel</id>
                         <goals>
                             <goal>parser-workflow</goal>
                         </goals>
                         <phase>generate-test-sources</phase>
                         <configuration>
-                            <sources>${basedir}/src/test/resources/model/MappedTransferAssociationModel</sources>
+                            <sources>${basedir}/src/test/resources/model/MappedTransferAssociationAggregationModel</sources>
                         </configuration>
                     </execution>
                     <execution>
-                        <id>generate-psm-test-model-from-artifact-MappedTransferAggregationModel</id>
+                        <id>generate-psm-test-model-from-artifact-MappedTransferCompositonAggregationModel</id>
                         <goals>
                             <goal>parser-workflow</goal>
                         </goals>
                         <phase>generate-test-sources</phase>
                         <configuration>
-                            <sources>${basedir}/src/test/resources/model/MappedTransferAggregationModel</sources>
+                            <sources>${basedir}/src/test/resources/model/MappedTransferCompositonAggregationModel</sources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-psm-test-model-from-artifact-MappedTransferCompositonAssociationModel</id>
+                        <goals>
+                            <goal>parser-workflow</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <sources>${basedir}/src/test/resources/model/MappedTransferCompositonAssociationModel</sources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-psm-test-model-from-artifact-MappedTransferAssociationAssociationModel</id>
+                        <goals>
+                            <goal>parser-workflow</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <sources>${basedir}/src/test/resources/model/MappedTransferAssociationAssociationModel</sources>
                         </configuration>
                     </execution>
                     <execution>
@@ -423,6 +443,76 @@
                         <phase>generate-test-sources</phase>
                         <configuration>
                             <sources>${basedir}/src/test/resources/model/EntityWithSameQueryNameModel</sources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-psm-test-model-from-artifact-MappedTransferCastingFunctionsModel</id>
+                        <goals>
+                            <goal>parser-workflow</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <sources>${basedir}/src/test/resources/model/MappedTransferCastingFunctionsModel</sources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-psm-test-model-from-artifact-MappedTransferContainerTestModel</id>
+                        <goals>
+                            <goal>parser-workflow</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <sources>${basedir}/src/test/resources/model/MappedTransferContainerTestModel</sources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-psm-test-model-from-artifact-MappedTransferContainsTestModel</id>
+                        <goals>
+                            <goal>parser-workflow</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <sources>${basedir}/src/test/resources/model/MappedTransferContainsTestModel</sources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-psm-test-model-from-artifact-MappedTransferFunctionsModels</id>
+                        <goals>
+                            <goal>parser-workflow</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <sources>${basedir}/src/test/resources/model/MappedTransferFunctionsModels</sources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-psm-test-model-from-artifact-MappedTransferOperatorsModel</id>
+                        <goals>
+                            <goal>parser-workflow</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <sources>${basedir}/src/test/resources/model/MappedTransferOperatorsModel</sources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-psm-test-model-from-artifact-MappedTransferOperatorAndFunctionOfEnumTestModel</id>
+                        <goals>
+                            <goal>parser-workflow</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <sources>${basedir}/src/test/resources/model/MappedTransferOperatorAndFunctionOfEnumTestModel</sources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-psm-test-model-from-artifact-MappedTransferNavigationTestModel</id>
+                        <goals>
+                            <goal>parser-workflow</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <sources>${basedir}/src/test/resources/model/MappedTransferNavigationTestModel</sources>
                         </configuration>
                     </execution>
                 </executions>
@@ -847,29 +937,55 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <id>execute-psm-test-model-from-artifact-MappedTransferAssociation</id>
+                        <id>execute-psm-test-model-from-artifact-MappedTransferCompositonAggregation</id>
                         <phase>generate-test-sources</phase>
                         <goals>
                             <goal>generate</goal>
                         </goals>
                         <configuration>
                             <psm>
-                                ${basedir}/target/generated-test-sources/model/MappedTransferAssociation-psm.model
+                                ${basedir}/target/generated-test-sources/model/MappedTransferCompositonAggregation-psm.model
                             </psm>
-                            <destination>${basedir}/target/generated-test-sources/sdk-core/MappedTransferAssociation</destination>
+                            <destination>${basedir}/target/generated-test-sources/sdk-core/MappedTransferCompositonAggregation</destination>
                         </configuration>
                     </execution>
                     <execution>
-                        <id>execute-psm-test-model-from-artifact-MappedTransferAggregation</id>
+                        <id>execute-psm-test-model-from-artifact-MappedTransferCompositonAssociation</id>
                         <phase>generate-test-sources</phase>
                         <goals>
                             <goal>generate</goal>
                         </goals>
                         <configuration>
                             <psm>
-                                ${basedir}/target/generated-test-sources/model/MappedTransferAggregation-psm.model
+                                ${basedir}/target/generated-test-sources/model/MappedTransferCompositonAssociation-psm.model
                             </psm>
-                            <destination>${basedir}/target/generated-test-sources/sdk-core/MappedTransferAggregation</destination>
+                            <destination>${basedir}/target/generated-test-sources/sdk-core/MappedTransferCompositonAssociation</destination>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-MappedTransferAssociationAggregation</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/MappedTransferAssociationAggregation-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/sdk-core/MappedTransferAssociationAggregation</destination>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-MappedTransferAssociationAssociation</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/MappedTransferAssociationAssociation-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/sdk-core/MappedTransferAssociationAssociation</destination>
                         </configuration>
                     </execution>
                     <execution>
@@ -939,6 +1055,110 @@
                             <destination>${basedir}/target/generated-test-sources/sdk-core/EntityWithSameQueryName</destination>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-MappedTransferCastingFunctions</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/MappedTransferCastingFunctions-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/sdk-core/MappedTransferCastingFunctions</destination>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-MappedTransferContainerTest</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/MappedTransferContainerTest-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/sdk-core/MappedTransferContainerTest</destination>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-MappedTransferContains</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/MappedTransferContains-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/sdk-core/MappedTransferContains</destination>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-MappedTransferFunctionsExternals</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/MappedTransferFunctionsExternals-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/sdk-core/MappedTransferFunctionsExternals</destination>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-MappedTransferFunctions</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/MappedTransferFunctions-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/sdk-core/MappedTransferFunctions</destination>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-MappedTransferOperators</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/MappedTransferOperators-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/sdk-core/MappedTransferOperators</destination>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-MappedTransferOperatorAndFunctionOfEnumTest</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/MappedTransferOperatorAndFunctionOfEnumTest-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/sdk-core/MappedTransferOperatorAndFunctionOfEnumTest</destination>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-MappedTransferNavigationTest</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/MappedTransferNavigationTest-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/sdk-core/MappedTransferNavigationTest</destination>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
 
@@ -985,13 +1205,23 @@
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/AbstractModel</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/ImportedTypesWithNoFieldDefinitions</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/StaticQueryDaoTest</source>
-                                <source>${project.basedir}/target/generated-test-sources/sdk-core/MappedTransferAssociation</source>
-                                <source>${project.basedir}/target/generated-test-sources/sdk-core/MappedTransferAggregation</source>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/MappedTransferAssociationAggregation</source>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/MappedTransferCompositonAggregation</source>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/MappedTransferCompositonAssociation</source>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/MappedTransferAssociationAssociation</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/TransferConstructor</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/Abstract</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/AutoMappedTransferSingleEntity</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/TestDefaultAndRequiredFieldsOnMappedTO</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/EntityWithSameQueryName</source>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/MappedTransferCastingFunctions</source>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/MappedTransferContainerTest</source>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/MappedTransferContains</source>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/MappedTransferFunctions</source>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/MappedTransferFunctionsExternals</source>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/MappedTransferOperatorAndFunctionOfEnumTest</source>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/MappedTransferOperators</source>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/MappedTransferNavigationTest</source>
                             </sources>
                         </configuration>
                     </execution>

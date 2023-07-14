@@ -22,23 +22,21 @@ package hu.blackbelt.judo.runtime.core.jsl.transfer;
 
 import com.google.inject.Inject;
 import com.google.inject.Module;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferaggregation.mappedtransferaggregation.entitya.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferaggregation.mappedtransferaggregation.entityb.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferaggregation.mappedtransferaggregation.entityc.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferaggregation.mappedtransferaggregation.entityd.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferaggregation.mappedtransferaggregation.entitye.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferaggregation.mappedtransferaggregation.entityf.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferaggregation.mappedtransferaggregation.entityg.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferaggregation.mappedtransferaggregation.transfera.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferaggregation.mappedtransferaggregation.transferb.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferaggregation.mappedtransferaggregation.transferc.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferaggregation.mappedtransferaggregation.transferd.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferaggregation.mappedtransferaggregation.transfere.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferaggregation.mappedtransferaggregation.transferf.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferaggregation.mappedtransferaggregation.transferg.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociation.mappedtransferassociation.transferh.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociation.mappedtransferassociation.transferj.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.MappedTransferAggregationDaoModules;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.entitya.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.entityb.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.entityc.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.entityd.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.entitye.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.entityf.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.entityg.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.transfera.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.transferb.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.transferc.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.transferd.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.transfere.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.transferf.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.transferg.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.MappedTransferCompositonAggregationDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
@@ -47,6 +45,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.Matchers.equalTo;
@@ -54,7 +53,7 @@ import static  org.junit.jupiter.api.Assertions.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 @Slf4j
-public class MappedTransferAggregationTest extends AbstractJslTest {
+public class MappedTransferCompositonAggregationTest extends AbstractJslTest {
 
     @Inject
     EntityADao entityADao;
@@ -102,18 +101,18 @@ public class MappedTransferAggregationTest extends AbstractJslTest {
 
     @Override
     public Module getModelDaoModule() {
-        return new MappedTransferAggregationDaoModules();
+        return new MappedTransferCompositonAggregationDaoModules();
     }
 
     @Override
     public String getModelName() {
-        return "MappedTransferAggregation";
+        return "MappedTransferCompositonAggregation";
     }
 
     /**
-     * The test checks the single aggregation work well on transfer object.
+     * The test checks the aggregation mapped single field with entity type work well on transfer object.
      *
-     * @prerequisites The test must start and finish on the same day. Therefore, don't run this test close to midnight.
+     * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
      * @type Behaviour
      *
@@ -125,7 +124,7 @@ public class MappedTransferAggregationTest extends AbstractJslTest {
      *
      */
     @Test
-    @TestCase("SingleAggregationOnTransfer")
+    @TestCase("SingleCompositionAggregationOnTransfer")
     @Requirement(reqs = {
             "REQ-MDL-001",
             "REQ-MDL-002",
@@ -138,7 +137,7 @@ public class MappedTransferAggregationTest extends AbstractJslTest {
             "REQ-ENT-005",
             "REQ-SRV-001"
     })
-    public void testSingleAggregationOnTransfer() {
+    public void testSingleCompositionAggregationOnTransfer() {
 
         TransferB transferB = transferBDao.create(TransferB.builder().withNameB("B1").build());
 
@@ -192,17 +191,16 @@ public class MappedTransferAggregationTest extends AbstractJslTest {
         assertTrue(thrown1.getMessage().contains("Identifier cannot be set on new association reference element"));
         assertTrue(thrown1.getMessage().contains("#singleEntityB"));
 
-
-        //TODO JNG-4877 create dao function throw error
-//        transferADao.createSingleEntityB(transferA, TransferB.builder().withNameB("B2").build());
-//        assertTrue(transferA.getSingleEntityB().isPresent());
+        transferADao.createSingleEntityB(transferA, TransferB.builder().withNameB("B2").build());
+        assertTrue(transferA.getSingleEntityB().isPresent());
+        assertEquals(Optional.of("B2"), transferADao.querySingleEntityB(transferA).orElseThrow().getNameB());
 
     }
 
     /**
-     * The test checks the single required aggregation work well on transfer object.
+     * The test checks the aggregation mapped single reqiured field with entity type work well on transfer object.
      *
-     * @prerequisites The test must start and finish on the same day. Therefore, don't run this test close to midnight.
+     * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
      * @type Behaviour
      *
@@ -214,7 +212,7 @@ public class MappedTransferAggregationTest extends AbstractJslTest {
      *
      */
     @Test
-    @TestCase("SingleRequiredAggregationOnTransfer")
+    @TestCase("SingleRequiredCompositionAggregationOnTransfer")
     @Requirement(reqs = {
             "REQ-MDL-001",
             "REQ-MDL-002",
@@ -227,7 +225,7 @@ public class MappedTransferAggregationTest extends AbstractJslTest {
             "REQ-ENT-005",
             "REQ-SRV-001"
     })
-    public void testSingleRequiredAggregationOnTransfer() {
+    public void testSingleRequiredCompositionAggregationOnTransfer() {
 
         TransferD transferD = transferDDao.create(TransferD.builder().withNameD("D1").build());
 
@@ -266,18 +264,18 @@ public class MappedTransferAggregationTest extends AbstractJslTest {
 
         //Create new required element and check the old is deleted
 
-        //TODO JNG-4877 create dao function throw error
-//        transferCDao.createSingleRequiredEntityD(transferC, TransferD.builder().build());
-
-//        assertTrue(transferDDao.getById(transferD.identifier()).isEmpty());
-//        assertTrue(entityDDao.getById(transferD.adaptTo(EntityDIdentifier.class)).isEmpty());
+        IllegalArgumentException thrown2 = assertThrows(
+                IllegalArgumentException.class,
+                () -> transferCDao.createSingleRequiredEntityD(transferC, TransferD.builder().build())
+        );
+        assertTrue(thrown2.getMessage().contains("Containment already set"));
 
     }
 
     /**
-     * The test checks the multi aggregation work well on transfer object.
+     * The test checks the aggregation mapped multi field with entity type work well on transfer object.
      *
-     * @prerequisites The test must start and finish on the same day. Therefore, don't run this test close to midnight.
+     * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
      * @type Behaviour
      *
@@ -289,7 +287,7 @@ public class MappedTransferAggregationTest extends AbstractJslTest {
      *
      */
     @Test
-    @TestCase("MultiAggregationOnTransfer")
+    @TestCase("MultiCompositionAggregationOnTransfer")
     @Requirement(reqs = {
             "REQ-MDL-001",
             "REQ-MDL-002",
@@ -302,7 +300,7 @@ public class MappedTransferAggregationTest extends AbstractJslTest {
             "REQ-ENT-005",
             "REQ-SRV-001"
     })
-    public void testMultiAggregationOnTransfer() {
+    public void testMultiCompositionAggregationOnTransfer() {
 
         TransferB transferB1 = transferBDao.create(TransferB.builder().withNameB("B1").build());
         TransferB transferB2 = transferBDao.create(TransferB.builder().withNameB("B2").build());
@@ -346,22 +344,20 @@ public class MappedTransferAggregationTest extends AbstractJslTest {
 
         // Add new List empty
 
-        // TODO JNG-4877
-//        transferADao.createMultiEntityB(transferA, List.of());
-//        assertEquals(0, transferADao.countMultiEntityB(transferA));
+        // Add new List empty
+        transferADao.createMultiEntityB(transferA, List.of());
+        assertEquals(2, transferADao.countMultiEntityB(transferA));
 
         // Create new List with elements
-
-        // TODO JNG-4877
-//        transferADao.createMultiEntityB(transferA, List.of(TransferB.builder().build()));
-//        assertEquals(1, transferADao.countMultiEntityB(transferA));
+        transferADao.createMultiEntityB(transferA, List.of(TransferB.builder().build()));
+        assertEquals(3, transferADao.countMultiEntityB(transferA));
 
     }
 
     /**
-     * The test checks the navigation between aggregations work well on transfer object.
+     * The test checks the navigation between compositon association work well on transfer object.
      *
-     * @prerequisites The test must start and finish on the same day. Therefore, don't run this test close to midnight.
+     * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
      * @type Behaviour
      *
@@ -374,7 +370,7 @@ public class MappedTransferAggregationTest extends AbstractJslTest {
      *
      */
     @Test
-    @TestCase("AggregationNavigationOnTransfer")
+    @TestCase("CompositionAggregationNavigationOnTransfer")
     @Requirement(reqs = {
             "REQ-MDL-001",
             "REQ-MDL-002",
@@ -387,7 +383,7 @@ public class MappedTransferAggregationTest extends AbstractJslTest {
             "REQ-ENT-005",
             "REQ-SRV-001"
     })
-    public void testAggregationNavigationOnTransfer() {
+    public void testCompositionAggregationNavigationOnTransfer() {
 
         TransferE transferE = transferEDao.create(TransferE
                 .builder()

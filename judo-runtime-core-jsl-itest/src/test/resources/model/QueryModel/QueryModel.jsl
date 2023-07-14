@@ -10,13 +10,13 @@ query Lead rootOneLead() <= Lead!any();
 query Integer totalNumberOfLeads() <= Lead!all()!size();
 
 entity Queries {
-    @Lazy
+    @Query
 	relation Lead[] queriesAllLeadsBetween(Integer min = 0, Integer max = 100) <= Lead!all()!filter(l | l.value > min and  l.value < max);
-    @Lazy
+    @Query
 	field Integer queriesCountAllLeadsBetween(Integer min = 0, Integer max = 100) <= Lead!all()!filter(l | l.value > min and  l.value < max)!size();
-    @Lazy
+    @Query
     relation Lead[] queriesAllLeads <= Lead!all();
-    @Lazy
+    @Query
     relation Lead queriesOneLead <= Lead!any();
 }
 

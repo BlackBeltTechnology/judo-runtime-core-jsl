@@ -68,6 +68,7 @@ transfer TransferWithOptionalFieldsWithDefaultMapsEntityWithOptionalFields (Enti
     }
 }
 
+<<<<<<< HEAD
 // Mapped Transfer Object with optional fields with default expression
 transfer TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFields (EntityWithOptionalFields mappedEntity) {
     field SmallString stringAttr <=> mappedEntity.stringAttr;
@@ -77,6 +78,8 @@ transfer TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFi
     }
 }
 
+=======
+>>>>>>> develop
 // Mapped Transfer Object with required fields
 transfer TransferWithRequiredFieldsMapsEntityWithOptionalFields (EntityWithOptionalFields mappedEntity) {
     field required Integer integerAttr <=> mappedEntity.integerAttr;
@@ -116,6 +119,7 @@ transfer TransferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFields (Enti
     }
 }
 
+<<<<<<< HEAD
 // Mapped Transfer Object with required fields with default expression
 transfer TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFields (EntityWithOptionalFields mappedEntity) {
     field required SmallString stringAttr <=> mappedEntity.stringAttr;
@@ -125,6 +129,8 @@ transfer TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFi
         }
 }
 
+=======
+>>>>>>> develop
 ////////////////////////////////////////////////////////////////////////////////////////
 // Entity with required fields                                                        //
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -181,6 +187,7 @@ transfer TransferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFields (Enti
     }
 }
 
+<<<<<<< HEAD
 // Mapped Transfer Object with optional fields with default expression
 transfer TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFields (EntityWithRequiredFields mappedEntity) {
     field SmallString stringAttr <=> mappedEntity.stringAttr;
@@ -190,6 +197,8 @@ transfer TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFi
         }
 }
 
+=======
+>>>>>>> develop
 // Mapped Transfer Object with required fields
 transfer TransferWithRequiredFieldsMapsEntityWithRequiredFields (EntityWithRequiredFields mappedEntity) {
     field required Integer integerAttr <=> mappedEntity.integerAttr;
@@ -229,6 +238,7 @@ transfer TransferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFields (Enti
     }
 }
 
+<<<<<<< HEAD
 // Mapped Transfer Object with required fields with default expression
 transfer TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFields (EntityWithRequiredFields mappedEntity) {
     field required SmallString stringAttr <=> mappedEntity.stringAttr;
@@ -238,6 +248,8 @@ transfer TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFi
         }
 }
 
+=======
+>>>>>>> develop
 ////////////////////////////////////////////////////////////////////////////////////////
 // Entity with optional fields with default value                                     //
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -294,6 +306,7 @@ transfer TransferWithOptionalFieldsWithDefaultMapsEntityWithOptionalFieldsWithDe
     }
 }
 
+<<<<<<< HEAD
 // Mapped Transfer Object with optional fields with default expression
 transfer TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefault (EntityWithOptionalFieldsWithDefault mappedEntity) {
     field SmallString stringAttr <=> mappedEntity.stringAttr;
@@ -303,6 +316,8 @@ transfer TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFi
         }
 }
 
+=======
+>>>>>>> develop
 // Mapped Transfer Object with required fields
 transfer TransferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefault (EntityWithOptionalFieldsWithDefault mappedEntity) {
     field required Integer integerAttr <=> mappedEntity.integerAttr;
@@ -342,6 +357,7 @@ transfer TransferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsWithDe
     }
 }
 
+<<<<<<< HEAD
 // Mapped Transfer Object with required fields with default expression
 transfer TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefault (EntityWithOptionalFieldsWithDefault mappedEntity) {
     field required SmallString stringAttr <=> mappedEntity.stringAttr;
@@ -351,6 +367,8 @@ transfer TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFi
         }
 }
 
+=======
+>>>>>>> develop
 ////////////////////////////////////////////////////////////////////////////////////////
 // Entity with required fields with default value                                     //
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -407,6 +425,7 @@ transfer TransferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsWithDe
     }
 }
 
+<<<<<<< HEAD
 // Mapped Transfer Object with optional fields with default expression
 transfer TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefault (EntityWithRequiredFieldsWithDefault mappedEntity) {
     field SmallString stringAttr <=> mappedEntity.stringAttr;
@@ -416,6 +435,8 @@ transfer TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFi
         }
 }
 
+=======
+>>>>>>> develop
 // Mapped Transfer Object with required fields
 transfer TransferWithRequiredFieldsMapsEntityWithRequiredFieldsWithDefault (EntityWithRequiredFieldsWithDefault mappedEntity) {
     field required Integer integerAttr <=> mappedEntity.integerAttr;
@@ -453,6 +474,7 @@ transfer TransferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsWithDe
         self.timeAttr  = `23:59:58`;
         self.enumAttr = Enum#EnumB;
     }
+<<<<<<< HEAD
 }
 
 // Mapped Transfer Object with required fields with default expression
@@ -466,3 +488,6 @@ transfer TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFi
 
 query String queryStringAttribute() <= EntityWithOptionalFields!all()!any().stringAttr;
 
+=======
+}
+>>>>>>> develop

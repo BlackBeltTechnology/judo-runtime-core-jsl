@@ -1,4 +1,4 @@
-model MappedTransferAggregation;
+model MappedTransferCompositonAggregation;
 
 import judo::types;
 
@@ -13,9 +13,9 @@ entity EntityB {
 }
 
 transfer TransferA (EntityA a) {
-	@Eager
+	@Embedded
     relation TransferB singleEntityB <=> a.singleEntityB;
-    @Eager
+    @Embedded
     relation TransferB[] multiEntityB <=> a.multiEntityB;
 }
 
@@ -34,7 +34,7 @@ entity EntityD {
 }
 
 transfer TransferC (EntityC c) {
-    @Eager
+    @Embedded
     relation required TransferD singleRequiredEntityD <=> c.singleRequiredEntityD;
 
 }
@@ -58,12 +58,12 @@ entity EntityG {
 }
 
 transfer TransferE (EntityE e) {
-    @Eager
+    @Embedded
     relation TransferF singleEntityF <=> e.singleEntityF;
 }
 
 transfer TransferF (EntityF f) {
-    @Eager
+    @Embedded
     relation TransferG[] multiEntityG <=> f.multiEntityG;
 }
 
