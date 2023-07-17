@@ -477,7 +477,7 @@ public class TestDefaultAndRequiredFieldsOnMappedTO extends AbstractJslTest {
         assertEquals("stringAttr", validationResult.getLocation());
         transferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsDao.delete(t4);
 
-        // TBD: Where should we validate the null default value
+        // TODO: JNG-4997
         //exception = assertThrows(ValidationException.class, () -> transferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsDao.create(TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFields.builder().build()));
         //assertEquals(1, exception.getValidationResults().size());
         //validationResult = exception.getValidationResults().stream().findAny().orElseThrow();
@@ -668,7 +668,7 @@ public class TestDefaultAndRequiredFieldsOnMappedTO extends AbstractJslTest {
         assertEquals("stringAttr", validationResult.getLocation());
         transferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsDao.delete(t2);
 
-        // TBD: Where should we validate the null default value
+        // TODO: JNG-4997
         //exception = assertThrows(ValidationException.class, () -> transferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsDao.create(TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFields.builder().build()));
         //assertEquals(1, exception.getValidationResults().size());
         //validationResult = exception.getValidationResults().stream().findAny().orElseThrow();
@@ -794,7 +794,7 @@ public class TestDefaultAndRequiredFieldsOnMappedTO extends AbstractJslTest {
 
         transferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsDao.delete(t4);
 
-        // TBD: Where should we validate the null default value
+        // TODO: JNG-4997
         //assertThrows(ValidationException.class, () -> transferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsDao.create(TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFields.builder().build()));
         //assertEquals(1, exception.getValidationResults().size());
         //validationResult = exception.getValidationResults().stream().findAny().orElseThrow();
@@ -1090,7 +1090,7 @@ public class TestDefaultAndRequiredFieldsOnMappedTO extends AbstractJslTest {
 
         transferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefaultDao.delete(t4);
 
-        // TBD: Where should we validate the null default value
+        // TODO: JNG-4997
         //exception = assertThrows(ValidationException.class, () -> transferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefaultDao.create(TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefault.builder().build()));
         //assertEquals(1, exception.getValidationResults().size());
         //validationResult = exception.getValidationResults().stream().findAny().orElseThrow();
@@ -1274,7 +1274,7 @@ public class TestDefaultAndRequiredFieldsOnMappedTO extends AbstractJslTest {
         assertEquals("stringAttr", validationResult.getLocation());
         transferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsWithDefaultDao.delete(t2);
 
-        // TBD: Where should we validate the null default value
+        // TODO: JNG-4997
         //exception = assertThrows(ValidationException.class, () -> transferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefaultDao.create(TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefault.builder().build()));
         //assertEquals(1, exception.getValidationResults().size());
         //validationResult = exception.getValidationResults().stream().findAny().orElseThrow();
@@ -1378,7 +1378,7 @@ public class TestDefaultAndRequiredFieldsOnMappedTO extends AbstractJslTest {
         assertEquals("MISSING_REQUIRED_ATTRIBUTE", validationResult.getCode());
         assertEquals("stringAttr", validationResult.getLocation());
 
-        // TBD: Where should we validate the null default value
+        // TODO: JNG-4997
         //exception = assertThrows(ValidationException.class, () -> transferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefaultDao.create(TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefault.builder().build()));
         //assertEquals(1, exception.getValidationResults().size());
         //validationResult = exception.getValidationResults().stream().findAny().orElseThrow();
