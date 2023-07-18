@@ -68,6 +68,15 @@ transfer TransferWithOptionalFieldsWithDefaultMapsEntityWithOptionalFields (Enti
     }
 }
 
+// Mapped Transfer Object with optional fields with default expression
+transfer TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFields (EntityWithOptionalFields mappedEntity) {
+    field SmallString stringAttr <=> mappedEntity.stringAttr;
+
+    constructor {
+        self.stringAttr = queryStringAttribute();
+    }
+}
+
 // Mapped Transfer Object with required fields
 transfer TransferWithRequiredFieldsMapsEntityWithOptionalFields (EntityWithOptionalFields mappedEntity) {
     field required Integer integerAttr <=> mappedEntity.integerAttr;
@@ -105,6 +114,15 @@ transfer TransferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFields (Enti
         self.timeAttr  = `23:59:59`;
         self.enumAttr = Enum#EnumA;
     }
+}
+
+// Mapped Transfer Object with required fields with default expression
+transfer TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFields (EntityWithOptionalFields mappedEntity) {
+    field required SmallString stringAttr <=> mappedEntity.stringAttr;
+
+        constructor {
+            self.stringAttr = queryStringAttribute();
+        }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -163,6 +181,15 @@ transfer TransferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFields (Enti
     }
 }
 
+// Mapped Transfer Object with optional fields with default expression
+transfer TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFields (EntityWithRequiredFields mappedEntity) {
+    field SmallString stringAttr <=> mappedEntity.stringAttr;
+
+        constructor {
+            self.stringAttr = queryStringAttribute();
+        }
+}
+
 // Mapped Transfer Object with required fields
 transfer TransferWithRequiredFieldsMapsEntityWithRequiredFields (EntityWithRequiredFields mappedEntity) {
     field required Integer integerAttr <=> mappedEntity.integerAttr;
@@ -200,6 +227,15 @@ transfer TransferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFields (Enti
         self.timeAttr  = `23:59:59`;
         self.enumAttr = Enum#EnumA;
     }
+}
+
+// Mapped Transfer Object with required fields with default expression
+transfer TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFields (EntityWithRequiredFields mappedEntity) {
+    field required SmallString stringAttr <=> mappedEntity.stringAttr;
+
+        constructor {
+            self.stringAttr = queryStringAttribute();
+        }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -258,6 +294,15 @@ transfer TransferWithOptionalFieldsWithDefaultMapsEntityWithOptionalFieldsWithDe
     }
 }
 
+// Mapped Transfer Object with optional fields with default expression
+transfer TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefault (EntityWithOptionalFieldsWithDefault mappedEntity) {
+    field SmallString stringAttr <=> mappedEntity.stringAttr;
+
+        constructor {
+            self.stringAttr = queryStringAttribute();
+        }
+}
+
 // Mapped Transfer Object with required fields
 transfer TransferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefault (EntityWithOptionalFieldsWithDefault mappedEntity) {
     field required Integer integerAttr <=> mappedEntity.integerAttr;
@@ -295,6 +340,15 @@ transfer TransferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsWithDe
         self.timeAttr  = `23:59:58`;
         self.enumAttr = Enum#EnumB;
     }
+}
+
+// Mapped Transfer Object with required fields with default expression
+transfer TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefault (EntityWithOptionalFieldsWithDefault mappedEntity) {
+    field required SmallString stringAttr <=> mappedEntity.stringAttr;
+
+        constructor {
+            self.stringAttr = queryStringAttribute();
+        }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -353,6 +407,15 @@ transfer TransferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsWithDe
     }
 }
 
+// Mapped Transfer Object with optional fields with default expression
+transfer TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefault (EntityWithRequiredFieldsWithDefault mappedEntity) {
+    field SmallString stringAttr <=> mappedEntity.stringAttr;
+
+        constructor {
+            self.stringAttr = queryStringAttribute();
+        }
+}
+
 // Mapped Transfer Object with required fields
 transfer TransferWithRequiredFieldsMapsEntityWithRequiredFieldsWithDefault (EntityWithRequiredFieldsWithDefault mappedEntity) {
     field required Integer integerAttr <=> mappedEntity.integerAttr;
@@ -391,3 +454,15 @@ transfer TransferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsWithDe
         self.enumAttr = Enum#EnumB;
     }
 }
+
+// Mapped Transfer Object with required fields with default expression
+transfer TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefault (EntityWithRequiredFieldsWithDefault mappedEntity) {
+    field required SmallString stringAttr <=> mappedEntity.stringAttr;
+
+        constructor {
+            self.stringAttr = queryStringAttribute();
+        }
+}
+
+query String queryStringAttribute() <= EntityWithOptionalFields!all()!any().stringAttr;
+
