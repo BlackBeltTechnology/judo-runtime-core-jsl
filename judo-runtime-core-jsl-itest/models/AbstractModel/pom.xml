@@ -27,7 +27,7 @@
                 <version>${judo-meta-psm-version}</version>
                 <executions>
                     <execution>
-                        <id>execute-psm-test-model-from-artifact-Inheritance</id>
+                        <id>execute-psm-test-model-from-artifact-AbstractModel</id>
                         <phase>generate-test-sources</phase>
                         <goals>
                             <goal>generate</goal>
