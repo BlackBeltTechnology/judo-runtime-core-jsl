@@ -1,0 +1,235 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>hu.blackbelt.judo.runtime</groupId>
+        <artifactId>judo-runtime-core-jsl-itest</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <artifactId>judo-runtime-core-jsl-itest-model</artifactId>
+    <packaging>pom</packaging>
+
+    <name>JUDO Runtime Core :: JUDO Language Specification DSL Integration Tests :: Model</name>
+
+    <modules>
+        <module>AbstractModel</module>
+        <module>AllTypeOfTransferObjectsModel</module>
+        <module>AssociationRelationshipsModel</module>
+        <module>AutoMappedTransferPrimitivesModel</module>
+        <module>AutoMappedTransferSingleEntityModel</module>
+        <module>CastingFunctionsModel</module>
+        <module>CompositionRelationshipsModel</module>
+<!--        <module>ContainerDerivedModel</module> -->
+        <module>ContainerTestModel</module>
+        <module>ContainsTestModel</module>
+        <module>EntityWithSameQueryNameModel</module>
+        <module>EnvironmentAndSequenceModel</module>
+        <module>FilterModel</module>
+        <module>FunctionsModels</module>
+        <module>ImportedTypesWithNoFieldDefinitions</module>
+        <module>InheritanceModel</module>
+        <module>MappedTransferAssociationAggregationModel</module>
+        <module>MappedTransferAssociationAssociationModel</module>
+        <module>MappedTransferCastingFunctionsModel</module>
+        <module>MappedTransferCompositonAggregationModel</module>
+        <module>MappedTransferCompositonAssociationModel</module>
+        <module>MappedTransferContainerTestModel</module>
+        <module>MappedTransferContainsTestModel</module>
+        <module>MappedTransferFilterModel</module>
+        <module>MappedTransferFunctionsModels</module>
+        <module>MappedTransferNavigationTestModel</module>
+        <module>MappedTransferOperatorAndFunctionOfEnumTestModel</module>
+        <module>MappedTransferOperatorsModel</module>
+        <module>MappedTransferPrimitivesModel</module>
+        <module>ModelNameWithJavaKeyword</module>
+        <module>NavigationTestModel</module>
+        <module>OperatorAndFunctionOfEnumTestModel</module>
+        <module>OperatorsModel</module>
+        <module>PrimitivesModel</module>
+        <module>QueryModel</module>
+        <module>SalesModels</module>
+<!--        <module>SampleModels</module> -->
+        <module>StaticQueryDaoTestModel</module>
+        <module>TaskModel</module>
+        <module>TernaryTestModel</module>
+        <module>TestDefaultAndRequiredFieldsOnMappedTOModel</module>
+        <module>TestStaticQueriesWithConstantParametersModel</module>
+        <module>TestStaticQueriesWithDefaultValuesModel</module>
+        <module>TransactionManagementModel</module>
+        <module>TransferConstructorModel</module>
+    </modules>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>hu.blackbelt.judo.meta</groupId>
+                    <artifactId>judo-psm-generator-maven-plugin</artifactId>
+                    <version>${judo-meta-psm-version}</version>
+                    <configuration>
+                        <uris>
+                            <uri>mvn:hu.blackbelt.judo.generator:judo-psm-generator-sdk-core-common:${judo-psm-generator-sdk-core-version}</uri>
+                            <uri>mvn:hu.blackbelt.judo.generator:judo-psm-generator-sdk-core-api:${judo-psm-generator-sdk-core-version}</uri>
+                            <uri>mvn:hu.blackbelt.judo.generator:judo-psm-generator-sdk-core-impl:${judo-psm-generator-sdk-core-version}</uri>
+                            <uri>mvn:hu.blackbelt.judo.generator:judo-psm-generator-sdk-core-guice:${judo-psm-generator-sdk-core-version}</uri>
+                        </uris>
+                        <type>psm-sdk-core</type>
+                        <templateParameters>
+                            <debugPrint>true</debugPrint>
+                            <apiPrefix>hu.blackbelt.judo.psm.generator.sdk.core.test.api</apiPrefix>
+                            <implPrefix>hu.blackbelt.judo.psm.generator.sdk.core.test.impl</implPrefix>
+                            <guicePrefix>hu.blackbelt.judo.psm.generator.sdk.core.test.guice</guicePrefix>
+                            <springPrefix>hu.blackbelt.judo.psm.generator.sdk.core.test.spring</springPrefix>
+
+                            <generateOptionalTypes>true</generateOptionalTypes>
+                            <generatePayloadValidator>true</generatePayloadValidator>
+                        </templateParameters>
+                    </configuration>
+                    <dependencies>
+                        <dependency>
+                            <groupId>hu.blackbelt.judo.generator</groupId>
+                            <artifactId>judo-psm-generator-sdk-core-common</artifactId>
+                            <version>${judo-psm-generator-sdk-core-version}</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>hu.blackbelt.judo.generator</groupId>
+                            <artifactId>judo-psm-generator-sdk-core-api</artifactId>
+                            <version>${judo-psm-generator-sdk-core-version}</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>hu.blackbelt.judo.generator</groupId>
+                            <artifactId>judo-psm-generator-sdk-core-impl</artifactId>
+                            <version>${judo-psm-generator-sdk-core-version}</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>hu.blackbelt.judo.generator</groupId>
+                            <artifactId>judo-psm-generator-sdk-core-guice</artifactId>
+                            <version>${judo-psm-generator-sdk-core-version}</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
+
+                <plugin>
+                    <groupId>hu.blackbelt.judo.tatami</groupId>
+                    <artifactId>judo-tatami-jsl-workflow-maven-plugin</artifactId>
+                    <version>${judo-tatami-jsl-version}</version>
+
+                    <configuration>
+                        <saveModels>true</saveModels>
+                        <destination>${basedir}/target/generated-test-sources/model</destination>
+                    </configuration>
+
+                    <executions>
+                        <execution>
+                            <id>generate-psm-test-model-from-artifact</id>
+                            <goals>
+                                <goal>parser-workflow</goal>
+                            </goals>
+                            <phase>generate-test-sources</phase>
+                            <configuration>
+                                <sources>${basedir}/src/test/resources/</sources>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <configuration>
+                        <compilerArgs>
+                            <arg>-AreportPath=${basedir}/target/classes</arg>
+                        </compilerArgs>
+                    </configuration>
+                </plugin>
+
+            </plugins>
+        </pluginManagement>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>hu.blackbelt.judo.runtime</groupId>
+            <artifactId>judo-runtime-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>hu.blackbelt.judo.runtime</groupId>
+            <artifactId>judo-runtime-core-bootstrap-hsqldb</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>hu.blackbelt.judo.runtime</groupId>
+            <artifactId>judo-runtime-core-bootstrap-postgresql</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>hu.blackbelt.judo.runtime</groupId>
+            <artifactId>judo-runtime-core-jsl-itest-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>hu.blackbelt.judo.runtime</groupId>
+            <artifactId>judo-runtime-core-jsl-itest-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>hu.blackbelt.judo</groupId>
+            <artifactId>judo-dao-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>hu.blackbelt.mapper</groupId>
+            <artifactId>mapper-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>hu.blackbelt.judo.meta</groupId>
+            <artifactId>hu.blackbelt.judo.meta.asm.model</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>hu.blackbelt.judo</groupId>
+            <artifactId>judo-dispatcher-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>hu.blackbelt.judo</groupId>
+            <artifactId>judo-sdk-common</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>hu.blackbelt.judo</groupId>
+            <artifactId>judo-requirement-report-annotation</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>hu.blackbelt.judo</groupId>
+            <artifactId>judo-requirement-report-processor</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>hu.blackbelt.judo.generator</groupId>
+            <artifactId>judo-psm-generator-sdk-core-test</artifactId>
+            <scope>test</scope>
+            <version>${judo-psm-generator-sdk-core-version}</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>uk.org.webcompere</groupId>
+            <artifactId>system-stubs-jupiter</artifactId>
+            <version>2.0.2</version>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+</project>
