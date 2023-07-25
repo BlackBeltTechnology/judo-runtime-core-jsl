@@ -42,7 +42,7 @@
 
         <judo-tatami-jsl-version>1.1.4.20230719_041230_e6490c12_develop</judo-tatami-jsl-version>
         <judo-runtime-core-version>1.0.6.20230718_140415_4b940629_develop</judo-runtime-core-version>
-        <judo-psm-generator-sdk-core-version>1.0.0.20230724_121230_f0ab9c0f_feature_JNG_4977_DAO_create_function_for_adding_one_element_to_relations</judo-psm-generator-sdk-core-version>
+        <judo-psm-generator-sdk-core-version>1.0.0.20230725_112017_0303984c_develop</judo-psm-generator-sdk-core-version>
 
 
         <judo-meta-psm-version>1.3.0.20230516_100351_2fb48f5a_develop</judo-meta-psm-version>
