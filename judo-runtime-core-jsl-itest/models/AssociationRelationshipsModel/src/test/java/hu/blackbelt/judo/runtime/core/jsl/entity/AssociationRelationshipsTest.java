@@ -134,7 +134,7 @@ public class AssociationRelationshipsTest extends AbstractJslTest {
     }
 
     /**
-     * This test checks the collection sdk methods work well.
+     * This test checks the collection sdk methods with one instance (create, add, remove) work well.
      *
      * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
