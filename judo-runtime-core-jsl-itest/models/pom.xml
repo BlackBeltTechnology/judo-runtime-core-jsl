@@ -58,7 +58,6 @@
         <module>TestStaticQueriesWithDefaultValuesModel</module>
         <module>TransactionManagementModel</module>
         <module>TransferConstructorModel</module>
-        <module>DaoMethodsModel</module>
     </modules>
 
     <build>
