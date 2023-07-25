@@ -35,8 +35,10 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationship
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entitye.EntityEDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entityf.EntityF;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entityf.EntityFDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entityf.EntityFIdentifier;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.AssociationRelationshipsDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
+import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
 import lombok.extern.slf4j.Slf4j;
@@ -46,6 +48,8 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.Optional;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasItems;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
@@ -127,6 +131,81 @@ public class AssociationRelationshipsTest extends AbstractJslTest {
         entityCDao.removeMultipleAonB(entityC, List.of(entityA));
 
         assertEquals(List.of(entityA2), entityCDao.queryMultipleAonB(entityC).execute());
+    }
+
+    /**
+     * This test checks the collection sdk methods with one instance (create, add, remove) work well.
+     *
+     * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
+     *
+     * @type Behaviour
+     *
+     * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
+     *
+     * @jslModel AssociationRelationships.jsl
+     *
+     */
+    @Test
+    @TestCase("testCreateAddRemoveMultipleRelationsMethodsWithOneElements")
+    @Requirement(reqs = {
+            "REQ-ENT-001",
+            "REQ-ENT-004",
+            "REQ-ENT-006",
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003"
+    })
+    public void testCreateAddRemoveMultipleRelationsMethodsWithOneElements() {
+
+        EntityF f1 = entityFDao.create(EntityF.builder().build());
+        EntityF f2 = entityFDao.create(EntityF.builder().build());
+
+        // create method's with one instance
+
+        EntityE entityE = entityEDao.create(EntityE.builder().build());
+
+        assertEquals(0, entityEDao.queryMultipleFOnE(entityE).count());
+
+        EntityF f3 = entityEDao.createMultipleFOnE(entityE, EntityF.builder().build());
+
+        assertEquals(1, entityEDao.queryMultipleFOnE(entityE).count());
+        assertThat(ListOfMultipleFOnEIds(entityE), hasItems(f3.identifier()));
+
+        EntityF f4 = entityEDao.createMultipleFOnE(entityE, f1);
+
+        assertNotEquals(f4.identifier(), f1.identifier());
+        assertEquals(2, entityEDao.queryMultipleFOnE(entityE).count());
+        assertThat(ListOfMultipleFOnEIds(entityE), hasItems(f3.identifier(), f4.identifier()));
+
+        // add method's with one instance
+
+        entityEDao.addMultipleFOnE(entityE, f1);
+        entityEDao.addMultipleFOnE(entityE, f1); // try to add twice
+
+        assertEquals(3, entityEDao.queryMultipleFOnE(entityE).count());
+        assertThat(ListOfMultipleFOnEIds(entityE), hasItems(f1.identifier(), f3.identifier(), f4.identifier()));
+
+        // remove method's with one instance
+
+        entityEDao.removeMultipleFOnE(entityE, f2); // remove one that not part of the relation
+
+        assertEquals(3, entityEDao.queryMultipleFOnE(entityE).count());
+        assertThat(ListOfMultipleFOnEIds(entityE), hasItems(f1.identifier(), f3.identifier(), f4.identifier()));
+
+        entityEDao.removeMultipleFOnE(entityE, f3);
+
+        assertEquals(2, entityEDao.queryMultipleFOnE(entityE).count());
+        assertThat(ListOfMultipleFOnEIds(entityE), hasItems(f1.identifier(), f4.identifier()));
+
+        entityEDao.removeMultipleFOnE(entityE, f4);
+
+        assertEquals(1, entityEDao.queryMultipleFOnE(entityE).count());
+        assertThat(ListOfMultipleFOnEIds(entityE), hasItems(f1.identifier()));
+
+    }
+
+    private  List<EntityFIdentifier> ListOfMultipleFOnEIds(EntityE e){
+        return entityEDao.queryMultipleFOnE(e).execute().stream().map(EntityF::identifier).toList();
     }
 
     @Test
