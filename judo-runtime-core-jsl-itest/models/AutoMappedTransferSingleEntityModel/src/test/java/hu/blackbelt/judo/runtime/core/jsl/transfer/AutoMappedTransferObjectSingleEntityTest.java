@@ -5,9 +5,12 @@ import com.google.inject.Module;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfersingleentity.automappedtransfersingleentity.automappedcontainersingleassociation.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfersingleentity.automappedtransfersingleentity.automappedcontainersinglecompositionderivedentity.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfersingleentity.automappedtransfersingleentity.automappedcontainersinglerelationderivedentity.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfersingleentity.automappedtransfersingleentity.automappedtwowayreferenceentity.AutoMappedTwoWayReferenceEntity;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfersingleentity.automappedtransfersingleentity.automappedtwowayreferenceentity.AutoMappedTwoWayReferenceEntityDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfersingleentity.automappedtransfersingleentity.containersingleassociationentity.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfersingleentity.automappedtransfersingleentity.containersinglecompositionentity.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfersingleentity.automappedtransfersingleentity.referenceentity.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfersingleentity.automappedtransfersingleentity.twowayreferenceentity.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfersingleentity.automappedtransfersingleentity.automappedcontainersinglecomposition.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfersingleentity.automappedtransfersingleentity.automappedreferenceentity.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.AutoMappedTransferSingleEntityDaoModules;
@@ -57,6 +60,9 @@ public class AutoMappedTransferObjectSingleEntityTest extends AbstractJslTest {
 
     @Inject
     AutoMappedContainerSingleRelationDerivedEntityDao autoMappedContainerSingleRelationDerivedEntityDao;
+
+    @Inject
+    AutoMappedTwoWayReferenceEntityDao twoWayReferenceEntityDao;
 
     /**
      * This test checks the auto mapped transfer object on single entity composition fields.
@@ -173,7 +179,6 @@ public class AutoMappedTransferObjectSingleEntityTest extends AbstractJslTest {
      *
      */
     @Test
-    @Disabled("JNG-4906")
     @TestCase("AutoMappedTransferWithSingleAssociationVariations")
     @Requirement(reqs = {
             "REQ-MDL-001",
@@ -190,23 +195,98 @@ public class AutoMappedTransferObjectSingleEntityTest extends AbstractJslTest {
     })
     void testAutoMappedTransferWithSingleAssociationVariations() {
 
-        AutoMappedReferenceEntity  singleRelation = autoMappedReferenceEntityDao.create(
+        AutoMappedReferenceEntity singleRelation = autoMappedReferenceEntityDao.create(
                 AutoMappedReferenceEntity
                         .builder()
                         .withName("SingleRelation")
                         .build()
         );
 
-        AutoMappedReferenceEntity  singleRequiredRelation = autoMappedReferenceEntityDao.create(
+        AutoMappedReferenceEntity singleRequiredRelation = autoMappedReferenceEntityDao.create(
                 AutoMappedReferenceEntity
                         .builder()
                         .withName("SingleRequiredRelation")
                         .build()
         );
-    // TODO JNG-4906
 
-//        AutoMappedContainerSingleAssociation containerSingleAssociation =
-//                autoMappedContainerSingleAssociationDao.create(AutoMappedContainerSingleAssociation.builder().build());
+        AutoMappedTwoWayReferenceEntity twoWayReferenceEntity = twoWayReferenceEntityDao.create(
+                AutoMappedTwoWayReferenceEntity
+                        .builder()
+                        .withName("TwoWayRelation")
+                        .build()
+        );
+
+        AutoMappedContainerSingleAssociation containerSingleAssociation =
+                autoMappedContainerSingleAssociationDao.create(
+                        AutoMappedContainerSingleAssociation
+                                .builder()
+                                .build(),
+                        AutoMappedContainerSingleAssociationAttachedRelationsForCreate
+                                .builder()
+                                .withSingleRelation(singleRelation)
+                                .withSingleRequiredRelation(singleRequiredRelation)
+                                .withTwoWayReferenceEntityRelation(twoWayReferenceEntity)
+                                .build()
+                );
+
+        assertEquals(Optional.of(singleRelation), autoMappedContainerSingleAssociationDao.querySingleRelation(containerSingleAssociation));
+        assertEquals(singleRequiredRelation, autoMappedContainerSingleAssociationDao.querySingleRequiredRelation(containerSingleAssociation));
+        assertEquals(Optional.of(twoWayReferenceEntity), autoMappedContainerSingleAssociationDao.queryTwoWayReferenceEntityRelation(containerSingleAssociation));
+        assertEquals(Optional.of(containerSingleAssociation), twoWayReferenceEntityDao.queryTwoWayContainerRelation(twoWayReferenceEntity));
+
+        // update name
+
+        singleRelation.setName("SingleRelationRenamed");
+        singleRequiredRelation.setName("SingleRequiredRelationRenamed");
+        twoWayReferenceEntity.setName("TwoWayRelationRenamed");
+
+        singleRelation = autoMappedReferenceEntityDao.update(singleRelation);
+        singleRequiredRelation = autoMappedReferenceEntityDao.update(singleRequiredRelation);
+        twoWayReferenceEntity = twoWayReferenceEntityDao.update(twoWayReferenceEntity);
+        containerSingleAssociation = autoMappedContainerSingleAssociationDao.update(containerSingleAssociation);
+
+        assertEquals(Optional.of("SingleRelationRenamed"), autoMappedContainerSingleAssociationDao.querySingleRelation(containerSingleAssociation).orElseThrow().getName());
+        assertEquals(Optional.of("SingleRequiredRelationRenamed"), autoMappedContainerSingleAssociationDao.querySingleRequiredRelation(containerSingleAssociation).getName());
+        assertEquals(Optional.of("TwoWayRelationRenamed"), autoMappedContainerSingleAssociationDao.queryTwoWayReferenceEntityRelation(containerSingleAssociation).orElseThrow().getName());
+
+        // unset association
+
+        autoMappedContainerSingleAssociationDao.unsetSingleRelation(containerSingleAssociation);
+
+        assertTrue(autoMappedContainerSingleAssociationDao.querySingleRelation(containerSingleAssociation).isEmpty());
+        assertTrue(autoMappedReferenceEntityDao.getById(singleRelation.identifier()).isPresent());
+
+        autoMappedContainerSingleAssociationDao.unsetTwoWayReferenceEntityRelation(containerSingleAssociation);
+
+        assertTrue(autoMappedContainerSingleAssociationDao.queryTwoWayReferenceEntityRelation(containerSingleAssociation).isEmpty());
+        assertTrue(twoWayReferenceEntityDao.getById(twoWayReferenceEntity.identifier()).isPresent());
+
+        // set
+
+        autoMappedContainerSingleAssociationDao.setSingleRelation(containerSingleAssociation, singleRelation);
+
+        assertTrue(autoMappedContainerSingleAssociationDao.querySingleRelation(containerSingleAssociation).isPresent());
+
+        autoMappedContainerSingleAssociationDao.setTwoWayReferenceEntityRelation(containerSingleAssociation, twoWayReferenceEntity);
+
+        assertTrue(autoMappedContainerSingleAssociationDao.queryTwoWayReferenceEntityRelation(containerSingleAssociation).isPresent());
+
+        // try delete required
+
+        AutoMappedReferenceEntity referenceForLambda = singleRequiredRelation;
+        IllegalStateException thrown = assertThrows(
+                IllegalStateException.class,
+                () -> autoMappedReferenceEntityDao.delete(referenceForLambda)
+        );
+        assertTrue(thrown.getMessage().contains("There are mandatory references that cannot be removed"));
+        assertTrue(thrown.getMessage().contains("#singleRequiredRelation"));
+
+        // delete not required
+
+        autoMappedReferenceEntityDao.delete(singleRelation);
+
+        assertTrue(autoMappedContainerSingleAssociationDao.querySingleRelation(containerSingleAssociation).isEmpty());
+        assertTrue(autoMappedReferenceEntityDao.getById(singleRelation.identifier()).isEmpty());
 
     }
 
@@ -271,8 +351,6 @@ public class AutoMappedTransferObjectSingleEntityTest extends AbstractJslTest {
                 autoMappedContainerSingleCompositionDerivedEntity.getSingleComposition().orElseThrow().identifier()
         );
 
-
-
     }
 
     /**
@@ -294,7 +372,6 @@ public class AutoMappedTransferObjectSingleEntityTest extends AbstractJslTest {
      *  Check the derived member contains the expressions.
      */
     @Test
-    @Disabled("JNG-4906")
     @TestCase("AutoMappedTransferWithRelationOnDerivedVariations")
     @Requirement(reqs = {
             "REQ-MDL-001",
@@ -313,23 +390,45 @@ public class AutoMappedTransferObjectSingleEntityTest extends AbstractJslTest {
     })
     void testAutoMappedTransferWithRelationOnDerivedVariations() {
 
-        AutoMappedReferenceEntity  singleRelation = autoMappedReferenceEntityDao.create(
+        AutoMappedReferenceEntity singleRelation = autoMappedReferenceEntityDao.create(
                 AutoMappedReferenceEntity
                         .builder()
                         .withName("SingleRelation")
                         .build()
         );
 
-        AutoMappedReferenceEntity  singleRequiredRelation = autoMappedReferenceEntityDao.create(
+        AutoMappedReferenceEntity singleRequiredRelation = autoMappedReferenceEntityDao.create(
                 AutoMappedReferenceEntity
                         .builder()
                         .withName("SingleRequiredRelation")
                         .build()
         );
 
-        //TODO JNG-4906
-        autoMappedContainerSingleRelationDerivedEntityDao.create(AutoMappedContainerSingleRelationDerivedEntity.builder().build(),
-                AutoMappedContainerSingleRelationDerivedEntityAttachedRelationsForCreate.builder().build());
+        AutoMappedTwoWayReferenceEntity twoWayReferenceEntity = twoWayReferenceEntityDao.create(
+                AutoMappedTwoWayReferenceEntity
+                        .builder()
+                        .withName("TwoWayRelation")
+                        .build()
+        );
+
+        AutoMappedContainerSingleRelationDerivedEntity containerSingleRelationDerivedEntity =
+                autoMappedContainerSingleRelationDerivedEntityDao.create(
+                        AutoMappedContainerSingleRelationDerivedEntity
+                                .builder()
+                                .build(),
+                        AutoMappedContainerSingleRelationDerivedEntityAttachedRelationsForCreate
+                                .builder()
+                                .withSingleRelation(singleRelation)
+                                .withSingleRequiredRelation(singleRequiredRelation)
+                                .withTwoWayReferenceEntityRelation(twoWayReferenceEntity)
+                                .build()
+                );
+
+        assertEquals(singleRelation.identifier(), autoMappedContainerSingleRelationDerivedEntityDao.querySingleRelation(containerSingleRelationDerivedEntity).orElseThrow().identifier());
+        assertEquals(singleRelation.identifier(), autoMappedContainerSingleRelationDerivedEntityDao.querySingleRelationEntityMemberDerived(containerSingleRelationDerivedEntity).orElseThrow().identifier());
+        assertEquals(singleRequiredRelation.identifier(), autoMappedContainerSingleRelationDerivedEntityDao.querySingleRelationEntityRequiredMemberDerived(containerSingleRelationDerivedEntity).orElseThrow().identifier());
+        // TODO JNG-5035
+//        assertEquals(singleRelation.identifier(), autoMappedContainerSingleRelationDerivedEntityDao.querySingleRelationEntityQueryMemberDerived(containerSingleRelationDerivedEntity).orElseThrow().identifier());
 
     }
 
