@@ -69,9 +69,10 @@ entity ContainerSingleRelationDerivedEntity {
     relation ReferenceEntity singleRelationEntityRequiredMemberDerived <= self.singleRequiredRelation;
     relation ReferenceEntity singleRelationEntityQueryMemberDerived <= self.singleRelationEntityExpressionQuery(name ="singleRelation");
 
+    // JNG-5036 auto map generate this methods in sdk
     @Query
     relation ReferenceEntity singleRelationEntityExpressionQuery(String name) <= referenceEntityWithNameQuery(name = name);
-
+    // JNG-5036 auto map generate this methods in sdk
     @Query
     field Integer primitiveQuery(String name) <= countReferenceEntityWithNameQuery(name = name);
 
