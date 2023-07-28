@@ -36,6 +36,18 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationship
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityd.EntityDIdentifier;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entitye.EntityE;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entitye.EntityEDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityf.EntityF;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityf2.EntityF2;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityf2.EntityF2Dao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityf3.EntityF3;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityf3.EntityF3Dao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityf4.EntityF4;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityf4.EntityF4Dao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityg.EntityG;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityg.EntityGDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityf.EntityFDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityh.EntityH;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityh.EntityHDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.CompositionRelationshipsDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
@@ -71,6 +83,24 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
 
     @Inject
     EntityEDao entityEDao;
+
+    @Inject
+    EntityFDao entityFDao;
+
+    @Inject
+    EntityF3Dao entityF3Dao;
+
+    @Inject
+    EntityF2Dao entityF2Dao;
+
+    @Inject
+    EntityF4Dao entityF4Dao;
+
+    @Inject
+    EntityGDao entityGDao;
+
+    @Inject
+    EntityHDao entityHDao;
 
     EntityA entityA;
     EntityC singleConA;
@@ -363,5 +393,73 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
         assertFalse(collect.contains(entityD1.identifier()));
         assertFalse(collect.contains(entityD2.identifier()));
 
+    }
+
+    @Test
+    void testCompositionWithUndefinedRequiredFields() {
+        // TODO: JNG-4194
+        EntityF f = EntityF.builder().build();
+
+        // java.lang.IllegalStateException: Default attribute value is undefined on required attribute: _name_Default_EntityG
+        EntityH h = entityHDao.create(EntityH.builder().withAlwaysUndefined("Entity").build());
+        f.setG(EntityG.builder().build());
+        entityFDao.create(f);
+
+        //java.lang.NullPointerException
+        //assertTrue(f.getG().getName().equals("Entity"));
+
+        EntityF f12 = EntityF.builder().build();
+
+        f12.setG(EntityG.builder().withName("Entity1").build());
+        entityFDao.create(f12);
+
+        assertTrue(f12.getG().getName().equals("Entity1"));
+
+        EntityF f13 = EntityF.builder().build();
+
+        // java.lang.NullPointerException
+        //EntityG g13 = entityFDao.createG(f13, EntityG.builder().withName("Entity").build());
+        //assertTrue(g13.getName().equals("Entity"));
+
+        EntityF2 f2 = EntityF2.builder().build();
+
+        f2.setH(EntityH.builder().withAlwaysUndefined("Entity").build());
+        entityF2Dao.create(f2);
+
+        assertTrue(f2.getH().getAlwaysUndefined().orElseThrow().equals("Entity"));
+
+        // java.lang.NullPointerException
+        //EntityH h2 = entityF2Dao.createH(f2, EntityH.builder().withAlwaysUndefined("Entity").build());
+        //assertTrue(h2.getAlwaysUndefined().orElseThrow().equals("Entity"));
+
+        EntityF3 f3 = EntityF3.builder().build();
+
+        f3.setG(List.of(EntityG.builder().withName("Entity2").build()));
+        entityF3Dao.create(f3);
+
+        assertTrue(f3.getG().get(0).getName().equals("Entity2"));
+
+        EntityF3 f31 = EntityF3.builder().build();
+
+        f31.setG(List.of(EntityG.builder().build()));
+        entityF3Dao.create(f31);
+
+        //java.lang.NullPointerException
+        //assertTrue(f31.getG().get(0).getName().equals("Entity"));
+
+        // java.lang.NullPointerException
+        //EntityG g3 = entityF3Dao.createG(f3, EntityG.builder().withName("Entity2").build());
+        //assertTrue(g3.getName().equals("Entity2"));
+
+        EntityF4 f4 = EntityF4.builder().build();
+
+        f4.setH(List.of(EntityH.builder().withAlwaysUndefined("Entity").build()));
+        entityF4Dao.create(f4);
+
+        assertTrue(f4.getH().get(0).getAlwaysUndefined().orElseThrow().equals("Entity"));
+
+        // java.lang.NullPointerException
+        //EntityH h4 = entityF4Dao.createH(f4, EntityH.builder().withAlwaysUndefined("Entity").build());
+        //assertTrue(h4.getAlwaysUndefined().orElseThrow().equals("Entity"));
     }
 }
