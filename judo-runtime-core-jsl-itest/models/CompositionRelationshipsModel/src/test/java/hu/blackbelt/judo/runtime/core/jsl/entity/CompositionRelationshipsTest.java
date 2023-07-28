@@ -415,10 +415,8 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
 
         assertTrue(f12.getG().getName().equals("Entity1"));
 
-        EntityF f13 = EntityF.builder().build();
-
         // java.lang.NullPointerException
-        //EntityG g13 = entityFDao.createG(f13, EntityG.builder().withName("Entity").build());
+        //EntityG g13 = entityFDao.createG(EntityF.builder().build(), EntityG.builder().withName("Entity").build());
         //assertTrue(g13.getName().equals("Entity"));
 
         EntityF2 f2 = EntityF2.builder().build();
@@ -429,7 +427,7 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
         assertTrue(f2.getH().getAlwaysUndefined().orElseThrow().equals("Entity"));
 
         // java.lang.NullPointerException
-        //EntityH h2 = entityF2Dao.createH(f2, EntityH.builder().withAlwaysUndefined("Entity").build());
+        //EntityH h2 = entityF2Dao.createH(EntityF2.builder().build(), EntityH.builder().withAlwaysUndefined("Entity").build());
         //assertTrue(h2.getAlwaysUndefined().orElseThrow().equals("Entity"));
 
         EntityF3 f3 = EntityF3.builder().build();
@@ -448,7 +446,7 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
         //assertTrue(f31.getG().get(0).getName().equals("Entity"));
 
         // java.lang.NullPointerException
-        //EntityG g3 = entityF3Dao.createG(f3, EntityG.builder().withName("Entity2").build());
+        //EntityG g3 = entityF3Dao.createG(EntityF3.builder().build(), EntityG.builder().withName("Entity2").build());
         //assertTrue(g3.getName().equals("Entity2"));
 
         EntityF4 f4 = EntityF4.builder().build();
@@ -459,7 +457,7 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
         assertTrue(f4.getH().get(0).getAlwaysUndefined().orElseThrow().equals("Entity"));
 
         // java.lang.NullPointerException
-        //EntityH h4 = entityF4Dao.createH(f4, EntityH.builder().withAlwaysUndefined("Entity").build());
+        //EntityH h4 = entityF4Dao.createH(EntityF4.builder().build(), EntityH.builder().withAlwaysUndefined("Entity").build());
         //assertTrue(h4.getAlwaysUndefined().orElseThrow().equals("Entity"));
     }
 }
