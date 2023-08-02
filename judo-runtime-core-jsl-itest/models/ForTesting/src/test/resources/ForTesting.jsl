@@ -1,0 +1,41 @@
+model ForTesting;
+
+import judo::types;
+
+entity A {
+
+    relation B singleB;
+    @Query
+    relation B queryB <= B!all()!any();
+    @Query
+    relation B queryBParam (String name) <= staticQueryB(name=name);
+    relation B derivedB <= self.queryBParam(name = "B");
+}
+
+entity B {
+    field String name;
+}
+
+query B staticQueryB (String name) <= B!all()!filter(e | e.name == name)!any();
+
+transfer TA (A a);
+
+transfer TB (B b);
+
+entity C {
+    @Query
+    relation D queryDParam (String param) <= staticQueryD(param = param);
+    relation D derivedD <= self.queryDParam(param = "");
+}
+
+query D staticQueryD (String param) <= D!all()!any();
+
+entity D {
+}
+
+transfer TC maps C as c {
+    relation TD derivedD <= c.derivedD;
+}
+
+transfer TD maps D as d {
+}
