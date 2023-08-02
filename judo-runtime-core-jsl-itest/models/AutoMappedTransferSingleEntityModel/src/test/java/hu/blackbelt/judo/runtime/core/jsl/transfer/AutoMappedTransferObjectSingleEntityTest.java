@@ -427,8 +427,7 @@ public class AutoMappedTransferObjectSingleEntityTest extends AbstractJslTest {
         assertEquals(singleRelation.identifier(), autoMappedContainerSingleRelationDerivedEntityDao.querySingleRelation(containerSingleRelationDerivedEntity).orElseThrow().identifier());
         assertEquals(singleRelation.identifier(), autoMappedContainerSingleRelationDerivedEntityDao.querySingleRelationEntityMemberDerived(containerSingleRelationDerivedEntity).orElseThrow().identifier());
         assertEquals(singleRequiredRelation.identifier(), autoMappedContainerSingleRelationDerivedEntityDao.querySingleRelationEntityRequiredMemberDerived(containerSingleRelationDerivedEntity).orElseThrow().identifier());
-        // TODO JNG-5035
-//        assertEquals(singleRelation.identifier(), autoMappedContainerSingleRelationDerivedEntityDao.querySingleRelationEntityQueryMemberDerived(containerSingleRelationDerivedEntity).orElseThrow().identifier());
+        assertEquals(singleRelation.identifier(), autoMappedContainerSingleRelationDerivedEntityDao.querySingleRelationEntityQueryMemberDerived(containerSingleRelationDerivedEntity).orElseThrow().identifier());
 
     }
 

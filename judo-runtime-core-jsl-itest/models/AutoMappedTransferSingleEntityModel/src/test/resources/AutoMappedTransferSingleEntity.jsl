@@ -64,10 +64,10 @@ entity ContainerSingleRelationDerivedEntity {
     relation required ReferenceEntity singleRequiredRelation;
     relation TwoWayReferenceEntity twoWayReferenceEntityRelation opposite-add : twoWayContainerRelationOnDerived;
 
-    relation ReferenceEntity singleRelationEntityExpressionDerived <= referenceEntityWithNameQuery(name ="singleRelation");
+    relation ReferenceEntity singleRelationEntityExpressionDerived <= referenceEntityWithNameQuery(name ="SingleRelation");
     relation ReferenceEntity singleRelationEntityMemberDerived <= self.singleRelation;
     relation ReferenceEntity singleRelationEntityRequiredMemberDerived <= self.singleRequiredRelation;
-    relation ReferenceEntity singleRelationEntityQueryMemberDerived <= self.singleRelationEntityExpressionQuery(name ="singleRelation");
+    relation ReferenceEntity singleRelationEntityQueryMemberDerived <= self.singleRelationEntityExpressionQuery(name ="SingleRelation");
 
     // JNG-5036 auto map generate this methods in sdk
     @Query
