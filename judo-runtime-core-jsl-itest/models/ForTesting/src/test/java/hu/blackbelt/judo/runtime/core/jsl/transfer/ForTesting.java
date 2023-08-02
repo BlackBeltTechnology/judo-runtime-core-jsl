@@ -59,7 +59,6 @@ public class ForTesting extends AbstractJslTest {
 
         assertEquals(td.identifier(), tcDao.queryDerivedD(tc).get().identifier());
 
-
     }
 
     @Inject
@@ -76,8 +75,6 @@ public class ForTesting extends AbstractJslTest {
 
         assertEquals(tb.identifier(), taDao.queryDerivedB(ta).get().identifier());
 
-
     }
-
 
 }

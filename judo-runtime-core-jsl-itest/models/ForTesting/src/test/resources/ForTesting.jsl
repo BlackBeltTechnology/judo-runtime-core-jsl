@@ -3,7 +3,8 @@ model ForTesting;
 import judo::types;
 
 entity A {
-
+    @Query
+    field String queryString <= "Hello";
     relation B singleB;
     @Query
     relation B queryB <= B!all()!any();
