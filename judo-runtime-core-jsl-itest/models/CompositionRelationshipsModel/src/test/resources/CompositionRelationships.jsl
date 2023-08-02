@@ -30,7 +30,7 @@ entity EntityF {
 }
 
 entity EntityG {
-  field required String name = EntityH!any().alwaysUndefined; // C!all() might be needed instead of simply C
+  field required String name = EntityH!any().alwaysUndefined;
 }
 
 entity EntityH {
