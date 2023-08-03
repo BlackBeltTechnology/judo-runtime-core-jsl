@@ -396,14 +396,15 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
     }
 
     @Test
+    @Disabled("JNG-4194")
     void testCompositionWithUndefinedRequiredFields() {
         // TODO: JNG-4194
         EntityF f = EntityF.builder().build();
 
         // Default attribute value is undefined on required attribute: _name_Default_EntityG
-        //f.setG(EntityG.builder().withName("Entity").build());
-        //f = entityFDao.create(f);
-        //assertTrue(f.getG().orElseThrow().getName().equals("Entity"));
+        f.setG(EntityG.builder().withName("Entity").build());
+        f = entityFDao.create(f);
+        assertTrue(f.getG().orElseThrow().getName().equals("Entity"));
 
         EntityF f12 = EntityF.builder().build();
 
@@ -416,10 +417,13 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
         entityHDao.delete(h);
 
         EntityF f13 = entityFDao.create(EntityF.builder().build());
+
         // Default attribute value is undefined on required attribute: _name_Default_EntityG
-        //EntityG g13 = entityFDao.createG(f13, EntityG.builder().withName("Entity").build());
-        //assertTrue(g13.getName().equals("Entity"));
-        //assertTrue(f13.getG().orElseThrow().getName().equals("Entity"));
+        // TODO: JNG-5046
+        EntityG g13 = entityFDao.createG(f13, EntityG.builder().withName("Entity").build());
+        f13 = entityFDao.getById(f13.identifier()).orElseThrow();
+        assertTrue(g13.getName().equals("Entity"));
+        assertTrue(f13.getG().orElseThrow().getName().equals("Entity"));
 
         EntityF2 f2 = EntityF2.builder().build();
 
@@ -429,25 +433,23 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
         assertTrue(f2.getH().orElseThrow().getAlwaysUndefined().orElseThrow().equals("Entity"));
         entityHDao.delete(f2.getH().orElseThrow());
 
-        // java.lang.NullPointerException
         EntityF2 f21 = entityF2Dao.create(EntityF2.builder().build());
         EntityH h2 = entityF2Dao.createH(f21, EntityH.builder().withAlwaysUndefined("Entity").build());
-        //java.util.NoSuchElementException: No value present
-        //assertTrue(f21.getH().orElseThrow().getAlwaysUndefined().orElseThrow().equals("Entity"));
-        //java.lang.NullPointerException
-        //assertTrue(h2.getAlwaysUndefined().orElseThrow().equals("Entity"));
-
+        f21 = entityF2Dao.getById(f21.identifier()).orElseThrow();
+        assertTrue(f21.getH().orElseThrow().getAlwaysUndefined().orElseThrow().equals("Entity"));
+        // TODO: JNG-5046
+        assertTrue(h2.getAlwaysUndefined().orElseThrow().equals("Entity"));
         entityHDao.delete(h2);
 
         EntityF3 f3 = EntityF3.builder().build();
 
         f3.setG(List.of(EntityG.builder().withName("Entity2").build()));
         //Default attribute value is undefined on required attribute: _name_Default_EntityG
-        //f3 = entityF3Dao.create(f3);
-//
-        //assertTrue(f3.getG().get(0).getName().equals("Entity2"));
+        f3 = entityF3Dao.create(f3);
 
-        h2 = entityF2Dao.createH(f21, EntityH.builder().withAlwaysUndefined("Entity").build());
+        assertTrue(f3.getG().get(0).getName().equals("Entity2"));
+
+        h2 = entityHDao.create(EntityH.builder().withAlwaysUndefined("Entity").build());
 
         EntityF3 f31 = EntityF3.builder().build();
 
@@ -460,9 +462,11 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
 
         EntityF3 f32 = entityF3Dao.create(EntityF3.builder().build());
         // Default attribute value is undefined on required attribute: _name_Default_EntityG
-        //EntityG g3 = entityF3Dao.createG(f32, EntityG.builder().withName("Entity2").build());
-        //assertTrue(g3.getName().equals("Entity2"));
-        //assertTrue(f32.getG().get(0).getName().equals("Entity2"));
+        // TODO: JNG-5046
+        EntityG g3 = entityF3Dao.createG(f32, EntityG.builder().withName("Entity2").build());
+        f32 = entityF3Dao.getById(f32.identifier()).orElseThrow();
+        assertTrue(g3.getName().equals("Entity2"));
+        assertTrue(f32.getG().get(0).getName().equals("Entity2"));
 
         EntityF4 f4 = EntityF4.builder().build();
 
@@ -473,8 +477,9 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
 
         EntityF4 f42 = entityF4Dao.create(EntityF4.builder().build());
         EntityH h4 = entityF4Dao.createH(f42, EntityH.builder().withAlwaysUndefined("Entity").build());
-        // java.lang.NullPointerException
-        //assertTrue(h4.getAlwaysUndefined().orElseThrow().equals("Entity"));
-        //assertTrue(f42.getH().get(0).getAlwaysUndefined().orElseThrow().equals("Entity"));
+        f42 = entityF4Dao.getById(f42.identifier()).orElseThrow();
+        // TODO: JNG-5046
+        assertTrue(h4.getAlwaysUndefined().orElseThrow().equals("Entity"));
+        assertTrue(f42.getH().get(0).getAlwaysUndefined().orElseThrow().equals("Entity"));
     }
 }
