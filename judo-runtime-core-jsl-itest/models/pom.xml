@@ -18,6 +18,7 @@
         <module>AssociationRelationshipsModel</module>
         <module>AutoMappedTransferPrimitivesModel</module>
         <module>AutoMappedTransferSingleEntityModel</module>
+        <module>AutoMappedTransferCollectionEntityModel</module>
         <module>CastingFunctionsModel</module>
         <module>CompositionRelationshipsModel</module>
 <!--        <module>ContainerDerivedModel</module> -->
