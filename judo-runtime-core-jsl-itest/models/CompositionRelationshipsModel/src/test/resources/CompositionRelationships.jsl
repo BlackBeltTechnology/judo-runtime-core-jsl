@@ -26,7 +26,7 @@ entity EntityE extends EntityD, EntityC {
 }
 
 entity EntityF {
-  field required EntityG g;
+  field EntityG g;
 }
 
 entity EntityG {
@@ -38,7 +38,7 @@ entity EntityH {
 }
 
 entity EntityF2 {
-  field required EntityH h;
+  field EntityH h;
 }
 
 entity EntityF3 {
