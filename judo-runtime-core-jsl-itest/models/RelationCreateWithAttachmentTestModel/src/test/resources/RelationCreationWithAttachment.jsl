@@ -1,0 +1,18 @@
+model RelationCreationWithAttachment;
+
+import judo::types;
+
+entity A {
+    field B compB;
+    relation B relB;
+    relation B[] relBColl;
+}
+
+entity B {
+    field String name;
+    relation C relC;
+}
+
+entity C {
+    field String name;
+}
