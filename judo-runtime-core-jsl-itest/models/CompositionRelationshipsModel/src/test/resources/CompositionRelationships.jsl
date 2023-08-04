@@ -24,3 +24,27 @@ entity EntityD {
 entity EntityE extends EntityD, EntityC {
     field String stringE;
 }
+
+entity EntityF {
+  field EntityG g;
+}
+
+entity EntityG {
+  field required String name = EntityH!any().alwaysUndefined;
+}
+
+entity EntityH {
+  field String alwaysUndefined;
+}
+
+entity EntityF2 {
+  field EntityH h;
+}
+
+entity EntityF3 {
+  field EntityG[] g;
+}
+
+entity EntityF4 {
+  field EntityH[] h;
+}
