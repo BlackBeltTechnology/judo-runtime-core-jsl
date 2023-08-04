@@ -42,7 +42,7 @@
 
         <judo-tatami-jsl-version>1.1.4.20230731_140452_0724ca35_develop</judo-tatami-jsl-version>
         <judo-runtime-core-version>1.0.6.20230726_222312_1bb16234_develop</judo-runtime-core-version>
-        <judo-psm-generator-sdk-core-version>1.0.0.20230731_140511_7c22d0c5_develop</judo-psm-generator-sdk-core-version>
+        <judo-psm-generator-sdk-core-version>1.0.0.20230804_113702_9e58a5ec_feature_JNG_5049_Add_relation_attachment_builder_for_relation_create</judo-psm-generator-sdk-core-version>
 
 
         <judo-meta-psm-version>1.3.0.20230516_100351_2fb48f5a_develop</judo-meta-psm-version>
