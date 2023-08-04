@@ -1,0 +1,34 @@
+model AutoMappedTransferCollectionEntity;
+
+import judo::types;
+
+entity ReferenceEntity {
+  field String name;
+}
+
+entity CollectionEntity {
+
+    field ReferenceEntity[] compositionCollection;
+    relation ReferenceEntity[] relationCollection;
+    relation ReferenceEntity[] twoWayRelationCollection opposite-add : relationOptional ;
+
+    relation ReferenceEntity[] collectionCompositionEntityExpressionDerived <= referenceEntityWithNameQuery(name ="comp");
+    relation ReferenceEntity[] collectionRelationEntityExpressionDerived <= referenceEntityWithNameQuery(name ="uniRel");
+    relation ReferenceEntity[] collectionTwoWayRelationEntityExpressionDerived <= referenceEntityWithNameQuery(name ="biRel");
+    relation ReferenceEntity[] collectionCompositionEntityMemberDerived <= self.compositionCollection;
+    relation ReferenceEntity[] collectionRelationEntityMemberDerived <= self.relationCollection;
+    relation ReferenceEntity[] collectionTwoWayRelationEntityMemberDerived <= self.twoWayRelationCollection;
+    relation ReferenceEntity[] collectionCompositionEntityQueryMemberDerived <= self.collectionRelationEntityExpressionQuery(name ="comp");
+    relation ReferenceEntity[] collectionRelationEntityQueryMemberDerived <= self.collectionRelationEntityExpressionQuery(name ="uniRel");
+    relation ReferenceEntity[] collectionTwoWayRelationEntityQueryMemberDerived <= self.collectionRelationEntityExpressionQuery(name ="biRel");
+
+    @Query
+    relation ReferenceEntity[] collectionRelationEntityExpressionQuery(String name) <= referenceEntityWithNameQuery(name = name);
+}
+
+transfer TransferReferenceEntity(ReferenceEntity ref);
+
+transfer TransferCollectionEntity(CollectionEntity ent);
+
+query ReferenceEntity[] referenceEntityWithNameQuery(String name) <= ReferenceEntity!all()!filter(e | e.name == name );
+
