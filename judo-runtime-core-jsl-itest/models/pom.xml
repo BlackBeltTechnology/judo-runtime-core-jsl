@@ -58,6 +58,7 @@
         <module>TestStaticQueriesWithDefaultValuesModel</module>
         <module>TransactionManagementModel</module>
         <module>TransferConstructorModel</module>
+        <module>RelationCreateWithAttachmentTestModel</module>
     </modules>
 
     <build>
