@@ -10,6 +10,8 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfercolle
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfercollectionentity.automappedtransfercollectionentity.transferreferenceentity.TransferReferenceEntity;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfercollectionentity.automappedtransfercollectionentity.transferreferenceentity.TransferReferenceEntityDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.AutoMappedTransferCollectionEntityDaoModules;
+import hu.blackbelt.judo.requirement.report.annotation.Requirement;
+import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
 import lombok.extern.slf4j.Slf4j;
 import org.hamcrest.Matcher;
@@ -44,7 +46,31 @@ public class AutoMappedTransferObjectCollectionEntityTest extends AbstractJslTes
     @Inject
     TransferCollectionEntityDao transferCollectionEntityDao;
 
+    /**
+     * This test checks the auto mapped transfer object on multi entity composition fields work well.
+     *
+     * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
+     *
+     * @type Behaviour
+     *
+     * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
+     *
+     * @jslModel AutoMappedTransferCollectionEntity.jsl
+     *
+     */
     @Test
+    @TestCase("AutoMappedTransferWithMultiAggregationVariations")
+    @Requirement(reqs = {
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-007",
+            "REQ-SRV-006"
+    })
     void testAutoMappedTransferWithMultiAggregationVariations() {
 
         TransferCollectionEntity collection = transferCollectionEntityDao.create(
@@ -108,7 +134,34 @@ public class AutoMappedTransferObjectCollectionEntityTest extends AbstractJslTes
 
     }
 
+    /**
+     * This test checks the auto mapped transfer object on multi entity relation work well.
+     *
+     * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
+     *
+     * @type Behaviour
+     *
+     * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
+     *
+     * @jslModel AutoMappedTransferCollectionEntity.jsl
+     *
+     */
     @Test
+    @TestCase("AutoMappedTransferWithMultiAggregationVariations")
+    @Requirement(reqs = {
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-ENT-006",
+            "REQ-SRV-006"
+
+    })
     void testAutoMappedTransferWithMultiAssociationVariations() {
 
         TransferReferenceEntity uniRel1 = transferReferenceEntityDao.create(TransferReferenceEntity.builder().withName("uniRel1").build());
@@ -226,7 +279,37 @@ public class AutoMappedTransferObjectCollectionEntityTest extends AbstractJslTes
 
     }
 
+    /**
+     * This test checks the auto mapped transfer object on multi entity derived members work well.
+     *
+     * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
+     *
+     * @type Behaviour
+     *
+     * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
+     *
+     * @jslModel AutoMappedTransferCollectionEntity.jsl
+     *
+     */
     @Test
+    @TestCase("AutoMappedTransferWithMultiDerivedVariations")
+    @Requirement(reqs = {
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-ENT-006",
+            "REQ-ENT-008",
+            "REQ-ENT-009",
+            "REQ-ENT-0010",
+            "REQ-SRV-006"
+
+    })
     void testAutoMappedTransferWithMultiDerivedVariations() {
 
         TransferReferenceEntity uniRel1 = transferReferenceEntityDao.create(TransferReferenceEntity.builder().withName("uniRel").build());
