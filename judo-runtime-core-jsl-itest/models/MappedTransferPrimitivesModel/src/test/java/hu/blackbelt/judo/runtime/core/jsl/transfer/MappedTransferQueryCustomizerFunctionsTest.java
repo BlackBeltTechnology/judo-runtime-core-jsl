@@ -30,8 +30,6 @@ import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
-import hu.blackbelt.judo.sdk.query.BooleanFilter;
-import hu.blackbelt.judo.sdk.query.EnumerationFilter;
 import hu.blackbelt.judo.sdk.query.StringFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,12 +38,11 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Slf4j
-public class TransferPrimitiveDaoFunctionsTest extends AbstractJslTest {
+public class MappedTransferQueryCustomizerFunctionsTest extends AbstractJslTest {
     @Inject
     TransferOptionalPrimitivesDao transferOptionalPrimitivesDao;
 

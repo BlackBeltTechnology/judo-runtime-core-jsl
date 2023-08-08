@@ -12,3 +12,8 @@ entity List {
     field String name;
     field Item[] items;
 }
+
+entity logEntry {
+    field Timestamp timestamp;
+    field String message;
+}
