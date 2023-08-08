@@ -40,7 +40,7 @@
             javax.resource;version="[1.6,2)"
         </osgi-transaction-import>
 
-        <judo-tatami-jsl-version>1.1.4.20230802_132112_f1bebe66_feature_JNG_5036_Automapped_Transfer_Object_should_not_maps_the_query_members</judo-tatami-jsl-version>
+        <judo-tatami-jsl-version>1.1.4.20230807_112627_50fc1c9e_develop</judo-tatami-jsl-version>
         <judo-runtime-core-version>1.0.6.20230726_222312_1bb16234_develop</judo-runtime-core-version>
         <judo-psm-generator-sdk-core-version>1.0.0.20230804_124609_93523ebd_develop</judo-psm-generator-sdk-core-version>
 
