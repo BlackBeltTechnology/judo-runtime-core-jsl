@@ -1,0 +1,19 @@
+model Paging;
+
+import judo::types;
+
+entity Item {
+    field Integer number;
+    field String topic;
+    field String listName <= self!container(entityType = List).name;
+}
+
+entity List {
+    field String name;
+    field Item[] items;
+}
+
+entity logEntry {
+    field Timestamp timestamp;
+    field String message;
+}

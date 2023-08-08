@@ -60,6 +60,7 @@
         <module>TransactionManagementModel</module>
         <module>TransferConstructorModel</module>
         <module>RelationCreateWithAttachmentTestModel</module>
+        <module>PagingModel</module>
     </modules>
 
     <build>
