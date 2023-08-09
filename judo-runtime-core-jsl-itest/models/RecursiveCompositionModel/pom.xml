@@ -7,10 +7,10 @@
         <version>${revision}</version>
     </parent>
 
-    <artifactId>judo-runtime-core-jsl-itest-model-CompositionRelationshipsModel</artifactId>
+    <artifactId>judo-runtime-core-jsl-itest-model-RecursiveCompositionModel</artifactId>
     <packaging>jar</packaging>
 
-    <name>JUDO Runtime Core :: JUDO Language Specification DSL Integration Tests :: CompositionRelationshipsModel</name>
+    <name>JUDO Runtime Core :: JUDO Language Specification DSL Integration Tests :: RecursiveCompositionModel</name>
 
     <build>
         <plugins>
