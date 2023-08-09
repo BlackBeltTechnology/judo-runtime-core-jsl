@@ -2,49 +2,36 @@ model RecursiveComposition;
 
 type string String min-size:0 max-size:128;
 
-entity EntityA {
-    field String stringA;
-    field EntityC singleConA;
-    field required EntityC singleRequiredConA;
+entity EntityX {
+    field String name;
+    field EntityX x;
+    field EntityX[] xs;
+    field EntityY y;
+    field EntityY[] ys;
 }
 
-entity abstract EntityB {
-    field String stringB;
-    field EntityD[] multipleDonB;
+entity EntityY {
+    field String name;
+    field EntityX yx;
+    field EntityX[] yxs;
 }
 
-entity EntityC extends EntityB {
-    field String stringC;
+transfer EntityXTO (EntityX entityX) {
+    field String name <=> entityX.name;
+    @Embedded
+    relation EntityXTO x <=> entityX.x;
+    @Embedded
+    relation EntityXTO[] xs <=> entityX.xs;
+    @Embedded
+    relation EntityYTO y <=> entityX.y;
+    @Embedded
+    relation EntityYTO[] ys <=> entityX.ys;
 }
 
-entity EntityD {
-    field String stringD;
-}
-
-entity EntityE extends EntityD, EntityC {
-    field String stringE;
-}
-
-entity EntityF {
-  field EntityG g;
-}
-
-entity EntityG {
-  field required String name = EntityH!any().alwaysUndefined;
-}
-
-entity EntityH {
-  field String alwaysUndefined;
-}
-
-entity EntityF2 {
-  field EntityH h;
-}
-
-entity EntityF3 {
-  field EntityG[] g;
-}
-
-entity EntityF4 {
-  field EntityH[] h;
+transfer EntityYTO (EntityY entityY) {
+    field String name <=> entityY.name;
+    @Embedded
+    relation EntityXTO yx <=> entityY.yx;
+    @Embedded
+    relation EntityXTO[] yxs <=> entityY.yxs;
 }
