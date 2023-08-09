@@ -59,6 +59,7 @@
         <module>TestStaticQueriesWithDefaultValuesModel</module>
         <module>TransactionManagementModel</module>
         <module>TransferConstructorModel</module>
+        <module>RecursiveCompositionModel</module>
         <module>RelationCreateWithAttachmentTestModel</module>
     </modules>
 

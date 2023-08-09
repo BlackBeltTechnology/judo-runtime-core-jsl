@@ -1,0 +1,37 @@
+model RecursiveComposition;
+
+type string String min-size:0 max-size:128;
+
+entity EntityX {
+    field String name;
+    field EntityX x;
+    field EntityX[] xs;
+    field EntityY y;
+    field EntityY[] ys;
+}
+
+entity EntityY {
+    field String name;
+    field EntityX yx;
+    field EntityX[] yxs;
+}
+
+transfer TransferXTO (EntityX entityX) {
+    field String name <=> entityX.name;
+    @Embedded
+    relation TransferXTO x <=> entityX.x;
+    @Embedded
+    relation TransferXTO[] xs <=> entityX.xs;
+    @Embedded
+    relation TransferYTO y <=> entityX.y;
+    @Embedded
+    relation TransferYTO[] ys <=> entityX.ys;
+}
+
+transfer TransferYTO (EntityY entityY) {
+    field String name <=> entityY.name;
+    @Embedded
+    relation TransferXTO yx <=> entityY.yx;
+    @Embedded
+    relation TransferXTO[] yxs <=> entityY.yxs;
+}
