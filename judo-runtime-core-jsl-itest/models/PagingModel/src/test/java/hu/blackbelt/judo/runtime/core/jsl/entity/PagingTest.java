@@ -72,7 +72,35 @@ public class PagingTest extends AbstractJslTest {
         return "Paging";
     }
 
+    /**
+     * Testing the limit and offset in bigger data and combine other query customizer methods (filter, order).
+     *
+     * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
+     *
+     * @type Behaviour
+     *
+     * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
+     *
+     * @jslModel Paging.jsl
+     *
+     */
     @Test
+    @TestCase("Windowing")
+    @Requirement(reqs = {
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-008",
+            "REQ-EXPR-001",
+            "REQ-EXPR-003",
+            "REQ-EXPR-006",
+            "REQ-EXPR-021"
+    })
     public void testWindowing() {
 
         Map<Character, ListIdentifier> listIds = new TreeMap<>();
@@ -215,8 +243,9 @@ public class PagingTest extends AbstractJslTest {
 
     }
 
+
     /**
-     * Testing the transfer Dao query limit method variants.
+     * Testing the query customizer execute method with limit and offset parameter variants.
      *
      * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
@@ -230,13 +259,13 @@ public class PagingTest extends AbstractJslTest {
     @Test
     @TestCase("LimitAndOffsetVariations")
     @Requirement(reqs = {
-            "REQ-TYPE-001",
-            "REQ-ENT-001",
-            "REQ-ENT-002",
             "REQ-MDL-001",
             "REQ-MDL-002",
             "REQ-MDL-003",
-            "REQ-SRV-002",
+            "REQ-TYPE-001",
+            "REQ-TYPE-005",
+            "REQ-ENT-001",
+            "REQ-ENT-002"
     })
     public void testLimitAndOffsetVariations() {
 
@@ -338,7 +367,30 @@ public class PagingTest extends AbstractJslTest {
         assertEquals(0, list.size());
     }
 
+    /**
+     * Testing the limit and offset with timestamp type attribute.
+     *
+     * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
+     *
+     * @type Behaviour
+     *
+     * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
+     *
+     * @jslModel Paging.jsl
+     *
+     */
     @Test
+    @TestCase("PaginationByTimestamp")
+    @Requirement(reqs = {
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-TYPE-009",
+            "REQ-ENT-001",
+            "REQ-ENT-002"
+    })
     public void testPaginationByTimestamp() {
 
         LogEntry entry1 = logEntryDao.create(LogEntry.builder().withTimestamp(LocalDateTime.of(LocalDate.of( 2021, 7, 29), LocalTime.of(15, 7, 1, 111_000_000))).withMessage("Message1").build());
