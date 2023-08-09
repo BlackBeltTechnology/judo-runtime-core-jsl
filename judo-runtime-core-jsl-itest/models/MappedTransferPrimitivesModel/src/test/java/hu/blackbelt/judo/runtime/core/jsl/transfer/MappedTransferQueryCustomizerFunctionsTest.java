@@ -24,14 +24,15 @@ import com.google.inject.Inject;
 import com.google.inject.Module;
 import hu.blackbelt.judo.dispatcher.api.FileType;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.enum_.Enum;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferoptionalprimitives.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferoptionalprimitives.TransferOptionalPrimitives;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferoptionalprimitives.TransferOptionalPrimitivesAttribute;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferoptionalprimitives.TransferOptionalPrimitivesDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferoptionalprimitives.TransferOptionalPrimitivesMask;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.MappedTransferPrimitivesDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
-import hu.blackbelt.judo.sdk.query.BooleanFilter;
-import hu.blackbelt.judo.sdk.query.EnumerationFilter;
 import hu.blackbelt.judo.sdk.query.StringFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
@@ -45,7 +46,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Slf4j
-public class TransferPrimitiveDaoFunctionsTest extends AbstractJslTest {
+public class MappedTransferQueryCustomizerFunctionsTest extends AbstractJslTest {
     @Inject
     TransferOptionalPrimitivesDao transferOptionalPrimitivesDao;
 
@@ -323,6 +324,274 @@ public class TransferPrimitiveDaoFunctionsTest extends AbstractJslTest {
         assertOrderByDescending(TransferOptionalPrimitivesAttribute.TIMESTAMP_ATTR, transf1);
         assertOrderByDescending(TransferOptionalPrimitivesAttribute.TIME_ATTR, transf1);
         assertOrderByDescending(TransferOptionalPrimitivesAttribute.ENUM_ATTR, transf1);
+    }
+    
+    @Test
+    @Requirement(reqs = {
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-008",
+            "REQ-SRV-002",
+    })
+    public void testDerivedOrderBy() {
+        assertOrderBy(TransferOptionalPrimitivesAttribute.DERIVED_INTEGER_ATTR, transf2);
+        assertOrderBy(TransferOptionalPrimitivesAttribute.DERIVED_SCALED_ATTR, transf2);
+        assertOrderBy(TransferOptionalPrimitivesAttribute.DERIVED_STRING_ATTR, transf2);
+        assertOrderBy(TransferOptionalPrimitivesAttribute.DERIVED_REGEX_ATTR, transf2);
+        assertOrderBy(TransferOptionalPrimitivesAttribute.DERIVED_BOOL_ATTR, transf2);
+        assertOrderBy(TransferOptionalPrimitivesAttribute.DERIVED_DATE_ATTR, transf2);
+        assertOrderBy(TransferOptionalPrimitivesAttribute.DERIVED_TIMESTAMP_ATTR, transf2);
+        assertOrderBy(TransferOptionalPrimitivesAttribute.DERIVED_TIME_ATTR, transf2);
+        assertOrderBy(TransferOptionalPrimitivesAttribute.DERIVED_ENUM_ATTR, transf2);
+    }
+
+    @Test
+    @Requirement(reqs = {
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-008",
+            "REQ-SRV-002",
+    })
+    public void testDerivedOrderByDescending() {
+        assertOrderByDescending(TransferOptionalPrimitivesAttribute.DERIVED_INTEGER_ATTR, transf1);
+        assertOrderByDescending(TransferOptionalPrimitivesAttribute.DERIVED_SCALED_ATTR, transf1);
+        assertOrderByDescending(TransferOptionalPrimitivesAttribute.DERIVED_STRING_ATTR, transf1);
+        assertOrderByDescending(TransferOptionalPrimitivesAttribute.DERIVED_REGEX_ATTR, transf1);
+        assertOrderByDescending(TransferOptionalPrimitivesAttribute.DERIVED_BOOL_ATTR, transf1);
+        assertOrderByDescending(TransferOptionalPrimitivesAttribute.DERIVED_DATE_ATTR, transf1);
+        assertOrderByDescending(TransferOptionalPrimitivesAttribute.DERIVED_TIMESTAMP_ATTR, transf1);
+        assertOrderByDescending(TransferOptionalPrimitivesAttribute.DERIVED_TIME_ATTR, transf1);
+        assertOrderByDescending(TransferOptionalPrimitivesAttribute.DERIVED_ENUM_ATTR, transf1);
+    }
+
+    @Test
+    @Requirement(reqs = {
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-SRV-002",
+    })
+    public void testMultiPrimitiveOrderBy() {
+        TransferOptionalPrimitives orderBy = transferOptionalPrimitivesDao
+                .query()
+                .orderBy(TransferOptionalPrimitivesAttribute.INTEGER_ATTR)
+                .orderBy(TransferOptionalPrimitivesAttribute.SCALED_ATTR)
+                .orderBy(TransferOptionalPrimitivesAttribute.REGEX_ATTR)
+                .orderBy(TransferOptionalPrimitivesAttribute.BOOL_ATTR)
+                .orderBy(TransferOptionalPrimitivesAttribute.DATE_ATTR)
+                .orderBy(TransferOptionalPrimitivesAttribute.TIMESTAMP_ATTR)
+                .orderBy(TransferOptionalPrimitivesAttribute.TIME_ATTR)
+                .orderBy(TransferOptionalPrimitivesAttribute.ENUM_ATTR)
+                .execute()
+                .get(0);
+
+        assertEquals(transf2.identifier(), orderBy.identifier());
+    }
+
+    @Test
+    @Requirement(reqs = {
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-SRV-002",
+    })
+    public void testMultiPrimitiveOrderByDescending() {
+        TransferOptionalPrimitives orderBy = transferOptionalPrimitivesDao
+                .query()
+                .orderByDescending(TransferOptionalPrimitivesAttribute.INTEGER_ATTR)
+                .orderByDescending(TransferOptionalPrimitivesAttribute.SCALED_ATTR)
+                .orderByDescending(TransferOptionalPrimitivesAttribute.REGEX_ATTR)
+                .orderByDescending(TransferOptionalPrimitivesAttribute.BOOL_ATTR)
+                .orderByDescending(TransferOptionalPrimitivesAttribute.DATE_ATTR)
+                .orderByDescending(TransferOptionalPrimitivesAttribute.TIMESTAMP_ATTR)
+                .orderByDescending(TransferOptionalPrimitivesAttribute.TIME_ATTR)
+                .orderByDescending(TransferOptionalPrimitivesAttribute.ENUM_ATTR)
+                .execute()
+                .get(0);
+
+        assertEquals(transf1.identifier(), orderBy.identifier());
+    }
+
+    @Test
+    @Requirement(reqs = {
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-008",
+            "REQ-SRV-002",
+    })
+    public void testMultiDerivedOrderBy() {
+        TransferOptionalPrimitives orderBy = transferOptionalPrimitivesDao
+                .query()
+                .orderBy(TransferOptionalPrimitivesAttribute.DERIVED_INTEGER_ATTR)
+                .orderBy(TransferOptionalPrimitivesAttribute.DERIVED_SCALED_ATTR)
+                .orderBy(TransferOptionalPrimitivesAttribute.DERIVED_REGEX_ATTR)
+                .orderBy(TransferOptionalPrimitivesAttribute.DERIVED_BOOL_ATTR)
+                .orderBy(TransferOptionalPrimitivesAttribute.DERIVED_DATE_ATTR)
+                .orderBy(TransferOptionalPrimitivesAttribute.DERIVED_TIMESTAMP_ATTR)
+                .orderBy(TransferOptionalPrimitivesAttribute.DERIVED_TIME_ATTR)
+                .orderBy(TransferOptionalPrimitivesAttribute.DERIVED_ENUM_ATTR)
+                .execute()
+                .get(0);
+
+        assertEquals(transf2.identifier(), orderBy.identifier());
+    }
+
+    @Test
+    @Requirement(reqs = {
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-008",
+            "REQ-SRV-002",
+    })
+    public void testMultiDerivedOrderByDescending() {
+        TransferOptionalPrimitives orderBy = transferOptionalPrimitivesDao
+                .query()
+                .orderByDescending(TransferOptionalPrimitivesAttribute.DERIVED_INTEGER_ATTR)
+                .orderByDescending(TransferOptionalPrimitivesAttribute.DERIVED_SCALED_ATTR)
+                .orderByDescending(TransferOptionalPrimitivesAttribute.DERIVED_REGEX_ATTR)
+                .orderByDescending(TransferOptionalPrimitivesAttribute.DERIVED_BOOL_ATTR)
+                .orderByDescending(TransferOptionalPrimitivesAttribute.DERIVED_DATE_ATTR)
+                .orderByDescending(TransferOptionalPrimitivesAttribute.DERIVED_TIMESTAMP_ATTR)
+                .orderByDescending(TransferOptionalPrimitivesAttribute.DERIVED_TIME_ATTR)
+                .orderByDescending(TransferOptionalPrimitivesAttribute.DERIVED_ENUM_ATTR)
+                .execute()
+                .get(0);
+
+        assertEquals(transf1.identifier(), orderBy.identifier());
+    }
+
+    @Test
+    @Requirement(reqs = {
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-008",
+            "REQ-SRV-002",
+    })
+    public void testMultiDerivedAndPrimitiveOrderBy() {
+        TransferOptionalPrimitives orderBy = transferOptionalPrimitivesDao
+                .query()
+                .orderBy(TransferOptionalPrimitivesAttribute.INTEGER_ATTR)
+                .orderBy(TransferOptionalPrimitivesAttribute.DERIVED_SCALED_ATTR)
+                .orderBy(TransferOptionalPrimitivesAttribute.REGEX_ATTR)
+                .orderBy(TransferOptionalPrimitivesAttribute.DERIVED_BOOL_ATTR)
+                .orderBy(TransferOptionalPrimitivesAttribute.DATE_ATTR)
+                .orderBy(TransferOptionalPrimitivesAttribute.DERIVED_TIMESTAMP_ATTR)
+                .orderBy(TransferOptionalPrimitivesAttribute.TIME_ATTR)
+                .orderBy(TransferOptionalPrimitivesAttribute.DERIVED_ENUM_ATTR)
+                .execute()
+                .get(0);
+
+        assertEquals(transf2.identifier(), orderBy.identifier());
+    }
+
+    @Test
+    @Requirement(reqs = {
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-008",
+            "REQ-SRV-002",
+    })
+    public void testMultiDerivedAndPrimitiveOrderByDescending() {
+        TransferOptionalPrimitives orderBy = transferOptionalPrimitivesDao
+                .query()
+                .orderByDescending(TransferOptionalPrimitivesAttribute.INTEGER_ATTR)
+                .orderByDescending(TransferOptionalPrimitivesAttribute.DERIVED_SCALED_ATTR)
+                .orderByDescending(TransferOptionalPrimitivesAttribute.REGEX_ATTR)
+                .orderByDescending(TransferOptionalPrimitivesAttribute.DERIVED_BOOL_ATTR)
+                .orderByDescending(TransferOptionalPrimitivesAttribute.DATE_ATTR)
+                .orderByDescending(TransferOptionalPrimitivesAttribute.DERIVED_TIMESTAMP_ATTR)
+                .orderByDescending(TransferOptionalPrimitivesAttribute.TIME_ATTR)
+                .orderByDescending(TransferOptionalPrimitivesAttribute.DERIVED_ENUM_ATTR)
+                .execute()
+                .get(0);
+
+        assertEquals(transf1.identifier(), orderBy.identifier());
     }
 
     /**
