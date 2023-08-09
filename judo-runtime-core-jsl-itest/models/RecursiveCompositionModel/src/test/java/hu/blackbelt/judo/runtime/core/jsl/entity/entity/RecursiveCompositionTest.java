@@ -98,10 +98,10 @@ public class RecursiveCompositionTest extends AbstractJslTest {
 
         assertEquals("x1", x1.getName().orElseThrow());
         assertEquals("x2", x1.getX().orElseThrow().getName().orElseThrow());
+        assertEquals(1, x1.getXs().stream().count());
         assertEquals("x6", x1.getXs().get(0).getName().orElseThrow());
         assertEquals("y1", x1.getY().orElseThrow().getName().orElseThrow());
-        assertEquals(1, x1.getYs().stream().filter(y -> "y2".equals(y.getName().orElseThrow())).count());
-        assertEquals(1, x1.getYs().stream().filter(y -> "y3".equals(y.getName().orElseThrow())).count());
+        assertEquals(2, x1.getYs().stream().count());
         assertTrue(x1.getYs().stream().anyMatch(y -> "y2".equals(y.getName().orElseThrow())));
         assertTrue(x1.getYs().stream().anyMatch(y -> "y3".equals(y.getName().orElseThrow())));
 
