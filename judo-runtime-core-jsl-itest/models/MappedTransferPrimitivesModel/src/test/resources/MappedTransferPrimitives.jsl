@@ -24,6 +24,17 @@ entity EntityForMapping {
         field Time timeAttr;
         field Enum enumAttr;
         field Binary binaryAttr;
+
+        field Boolean derivedBoolAttr <= self.boolAttr;
+        field Binary derivedBinaryAttr <= self.binaryAttr;
+        field Integer derivedIntegerAttr <= self.integerAttr;
+        field SmallString derivedStringAttr <= self.stringAttr;
+        field PhoneNumber derivedRegexAttr <= self.regexAttr;
+        field Scaled derivedScaledAttr <= self.scaledAttr;
+        field Date derivedDateAttr <= self.dateAttr;
+        field Time derivedTimeAttr <= self.timeAttr;
+        field Timestamp derivedTimestampAttr <= self.timestampAttr;
+        field Enum derivedEnumAttr <= self.enumAttr;
 }
 
 transfer TransferOptionalPrimitives (EntityForMapping mappedEntity) {
@@ -37,6 +48,17 @@ transfer TransferOptionalPrimitives (EntityForMapping mappedEntity) {
     field Time timeAttr <=> mappedEntity.timeAttr;
     field Enum enumAttr <=> mappedEntity.enumAttr;
     field Binary binaryAttr <=> mappedEntity.binaryAttr;
+
+    field Boolean derivedBoolAttr <= mappedEntity.derivedBoolAttr;
+    field Binary derivedBinaryAttr <= mappedEntity.derivedBinaryAttr;
+    field Integer derivedIntegerAttr <= mappedEntity.derivedIntegerAttr;
+    field SmallString derivedStringAttr <= mappedEntity.derivedStringAttr;
+    field PhoneNumber derivedRegexAttr <= mappedEntity.derivedRegexAttr;
+    field Scaled derivedScaledAttr <= mappedEntity.derivedScaledAttr;
+    field Date derivedDateAttr <= mappedEntity.derivedDateAttr;
+    field Time derivedTimeAttr <= mappedEntity.derivedTimeAttr;
+    field Timestamp derivedTimestampAttr <= mappedEntity.derivedTimestampAttr;
+    field Enum derivedEnumAttr <= mappedEntity.derivedEnumAttr;
 }
 
 entity EntityForMappingRequired {

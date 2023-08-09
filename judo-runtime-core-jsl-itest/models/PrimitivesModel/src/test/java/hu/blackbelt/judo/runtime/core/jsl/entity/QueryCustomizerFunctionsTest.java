@@ -201,6 +201,7 @@ public class QueryCustomizerFunctionsTest extends AbstractJslTest {
             "REQ-TYPE-009",
             "REQ-ENT-001",
             "REQ-ENT-002",
+            "REQ-ENT-012",
     })
     public void testOrderBy() {
         assertOrderBy(MyEntityWithOptionalFieldsAttribute.INTEGER_ATTR, entity2);
@@ -229,6 +230,7 @@ public class QueryCustomizerFunctionsTest extends AbstractJslTest {
             "REQ-TYPE-009",
             "REQ-ENT-001",
             "REQ-ENT-002",
+            "REQ-ENT-012",
     })
     public void testOrderByDescending() {
         assertOrderByDescending(MyEntityWithOptionalFieldsAttribute.INTEGER_ATTR, entity1);
@@ -258,6 +260,7 @@ public class QueryCustomizerFunctionsTest extends AbstractJslTest {
             "REQ-ENT-001",
             "REQ-ENT-002",
             "REQ-ENT-008",
+            "REQ-ENT-012",
     })
     public void testDerivedOrderBy() {
         assertOrderBy(MyEntityWithOptionalFieldsAttribute.DERIVED_INTEGER_ATTR, entity2);
@@ -287,6 +290,7 @@ public class QueryCustomizerFunctionsTest extends AbstractJslTest {
             "REQ-ENT-001",
             "REQ-ENT-002",
             "REQ-ENT-008",
+            "REQ-ENT-012",
     })
     public void testDerivedOrderByDescending() {
         assertOrderByDescending(MyEntityWithOptionalFieldsAttribute.DERIVED_INTEGER_ATTR, entity1);
@@ -314,7 +318,8 @@ public class QueryCustomizerFunctionsTest extends AbstractJslTest {
             "REQ-TYPE-008",
             "REQ-TYPE-009",
             "REQ-ENT-001",
-            "REQ-ENT-002"
+            "REQ-ENT-002",
+            "REQ-ENT-012",
     })
     public void testMultiPrimitiveOrderBy() {
         MyEntityWithOptionalFields orderBy = myEntityWithOptionalFieldsDao
@@ -347,7 +352,8 @@ public class QueryCustomizerFunctionsTest extends AbstractJslTest {
             "REQ-TYPE-008",
             "REQ-TYPE-009",
             "REQ-ENT-001",
-            "REQ-ENT-002"
+            "REQ-ENT-002",
+            "REQ-ENT-012",
     })
     public void testMultiPrimitiveOrderByDescending() {
         MyEntityWithOptionalFields orderBy = myEntityWithOptionalFieldsDao
@@ -382,6 +388,7 @@ public class QueryCustomizerFunctionsTest extends AbstractJslTest {
             "REQ-ENT-001",
             "REQ-ENT-002",
             "REQ-ENT-008",
+            "REQ-ENT-012",
     })
     public void testMultiDerivedOrderBy() {
         MyEntityWithOptionalFields orderBy = myEntityWithOptionalFieldsDao
@@ -416,6 +423,7 @@ public class QueryCustomizerFunctionsTest extends AbstractJslTest {
             "REQ-ENT-001",
             "REQ-ENT-002",
             "REQ-ENT-008",
+            "REQ-ENT-012",
     })
     public void testMultiDerivedOrderByDescending() {
         MyEntityWithOptionalFields orderBy = myEntityWithOptionalFieldsDao
@@ -450,6 +458,7 @@ public class QueryCustomizerFunctionsTest extends AbstractJslTest {
             "REQ-ENT-001",
             "REQ-ENT-002",
             "REQ-ENT-008",
+            "REQ-ENT-012",
     })
     public void testMultiDerivedAndPrimitiveOrderBy() {
         MyEntityWithOptionalFields orderBy = myEntityWithOptionalFieldsDao
@@ -484,6 +493,7 @@ public class QueryCustomizerFunctionsTest extends AbstractJslTest {
             "REQ-ENT-001",
             "REQ-ENT-002",
             "REQ-ENT-008",
+            "REQ-ENT-012",
     })
     public void testMultiDerivedAndPrimitiveOrderByDescending() {
         MyEntityWithOptionalFields orderBy = myEntityWithOptionalFieldsDao
