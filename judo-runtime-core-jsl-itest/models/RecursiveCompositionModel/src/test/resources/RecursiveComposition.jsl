@@ -16,22 +16,22 @@ entity EntityY {
     field EntityX[] yxs;
 }
 
-transfer EntityXTO (EntityX entityX) {
+transfer TransferXTO (EntityX entityX) {
     field String name <=> entityX.name;
     @Embedded
-    relation EntityXTO x <=> entityX.x;
+    relation TransferXTO x <=> entityX.x;
     @Embedded
-    relation EntityXTO[] xs <=> entityX.xs;
+    relation TransferXTO[] xs <=> entityX.xs;
     @Embedded
-    relation EntityYTO y <=> entityX.y;
+    relation TransferYTO y <=> entityX.y;
     @Embedded
-    relation EntityYTO[] ys <=> entityX.ys;
+    relation TransferYTO[] ys <=> entityX.ys;
 }
 
-transfer EntityYTO (EntityY entityY) {
+transfer TransferYTO (EntityY entityY) {
     field String name <=> entityY.name;
     @Embedded
-    relation EntityXTO yx <=> entityY.yx;
+    relation TransferXTO yx <=> entityY.yx;
     @Embedded
-    relation EntityXTO[] yxs <=> entityY.yxs;
+    relation TransferXTO[] yxs <=> entityY.yxs;
 }

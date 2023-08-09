@@ -1,4 +1,4 @@
-package hu.blackbelt.judo.runtime.core.jsl.entity;
+package hu.blackbelt.judo.runtime.core.jsl.entity.entity;
 
 /*-
  * #%L
