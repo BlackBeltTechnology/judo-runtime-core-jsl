@@ -30,8 +30,6 @@ import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
-import hu.blackbelt.judo.sdk.query.BooleanFilter;
-import hu.blackbelt.judo.sdk.query.EnumerationFilter;
 import hu.blackbelt.judo.sdk.query.StringFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,12 +38,11 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Slf4j
-public class TransferPrimitiveDaoFunctionsTest extends AbstractJslTest {
+public class MappedTransferQueryCustomizerFunctionsTest extends AbstractJslTest {
     @Inject
     TransferOptionalPrimitivesDao transferOptionalPrimitivesDao;
 
@@ -94,134 +91,6 @@ public class TransferPrimitiveDaoFunctionsTest extends AbstractJslTest {
         return "MappedTransferPrimitives";
     }
 
-
-    /**
-     * Testing the transfer Dao query limit method.
-     *
-     * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
-     *
-     * @type Behaviour
-     *
-     * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
-     *
-     * @jslModel MappedTransferPrimitives.jsl
-     *
-     *
-     * @scenario
-     *
-     *  Create two instance of TransferOptionalPrimitives like transf1,transf2
-     *
-     *  Make a list with the Dao query and use the limit method with parameter 1.
-     *
-     *  Check the list have only one element.
-     *
-     */
-    @Test
-    @TestCase("TransferDaoQueryLimitFunction")
-    @Requirement(reqs = {
-            "REQ-TYPE-001",
-            "REQ-ENT-001",
-            "REQ-ENT-002",
-            "REQ-MDL-001",
-            "REQ-MDL-002",
-            "REQ-MDL-003",
-            "REQ-SRV-002",
-    })
-    public void testLimitAndOffset() {
-        List<TransferOptionalPrimitives> list = transferOptionalPrimitivesDao
-                .query()
-                .orderBy(TransferOptionalPrimitivesAttribute.INTEGER_ATTR)
-                .execute(1);
-
-        assertEquals(1, list.size());
-        assertEquals(transf2.identifier(), list.get(0).identifier());
-
-        list = transferOptionalPrimitivesDao
-                .query()
-                .orderBy(TransferOptionalPrimitivesAttribute.INTEGER_ATTR)
-                .execute(null);
-
-        assertEquals(2, list.size());
-        assertEquals(transf2.identifier(), list.get(0).identifier());
-        assertEquals(transf1.identifier(), list.get(1).identifier());
-
-        list = transferOptionalPrimitivesDao
-                .query()
-                .orderBy(TransferOptionalPrimitivesAttribute.INTEGER_ATTR)
-                .execute(0);
-
-        assertEquals(2, list.size());
-        assertEquals(transf2.identifier(), list.get(0).identifier());
-        assertEquals(transf1.identifier(), list.get(1).identifier());
-
-        list = transferOptionalPrimitivesDao
-                .query()
-                .orderBy(TransferOptionalPrimitivesAttribute.INTEGER_ATTR)
-                .execute(3);
-
-        assertEquals(2, list.size());
-        assertEquals(transf2.identifier(), list.get(0).identifier());
-        assertEquals(transf1.identifier(), list.get(1).identifier());
-
-        list = transferOptionalPrimitivesDao
-                .query()
-                .orderBy(TransferOptionalPrimitivesAttribute.INTEGER_ATTR)
-                .execute(1, null);
-
-        assertEquals(1, list.size());
-        assertEquals(transf2.identifier(), list.get(0).identifier());
-
-        list = transferOptionalPrimitivesDao
-                .query()
-                .orderBy(TransferOptionalPrimitivesAttribute.INTEGER_ATTR)
-                .execute(null, null);
-
-        assertEquals(2, list.size());
-        assertEquals(transf2.identifier(), list.get(0).identifier());
-        assertEquals(transf1.identifier(), list.get(1).identifier());
-
-        list = transferOptionalPrimitivesDao
-                .query()
-                .orderBy(TransferOptionalPrimitivesAttribute.INTEGER_ATTR)
-                .execute(0, null);
-
-        assertEquals(2, list.size());
-        assertEquals(transf2.identifier(), list.get(0).identifier());
-        assertEquals(transf1.identifier(), list.get(1).identifier());
-
-        list = transferOptionalPrimitivesDao
-                .query()
-                .orderBy(TransferOptionalPrimitivesAttribute.INTEGER_ATTR)
-                .execute(3, null);
-
-        assertEquals(2, list.size());
-        assertEquals(transf2.identifier(), list.get(0).identifier());
-        assertEquals(transf1.identifier(), list.get(1).identifier());
-
-        list = transferOptionalPrimitivesDao
-                .query()
-                .orderBy(TransferOptionalPrimitivesAttribute.INTEGER_ATTR)
-                .execute(2, 0);
-
-        assertEquals(2, list.size());
-        assertEquals(transf2.identifier(), list.get(0).identifier());
-        assertEquals(transf1.identifier(), list.get(1).identifier());
-
-        list = transferOptionalPrimitivesDao
-                .query()
-                .orderBy(TransferOptionalPrimitivesAttribute.INTEGER_ATTR)
-                .execute(2, 1);
-
-        assertEquals(1, list.size());
-        assertEquals(transf1.identifier(), list.get(0).identifier());
-
-        list = transferOptionalPrimitivesDao
-                .query()
-                .orderBy(TransferOptionalPrimitivesAttribute.INTEGER_ATTR)
-                .execute(2, 2);
-
-        assertEquals(0, list.size());
-    }
 
     /**
      * Testing the transfer Dao query orderBy method.
