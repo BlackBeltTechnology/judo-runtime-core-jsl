@@ -1,4 +1,4 @@
-package hu.blackbelt.judo.runtime.core.jsl.entity.mappedto;
+package hu.blackbelt.judo.runtime.core.jsl.entity.automappedto;
 
 /*-
  * #%L
@@ -28,16 +28,14 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.re
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.entityy.EntityY;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.entityy.EntityYDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.entityy.EntityYIdentifier;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.transferxto.TransferXTO;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.transferxto.TransferXTODao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.transferyto.TransferYTO;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.transferyto.TransferYTODao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.transferxautomappedto.TransferXAutoMappedTO;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.transferxautomappedto.TransferXAutoMappedTODao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.transferyautomappedto.TransferYAutoMappedTO;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.transferyautomappedto.TransferYAutoMappedTODao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.RecursiveCompositionDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
-import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -48,10 +46,10 @@ import static org.junit.jupiter.api.Assertions.*;
 public class RecursiveCompositionTest extends AbstractJslTest {
 
     @Inject
-    TransferXTODao transferXTODao;
+    TransferXAutoMappedTODao transferXAutoMappedTODao;
 
     @Inject
-    TransferYTODao transferYTODao;
+    TransferYAutoMappedTODao transferYAutoMappedTODao;
 
 
     @Inject
@@ -76,34 +74,34 @@ public class RecursiveCompositionTest extends AbstractJslTest {
             "REQ-ENT-007"
     })
     void testRecursiveCompositionOnMappedTo() {
-        TransferXTO x13 = transferXTODao.create(TransferXTO.builder().withName("x13").build());
-        TransferXTO x11 = transferXTODao.create(TransferXTO.builder().withName("x11").build());
-        TransferXTO x8 = transferXTODao.create(TransferXTO.builder().withName("x8").build());
-        TransferXTO x5 = transferXTODao.create(TransferXTO.builder().withName("x5").build());
-        TransferXTO x3 = transferXTODao.create(TransferXTO.builder().withName("x3").build());
+        TransferXAutoMappedTO x13 = transferXAutoMappedTODao.create(TransferXAutoMappedTO.builder().withName("x13").build());
+        TransferXAutoMappedTO x11 = transferXAutoMappedTODao.create(TransferXAutoMappedTO.builder().withName("x11").build());
+        TransferXAutoMappedTO x8 = transferXAutoMappedTODao.create(TransferXAutoMappedTO.builder().withName("x8").build());
+        TransferXAutoMappedTO x5 = transferXAutoMappedTODao.create(TransferXAutoMappedTO.builder().withName("x5").build());
+        TransferXAutoMappedTO x3 = transferXAutoMappedTODao.create(TransferXAutoMappedTO.builder().withName("x3").build());
 
-        TransferYTO y9 = transferYTODao.create(TransferYTO.builder().withName("y9").build());
-        TransferYTO y7 = transferYTODao.create(TransferYTO.builder().withName("y7").build());
-        TransferYTO y4 = transferYTODao.create(TransferYTO.builder().withName("y4").build());
-        TransferYTO y3 = transferYTODao.create(TransferYTO.builder().withName("y3").build());
-        TransferYTO y2 = transferYTODao.create(TransferYTO.builder().withName("y2").build());
-        TransferYTO y1 = transferYTODao.create(TransferYTO.builder().withName("y1").build());
+        TransferYAutoMappedTO y9 = transferYAutoMappedTODao.create(TransferYAutoMappedTO.builder().withName("y9").build());
+        TransferYAutoMappedTO y7 = transferYAutoMappedTODao.create(TransferYAutoMappedTO.builder().withName("y7").build());
+        TransferYAutoMappedTO y4 = transferYAutoMappedTODao.create(TransferYAutoMappedTO.builder().withName("y4").build());
+        TransferYAutoMappedTO y3 = transferYAutoMappedTODao.create(TransferYAutoMappedTO.builder().withName("y3").build());
+        TransferYAutoMappedTO y2 = transferYAutoMappedTODao.create(TransferYAutoMappedTO.builder().withName("y2").build());
+        TransferYAutoMappedTO y1 = transferYAutoMappedTODao.create(TransferYAutoMappedTO.builder().withName("y1").build());
 
-        TransferYTO y8 = transferYTODao.create(TransferYTO.builder().withName("y8").withYx(x13).build());
-        TransferXTO x12 = transferXTODao.create(TransferXTO.builder().withName("x12").withY(y9).build());
-        TransferXTO x4 = transferXTODao.create(TransferXTO.builder().withName("x4").withY(y4).build());
+        TransferYAutoMappedTO y8 = transferYAutoMappedTODao.create(TransferYAutoMappedTO.builder().withName("y8").withYx(x13).build());
+        TransferXAutoMappedTO x12 = transferXAutoMappedTODao.create(TransferXAutoMappedTO.builder().withName("x12").withY(y9).build());
+        TransferXAutoMappedTO x4 = transferXAutoMappedTODao.create(TransferXAutoMappedTO.builder().withName("x4").withY(y4).build());
 
-        TransferXTO x10 = transferXTODao.create(TransferXTO.builder().withName("x10").withYs(List.of(y7, y8)).build());
-        TransferXTO x2 = transferXTODao.create(TransferXTO.builder().withName("x2").withX(x5).withXs(List.of(x3, x4)).build());
+        TransferXAutoMappedTO x10 = transferXAutoMappedTODao.create(TransferXAutoMappedTO.builder().withName("x10").withYs(List.of(y7, y8)).build());
+        TransferXAutoMappedTO x2 = transferXAutoMappedTODao.create(TransferXAutoMappedTO.builder().withName("x2").withX(x5).withXs(List.of(x3, x4)).build());
 
-        TransferYTO y6 = transferYTODao.create(TransferYTO.builder().withName("y6").withYxs(List.of(x11, x12)).build());
-        TransferYTO y5 = transferYTODao.create(TransferYTO.builder().withName("y5").withYx(x10).build());
+        TransferYAutoMappedTO y6 = transferYAutoMappedTODao.create(TransferYAutoMappedTO.builder().withName("y6").withYxs(List.of(x11, x12)).build());
+        TransferYAutoMappedTO y5 = transferYAutoMappedTODao.create(TransferYAutoMappedTO.builder().withName("y5").withYx(x10).build());
 
-        TransferXTO x9 = transferXTODao.create(TransferXTO.builder().withName("x9").withYs(List.of(y5, y6)).build());
-        TransferXTO x7 = transferXTODao.create(TransferXTO.builder().withName("x7").withXs(List.of(x8, x9)).build());
-        TransferXTO x6 = transferXTODao.create(TransferXTO.builder().withName("x6").withX(x7).build());
+        TransferXAutoMappedTO x9 = transferXAutoMappedTODao.create(TransferXAutoMappedTO.builder().withName("x9").withYs(List.of(y5, y6)).build());
+        TransferXAutoMappedTO x7 = transferXAutoMappedTODao.create(TransferXAutoMappedTO.builder().withName("x7").withXs(List.of(x8, x9)).build());
+        TransferXAutoMappedTO x6 = transferXAutoMappedTODao.create(TransferXAutoMappedTO.builder().withName("x6").withX(x7).build());
 
-        TransferXTO x1 = transferXTODao.create(TransferXTO.builder().withName("x1").withX(x2).withXs(List.of(x6)).withY(y1).withYs(List.of(y2, y3)).build());
+        TransferXAutoMappedTO x1 = transferXAutoMappedTODao.create(TransferXAutoMappedTO.builder().withName("x1").withX(x2).withXs(List.of(x6)).withY(y1).withYs(List.of(y2, y3)).build());
 
         assertEquals("x1", x1.getName().orElseThrow());
         assertEquals("x2", x1.getX().orElseThrow().getName().orElseThrow());
@@ -125,7 +123,7 @@ public class RecursiveCompositionTest extends AbstractJslTest {
         assertTrue(x1EntityX.getYs().stream().anyMatch(y -> "y2".equals(y.getName().orElseThrow())));
         assertTrue(x1EntityX.getYs().stream().anyMatch(y -> "y3".equals(y.getName().orElseThrow())));
 
-        TransferXTO x2Test = x1.getX().orElseThrow();
+        TransferXAutoMappedTO x2Test = x1.getX().orElseThrow();
 
         assertEquals("x5", x2Test.getX().orElseThrow().getName().orElseThrow());
         assertEquals(2, x2Test.getXs().stream().count());
@@ -143,7 +141,7 @@ public class RecursiveCompositionTest extends AbstractJslTest {
         assertFalse(x2EntityX.getY().isPresent());
         assertEquals(0, x2EntityX.getYs().size());
 
-        TransferXTO x6Test = x1.getXs().get(0);
+        TransferXAutoMappedTO x6Test = x1.getXs().get(0);
 
         assertEquals("x7", x6Test.getX().orElseThrow().getName().orElseThrow());
         assertEquals(0, x6Test.getXs().size());
@@ -157,7 +155,7 @@ public class RecursiveCompositionTest extends AbstractJslTest {
         assertFalse(x6EntityX.getY().isPresent());
         assertEquals(0, x6EntityX.getYs().size());
 
-        TransferXTO x4Test = x2Test.getXs().stream().filter(c -> "x4".equals(c.getName().orElseThrow())).findFirst().orElseThrow();
+        TransferXAutoMappedTO x4Test = x2Test.getXs().stream().filter(c -> "x4".equals(c.getName().orElseThrow())).findFirst().orElseThrow();
 
         assertEquals("y4", x4Test.getY().orElseThrow().getName().orElseThrow());
         assertFalse(x4Test.getX().isPresent());
@@ -171,7 +169,7 @@ public class RecursiveCompositionTest extends AbstractJslTest {
         assertEquals(0, x4EntityX.getXs().size());
         assertEquals(0, x4EntityX.getYs().size());
 
-        TransferXTO x7Test = x6Test.getX().orElseThrow();
+        TransferXAutoMappedTO x7Test = x6Test.getX().orElseThrow();
 
         assertEquals(2, x7Test.getXs().stream().count());
         assertTrue(x7Test.getXs().stream().anyMatch(y -> "x8".equals(y.getName().orElseThrow())));
@@ -191,7 +189,7 @@ public class RecursiveCompositionTest extends AbstractJslTest {
         assertFalse(x7EntityX.getY().isPresent());
         assertEquals(0, x7EntityX.getYs().size());
 
-        TransferXTO x9Test = x7.getXs().stream().filter(c -> "x9".equals(c.getName().orElseThrow())).findFirst().orElseThrow();
+        TransferXAutoMappedTO x9Test = x7.getXs().stream().filter(c -> "x9".equals(c.getName().orElseThrow())).findFirst().orElseThrow();
 
         assertEquals(2, x9Test.getYs().stream().count());
         assertTrue(x9Test.getYs().stream().anyMatch(y -> "y5".equals(y.getName().orElseThrow())));
@@ -209,7 +207,7 @@ public class RecursiveCompositionTest extends AbstractJslTest {
         assertFalse(x9EntityX.getY().isPresent());
         assertEquals(0, x9EntityX.getXs().size());
 
-        TransferYTO y5Test = x9Test.getYs().stream().filter(c -> "y5".equals(c.getName().orElseThrow())).findFirst().orElseThrow();
+        TransferYAutoMappedTO y5Test = x9Test.getYs().stream().filter(c -> "y5".equals(c.getName().orElseThrow())).findFirst().orElseThrow();
 
         assertEquals("x10", y5Test.getYx().orElseThrow().getName().orElseThrow());
         assertEquals(0, y5Test.getYxs().size());
@@ -219,7 +217,7 @@ public class RecursiveCompositionTest extends AbstractJslTest {
         assertEquals("x10", y5EntityY.getYx().orElseThrow().getName().orElseThrow());
         assertEquals(0, y5EntityY.getYxs().size());
 
-        TransferYTO y6Test = x9Test.getYs().stream().filter(c -> "y6".equals(c.getName().orElseThrow())).findFirst().orElseThrow();
+        TransferYAutoMappedTO y6Test = x9Test.getYs().stream().filter(c -> "y6".equals(c.getName().orElseThrow())).findFirst().orElseThrow();
 
         assertEquals(2, y6Test.getYxs().stream().count());
         assertTrue(y6Test.getYxs().stream().anyMatch(y -> "x11".equals(y.getName().orElseThrow())));
@@ -233,7 +231,7 @@ public class RecursiveCompositionTest extends AbstractJslTest {
         assertTrue(y6EntityY.getYxs().stream().anyMatch(y -> "x12".equals(y.getName().orElseThrow())));
         assertFalse(y6EntityY.getYx().isPresent());
 
-        TransferXTO x10Test = y5Test.getYx().orElseThrow();
+        TransferXAutoMappedTO x10Test = y5Test.getYx().orElseThrow();
 
         assertEquals(2, x10Test.getYs().stream().count());
         assertTrue(x10Test.getYs().stream().anyMatch(y -> "y7".equals(y.getName().orElseThrow())));
@@ -251,7 +249,7 @@ public class RecursiveCompositionTest extends AbstractJslTest {
         assertFalse(x10EntityX.getY().isPresent());
         assertEquals(0, x10EntityX.getXs().size());
 
-        TransferXTO x12test = y6.getYxs().stream().filter(c -> "x12".equals(c.getName().orElseThrow())).findFirst().orElseThrow();
+        TransferXAutoMappedTO x12test = y6.getYxs().stream().filter(c -> "x12".equals(c.getName().orElseThrow())).findFirst().orElseThrow();
 
         assertEquals("y9", x12test.getY().orElseThrow().getName().orElseThrow());
         assertFalse(x12test.getX().isPresent());

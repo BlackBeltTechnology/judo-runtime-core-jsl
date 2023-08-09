@@ -35,3 +35,7 @@ transfer TransferYTO (EntityY entityY) {
     @Embedded
     relation TransferXTO[] yxs <=> entityY.yxs;
 }
+
+transfer TransferXAutoMappedTO (EntityX entityX);
+
+transfer TransferYAutoMappedTO (EntityY entityY);
