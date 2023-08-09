@@ -35,9 +35,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.re
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.RecursiveCompositionDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
-import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -72,8 +70,16 @@ public class RecursiveCompositionTest extends AbstractJslTest {
 
     @Test
     @Requirement(reqs = {
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
             "REQ-ENT-001",
-            "REQ-ENT-007"
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-SRV-001"
     })
     void testRecursiveCompositionOnMappedTo() {
         TransferXTO x13 = transferXTODao.create(TransferXTO.builder().withName("x13").build());
@@ -176,7 +182,7 @@ public class RecursiveCompositionTest extends AbstractJslTest {
         assertEquals(2, x7Test.getXs().stream().count());
         assertTrue(x7Test.getXs().stream().anyMatch(y -> "x8".equals(y.getName().orElseThrow())));
         assertTrue(x7Test.getXs().stream().anyMatch(y -> "x9".equals(y.getName().orElseThrow())));
-        // It should be Optional.empty, but it is null
+        // TODO: JNG-5089
         //assertFalse(x7Test.getX().isPresent());
         assertFalse(x7Test.getY().isPresent());
         assertEquals(0, x7Test.getYs().size());
@@ -186,7 +192,6 @@ public class RecursiveCompositionTest extends AbstractJslTest {
         assertEquals(2, x7EntityX.getXs().stream().count());
         assertTrue(x7EntityX.getXs().stream().anyMatch(y -> "x8".equals(y.getName().orElseThrow())));
         assertTrue(x7EntityX.getXs().stream().anyMatch(y -> "x9".equals(y.getName().orElseThrow())));
-        // It should be Optional.empty, but it is null
         assertFalse(x7EntityX.getX().isPresent());
         assertFalse(x7EntityX.getY().isPresent());
         assertEquals(0, x7EntityX.getYs().size());
