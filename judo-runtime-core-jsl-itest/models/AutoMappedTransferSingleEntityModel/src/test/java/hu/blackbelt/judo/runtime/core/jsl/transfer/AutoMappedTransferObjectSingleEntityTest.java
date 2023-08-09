@@ -243,7 +243,6 @@ public class AutoMappedTransferObjectSingleEntityTest extends AbstractJslTest {
         singleRelation = autoMappedReferenceEntityDao.update(singleRelation);
         singleRequiredRelation = autoMappedReferenceEntityDao.update(singleRequiredRelation);
         twoWayReferenceEntity = twoWayReferenceEntityDao.update(twoWayReferenceEntity);
-        containerSingleAssociation = autoMappedContainerSingleAssociationDao.update(containerSingleAssociation);
 
         assertEquals(Optional.of("SingleRelationRenamed"), autoMappedContainerSingleAssociationDao.querySingleRelation(containerSingleAssociation).orElseThrow().getName());
         assertEquals(Optional.of("SingleRequiredRelationRenamed"), autoMappedContainerSingleAssociationDao.querySingleRequiredRelation(containerSingleAssociation).getName());

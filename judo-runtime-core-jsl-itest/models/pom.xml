@@ -18,6 +18,7 @@
         <module>AssociationRelationshipsModel</module>
         <module>AutoMappedTransferPrimitivesModel</module>
         <module>AutoMappedTransferSingleEntityModel</module>
+        <module>AutoMappedTransferCollectionEntityModel</module>
         <module>CastingFunctionsModel</module>
         <module>CompositionRelationshipsModel</module>
 <!--        <module>ContainerDerivedModel</module> -->
@@ -59,6 +60,7 @@
         <module>TransactionManagementModel</module>
         <module>TransferConstructorModel</module>
         <module>RecursiveCompositionModel</module>
+        <module>RelationCreateWithAttachmentTestModel</module>
     </modules>
 
     <build>
