@@ -1,0 +1,37 @@
+model Paging;
+
+import judo::types;
+
+entity Item {
+    field Integer number;
+    field String topic;
+    field String listName <= self!container(entityType = List).name;
+}
+
+transfer TransferItem (Item item){
+    field Integer number <=> item.number;
+    field String topic <=> item.topic;
+    field String listName <= item.listName;
+}
+
+
+entity List {
+    field String name;
+    field Item[] items;
+}
+
+transfer TransferList (List list){
+    field String name <=> list.name;
+    @Embedded
+    relation TransferItem[] items <=> list.items;
+}
+
+entity LogEntry {
+    field Timestamp timestamp;
+    field String message;
+}
+
+transfer TransferLogEntry (LogEntry logEntry){
+    field Timestamp timestamp <=> logEntry.timestamp;
+    field String message <=> logEntry.message;
+}
