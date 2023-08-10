@@ -24,6 +24,17 @@ entity abstract AbstractEntityOptionalFields {
     field Time timeAttr;
     field Timestamp timestampAttr;
     field MyEnum enumAttr;
+
+    field Boolean derivedBoolAttr <= self.boolAttr;
+    field Binary derivedBinaryAttr <= self.binaryAttr;
+    field Integer derivedIntegerAttr <= self.integerAttr;
+    field SmallString derivedStringAttr <= self.stringAttr;
+    field PhoneNumber derivedRegexAttr <= self.regexAttr;
+    field Scaled derivedScaledAttr <= self.scaledAttr;
+    field Date derivedDateAttr <= self.dateAttr;
+    field Time derivedTimeAttr <= self.timeAttr;
+    field Timestamp derivedTimestampAttr <= self.timestampAttr;
+    field MyEnum derivedEnumAttr <= self.enumAttr;
 }
 
 entity MyEntityWithOptionalFields extends AbstractEntityOptionalFields {

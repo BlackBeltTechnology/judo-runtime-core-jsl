@@ -29,6 +29,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.m
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.myentitywithoptionalfields.MyEntityWithOptionalFieldsMask;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.myenum.MyEnum;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.PrimitivesDaoModules;
+import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
 import hu.blackbelt.judo.sdk.query.StringFilter;
@@ -92,6 +93,22 @@ public class QueryCustomizerFunctionsTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-012",
+    })
     public void testOrderBy() {
         assertOrderBy(MyEntityWithOptionalFieldsAttribute.INTEGER_ATTR, entity2);
         assertOrderBy(MyEntityWithOptionalFieldsAttribute.SCALED_ATTR, entity2);
@@ -105,6 +122,22 @@ public class QueryCustomizerFunctionsTest extends AbstractJslTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-012",
+    })
     public void testOrderByDescending() {
         assertOrderByDescending(MyEntityWithOptionalFieldsAttribute.INTEGER_ATTR, entity1);
         assertOrderByDescending(MyEntityWithOptionalFieldsAttribute.SCALED_ATTR, entity1);
@@ -115,6 +148,274 @@ public class QueryCustomizerFunctionsTest extends AbstractJslTest {
         assertOrderByDescending(MyEntityWithOptionalFieldsAttribute.TIMESTAMP_ATTR, entity1);
         assertOrderByDescending(MyEntityWithOptionalFieldsAttribute.TIME_ATTR, entity1);
         assertOrderByDescending(MyEntityWithOptionalFieldsAttribute.ENUM_ATTR, entity1);
+    }
+
+    @Test
+    @Requirement(reqs = {
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-008",
+            "REQ-ENT-012",
+    })
+    public void testDerivedOrderBy() {
+        assertOrderBy(MyEntityWithOptionalFieldsAttribute.DERIVED_INTEGER_ATTR, entity2);
+        assertOrderBy(MyEntityWithOptionalFieldsAttribute.DERIVED_SCALED_ATTR, entity2);
+        assertOrderBy(MyEntityWithOptionalFieldsAttribute.DERIVED_STRING_ATTR, entity2);
+        assertOrderBy(MyEntityWithOptionalFieldsAttribute.DERIVED_REGEX_ATTR, entity2);
+        assertOrderBy(MyEntityWithOptionalFieldsAttribute.DERIVED_BOOL_ATTR, entity2);
+        assertOrderBy(MyEntityWithOptionalFieldsAttribute.DERIVED_DATE_ATTR, entity2);
+        assertOrderBy(MyEntityWithOptionalFieldsAttribute.DERIVED_TIMESTAMP_ATTR, entity2);
+        assertOrderBy(MyEntityWithOptionalFieldsAttribute.DERIVED_TIME_ATTR, entity2);
+        assertOrderBy(MyEntityWithOptionalFieldsAttribute.DERIVED_ENUM_ATTR, entity2);
+    }
+
+    @Test
+    @Requirement(reqs = {
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-008",
+            "REQ-ENT-012",
+    })
+    public void testDerivedOrderByDescending() {
+        assertOrderByDescending(MyEntityWithOptionalFieldsAttribute.DERIVED_INTEGER_ATTR, entity1);
+        assertOrderByDescending(MyEntityWithOptionalFieldsAttribute.DERIVED_SCALED_ATTR, entity1);
+        assertOrderByDescending(MyEntityWithOptionalFieldsAttribute.DERIVED_STRING_ATTR, entity1);
+        assertOrderByDescending(MyEntityWithOptionalFieldsAttribute.DERIVED_REGEX_ATTR, entity1);
+        assertOrderByDescending(MyEntityWithOptionalFieldsAttribute.DERIVED_BOOL_ATTR, entity1);
+        assertOrderByDescending(MyEntityWithOptionalFieldsAttribute.DERIVED_DATE_ATTR, entity1);
+        assertOrderByDescending(MyEntityWithOptionalFieldsAttribute.DERIVED_TIMESTAMP_ATTR, entity1);
+        assertOrderByDescending(MyEntityWithOptionalFieldsAttribute.DERIVED_TIME_ATTR, entity1);
+        assertOrderByDescending(MyEntityWithOptionalFieldsAttribute.DERIVED_ENUM_ATTR, entity1);
+    }
+
+    @Test
+    @Requirement(reqs = {
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-012",
+    })
+    public void testMultiPrimitiveOrderBy() {
+        MyEntityWithOptionalFields orderBy = myEntityWithOptionalFieldsDao
+                .query()
+                .orderBy(MyEntityWithOptionalFieldsAttribute.INTEGER_ATTR)
+                .orderBy(MyEntityWithOptionalFieldsAttribute.SCALED_ATTR)
+                .orderBy(MyEntityWithOptionalFieldsAttribute.REGEX_ATTR)
+                .orderBy(MyEntityWithOptionalFieldsAttribute.BOOL_ATTR)
+                .orderBy(MyEntityWithOptionalFieldsAttribute.DATE_ATTR)
+                .orderBy(MyEntityWithOptionalFieldsAttribute.TIMESTAMP_ATTR)
+                .orderBy(MyEntityWithOptionalFieldsAttribute.TIME_ATTR)
+                .orderBy(MyEntityWithOptionalFieldsAttribute.ENUM_ATTR)
+                .execute()
+                .get(0);
+
+        assertEquals(entity2.identifier(), orderBy.identifier());
+    }
+
+    @Test
+    @Requirement(reqs = {
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-012",
+    })
+    public void testMultiPrimitiveOrderByDescending() {
+        MyEntityWithOptionalFields orderBy = myEntityWithOptionalFieldsDao
+                .query()
+                .orderByDescending(MyEntityWithOptionalFieldsAttribute.INTEGER_ATTR)
+                .orderByDescending(MyEntityWithOptionalFieldsAttribute.SCALED_ATTR)
+                .orderByDescending(MyEntityWithOptionalFieldsAttribute.REGEX_ATTR)
+                .orderByDescending(MyEntityWithOptionalFieldsAttribute.BOOL_ATTR)
+                .orderByDescending(MyEntityWithOptionalFieldsAttribute.DATE_ATTR)
+                .orderByDescending(MyEntityWithOptionalFieldsAttribute.TIMESTAMP_ATTR)
+                .orderByDescending(MyEntityWithOptionalFieldsAttribute.TIME_ATTR)
+                .orderByDescending(MyEntityWithOptionalFieldsAttribute.ENUM_ATTR)
+                .execute()
+                .get(0);
+
+        assertEquals(entity1.identifier(), orderBy.identifier());
+    }
+
+    @Test
+    @Requirement(reqs = {
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-008",
+            "REQ-ENT-012",
+    })
+    public void testMultiDerivedOrderBy() {
+        MyEntityWithOptionalFields orderBy = myEntityWithOptionalFieldsDao
+                .query()
+                .orderBy(MyEntityWithOptionalFieldsAttribute.DERIVED_INTEGER_ATTR)
+                .orderBy(MyEntityWithOptionalFieldsAttribute.DERIVED_SCALED_ATTR)
+                .orderBy(MyEntityWithOptionalFieldsAttribute.DERIVED_REGEX_ATTR)
+                .orderBy(MyEntityWithOptionalFieldsAttribute.DERIVED_BOOL_ATTR)
+                .orderBy(MyEntityWithOptionalFieldsAttribute.DERIVED_DATE_ATTR)
+                .orderBy(MyEntityWithOptionalFieldsAttribute.DERIVED_TIMESTAMP_ATTR)
+                .orderBy(MyEntityWithOptionalFieldsAttribute.DERIVED_TIME_ATTR)
+                .orderBy(MyEntityWithOptionalFieldsAttribute.DERIVED_ENUM_ATTR)
+                .execute()
+                .get(0);
+
+        assertEquals(entity2.identifier(), orderBy.identifier());
+    }
+
+    @Test
+    @Requirement(reqs = {
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-008",
+            "REQ-ENT-012",
+    })
+    public void testMultiDerivedOrderByDescending() {
+        MyEntityWithOptionalFields orderBy = myEntityWithOptionalFieldsDao
+                .query()
+                .orderByDescending(MyEntityWithOptionalFieldsAttribute.DERIVED_INTEGER_ATTR)
+                .orderByDescending(MyEntityWithOptionalFieldsAttribute.DERIVED_SCALED_ATTR)
+                .orderByDescending(MyEntityWithOptionalFieldsAttribute.DERIVED_REGEX_ATTR)
+                .orderByDescending(MyEntityWithOptionalFieldsAttribute.DERIVED_BOOL_ATTR)
+                .orderByDescending(MyEntityWithOptionalFieldsAttribute.DERIVED_DATE_ATTR)
+                .orderByDescending(MyEntityWithOptionalFieldsAttribute.DERIVED_TIMESTAMP_ATTR)
+                .orderByDescending(MyEntityWithOptionalFieldsAttribute.DERIVED_TIME_ATTR)
+                .orderByDescending(MyEntityWithOptionalFieldsAttribute.DERIVED_ENUM_ATTR)
+                .execute()
+                .get(0);
+
+        assertEquals(entity1.identifier(), orderBy.identifier());
+    }
+
+    @Test
+    @Requirement(reqs = {
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-008",
+            "REQ-ENT-012",
+    })
+    public void testMultiDerivedAndPrimitiveOrderBy() {
+        MyEntityWithOptionalFields orderBy = myEntityWithOptionalFieldsDao
+                .query()
+                .orderBy(MyEntityWithOptionalFieldsAttribute.INTEGER_ATTR)
+                .orderBy(MyEntityWithOptionalFieldsAttribute.DERIVED_SCALED_ATTR)
+                .orderBy(MyEntityWithOptionalFieldsAttribute.REGEX_ATTR)
+                .orderBy(MyEntityWithOptionalFieldsAttribute.DERIVED_BOOL_ATTR)
+                .orderBy(MyEntityWithOptionalFieldsAttribute.DATE_ATTR)
+                .orderBy(MyEntityWithOptionalFieldsAttribute.DERIVED_TIMESTAMP_ATTR)
+                .orderBy(MyEntityWithOptionalFieldsAttribute.TIME_ATTR)
+                .orderBy(MyEntityWithOptionalFieldsAttribute.DERIVED_ENUM_ATTR)
+                .execute()
+                .get(0);
+
+        assertEquals(entity2.identifier(), orderBy.identifier());
+    }
+
+    @Test
+    @Requirement(reqs = {
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-008",
+            "REQ-ENT-012",
+    })
+    public void testMultiDerivedAndPrimitiveOrderByDescending() {
+        MyEntityWithOptionalFields orderBy = myEntityWithOptionalFieldsDao
+                .query()
+                .orderByDescending(MyEntityWithOptionalFieldsAttribute.INTEGER_ATTR)
+                .orderByDescending(MyEntityWithOptionalFieldsAttribute.DERIVED_SCALED_ATTR)
+                .orderByDescending(MyEntityWithOptionalFieldsAttribute.REGEX_ATTR)
+                .orderByDescending(MyEntityWithOptionalFieldsAttribute.DERIVED_BOOL_ATTR)
+                .orderByDescending(MyEntityWithOptionalFieldsAttribute.DATE_ATTR)
+                .orderByDescending(MyEntityWithOptionalFieldsAttribute.DERIVED_TIMESTAMP_ATTR)
+                .orderByDescending(MyEntityWithOptionalFieldsAttribute.TIME_ATTR)
+                .orderByDescending(MyEntityWithOptionalFieldsAttribute.DERIVED_ENUM_ATTR)
+                .execute()
+                .get(0);
+
+        assertEquals(entity1.identifier(), orderBy.identifier());
     }
 
     @Test
