@@ -39,3 +39,38 @@ transfer TransferYTO (EntityY entityY) {
 transfer TransferXAutoMappedTO (EntityX entityX);
 
 transfer TransferYAutoMappedTO (EntityY entityY);
+
+entity EntityA {
+    field String name;
+    field EntityA a;
+    field EntityA[] as;
+}
+
+entity EntityB extends EntityA {
+    field EntityA ba;
+    field EntityA[] bas;
+}
+
+transfer TransferATO (EntityA entityA) {
+    field String name <=> entityA.name;
+    @Embedded
+    relation TransferATO a <=> entityA.a;
+    @Embedded
+    relation TransferATO[] as <=> entityA.as;
+}
+
+transfer TransferBTO (EntityB entityB) {
+    field String name <=> entityB.name;
+    @Embedded
+    relation TransferATO a <=> entityB.a;
+    @Embedded
+    relation TransferATO[] as <=> entityB.as;
+    @Embedded
+    relation TransferATO ba <=> entityB.ba;
+    @Embedded
+    relation TransferATO[] bas <=> entityB.bas;
+}
+
+transfer TransferAAutoMappedTO (EntityA entityA);
+
+transfer TransferBAutoMappedTO (EntityB entityB);

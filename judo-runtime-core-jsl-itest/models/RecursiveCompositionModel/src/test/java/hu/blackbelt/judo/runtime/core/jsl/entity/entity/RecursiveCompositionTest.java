@@ -22,6 +22,10 @@ package hu.blackbelt.judo.runtime.core.jsl.entity.entity;
 
 import com.google.inject.Inject;
 import com.google.inject.Module;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.entitya.EntityA;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.entitya.EntityADao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.entityb.EntityB;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.entityb.EntityBDao;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
 import lombok.extern.slf4j.Slf4j;
@@ -42,6 +46,12 @@ public class RecursiveCompositionTest extends AbstractJslTest {
 
     @Inject
     EntityYDao entityYDao;
+
+    @Inject
+    EntityADao entityADao;
+
+    @Inject
+    EntityBDao entityBDao;
 
     @Override
     public Module getModelDaoModule() {
@@ -173,5 +183,56 @@ public class RecursiveCompositionTest extends AbstractJslTest {
         assertFalse(x12test.getX().isPresent());
         assertEquals(0, x12test.getXs().size());
         assertEquals(0, x12test.getYs().size());
+    }
+
+    @Test
+    @Requirement(reqs = {
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-SRV-001"
+    })
+    void testRecursiveCompositionOnInheritedEntity() {
+        EntityA a4 = entityADao.create(EntityA.builder().withName("a4").build());
+        EntityA a5 = entityADao.create(EntityA.builder().withName("a5").build());
+        EntityA a6 = entityADao.create(EntityA.builder().withName("a6").build());
+        EntityA a1 = entityADao.create(EntityA.builder().withName("a1").withA(a4).withAs(List.of(a5, a6)).build());
+        EntityA a2 = entityADao.create(EntityA.builder().withName("a2").withA(a5).build());
+        EntityA a3 = entityADao.create(EntityA.builder().withName("a3").withAs(List.of(a5, a6)).build());
+
+        EntityB b1 = entityBDao.create(EntityB.builder().withName("b1").withBa(a1).withBas(List.of(a2, a3)).build());
+
+        assertEquals("b1", b1.getName().orElseThrow());
+        assertEquals("a1", b1.getBa().orElseThrow().getName().orElseThrow());
+        assertEquals(2, b1.getBas().size());
+        assertTrue(b1.getBas().stream().anyMatch(c -> "a2".equals(c.getName().orElseThrow())));
+        assertTrue(b1.getBas().stream().anyMatch(c -> "a3".equals(c.getName().orElseThrow())));
+        assertFalse(b1.getA().isPresent());
+        assertEquals(0, b1.getAs().size());
+
+        EntityA a1Test = b1.getBa().orElseThrow();
+
+        assertEquals("a4", a1Test.getA().orElseThrow().getName().orElseThrow());
+        //assertEquals(2, a1Test.getAs().size());
+        //assertTrue(a1Test.getAs().stream().anyMatch(c -> "a5".equals(c.getName().orElseThrow())));
+        //assertTrue(a1Test.getAs().stream().anyMatch(c -> "a6".equals(c.getName().orElseThrow())));
+
+        EntityA a2Test = b1.getBas().stream().filter(c -> "a2".equals(c.getName().orElseThrow())).findFirst().orElseThrow();
+
+        assertEquals("a5", a2Test.getA().orElseThrow().getName().orElseThrow());
+
+        EntityA a3Test = b1.getBas().stream().filter(c -> "a3".equals(c.getName().orElseThrow())).findFirst().orElseThrow();
+
+        assertEquals(2, a3Test.getAs().size());
+        assertTrue(a3Test.getAs().stream().anyMatch(c -> "a5".equals(c.getName().orElseThrow())));
+        assertTrue(a3Test.getAs().stream().anyMatch(c -> "a6".equals(c.getName().orElseThrow())));
+
+
     }
 }

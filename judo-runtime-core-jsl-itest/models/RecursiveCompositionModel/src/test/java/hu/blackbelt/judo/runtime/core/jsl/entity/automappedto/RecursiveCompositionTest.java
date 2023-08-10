@@ -22,12 +22,22 @@ package hu.blackbelt.judo.runtime.core.jsl.entity.automappedto;
 
 import com.google.inject.Inject;
 import com.google.inject.Module;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.entitya.EntityA;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.entitya.EntityADao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.entitya.EntityAIdentifier;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.entityb.EntityB;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.entityb.EntityBDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.entityb.EntityBIdentifier;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.entityx.EntityX;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.entityx.EntityXDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.entityx.EntityXIdentifier;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.entityy.EntityY;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.entityy.EntityYDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.entityy.EntityYIdentifier;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.transferaautomappedto.TransferAAutoMappedTO;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.transferaautomappedto.TransferAAutoMappedTODao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.transferbautomappedto.TransferBAutoMappedTO;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.transferbautomappedto.TransferBAutoMappedTODao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.transferxautomappedto.TransferXAutoMappedTO;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.transferxautomappedto.TransferXAutoMappedTODao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.transferyautomappedto.TransferYAutoMappedTO;
@@ -51,12 +61,23 @@ public class RecursiveCompositionTest extends AbstractJslTest {
     @Inject
     TransferYAutoMappedTODao transferYAutoMappedTODao;
 
-
     @Inject
     EntityXDao entityXDao;
 
     @Inject
     EntityYDao entityYDao;
+
+    @Inject
+    TransferAAutoMappedTODao transferAAutoMappedTODao;
+
+    @Inject
+    TransferBAutoMappedTODao transferBAutoMappedTODao;
+    
+    @Inject
+    EntityADao entityADao;
+
+    @Inject
+    EntityBDao entityBDao;
 
     @Override
     public Module getModelDaoModule() {
@@ -269,5 +290,81 @@ public class RecursiveCompositionTest extends AbstractJslTest {
         assertFalse(x12EntityX.getX().isPresent());
         assertEquals(0, x12EntityX.getXs().size());
         assertEquals(0, x12EntityX.getYs().size());
+    }
+
+    @Test
+    @Requirement(reqs = {
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-SRV-001"
+    })
+    void testRecursiveCompositionOnInheritedEntity() {
+        TransferAAutoMappedTO a4 = transferAAutoMappedTODao.create(TransferAAutoMappedTO.builder().withName("a4").build());
+        TransferAAutoMappedTO a5 = transferAAutoMappedTODao.create(TransferAAutoMappedTO.builder().withName("a5").build());
+        TransferAAutoMappedTO a6 = transferAAutoMappedTODao.create(TransferAAutoMappedTO.builder().withName("a6").build());
+        TransferAAutoMappedTO a1 = transferAAutoMappedTODao.create(TransferAAutoMappedTO.builder().withName("a1").withA(a4).withAs(List.of(a5, a6)).build());
+        TransferAAutoMappedTO a2 = transferAAutoMappedTODao.create(TransferAAutoMappedTO.builder().withName("a2").withA(a5).build());
+        TransferAAutoMappedTO a3 = transferAAutoMappedTODao.create(TransferAAutoMappedTO.builder().withName("a3").withAs(List.of(a5, a6)).build());
+
+        TransferBAutoMappedTO b1 = transferBAutoMappedTODao.create(TransferBAutoMappedTO.builder().withName("b1").withBa(a1).withBas(List.of(a2, a3)).build());
+
+        assertEquals("b1", b1.getName().orElseThrow());
+        assertEquals("a1", b1.getBa().orElseThrow().getName().orElseThrow());
+        assertEquals(2, b1.getBas().size());
+        assertTrue(b1.getBas().stream().anyMatch(c -> "a2".equals(c.getName().orElseThrow())));
+        assertTrue(b1.getBas().stream().anyMatch(c -> "a3".equals(c.getName().orElseThrow())));
+        assertFalse(b1.getA().isPresent());
+        assertEquals(0, b1.getAs().size());
+
+        EntityB a1TransferBTO = entityBDao.getById(b1.adaptTo(EntityBIdentifier.class)).orElseThrow();
+
+        assertEquals("b1", a1TransferBTO.getName().orElseThrow());
+        assertEquals("a1", a1TransferBTO.getBa().orElseThrow().getName().orElseThrow());
+        assertEquals(2, a1TransferBTO.getBas().size());
+        assertTrue(a1TransferBTO.getBas().stream().anyMatch(c -> "a2".equals(c.getName().orElseThrow())));
+        assertTrue(a1TransferBTO.getBas().stream().anyMatch(c -> "a3".equals(c.getName().orElseThrow())));
+        assertFalse(a1TransferBTO.getA().isPresent());
+        assertEquals(0, a1TransferBTO.getAs().size());
+
+        TransferAAutoMappedTO a1Test = b1.getBa().orElseThrow();
+
+        assertEquals("a4", a1Test.getA().orElseThrow().getName().orElseThrow());
+        //assertEquals(2, a1Test.getAs().size());
+        //assertTrue(a1Test.getAs().stream().anyMatch(c -> "a5".equals(c.getName().orElseThrow())));
+        //assertTrue(a1Test.getAs().stream().anyMatch(c -> "a6".equals(c.getName().orElseThrow())));
+
+        EntityA a1TransferAAutoMappedTO = entityADao.getById(a1Test.adaptTo(EntityAIdentifier.class)).orElseThrow();
+
+        assertEquals("a4", a1TransferAAutoMappedTO.getA().orElseThrow().getName().orElseThrow());
+        //assertEquals(2, a1TransferAAutoMappedTO.getAs().size());
+        //assertTrue(a1TransferAAutoMappedTO.getAs().stream().anyMatch(c -> "a5".equals(c.getName().orElseThrow())));
+        //assertTrue(a1TransferAAutoMappedTO.getAs().stream().anyMatch(c -> "a6".equals(c.getName().orElseThrow())));
+
+        TransferAAutoMappedTO a2Test = b1.getBas().stream().filter(c -> "a2".equals(c.getName().orElseThrow())).findFirst().orElseThrow();
+
+        assertEquals("a5", a2Test.getA().orElseThrow().getName().orElseThrow());
+
+        EntityA a2TransferAAutoMappedTO = entityADao.getById(a2Test.adaptTo(EntityAIdentifier.class)).orElseThrow();
+
+        assertEquals("a5", a2TransferAAutoMappedTO.getA().orElseThrow().getName().orElseThrow());
+
+        TransferAAutoMappedTO a3Test = b1.getBas().stream().filter(c -> "a3".equals(c.getName().orElseThrow())).findFirst().orElseThrow();
+
+        assertEquals(2, a3Test.getAs().size());
+        assertTrue(a3Test.getAs().stream().anyMatch(c -> "a5".equals(c.getName().orElseThrow())));
+        assertTrue(a3Test.getAs().stream().anyMatch(c -> "a6".equals(c.getName().orElseThrow())));
+
+        EntityA a3TransferAAutoMappedTO = entityADao.getById(a3Test.adaptTo(EntityAIdentifier.class)).orElseThrow();
+
+        assertEquals(2, a3TransferAAutoMappedTO.getAs().size());
+        assertTrue(a3TransferAAutoMappedTO.getAs().stream().anyMatch(c -> "a5".equals(c.getName().orElseThrow())));
+        assertTrue(a3TransferAAutoMappedTO.getAs().stream().anyMatch(c -> "a6".equals(c.getName().orElseThrow())));
     }
 }
