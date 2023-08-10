@@ -219,6 +219,7 @@ public class RecursiveCompositionTest extends AbstractJslTest {
         EntityA a1Test = b1.getBa().orElseThrow();
 
         assertEquals("a4", a1Test.getA().orElseThrow().getName().orElseThrow());
+        // TODO: JNG-5091
         //assertEquals(2, a1Test.getAs().size());
         //assertTrue(a1Test.getAs().stream().anyMatch(c -> "a5".equals(c.getName().orElseThrow())));
         //assertTrue(a1Test.getAs().stream().anyMatch(c -> "a6".equals(c.getName().orElseThrow())));
