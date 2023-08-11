@@ -134,10 +134,10 @@ public class RecursiveCompositionTest extends AbstractJslTest {
 
         assertEquals("x1", x1.getName().orElseThrow());
         assertEquals("x2", x1.getX().orElseThrow().getName().orElseThrow());
-        assertEquals(1, x1.getXs().stream().count());
+        assertEquals(1, x1.getXs().size());
         assertEquals("x6", x1.getXs().get(0).getName().orElseThrow());
         assertEquals("y1", x1.getY().orElseThrow().getName().orElseThrow());
-        assertEquals(2, x1.getYs().stream().count());
+        assertEquals(2, x1.getYs().size());
         assertTrue(x1.getYs().stream().anyMatch(y -> "y2".equals(y.getName().orElseThrow())));
         assertTrue(x1.getYs().stream().anyMatch(y -> "y3".equals(y.getName().orElseThrow())));
 
@@ -145,17 +145,17 @@ public class RecursiveCompositionTest extends AbstractJslTest {
 
         assertEquals("x1", x1EntityX.getName().orElseThrow());
         assertEquals("x2", x1EntityX.getX().orElseThrow().getName().orElseThrow());
-        assertEquals(1, x1EntityX.getXs().stream().count());
+        assertEquals(1, x1EntityX.getXs().size());
         assertEquals("x6", x1EntityX.getXs().get(0).getName().orElseThrow());
         assertEquals("y1", x1EntityX.getY().orElseThrow().getName().orElseThrow());
-        assertEquals(2, x1EntityX.getYs().stream().count());
+        assertEquals(2, x1EntityX.getYs().size());
         assertTrue(x1EntityX.getYs().stream().anyMatch(y -> "y2".equals(y.getName().orElseThrow())));
         assertTrue(x1EntityX.getYs().stream().anyMatch(y -> "y3".equals(y.getName().orElseThrow())));
 
         TransferXAutoMappedTO x2Test = x1.getX().orElseThrow();
 
         assertEquals("x5", x2Test.getX().orElseThrow().getName().orElseThrow());
-        assertEquals(2, x2Test.getXs().stream().count());
+        assertEquals(2, x2Test.getXs().size());
         assertTrue(x2Test.getXs().stream().anyMatch(y -> "x3".equals(y.getName().orElseThrow())));
         assertTrue(x2Test.getXs().stream().anyMatch(y -> "x4".equals(y.getName().orElseThrow())));
         assertFalse(x2Test.getY().isPresent());
@@ -164,7 +164,7 @@ public class RecursiveCompositionTest extends AbstractJslTest {
         EntityX x2EntityX = entityXDao.getById(x2Test.adaptTo(EntityXIdentifier.class)).orElseThrow();
 
         assertEquals("x5", x2EntityX.getX().orElseThrow().getName().orElseThrow());
-        assertEquals(2, x2EntityX.getXs().stream().count());
+        assertEquals(2, x2EntityX.getXs().size());
         assertTrue(x2EntityX.getXs().stream().anyMatch(y -> "x3".equals(y.getName().orElseThrow())));
         assertTrue(x2EntityX.getXs().stream().anyMatch(y -> "x4".equals(y.getName().orElseThrow())));
         assertFalse(x2EntityX.getY().isPresent());
@@ -200,7 +200,7 @@ public class RecursiveCompositionTest extends AbstractJslTest {
 
         TransferXAutoMappedTO x7Test = x6Test.getX().orElseThrow();
 
-        assertEquals(2, x7Test.getXs().stream().count());
+        assertEquals(2, x7Test.getXs().size());
         assertTrue(x7Test.getXs().stream().anyMatch(y -> "x8".equals(y.getName().orElseThrow())));
         assertTrue(x7Test.getXs().stream().anyMatch(y -> "x9".equals(y.getName().orElseThrow())));
         // TODO: JNG-5089
@@ -210,7 +210,7 @@ public class RecursiveCompositionTest extends AbstractJslTest {
 
         EntityX x7EntityX = entityXDao.getById(x7Test.adaptTo(EntityXIdentifier.class)).orElseThrow();
 
-        assertEquals(2, x7EntityX.getXs().stream().count());
+        assertEquals(2, x7EntityX.getXs().size());
         assertTrue(x7EntityX.getXs().stream().anyMatch(y -> "x8".equals(y.getName().orElseThrow())));
         assertTrue(x7EntityX.getXs().stream().anyMatch(y -> "x9".equals(y.getName().orElseThrow())));
         assertFalse(x7EntityX.getX().isPresent());
@@ -219,7 +219,7 @@ public class RecursiveCompositionTest extends AbstractJslTest {
 
         TransferXAutoMappedTO x9Test = x7.getXs().stream().filter(c -> "x9".equals(c.getName().orElseThrow())).findFirst().orElseThrow();
 
-        assertEquals(2, x9Test.getYs().stream().count());
+        assertEquals(2, x9Test.getYs().size());
         assertTrue(x9Test.getYs().stream().anyMatch(y -> "y5".equals(y.getName().orElseThrow())));
         assertTrue(x9Test.getYs().stream().anyMatch(y -> "y6".equals(y.getName().orElseThrow())));
         assertFalse(x9Test.getX().isPresent());
@@ -228,7 +228,7 @@ public class RecursiveCompositionTest extends AbstractJslTest {
 
         EntityX x9EntityX = entityXDao.getById(x9Test.adaptTo(EntityXIdentifier.class)).orElseThrow();
 
-        assertEquals(2, x9EntityX.getYs().stream().count());
+        assertEquals(2, x9EntityX.getYs().size());
         assertTrue(x9EntityX.getYs().stream().anyMatch(y -> "y5".equals(y.getName().orElseThrow())));
         assertTrue(x9EntityX.getYs().stream().anyMatch(y -> "y6".equals(y.getName().orElseThrow())));
         assertFalse(x9EntityX.getX().isPresent());
@@ -247,21 +247,21 @@ public class RecursiveCompositionTest extends AbstractJslTest {
 
         TransferYAutoMappedTO y6Test = x9Test.getYs().stream().filter(c -> "y6".equals(c.getName().orElseThrow())).findFirst().orElseThrow();
 
-        assertEquals(2, y6Test.getYxs().stream().count());
+        assertEquals(2, y6Test.getYxs().size());
         assertTrue(y6Test.getYxs().stream().anyMatch(y -> "x11".equals(y.getName().orElseThrow())));
         assertTrue(y6Test.getYxs().stream().anyMatch(y -> "x12".equals(y.getName().orElseThrow())));
         assertFalse(y6Test.getYx().isPresent());
 
         EntityY y6EntityY = entityYDao.getById(y6Test.adaptTo(EntityYIdentifier.class)).orElseThrow();
 
-        assertEquals(2, y6EntityY.getYxs().stream().count());
+        assertEquals(2, y6EntityY.getYxs().size());
         assertTrue(y6EntityY.getYxs().stream().anyMatch(y -> "x11".equals(y.getName().orElseThrow())));
         assertTrue(y6EntityY.getYxs().stream().anyMatch(y -> "x12".equals(y.getName().orElseThrow())));
         assertFalse(y6EntityY.getYx().isPresent());
 
         TransferXAutoMappedTO x10Test = y5Test.getYx().orElseThrow();
 
-        assertEquals(2, x10Test.getYs().stream().count());
+        assertEquals(2, x10Test.getYs().size());
         assertTrue(x10Test.getYs().stream().anyMatch(y -> "y7".equals(y.getName().orElseThrow())));
         assertTrue(x10Test.getYs().stream().anyMatch(y -> "y8".equals(y.getName().orElseThrow())));
         assertFalse(x10Test.getX().isPresent());
@@ -270,7 +270,7 @@ public class RecursiveCompositionTest extends AbstractJslTest {
 
         EntityX x10EntityX = entityXDao.getById(x10Test.adaptTo(EntityXIdentifier.class)).orElseThrow();
 
-        assertEquals(2, x10EntityX.getYs().stream().count());
+        assertEquals(2, x10EntityX.getYs().size());
         assertTrue(x10EntityX.getYs().stream().anyMatch(y -> "y7".equals(y.getName().orElseThrow())));
         assertTrue(x10EntityX.getYs().stream().anyMatch(y -> "y8".equals(y.getName().orElseThrow())));
         assertFalse(x10EntityX.getX().isPresent());
