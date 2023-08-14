@@ -21,3 +21,19 @@ entity D {
     relation A containerA1 <= self!container(entityType = A);
     relation B containerB <= self!container(entityType = B);
 }
+
+// Transaction model
+
+entity Partner {
+  field ServicePrice[] servicePrices;
+}
+entity ServicePrice {}
+
+entity StockTransaction {
+  field AdditionalService[] additionalServices;
+  relation required Partner client;
+}
+
+entity AdditionalService {
+  relation ServicePrice[] servicePrice <= self!container(entityType = StockTransaction).client.servicePrices;
+}

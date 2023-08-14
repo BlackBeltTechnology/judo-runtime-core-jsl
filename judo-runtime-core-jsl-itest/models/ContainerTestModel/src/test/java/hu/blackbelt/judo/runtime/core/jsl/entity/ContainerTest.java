@@ -23,17 +23,29 @@ package hu.blackbelt.judo.runtime.core.jsl.entity;
 import com.google.inject.Inject;
 import com.google.inject.Module;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.a.A;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.additionalservice.AdditionalService;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.additionalservice.AdditionalServiceDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.b.B;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.b.BDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.c.C;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.c.CDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.d.D;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.d.DDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.partner.Partner;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.partner.PartnerDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.serviceprice.ServicePrice;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.serviceprice.ServicePriceDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.stocktransaction.StockTransaction;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.stocktransaction.StockTransactionAttachedRelationsForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.stocktransaction.StockTransactionDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.ContainerTestDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
+import liquibase.pro.packaged.P;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -43,6 +55,18 @@ public class ContainerTest extends AbstractJslTest {
     @Inject BDao bDao;
     @Inject CDao cDao;
     @Inject DDao dDao;
+
+    @Inject
+    PartnerDao partnerDao;
+
+    @Inject
+    ServicePriceDao servicePriceDao;
+
+    @Inject
+    StockTransactionDao stockTransactionDao;
+
+    @Inject
+    AdditionalServiceDao additionalServiceDao;
 
     @Override
     public Module getModelDaoModule() {
@@ -79,6 +103,7 @@ public class ContainerTest extends AbstractJslTest {
                            .withDonB(D.builder().build())
                            .build());
         C c = b.getConA();
+
         A cA = cDao.queryContainerA(c).orElseThrow();
         B cB = cDao.queryContainerB(c).orElseThrow();
         B cB1 = cDao.queryContainerB1(c).orElseThrow();
@@ -97,6 +122,32 @@ public class ContainerTest extends AbstractJslTest {
         assertEquals(b1.identifier().getIdentifier(), dA.identifier().getIdentifier());
         assertEquals(b1.identifier().getIdentifier(), dA1.identifier().getIdentifier());
         assertEquals(b1.identifier().getIdentifier(), dB.identifier().getIdentifier());
+    }
+
+    @Test
+    public void testContainerFunctionWithNavigation() {
+
+        Partner partner = partnerDao.create(Partner
+                    .builder()
+                    .withServicePrices(List.of(
+                        ServicePrice.builder().build(),
+                        ServicePrice.builder().build(),
+                        ServicePrice.builder().build()
+                    ))
+                    .build()
+        );
+        StockTransaction stockTransaction = stockTransactionDao.create(
+          StockTransaction
+                  .builder()
+                  .withAdditionalServices(List.of(
+                          AdditionalService
+                                  .builder()
+                                  .build()
+                  ))
+                  .build()
+                , StockTransactionAttachedRelationsForCreate.builder().withClient(partner).build()
+        );
+        assertEquals(3, additionalServiceDao.queryServicePrice(stockTransaction.getAdditionalServices().get(0)).count());
     }
 
 }
