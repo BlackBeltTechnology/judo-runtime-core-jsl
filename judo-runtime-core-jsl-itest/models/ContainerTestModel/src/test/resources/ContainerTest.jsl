@@ -21,3 +21,38 @@ entity D {
     relation A containerA1 <= self!container(entityType = A);
     relation B containerB <= self!container(entityType = B);
 }
+
+// Transaction model
+
+entity Partner {
+  field ServicePrice[] servicePrices;
+}
+entity ServicePrice {}
+
+entity StockTransaction {
+  field AdditionalService[] additionalServices;
+  relation required Partner client;
+}
+
+entity AdditionalService {
+  relation ServicePrice servicePrice;
+  relation ServicePrice[] servicePriceDerived <= self!container(entityType = StockTransaction).client.servicePrices;
+}
+
+transfer TPartner (Partner p) {
+    @Embedded
+    relation TServicePrice[] servicePrices <=> p.servicePrices;
+}
+
+transfer TServicePrice (ServicePrice s) {
+}
+
+transfer TStockTransaction (StockTransaction s) {
+  @Embedded
+  relation TAdditionalService[] additionalServices <=> s.additionalServices;
+  relation required TPartner client <=> s.client;
+}
+
+transfer TAdditionalService (AdditionalService a) {
+  relation TServicePrice servicePrice <=> a.servicePrice choices : a.servicePriceDerived;
+}
