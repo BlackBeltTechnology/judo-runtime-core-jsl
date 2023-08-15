@@ -38,6 +38,15 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.container
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.stocktransaction.StockTransaction;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.stocktransaction.StockTransactionAttachedRelationsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.stocktransaction.StockTransactionDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.tadditionalservice.TAdditionalService;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.tadditionalservice.TAdditionalServiceDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.tpartner.TPartner;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.tpartner.TPartnerDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.tserviceprice.TServicePrice;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.tserviceprice.TServicePriceDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.tstocktransaction.TStockTransaction;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.tstocktransaction.TStockTransactionAttachedRelationsForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.tstocktransaction.TStockTransactionDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.ContainerTestDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
@@ -48,6 +57,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Slf4j
 public class ContainerTest extends AbstractJslTest {
@@ -57,13 +67,16 @@ public class ContainerTest extends AbstractJslTest {
     @Inject DDao dDao;
 
     @Inject
-    PartnerDao partnerDao;
+    TPartnerDao tpartnerDao;
 
     @Inject
-    ServicePriceDao servicePriceDao;
+    TServicePriceDao tservicePriceDao;
 
     @Inject
-    StockTransactionDao stockTransactionDao;
+    TStockTransactionDao tstockTransactionDao;
+
+    @Inject
+    TAdditionalServiceDao tadditionalServiceDao;
 
     @Inject
     AdditionalServiceDao additionalServiceDao;
@@ -125,29 +138,45 @@ public class ContainerTest extends AbstractJslTest {
     }
 
     @Test
-    public void testContainerFunctionWithNavigation() {
+    public void testTransferContainerFunctionWithRange() {
 
-        Partner partner = partnerDao.create(Partner
+        TServicePrice outOfPrice = tservicePriceDao.create(TServicePrice.builder().build());
+
+        TPartner partner = tpartnerDao.create(TPartner
                     .builder()
                     .withServicePrices(List.of(
-                        ServicePrice.builder().build(),
-                        ServicePrice.builder().build(),
-                        ServicePrice.builder().build()
+                        TServicePrice.builder().build(),
+                        TServicePrice.builder().build(),
+                        TServicePrice.builder().build()
                     ))
                     .build()
         );
-        StockTransaction stockTransaction = stockTransactionDao.create(
-          StockTransaction
+        TStockTransaction stockTransaction = tstockTransactionDao.create(
+          TStockTransaction
                   .builder()
                   .withAdditionalServices(List.of(
-                          AdditionalService
+                          TAdditionalService
                                   .builder()
                                   .build()
                   ))
                   .build()
-                , StockTransactionAttachedRelationsForCreate.builder().withClient(partner).build()
+                , TStockTransactionAttachedRelationsForCreate.builder().withClient(partner).build()
         );
-        assertEquals(3, additionalServiceDao.queryServicePrice(stockTransaction.getAdditionalServices().get(0)).count());
+
+        AdditionalService additionalService = additionalServiceDao.getAll().get(0);
+        assertEquals(3,additionalServiceDao.queryServicePriceDerived(additionalService).count());
+
+        TAdditionalService tadditionalService = tadditionalServiceDao.getAll().get(0);
+        tadditionalServiceDao.setServicePrice(tadditionalService, partner.getServicePrices().get(0));
+
+        assertTrue(tadditionalServiceDao.queryServicePrice(tadditionalService).isPresent());
+
+        assertEquals(partner.getServicePrices().get(0).identifier(), tadditionalServiceDao.queryServicePrice(tadditionalService).get().identifier());
+
+        tadditionalServiceDao.setServicePrice(tadditionalService, outOfPrice);
+
+        assertEquals(outOfPrice.identifier(), tadditionalServiceDao.queryServicePrice(tadditionalService).get().identifier());
+
     }
 
 }
