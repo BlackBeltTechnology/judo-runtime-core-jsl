@@ -1,0 +1,18 @@
+model Testing;
+
+type string String min-size:0 max-size:255;
+
+entity AP {
+    field B compB;
+}
+
+entity A extends AP {
+    relation B relB;
+}
+
+entity B {
+    relation B containerARelC <= self!container(entityType = A).relB;
+}
+
+
+

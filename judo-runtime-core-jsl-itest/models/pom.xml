@@ -61,6 +61,7 @@
         <module>TransferConstructorModel</module>
         <module>RelationCreateWithAttachmentTestModel</module>
         <module>PagingModel</module>
+        <module>ForTestingModel</module>
     </modules>
 
     <build>
