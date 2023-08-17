@@ -7,10 +7,10 @@
         <version>${revision}</version>
     </parent>
 
-    <artifactId>judo-runtime-core-jsl-itest-model-CastingFunctionsModel</artifactId>
+    <artifactId>judo-runtime-core-jsl-itest-model-EntityRelationshipsModel</artifactId>
     <packaging>jar</packaging>
 
-    <name>JUDO Runtime Core :: JUDO Language Specification DSL Integration Tests :: CastingFunctionsModel</name>
+    <name>JUDO Runtime Core :: JUDO Language Specification DSL Integration Tests :: EntityRelationshipsModel</name>
 
     <build>
         <plugins>
@@ -26,16 +26,29 @@
                 <version>${judo-meta-psm-version}</version>
                 <executions>
                     <execution>
-                        <id>execute-psm-test-model-from-artifact-CastingFunctionsModel</id>
+                        <id>execute-psm-test-model-from-artifact-AssociationRelationshipsModel</id>
                         <phase>generate-test-sources</phase>
                         <goals>
                             <goal>generate</goal>
                         </goals>
                         <configuration>
                             <psm>
-                                ${basedir}/target/generated-test-sources/model/CastingFunctions-psm.model
+                                ${basedir}/target/generated-test-sources/model/AssociationRelationships-psm.model
                             </psm>
-                            <destination>${basedir}/target/generated-test-sources/sdk-core/CastingFunctions</destination>
+                            <destination>${basedir}/target/generated-test-sources/sdk-core/AssociationRelationships</destination>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-CompositionRelationships</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/CompositionRelationships-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/sdk-core/CompositionRelationships</destination>
                         </configuration>
                     </execution>
                 </executions>
@@ -53,12 +66,14 @@
                         </goals>
                         <configuration>
                             <sources>
-                                <source>${project.basedir}/target/generated-test-sources/sdk-core/CastingFunctions</source>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/AssociationRelationships</source>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/CompositionRelationships</source>
                             </sources>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
+
         </plugins>
     </build>
 </project>
