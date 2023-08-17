@@ -23,26 +23,26 @@ package hu.blackbelt.judo.runtime.core.jsl.transfer;
 import com.google.inject.Inject;
 import com.google.inject.Module;
 import hu.blackbelt.judo.dispatcher.api.FileType;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfilter.mappedtransferfilter.continent.Continent;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfilter.mappedtransferfilter.myenum.MyEnum;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfilter.mappedtransferfilter.transfercar.TransferCar;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfilter.mappedtransferfilter.transfercar.TransferCarAttachedRelationsForCreate;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfilter.mappedtransferfilter.transfercar.TransferCarDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfilter.mappedtransferfilter.transfercity.TransferCity;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfilter.mappedtransferfilter.transfercity.TransferCityAttachedRelationsForCreate;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfilter.mappedtransferfilter.transfercity.TransferCityDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfilter.mappedtransferfilter.transfercountry.TransferCountry;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfilter.mappedtransferfilter.transfercountry.TransferCountryDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfilter.mappedtransferfilter.transferfilterentity.TransferFilterEntity;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfilter.mappedtransferfilter.transferfilterentity.TransferFilterEntityDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfilter.mappedtransferfilter.transfermyentitywithoptionalfields.TransferMyEntityWithOptionalFields;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfilter.mappedtransferfilter.transfermyentitywithoptionalfields.TransferMyEntityWithOptionalFieldsDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfilter.mappedtransferfilter.transferperson.TransferPerson;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfilter.mappedtransferfilter.transferperson.TransferPersonAttachedRelationsForCreate;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfilter.mappedtransferfilter.transferperson.TransferPersonDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfilter.mappedtransferfilter.transfertester.TransferTester;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfilter.mappedtransferfilter.transfertester.TransferTesterDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.MappedTransferFilterDaoModules;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.continent.Continent;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.myenum.MyEnum;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transfercar.TransferCar;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transfercar.TransferCarAttachedRelationsForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transfercar.TransferCarDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transfercity.TransferCity;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transfercity.TransferCityAttachedRelationsForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transfercity.TransferCityDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transfercountry.TransferCountry;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transfercountry.TransferCountryDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transferfilterentity.TransferFilterEntity;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transferfilterentity.TransferFilterEntityDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transfermyentitywithoptionalfields.TransferMyEntityWithOptionalFields;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transfermyentitywithoptionalfields.TransferMyEntityWithOptionalFieldsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transferperson.TransferPerson;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transferperson.TransferPersonAttachedRelationsForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transferperson.TransferPersonDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transfertester.TransferTester;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transfertester.TransferTesterDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.FilterDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
@@ -150,12 +150,12 @@ public class MappedTransferFiltersTest extends AbstractJslTest {
 
     @Override
     public Module getModelDaoModule() {
-        return new MappedTransferFilterDaoModules();
+        return new FilterDaoModules();
     }
 
     @Override
     public String getModelName() {
-        return "MappedTransferFilter";
+        return "Filter";
     }
 
     @Test
