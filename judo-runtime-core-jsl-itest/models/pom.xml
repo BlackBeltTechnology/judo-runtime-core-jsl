@@ -32,7 +32,6 @@
         <module>MappedTransferAssociationAssociationModel</module>
         <module>MappedTransferCompositonAggregationModel</module>
         <module>MappedTransferCompositonAssociationModel</module>
-        <module>MappedTransferFunctionsModels</module>
         <module>MappedTransferNavigationTestModel</module>
         <module>MappedTransferOperatorAndFunctionOfEnumTestModel</module>
         <module>MappedTransferOperatorsModel</module>

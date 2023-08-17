@@ -23,54 +23,52 @@ package hu.blackbelt.judo.runtime.core.jsl.transfer;
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
 import com.google.inject.Module;
-
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfunctions.mappedtransferfunctions.booler.Booler;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfunctions.mappedtransferfunctions.transferanytypefunctions.TransferAnyTypeFunctions;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfunctions.mappedtransferfunctions.transferanytypefunctions.TransferAnyTypeFunctionsDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfunctions.mappedtransferfunctions.transferbooleanfunctions.TransferBooleanFunctions;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfunctions.mappedtransferfunctions.transferbooleanfunctions.TransferBooleanFunctionsDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfunctions.mappedtransferfunctions.transferbooler.TransferBooler;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfunctions.mappedtransferfunctions.transferbooler.TransferBoolerDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfunctions.mappedtransferfunctions.transferboolertester.TransferBoolerTester;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfunctions.mappedtransferfunctions.transferboolertester.TransferBoolerTesterDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfunctions.mappedtransferfunctions.transferchild.TransferChild;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfunctions.mappedtransferfunctions.transferchild.TransferChildDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfunctions.mappedtransferfunctions.transfercollectionfunctions.TransferCollectionFunctions;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfunctions.mappedtransferfunctions.transfercollectionfunctions.TransferCollectionFunctionsAttachedRelationsForCreate;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfunctions.mappedtransferfunctions.transfercollectionfunctions.TransferCollectionFunctionsDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfunctions.mappedtransferfunctions.transferdatefunctions.TransferDateFunctions;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfunctions.mappedtransferfunctions.transferdatefunctions.TransferDateFunctionsDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfunctions.mappedtransferfunctions.transferentity.TransferEntity;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfunctions.mappedtransferfunctions.transferentity.TransferEntityDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfunctions.mappedtransferfunctions.transferentitywithprimitivedefaults.TransferEntityWithPrimitiveDefaults;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfunctions.mappedtransferfunctions.transferentitywithprimitivedefaults.TransferEntityWithPrimitiveDefaultsDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfunctions.mappedtransferfunctions.transferenumfunctions.TransferEnumFunctions;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfunctions.mappedtransferfunctions.transferenumfunctions.TransferEnumFunctionsDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfunctions.mappedtransferfunctions.transferinstancefunctions.TransferInstanceFunctions;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfunctions.mappedtransferfunctions.transferinstancefunctions.TransferInstanceFunctionsDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfunctions.mappedtransferfunctions.transferkleene.TransferKleene;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfunctions.mappedtransferfunctions.transferkleene.TransferKleeneDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfunctions.mappedtransferfunctions.transfermember.TransferMember;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfunctions.mappedtransferfunctions.transfermember.TransferMemberDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfunctions.mappedtransferfunctions.transfernumericfunctions.TransferNumericFunctions;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfunctions.mappedtransferfunctions.transfernumericfunctions.TransferNumericFunctionsDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfunctions.mappedtransferfunctions.transferparent.TransferParent;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfunctions.mappedtransferfunctions.transferparent.TransferParentDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfunctions.mappedtransferfunctions.transferparent.TransferParentIdentifier;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfunctions.mappedtransferfunctions.transfersimple.TransferSimple;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfunctions.mappedtransferfunctions.transfersimple.TransferSimpleDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfunctions.mappedtransferfunctions.transferstringfunctions.TransferStringFunctions;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfunctions.mappedtransferfunctions.transferstringfunctions.TransferStringFunctionsDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfunctions.mappedtransferfunctions.transfertester.TransferTester;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfunctions.mappedtransferfunctions.transfertester.TransferTesterAttachedRelationsForCreate;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfunctions.mappedtransferfunctions.transfertester.TransferTesterDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfunctions.mappedtransferfunctions.transfertimefunctions.TransferTimeFunctions;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfunctions.mappedtransferfunctions.transfertimefunctions.TransferTimeFunctionsDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfunctions.mappedtransferfunctions.transfertimestampasstring.TransferTimestampAsString;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfunctions.mappedtransferfunctions.transfertimestampasstring.TransferTimestampAsStringDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfunctions.mappedtransferfunctions.transfertimestampfunctions.TransferTimestampFunctions;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferfunctions.mappedtransferfunctions.transfertimestampfunctions.TransferTimestampFunctionsDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.MappedTransferFunctionsDaoModules;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferanytypefunctions.TransferAnyTypeFunctions;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferanytypefunctions.TransferAnyTypeFunctionsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferbooleanfunctions.TransferBooleanFunctions;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferbooleanfunctions.TransferBooleanFunctionsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferbooler.TransferBooler;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferbooler.TransferBoolerDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferboolertester.TransferBoolerTester;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferboolertester.TransferBoolerTesterDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferchild.TransferChild;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferchild.TransferChildDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transfercollectionfunctions.TransferCollectionFunctions;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transfercollectionfunctions.TransferCollectionFunctionsAttachedRelationsForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transfercollectionfunctions.TransferCollectionFunctionsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferdatefunctions.TransferDateFunctions;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferdatefunctions.TransferDateFunctionsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferentity.TransferEntity;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferentity.TransferEntityDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferentitywithprimitivedefaults.TransferEntityWithPrimitiveDefaults;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferentitywithprimitivedefaults.TransferEntityWithPrimitiveDefaultsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferenumfunctions.TransferEnumFunctions;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferenumfunctions.TransferEnumFunctionsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferinstancefunctions.TransferInstanceFunctions;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferinstancefunctions.TransferInstanceFunctionsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferkleene.TransferKleene;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferkleene.TransferKleeneDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transfermember.TransferMember;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transfermember.TransferMemberDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transfernumericfunctions.TransferNumericFunctions;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transfernumericfunctions.TransferNumericFunctionsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferparent.TransferParent;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferparent.TransferParentDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferparent.TransferParentIdentifier;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transfersimple.TransferSimple;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transfersimple.TransferSimpleDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferstringfunctions.TransferStringFunctions;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferstringfunctions.TransferStringFunctionsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transfertester.TransferTester;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transfertester.TransferTesterAttachedRelationsForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transfertester.TransferTesterDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transfertimefunctions.TransferTimeFunctions;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transfertimefunctions.TransferTimeFunctionsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transfertimestampasstring.TransferTimestampAsString;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transfertimestampasstring.TransferTimestampAsStringDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transfertimestampfunctions.TransferTimestampFunctions;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transfertimestampfunctions.TransferTimestampFunctionsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.FunctionsDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
@@ -169,12 +167,12 @@ public class MappedTransferFunctionsTest extends AbstractJslTest {
 
     @Override
     public Module getModelDaoModule() {
-        return  new MappedTransferFunctionsDaoModules();
+        return  new FunctionsDaoModules();
     }
 
     @Override
     public String getModelName() {
-        return "MappedTransferFunctions";
+        return "Functions";
     }
 
     @Test
