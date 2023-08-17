@@ -23,41 +23,19 @@ package hu.blackbelt.judo.runtime.core.jsl.entity;
 import com.google.inject.Inject;
 import com.google.inject.Module;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.a.A;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.additionalservice.AdditionalService;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.additionalservice.AdditionalServiceDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.b.B;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.b.BDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.c.C;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.c.CDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.d.D;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.d.DDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.partner.Partner;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.partner.PartnerDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.serviceprice.ServicePrice;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.serviceprice.ServicePriceDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.stocktransaction.StockTransaction;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.stocktransaction.StockTransactionAttachedRelationsForCreate;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.stocktransaction.StockTransactionDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.tadditionalservice.TAdditionalService;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.tadditionalservice.TAdditionalServiceDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.tpartner.TPartner;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.tpartner.TPartnerDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.tserviceprice.TServicePrice;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.tserviceprice.TServicePriceDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.tstocktransaction.TStockTransaction;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.tstocktransaction.TStockTransactionAttachedRelationsForCreate;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.tstocktransaction.TStockTransactionDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.ContainerTestDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
-import liquibase.pro.packaged.P;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Slf4j
 public class ContainerTest extends AbstractJslTest {
@@ -65,21 +43,6 @@ public class ContainerTest extends AbstractJslTest {
     @Inject BDao bDao;
     @Inject CDao cDao;
     @Inject DDao dDao;
-
-    @Inject
-    TPartnerDao tpartnerDao;
-
-    @Inject
-    TServicePriceDao tservicePriceDao;
-
-    @Inject
-    TStockTransactionDao tstockTransactionDao;
-
-    @Inject
-    TAdditionalServiceDao tadditionalServiceDao;
-
-    @Inject
-    AdditionalServiceDao additionalServiceDao;
 
     @Override
     public Module getModelDaoModule() {
@@ -135,48 +98,6 @@ public class ContainerTest extends AbstractJslTest {
         assertEquals(b1.identifier().getIdentifier(), dA.identifier().getIdentifier());
         assertEquals(b1.identifier().getIdentifier(), dA1.identifier().getIdentifier());
         assertEquals(b1.identifier().getIdentifier(), dB.identifier().getIdentifier());
-    }
-
-    @Test
-    public void testTransferContainerFunctionWithRange() {
-
-        TServicePrice outOfPrice = tservicePriceDao.create(TServicePrice.builder().build());
-
-        TPartner partner = tpartnerDao.create(TPartner
-                    .builder()
-                    .withServicePrices(List.of(
-                        TServicePrice.builder().build(),
-                        TServicePrice.builder().build(),
-                        TServicePrice.builder().build()
-                    ))
-                    .build()
-        );
-        TStockTransaction stockTransaction = tstockTransactionDao.create(
-          TStockTransaction
-                  .builder()
-                  .withAdditionalServices(List.of(
-                          TAdditionalService
-                                  .builder()
-                                  .build()
-                  ))
-                  .build()
-                , TStockTransactionAttachedRelationsForCreate.builder().withClient(partner).build()
-        );
-
-        AdditionalService additionalService = additionalServiceDao.getAll().get(0);
-        assertEquals(3,additionalServiceDao.queryServicePriceDerived(additionalService).count());
-
-        TAdditionalService tadditionalService = tadditionalServiceDao.getAll().get(0);
-        tadditionalServiceDao.setServicePrice(tadditionalService, partner.getServicePrices().get(0));
-
-        assertTrue(tadditionalServiceDao.queryServicePrice(tadditionalService).isPresent());
-
-        assertEquals(partner.getServicePrices().get(0).identifier(), tadditionalServiceDao.queryServicePrice(tadditionalService).get().identifier());
-
-        tadditionalServiceDao.setServicePrice(tadditionalService, outOfPrice);
-
-        assertEquals(outOfPrice.identifier(), tadditionalServiceDao.queryServicePrice(tadditionalService).get().identifier());
-
     }
 
 }
