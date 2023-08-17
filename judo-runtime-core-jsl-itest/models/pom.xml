@@ -21,7 +21,6 @@
         <module>AutoMappedTransferCollectionEntityModel</module>
         <module>CastingFunctionsModel</module>
         <module>CompositionRelationshipsModel</module>
-<!--        <module>ContainerDerivedModel</module> -->
         <module>ContainerTestModel</module>
         <module>ContainsTestModel</module>
         <module>EntityWithSameQueryNameModel</module>
