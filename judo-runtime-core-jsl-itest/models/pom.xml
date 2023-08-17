@@ -15,13 +15,13 @@
     <modules>
         <module>AbstractModel</module>
         <module>AllTypeOfTransferObjectsModel</module>
-        <module>EntityRelationshipsModel</module>
         <module>AutoMappedTransferPrimitivesModel</module>
         <module>AutoMappedTransferSingleEntityModel</module>
         <module>AutoMappedTransferCollectionEntityModel</module>
         <module>CastingFunctionsModel</module>
         <module>ContainerTestModel</module>
         <module>ContainsTestModel</module>
+        <module>EntityRelationshipsModel</module>
         <module>EntityWithSameQueryNameModel</module>
         <module>EnvironmentAndSequenceModel</module>
         <module>FilterModel</module>
@@ -30,7 +30,6 @@
         <module>InheritanceModel</module>
         <module>MappedTransferAssociationAggregationModel</module>
         <module>MappedTransferAssociationAssociationModel</module>
-        <module>MappedTransferCastingFunctionsModel</module>
         <module>MappedTransferCompositonAggregationModel</module>
         <module>MappedTransferCompositonAssociationModel</module>
         <module>MappedTransferContainsTestModel</module>

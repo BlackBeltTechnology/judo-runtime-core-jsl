@@ -22,15 +22,24 @@ package hu.blackbelt.judo.runtime.core.jsl.transfer;
 
 import com.google.inject.Inject;
 import com.google.inject.Module;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercastingfunctions.mappedtransfercastingfunctions.a.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercastingfunctions.mappedtransfercastingfunctions.ta.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercastingfunctions.mappedtransfercastingfunctions.b.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercastingfunctions.mappedtransfercastingfunctions.tb.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercastingfunctions.mappedtransfercastingfunctions.ca.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercastingfunctions.mappedtransfercastingfunctions.tca.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercastingfunctions.mappedtransfercastingfunctions.tester.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercastingfunctions.mappedtransfercastingfunctions.transfertester.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.MappedTransferCastingFunctionsDaoModules;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.a.A;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.b.B;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.b.BDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.ca.CA;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.ca.CADao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.ta.TA;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.tb.TB;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.tb.TBDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.tb.TBIdentifier;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.tca.TCA;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.tca.TCADao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.tester.Tester;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.tester.TesterDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.tester.TesterIdentifier;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.transfertester.TransferTester;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.transfertester.TransferTesterAttachedRelationsForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.transfertester.TransferTesterDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.CastingFunctionsDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
@@ -41,7 +50,9 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Slf4j
 public class MappedTransferCastingFunctionsTest extends AbstractJslTest {
@@ -66,12 +77,12 @@ public class MappedTransferCastingFunctionsTest extends AbstractJslTest {
 
     @Override
     public Module getModelDaoModule() {
-        return new MappedTransferCastingFunctionsDaoModules();
+        return new CastingFunctionsDaoModules();
     }
 
     @Override
     public String getModelName() {
-        return "MappedTransferCastingFunctions";
+        return "CastingFunctions";
     }
 
     @Override
@@ -112,7 +123,7 @@ public class MappedTransferCastingFunctionsTest extends AbstractJslTest {
      *
      * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
      *
-     * @jslModel MappedTransferCastingFunctions.jsl
+     * @jslModel CastingFunctions.jsl
      *
      * @positiveRequirements REQ-EXPR-021
      *
@@ -158,7 +169,7 @@ public class MappedTransferCastingFunctionsTest extends AbstractJslTest {
      *
      * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
      *
-     * @jslModel MappedTransferCastingFunctions.jsl
+     * @jslModel CastingFunctions.jsl
      *
      * @positiveRequirements REQ-EXPR-021
      *
@@ -203,7 +214,7 @@ public class MappedTransferCastingFunctionsTest extends AbstractJslTest {
      *
      * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
      *
-     * @jslModel MappedTransferCastingFunctions.jsl
+     * @jslModel CastingFunctions.jsl
      *
      * @positiveRequirements REQ-EXPR-021
      *
@@ -267,7 +278,7 @@ public class MappedTransferCastingFunctionsTest extends AbstractJslTest {
      *
      * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
      *
-     * @jslModel MappedTransferCastingFunctions.jsl
+     * @jslModel CastingFunctions.jsl
      *
      * @positiveRequirements REQ-EXPR-022
      *

@@ -1,4 +1,4 @@
-model MappedTransferCastingFunctions;
+model CastingFunctions;
 
 type string String min-size:0 max-size:255;
 type boolean Boolean;
@@ -7,40 +7,18 @@ entity A {
     field String nameA;
 }
 
-transfer TA maps A as a {
-    field String nameA <=> a.nameA;
-}
-
 entity B extends A {
     field String nameB;
-}
-
-transfer TB maps B as b {
-    field String nameA <=> b.nameA;
-    field String nameB <=> b.nameB;
 }
 
 entity CA extends B {
     field String nameCA;
 }
 
-transfer TCA maps CA as ca {
-    field String nameA <=> ca.nameA;
-    field String nameCA <=> ca.nameCA;
-    field String nameB <=> ca.nameB;
-}
 
 entity CB extends B {
     field String nameCB;
 }
-
-
-transfer TCB maps CB as cb {
-    field String nameA <=> cb.nameA;
-    field String nameCB <=> cb.nameCB;
-    field String nameB <=> cb.nameB;
-}
-
 
 entity Tester {
     relation B b;
@@ -77,6 +55,31 @@ entity Tester {
     relation CB[] asCollectionCB <= self.bs!asCollection(entityType = CB);      // empty
 
 }
+
+// TRANSFER REPRESENTATION
+
+transfer TA maps A as a {
+    field String nameA <=> a.nameA;
+}
+
+transfer TB maps B as b {
+    field String nameA <=> b.nameA;
+    field String nameB <=> b.nameB;
+}
+
+transfer TCA maps CA as ca {
+    field String nameA <=> ca.nameA;
+    field String nameCA <=> ca.nameCA;
+    field String nameB <=> ca.nameB;
+}
+
+
+transfer TCB maps CB as cb {
+    field String nameA <=> cb.nameA;
+    field String nameCB <=> cb.nameCB;
+    field String nameB <=> cb.nameB;
+}
+
 
 transfer TransferTester maps Tester as t {
 
