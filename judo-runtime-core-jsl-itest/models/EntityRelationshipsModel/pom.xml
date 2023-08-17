@@ -7,10 +7,10 @@
         <version>${revision}</version>
     </parent>
 
-    <artifactId>judo-runtime-core-jsl-itest-model-AssociationRelationshipsModel</artifactId>
+    <artifactId>judo-runtime-core-jsl-itest-model-EntityRelationshipsModel</artifactId>
     <packaging>jar</packaging>
 
-    <name>JUDO Runtime Core :: JUDO Language Specification DSL Integration Tests :: AssociationRelationshipsModel</name>
+    <name>JUDO Runtime Core :: JUDO Language Specification DSL Integration Tests :: EntityRelationshipsModel</name>
 
     <build>
         <plugins>
@@ -35,7 +35,20 @@
                             <psm>
                                 ${basedir}/target/generated-test-sources/model/AssociationRelationships-psm.model
                             </psm>
-                            <destination>${basedir}/target/generated-test-sources/sdk-core/AssociationRelationshipsModel</destination>
+                            <destination>${basedir}/target/generated-test-sources/sdk-core/AssociationRelationships</destination>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-CompositionRelationships</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/CompositionRelationships-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/sdk-core/CompositionRelationships</destination>
                         </configuration>
                     </execution>
                 </executions>
@@ -53,7 +66,8 @@
                         </goals>
                         <configuration>
                             <sources>
-                                <source>${project.basedir}/target/generated-test-sources/sdk-core/AssociationRelationshipsModel</source>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/AssociationRelationships</source>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/CompositionRelationships</source>
                             </sources>
                         </configuration>
                     </execution>

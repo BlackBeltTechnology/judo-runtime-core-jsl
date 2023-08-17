@@ -22,6 +22,33 @@ entity D {
     relation B containerB <= self!container(entityType = B);
 }
 
+// TRANSFER representation
+
+transfer TA maps A as a {
+    @Embedded
+    relation required TC conA <=> a.conA;
+}
+
+transfer TB maps B as b {
+    @Embedded
+    relation required TD donB <=> b.donB;
+    @Embedded
+    relation required TC conA <=> b.conA;
+}
+
+transfer TC maps C as c {
+    relation TA containerA <= c.containerA;
+    relation TB containerB <= c.containerB;
+    relation TB containerB1 <= c.containerB1;
+}
+
+transfer TD maps D as d {
+    relation TA containerA <= d.containerA;
+    relation TA containerA1 <= d.containerA1;
+    relation TB containerB <= d.containerB;
+}
+
+
 // Transaction model
 
 entity Partner {
