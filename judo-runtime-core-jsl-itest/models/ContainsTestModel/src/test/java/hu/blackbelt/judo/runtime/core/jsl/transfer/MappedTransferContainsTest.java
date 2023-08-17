@@ -22,11 +22,11 @@ package hu.blackbelt.judo.runtime.core.jsl.transfer;
 
 import com.google.inject.Inject;
 import com.google.inject.Module;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercontains.mappedtransfercontains.a.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercontains.mappedtransfercontains.b.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercontains.mappedtransfercontains.ta.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercontains.mappedtransfercontains.tb.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.MappedTransferContainsDaoModules;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containsmodel.containsmodel.a.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containsmodel.containsmodel.b.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containsmodel.containsmodel.ta.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containsmodel.containsmodel.tb.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.ContainsModelDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
@@ -35,8 +35,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 @Slf4j
 public class MappedTransferContainsTest extends AbstractJslTest {
@@ -54,13 +54,12 @@ public class MappedTransferContainsTest extends AbstractJslTest {
     TBDao tbDao;
 
     @Override
-    public Module getModelDaoModule() {
-        return new MappedTransferContainsDaoModules();
+    public Module getModelDaoModule() {return new ContainsModelDaoModules();
     }
 
     @Override
     public String getModelName() {
-        return "MappedTransferContains";
+        return "ContainsModel";
     }
 
     /**
@@ -72,7 +71,7 @@ public class MappedTransferContainsTest extends AbstractJslTest {
      *
      * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
      *
-     * @jslModel MappedTransferContains.jsl
+     * @jslModel ContainsModel.jsl
      *
      * @positiveRequirements REQ-EXPR-021
      *
