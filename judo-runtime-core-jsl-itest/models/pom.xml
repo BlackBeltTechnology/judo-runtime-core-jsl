@@ -26,8 +26,6 @@
         <module>FilterModel</module>
         <module>FunctionsModels</module>
         <module>InheritanceModel</module>
-        <module>MappedTransferAssociationAssociationModel</module>
-        <module>MappedTransferCompositonAssociationModel</module>
         <module>MappedTransferPrimitivesModel</module>
         <module>NavigationTestModel</module>
         <module>OperatorsModel</module>
@@ -43,6 +41,7 @@
         <module>TestDefaultAndRequiredFieldsOnMappedTOModel</module>
         <module>TransactionManagementModel</module>
         <module>TransferAggregationModel</module>
+        <module>TransferAssociationModel</module>
         <module>TransferConstructorModel</module>
         <module>RecursiveCompositionModel</module>
         <module>RelationCreateWithAttachmentTestModel</module>

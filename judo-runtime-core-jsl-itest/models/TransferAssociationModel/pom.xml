@@ -7,10 +7,10 @@
         <version>${revision}</version>
     </parent>
 
-    <artifactId>judo-runtime-core-jsl-itest-model-MappedTransferCompositonAssociationModel</artifactId>
+    <artifactId>judo-runtime-core-jsl-itest-model-TransferAssociationModel</artifactId>
     <packaging>jar</packaging>
 
-    <name>JUDO Runtime Core :: JUDO Language Specification DSL Integration Tests :: MappedTransferCompositonAssociationModel</name>
+    <name>JUDO Runtime Core :: JUDO Language Specification DSL Integration Tests :: TransferAssociationModel</name>
 
     <build>
         <plugins>
@@ -25,6 +25,19 @@
                 <artifactId>judo-psm-generator-maven-plugin</artifactId>
                 <version>${judo-meta-psm-version}</version>
                 <executions>
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-MappedTransferAssociationAssociationModel</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/MappedTransferAssociationAssociation-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/sdk-core/MappedTransferAssociationAssociationModel</destination>
+                        </configuration>
+                    </execution>
                     <execution>
                         <id>execute-psm-test-model-from-artifact-MappedTransferCompositonAssociationModel</id>
                         <phase>generate-test-sources</phase>
@@ -53,6 +66,7 @@
                         </goals>
                         <configuration>
                             <sources>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/MappedTransferAssociationAssociationModel</source>
                                 <source>${project.basedir}/target/generated-test-sources/sdk-core/MappedTransferCompositonAssociationModel</source>
                             </sources>
                         </configuration>
