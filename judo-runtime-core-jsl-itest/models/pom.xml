@@ -38,13 +38,11 @@
         <module>QueryModel</module>
         <module>SalesModels</module>
 <!--        <module>SampleModels</module> -->
-        <module>StaticQueryDaoTestModel</module>
+        <module>StaticQueryModels</module>
         <module>SpecialCasesModel</module>
         <module>TaskModel</module>
         <module>TernaryTestModel</module>
         <module>TestDefaultAndRequiredFieldsOnMappedTOModel</module>
-        <module>TestStaticQueriesWithConstantParametersModel</module>
-        <module>TestStaticQueriesWithDefaultValuesModel</module>
         <module>TransactionManagementModel</module>
         <module>TransferConstructorModel</module>
         <module>RecursiveCompositionModel</module>
