@@ -22,21 +22,21 @@ package hu.blackbelt.judo.runtime.core.jsl.transfer;
 
 import com.google.inject.Inject;
 import com.google.inject.Module;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfernavigationtest.mappedtransfernavigationtest.a.A;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfernavigationtest.mappedtransfernavigationtest.a.ADao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfernavigationtest.mappedtransfernavigationtest.a.AIdentifier;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfernavigationtest.mappedtransfernavigationtest.b.BDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfernavigationtest.mappedtransfernavigationtest.c.CDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfernavigationtest.mappedtransfernavigationtest.ta.TA;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfernavigationtest.mappedtransfernavigationtest.ta.TADao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfernavigationtest.mappedtransfernavigationtest.tb.TB;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfernavigationtest.mappedtransfernavigationtest.tb.TBAttachedRelationsForCreate;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfernavigationtest.mappedtransfernavigationtest.tb.TBDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfernavigationtest.mappedtransfernavigationtest.tb.TBIdentifier;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfernavigationtest.mappedtransfernavigationtest.tc.TC;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfernavigationtest.mappedtransfernavigationtest.tc.TCDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfernavigationtest.mappedtransfernavigationtest.tc.TCIdentifier;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.MappedTransferNavigationTestDaoModules;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.a.A;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.a.ADao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.a.AIdentifier;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.b.BDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.c.CDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.ta.TA;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.ta.TADao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.tb.TB;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.tb.TBAttachedRelationsForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.tb.TBDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.tb.TBIdentifier;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.tc.TC;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.tc.TCDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.tc.TCIdentifier;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.NavigationTestDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
@@ -53,7 +53,9 @@ import java.util.stream.Collectors;
 
 import static org.hamcrest.CoreMatchers.anyOf;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Slf4j
 class MappedTransferNavigationTest extends AbstractJslTest {
@@ -78,12 +80,12 @@ class MappedTransferNavigationTest extends AbstractJslTest {
 
     @Override
     public Module getModelDaoModule() {
-        return new MappedTransferNavigationTestDaoModules();
+        return new NavigationTestDaoModules();
     }
 
     @Override
     public String getModelName() {
-        return "MappedTransferNavigationTest";
+        return "NavigationTest";
     }
 
     @Test
