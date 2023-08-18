@@ -7,10 +7,10 @@
         <version>${revision}</version>
     </parent>
 
-    <artifactId>judo-runtime-core-jsl-itest-model-MappedTransferCompositonAggregationModel</artifactId>
+    <artifactId>judo-runtime-core-jsl-itest-model-TransferAggregationModel</artifactId>
     <packaging>jar</packaging>
 
-    <name>JUDO Runtime Core :: JUDO Language Specification DSL Integration Tests :: MappedTransferCompositonAggregationModel</name>
+    <name>JUDO Runtime Core :: JUDO Language Specification DSL Integration Tests :: TransferAggregationModel</name>
 
     <build>
         <plugins>
@@ -26,6 +26,19 @@
                 <version>${judo-meta-psm-version}</version>
                 <executions>
                     <execution>
+                        <id>execute-psm-test-model-from-artifact-MappedTransferAssociationAggregationModel</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <psm>
+                                ${basedir}/target/generated-test-sources/model/MappedTransferAssociationAggregation-psm.model
+                            </psm>
+                            <destination>${basedir}/target/generated-test-sources/sdk-core/MappedTransferAssociationAggregation</destination>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>execute-psm-test-model-from-artifact-MappedTransferCompositonAggregationModel</id>
                         <phase>generate-test-sources</phase>
                         <goals>
@@ -35,7 +48,7 @@
                             <psm>
                                 ${basedir}/target/generated-test-sources/model/MappedTransferCompositonAggregation-psm.model
                             </psm>
-                            <destination>${basedir}/target/generated-test-sources/sdk-core/MappedTransferCompositonAggregationModel</destination>
+                            <destination>${basedir}/target/generated-test-sources/sdk-core/MappedTransferCompositonAggregation</destination>
                         </configuration>
                     </execution>
                 </executions>
@@ -53,7 +66,8 @@
                         </goals>
                         <configuration>
                             <sources>
-                                <source>${project.basedir}/target/generated-test-sources/sdk-core/MappedTransferCompositonAggregationModel</source>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/MappedTransferAssociationAggregation</source>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/MappedTransferCompositonAggregation</source>
                             </sources>
                         </configuration>
                     </execution>

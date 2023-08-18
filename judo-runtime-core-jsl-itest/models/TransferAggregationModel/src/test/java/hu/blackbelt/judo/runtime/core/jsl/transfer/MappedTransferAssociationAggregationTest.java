@@ -181,7 +181,7 @@ public class MappedTransferAssociationAggregationTest extends AbstractJslTest {
      *
      * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
      *
-     * @jslModel MappedTransferAssociation.jsl
+     * @jslModel MappedTransferAssociationAggregation.jsl
      *
      * @positiveRequirements REQ-ENT-005
      *
@@ -337,7 +337,7 @@ public class MappedTransferAssociationAggregationTest extends AbstractJslTest {
      *
      * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
      *
-     * @jslModel MappedTransferAssociation.jsl
+     * @jslModel MappedTransferAssociationAggregation.jsl
      *
      */
     @Test
@@ -1116,7 +1116,7 @@ public class MappedTransferAssociationAggregationTest extends AbstractJslTest {
      *
      * @others Implement this test case in the *judo-runtime-core-jsl-itest* module.
      *
-     * @jslModel MappedTransferAssociation.jsl
+     * @jslModel MappedTransferAssociationAggregation.jsl
      *
      *
      */
