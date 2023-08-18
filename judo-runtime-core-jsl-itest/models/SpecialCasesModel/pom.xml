@@ -7,10 +7,10 @@
         <version>${revision}</version>
     </parent>
 
-    <artifactId>judo-runtime-core-jsl-itest-model-ImportedTypesWithNoFieldDefinitions</artifactId>
+    <artifactId>judo-runtime-core-jsl-itest-model-SpecialCasesModel</artifactId>
     <packaging>jar</packaging>
 
-    <name>JUDO Runtime Core :: JUDO Language Specification DSL Integration Tests :: ImportedTypesWithNoFieldDefinitions</name>
+    <name>JUDO Runtime Core :: JUDO Language Specification DSL Integration Tests :: SpecialCasesModel</name>
 
     <build>
         <plugins>
@@ -26,16 +26,16 @@
                 <version>${judo-meta-psm-version}</version>
                 <executions>
                     <execution>
-                        <id>execute-psm-test-model-from-artifact-ImportedTypesWithNoFieldDefinitions</id>
+                        <id>execute-psm-test-model-from-artifact-SpecialCases</id>
                         <phase>generate-test-sources</phase>
                         <goals>
                             <goal>generate</goal>
                         </goals>
                         <configuration>
                             <psm>
-                                ${basedir}/target/generated-test-sources/model/ImportedTypesWithNoFieldDefinitions-psm.model
+                                ${basedir}/target/generated-test-sources/model/SpecialCases-psm.model
                             </psm>
-                            <destination>${basedir}/target/generated-test-sources/sdk-core/ImportedTypesWithNoFieldDefinitions</destination>
+                            <destination>${basedir}/target/generated-test-sources/sdk-core/SpecialCases</destination>
                         </configuration>
                     </execution>
                 </executions>
@@ -53,12 +53,13 @@
                         </goals>
                         <configuration>
                             <sources>
-                                <source>${project.basedir}/target/generated-test-sources/sdk-core/ImportedTypesWithNoFieldDefinitions</source>
+                                <source>${project.basedir}/target/generated-test-sources/sdk-core/SpecialCases</source>
                             </sources>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
+
         </plugins>
     </build>
 </project>
