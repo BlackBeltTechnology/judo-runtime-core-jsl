@@ -106,14 +106,14 @@ jobs:
 
       - name: 🔥 Build Maven project with tests (HSQLDB)
         run: |-
-          ./mvnw -B -Dstyle.color=always \
+          ./mvnw -B -T 4 -Dstyle.color=always \
           -Drevision=${{ steps.version.outputs.version }} \
           -Ddialect=hsqldb \
           clean install
 
       - name: 🔥 Test with PostgreSQL
         run: |-
-          ./mvnw -B -Dstyle.color=always \
+          ./mvnw -B -T 4 -Dstyle.color=always \
           -Drevision=${{ steps.version.outputs.version }} \
           -Ddialect=postgresql \
           surefire:test
