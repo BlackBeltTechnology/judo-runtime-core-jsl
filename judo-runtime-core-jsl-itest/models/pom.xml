@@ -45,7 +45,6 @@
         <module>TransferConstructorModel</module>
         <module>RecursiveCompositionModel</module>
         <module>RelationCreateWithAttachmentTestModel</module>
-        <module>PagingModel</module>
         <module>ForTestingModel</module>
     </modules>
 
