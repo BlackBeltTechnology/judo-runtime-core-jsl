@@ -79,6 +79,7 @@ public class ContainerTest extends AbstractJslTest {
                            .withDonB(D.builder().build())
                            .build());
         C c = b.getConA();
+
         A cA = cDao.queryContainerA(c).orElseThrow();
         B cB = cDao.queryContainerB(c).orElseThrow();
         B cB1 = cDao.queryContainerB1(c).orElseThrow();

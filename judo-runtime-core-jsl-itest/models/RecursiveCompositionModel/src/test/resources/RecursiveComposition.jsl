@@ -1,0 +1,76 @@
+model RecursiveComposition;
+
+type string String min-size:0 max-size:128;
+
+entity EntityX {
+    field String name;
+    field EntityX x;
+    field EntityX[] xs;
+    field EntityY y;
+    field EntityY[] ys;
+}
+
+entity EntityY {
+    field String name;
+    field EntityX yx;
+    field EntityX[] yxs;
+}
+
+transfer TransferXTO (EntityX entityX) {
+    field String name <=> entityX.name;
+    @Embedded
+    relation TransferXTO x <=> entityX.x;
+    @Embedded
+    relation TransferXTO[] xs <=> entityX.xs;
+    @Embedded
+    relation TransferYTO y <=> entityX.y;
+    @Embedded
+    relation TransferYTO[] ys <=> entityX.ys;
+}
+
+transfer TransferYTO (EntityY entityY) {
+    field String name <=> entityY.name;
+    @Embedded
+    relation TransferXTO yx <=> entityY.yx;
+    @Embedded
+    relation TransferXTO[] yxs <=> entityY.yxs;
+}
+
+transfer TransferXAutoMappedTO (EntityX entityX);
+
+transfer TransferYAutoMappedTO (EntityY entityY);
+
+entity EntityA {
+    field String name;
+    field EntityA a;
+    field EntityA[] as;
+}
+
+entity EntityB extends EntityA {
+    field EntityA ba;
+    field EntityA[] bas;
+}
+
+transfer TransferATO (EntityA entityA) {
+    field String name <=> entityA.name;
+    @Embedded
+    relation TransferATO a <=> entityA.a;
+    @Embedded
+    relation TransferATO[] as <=> entityA.as;
+}
+
+transfer TransferBTO (EntityB entityB) {
+    field String name <=> entityB.name;
+    @Embedded
+    relation TransferATO a <=> entityB.a;
+    @Embedded
+    relation TransferATO[] as <=> entityB.as;
+    @Embedded
+    relation TransferATO ba <=> entityB.ba;
+    @Embedded
+    relation TransferATO[] bas <=> entityB.bas;
+}
+
+transfer TransferAAutoMappedTO (EntityA entityA);
+
+transfer TransferBAutoMappedTO (EntityB entityB);

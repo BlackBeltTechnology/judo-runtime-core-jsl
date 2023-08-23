@@ -22,16 +22,16 @@ package hu.blackbelt.judo.runtime.core.jsl.entity;
 
 import com.google.inject.Inject;
 import com.google.inject.Module;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctionsmodel.castingfunctionsmodel.a.A;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctionsmodel.castingfunctionsmodel.b.B;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctionsmodel.castingfunctionsmodel.b.BDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctionsmodel.castingfunctionsmodel.ca.CA;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctionsmodel.castingfunctionsmodel.ca.CADao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctionsmodel.castingfunctionsmodel.tester.Tester;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctionsmodel.castingfunctionsmodel.tester.TesterAttachedRelationsForCreate;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctionsmodel.castingfunctionsmodel.tester.TesterDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctionsmodel.castingfunctionsmodel.b.BIdentifier;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.CastingFunctionsModelDaoModules;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.a.A;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.b.B;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.b.BDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.ca.CA;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.ca.CADao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.tester.Tester;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.tester.TesterAttachedRelationsForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.tester.TesterDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.b.BIdentifier;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.CastingFunctionsDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
@@ -57,12 +57,12 @@ public class CastingFunctionsTest extends AbstractJslTest {
 
     @Override
     public Module getModelDaoModule() {
-        return new CastingFunctionsModelDaoModules();
+        return new CastingFunctionsDaoModules();
     }
 
     @Override
     public String getModelName() {
-        return "CastingFunctionsModel";
+        return "CastingFunctions";
     }
 
     @Override

@@ -13,3 +13,14 @@ entity A {
 entity B {
     field String name;
 }
+
+transfer TA maps A as a {
+    relation TB[] bs <=> a.bs;
+    relation TB b <=> a.b;
+    field Boolean containsTest <= a.containsTest;
+    field Boolean containsTest1 <= a.containsTest1;
+}
+
+transfer TB maps B as b {
+    field String name <=> b.name;
+}

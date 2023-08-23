@@ -3,30 +3,55 @@ model NavigationTest;
 type string String min-size:0 max-size:255;
 
 entity A {
-    relation B[]    blist;
-    relation  C[]    clist               <= self.blist.c;
+    relation B[] blist;
+    relation C[] clist <= self.blist.c;
+    relation B[] bbAll <= B!all();
+    relation B bbAny <= B!any();
 
-    relation  B[]    bbAll                <= B!all();
-    relation  B      bbAny                <= B!any();
+    field String bbAnyName <= B!any().name;
+    field String selfBName <= self.bbAny.name;
 
-    field  String bbAnyName           <= B!any().name;
-    field  String selfBName           <= self.bbAny.name;
+    relation B[] bbAllFilter <= B!all()!filter(b | b.name == "b");
+    relation B bbAllFilterAny <= B!all()!filter(b | b.name == "b")!any();
+    relation B bbAllFilterAny1 <= self.bbAllFilter!any();
 
-    relation  B[]    bbAllFilter          <= B!all()!filter(b | b.name == "b");
-    relation  B      bbAllFilterAny       <= B!all()!filter(b | b.name == "b")!any();
-    relation  B      bbAllFilterAny1      <= self.bbAllFilter!any();
+    field String bbAllFilterAnyName <= B!all()!filter(b | b.name == "b")!any().name;
+    field String bbAllFilterAnyName1 <= self.bbAllFilter!any().name;
+    field String bbAllFilterAnyName2 <= self.bbAllFilterAny1.name;
 
-    field  String bbAllFilterAnyName  <= B!all()!filter(b | b.name == "b")!any().name;
-    field  String bbAllFilterAnyName1 <= self.bbAllFilter!any().name;
-    field  String bbAllFilterAnyName2 <= self.bbAllFilterAny1.name;
+    relation C[] selfbAllC <= self.bbAll.c;
+    relation C selfbAllCAny <= self.bbAll.c!any();
+    field String selfbAllCAnyName <= self.bbAll.c!any().name;
 
-    relation  C[]    selfbAllC           <= self.bbAll.c;
-    relation  C      selfbAllCAny        <= self.bbAll.c!any();
-    field  String selfbAllCAnyName    <= self.bbAll.c!any().name;
+    relation C[] bbAllC <= B!all().c;
+    relation C bbAllCAny <= B!all().c!any();
+    field String bbAllCAnyName <= B!all().c!any().name;
+}
 
-    relation  C[]    bbAllC               <= B!all().c;
-    relation  C      bbAllCAny            <= B!all().c!any();
-    field  String bbAllCAnyName       <= B!all().c!any().name;
+transfer TA (A mapped) {
+    relation TB[] blist <=> mapped.blist;
+    relation TC[] clist  <= mapped.clist;
+    relation TB[] bbAll  <= mapped.bbAll;
+    relation TB bbAny  <= mapped.bbAny;
+
+    field String bbAnyName  <= mapped.bbAnyName;
+    field String selfBName  <= mapped.selfBName;
+
+    relation TB[] bbAllFilter  <= mapped.bbAllFilter;
+    relation TB bbAllFilterAny  <= mapped.bbAllFilterAny;
+    relation TB bbAllFilterAny1  <= mapped.bbAllFilterAny1;
+
+    field String bbAllFilterAnyName  <= mapped.bbAllFilterAnyName;
+    field String bbAllFilterAnyName1  <= mapped.bbAllFilterAnyName1;
+    field String bbAllFilterAnyName2  <= mapped.bbAllFilterAnyName2;
+
+    relation TC[] selfbAllC  <= mapped.selfbAllC;
+    relation TC selfbAllCAny  <= mapped.selfbAllCAny;
+    field String selfbAllCAnyName  <= mapped.selfbAllCAnyName;
+
+    relation TC[] bbAllC  <= mapped.bbAllC;
+    relation TC bbAllCAny  <= mapped.bbAllCAny;
+    field String bbAllCAnyName  <= mapped.bbAllCAnyName;
 }
 
 entity B {
@@ -34,6 +59,15 @@ entity B {
     relation C c;
 }
 
+transfer TB (B mapped){
+    field String name <=> mapped.name;
+    relation TC c <=> mapped.c;
+}
+
 entity C {
-    field String name;
+   field String name;
+}
+
+transfer TC (C mapped){
+    field String name <=> mapped.name;
 }
