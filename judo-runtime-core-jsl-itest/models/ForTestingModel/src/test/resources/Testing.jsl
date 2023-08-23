@@ -12,6 +12,7 @@ entity A extends AP {
 
 entity B {
     relation B containerARelC <= self!container(entityType = A).relB;
+    relation A derivedElement <= self!container(entityType = A);
 }
 
 

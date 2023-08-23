@@ -60,7 +60,18 @@ public class Testing extends AbstractJslTest {
 
         A a =aDao.create(A.builder().withCompB(B.builder().build()).build());
 
+        B bRel = bDao.create(B.builder().build());
+
+        aDao.setRelB(a, bRel);
+
         B b = a.getCompB().get();
+
+        A containerA =bDao.queryDerivedElement(b).orElseThrow();
+
+        assertEquals(a.identifier() , containerA.identifier());
+        assertEquals(b.identifier() , containerA.getCompB().get().identifier());
+        assertEquals(bRel.identifier() , aDao.queryRelB(a).get().identifier());
+
 
         bDao.queryContainerARelC(b);
 
