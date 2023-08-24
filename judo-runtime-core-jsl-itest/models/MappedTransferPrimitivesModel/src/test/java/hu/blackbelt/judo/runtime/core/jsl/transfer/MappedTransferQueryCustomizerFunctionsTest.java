@@ -31,7 +31,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitive
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.MappedTransferPrimitivesDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
+import hu.blackbelt.judo.runtime.core.jsl.AbstractJslWithOneInjectionTest;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
 import hu.blackbelt.judo.sdk.query.StringFilter;
 import lombok.extern.slf4j.Slf4j;
@@ -45,7 +45,7 @@ import java.time.LocalTime;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Slf4j
-public class MappedTransferQueryCustomizerFunctionsTest extends AbstractJslTest {
+public class MappedTransferQueryCustomizerFunctionsTest extends AbstractJslWithOneInjectionTest {
     @Inject
     TransferOptionalPrimitivesDao transferOptionalPrimitivesDao;
 
@@ -54,7 +54,7 @@ public class MappedTransferQueryCustomizerFunctionsTest extends AbstractJslTest 
     TransferOptionalPrimitives transf2;
 
     @BeforeEach
-    protected void init(JudoDatasourceFixture datasource) throws Exception {
+    protected void init(JudoDatasourceFixture datasource) {
         super.init(datasource);
 
         transf1 = transferOptionalPrimitivesDao.create(TransferOptionalPrimitives.builder()

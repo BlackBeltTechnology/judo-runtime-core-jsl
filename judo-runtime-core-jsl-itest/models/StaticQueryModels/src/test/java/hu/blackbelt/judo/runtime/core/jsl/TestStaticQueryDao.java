@@ -58,7 +58,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
-public class TestStaticQueryDao extends AbstractJslTest {
+public class TestStaticQueryDao extends AbstractJslWithOneInjectionTest {
 
     @Inject
     EntityWithPrimitivesDao entityWithPrimitivesDao;

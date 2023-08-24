@@ -34,7 +34,8 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractm
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.AbstractModelDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
+import hu.blackbelt.judo.runtime.core.jsl.AbstractJslWithOneInjectionTest;
+import hu.blackbelt.judo.runtime.core.jsl.AbstractJslWithOneInjectionTest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
@@ -45,7 +46,7 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
-public class AbstractTest extends AbstractJslTest {
+public class AbstractTest extends AbstractJslWithOneInjectionTest {
 
     @Override
     public Module getModelDaoModule() {
