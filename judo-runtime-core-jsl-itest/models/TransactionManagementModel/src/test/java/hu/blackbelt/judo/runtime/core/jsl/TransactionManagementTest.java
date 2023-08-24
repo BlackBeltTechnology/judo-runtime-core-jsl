@@ -32,7 +32,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Slf4j
-public class TransactionManagementTest extends AbstractJslTest {
+public class TransactionManagementTest extends AbstractJslFastTest {
 
     @Inject TesterDao testerDao;
 

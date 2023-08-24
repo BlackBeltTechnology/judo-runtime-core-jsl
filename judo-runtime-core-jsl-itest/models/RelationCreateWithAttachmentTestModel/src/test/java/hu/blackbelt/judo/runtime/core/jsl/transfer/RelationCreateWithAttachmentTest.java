@@ -7,7 +7,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.relationcreationwithatt
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.relationcreationwithattachment.relationcreationwithattachment.c.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.RelationCreationWithAttachmentDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
+import hu.blackbelt.judo.runtime.core.jsl.AbstractJslFastTest;
 import hu.blackbelt.judo.sdk.query.StringFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -19,7 +19,7 @@ import java.util.Optional;
 import static org.junit.Assert.*;
 
 @Slf4j
-public class RelationCreateWithAttachmentTest extends AbstractJslTest {
+public class RelationCreateWithAttachmentTest extends AbstractJslFastTest {
 
     @Override
     public Module getModelDaoModule() {

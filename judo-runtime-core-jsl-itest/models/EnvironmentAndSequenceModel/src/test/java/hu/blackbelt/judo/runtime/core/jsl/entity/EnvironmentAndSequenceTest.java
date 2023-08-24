@@ -25,7 +25,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencem
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.EnvironmentAndSequenceModelDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
+import hu.blackbelt.judo.runtime.core.jsl.AbstractJslFastTest;
 import hu.blackbelt.judo.runtime.core.jsl.util.EnvironmentVariableMocker;
 import hu.blackbelt.judo.runtime.core.jsl.util.EnvironmentVariables;
 import org.junit.jupiter.api.Disabled;
@@ -56,7 +56,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * #L%
  */
 
-public class EnvironmentAndSequenceTest extends AbstractJslTest {
+public class EnvironmentAndSequenceTest extends AbstractJslFastTest {
 
     @Inject
     EnvVars1Dao envVars1Dao;

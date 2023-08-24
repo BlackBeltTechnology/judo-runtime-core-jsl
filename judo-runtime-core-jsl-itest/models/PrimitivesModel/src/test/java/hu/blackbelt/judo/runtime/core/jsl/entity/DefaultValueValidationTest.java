@@ -30,7 +30,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.e
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.PrimitivesDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
+import hu.blackbelt.judo.runtime.core.jsl.AbstractJslFastTest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -43,7 +43,7 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
-public class DefaultValueValidationTest extends AbstractJslTest {
+public class DefaultValueValidationTest extends AbstractJslFastTest {
     @Inject
     EntityWithNotValidIntegerDefaultValueDao entityWithNotValidIntegerDefaultValueDao;
 
