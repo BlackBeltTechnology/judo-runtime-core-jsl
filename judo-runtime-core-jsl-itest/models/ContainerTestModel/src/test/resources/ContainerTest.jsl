@@ -21,3 +21,65 @@ entity D {
     relation A containerA1 <= self!container(entityType = A);
     relation B containerB <= self!container(entityType = B);
 }
+
+// TRANSFER representation
+
+transfer TA maps A as a {
+    @Embedded
+    relation required TC conA <=> a.conA;
+}
+
+transfer TB maps B as b {
+    @Embedded
+    relation required TD donB <=> b.donB;
+    @Embedded
+    relation required TC conA <=> b.conA;
+}
+
+transfer TC maps C as c {
+    relation TA containerA <= c.containerA;
+    relation TB containerB <= c.containerB;
+    relation TB containerB1 <= c.containerB1;
+}
+
+transfer TD maps D as d {
+    relation TA containerA <= d.containerA;
+    relation TA containerA1 <= d.containerA1;
+    relation TB containerB <= d.containerB;
+}
+
+
+// Transaction model
+
+entity Partner {
+  field ServicePrice[] servicePrices;
+}
+entity ServicePrice {}
+
+entity StockTransaction {
+  field AdditionalService[] additionalServices;
+  relation required Partner client;
+}
+
+entity AdditionalService {
+  relation ServicePrice servicePrice;
+  relation ServicePrice[] servicePriceDerived <= self!container(entityType = StockTransaction).client.servicePrices;
+}
+
+transfer TPartner (Partner p) {
+    @Embedded
+    relation TServicePrice[] servicePrices <=> p.servicePrices;
+}
+
+transfer TServicePrice (ServicePrice s) {
+}
+
+transfer TStockTransaction (StockTransaction s) {
+  @Embedded
+  relation TAdditionalService[] additionalServices <=> s.additionalServices;
+  relation required TPartner client <=> s.client;
+}
+
+transfer TAdditionalService (AdditionalService a) {
+  relation TServicePrice servicePrice <=> a.servicePrice choices : a.servicePriceDerived;
+}

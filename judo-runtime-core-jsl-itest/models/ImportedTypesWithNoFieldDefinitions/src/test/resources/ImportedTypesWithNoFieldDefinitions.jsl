@@ -1,9 +1,0 @@
-model ImportedTypesWithNoFieldDefinitions;
-
-import judo::types;
-
-entity TestEntity {
-    field Boolean dateSmaller = Date!of(year = 2023, month = 4, day = 17) < Date!of(year = 2023, month = 4, day = 19);
-    field Boolean timeSmaller = Time!of(hour = 11, minute = 11) < Time!of(hour = 11, minute = 19);
-    field Boolean timestampSmaller = Timestamp!of(date = `2023-04-17`) < Timestamp!of(date = `2023-04-19`);
-}

@@ -10,7 +10,7 @@
 
     <properties>
         <revision>1.0.3-SNAPSHOT</revision>
-        <maven>3.8.3</maven>
+        <maven>3.9.4</maven>
         <maven.version>3.8.3</maven.version>
 
         <project-shortname>judo-runtime-core-jsl</project-shortname>
@@ -40,12 +40,12 @@
             javax.resource;version="[1.6,2)"
         </osgi-transaction-import>
 
-        <judo-tatami-jsl-version>1.1.4.20230807_112627_50fc1c9e_develop</judo-tatami-jsl-version>
-        <judo-runtime-core-version>1.0.6.20230726_222312_1bb16234_develop</judo-runtime-core-version>
-        <judo-psm-generator-sdk-core-version>1.0.0.20230804_124609_93523ebd_develop</judo-psm-generator-sdk-core-version>
+        <judo-tatami-jsl-version>1.1.4.20230824_042044_affd037f_develop</judo-tatami-jsl-version>
+        <judo-runtime-core-version>1.0.6.20230824_041623_e4426618_develop</judo-runtime-core-version>
+        <judo-psm-generator-sdk-core-version>1.0.0.20230818_054940_535764f1_develop</judo-psm-generator-sdk-core-version>
 
 
-        <judo-meta-psm-version>1.3.0.20230516_100351_2fb48f5a_develop</judo-meta-psm-version>
+        <judo-meta-psm-version>1.3.0.20230817_041451_c7d94464_develop</judo-meta-psm-version>
 
         <!-- Code Quality-->
         <sonar-maven-plugin-version>3.9.1.2184</sonar-maven-plugin-version>
@@ -54,7 +54,7 @@
         <sonar.language>java</sonar.language>
         <sonar.java.source>${java.version}</sonar.java.source>
         <jacoco.version>0.8.8</jacoco.version>
-        <judo-requirement-report-version>1.0.0.20230309_124649_40174e0b_develop</judo-requirement-report-version>
+        <judo-requirement-report-version>1.0.0.20230816_144941_80e9b223_develop</judo-requirement-report-version>
     </properties>
 
     <url>http://github.com/${project-repositoryId}</url>
@@ -525,7 +525,7 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>27.1-jre</version>
+            <version>30.0-jre</version>
         </dependency>
 
         <dependency>

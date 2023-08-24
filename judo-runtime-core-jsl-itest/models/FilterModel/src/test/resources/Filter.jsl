@@ -4,7 +4,7 @@ import judo::types;
 
 type numeric Scaled precision:9 scale:2;
 type string PhoneNumber min-size:0 max-size:32 regex:"^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]\\d{3}[\\s.-]\\d{4}$";   // escape sequencing does not work in regexp!!!!
-type binary Binary mime-type:["text/plain"] max-file-size:1 GB;
+type binary Binary mime-type:["text/plain"] max-file-size:1 GB ;
 type string SmallString min-size:0 max-size:128;
 type string CarId min-size:0 max-size:32 regex:"^\\w{4}-\\d{3}$";
 
@@ -39,6 +39,30 @@ entity MyEntityWithOptionalFields {
 
 }
 
+transfer TransferMyEntityWithOptionalFields (MyEntityWithOptionalFields mapped) {
+    field Boolean boolAttr <=> mapped.boolAttr;
+    field Binary binaryAttr <=> mapped.binaryAttr;
+    field Integer integerAttr <=> mapped.integerAttr;
+    field SmallString stringAttr <=> mapped.stringAttr;
+    field PhoneNumber regexAttr <=> mapped.regexAttr;
+    field Scaled scaledAttr <=> mapped.scaledAttr;
+    field Date dateAttr <=> mapped.dateAttr;
+    field Time timeAttr <=> mapped.timeAttr;
+    field Timestamp timestampAttr <=> mapped.timestampAttr;
+    field MyEnum enumAttr <=> mapped.enumAttr;
+
+    field Boolean derivedBoolAttr  <= mapped.derivedBoolAttr;
+    field Binary derivedBinaryAttr  <= mapped.derivedBinaryAttr;
+    field Integer derivedIntegerAttr  <= mapped.derivedIntegerAttr;
+    field SmallString derivedStringAttr  <= mapped.derivedStringAttr;
+    field PhoneNumber derivedRegexAttr  <= mapped.derivedRegexAttr;
+    field Scaled derivedScaledAttr  <= mapped.derivedScaledAttr;
+    field Date derivedDateAttr  <= mapped.derivedDateAttr;
+    field Time derivedTimeAttr  <= mapped.derivedTimeAttr;
+    field Timestamp derivedTimestampAttr  <= mapped.derivedTimestampAttr;
+    field MyEnum derivedEnumAttr  <= mapped.derivedEnumAttr;
+}
+
 entity FilterEntity {
     relation MyEntityWithOptionalFields[] haveTOnTheStringAttr <= MyEntityWithOptionalFields!all()!filter(e | e.stringAttr!matches(pattern = ".*t.*"));
     relation MyEntityWithOptionalFields[] TestIsTheStringAttr <= MyEntityWithOptionalFields!all()!filter(e | e.stringAttr!matches(pattern = "test"));
@@ -47,7 +71,13 @@ entity FilterEntity {
     relation MyEntityWithOptionalFields[] haveDefinedOnTheStringAttr <= MyEntityWithOptionalFields!all()!filter(e | e.stringAttr!isDefined());
 }
 
-
+transfer TransferFilterEntity (FilterEntity mapped) {
+    relation TransferMyEntityWithOptionalFields[] haveTOnTheStringAttr  <= mapped.haveTOnTheStringAttr;
+    relation TransferMyEntityWithOptionalFields[] TestIsTheStringAttr  <= mapped.TestIsTheStringAttr;
+    relation TransferMyEntityWithOptionalFields[] haveNoMatchOnTheStringAttr  <= mapped.haveNoMatchOnTheStringAttr;
+    relation TransferMyEntityWithOptionalFields[] haveUndefinedOnTheStringAttr  <= mapped.haveUndefinedOnTheStringAttr;
+    relation TransferMyEntityWithOptionalFields[] haveDefinedOnTheStringAttr  <= mapped.haveDefinedOnTheStringAttr;
+}
 
 // navigation in a filter : Car test
 
@@ -65,9 +95,19 @@ entity Country {
     field Continent continent;
 }
 
+transfer TransferCountry (Country mapped) {
+    field String name <=> mapped.name;
+    field Continent continent <=> mapped.continent;
+}
+
 entity City {
     field String name;
     relation Country country;
+}
+
+transfer TransferCity (City mapped) {
+    field String name <=> mapped.name;
+    relation TransferCountry country <=> mapped.country;
 }
 
 entity Person {
@@ -75,9 +115,19 @@ entity Person {
     relation City city;
 }
 
+transfer TransferPerson (Person mapped) {
+    field String name <=> mapped.name;
+    relation TransferCity city <=> mapped.city;
+}
+
 entity Car {
     field String licensePlate;
     relation Person owner;
+}
+
+transfer TransferCar (Car mapped) {
+    field String licensePlate <=> mapped.licensePlate;
+    relation TransferPerson owner <=> mapped.owner;
 }
 
 entity Tester {
@@ -86,3 +136,11 @@ entity Tester {
     relation Car[] carsInHungary <= Car!all()!filter(c | c.owner.city.country.name == "Hungary");
     relation Car[] carsOfKnownContinents <= Car!all()!filter(c | c.owner.city.country.continent!isDefined());
 }
+
+transfer TransferTester (Tester mapped) {
+    relation TransferCar[] carsOfTesztElek <= mapped.carsOfTesztElek;
+    relation TransferCar[] carsInBudapest <= mapped.carsInBudapest;
+    relation TransferCar[] carsInHungary <= mapped.carsInHungary;
+    relation TransferCar[] carsOfKnownContinents <= mapped.carsOfKnownContinents;
+}
+

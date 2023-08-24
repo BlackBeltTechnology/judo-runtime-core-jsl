@@ -8,7 +8,14 @@ type boolean Boolean;
 type date Date;
 type timestamp Timestamp;
 type time Time;
-type binary Binary mime-type:["text/plain"] max-file-size:1 GB;
+type binary Binary mime-type:["text/plain"] max-file-size: 1 GB ;
+
+enum TestLiteral {
+    Aaa01 = 1;
+    Bbb02 = 2;
+    Ccc03 = 9999;
+    ZZ00  = 0;
+}
 
 entity DefaultOperators {
     field Integer rounded = 1.23!round();
@@ -85,12 +92,96 @@ entity DefaultOperators {
     field Boolean csStringNeq = "ABC" != "abc";
 }
 
+transfer TransferDefaultOperators (DefaultOperators mapped) {
+    field Integer rounded <=> mapped.rounded;
+    field Integer unary <=> mapped.unary; // -6
+    field Integer abs <=> mapped.abs;
+    field Integer addition <=> mapped.addition;
+    field Integer subtraction <=> mapped.subtraction;
+    field Integer pow <=> mapped.pow;
+    field Integer multiplication <=> mapped.multiplication;
+    field Scaled division <=> mapped.division;
+    field Integer divisionWhole <=> mapped.divisionWhole;
+    field Integer modulo <=> mapped.modulo;
+    field Boolean lt <=> mapped.lt;
+    field Boolean lt2 <=> mapped.lt2;
+    field Boolean gt <=> mapped.gt;
+    field Boolean gt2 <=> mapped.gt2;
+    field Boolean lte <=> mapped.lte;
+    field Boolean lte2 <=> mapped.lte2;
+    field Boolean gte <=> mapped.gte;
+    field Boolean gte2 <=> mapped.gte2;
+    field Boolean eq <=> mapped.eq;
+    field Boolean neq <=> mapped.neq;
+    field Integer conditional <=> mapped.conditional;
+    field Boolean groupAnd <=> mapped.groupAnd;
+    field Boolean groupOr <=> mapped.groupOr;
+
+    field Integer oneModOne <=> mapped.oneModOne;
+    field Scaled oneModOnePointNine <=> mapped.oneModOnePointNine;
+    field Scaled onePointNineModOnePointNine <=> mapped.onePointNineModOnePointNine;
+    field Scaled onePointNineModOne <=> mapped.onePointNineModOne;
+    field Integer oneDivOne <=> mapped.oneDivOne;
+    field Scaled oneDivOnePointNine <=> mapped.oneDivOnePointNine;
+    field Scaled onePointNineDivOnePointNine <=> mapped.onePointNineDivOnePointNine;
+    field Scaled onePointNineDivOne <=> mapped.onePointNineDivOne;
+
+    field Boolean dateLt <=> mapped.dateLt;
+    field Boolean dateLte <=> mapped.dateLte;
+    field Boolean dateLte2 <=> mapped.dateLte2;
+    field Boolean dateGt <=> mapped.dateGt;
+    field Boolean dateGte <=> mapped.dateGte;
+    field Boolean dateGte2 <=> mapped.dateGte2;
+    field Boolean dateEq <=> mapped.dateEq;
+    field Boolean dateNeq <=> mapped.dateNeq;
+
+    field Boolean timeLt <=> mapped.timeLt;
+    field Boolean timeLte <=> mapped.timeLte;
+    field Boolean timeLte2 <=> mapped.timeLte2;
+    field Boolean timeGt <=> mapped.timeGt;
+    field Boolean timeGte <=> mapped.timeGte;
+    field Boolean timeGte2 <=> mapped.timeGte2;
+    field Boolean timeEq <=> mapped.timeEq;
+    field Boolean timeNeq <=> mapped.timeNeq;
+
+    field Boolean timestampEq <=> mapped.timestampEq;
+    field Boolean timestampNeq <=> mapped.timestampNeq;
+
+    field Boolean stringLt <=> mapped.stringLt;
+    field Boolean stringLte <=> mapped.stringLte;
+    field Boolean stringLte2 <=> mapped.stringLte2;
+    field Boolean stringGt <=> mapped.stringGt;
+    field Boolean stringGte <=> mapped.stringGte;
+    field Boolean stringGte2 <=> mapped.stringGte2;
+    field Boolean stringEq <=> mapped.stringEq;
+    field Boolean stringNeq <=> mapped.stringNeq;
+
+    field Boolean csStringLt <=> mapped.csStringLt;
+    field Boolean csStringLte <=> mapped.csStringLte;
+    field Boolean csStringLte2 <=> mapped.csStringLte2;
+    field Boolean csStringGt <=> mapped.csStringGt;
+    field Boolean csStringGte <=> mapped.csStringGte;
+    field Boolean csStringGte2 <=> mapped.csStringGte2;
+    field Boolean csStringEq <=> mapped.csStringEq;
+    field Boolean csStringEqFalse <=> mapped.csStringEqFalse;
+    field Boolean csStringNeq <=> mapped.csStringNeq;
+}
+
+
 entity DerivedSource {
     field String firstName = "John";
     field String lastName = "Pro";
     field Integer age = 35;
     field Scaled score = 98.75;
 }
+
+transfer TransferDerivedSource (DerivedSource mapped) {
+    field String firstName <=> mapped.firstName;
+    field String lastName <=> mapped.lastName;
+    field Integer age <=> mapped.age;
+    field Scaled score <=> mapped.score;
+}
+
 
 entity DerivedOperators {
     field required DerivedSource source;
@@ -129,3 +220,68 @@ entity DerivedOperators {
     field Boolean conditionalUndefinedTrue <= (self.undefined.age > 2 ? 1 : 2)!isDefined();
     field Boolean conditionalUndefinedFalse <= (self.undefined.age > 2 ? 1 : 2)!isUndefined();
 }
+
+transfer TransferDerivedOperators (DerivedOperators mapped) {
+    @Embedded
+    relation required TransferDerivedSource source <=> mapped.source;
+    @Embedded
+    relation TransferDerivedSource undefined <=> mapped.undefined;
+    field String stringConcat <= mapped.stringConcat;
+    field Integer firstNameLength <= mapped.firstNameLength;
+    field Integer rounded <= mapped.rounded;
+    field Integer addition <= mapped.addition;
+    field Boolean additionTrue <= mapped.additionTrue;
+    field Boolean additionFalse <= mapped.additionFalse;
+    field Boolean additionUndefinedFalse <= mapped.additionUndefinedFalse;
+    field Boolean additionUndefinedTrue <= mapped.additionUndefinedTrue;
+    field Integer subtraction <= mapped.subtraction;
+    field BigInteger pow <= mapped.pow;
+    field Integer multiplication <= mapped.multiplication;
+    field Integer division <= mapped.division;
+    field Integer divisionWhole <= mapped.divisionWhole;
+    field Integer modulo <= mapped.modulo;
+    field Boolean lt <= mapped.lt;
+    field Boolean ltTrue <= mapped.ltTrue;
+    field Boolean ltFalse <= mapped.ltFalse;
+    field Boolean ltUndefinedFalse <= mapped.ltUndefinedFalse;
+    field Boolean ltUndefinedTrue <= mapped.ltUndefinedTrue;
+    field Boolean lt2 <= mapped.lt2;
+    field Boolean gt <= mapped.gt;
+    field Boolean gt2 <= mapped.gt2;
+    field Boolean lte <= mapped.lte;
+    field Boolean lte2 <= mapped.lte2;
+    field Boolean gte <= mapped.gte;
+    field Boolean gte2 <= mapped.gte2;
+    field Boolean eq <= mapped.eq;
+    field Boolean neq <= mapped.neq;
+    field Integer conditional <= mapped.conditional;
+    field Boolean conditionalTrue <= mapped.conditionalTrue;
+    field Boolean conditionalFalse <= mapped.conditionalFalse;
+    field Boolean conditionalUndefinedTrue <= mapped.conditionalUndefinedTrue;
+    field Boolean conditionalUndefinedFalse <= mapped.conditionalUndefinedFalse;
+}
+
+entity E1 {
+    field TestLiteral f1 = TestLiteral#ZZ00;
+    field TestLiteral f2 = TestLiteral#Aaa01;
+    field Boolean f3 <= self.f1 < self.f2;
+    field Boolean f4 <= self.f1 <= self.f2;
+    field Boolean f5 <= self.f1 > self.f2;
+    field Boolean f6 <= self.f1 >= self.f2;
+    field Boolean f7 <= self.f1 == self.f2;
+    field Boolean f8 <= self.f1 != self.f2;
+    field String f9 <= self.f1!asString();
+}
+
+transfer TE1 (E1 mapped){
+    field TestLiteral f1 <=> mapped.f1;
+    field TestLiteral f2  <=> mapped.f2;
+    field Boolean f3 <= mapped.f3;
+    field Boolean f4 <= mapped.f4;
+    field Boolean f5 <= mapped.f5;
+    field Boolean f6 <= mapped.f6;
+    field Boolean f7 <= mapped.f7;
+    field Boolean f8 <= mapped.f8;
+    field String f9 <= mapped.f9;
+}
+
