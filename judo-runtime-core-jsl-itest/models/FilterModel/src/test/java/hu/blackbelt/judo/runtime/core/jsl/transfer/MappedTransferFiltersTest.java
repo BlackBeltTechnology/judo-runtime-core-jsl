@@ -44,8 +44,9 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transfert
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transfertester.TransferTesterDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.FilterDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslFastTest;
+import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeFixture;
 import hu.blackbelt.judo.sdk.query.*;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
@@ -62,7 +63,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Slf4j
-public class MappedTransferFiltersTest extends AbstractJslFastTest {
+public class MappedTransferFiltersTest extends AbstractJslTest {
     @Inject
     TransferMyEntityWithOptionalFieldsDao transferMyEntityWithOptionalFieldsDao;
 
@@ -112,10 +113,10 @@ public class MappedTransferFiltersTest extends AbstractJslFastTest {
     static final MyEnum ENUM_1 = MyEnum.Bombastic;
     static final MyEnum ENUM_2 = MyEnum.Atomic;
 
+    
     @BeforeEach
-    protected void init(JudoDatasourceFixture datasource) {
-        super.init(datasource);
-
+    protected void init(JudoRuntimeFixture fixture) {
+        super.init(fixture);
         transfer1 = transferMyEntityWithOptionalFieldsDao.create(TransferMyEntityWithOptionalFields.builder()
                 .withIntegerAttr(INTEGER_1)
                 .withScaledAttr(SCALED_1)

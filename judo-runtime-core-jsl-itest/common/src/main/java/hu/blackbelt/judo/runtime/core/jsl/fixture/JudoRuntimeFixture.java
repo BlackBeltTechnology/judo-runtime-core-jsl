@@ -1,24 +1,4 @@
-package hu.blackbelt.judo.runtime.core.jsl;
-
-/*-
- * #%L
- * JUDO Runtime Core :: JUDO Language Specification DSL Integration Tests
- * %%
- * Copyright (C) 2018 - 2022 BlackBelt Technology
- * %%
- * This program and the accompanying materials are made available under the
- * terms of the Eclipse Public License 2.0 which is available at
- * http://www.eclipse.org/legal/epl-2.0.
- *
- * This Source Code may also be made available under the following Secondary
- * Licenses when the conditions for such availability set forth in the Eclipse
- * Public License, v. 2.0 are satisfied: GNU General Public License, version 2
- * with the GNU Classpath Exception which is
- * available at https://www.gnu.org/software/classpath/license.html.
- *
- * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
- * #L%
- */
+package hu.blackbelt.judo.runtime.core.jsl.fixture;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -27,51 +7,43 @@ import hu.blackbelt.judo.runtime.core.bootstrap.JudoDefaultModule;
 import hu.blackbelt.judo.runtime.core.bootstrap.JudoModelLoader;
 import hu.blackbelt.judo.runtime.core.bootstrap.dao.rdbms.hsqldb.JudoHsqldbModules;
 import hu.blackbelt.judo.runtime.core.bootstrap.dao.rdbms.postgresql.JudoPostgresqlModules;
+import hu.blackbelt.judo.runtime.core.dao.rdbms.Dialect;
 import hu.blackbelt.judo.runtime.core.dao.rdbms.hsqldb.HsqldbDialect;
 import hu.blackbelt.judo.runtime.core.dao.rdbms.postgresql.PostgresqlDialect;
-import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceByClassExtension;
-import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.slf4j.bridge.SLF4JBridgeHandler;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.testcontainers.containers.JdbcDatabaseContainer;
+import uk.org.lidalia.sysoutslf4j.context.SysOutOverSLF4J;
 
 import java.io.File;
-import java.util.Arrays;
 
 import static hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture.DIALECT_HSQLDB;
 import static hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture.DIALECT_POSTGRESQL;
 
 @Slf4j
-@ExtendWith(JudoDatasourceByClassExtension.class)
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public abstract class AbstractJslFastTest {
+public class JudoRuntimeFixture {
+
+    static {
+        SLF4JBridgeHandler.install();
+        SysOutOverSLF4J.sendSystemOutAndErrToSLF4J();
+    }
 
     public static final String MODEL_SOURCES = "target/generated-test-sources/model";
 
     Injector injector;
 
-    protected TransactionStatus transactionStatus;
+    private TransactionStatus transactionStatus;
 
     private PlatformTransactionManager transactionManager;
 
-    public abstract Module getModelDaoModule();
-
-    public abstract String getModelName();
-
-    @BeforeAll
-    protected void initDB(JudoDatasourceFixture datasource) throws Exception {
-
+    public void init(String modelName, Module module,Object injectModulesTo, JudoDatasourceFixture datasource)  throws Exception {
         JudoModelLoader modelHolder;
 
         if (DIALECT_POSTGRESQL.equals(datasource.getDialect())) {
-            modelHolder = JudoModelLoader.loadFromDirectory(getModelName(), new File(MODEL_SOURCES), new PostgresqlDialect(), true);
+            modelHolder = JudoModelLoader.loadFromDirectory(modelName, new File(MODEL_SOURCES), new PostgresqlDialect(), true);
             JdbcDatabaseContainer sqlContainer = datasource.getSqlContainer();
             JudoPostgresqlModules judoPostgresqlModules = JudoPostgresqlModules.builder()
                     .databaseName(sqlContainer.getDatabaseName())
@@ -80,23 +52,18 @@ public abstract class AbstractJslFastTest {
                     .port(sqlContainer.getFirstMappedPort())
                     .build();
 
-            injector = Guice.createInjector(judoPostgresqlModules, getModelDaoModule(), new JudoDefaultModule(this, modelHolder));
+            injector = Guice.createInjector(judoPostgresqlModules, module, new JudoDefaultModule(injectModulesTo, modelHolder));
         } else if (DIALECT_HSQLDB.equals(datasource.getDialect())) {
-            modelHolder = JudoModelLoader.loadFromDirectory(getModelName(), new File(MODEL_SOURCES), new HsqldbDialect(), true);
-            injector = Guice.createInjector(JudoHsqldbModules.builder().build(), getModelDaoModule(), new JudoDefaultModule(this, modelHolder));
+            modelHolder = JudoModelLoader.loadFromDirectory(modelName, new File(MODEL_SOURCES), new HsqldbDialect(), true);
+
+
+            injector = Guice.createInjector(JudoHsqldbModules.builder().build(), module, new JudoDefaultModule(injectModulesTo, modelHolder));
         } else {
             throw new IllegalArgumentException("Unsupported dialect: " + datasource.getDialect());
         }
-
     }
 
-    @BeforeEach
-    protected void init(JudoDatasourceFixture datasource) {
-        beginTransaction();
-    }
-
-    @AfterEach
-    void tearDown() {
+    public void tearDown() {
         rollbackTransaction();
     }
 
@@ -107,29 +74,29 @@ public abstract class AbstractJslFastTest {
         return transactionManager;
     }
 
-    protected void beginTransaction() {
+    public void beginTransaction() {
         if (transactionStatus != null && !transactionStatus.isCompleted()) {
             throw new IllegalStateException("Previous transaction was not completed");
         }
         transactionStatus = getTransactionManager().getTransaction(new DefaultTransactionDefinition());
     }
 
-    protected void commitTransaction() {
+    public void commitTransaction() {
         checkTransactionStatus();
         getTransactionManager().commit(transactionStatus);
     }
 
-    protected void rollbackTransaction() {
+    public void rollbackTransaction() {
         checkTransactionStatus();
         getTransactionManager().rollback(transactionStatus);
     }
 
-    protected Object createSavePoint() {
+    public Object createSavePoint() {
         checkTransactionStatus();
         return transactionStatus.createSavepoint();
     }
 
-    protected void rollbackToSavePoint(Object savePoint) {
+    public void rollbackToSavePoint(Object savePoint) {
         checkTransactionStatus();
         transactionStatus.rollbackToSavepoint(savePoint);
     }
@@ -141,11 +108,6 @@ public abstract class AbstractJslFastTest {
         if (transactionStatus.isCompleted()) {
             throw new IllegalStateException("Transaction was already completed");
         }
-    }
-
-    public boolean hasMethodWithName(String methodName,Object object) {
-        return Arrays.stream(object.getClass().getDeclaredMethods())
-                .anyMatch(f -> f.getName().equals(methodName));
     }
 
 }

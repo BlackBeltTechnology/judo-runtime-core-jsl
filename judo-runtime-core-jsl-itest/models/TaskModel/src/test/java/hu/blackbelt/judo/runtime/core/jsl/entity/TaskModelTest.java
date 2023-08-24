@@ -34,7 +34,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.taskmodel.taskmodel.tas
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.taskmodel.taskmodel.workplace.Workplace;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.TaskModelDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslFastTest;
+import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -47,7 +47,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Slf4j
-public class TaskModelTest extends AbstractJslFastTest {
+public class TaskModelTest extends AbstractJslTest {
 
     @Inject
     PersonDao personDao;

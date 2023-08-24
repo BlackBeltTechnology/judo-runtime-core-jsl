@@ -42,7 +42,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.der
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.OperatorsDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslFastTest;
+import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
@@ -52,7 +52,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @Slf4j
-public class MappedTransferOperatorsTest extends AbstractJslFastTest {
+public class MappedTransferOperatorsTest extends AbstractJslTest {
 
     @Inject
     DefaultOperatorsDao defaultOperatorsDao;

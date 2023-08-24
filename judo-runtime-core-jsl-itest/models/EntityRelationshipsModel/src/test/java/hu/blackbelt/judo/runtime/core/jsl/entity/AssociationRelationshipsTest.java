@@ -39,8 +39,9 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationship
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.AssociationRelationshipsDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslFastTest;
+import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeFixture;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -53,7 +54,7 @@ import static org.hamcrest.Matchers.hasItems;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
-public class AssociationRelationshipsTest extends AbstractJslFastTest {
+public class AssociationRelationshipsTest extends AbstractJslTest {
     @Inject
     EntityADao entityADao;
 
@@ -74,8 +75,8 @@ public class AssociationRelationshipsTest extends AbstractJslFastTest {
     EntityA entityA;
 
     @BeforeEach
-    protected void init(JudoDatasourceFixture datasource) {
-        super.init(datasource);
+    protected void init(JudoRuntimeFixture fixture) {
+        super.init(fixture);
         entityD = entityDDao.create(EntityD.builder()
                 .build());
         entityC = entityCDao.create(EntityC.builder()

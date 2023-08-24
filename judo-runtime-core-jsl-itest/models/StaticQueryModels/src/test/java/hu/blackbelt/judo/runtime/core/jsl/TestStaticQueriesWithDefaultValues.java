@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Slf4j
-public class TestStaticQueriesWithDefaultValues extends AbstractJslFastTest {
+public class TestStaticQueriesWithDefaultValues extends AbstractJslTest {
 
     @Inject
     MyEntityDao myEntityDao;

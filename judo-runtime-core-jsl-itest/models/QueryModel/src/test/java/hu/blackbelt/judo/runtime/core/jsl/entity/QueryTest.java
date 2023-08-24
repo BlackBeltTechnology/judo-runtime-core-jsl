@@ -33,7 +33,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.querymodel.querymodel.r
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.querymodel.querymodel.totalnumberofleads.TotalNumberOfLeadsDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.QueryModelDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslFastTest;
+import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
@@ -43,7 +43,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
-public class QueryTest extends AbstractJslFastTest {
+public class QueryTest extends AbstractJslTest {
     @Inject
     TotalNumberOfLeadsDao totalNumberOfLeadsDao;
 

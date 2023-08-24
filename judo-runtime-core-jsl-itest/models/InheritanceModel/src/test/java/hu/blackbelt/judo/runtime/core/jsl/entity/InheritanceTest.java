@@ -13,7 +13,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.InheritanceDaoModules
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslFastTest;
+import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.hamcrest.Matcher;
@@ -29,7 +29,7 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
-public class InheritanceTest extends AbstractJslFastTest {
+public class InheritanceTest extends AbstractJslTest {
 
     @Override
     public Module getModelDaoModule() {

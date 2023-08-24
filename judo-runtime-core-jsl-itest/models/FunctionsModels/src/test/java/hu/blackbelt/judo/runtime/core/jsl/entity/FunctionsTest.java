@@ -71,8 +71,9 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.sim
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.FunctionsDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslFastTest;
+import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeFixture;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
 
@@ -83,7 +84,7 @@ import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
-public class FunctionsTest extends AbstractJslFastTest {
+public class FunctionsTest extends AbstractJslTest {
     @Inject
     EntityDao entityDao;
 
@@ -150,8 +151,8 @@ public class FunctionsTest extends AbstractJslFastTest {
     SimpleDao simpleDao;
 
     @BeforeEach
-    protected void init(JudoDatasourceFixture datasource) {
-        super.init(datasource);
+    protected void init(JudoRuntimeFixture fixture) {
+        super.init(fixture);
         Entity entity = entityDao
                         .create(Entity.builder().build());
         EntityWithPrimitiveDefaults entityWithPrimitiveDefaults = entityWithPrimitiveDefaultsDao

@@ -29,7 +29,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containsmodel.containsm
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containsmodel.containsmodel.b.BDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.ContainsModelDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslFastTest;
+import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
@@ -39,7 +39,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Slf4j
-public class ContainsTest extends AbstractJslFastTest {
+public class ContainsTest extends AbstractJslTest {
 
     @Inject
     ADao aDao;

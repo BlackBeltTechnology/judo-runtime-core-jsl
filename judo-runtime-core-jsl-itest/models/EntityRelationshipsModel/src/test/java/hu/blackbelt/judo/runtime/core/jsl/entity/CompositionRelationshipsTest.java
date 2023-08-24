@@ -51,8 +51,9 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationship
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.CompositionRelationshipsDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslFastTest;
+import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeFixture;
 import lombok.extern.slf4j.Slf4j;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.BeforeEach;
@@ -68,7 +69,7 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
-public class CompositionRelationshipsTest extends AbstractJslFastTest {
+public class CompositionRelationshipsTest extends AbstractJslTest {
     @Inject
     EntityADao entityADao;
 
@@ -110,8 +111,8 @@ public class CompositionRelationshipsTest extends AbstractJslFastTest {
 
 
     @BeforeEach
-    protected void init(JudoDatasourceFixture datasource) {
-        super.init(datasource);
+    public void init(JudoRuntimeFixture fixture) {
+        super.init(fixture);
 
         entityD1 = entityDDao.create(EntityD.builder()
                 .build());

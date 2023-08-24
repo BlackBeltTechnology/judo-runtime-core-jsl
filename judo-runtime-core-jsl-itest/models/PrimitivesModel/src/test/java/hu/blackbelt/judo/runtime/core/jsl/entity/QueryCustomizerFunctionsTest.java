@@ -30,8 +30,9 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.m
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.myenum.MyEnum;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.PrimitivesDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslFastTest;
+import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeFixture;
 import hu.blackbelt.judo.sdk.query.StringFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
@@ -42,7 +43,7 @@ import java.time.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Slf4j
-public class QueryCustomizerFunctionsTest extends AbstractJslFastTest {
+public class QueryCustomizerFunctionsTest extends AbstractJslTest {
     @Inject
     MyEntityWithOptionalFieldsDao myEntityWithOptionalFieldsDao;
 
@@ -51,8 +52,8 @@ public class QueryCustomizerFunctionsTest extends AbstractJslFastTest {
     MyEntityWithOptionalFields entity2;
 
     @BeforeEach
-    protected void init(JudoDatasourceFixture datasource) {
-        super.init(datasource);
+    protected void init(JudoRuntimeFixture fixture) {
+        super.init(fixture);
 
         entity1 = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
                 .withIntegerAttr(2)

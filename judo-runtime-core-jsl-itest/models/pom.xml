@@ -45,6 +45,7 @@
         <module>TransferConstructorModel</module>
         <module>RecursiveCompositionModel</module>
         <module>RelationCreateWithAttachmentTestModel</module>
+        <module>BigModels</module>
     </modules>
 
     <build>
