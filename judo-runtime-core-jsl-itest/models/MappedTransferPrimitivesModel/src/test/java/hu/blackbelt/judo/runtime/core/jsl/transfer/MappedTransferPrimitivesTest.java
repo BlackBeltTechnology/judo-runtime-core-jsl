@@ -22,7 +22,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.MappedTransferPrimiti
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
+import hu.blackbelt.judo.runtime.core.jsl.AbstractJslWithOneInjectionTest;
 import lombok.extern.slf4j.Slf4j;
 import org.hamcrest.*;
 import org.junit.jupiter.api.Disabled;
@@ -41,7 +41,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
-public class MappedTransferPrimitivesTest extends AbstractJslTest {
+public class MappedTransferPrimitivesTest extends AbstractJslWithOneInjectionTest {
 
     @Override
     public Module getModelDaoModule() {

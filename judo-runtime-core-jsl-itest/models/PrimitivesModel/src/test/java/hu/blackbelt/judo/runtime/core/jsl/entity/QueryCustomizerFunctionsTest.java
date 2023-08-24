@@ -30,7 +30,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.m
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.myenum.MyEnum;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.PrimitivesDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
+import hu.blackbelt.judo.runtime.core.jsl.AbstractJslWithOneInjectionTest;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
 import hu.blackbelt.judo.sdk.query.StringFilter;
 import lombok.extern.slf4j.Slf4j;
@@ -43,7 +43,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Slf4j
-public class QueryCustomizerFunctionsTest extends AbstractJslTest {
+public class QueryCustomizerFunctionsTest extends AbstractJslWithOneInjectionTest {
     @Inject
     MyEntityWithOptionalFieldsDao myEntityWithOptionalFieldsDao;
 
@@ -52,7 +52,7 @@ public class QueryCustomizerFunctionsTest extends AbstractJslTest {
     MyEntityWithOptionalFields entity2;
 
     @BeforeEach
-    protected void init(JudoDatasourceFixture datasource) throws Exception {
+    protected void init(JudoDatasourceFixture datasource) {
         super.init(datasource);
 
         entity1 = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()

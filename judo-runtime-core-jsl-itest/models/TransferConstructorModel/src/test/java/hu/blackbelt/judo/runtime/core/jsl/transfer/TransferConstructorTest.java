@@ -7,7 +7,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferconstructor.tra
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferconstructor.transferconstructor.mappedentitywithmultirelation.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferconstructor.transferconstructor.mappedentitywithsinglerelation.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.TransferConstructorDaoModules;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
+import hu.blackbelt.judo.runtime.core.jsl.AbstractJslWithOneInjectionTest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Slf4j
-public class TransferConstructorTest extends AbstractJslTest {
+public class TransferConstructorTest extends AbstractJslWithOneInjectionTest {
 
     @Override
     public Module getModelDaoModule() {

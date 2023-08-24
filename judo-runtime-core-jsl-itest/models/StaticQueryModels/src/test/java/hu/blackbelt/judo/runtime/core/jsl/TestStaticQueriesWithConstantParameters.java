@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Slf4j
-public class TestStaticQueriesWithConstantParameters extends AbstractJslTest {
+public class TestStaticQueriesWithConstantParameters extends AbstractJslWithOneInjectionTest {
 
     @Inject
     MyEntityDao myEntityDao;

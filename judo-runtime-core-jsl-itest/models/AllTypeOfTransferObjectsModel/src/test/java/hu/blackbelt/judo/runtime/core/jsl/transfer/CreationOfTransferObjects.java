@@ -13,7 +13,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.alltypeoftransferobject
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.AllTypeOfTransferObjectsDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
+import hu.blackbelt.judo.runtime.core.jsl.AbstractJslWithOneInjectionTest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
@@ -22,7 +22,7 @@ import java.util.Locale;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
-public class CreationOfTransferObjects extends AbstractJslTest {
+public class CreationOfTransferObjects extends AbstractJslWithOneInjectionTest {
 
     @Override
     public Module getModelDaoModule() {

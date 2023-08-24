@@ -71,7 +71,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.tra
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.FunctionsDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
+import hu.blackbelt.judo.runtime.core.jsl.AbstractJslWithOneInjectionTest;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
@@ -85,7 +85,7 @@ import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
-public class MappedTransferFunctionsTest extends AbstractJslTest {
+public class MappedTransferFunctionsTest extends AbstractJslWithOneInjectionTest {
     @Inject
     TransferEntityDao transferEntityDao;
 
@@ -152,7 +152,7 @@ public class MappedTransferFunctionsTest extends AbstractJslTest {
     TransferSimpleDao transferSimpleDao;
 
     @BeforeEach
-    protected void init(JudoDatasourceFixture datasource) throws Exception {
+    protected void init(JudoDatasourceFixture datasource) {
         super.init(datasource);
         TransferEntity tentity = transferEntityDao
                         .create(TransferEntity.builder().build());

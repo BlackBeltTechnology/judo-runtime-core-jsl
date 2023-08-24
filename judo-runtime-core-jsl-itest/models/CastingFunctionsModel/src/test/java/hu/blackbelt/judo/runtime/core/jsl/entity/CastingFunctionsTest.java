@@ -33,7 +33,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castin
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.b.BIdentifier;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.CastingFunctionsDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
+import hu.blackbelt.judo.runtime.core.jsl.AbstractJslWithOneInjectionTest;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
@@ -44,7 +44,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
-public class CastingFunctionsTest extends AbstractJslTest {
+public class CastingFunctionsTest extends AbstractJslWithOneInjectionTest {
 
     @Inject
     BDao bDao;
@@ -67,7 +67,7 @@ public class CastingFunctionsTest extends AbstractJslTest {
 
     @Override
     @BeforeEach
-    protected void init(JudoDatasourceFixture datasource) throws Exception {
+    protected void init(JudoDatasourceFixture datasource) {
         super.init(datasource);
         CA ca = caDao.create(CA.builder().withNameA("aca1").withNameB("bca1").withNameCA("ca1").build());
         CA ca1 = caDao.create(CA.builder().withNameA("aca2").withNameB("bca2").withNameCA("ca2").build());

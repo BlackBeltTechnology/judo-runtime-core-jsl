@@ -12,7 +12,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfercolle
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.AutoMappedTransferCollectionEntityDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
+import hu.blackbelt.judo.runtime.core.jsl.AbstractJslWithOneInjectionTest;
 import lombok.extern.slf4j.Slf4j;
 import org.hamcrest.Matcher;
 import org.junit.jupiter.api.Test;
@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 @Slf4j
-public class AutoMappedTransferObjectCollectionEntityTest extends AbstractJslTest {
+public class AutoMappedTransferObjectCollectionEntityTest extends AbstractJslWithOneInjectionTest {
 
     @Override
     public Module getModelDaoModule() {
