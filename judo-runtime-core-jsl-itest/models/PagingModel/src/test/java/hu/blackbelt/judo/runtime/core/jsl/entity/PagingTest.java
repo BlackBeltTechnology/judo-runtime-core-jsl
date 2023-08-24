@@ -33,13 +33,12 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.paging.paging.logentry.
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.PagingDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslWithOneInjectionTest;
+import hu.blackbelt.judo.runtime.core.jsl.AbstractJslFastTest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
 import java.time.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
@@ -51,7 +50,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Slf4j
-public class PagingTest extends AbstractJslWithOneInjectionTest {
+public class PagingTest extends AbstractJslFastTest {
     @Inject
     ItemDao itemDao;
 

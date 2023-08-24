@@ -33,17 +33,16 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.tes
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.OperatorsDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslWithOneInjectionTest;
+import hu.blackbelt.judo.runtime.core.jsl.AbstractJslFastTest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
-import static hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture.DIALECT_HSQLDB;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
-public class OperatorsTest extends AbstractJslWithOneInjectionTest {
+public class OperatorsTest extends AbstractJslFastTest {
     @Inject
     DefaultOperatorsDao defaultOperatorsDao;
 

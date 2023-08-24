@@ -51,7 +51,7 @@ import static hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture.D
 @Slf4j
 @ExtendWith(JudoDatasourceByClassExtension.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public abstract class AbstractJslWithOneInjectionTest {
+public abstract class AbstractJslFastTest {
 
     public static final String MODEL_SOURCES = "target/generated-test-sources/model";
 
