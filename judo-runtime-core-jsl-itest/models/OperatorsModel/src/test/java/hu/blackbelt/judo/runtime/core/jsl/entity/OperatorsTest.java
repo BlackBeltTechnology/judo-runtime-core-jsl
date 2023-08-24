@@ -39,7 +39,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
-import static hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture.DIALECT_HSQLDB;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j

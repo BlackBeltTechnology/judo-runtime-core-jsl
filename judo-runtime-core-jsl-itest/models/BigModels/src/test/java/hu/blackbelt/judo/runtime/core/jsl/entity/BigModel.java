@@ -1,4 +1,4 @@
-package hu.blackbelt.judo.runtime.core.jsl;
+package hu.blackbelt.judo.runtime.core.jsl.entity;
 
 /*-
  * #%L
@@ -20,48 +20,58 @@ package hu.blackbelt.judo.runtime.core.jsl;
  * #L%
  */
 
+import com.google.inject.Inject;
 import com.google.inject.Module;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.simple.Simple;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.simple.SimpleDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.FunctionsDaoModules;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceByClassExtension;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeFixture;
+import liquibase.pro.packaged.A;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.After;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import java.util.Arrays;
-
 @Slf4j
 @ExtendWith({JudoDatasourceByClassExtension.class, JudoRuntimeExtension.class})
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public abstract class AbstractJslTest {
+public class BigModel {
 
-    public abstract Module getModelDaoModule();
-
-    public abstract String getModelName();
-
-    @BeforeAll
-    protected void initDB(JudoRuntimeFixture fixture, JudoDatasourceFixture datasource) throws Exception {
-        fixture.init(getModelName(),getModelDaoModule(),this, datasource);
-    }
+    @Inject
+    SimpleDao simpleDao;
 
     @BeforeEach
-    protected void init(JudoRuntimeFixture fixture) {
+    protected void init(JudoRuntimeFixture fixture, JudoDatasourceFixture datasource) throws Exception {
+        fixture.init(getModelName(), getModelDaoModule(),this, datasource);
         fixture.beginTransaction();
     }
 
     @AfterEach
-    protected void endTransaction(JudoRuntimeFixture fixture) {
+    protected void init(JudoRuntimeFixture fixture) {
         fixture.tearDown();
     }
 
+    public Module getModelDaoModule() {
+        return  new FunctionsDaoModules();
+    }
 
-    public boolean hasMethodWithName(String methodName,Object object) {
-        return Arrays.stream(object.getClass().getDeclaredMethods())
-                .anyMatch(f -> f.getName().equals(methodName));
+    public String getModelName() {
+        return "Functions";
+    }
+
+    @Test
+    public void testFirst() {
+        Simple s1 = simpleDao.create(Simple.builder().withStringAttr("A").build());
+    }
+
+    @Test
+    public void testFirst1() {
+        Simple s1 = simpleDao.create(Simple.builder().withStringAttr("A").build());
     }
 
 }

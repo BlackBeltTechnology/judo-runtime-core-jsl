@@ -26,6 +26,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transactionmanagementmo
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transactionmanagementmodel.transactionmanagementmodel.tester.TesterDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.TransactionManagementModelDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeFixture;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
@@ -53,21 +54,21 @@ public class TransactionManagementTest extends AbstractJslTest {
             "REQ-ENT-001",
             "REQ-ENT-002"
     })
-    void testManualTransactionManagementCommitAndRollback() {
+    void testManualTransactionManagementCommitAndRollback(JudoRuntimeFixture fixture) {
         // beginTransaction(); in BeforeEach
 
         Tester tester = testerDao.create(Tester.builder().withName("TEST-A").build());
 
-        commitTransaction();
-        beginTransaction();
+        fixture.commitTransaction();
+        fixture.beginTransaction();
 
         assertEquals("TEST-A", testerDao.getById(tester.identifier()).orElseThrow().getName());
 
         tester.setName("BLAAA");
         testerDao.update(tester);
 
-        rollbackTransaction();
-        beginTransaction();
+        fixture.rollbackTransaction();
+        fixture.beginTransaction();
 
         assertEquals("TEST-A", testerDao.getById(tester.identifier()).orElseThrow().getName());
 

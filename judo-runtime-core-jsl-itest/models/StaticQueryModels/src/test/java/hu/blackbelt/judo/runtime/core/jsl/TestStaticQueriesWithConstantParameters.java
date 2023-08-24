@@ -15,7 +15,6 @@ import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
-import org.testcontainers.shaded.com.fasterxml.jackson.databind.ser.std.UUIDSerializer;
 
 import java.io.Serializable;
 import java.time.*;

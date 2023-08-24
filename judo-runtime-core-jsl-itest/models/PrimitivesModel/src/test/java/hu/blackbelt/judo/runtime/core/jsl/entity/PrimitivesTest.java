@@ -54,7 +54,6 @@ import java.time.*;
 import java.util.List;
 import java.util.Optional;
 
-import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;

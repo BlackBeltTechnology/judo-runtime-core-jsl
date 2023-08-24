@@ -2,8 +2,6 @@ package hu.blackbelt.judo.runtime.core.jsl.transfer;
 
 import com.google.inject.Inject;
 import com.google.inject.Module;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfercollectionentity.automappedtransfercollectionentity.collectionentity.CollectionEntity;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfercollectionentity.automappedtransfercollectionentity.referenceentity.ReferenceEntity;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfercollectionentity.automappedtransfercollectionentity.transfercollectionentity.TransferCollectionEntity;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfercollectionentity.automappedtransfercollectionentity.transfercollectionentity.TransferCollectionEntityAttachedRelationsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfercollectionentity.automappedtransfercollectionentity.transfercollectionentity.TransferCollectionEntityDao;
@@ -14,7 +12,6 @@ import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
 import lombok.extern.slf4j.Slf4j;
-import org.hamcrest.Matcher;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

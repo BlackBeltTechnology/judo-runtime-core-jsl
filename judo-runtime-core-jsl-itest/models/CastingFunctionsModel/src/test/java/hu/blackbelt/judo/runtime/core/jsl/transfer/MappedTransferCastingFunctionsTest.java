@@ -44,6 +44,7 @@ import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeFixture;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -87,8 +88,8 @@ public class MappedTransferCastingFunctionsTest extends AbstractJslTest {
 
     @Override
     @BeforeEach
-    protected void init(JudoDatasourceFixture datasource) throws Exception {
-        super.init(datasource);
+    protected void init(JudoRuntimeFixture fixture) {
+        super.init(fixture);
         TCA tca = tcaDao.create(TCA.builder().withNameA("aca1").withNameB("bca1").withNameCA("ca1").build());
         TCA tca1 = tcaDao.create(TCA.builder().withNameA("aca2").withNameB("bca2").withNameCA("ca2").build());
         TCA tca2 = tcaDao.create(TCA.builder().withNameA("aca3").withNameB("bca3").withNameCA("ca3").build());
