@@ -27,12 +27,12 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <surefire-version>3.0.0-M7</surefire-version>
-        <slf4j-version>1.7.36</slf4j-version>
+        <slf4j-version>2.0.7</slf4j-version>
 
         <osgi-default-import>
             org.osgi.framework;version="[1.8,2.0)",
             !lombok,
-            org.slf4j;version="[1.6,2)",
+            org.slf4j;version="(1.6,3]",
             javax.annotation;version="[1.0,2)"
         </osgi-default-import>
         <osgi-transaction-import>
@@ -40,12 +40,12 @@
             javax.resource;version="[1.6,2)"
         </osgi-transaction-import>
 
-        <judo-tatami-jsl-version>1.1.4.20230824_042044_affd037f_develop</judo-tatami-jsl-version>
-        <judo-runtime-core-version>1.0.6.20230824_041623_e4426618_develop</judo-runtime-core-version>
-        <judo-psm-generator-sdk-core-version>1.0.0.20230818_054940_535764f1_develop</judo-psm-generator-sdk-core-version>
+        <judo-tatami-jsl-version>1.1.4.20230825_133814_0f9a0f3e_feature_JNG_5144_ReplaceLogger</judo-tatami-jsl-version>
+        <judo-runtime-core-version>1.0.6.20230825_133358_5ccc221f_feature_JNG_5144_ReplaceLogger</judo-runtime-core-version>
+        <judo-psm-generator-sdk-core-version>1.0.0.20230825_132724_f95d8707_feature_JNG_5144_ReplaceLogger</judo-psm-generator-sdk-core-version>
 
 
-        <judo-meta-psm-version>1.3.0.20230817_041451_c7d94464_develop</judo-meta-psm-version>
+        <judo-meta-psm-version>1.3.0.20230825_132053_b1519e68_feature_JNG_5144_ReplaceLogger</judo-meta-psm-version>
 
         <!-- Code Quality-->
         <sonar-maven-plugin-version>3.9.1.2184</sonar-maven-plugin-version>
