@@ -153,8 +153,8 @@ public class MappedTransferFunctionsTest extends AbstractJslTest {
     TransferSimpleDao transferSimpleDao;
 
     @BeforeEach
-    protected void init(JudoRuntimeFixture fixture) {
-        super.init(fixture);
+    protected void init(JudoRuntimeFixture fixture, JudoDatasourceFixture source) {
+        super.init(fixture, source);
         TransferEntity tentity = transferEntityDao
                         .create(TransferEntity.builder().build());
         TransferEntityWithPrimitiveDefaults entityWithPrimitiveDefaults = transferEntityWithPrimitiveDefaultsDao
@@ -171,8 +171,8 @@ public class MappedTransferFunctionsTest extends AbstractJslTest {
         return  new FunctionsDaoModules();
     }
 
-    @Override
-    public String getModelName() {
+
+    static public String getModelName() {
         return "Functions";
     }
 

@@ -32,11 +32,10 @@ import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeFixture;
 import liquibase.pro.packaged.A;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.After;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
+
+import static org.junit.Assert.assertEquals;
 
 @Slf4j
 @ExtendWith({JudoDatasourceByClassExtension.class, JudoRuntimeExtension.class})
@@ -45,9 +44,15 @@ public class BigModel {
     @Inject
     SimpleDao simpleDao;
 
+    @BeforeAll
+    static public void initOnce(JudoRuntimeFixture fixture, JudoDatasourceFixture datasource) throws Exception {
+        fixture.initOnce("Functions", datasource);
+    }
+
+
     @BeforeEach
     protected void init(JudoRuntimeFixture fixture, JudoDatasourceFixture datasource) throws Exception {
-        fixture.init(getModelName(), getModelDaoModule(),this, datasource);
+        fixture.initInject(getModelName(), getModelDaoModule(),this, datasource);
         fixture.beginTransaction();
     }
 
@@ -73,5 +78,40 @@ public class BigModel {
     public void testFirst1() {
         Simple s1 = simpleDao.create(Simple.builder().withStringAttr("A").build());
     }
+
+
+    @Test
+    public void testFirst2() {
+        Simple s1 = simpleDao.create(Simple.builder().withStringAttr("A").build());
+
+        assertEquals(1,simpleDao.countAll());
+    }
+
+    @Test
+    public void testFirst3() {
+        Simple s1 = simpleDao.create(Simple.builder().withStringAttr("A").build());
+    }
+
+
+    @Test
+    public void testFirst4() {
+        Simple s1 = simpleDao.create(Simple.builder().withStringAttr("A").build());
+    }
+
+
+    @Test
+    public void testFirst5() {
+        Simple s1 = simpleDao.create(Simple.builder().withStringAttr("A").build());
+    }
+
+    @Test
+    public void testFirst6() {
+        Simple s1 = simpleDao.create(Simple.builder().withStringAttr("A").build());
+    }
+    @Test
+    public void testFirst7() {
+        Simple s1 = simpleDao.create(Simple.builder().withStringAttr("A").build());
+    }
+
 
 }

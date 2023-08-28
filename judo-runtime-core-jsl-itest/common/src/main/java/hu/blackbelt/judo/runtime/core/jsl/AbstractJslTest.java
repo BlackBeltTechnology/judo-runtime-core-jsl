@@ -36,20 +36,20 @@ import java.util.Arrays;
 
 @Slf4j
 @ExtendWith({JudoDatasourceByClassExtension.class, JudoRuntimeExtension.class})
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public abstract class AbstractJslTest {
 
     public abstract Module getModelDaoModule();
 
-    public abstract String getModelName();
+    static public String getModelName(){return null;}
 
     @BeforeAll
-    protected void initDB(JudoRuntimeFixture fixture, JudoDatasourceFixture datasource) throws Exception {
-        fixture.init(getModelName(),getModelDaoModule(),this, datasource);
+    protected static void initDB(JudoRuntimeFixture fixture, JudoDatasourceFixture datasource) throws Exception {
+        fixture.initOnce("Functions", datasource);
     }
 
     @BeforeEach
-    protected void init(JudoRuntimeFixture fixture) {
+    protected void init(JudoRuntimeFixture fixture, JudoDatasourceFixture datasource) {
+        fixture.initInject(getModelName(),getModelDaoModule(),this, datasource);
         fixture.beginTransaction();
     }
 
@@ -57,7 +57,6 @@ public abstract class AbstractJslTest {
     protected void endTransaction(JudoRuntimeFixture fixture) {
         fixture.tearDown();
     }
-
 
     public boolean hasMethodWithName(String methodName,Object object) {
         return Arrays.stream(object.getClass().getDeclaredMethods())
