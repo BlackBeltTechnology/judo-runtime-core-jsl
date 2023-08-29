@@ -25,11 +25,14 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencem
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.EnvironmentAndSequenceModelDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceByClassExtension;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeFixture;
 import hu.blackbelt.judo.runtime.core.jsl.util.EnvironmentVariableMocker;
 import hu.blackbelt.judo.runtime.core.jsl.util.EnvironmentVariables;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.time.*;
 import java.util.Map;
@@ -56,7 +59,8 @@ import static org.junit.jupiter.api.Assertions.*;
  * #L%
  */
 
-public class EnvironmentAndSequenceTest extends AbstractJslTest {
+@ExtendWith({JudoDatasourceByClassExtension.class, JudoRuntimeExtension.class})
+public class EnvironmentAndSequenceTest {
 
     @Inject
     EnvVars1Dao envVars1Dao;
@@ -79,14 +83,25 @@ public class EnvironmentAndSequenceTest extends AbstractJslTest {
     @Inject
     SequencesDao sequencesDao;
 
-    @Override
     public Module getModelDaoModule() {
         return new EnvironmentAndSequenceModelDaoModules();
     }
 
-    @Override
-    public String getModelName() {
+    static public String getModelName() {
         return "EnvironmentAndSequenceModel";
+    }
+
+
+    @BeforeEach
+    protected void init(JudoRuntimeFixture fixture, JudoDatasourceFixture datasource) throws Exception {
+        fixture.prepare(getModelName(), datasource);
+        fixture.init(getModelDaoModule(),this, datasource);
+        fixture.beginTransaction();
+    }
+
+    @AfterEach
+    protected void tearDown(JudoRuntimeFixture fixture) {
+        fixture.tearDown();
     }
 
     /**

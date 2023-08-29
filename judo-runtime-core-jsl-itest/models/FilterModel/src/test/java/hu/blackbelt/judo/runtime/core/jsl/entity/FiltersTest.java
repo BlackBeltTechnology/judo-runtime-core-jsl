@@ -44,15 +44,22 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.tester.Te
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.tester.TesterDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.FilterDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceByClassExtension;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeFixture;
 import hu.blackbelt.judo.sdk.query.*;
 import lombok.extern.slf4j.Slf4j;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-import java.time.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -61,7 +68,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Slf4j
-public class FiltersTest extends AbstractJslTest {
+@ExtendWith({JudoDatasourceByClassExtension.class, JudoRuntimeExtension.class})
+public class FiltersTest {
     @Inject
     MyEntityWithOptionalFieldsDao myEntityWithOptionalFieldsDao;
 
@@ -110,9 +118,16 @@ public class FiltersTest extends AbstractJslTest {
     static final MyEnum ENUM_1 = MyEnum.Bombastic;
     static final MyEnum ENUM_2 = MyEnum.Atomic;
 
+
+    @BeforeAll
+    static public void prepare(JudoRuntimeFixture fixture, JudoDatasourceFixture datasource) throws Exception {
+        fixture.prepare(getModelName(), datasource);
+    }
+
     @BeforeEach
-    protected void init(JudoDatasourceFixture datasource) throws Exception {
-        super.init(datasource);
+    protected void init(JudoRuntimeFixture fixture, JudoDatasourceFixture datasource) throws Exception {
+        fixture.init(getModelDaoModule(),this, datasource);
+        fixture.beginTransaction();
 
         entity1 = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
                 .withIntegerAttr(INTEGER_1)
@@ -146,13 +161,16 @@ public class FiltersTest extends AbstractJslTest {
         filterEntity = filterEntityDao.create(FilterEntity.builder().build());
     }
 
-    @Override
+    @AfterEach
+    protected void tearDown(JudoRuntimeFixture fixture) {
+        fixture.tearDown();
+    }
+
     public Module getModelDaoModule() {
         return new FilterDaoModules();
     }
 
-    @Override
-    public String getModelName() {
+    static public String getModelName() {
         return "Filter";
     }
 

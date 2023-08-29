@@ -2,22 +2,33 @@ package hu.blackbelt.judo.runtime.core.jsl.entity;
 
 import com.google.inject.Inject;
 import com.google.inject.Module;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.e.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.f.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.g.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.i.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.h.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.e.E;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.e.EDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.f.F;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.f.FDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.g.G;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.g.GDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.h.H;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.h.HDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.i.I;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.i.IDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.myenum.MyEnum;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.parentabstract.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.parentabstract.ParentAbstractDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.InheritanceDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceByClassExtension;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeFixture;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
 import org.hamcrest.Matcher;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -31,16 +42,31 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
-public class InheritanceTest extends AbstractJslTest {
+@ExtendWith({JudoDatasourceByClassExtension.class, JudoRuntimeExtension.class})
+public class InheritanceTest {
 
-    @Override
     public Module getModelDaoModule() {
         return new InheritanceDaoModules();
     }
 
-    @Override
-    public String getModelName() {
+    static public String getModelName() {
         return "Inheritance";
+    }
+
+    @BeforeAll
+    static public void prepare(JudoRuntimeFixture fixture, JudoDatasourceFixture datasource) throws Exception {
+        fixture.prepare(getModelName(), datasource);
+    }
+
+    @BeforeEach
+    protected void init(JudoRuntimeFixture fixture, JudoDatasourceFixture datasource) throws Exception {
+        fixture.init(getModelDaoModule(),this, datasource);
+        fixture.beginTransaction();
+    }
+
+    @AfterEach
+    protected void tearDown(JudoRuntimeFixture fixture) {
+        fixture.tearDown();
     }
 
     @Inject
@@ -360,5 +386,10 @@ public class InheritanceTest extends AbstractJslTest {
         return allOf(
                 hasProperty("code", equalTo("MISSING_REQUIRED_ATTRIBUTE")),
                 hasProperty("location", equalTo(attrName)));
+    }
+
+    public boolean hasMethodWithName(String methodName,Object object) {
+        return Arrays.stream(object.getClass().getDeclaredMethods())
+                .anyMatch(f -> f.getName().equals(methodName));
     }
 }

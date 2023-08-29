@@ -55,6 +55,8 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.num
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.parent.Parent;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.parent.ParentDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.parent.ParentIdentifier;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.simple.Simple;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.simple.SimpleDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.stringfunctions.StringFunctions;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.stringfunctions.StringFunctionsDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.tester.Tester;
@@ -66,26 +68,30 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.tim
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.timestampasstring.TimestampAsStringDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.timestampfunctions.TimestampFunctions;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.timestampfunctions.TimestampFunctionsDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.simple.Simple;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.simple.SimpleDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.FunctionsDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceByClassExtension;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeFixture;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.time.*;
-import java.time.temporal.ChronoUnit;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE_TIME;
-import static java.time.format.DateTimeFormatter.ISO_OFFSET_DATE_TIME;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
-public class FunctionsTest extends AbstractJslTest {
+@ExtendWith({JudoDatasourceByClassExtension.class, JudoRuntimeExtension.class})
+public class FunctionsTest {
     @Inject
     EntityDao entityDao;
 
@@ -151,28 +157,38 @@ public class FunctionsTest extends AbstractJslTest {
     @Inject
     SimpleDao simpleDao;
 
-    @BeforeEach
-    protected void init(JudoDatasourceFixture datasource) throws Exception {
-        super.init(datasource);
-        Entity entity = entityDao
-                        .create(Entity.builder().build());
-        EntityWithPrimitiveDefaults entityWithPrimitiveDefaults = entityWithPrimitiveDefaultsDao
-                        .create(EntityWithPrimitiveDefaults.builder().build());
-
-        anyTypeFunctions = anyTypeFunctionsDao.create(AnyTypeFunctions.builder()
-                        .withEntity(entity)
-                        .withEntityWithPrimitives(entityWithPrimitiveDefaults)
-                        .build());
-    }
-
-    @Override
     public Module getModelDaoModule() {
         return  new FunctionsDaoModules();
     }
 
-    @Override
-    public String getModelName() {
+    static public String getModelName() {
         return "Functions";
+    }
+
+    @BeforeAll
+    static public void prepare(JudoRuntimeFixture fixture, JudoDatasourceFixture datasource) throws Exception {
+        fixture.prepare(getModelName(), datasource);
+    }
+
+    @BeforeEach
+    protected void init(JudoRuntimeFixture fixture, JudoDatasourceFixture datasource) throws Exception {
+        fixture.init(getModelDaoModule(),this, datasource);
+        fixture.beginTransaction();
+
+        Entity entity = entityDao
+                .create(Entity.builder().build());
+        EntityWithPrimitiveDefaults entityWithPrimitiveDefaults = entityWithPrimitiveDefaultsDao
+                .create(EntityWithPrimitiveDefaults.builder().build());
+
+        anyTypeFunctions = anyTypeFunctionsDao.create(AnyTypeFunctions.builder()
+                .withEntity(entity)
+                .withEntityWithPrimitives(entityWithPrimitiveDefaults)
+                .build());
+    }
+
+    @AfterEach
+    protected void tearDown(JudoRuntimeFixture fixture) {
+        fixture.tearDown();
     }
 
     @Test

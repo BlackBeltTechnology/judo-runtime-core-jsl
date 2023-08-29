@@ -39,12 +39,19 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigati
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.NavigationTestDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceByClassExtension;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeFixture;
 import hu.blackbelt.judo.sdk.Identifiable;
 import lombok.extern.slf4j.Slf4j;
 import org.hamcrest.CoreMatchers;
 import org.hamcrest.Matcher;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.Collection;
 import java.util.List;
@@ -58,7 +65,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Slf4j
-class MappedTransferNavigationTest extends AbstractJslTest {
+@ExtendWith({JudoDatasourceByClassExtension.class, JudoRuntimeExtension.class})
+class MappedTransferNavigationTest {
 
     @Inject
     ADao aDao;
@@ -78,14 +86,28 @@ class MappedTransferNavigationTest extends AbstractJslTest {
     @Inject
     TCDao tcDao;
 
-    @Override
     public Module getModelDaoModule() {
         return new NavigationTestDaoModules();
     }
 
-    @Override
-    public String getModelName() {
+    static public String getModelName() {
         return "NavigationTest";
+    }
+
+    @BeforeAll
+    static public void prepare(JudoRuntimeFixture fixture, JudoDatasourceFixture datasource) throws Exception {
+        fixture.prepare(getModelName(), datasource);
+    }
+
+    @BeforeEach
+    protected void init(JudoRuntimeFixture fixture, JudoDatasourceFixture datasource) throws Exception {
+        fixture.init(getModelDaoModule(),this, datasource);
+        fixture.beginTransaction();
+    }
+
+    @AfterEach
+    protected void tearDown(JudoRuntimeFixture fixture) {
+        fixture.tearDown();
     }
 
     @Test

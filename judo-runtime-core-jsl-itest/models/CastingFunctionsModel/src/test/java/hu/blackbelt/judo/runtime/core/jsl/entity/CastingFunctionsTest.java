@@ -25,26 +25,32 @@ import com.google.inject.Module;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.a.A;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.b.B;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.b.BDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.b.BIdentifier;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.ca.CA;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.ca.CADao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.tester.Tester;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.tester.TesterAttachedRelationsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.tester.TesterDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.b.BIdentifier;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.CastingFunctionsDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceByClassExtension;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeFixture;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
-public class CastingFunctionsTest extends AbstractJslTest {
+@ExtendWith({JudoDatasourceByClassExtension.class, JudoRuntimeExtension.class})
+public class CastingFunctionsTest {
 
     @Inject
     BDao bDao;
@@ -55,20 +61,23 @@ public class CastingFunctionsTest extends AbstractJslTest {
 
     private Tester tester;
 
-    @Override
     public Module getModelDaoModule() {
         return new CastingFunctionsDaoModules();
     }
 
-    @Override
-    public String getModelName() {
+    static public String getModelName() {
         return "CastingFunctions";
     }
+    @BeforeAll
+    static public void prepare(JudoRuntimeFixture fixture, JudoDatasourceFixture datasource) throws Exception {
+        fixture.prepare(getModelName(), datasource);
+    }
 
-    @Override
     @BeforeEach
-    protected void init(JudoDatasourceFixture datasource) throws Exception {
-        super.init(datasource);
+    protected void init(JudoRuntimeFixture fixture, JudoDatasourceFixture datasource) throws Exception {
+        fixture.init(getModelDaoModule(),this, datasource);
+        fixture.beginTransaction();
+
         CA ca = caDao.create(CA.builder().withNameA("aca1").withNameB("bca1").withNameCA("ca1").build());
         CA ca1 = caDao.create(CA.builder().withNameA("aca2").withNameB("bca2").withNameCA("ca2").build());
         CA ca2 = caDao.create(CA.builder().withNameA("aca3").withNameB("bca3").withNameCA("ca3").build());
@@ -77,18 +86,23 @@ public class CastingFunctionsTest extends AbstractJslTest {
         B caAsB2 = bDao.getById(ca2.identifier().adaptTo(BIdentifier.class)).orElseThrow();
 
         tester = testerDao.create(
-                                    Tester.builder()
-                                        .build(),
-                                    TesterAttachedRelationsForCreate
-                                        .builder()
-                                        .withB(bDao.create(B.builder().withNameA("ab").withNameB("b").build()))
-                                        .withBs(List.of(
-                                                bDao.create(B.builder().withNameA("ab1").withNameB("b1").build()),
-                                                bDao.create(B.builder().withNameA("ab2").withNameB("b2").build())
-                                        ))
-                                        .withCaAsB(caAsB)
-                                        .withCaAsBs(List.of(caAsB1, caAsB2))
-                                        .build());
+                Tester.builder()
+                        .build(),
+                TesterAttachedRelationsForCreate
+                        .builder()
+                        .withB(bDao.create(B.builder().withNameA("ab").withNameB("b").build()))
+                        .withBs(List.of(
+                                bDao.create(B.builder().withNameA("ab1").withNameB("b1").build()),
+                                bDao.create(B.builder().withNameA("ab2").withNameB("b2").build())
+                        ))
+                        .withCaAsB(caAsB)
+                        .withCaAsBs(List.of(caAsB1, caAsB2))
+                        .build());
+    }
+
+    @AfterEach
+    protected void tearDown(JudoRuntimeFixture fixture) {
+        fixture.tearDown();
     }
 
     @Test
