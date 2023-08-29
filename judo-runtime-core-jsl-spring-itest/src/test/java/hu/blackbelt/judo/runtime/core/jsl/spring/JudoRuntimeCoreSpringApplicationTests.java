@@ -23,13 +23,13 @@ package hu.blackbelt.judo.runtime.core.jsl.spring;
 import hu.blackbelt.judo.runtime.core.jsl.spring.test.api.salesmodel.salesmodel.lead.Lead;
 import hu.blackbelt.judo.runtime.core.jsl.spring.test.api.salesmodel.salesmodel.lead.LeadAttachedRelationsForCreate;
 import hu.blackbelt.judo.runtime.core.jsl.spring.test.api.salesmodel.salesmodel.lead.LeadDao;
-import hu.blackbelt.judo.runtime.core.jsl.spring.test.api.salesmodel.salesmodel.salesperson.leadsover.SalesPersonLeadsOverParameter;
 import hu.blackbelt.judo.runtime.core.jsl.spring.test.api.salesmodel.salesmodel.person.PersonDao;
 import hu.blackbelt.judo.runtime.core.jsl.spring.test.api.salesmodel.salesmodel.rootallleads.RootAllLeadsDao;
 import hu.blackbelt.judo.runtime.core.jsl.spring.test.api.salesmodel.salesmodel.rootonelead.RootOneLeadDao;
 import hu.blackbelt.judo.runtime.core.jsl.spring.test.api.salesmodel.salesmodel.salesperson.SalesPerson;
 import hu.blackbelt.judo.runtime.core.jsl.spring.test.api.salesmodel.salesmodel.salesperson.SalesPersonDao;
 import hu.blackbelt.judo.runtime.core.jsl.spring.test.api.salesmodel.salesmodel.salesperson.SalesPersonIdentifier;
+import hu.blackbelt.judo.runtime.core.jsl.spring.test.api.salesmodel.salesmodel.salesperson.leadsover.SalesPersonLeadsOverParameter;
 import hu.blackbelt.judo.runtime.core.jsl.spring.test.api.salesmodel.salesmodel.totalnumberofleads.TotalNumberOfLeadsDao;
 import hu.blackbelt.judo.sdk.query.NumberFilter;
 import hu.blackbelt.judo.sdk.query.StringFilter;
@@ -42,14 +42,10 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
-import org.springframework.transaction.support.TransactionSynchronization;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
-import javax.transaction.NotSupportedException;
-import javax.transaction.SystemException;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 

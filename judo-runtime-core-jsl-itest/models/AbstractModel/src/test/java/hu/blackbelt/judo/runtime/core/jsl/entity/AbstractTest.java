@@ -21,10 +21,17 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractm
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.j.J;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.j.JDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.j.JIdentifier;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.k.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.l.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.m.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.n.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.k.K;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.k.KDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.k.KIdentifier;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.l.L;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.l.LAttachedRelationsForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.l.LDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.m.M;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.m.MDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.m.MIdentifier;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.n.N;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.n.NDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.o.ODao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.p.P;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.p.PDao;
@@ -34,10 +41,18 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractm
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.AbstractModelDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceByClassExtension;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeFixture;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -45,18 +60,32 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
-public class AbstractTest extends AbstractJslTest {
+@ExtendWith({JudoDatasourceByClassExtension.class, JudoRuntimeExtension.class})
+public class AbstractTest {
 
-    @Override
     public Module getModelDaoModule() {
         return new AbstractModelDaoModules();
     }
 
-    @Override
-    public String getModelName() {
+    static public String getModelName() {
         return "AbstractModel";
     }
 
+    @BeforeAll
+    static public void prepare(JudoRuntimeFixture fixture, JudoDatasourceFixture datasource) throws Exception {
+        fixture.prepare(getModelName(), datasource);
+    }
+
+    @BeforeEach
+    protected void init(JudoRuntimeFixture fixture, JudoDatasourceFixture datasource) throws Exception {
+        fixture.init(getModelDaoModule(),this, datasource);
+        fixture.beginTransaction();
+    }
+
+    @AfterEach
+    protected void tearDown(JudoRuntimeFixture fixture) {
+        fixture.tearDown();
+    }
 
     @Inject
     ADao aDao;
@@ -649,6 +678,11 @@ public class AbstractTest extends AbstractJslTest {
 
     private M NtoM(N n) {
         return mDao.getById(n.identifier().adaptTo(MIdentifier.class)).orElseThrow();
+    }
+
+    public boolean hasMethodWithName(String methodName,Object object) {
+        return Arrays.stream(object.getClass().getDeclaredMethods())
+                .anyMatch(f -> f.getName().equals(methodName));
     }
 
 }
