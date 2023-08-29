@@ -53,6 +53,7 @@ import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
 import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeFixture;
 import lombok.extern.slf4j.Slf4j;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.BeforeEach;
@@ -110,8 +111,8 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
 
 
     @BeforeEach
-    protected void init(JudoDatasourceFixture datasource) throws Exception {
-        super.init(datasource);
+    public void init(JudoRuntimeFixture fixture) {
+        super.init(fixture);
 
         entityD1 = entityDDao.create(EntityD.builder()
                 .build());

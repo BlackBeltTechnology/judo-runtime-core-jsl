@@ -33,6 +33,7 @@ import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeFixture;
 import hu.blackbelt.judo.sdk.query.StringFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
@@ -54,8 +55,8 @@ public class MappedTransferQueryCustomizerFunctionsTest extends AbstractJslTest 
     TransferOptionalPrimitives transf2;
 
     @BeforeEach
-    protected void init(JudoDatasourceFixture datasource) throws Exception {
-        super.init(datasource);
+    protected void init(JudoRuntimeFixture fixture) {
+        super.init(fixture);
 
         transf1 = transferOptionalPrimitivesDao.create(TransferOptionalPrimitives.builder()
                 .withIntegerAttr(2)

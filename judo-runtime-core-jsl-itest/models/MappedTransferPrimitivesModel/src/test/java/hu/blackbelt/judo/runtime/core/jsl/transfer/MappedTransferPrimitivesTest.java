@@ -5,7 +5,6 @@ import com.google.inject.Module;
 
 import hu.blackbelt.judo.dao.api.ValidationResult;
 import hu.blackbelt.judo.dispatcher.api.FileType;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.entityrequiredwithprimitivedefaults.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.enum_.Enum;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferoptionalprimitives.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferprimitivedefaults.*;

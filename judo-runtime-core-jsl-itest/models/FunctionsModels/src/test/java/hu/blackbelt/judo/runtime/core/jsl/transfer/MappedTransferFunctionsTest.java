@@ -73,6 +73,7 @@ import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeFixture;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -152,8 +153,8 @@ public class MappedTransferFunctionsTest extends AbstractJslTest {
     TransferSimpleDao transferSimpleDao;
 
     @BeforeEach
-    protected void init(JudoDatasourceFixture datasource) throws Exception {
-        super.init(datasource);
+    protected void init(JudoRuntimeFixture fixture, JudoDatasourceFixture source) {
+        super.init(fixture, source);
         TransferEntity tentity = transferEntityDao
                         .create(TransferEntity.builder().build());
         TransferEntityWithPrimitiveDefaults entityWithPrimitiveDefaults = transferEntityWithPrimitiveDefaultsDao
@@ -170,8 +171,8 @@ public class MappedTransferFunctionsTest extends AbstractJslTest {
         return  new FunctionsDaoModules();
     }
 
-    @Override
-    public String getModelName() {
+
+    static public String getModelName() {
         return "Functions";
     }
 
