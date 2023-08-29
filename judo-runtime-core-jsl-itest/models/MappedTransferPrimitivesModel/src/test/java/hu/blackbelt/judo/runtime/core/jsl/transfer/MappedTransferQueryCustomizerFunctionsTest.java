@@ -31,13 +31,17 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitive
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.MappedTransferPrimitivesDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceByClassExtension;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeFixture;
 import hu.blackbelt.judo.sdk.query.StringFilter;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -46,7 +50,8 @@ import java.time.LocalTime;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Slf4j
-public class MappedTransferQueryCustomizerFunctionsTest extends AbstractJslTest {
+@ExtendWith({JudoDatasourceByClassExtension.class, JudoRuntimeExtension.class})
+public class MappedTransferQueryCustomizerFunctionsTest {
     @Inject
     TransferOptionalPrimitivesDao transferOptionalPrimitivesDao;
 
@@ -54,9 +59,23 @@ public class MappedTransferQueryCustomizerFunctionsTest extends AbstractJslTest 
 
     TransferOptionalPrimitives transf2;
 
+    public Module getModelDaoModule() {
+        return new MappedTransferPrimitivesDaoModules();
+    }
+
+    static public String getModelName() {
+        return "MappedTransferPrimitives";
+    }
+
+    @BeforeAll
+    static public void prepare(JudoRuntimeFixture fixture, JudoDatasourceFixture datasource) throws Exception {
+        fixture.prepare(getModelName(), datasource);
+    }
+
     @BeforeEach
-    protected void init(JudoRuntimeFixture fixture) {
-        super.init(fixture);
+    protected void init(JudoRuntimeFixture fixture, JudoDatasourceFixture datasource) throws Exception {
+        fixture.init(getModelDaoModule(),this, datasource);
+        fixture.beginTransaction();
 
         transf1 = transferOptionalPrimitivesDao.create(TransferOptionalPrimitives.builder()
                 .withIntegerAttr(2)
@@ -85,14 +104,9 @@ public class MappedTransferQueryCustomizerFunctionsTest extends AbstractJslTest 
                 .build());
     }
 
-    @Override
-    public Module getModelDaoModule() {
-        return new MappedTransferPrimitivesDaoModules();
-    }
-
-    @Override
-    public String getModelName() {
-        return "MappedTransferPrimitives";
+    @AfterEach
+    protected void tearDown(JudoRuntimeFixture fixture) {
+        fixture.tearDown();
     }
 
 

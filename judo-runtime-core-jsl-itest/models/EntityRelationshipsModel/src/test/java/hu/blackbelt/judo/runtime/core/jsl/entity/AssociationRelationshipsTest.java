@@ -39,12 +39,16 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationship
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.AssociationRelationshipsDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceByClassExtension;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeFixture;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.List;
 import java.util.Optional;
@@ -54,7 +58,8 @@ import static org.hamcrest.Matchers.hasItems;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
-public class AssociationRelationshipsTest extends AbstractJslTest {
+@ExtendWith({JudoDatasourceByClassExtension.class, JudoRuntimeExtension.class})
+public class AssociationRelationshipsTest {
     @Inject
     EntityADao entityADao;
 
@@ -74,9 +79,24 @@ public class AssociationRelationshipsTest extends AbstractJslTest {
     EntityC entityC;
     EntityA entityA;
 
+    public Module getModelDaoModule() {
+        return new AssociationRelationshipsDaoModules();
+    }
+
+    static public String getModelName() {
+        return "AssociationRelationships";
+    }
+
+    @BeforeAll
+    static public void prepare(JudoRuntimeFixture fixture, JudoDatasourceFixture datasource) throws Exception {
+        fixture.prepare(getModelName(), datasource);
+    }
+
     @BeforeEach
-    protected void init(JudoRuntimeFixture fixture) {
-        super.init(fixture);
+    protected void init(JudoRuntimeFixture fixture, JudoDatasourceFixture datasource) throws Exception {
+        fixture.init(getModelDaoModule(),this, datasource);
+        fixture.beginTransaction();
+
         entityD = entityDDao.create(EntityD.builder()
                 .build());
         entityC = entityCDao.create(EntityC.builder()
@@ -84,15 +104,11 @@ public class AssociationRelationshipsTest extends AbstractJslTest {
         entityA = createA(entityC, List.of(entityD));
     }
 
-    @Override
-    public Module getModelDaoModule() {
-        return new AssociationRelationshipsDaoModules();
+    @AfterEach
+    protected void tearDown(JudoRuntimeFixture fixture) {
+        fixture.tearDown();
     }
 
-    @Override
-    public String getModelName() {
-        return "AssociationRelationships";
-    }
 
     @Test
     @Requirement(reqs = {

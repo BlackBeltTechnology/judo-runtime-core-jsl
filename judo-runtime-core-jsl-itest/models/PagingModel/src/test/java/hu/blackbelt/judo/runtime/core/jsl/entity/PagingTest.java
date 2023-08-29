@@ -29,15 +29,27 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.paging.paging.list.List
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.paging.paging.list.ListAttribute;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.paging.paging.list.ListDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.paging.paging.list.ListIdentifier;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.paging.paging.logentry.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.paging.paging.logentry.LogEntry;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.paging.paging.logentry.LogEntryAttribute;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.paging.paging.logentry.LogEntryDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.paging.paging.logentry.LogEntryIdentifier;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.PagingDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceByClassExtension;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeFixture;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-import java.time.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
@@ -50,7 +62,8 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Slf4j
-public class PagingTest extends AbstractJslTest {
+@ExtendWith({JudoDatasourceByClassExtension.class, JudoRuntimeExtension.class})
+public class PagingTest {
     @Inject
     ItemDao itemDao;
 
@@ -61,14 +74,28 @@ public class PagingTest extends AbstractJslTest {
     LogEntryDao logEntryDao;
 
 
-    @Override
     public Module getModelDaoModule() {
         return new PagingDaoModules();
     }
 
-    @Override
-    public String getModelName() {
+    static public String getModelName() {
         return "Paging";
+    }
+
+    @BeforeAll
+    static public void prepare(JudoRuntimeFixture fixture, JudoDatasourceFixture datasource) throws Exception {
+        fixture.prepare(getModelName(), datasource);
+    }
+
+    @BeforeEach
+    protected void init(JudoRuntimeFixture fixture, JudoDatasourceFixture datasource) throws Exception {
+        fixture.init(getModelDaoModule(),this, datasource);
+        fixture.beginTransaction();
+    }
+
+    @AfterEach
+    protected void tearDown(JudoRuntimeFixture fixture) {
+        fixture.tearDown();
     }
 
     /**

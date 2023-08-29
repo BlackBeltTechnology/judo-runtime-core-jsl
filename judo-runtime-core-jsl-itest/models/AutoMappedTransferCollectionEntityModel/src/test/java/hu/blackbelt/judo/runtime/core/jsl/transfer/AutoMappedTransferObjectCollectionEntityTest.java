@@ -10,38 +10,57 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfercolle
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.AutoMappedTransferCollectionEntityDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceByClassExtension;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeFixture;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.jupiter.api.Assertions.*;
 
-
-
 @Slf4j
-public class AutoMappedTransferObjectCollectionEntityTest extends AbstractJslTest {
+@ExtendWith({JudoDatasourceByClassExtension.class, JudoRuntimeExtension.class})
+public class AutoMappedTransferObjectCollectionEntityTest {
 
-    @Override
     public Module getModelDaoModule() {
         return new AutoMappedTransferCollectionEntityDaoModules();
     }
 
-    @Override
-    public String getModelName() {
+    static public String getModelName() {
         return "AutoMappedTransferCollectionEntity";
     }
-
 
     @Inject
     TransferReferenceEntityDao transferReferenceEntityDao;
 
     @Inject
     TransferCollectionEntityDao transferCollectionEntityDao;
+
+    @BeforeAll
+    static public void prepare(JudoRuntimeFixture fixture, JudoDatasourceFixture datasource) throws Exception {
+        fixture.prepare(getModelName(), datasource);
+    }
+
+    @BeforeEach
+    protected void init(JudoRuntimeFixture fixture, JudoDatasourceFixture datasource) throws Exception {
+        fixture.init(getModelDaoModule(),this, datasource);
+        fixture.beginTransaction();
+    }
+
+    @AfterEach
+    protected void tearDown(JudoRuntimeFixture fixture) {
+        fixture.tearDown();
+    }
 
     /**
      * This test checks the auto mapped transfer object on multi entity composition fields work well.
