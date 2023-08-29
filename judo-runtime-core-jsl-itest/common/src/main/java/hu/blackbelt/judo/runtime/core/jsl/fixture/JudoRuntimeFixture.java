@@ -7,12 +7,13 @@ import hu.blackbelt.judo.meta.expression.builder.jql.JqlExpressionBuilderConfig;
 import hu.blackbelt.judo.meta.expression.builder.jql.asm.AsmJqlExtractor;
 import hu.blackbelt.judo.runtime.core.bootstrap.JudoDefaultModule;
 import hu.blackbelt.judo.runtime.core.bootstrap.JudoModelLoader;
-import hu.blackbelt.judo.runtime.core.bootstrap.dao.rdbms.hsqldb.JudoHsqldbTestModules;
+import hu.blackbelt.judo.runtime.core.bootstrap.dao.rdbms.hsqldb.JudoHsqldbModules;
 import hu.blackbelt.judo.runtime.core.bootstrap.dao.rdbms.postgresql.JudoPostgresqlModules;
 import hu.blackbelt.judo.runtime.core.dao.rdbms.hsqldb.HsqldbDialect;
 import hu.blackbelt.judo.runtime.core.dao.rdbms.hsqldb.HsqldbRdbmsInit;
 import hu.blackbelt.judo.runtime.core.dao.rdbms.liquibase.SimpleLiquibaseExecutor;
 import hu.blackbelt.judo.runtime.core.dao.rdbms.postgresql.PostgresqlDialect;
+import hu.blackbelt.judo.runtime.core.dao.rdbms.postgresql.PostgresqlRdbmsInit;
 import hu.blackbelt.judo.runtime.core.query.QueryFactory;
 import hu.blackbelt.mapper.api.ExtendableCoercer;
 import hu.blackbelt.mapper.impl.DefaultCoercer;
@@ -55,7 +56,7 @@ public class JudoRuntimeFixture {
 
     JudoPostgresqlModules judoPostgresqlModules;
 
-    JudoHsqldbTestModules judoHsqldbTestModules;
+    JudoHsqldbModules judoHsqldbTestModules;
 
     HsqldbDialect hsqldbDialect;
 
@@ -67,7 +68,7 @@ public class JudoRuntimeFixture {
 
     QueryFactory queryFactory;
 
-    void initQueryFactory() {
+    private void initQueryFactory() {
 
         coercer = new DefaultCoercer();
 
@@ -86,47 +87,65 @@ public class JudoRuntimeFixture {
 
     }
 
-    public void initOnce(String modelName, JudoDatasourceFixture datasource) throws Exception {
+    private void initJudoHsqldbModules(JudoDatasourceFixture datasource) {
+
+        simpleLiquibaseExecutor = new SimpleLiquibaseExecutor();
+        HsqldbRdbmsInit init = HsqldbRdbmsInit.builder()
+                .liquibaseExecutor(simpleLiquibaseExecutor)
+                .liquibaseModel(modelHolder.getLiquibaseModel())
+                .build();
+        init.execute(datasource.getDataSource());
+
+        judoHsqldbTestModules = JudoHsqldbModules
+                .builder()
+                .dialect(hsqldbDialect)
+                .source(datasource.getDataSource())
+                .hsqldbRdbmsInit(init)
+                .build();
+
+    }
+
+    private void initJudoPostgresqlModules(JudoDatasourceFixture datasource) {
+
+        simpleLiquibaseExecutor = new SimpleLiquibaseExecutor();
+        PostgresqlRdbmsInit init = PostgresqlRdbmsInit.builder()
+                .liquibaseExecutor(simpleLiquibaseExecutor)
+                .liquibaseModel(modelHolder.getLiquibaseModel())
+                .build();
+        init.execute(datasource.getDataSource());
+
+        sqlContainer = datasource.getSqlContainer();
+        judoPostgresqlModules = JudoPostgresqlModules.builder()
+                .databaseName(sqlContainer.getDatabaseName())
+                .user(sqlContainer.getUsername())
+                .password(sqlContainer.getPassword())
+                .port(sqlContainer.getFirstMappedPort())
+                .dialect(postgresqlDialect)
+                .source(datasource.getDataSource())
+                .postgresqlRdbmsInit(init)
+                .build();
+    }
+
+    public void prepare(String modelName, JudoDatasourceFixture datasource) throws Exception {
 
         if (DIALECT_POSTGRESQL.equals(datasource.getDialect())) {
             postgresqlDialect = new PostgresqlDialect();
             modelHolder = JudoModelLoader.loadFromDirectory(modelName, new File(MODEL_SOURCES), postgresqlDialect, true);
-            sqlContainer = datasource.getSqlContainer();
-            judoPostgresqlModules = JudoPostgresqlModules.builder()
-                    .databaseName(sqlContainer.getDatabaseName())
-                    .user(sqlContainer.getUsername())
-                    .password(sqlContainer.getPassword())
-                    .port(sqlContainer.getFirstMappedPort())
-                    .build();
-
+            initQueryFactory();
+            initJudoPostgresqlModules(datasource);
         } else if (DIALECT_HSQLDB.equals(datasource.getDialect())) {
             hsqldbDialect = new HsqldbDialect();
             modelHolder = JudoModelLoader.loadFromDirectory(modelName, new File(MODEL_SOURCES), hsqldbDialect, true);
-            simpleLiquibaseExecutor = new SimpleLiquibaseExecutor();
-
-            HsqldbRdbmsInit init = HsqldbRdbmsInit.builder()
-                    .liquibaseExecutor(simpleLiquibaseExecutor)
-                    .liquibaseModel(modelHolder.getLiquibaseModel())
-                    .build();
-            init.execute(datasource.getDataSource());
-
             initQueryFactory();
-
-            judoHsqldbTestModules = JudoHsqldbTestModules
-                    .builder()
-                    .dialect(hsqldbDialect)
-                    .source(datasource.getDataSource())
-                    .hsqldbRdbmsInit(init)
-                    .build();
-
+            initJudoHsqldbModules(datasource);
         } else {
             throw new IllegalArgumentException("Unsupported dialect: " + datasource.getDialect());
         }
     }
 
-    public void initInject(String modelName, Module module, Object injectModulesTo, JudoDatasourceFixture datasource) {
+    public void init(Module module, Object injectModulesTo, JudoDatasourceFixture datasource) {
         if (DIALECT_POSTGRESQL.equals(datasource.getDialect())) {
-            injector = Guice.createInjector(judoPostgresqlModules, module, new JudoDefaultModule(injectModulesTo, modelHolder));
+            injector = Guice.createInjector(judoPostgresqlModules, module, JudoDefaultModule.builder().injectModulesTo(injectModulesTo).judoModelLoader(modelHolder).coercer(coercer).queryFactory(queryFactory).build());
         } else if (DIALECT_HSQLDB.equals(datasource.getDialect())) {
             injector = Guice.createInjector(judoHsqldbTestModules, module, JudoDefaultModule.builder().injectModulesTo(injectModulesTo).judoModelLoader(modelHolder).coercer(coercer).queryFactory(queryFactory).build());
         }
