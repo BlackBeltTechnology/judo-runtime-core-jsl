@@ -77,34 +77,29 @@ public class RecursiveCompositionTest extends AbstractJslTest {
             "REQ-SRV-001"
     })
     void testRecursiveCompositionOnEntity() {
-        EntityX x13 = entityXDao.create(EntityX.builder().withName("x13").build());
-        EntityX x11 = entityXDao.create(EntityX.builder().withName("x11").build());
-        EntityX x8 = entityXDao.create(EntityX.builder().withName("x8").build());
-        EntityX x5 = entityXDao.create(EntityX.builder().withName("x5").build());
-        EntityX x3 = entityXDao.create(EntityX.builder().withName("x3").build());
 
-        EntityY y9 = entityYDao.create(EntityY.builder().withName("y9").build());
-        EntityY y7 = entityYDao.create(EntityY.builder().withName("y7").build());
-        EntityY y4 = entityYDao.create(EntityY.builder().withName("y4").build());
-        EntityY y3 = entityYDao.create(EntityY.builder().withName("y3").build());
-        EntityY y2 = entityYDao.create(EntityY.builder().withName("y2").build());
-        EntityY y1 = entityYDao.create(EntityY.builder().withName("y1").build());
-
-        EntityY y8 = entityYDao.create(EntityY.builder().withName("y8").withYx(x13).build());
-        EntityX x12 = entityXDao.create(EntityX.builder().withName("x12").withY(y9).build());
-        EntityX x4 = entityXDao.create(EntityX.builder().withName("x4").withY(y4).build());
-
-        EntityX x10 = entityXDao.create(EntityX.builder().withName("x10").withYs(List.of(y7, y8)).build());
-        EntityX x2 = entityXDao.create(EntityX.builder().withName("x2").withX(x5).withXs(List.of(x3, x4)).build());
-
-        EntityY y6 = entityYDao.create(EntityY.builder().withName("y6").withYxs(List.of(x11, x12)).build());
-        EntityY y5 = entityYDao.create(EntityY.builder().withName("y5").withYx(x10).build());
-
-        EntityX x9 = entityXDao.create(EntityX.builder().withName("x9").withYs(List.of(y5, y6)).build());
-        EntityX x7 = entityXDao.create(EntityX.builder().withName("x7").withXs(List.of(x8, x9)).build());
-        EntityX x6 = entityXDao.create(EntityX.builder().withName("x6").withX(x7).build());
-
-        EntityX x1 = entityXDao.create(EntityX.builder().withName("x1").withX(x2).withXs(List.of(x6)).withY(y1).withYs(List.of(y2, y3)).build());
+        EntityX x1 = entityXDao.create(EntityX.builder().withName("x1")
+                .withX(EntityX.builder().withName("x2")
+                        .withX(EntityX.builder().withName("x5").build())
+                        .withXs(List.of(EntityX.builder().withName("x3").build(), EntityX.builder().withName("x4")
+                                .withY(EntityY.builder().withName("y4").build()).build()))
+                        .build())
+                .withXs(List.of(EntityX.builder().withName("x6")
+                        .withX(EntityX.builder().withName("x7")
+                                .withXs(List.of(EntityX.builder().withName("x8").build(), EntityX.builder().withName("x9")
+                                        .withYs(List.of(EntityY.builder().withName("y5")
+                                                .withYx(EntityX.builder().withName("x10")
+                                                        .withYs(List.of(EntityY.builder().withName("y7").build(), EntityY.builder().withName("y8")
+                                                                .withYx(EntityX.builder().withName("x13").build()).build()))
+                                                        .build()).build(), EntityY.builder().withName("y6")
+                                                .withYxs(List.of(EntityX.builder().withName("x11").build(), EntityX.builder().withName("x12")
+                                                        .withY(EntityY.builder().withName("y9").build()).build()))
+                                                .build()))
+                                        .build()))
+                                .build())
+                        .build()))
+                .withY(EntityY.builder().withName("y1").build())
+                .withYs(List.of(EntityY.builder().withName("y2").build(), EntityY.builder().withName("y3").build())).build());
 
         assertEquals("x1", x1.getName().orElseThrow());
         assertEquals("x2", x1.getX().orElseThrow().getName().orElseThrow());
@@ -147,7 +142,7 @@ public class RecursiveCompositionTest extends AbstractJslTest {
         assertFalse(x7Test.getY().isPresent());
         assertEquals(0, x7Test.getYs().size());
 
-        EntityX x9Test = x7.getXs().stream().filter(c -> "x9".equals(c.getName().orElseThrow())).findFirst().orElseThrow();
+        EntityX x9Test = x7Test.getXs().stream().filter(c -> "x9".equals(c.getName().orElseThrow())).findFirst().orElseThrow();
 
         assertEquals(2, x9Test.getYs().size());
         assertTrue(x9Test.getYs().stream().anyMatch(y -> "y5".equals(y.getName().orElseThrow())));
@@ -177,7 +172,7 @@ public class RecursiveCompositionTest extends AbstractJslTest {
         assertFalse(x10Test.getY().isPresent());
         assertEquals(0, x10Test.getXs().size());
 
-        EntityX x12test = y6.getYxs().stream().filter(c -> "x12".equals(c.getName().orElseThrow())).findFirst().orElseThrow();
+        EntityX x12test = y6Test.getYxs().stream().filter(c -> "x12".equals(c.getName().orElseThrow())).findFirst().orElseThrow();
 
         assertEquals("y9", x12test.getY().orElseThrow().getName().orElseThrow());
         assertFalse(x12test.getX().isPresent());
@@ -199,14 +194,15 @@ public class RecursiveCompositionTest extends AbstractJslTest {
             "REQ-SRV-001"
     })
     void testRecursiveCompositionOnInheritedEntity() {
-        EntityA a4 = entityADao.create(EntityA.builder().withName("a4").build());
-        EntityA a5 = entityADao.create(EntityA.builder().withName("a5").build());
-        EntityA a6 = entityADao.create(EntityA.builder().withName("a6").build());
-        EntityA a1 = entityADao.create(EntityA.builder().withName("a1").withA(a4).withAs(List.of(a5, a6)).build());
-        EntityA a2 = entityADao.create(EntityA.builder().withName("a2").withA(a5).build());
-        EntityA a3 = entityADao.create(EntityA.builder().withName("a3").withAs(List.of(a5, a6)).build());
 
-        EntityB b1 = entityBDao.create(EntityB.builder().withName("b1").withBa(a1).withBas(List.of(a2, a3)).build());
+        EntityB b1 = entityBDao.create(EntityB.builder().withName("b1")
+                .withBa(EntityA.builder().withName("a1")
+                        .withA(EntityA.builder().withName("a4").build())
+                        .withAs(List.of(EntityA.builder().withName("a5").build(), EntityA.builder().withName("a6").build())).build())
+                .withBas(List.of(EntityA.builder().withName("a2")
+                        .withA(EntityA.builder().withName("a5").build()).build(), EntityA.builder().withName("a3")
+                        .withAs(List.of(EntityA.builder().withName("a5").build(), EntityA.builder().withName("a6").build())).build()))
+                .build());
 
         assertEquals("b1", b1.getName().orElseThrow());
         assertEquals("a1", b1.getBa().orElseThrow().getName().orElseThrow());
@@ -219,10 +215,9 @@ public class RecursiveCompositionTest extends AbstractJslTest {
         EntityA a1Test = b1.getBa().orElseThrow();
 
         assertEquals("a4", a1Test.getA().orElseThrow().getName().orElseThrow());
-        // TODO: JNG-5091
-        //assertEquals(2, a1Test.getAs().size());
-        //assertTrue(a1Test.getAs().stream().anyMatch(c -> "a5".equals(c.getName().orElseThrow())));
-        //assertTrue(a1Test.getAs().stream().anyMatch(c -> "a6".equals(c.getName().orElseThrow())));
+        assertEquals(2, a1Test.getAs().size());
+        assertTrue(a1Test.getAs().stream().anyMatch(c -> "a5".equals(c.getName().orElseThrow())));
+        assertTrue(a1Test.getAs().stream().anyMatch(c -> "a6".equals(c.getName().orElseThrow())));
 
         EntityA a2Test = b1.getBas().stream().filter(c -> "a2".equals(c.getName().orElseThrow())).findFirst().orElseThrow();
 
