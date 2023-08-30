@@ -21,7 +21,6 @@ package hu.blackbelt.judo.runtime.core.jsl.entity;
  */
 
 import com.google.inject.Inject;
-import com.google.inject.Module;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entitya.EntityA;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entitya.EntityADao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entitya.EntityAMask;
@@ -51,14 +50,13 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationship
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.CompositionRelationshipsDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
-import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceByClassExtension;
-import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
-import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
-import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeFixture;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeJudoDatasourceByClassExtension;
 import lombok.extern.slf4j.Slf4j;
 import org.hamcrest.CoreMatchers;
-import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.List;
 import java.util.Optional;
@@ -69,8 +67,11 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
-@ExtendWith({JudoDatasourceByClassExtension.class, JudoRuntimeExtension.class})
 public class CompositionRelationshipsTest {
+
+    @RegisterExtension
+    static JudoRuntimeJudoDatasourceByClassExtension runtimeExtension = new JudoRuntimeJudoDatasourceByClassExtension("CompositionRelationships", new CompositionRelationshipsDaoModules());
+
     @Inject
     EntityADao entityADao;
 
@@ -110,15 +111,8 @@ public class CompositionRelationshipsTest {
     EntityD entityD1;
     EntityD entityD2;
 
-    @BeforeAll
-    static public void prepare(JudoRuntimeFixture fixture, JudoDatasourceFixture datasource) throws Exception {
-        fixture.prepare(getModelName(), datasource);
-    }
-
     @BeforeEach
-    protected void init(JudoRuntimeFixture fixture, JudoDatasourceFixture datasource) throws Exception {
-        fixture.init(getModelDaoModule(),this, datasource);
-        fixture.beginTransaction();
+    protected void init() {
 
         entityD1 = entityDDao.create(EntityD.builder()
                 .build());
@@ -135,19 +129,6 @@ public class CompositionRelationshipsTest {
                 .withSingleRequiredConA(singleRequiredConA)
                 .withSingleConA(singleConA)
                 .build());
-    }
-
-    @AfterEach
-    protected void tearDown(JudoRuntimeFixture fixture) {
-        fixture.tearDown();
-    }
-
-    public Module getModelDaoModule() {
-        return new CompositionRelationshipsDaoModules();
-    }
-
-    static public String getModelName() {
-        return "CompositionRelationships";
     }
 
     @Test

@@ -21,7 +21,6 @@ package hu.blackbelt.judo.runtime.core.jsl.entity;
  */
 
 import com.google.inject.Inject;
-import com.google.inject.Module;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.a.A;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.b.B;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.b.BDao;
@@ -33,24 +32,21 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castin
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.tester.TesterDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.CastingFunctionsDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
-import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceByClassExtension;
-import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
-import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
-import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeFixture;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeJudoDatasourceByClassExtension;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
-@ExtendWith({JudoDatasourceByClassExtension.class, JudoRuntimeExtension.class})
 public class CastingFunctionsTest {
+
+    @RegisterExtension
+    static JudoRuntimeJudoDatasourceByClassExtension runtimeExtension = new JudoRuntimeJudoDatasourceByClassExtension("CastingFunctions", new CastingFunctionsDaoModules());
 
     @Inject
     BDao bDao;
@@ -61,22 +57,8 @@ public class CastingFunctionsTest {
 
     private Tester tester;
 
-    public Module getModelDaoModule() {
-        return new CastingFunctionsDaoModules();
-    }
-
-    static public String getModelName() {
-        return "CastingFunctions";
-    }
-    @BeforeAll
-    static public void prepare(JudoRuntimeFixture fixture, JudoDatasourceFixture datasource) throws Exception {
-        fixture.prepare(getModelName(), datasource);
-    }
-
     @BeforeEach
-    protected void init(JudoRuntimeFixture fixture, JudoDatasourceFixture datasource) throws Exception {
-        fixture.init(getModelDaoModule(),this, datasource);
-        fixture.beginTransaction();
+    protected void init() throws Exception {
 
         CA ca = caDao.create(CA.builder().withNameA("aca1").withNameB("bca1").withNameCA("ca1").build());
         CA ca1 = caDao.create(CA.builder().withNameA("aca2").withNameB("bca2").withNameCA("ca2").build());
@@ -98,11 +80,6 @@ public class CastingFunctionsTest {
                         .withCaAsB(caAsB)
                         .withCaAsBs(List.of(caAsB1, caAsB2))
                         .build());
-    }
-
-    @AfterEach
-    protected void tearDown(JudoRuntimeFixture fixture) {
-        fixture.tearDown();
     }
 
     @Test

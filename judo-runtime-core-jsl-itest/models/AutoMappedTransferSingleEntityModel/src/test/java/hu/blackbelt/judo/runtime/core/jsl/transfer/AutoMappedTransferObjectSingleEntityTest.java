@@ -21,16 +21,12 @@ import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceByClassExtension;
-import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
-import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
-import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeFixture;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeJudoDatasourceByClassExtension;
 import lombok.extern.slf4j.Slf4j;
 import org.hamcrest.Matcher;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.Optional;
 
@@ -39,17 +35,10 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
-@ExtendWith({JudoDatasourceByClassExtension.class, JudoRuntimeExtension.class})
 public class AutoMappedTransferObjectSingleEntityTest {
 
-    public Module getModelDaoModule() {
-        return new AutoMappedTransferSingleEntityDaoModules();
-    }
-
-    static public String getModelName() {
-        return "AutoMappedTransferSingleEntity";
-    }
-
+    @RegisterExtension
+    static JudoRuntimeJudoDatasourceByClassExtension runtimeExtension = new JudoRuntimeJudoDatasourceByClassExtension("AutoMappedTransferSingleEntity", new AutoMappedTransferSingleEntityDaoModules());
 
     @Inject
     AutoMappedContainerSingleAssociationDao autoMappedContainerSingleAssociationDao;
@@ -68,23 +57,6 @@ public class AutoMappedTransferObjectSingleEntityTest {
 
     @Inject
     AutoMappedTwoWayReferenceEntityDao twoWayReferenceEntityDao;
-
-    @BeforeAll
-    static public void prepare(JudoRuntimeFixture fixture, JudoDatasourceFixture datasource) throws Exception {
-        fixture.prepare(getModelName(), datasource);
-    }
-
-    @BeforeEach
-    protected void init(JudoRuntimeFixture fixture, JudoDatasourceFixture datasource) throws Exception {
-        fixture.init(getModelDaoModule(),this, datasource);
-        fixture.beginTransaction();
-    }
-
-    @AfterEach
-    protected void tearDown(JudoRuntimeFixture fixture) {
-        fixture.tearDown();
-    }
-
 
     /**
      * This test checks the auto mapped transfer object on single entity composition fields.

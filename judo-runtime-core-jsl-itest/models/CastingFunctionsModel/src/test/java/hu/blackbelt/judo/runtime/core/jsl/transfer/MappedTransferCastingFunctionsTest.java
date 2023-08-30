@@ -44,7 +44,7 @@ import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceByClassExtension;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
-import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeJudoDatasourceByClassExtension;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeFixture;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
@@ -52,6 +52,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.List;
 
@@ -60,8 +61,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Slf4j
-@ExtendWith({JudoDatasourceByClassExtension.class, JudoRuntimeExtension.class})
 public class MappedTransferCastingFunctionsTest {
+
+    @RegisterExtension
+    static JudoRuntimeJudoDatasourceByClassExtension runtimeExtension = new JudoRuntimeJudoDatasourceByClassExtension("CastingFunctions", new CastingFunctionsDaoModules());
 
     @Inject
     BDao bDao;
@@ -81,23 +84,8 @@ public class MappedTransferCastingFunctionsTest {
 
     private Tester tester;
 
-    public Module getModelDaoModule() {
-        return new CastingFunctionsDaoModules();
-    }
-
-    static public String getModelName() {
-        return "CastingFunctions";
-    }
-
-    @BeforeAll
-    static public void prepare(JudoRuntimeFixture fixture, JudoDatasourceFixture datasource) throws Exception {
-        fixture.prepare(getModelName(), datasource);
-    }
-
     @BeforeEach
-    protected void init(JudoRuntimeFixture fixture, JudoDatasourceFixture datasource) throws Exception {
-        fixture.init(getModelDaoModule(),this, datasource);
-        fixture.beginTransaction();
+    protected void init() {
 
         TCA tca = tcaDao.create(TCA.builder().withNameA("aca1").withNameB("bca1").withNameCA("ca1").build());
         TCA tca1 = tcaDao.create(TCA.builder().withNameA("aca2").withNameB("bca2").withNameCA("ca2").build());
@@ -121,11 +109,6 @@ public class MappedTransferCastingFunctionsTest {
                         .build());
 
         tester = testerDao.getById(transferTester.identifier().adaptTo(TesterIdentifier.class)).orElseThrow();
-    }
-
-    @AfterEach
-    protected void tearDown(JudoRuntimeFixture fixture) {
-        fixture.tearDown();
     }
 
 

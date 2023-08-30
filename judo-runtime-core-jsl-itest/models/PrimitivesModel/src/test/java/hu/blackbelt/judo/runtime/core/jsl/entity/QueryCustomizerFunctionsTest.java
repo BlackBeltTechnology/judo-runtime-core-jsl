@@ -32,7 +32,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.PrimitivesDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceByClassExtension;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
-import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeJudoDatasourceByClassExtension;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeFixture;
 import hu.blackbelt.judo.sdk.query.StringFilter;
 import lombok.extern.slf4j.Slf4j;
@@ -41,6 +41,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -49,8 +50,11 @@ import java.time.LocalTime;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Slf4j
-@ExtendWith({JudoDatasourceByClassExtension.class, JudoRuntimeExtension.class})
 public class QueryCustomizerFunctionsTest {
+
+    @RegisterExtension
+    static JudoRuntimeJudoDatasourceByClassExtension runtimeExtension = new JudoRuntimeJudoDatasourceByClassExtension("Primitives", new PrimitivesDaoModules());
+
     @Inject
     MyEntityWithOptionalFieldsDao myEntityWithOptionalFieldsDao;
 
@@ -58,23 +62,8 @@ public class QueryCustomizerFunctionsTest {
 
     MyEntityWithOptionalFields entity2;
 
-    public Module getModelDaoModule() {
-        return new PrimitivesDaoModules();
-    }
-
-    static public String getModelName() {
-        return "Primitives";
-    }
-
-    @BeforeAll
-    static public void prepare(JudoRuntimeFixture fixture, JudoDatasourceFixture datasource) throws Exception {
-        fixture.prepare(getModelName(), datasource);
-    }
-
     @BeforeEach
-    protected void init(JudoRuntimeFixture fixture, JudoDatasourceFixture datasource) throws Exception {
-        fixture.init(getModelDaoModule(),this, datasource);
-        fixture.beginTransaction();
+    protected void init() {
 
         entity1 = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
                 .withIntegerAttr(2)
@@ -101,11 +90,6 @@ public class QueryCustomizerFunctionsTest {
                 .withBinaryAttr(FileType.builder().fileName("test.txt").build())
                 .withEnumAttr(MyEnum.Atomic)
                 .build());
-    }
-
-    @AfterEach
-    protected void tearDown(JudoRuntimeFixture fixture) {
-        fixture.tearDown();
     }
 
     @Test

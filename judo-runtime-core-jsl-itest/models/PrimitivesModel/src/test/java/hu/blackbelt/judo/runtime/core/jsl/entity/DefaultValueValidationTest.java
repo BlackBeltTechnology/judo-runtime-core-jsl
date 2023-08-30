@@ -30,16 +30,16 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.e
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.entitywithnotvalidregexdefaultvalue.EntityWithNotValidRegexDefaultValueDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.entitywithnotvalidscaledefaultvalue.EntityWithNotValidScaleDefaultValue;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.entitywithnotvalidscaledefaultvalue.EntityWithNotValidScaleDefaultValueDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.AbstractModelDaoModules;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.PrimitivesDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceByClassExtension;
-import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
-import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
-import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeFixture;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeJudoDatasourceByClassExtension;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import java.util.Optional;
@@ -49,8 +49,12 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
-@ExtendWith({JudoDatasourceByClassExtension.class, JudoRuntimeExtension.class})
 public class DefaultValueValidationTest {
+
+    // TODO JNG-JNG-4899 The injection is failed in this module
+    @RegisterExtension
+    static JudoRuntimeJudoDatasourceByClassExtension runtimeExtension = new JudoRuntimeJudoDatasourceByClassExtension("Primitives", new PrimitivesDaoModules());
+
     @Inject
     EntityWithNotValidIntegerDefaultValueDao entityWithNotValidIntegerDefaultValueDao;
 
@@ -66,32 +70,6 @@ public class DefaultValueValidationTest {
 
     @Inject
     EntityWithNotValidRegexDefaultValueDao entityWithNotValidRegexDefaultValueDao;
-
-    // TODO JNG-JNG-4899 The injection is failed in this module
-    public Module getModelDaoModule() {
-        return new PrimitivesDaoModules();
-    }
-
-    static public String getModelName() {
-        return "Primitives";
-    }
-
-    @BeforeAll
-    static public void prepare(JudoRuntimeFixture fixture, JudoDatasourceFixture datasource) throws Exception {
-        fixture.prepare(getModelName(), datasource);
-    }
-
-    @BeforeEach
-    protected void init(JudoRuntimeFixture fixture, JudoDatasourceFixture datasource) throws Exception {
-        fixture.init(getModelDaoModule(),this, datasource);
-        fixture.beginTransaction();
-    }
-
-    @AfterEach
-    protected void tearDown(JudoRuntimeFixture fixture) {
-        fixture.tearDown();
-    }
-
 
     /**
      * This case checks the invalid default value behaviors, when try to create an Entity instance of them.
