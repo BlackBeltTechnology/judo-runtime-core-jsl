@@ -44,16 +44,22 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.re
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.transferyautomappedto.TransferYAutoMappedTODao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.RecursiveCompositionDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceByClassExtension;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeJudoDatasourceByClassExtension;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
-public class RecursiveCompositionTest extends AbstractJslTest {
+public class RecursiveCompositionTest {
+
+    @RegisterExtension
+    static JudoRuntimeJudoDatasourceByClassExtension runtimeExtension = new JudoRuntimeJudoDatasourceByClassExtension("RecursiveComposition", new RecursiveCompositionDaoModules());
 
     @Inject
     TransferXAutoMappedTODao transferXAutoMappedTODao;
@@ -78,16 +84,6 @@ public class RecursiveCompositionTest extends AbstractJslTest {
 
     @Inject
     EntityBDao entityBDao;
-
-    @Override
-    public Module getModelDaoModule() {
-        return new RecursiveCompositionDaoModules();
-    }
-
-    @Override
-    public String getModelName() {
-        return "RecursiveComposition";
-    }
 
     @Test
     @Requirement(reqs = {

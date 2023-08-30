@@ -51,9 +51,12 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.MappedTransferComposi
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceByClassExtension;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeJudoDatasourceByClassExtension;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.List;
 import java.util.Optional;
@@ -65,7 +68,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Slf4j
-public class MappedTransferCompositonAggregationTest extends AbstractJslTest {
+public class MappedTransferCompositonAggregationTest {
+
+    @RegisterExtension
+    static JudoRuntimeJudoDatasourceByClassExtension runtimeExtension = new JudoRuntimeJudoDatasourceByClassExtension("MappedTransferCompositonAggregation", new MappedTransferCompositonAggregationDaoModules());
 
     @Inject
     EntityADao entityADao;
@@ -109,17 +115,6 @@ public class MappedTransferCompositonAggregationTest extends AbstractJslTest {
 
     @Inject
     TransferGDao transferGDao;
-
-
-    @Override
-    public Module getModelDaoModule() {
-        return new MappedTransferCompositonAggregationDaoModules();
-    }
-
-    @Override
-    public String getModelName() {
-        return "MappedTransferCompositonAggregation";
-    }
 
     /**
      * The test checks the aggregation mapped single field with entity type work well on transfer object.

@@ -1,7 +1,6 @@
 package hu.blackbelt.judo.runtime.core.jsl;
 
 import com.google.inject.Inject;
-import com.google.inject.Module;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.teststaticquerieswithdefaultvalues.teststaticquerieswithdefaultvalues.myentity.MyEntity;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.teststaticquerieswithdefaultvalues.teststaticquerieswithdefaultvalues.myentity.MyEntityDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.teststaticquerieswithdefaultvalues.teststaticquerieswithdefaultvalues.myenum.MyEnum;
@@ -10,11 +9,16 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.teststaticquerieswithde
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.TestStaticQueriesWithDefaultValuesDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeJudoDatasourceByClassExtension;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.Serializable;
-import java.time.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,23 +26,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Slf4j
-public class TestStaticQueriesWithDefaultValues extends AbstractJslTest {
+public class TestStaticQueriesWithDefaultValues {
+
+    @RegisterExtension
+    static JudoRuntimeJudoDatasourceByClassExtension runtimeExtension = new JudoRuntimeJudoDatasourceByClassExtension("TestStaticQueriesWithDefaultValues", new TestStaticQueriesWithDefaultValuesDaoModules());
 
     @Inject
     MyEntityDao myEntityDao;
 
     @Inject
     Snapshot1Dao snapshot1Dao;
-
-    @Override
-    public Module getModelDaoModule() {
-        return new TestStaticQueriesWithDefaultValuesDaoModules();
-    }
-
-    @Override
-    public String getModelName() {
-        return "TestStaticQueriesWithDefaultValues";
-    }
 
     /**
      * Testing the static queries with default values that are defined by constants or expressions.

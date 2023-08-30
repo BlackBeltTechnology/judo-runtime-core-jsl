@@ -31,19 +31,28 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.querymodel.querymodel.r
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.querymodel.querymodel.rootcountallleadsbetween.RootCountAllLeadsBetweenParameter;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.querymodel.querymodel.rootonelead.RootOneLeadDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.querymodel.querymodel.totalnumberofleads.TotalNumberOfLeadsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.AbstractModelDaoModules;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.QueryModelDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceByClassExtension;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeJudoDatasourceByClassExtension;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Slf4j
-public class QueryTest extends AbstractJslTest {
+public class QueryTest {
+
+    @RegisterExtension
+    static JudoRuntimeJudoDatasourceByClassExtension runtimeExtension = new JudoRuntimeJudoDatasourceByClassExtension("QueryModel", new QueryModelDaoModules());
+
     @Inject
     TotalNumberOfLeadsDao totalNumberOfLeadsDao;
 
@@ -61,16 +70,6 @@ public class QueryTest extends AbstractJslTest {
 
     @Inject
     LeadDao leadDao;
-
-    @Override
-    public Module getModelDaoModule() {
-        return new QueryModelDaoModules();
-    }
-
-    @Override
-    public String getModelName() {
-        return "QueryModel";
-    }
 
     @Test
     @Requirement(reqs = {

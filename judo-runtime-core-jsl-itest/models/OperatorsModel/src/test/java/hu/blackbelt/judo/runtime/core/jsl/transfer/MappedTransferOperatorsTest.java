@@ -23,8 +23,10 @@ package hu.blackbelt.judo.runtime.core.jsl.transfer;
 import com.google.inject.Inject;
 import com.google.inject.Module;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.defaultoperators.DefaultOperators;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.defaultoperators.DefaultOperatorsDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.defaultoperators.DefaultOperatorsIdentifier;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.derivedoperators.DerivedOperators;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.derivedoperators.DerivedOperatorsDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.derivedoperators.DerivedOperatorsIdentifier;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.e1.E1;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.e1.E1Dao;
@@ -37,22 +39,26 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.tra
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.transferderivedoperators.TransferDerivedOperators;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.transferderivedoperators.TransferDerivedOperatorsDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.transferderivedsource.TransferDerivedSource;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.defaultoperators.DefaultOperatorsDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.derivedoperators.DerivedOperatorsDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.OperatorsDaoModules;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.PrimitivesDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceByClassExtension;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeJudoDatasourceByClassExtension;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @Slf4j
-public class MappedTransferOperatorsTest extends AbstractJslTest {
+public class MappedTransferOperatorsTest {
+
+    @RegisterExtension
+    static JudoRuntimeJudoDatasourceByClassExtension runtimeExtension = new JudoRuntimeJudoDatasourceByClassExtension("Operators", new OperatorsDaoModules());
 
     @Inject
     DefaultOperatorsDao defaultOperatorsDao;
@@ -69,16 +75,6 @@ public class MappedTransferOperatorsTest extends AbstractJslTest {
     @Inject TE1Dao te1Dao;
 
     @Inject E1Dao e1Dao;
-
-    @Override
-    public Module getModelDaoModule() {
-        return new OperatorsDaoModules();
-    }
-
-    @Override
-    public String getModelName() {
-        return "Operators";
-    }
 
     /**
      * The test checks the operation for field with default work well on transfer object.

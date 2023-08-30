@@ -1,7 +1,6 @@
 package hu.blackbelt.judo.runtime.core.jsl.entity;
 
 import com.google.inject.Inject;
-import com.google.inject.Module;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.envvarbool.EnvVarBool;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.envvarbool.EnvVarBoolDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.envvardate.EnvVarDate;
@@ -25,11 +24,12 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencem
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.EnvironmentAndSequenceModelDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeJudoDatasourceByClassExtension;
 import hu.blackbelt.judo.runtime.core.jsl.util.EnvironmentVariableMocker;
 import hu.blackbelt.judo.runtime.core.jsl.util.EnvironmentVariables;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.time.*;
 import java.util.Map;
@@ -56,7 +56,10 @@ import static org.junit.jupiter.api.Assertions.*;
  * #L%
  */
 
-public class EnvironmentAndSequenceTest extends AbstractJslTest {
+public class EnvironmentAndSequenceTest {
+
+    @RegisterExtension
+    static JudoRuntimeJudoDatasourceByClassExtension runtimeExtension = new JudoRuntimeJudoDatasourceByClassExtension("EnvironmentAndSequenceModel", new EnvironmentAndSequenceModelDaoModules());
 
     @Inject
     EnvVars1Dao envVars1Dao;
@@ -78,16 +81,6 @@ public class EnvironmentAndSequenceTest extends AbstractJslTest {
     EnvVarsDao envVarsDao;
     @Inject
     SequencesDao sequencesDao;
-
-    @Override
-    public Module getModelDaoModule() {
-        return new EnvironmentAndSequenceModelDaoModules();
-    }
-
-    @Override
-    public String getModelName() {
-        return "EnvironmentAndSequenceModel";
-    }
 
     /**
      * With all judo-types primitives test the !getVariables(“ENVIRONMENT“, “key”) that read the key environment variable, and check the returned values.

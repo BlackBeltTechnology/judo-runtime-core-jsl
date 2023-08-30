@@ -36,9 +36,12 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.paging.paging.transferl
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.PagingDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceByClassExtension;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeJudoDatasourceByClassExtension;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -56,7 +59,11 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Slf4j
-public class MappedTransferPagingTest extends AbstractJslTest {
+public class MappedTransferPagingTest {
+
+    @RegisterExtension
+    static JudoRuntimeJudoDatasourceByClassExtension runtimeExtension = new JudoRuntimeJudoDatasourceByClassExtension("Paging", new PagingDaoModules());
+
     @Inject
     TransferItemDao transferItemDao;
 
@@ -65,17 +72,6 @@ public class MappedTransferPagingTest extends AbstractJslTest {
 
     @Inject
     TransferLogEntryDao transferLogEntryDao;
-
-
-    @Override
-    public Module getModelDaoModule() {
-        return new PagingDaoModules();
-    }
-
-    @Override
-    public String getModelName() {
-        return "Paging";
-    }
 
     /**
      * Testing the limit and offset in bigger data and combine other query customizer methods (filter, order) on a transfer object.

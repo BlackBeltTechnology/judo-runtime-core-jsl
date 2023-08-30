@@ -1,35 +1,62 @@
 package hu.blackbelt.judo.runtime.core.jsl.transfer;
 
 import com.google.inject.Inject;
-import com.google.inject.Module;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.automappedtransferonderivedwithcomplexprimitiveexpression.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.automappedtransferonderivedwithdefaultfieldsexpression.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.automappedtransferonderivedwithfieldsexpression.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.automappedtransferonderivedwithqueryexpression.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.automappedtransferonderivedwithsimpleprimitiveexpression.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.derivedwithcomplexprimitiveexpression.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.derivedwithdefaultfieldsexpression.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.derivedwithfieldsexpression.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.derivedwithqueryexpression.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.derivedwithsimpleprimitiveexpression.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.myenum.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.entitywithoptionalprimitives.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.entitywithrequiredprimitives.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.entitywithoptionalprimitivedefaults.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.entitywithrequiredprimitivedefaults.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.automappedtransferonoptionalprimitives.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.automappedtransferonrequiredprimitives.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.automappedtransferonoptionalprimitivedefaults.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.automappedtransferonrequiredprimitivedefaults.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.automappedtransferonderivedwithcomplexprimitiveexpression.AutoMappedTransferOnDerivedWithComplexPrimitiveExpression;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.automappedtransferonderivedwithcomplexprimitiveexpression.AutoMappedTransferOnDerivedWithComplexPrimitiveExpressionDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.automappedtransferonderivedwithdefaultfieldsexpression.AutoMappedTransferOnDerivedWithDefaultFieldsExpression;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.automappedtransferonderivedwithdefaultfieldsexpression.AutoMappedTransferOnDerivedWithDefaultFieldsExpressionDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.automappedtransferonderivedwithfieldsexpression.AutoMappedTransferOnDerivedWithFieldsExpression;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.automappedtransferonderivedwithfieldsexpression.AutoMappedTransferOnDerivedWithFieldsExpressionDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.automappedtransferonderivedwithqueryexpression.AutoMappedTransferOnDerivedWithQueryExpression;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.automappedtransferonderivedwithqueryexpression.AutoMappedTransferOnDerivedWithQueryExpressionDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.automappedtransferonderivedwithsimpleprimitiveexpression.AutoMappedTransferOnDerivedWithSimplePrimitiveExpression;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.automappedtransferonderivedwithsimpleprimitiveexpression.AutoMappedTransferOnDerivedWithSimplePrimitiveExpressionDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.automappedtransferonoptionalprimitivedefaults.AutoMappedTransferOnOptionalPrimitiveDefaults;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.automappedtransferonoptionalprimitivedefaults.AutoMappedTransferOnOptionalPrimitiveDefaultsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.automappedtransferonoptionalprimitives.AutoMappedTransferOnOptionalPrimitives;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.automappedtransferonoptionalprimitives.AutoMappedTransferOnOptionalPrimitivesDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.automappedtransferonrequiredprimitivedefaults.AutoMappedTransferOnRequiredPrimitiveDefaults;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.automappedtransferonrequiredprimitivedefaults.AutoMappedTransferOnRequiredPrimitiveDefaultsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.automappedtransferonrequiredprimitives.AutoMappedTransferOnRequiredPrimitives;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.automappedtransferonrequiredprimitives.AutoMappedTransferOnRequiredPrimitivesDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.derivedwithcomplexprimitiveexpression.DerivedWithComplexPrimitiveExpression;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.derivedwithcomplexprimitiveexpression.DerivedWithComplexPrimitiveExpressionDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.derivedwithcomplexprimitiveexpression.DerivedWithComplexPrimitiveExpressionIdentifier;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.derivedwithdefaultfieldsexpression.DerivedWithDefaultFieldsExpression;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.derivedwithdefaultfieldsexpression.DerivedWithDefaultFieldsExpressionDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.derivedwithdefaultfieldsexpression.DerivedWithDefaultFieldsExpressionIdentifier;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.derivedwithfieldsexpression.DerivedWithFieldsExpression;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.derivedwithfieldsexpression.DerivedWithFieldsExpressionDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.derivedwithfieldsexpression.DerivedWithFieldsExpressionIdentifier;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.derivedwithqueryexpression.DerivedWithQueryExpression;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.derivedwithqueryexpression.DerivedWithQueryExpressionDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.derivedwithqueryexpression.DerivedWithQueryExpressionIdentifier;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.derivedwithsimpleprimitiveexpression.DerivedWithSimplePrimitiveExpression;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.derivedwithsimpleprimitiveexpression.DerivedWithSimplePrimitiveExpressionDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.derivedwithsimpleprimitiveexpression.DerivedWithSimplePrimitiveExpressionIdentifier;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.entitywithoptionalprimitivedefaults.EntityWithOptionalPrimitiveDefaults;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.entitywithoptionalprimitivedefaults.EntityWithOptionalPrimitiveDefaultsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.entitywithoptionalprimitivedefaults.EntityWithOptionalPrimitiveDefaultsIdentifier;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.entitywithoptionalprimitives.EntityWithOptionalPrimitives;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.entitywithoptionalprimitives.EntityWithOptionalPrimitivesDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.entitywithoptionalprimitives.EntityWithOptionalPrimitivesIdentifier;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.entitywithrequiredprimitivedefaults.EntityWithRequiredPrimitiveDefaults;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.entitywithrequiredprimitivedefaults.EntityWithRequiredPrimitiveDefaultsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.entitywithrequiredprimitivedefaults.EntityWithRequiredPrimitiveDefaultsIdentifier;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.entitywithrequiredprimitives.EntityWithRequiredPrimitives;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.entitywithrequiredprimitives.EntityWithRequiredPrimitivesDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.entitywithrequiredprimitives.EntityWithRequiredPrimitivesIdentifier;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransferprimitives.automappedtransferprimitives.myenum.MyEnum;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.AutoMappedTransferPrimitivesDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeJudoDatasourceByClassExtension;
 import lombok.extern.slf4j.Slf4j;
 import org.hamcrest.Matcher;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -38,21 +65,13 @@ import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
-public class AutoMappedTransferObjectPrimitivesTest extends AbstractJslTest {
+public class AutoMappedTransferObjectPrimitivesTest {
 
-    @Override
-    public Module getModelDaoModule() {
-        return new AutoMappedTransferPrimitivesDaoModules();
-    }
-
-    @Override
-    public String getModelName() {
-        return "AutoMappedTransferPrimitives";
-    }
+    @RegisterExtension
+    static JudoRuntimeJudoDatasourceByClassExtension runtimeExtension = new JudoRuntimeJudoDatasourceByClassExtension("AutoMappedTransferPrimitives", new AutoMappedTransferPrimitivesDaoModules());
 
     @Inject
     EntityWithOptionalPrimitivesDao entityWithOptionalPrimitivesDao;
@@ -107,6 +126,7 @@ public class AutoMappedTransferObjectPrimitivesTest extends AbstractJslTest {
 
     @Inject
     AutoMappedTransferOnDerivedWithQueryExpressionDao autoMappedTransferOnDerivedWithQueryExpressionDao;
+
 
 
     /**

@@ -26,27 +26,23 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.ternarytest.ternarytest
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.ternarytest.ternarytest.aaa.AAADao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.TernaryTestDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceByClassExtension;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeJudoDatasourceByClassExtension;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Slf4j
-public class TernaryTest extends AbstractJslTest {
+public class TernaryTest {
+
+    @RegisterExtension
+    static JudoRuntimeJudoDatasourceByClassExtension runtimeExtension = new JudoRuntimeJudoDatasourceByClassExtension("TernaryTest", new TernaryTestDaoModules());
 
     @Inject
     AAADao aDao;
-
-    @Override
-    public Module getModelDaoModule() {
-        return new TernaryTestDaoModules();
-    }
-
-    @Override
-    public String getModelName() {
-        return "TernaryTest";
-    }
 
     @Test
     @Requirement(reqs = {
