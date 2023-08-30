@@ -21,26 +21,34 @@ package hu.blackbelt.judo.runtime.core.jsl.entity;
  */
 
 import com.google.inject.Inject;
-import com.google.inject.Module;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.abstract_.Abstract;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.abstract_.AbstractDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.entitya.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.entitya.querysamename.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.entityb.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.entityb.querysamename.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.referenceentity.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.testentity.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.entitya.EntityA;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.entitya.EntityADao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.entitya.querysamename.EntityAQuerySameNameParameter;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.entityb.EntityB;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.entityb.EntityBDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.entityb.querysamename.EntityBQuerySameNameParameter;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.referenceentity.ReferenceEntity;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.referenceentity.ReferenceEntityDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.testentity.TestEntity;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.testentity.TestEntityDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.SpecialCasesDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Slf4j
-public class SpecialCasesTest extends AbstractJslTest {
+public class SpecialCasesTest {
+
+    @RegisterExtension
+    static JudoRuntimeExtension runtimeExtension = new JudoRuntimeExtension("SpecialCases", new SpecialCasesDaoModules());
 
     @Inject
     EntityADao entityADao;
@@ -56,16 +64,6 @@ public class SpecialCasesTest extends AbstractJslTest {
 
     @Inject
     TestEntityDao testEntityDao;
-
-    @Override
-    public Module getModelDaoModule() {
-        return new SpecialCasesDaoModules();
-    }
-
-    @Override
-    public String getModelName() {
-        return "SpecialCases";
-    }
 
     /**
      * This test checks the entities with the same query name declaration.

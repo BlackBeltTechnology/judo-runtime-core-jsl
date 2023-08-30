@@ -22,7 +22,6 @@ package hu.blackbelt.judo.runtime.core.jsl.entity;
 
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
-import com.google.inject.Module;
 import hu.blackbelt.judo.dispatcher.api.FileType;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.defaultrequiredentity.DefaultRequiredEntity;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.defaultrequiredentity.DefaultRequiredEntityDao;
@@ -46,22 +45,29 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.r
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.PrimitivesDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
-import java.time.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @Slf4j
-public class PrimitivesTest extends AbstractJslTest {
+public class PrimitivesTest {
+
+    @RegisterExtension
+    static JudoRuntimeExtension runtimeExtension = new JudoRuntimeExtension("Primitives", new PrimitivesDaoModules());
+
     @Inject
     MyEntityWithOptionalFieldsDao myEntityWithOptionalFieldsDao;
 
@@ -88,15 +94,6 @@ public class PrimitivesTest extends AbstractJslTest {
 
     @Inject
     DefaultRequiredEntityDao defaultRequiredEntityDao;
-    @Override
-    public Module getModelDaoModule() {
-        return new PrimitivesDaoModules();
-    }
-
-    @Override
-    public String getModelName() {
-        return "Primitives";
-    }
 
     @Test
     @Requirement(reqs = {

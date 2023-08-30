@@ -22,7 +22,6 @@ package hu.blackbelt.judo.runtime.core.jsl.transfer;
 
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
-import com.google.inject.Module;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferanytypefunctions.TransferAnyTypeFunctions;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferanytypefunctions.TransferAnyTypeFunctionsDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferbooleanfunctions.TransferBooleanFunctions;
@@ -71,11 +70,11 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.tra
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.FunctionsDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
-import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.time.*;
 import java.util.List;
@@ -85,7 +84,11 @@ import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
-public class MappedTransferFunctionsTest extends AbstractJslTest {
+public class MappedTransferFunctionsTest {
+
+    @RegisterExtension
+    static JudoRuntimeExtension runtimeExtension = new JudoRuntimeExtension("Functions", new FunctionsDaoModules());
+
     @Inject
     TransferEntityDao transferEntityDao;
 
@@ -152,27 +155,17 @@ public class MappedTransferFunctionsTest extends AbstractJslTest {
     TransferSimpleDao transferSimpleDao;
 
     @BeforeEach
-    protected void init(JudoDatasourceFixture datasource) throws Exception {
-        super.init(datasource);
+    protected void init() {
+
         TransferEntity tentity = transferEntityDao
-                        .create(TransferEntity.builder().build());
+                .create(TransferEntity.builder().build());
         TransferEntityWithPrimitiveDefaults entityWithPrimitiveDefaults = transferEntityWithPrimitiveDefaultsDao
-                        .create(TransferEntityWithPrimitiveDefaults.builder().build());
+                .create(TransferEntityWithPrimitiveDefaults.builder().build());
 
         transferAnyTypeFunctions = transferAnyTypeFunctionsDao.create(TransferAnyTypeFunctions.builder()
-                        .withEntity(tentity)
-                        .withEntityWithPrimitives(entityWithPrimitiveDefaults)
-                        .build());
-    }
-
-    @Override
-    public Module getModelDaoModule() {
-        return  new FunctionsDaoModules();
-    }
-
-    @Override
-    public String getModelName() {
-        return "Functions";
+                .withEntity(tentity)
+                .withEntityWithPrimitives(entityWithPrimitiveDefaults)
+                .build());
     }
 
     @Test

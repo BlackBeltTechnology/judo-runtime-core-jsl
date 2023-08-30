@@ -21,7 +21,6 @@ package hu.blackbelt.judo.runtime.core.jsl.transfer;
  */
 
 import com.google.inject.Inject;
-import com.google.inject.Module;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.entitya.EntityADao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.entitya.EntityAIdentifier;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.entityb.EntityB;
@@ -51,9 +50,10 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.MappedTransferComposi
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.List;
 import java.util.Optional;
@@ -65,7 +65,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Slf4j
-public class MappedTransferCompositonAggregationTest extends AbstractJslTest {
+public class MappedTransferCompositonAggregationTest {
+
+    @RegisterExtension
+    static JudoRuntimeExtension runtimeExtension = new JudoRuntimeExtension("MappedTransferCompositonAggregation", new MappedTransferCompositonAggregationDaoModules());
 
     @Inject
     EntityADao entityADao;
@@ -109,17 +112,6 @@ public class MappedTransferCompositonAggregationTest extends AbstractJslTest {
 
     @Inject
     TransferGDao transferGDao;
-
-
-    @Override
-    public Module getModelDaoModule() {
-        return new MappedTransferCompositonAggregationDaoModules();
-    }
-
-    @Override
-    public String getModelName() {
-        return "MappedTransferCompositonAggregation";
-    }
 
     /**
      * The test checks the aggregation mapped single field with entity type work well on transfer object.

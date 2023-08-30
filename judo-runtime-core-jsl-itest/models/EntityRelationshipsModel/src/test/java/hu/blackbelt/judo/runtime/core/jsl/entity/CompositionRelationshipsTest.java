@@ -21,7 +21,6 @@ package hu.blackbelt.judo.runtime.core.jsl.entity;
  */
 
 import com.google.inject.Inject;
-import com.google.inject.Module;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entitya.EntityA;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entitya.EntityADao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entitya.EntityAMask;
@@ -51,13 +50,13 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationship
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.CompositionRelationshipsDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
-import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import lombok.extern.slf4j.Slf4j;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.List;
 import java.util.Optional;
@@ -68,7 +67,11 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
-public class CompositionRelationshipsTest extends AbstractJslTest {
+public class CompositionRelationshipsTest {
+
+    @RegisterExtension
+    static JudoRuntimeExtension runtimeExtension = new JudoRuntimeExtension("CompositionRelationships", new CompositionRelationshipsDaoModules());
+
     @Inject
     EntityADao entityADao;
 
@@ -108,10 +111,8 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
     EntityD entityD1;
     EntityD entityD2;
 
-
     @BeforeEach
-    protected void init(JudoDatasourceFixture datasource) throws Exception {
-        super.init(datasource);
+    protected void init() {
 
         entityD1 = entityDDao.create(EntityD.builder()
                 .build());
@@ -128,16 +129,6 @@ public class CompositionRelationshipsTest extends AbstractJslTest {
                 .withSingleRequiredConA(singleRequiredConA)
                 .withSingleConA(singleConA)
                 .build());
-    }
-
-    @Override
-    public Module getModelDaoModule() {
-        return new CompositionRelationshipsDaoModules();
-    }
-
-    @Override
-    public String getModelName() {
-        return "CompositionRelationships";
     }
 
     @Test

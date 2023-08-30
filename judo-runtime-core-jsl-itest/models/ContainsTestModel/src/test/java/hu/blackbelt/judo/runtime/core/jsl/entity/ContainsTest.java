@@ -21,7 +21,6 @@ package hu.blackbelt.judo.runtime.core.jsl.entity;
  */
 
 import com.google.inject.Inject;
-import com.google.inject.Module;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containsmodel.containsmodel.a.A;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containsmodel.containsmodel.a.AAttachedRelationsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containsmodel.containsmodel.a.ADao;
@@ -29,9 +28,10 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containsmodel.containsm
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containsmodel.containsmodel.b.BDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.ContainsModelDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.List;
 
@@ -39,23 +39,16 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Slf4j
-public class ContainsTest extends AbstractJslTest {
+public class ContainsTest {
+
+    @RegisterExtension
+    static JudoRuntimeExtension runtimeExtension = new JudoRuntimeExtension("ContainsModel", new ContainsModelDaoModules());
 
     @Inject
     ADao aDao;
 
     @Inject
     BDao bDao;
-
-    @Override
-    public Module getModelDaoModule() {
-        return new ContainsModelDaoModules();
-    }
-
-    @Override
-    public String getModelName() {
-        return "ContainsModel";
-    }
 
     @Test
     @Requirement(reqs = {
