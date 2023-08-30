@@ -5,9 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.extension.*;
 
 @Slf4j
-public class JudoRuntimeExtension implements ParameterResolver, BeforeEachCallback, AfterEachCallback {
+public class JudoRuntimeByClassExtension implements ParameterResolver, BeforeEachCallback, AfterEachCallback, BeforeAllCallback {
 
-    private JudoRuntimeFixture fixture = new JudoRuntimeFixture();
+    private JudoRuntimeFixture judoRuntimeFixture;
 
     @Override
     public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
@@ -16,7 +16,12 @@ public class JudoRuntimeExtension implements ParameterResolver, BeforeEachCallba
 
     @Override
     public Object resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
-        return fixture;
+        return judoRuntimeFixture;
+    }
+
+    @Override
+    public void beforeAll(ExtensionContext context) {
+        judoRuntimeFixture = new JudoRuntimeFixture();
     }
 
     @Override

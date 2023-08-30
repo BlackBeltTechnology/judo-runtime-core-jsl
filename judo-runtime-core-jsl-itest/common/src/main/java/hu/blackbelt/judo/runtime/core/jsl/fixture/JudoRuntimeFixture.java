@@ -7,8 +7,8 @@ import hu.blackbelt.judo.meta.expression.builder.jql.JqlExpressionBuilderConfig;
 import hu.blackbelt.judo.meta.expression.builder.jql.asm.AsmJqlExtractor;
 import hu.blackbelt.judo.runtime.core.bootstrap.JudoDefaultModule;
 import hu.blackbelt.judo.runtime.core.bootstrap.JudoModelLoader;
-import hu.blackbelt.judo.runtime.core.bootstrap.dao.rdbms.hsqldb.JudoHsqldbModules;
-import hu.blackbelt.judo.runtime.core.bootstrap.dao.rdbms.postgresql.JudoPostgresqlModules;
+import hu.blackbelt.judo.runtime.core.bootstrap.dao.rdbms.hsqldb.JudoHsqldbTestModules;
+import hu.blackbelt.judo.runtime.core.bootstrap.dao.rdbms.postgresql.JudoPostgresqlTestModules;
 import hu.blackbelt.judo.runtime.core.dao.rdbms.hsqldb.HsqldbDialect;
 import hu.blackbelt.judo.runtime.core.dao.rdbms.hsqldb.HsqldbRdbmsInit;
 import hu.blackbelt.judo.runtime.core.dao.rdbms.liquibase.SimpleLiquibaseExecutor;
@@ -54,9 +54,9 @@ public class JudoRuntimeFixture {
 
     JdbcDatabaseContainer sqlContainer;
 
-    JudoPostgresqlModules judoPostgresqlModules;
+    JudoPostgresqlTestModules judoPostgresqlTestModules;
 
-    JudoHsqldbModules judoHsqldbTestModules;
+    JudoHsqldbTestModules judoHsqldbTestModules;
 
     HsqldbDialect hsqldbDialect;
 
@@ -96,13 +96,11 @@ public class JudoRuntimeFixture {
                 .build();
         init.execute(datasource.getDataSource());
 
-        judoHsqldbTestModules = JudoHsqldbModules
+        judoHsqldbTestModules = JudoHsqldbTestModules
                 .builder()
-                .dialect(hsqldbDialect)
-                .source(datasource.getDataSource())
+                .dataSource(datasource.getDataSource())
                 .hsqldbRdbmsInit(init)
                 .build();
-
     }
 
     private void initJudoPostgresqlModules(JudoDatasourceFixture datasource) {
@@ -115,13 +113,12 @@ public class JudoRuntimeFixture {
         init.execute(datasource.getDataSource());
 
         sqlContainer = datasource.getSqlContainer();
-        judoPostgresqlModules = JudoPostgresqlModules.builder()
+        judoPostgresqlTestModules = JudoPostgresqlTestModules.builder()
                 .databaseName(sqlContainer.getDatabaseName())
                 .user(sqlContainer.getUsername())
                 .password(sqlContainer.getPassword())
                 .port(sqlContainer.getFirstMappedPort())
-                .dialect(postgresqlDialect)
-                .source(datasource.getDataSource())
+                .dataSource(datasource.getDataSource())
                 .postgresqlRdbmsInit(init)
                 .build();
     }
@@ -143,10 +140,11 @@ public class JudoRuntimeFixture {
         }
     }
 
-    public void init(Module module, Object injectModulesTo, JudoDatasourceFixture datasource) {
-        if (DIALECT_POSTGRESQL.equals(datasource.getDialect())) {
-            injector = Guice.createInjector(judoPostgresqlModules, module, JudoDefaultModule.builder().injectModulesTo(injectModulesTo).judoModelLoader(modelHolder).coercer(coercer).queryFactory(queryFactory).build());
-        } else if (DIALECT_HSQLDB.equals(datasource.getDialect())) {
+    public void init(Module module, Object injectModulesTo) {
+
+        if (postgresqlDialect != null ) {
+            injector = Guice.createInjector(judoPostgresqlTestModules, module, JudoDefaultModule.builder().injectModulesTo(injectModulesTo).judoModelLoader(modelHolder).coercer(coercer).queryFactory(queryFactory).build());
+        } else if (hsqldbDialect != null ) {
             injector = Guice.createInjector(judoHsqldbTestModules, module, JudoDefaultModule.builder().injectModulesTo(injectModulesTo).judoModelLoader(modelHolder).coercer(coercer).queryFactory(queryFactory).build());
         }
     }
