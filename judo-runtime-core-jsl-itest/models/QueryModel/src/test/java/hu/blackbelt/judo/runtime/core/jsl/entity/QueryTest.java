@@ -21,7 +21,6 @@ package hu.blackbelt.judo.runtime.core.jsl.entity;
  */
 
 import com.google.inject.Inject;
-import com.google.inject.Module;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.querymodel.querymodel.lead.Lead;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.querymodel.querymodel.lead.LeadDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.querymodel.querymodel.rootallleads.RootAllLeadsDao;
@@ -31,14 +30,11 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.querymodel.querymodel.r
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.querymodel.querymodel.rootcountallleadsbetween.RootCountAllLeadsBetweenParameter;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.querymodel.querymodel.rootonelead.RootOneLeadDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.querymodel.querymodel.totalnumberofleads.TotalNumberOfLeadsDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.AbstractModelDaoModules;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.QueryModelDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
-import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceByClassExtension;
-import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeJudoDatasourceByClassExtension;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.List;
@@ -51,7 +47,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class QueryTest {
 
     @RegisterExtension
-    static JudoRuntimeJudoDatasourceByClassExtension runtimeExtension = new JudoRuntimeJudoDatasourceByClassExtension("QueryModel", new QueryModelDaoModules());
+    static JudoRuntimeExtension runtimeExtension = new JudoRuntimeExtension("QueryModel", new QueryModelDaoModules());
 
     @Inject
     TotalNumberOfLeadsDao totalNumberOfLeadsDao;

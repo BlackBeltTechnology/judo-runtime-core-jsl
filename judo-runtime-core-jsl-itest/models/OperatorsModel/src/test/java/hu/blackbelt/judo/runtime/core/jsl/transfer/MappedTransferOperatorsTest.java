@@ -21,7 +21,6 @@ package hu.blackbelt.judo.runtime.core.jsl.transfer;
  */
 
 import com.google.inject.Inject;
-import com.google.inject.Module;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.defaultoperators.DefaultOperators;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.defaultoperators.DefaultOperatorsDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.defaultoperators.DefaultOperatorsIdentifier;
@@ -40,14 +39,11 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.tra
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.transferderivedoperators.TransferDerivedOperatorsDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.transferderivedsource.TransferDerivedSource;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.OperatorsDaoModules;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.PrimitivesDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
-import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceByClassExtension;
-import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeJudoDatasourceByClassExtension;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.Optional;
@@ -58,7 +54,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class MappedTransferOperatorsTest {
 
     @RegisterExtension
-    static JudoRuntimeJudoDatasourceByClassExtension runtimeExtension = new JudoRuntimeJudoDatasourceByClassExtension("Operators", new OperatorsDaoModules());
+    static JudoRuntimeExtension runtimeExtension = new JudoRuntimeExtension("Operators", new OperatorsDaoModules());
 
     @Inject
     DefaultOperatorsDao defaultOperatorsDao;

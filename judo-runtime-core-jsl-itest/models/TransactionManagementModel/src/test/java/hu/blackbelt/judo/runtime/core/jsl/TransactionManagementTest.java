@@ -26,7 +26,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transactionmanagementmo
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.TransactionManagementModelDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeFixture;
-import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeJudoDatasourceByClassExtension;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -37,7 +37,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class TransactionManagementTest {
 
     @RegisterExtension
-    static JudoRuntimeJudoDatasourceByClassExtension runtimeExtension = new JudoRuntimeJudoDatasourceByClassExtension("TransactionManagementModel", new TransactionManagementModelDaoModules());
+    static JudoRuntimeExtension runtimeExtension = new JudoRuntimeExtension("TransactionManagementModel", new TransactionManagementModelDaoModules());
 
     @Inject TesterDao testerDao;
 

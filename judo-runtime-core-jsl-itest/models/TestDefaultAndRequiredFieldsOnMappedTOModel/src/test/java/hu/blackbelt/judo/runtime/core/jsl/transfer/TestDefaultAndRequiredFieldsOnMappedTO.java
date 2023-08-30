@@ -1,7 +1,6 @@
 package hu.blackbelt.judo.runtime.core.jsl.transfer;
 
 import com.google.inject.Inject;
-import com.google.inject.Module;
 import hu.blackbelt.judo.dao.api.ValidationResult;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.entitywithoptionalfields.EntityWithOptionalFields;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.entitywithoptionalfields.EntityWithOptionalFieldsDao;
@@ -63,13 +62,11 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.TestDefaultAndRequire
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
-import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceByClassExtension;
-import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeJudoDatasourceByClassExtension;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import hu.blackbelt.judo.sdk.query.EnumerationFilter;
 import hu.blackbelt.judo.sdk.query.StringFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.time.LocalDate;
@@ -83,7 +80,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class TestDefaultAndRequiredFieldsOnMappedTO {
 
     @RegisterExtension
-    static JudoRuntimeJudoDatasourceByClassExtension runtimeExtension = new JudoRuntimeJudoDatasourceByClassExtension("TestDefaultAndRequiredFieldsOnMappedTO", new TestDefaultAndRequiredFieldsOnMappedTODaoModules());
+    static JudoRuntimeExtension runtimeExtension = new JudoRuntimeExtension("TestDefaultAndRequiredFieldsOnMappedTO", new TestDefaultAndRequiredFieldsOnMappedTODaoModules());
 
     @Inject
     EntityWithOptionalFieldsDao entityWithOptionalFieldsDao;

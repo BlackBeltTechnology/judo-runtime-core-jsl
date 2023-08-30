@@ -21,7 +21,6 @@ package hu.blackbelt.judo.runtime.core.jsl.transfer;
  */
 
 import com.google.inject.Inject;
-import com.google.inject.Module;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.paging.paging.transferitem.TransferItem;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.paging.paging.transferitem.TransferItemAttribute;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.paging.paging.transferitem.TransferItemDao;
@@ -36,11 +35,9 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.paging.paging.transferl
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.PagingDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
-import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceByClassExtension;
-import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeJudoDatasourceByClassExtension;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.time.LocalDate;
@@ -62,7 +59,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class MappedTransferPagingTest {
 
     @RegisterExtension
-    static JudoRuntimeJudoDatasourceByClassExtension runtimeExtension = new JudoRuntimeJudoDatasourceByClassExtension("Paging", new PagingDaoModules());
+    static JudoRuntimeExtension runtimeExtension = new JudoRuntimeExtension("Paging", new PagingDaoModules());
 
     @Inject
     TransferItemDao transferItemDao;

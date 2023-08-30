@@ -9,7 +9,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 @Slf4j
-public class JudoRuntimeJudoDatasourceByClassExtension implements BeforeAllCallback, AfterAllCallback, BeforeEachCallback, AfterEachCallback, ParameterResolver {
+public class JudoRuntimeExtension implements BeforeAllCallback, AfterAllCallback, BeforeEachCallback, AfterEachCallback, ParameterResolver {
 
     private JudoDatasourceFixture judoDatasourceFixture;
     private JudoRuntimeFixture judoRuntimeFixture;
@@ -18,7 +18,7 @@ public class JudoRuntimeJudoDatasourceByClassExtension implements BeforeAllCallb
 
     private Module module;
 
-    public JudoRuntimeJudoDatasourceByClassExtension(String modelName, Module module) {
+    public JudoRuntimeExtension(String modelName, Module module) {
         judoDatasourceFixture = new JudoDatasourceFixture();
         judoRuntimeFixture = new JudoRuntimeFixture();
         this.modelName = modelName;

@@ -58,7 +58,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.staticquerydaotest.stat
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.StaticQueryDaoTestDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
-import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeJudoDatasourceByClassExtension;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import hu.blackbelt.judo.sdk.query.StringFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -78,7 +78,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class TestStaticQueryDao {
 
     @RegisterExtension
-    static JudoRuntimeJudoDatasourceByClassExtension runtimeExtension = new JudoRuntimeJudoDatasourceByClassExtension("StaticQueryDaoTest", new StaticQueryDaoTestDaoModules());
+    static JudoRuntimeExtension runtimeExtension = new JudoRuntimeExtension("StaticQueryDaoTest", new StaticQueryDaoTestDaoModules());
 
     @Inject
     EntityWithPrimitivesDao entityWithPrimitivesDao;

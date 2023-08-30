@@ -1,7 +1,6 @@
 package hu.blackbelt.judo.runtime.core.jsl.transfer;
 
 import com.google.inject.Inject;
-import com.google.inject.Module;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfersingleentity.automappedtransfersingleentity.automappedcontainersingleassociation.AutoMappedContainerSingleAssociation;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfersingleentity.automappedtransfersingleentity.automappedcontainersingleassociation.AutoMappedContainerSingleAssociationAttachedRelationsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfersingleentity.automappedtransfersingleentity.automappedcontainersingleassociation.AutoMappedContainerSingleAssociationDao;
@@ -20,12 +19,10 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.AutoMappedTransferSin
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
-import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceByClassExtension;
-import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeJudoDatasourceByClassExtension;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import lombok.extern.slf4j.Slf4j;
 import org.hamcrest.Matcher;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.Optional;
@@ -38,7 +35,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class AutoMappedTransferObjectSingleEntityTest {
 
     @RegisterExtension
-    static JudoRuntimeJudoDatasourceByClassExtension runtimeExtension = new JudoRuntimeJudoDatasourceByClassExtension("AutoMappedTransferSingleEntity", new AutoMappedTransferSingleEntityDaoModules());
+    static JudoRuntimeExtension runtimeExtension = new JudoRuntimeExtension("AutoMappedTransferSingleEntity", new AutoMappedTransferSingleEntityDaoModules());
 
     @Inject
     AutoMappedContainerSingleAssociationDao autoMappedContainerSingleAssociationDao;

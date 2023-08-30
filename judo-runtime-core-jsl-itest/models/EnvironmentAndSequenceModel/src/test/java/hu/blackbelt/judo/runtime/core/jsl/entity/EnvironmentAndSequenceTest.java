@@ -24,7 +24,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencem
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.EnvironmentAndSequenceModelDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
-import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeJudoDatasourceByClassExtension;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import hu.blackbelt.judo.runtime.core.jsl.util.EnvironmentVariableMocker;
 import hu.blackbelt.judo.runtime.core.jsl.util.EnvironmentVariables;
 import org.junit.jupiter.api.Disabled;
@@ -59,7 +59,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class EnvironmentAndSequenceTest {
 
     @RegisterExtension
-    static JudoRuntimeJudoDatasourceByClassExtension runtimeExtension = new JudoRuntimeJudoDatasourceByClassExtension("EnvironmentAndSequenceModel", new EnvironmentAndSequenceModelDaoModules());
+    static JudoRuntimeExtension runtimeExtension = new JudoRuntimeExtension("EnvironmentAndSequenceModel", new EnvironmentAndSequenceModelDaoModules());
 
     @Inject
     EnvVars1Dao envVars1Dao;

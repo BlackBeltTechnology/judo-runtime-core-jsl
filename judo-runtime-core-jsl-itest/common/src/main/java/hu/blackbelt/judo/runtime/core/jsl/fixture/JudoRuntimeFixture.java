@@ -5,15 +5,15 @@ import com.google.inject.Injector;
 import com.google.inject.Module;
 import hu.blackbelt.judo.meta.expression.builder.jql.JqlExpressionBuilderConfig;
 import hu.blackbelt.judo.meta.expression.builder.jql.asm.AsmJqlExtractor;
-import hu.blackbelt.judo.runtime.core.bootstrap.JudoDefaultModule;
 import hu.blackbelt.judo.runtime.core.bootstrap.JudoModelLoader;
-import hu.blackbelt.judo.runtime.core.bootstrap.dao.rdbms.hsqldb.JudoHsqldbTestModules;
-import hu.blackbelt.judo.runtime.core.bootstrap.dao.rdbms.postgresql.JudoPostgresqlTestModules;
 import hu.blackbelt.judo.runtime.core.dao.rdbms.hsqldb.HsqldbDialect;
 import hu.blackbelt.judo.runtime.core.dao.rdbms.hsqldb.HsqldbRdbmsInit;
 import hu.blackbelt.judo.runtime.core.dao.rdbms.liquibase.SimpleLiquibaseExecutor;
 import hu.blackbelt.judo.runtime.core.dao.rdbms.postgresql.PostgresqlDialect;
 import hu.blackbelt.judo.runtime.core.dao.rdbms.postgresql.PostgresqlRdbmsInit;
+import hu.blackbelt.judo.runtime.core.jsl.modules.JudoDefaultTestModule;
+import hu.blackbelt.judo.runtime.core.jsl.modules.JudoHsqldbTestModules;
+import hu.blackbelt.judo.runtime.core.jsl.modules.JudoPostgresqlTestModules;
 import hu.blackbelt.judo.runtime.core.query.QueryFactory;
 import hu.blackbelt.mapper.api.ExtendableCoercer;
 import hu.blackbelt.mapper.impl.DefaultCoercer;
@@ -143,9 +143,9 @@ public class JudoRuntimeFixture {
     public void init(Module module, Object injectModulesTo) {
 
         if (postgresqlDialect != null ) {
-            injector = Guice.createInjector(judoPostgresqlTestModules, module, JudoDefaultModule.builder().injectModulesTo(injectModulesTo).judoModelLoader(modelHolder).coercer(coercer).queryFactory(queryFactory).build());
+            injector = Guice.createInjector(judoPostgresqlTestModules, module, JudoDefaultTestModule.builder().injectModulesTo(injectModulesTo).judoModelLoader(modelHolder).coercer(coercer).queryFactory(queryFactory).build());
         } else if (hsqldbDialect != null ) {
-            injector = Guice.createInjector(judoHsqldbTestModules, module, JudoDefaultModule.builder().injectModulesTo(injectModulesTo).judoModelLoader(modelHolder).coercer(coercer).queryFactory(queryFactory).build());
+            injector = Guice.createInjector(judoHsqldbTestModules, module, JudoDefaultTestModule.builder().injectModulesTo(injectModulesTo).judoModelLoader(modelHolder).coercer(coercer).queryFactory(queryFactory).build());
         }
     }
 

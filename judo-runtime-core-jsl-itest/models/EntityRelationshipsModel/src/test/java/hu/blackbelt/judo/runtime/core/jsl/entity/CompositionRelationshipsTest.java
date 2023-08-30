@@ -50,7 +50,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationship
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.CompositionRelationshipsDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
-import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeJudoDatasourceByClassExtension;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import lombok.extern.slf4j.Slf4j;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.BeforeEach;
@@ -70,7 +70,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class CompositionRelationshipsTest {
 
     @RegisterExtension
-    static JudoRuntimeJudoDatasourceByClassExtension runtimeExtension = new JudoRuntimeJudoDatasourceByClassExtension("CompositionRelationships", new CompositionRelationshipsDaoModules());
+    static JudoRuntimeExtension runtimeExtension = new JudoRuntimeExtension("CompositionRelationships", new CompositionRelationshipsDaoModules());
 
     @Inject
     EntityADao entityADao;

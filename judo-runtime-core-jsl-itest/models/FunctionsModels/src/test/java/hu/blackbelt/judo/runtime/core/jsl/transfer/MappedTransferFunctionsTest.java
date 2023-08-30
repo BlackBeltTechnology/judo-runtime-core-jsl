@@ -22,7 +22,6 @@ package hu.blackbelt.judo.runtime.core.jsl.transfer;
 
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
-import com.google.inject.Module;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferanytypefunctions.TransferAnyTypeFunctions;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferanytypefunctions.TransferAnyTypeFunctionsDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferbooleanfunctions.TransferBooleanFunctions;
@@ -71,15 +70,10 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.tra
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.FunctionsDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
-import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceByClassExtension;
-import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
-import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeJudoDatasourceByClassExtension;
-import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeFixture;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.time.*;
@@ -93,7 +87,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class MappedTransferFunctionsTest {
 
     @RegisterExtension
-    static JudoRuntimeJudoDatasourceByClassExtension runtimeExtension = new JudoRuntimeJudoDatasourceByClassExtension("Functions", new FunctionsDaoModules());
+    static JudoRuntimeExtension runtimeExtension = new JudoRuntimeExtension("Functions", new FunctionsDaoModules());
 
     @Inject
     TransferEntityDao transferEntityDao;
