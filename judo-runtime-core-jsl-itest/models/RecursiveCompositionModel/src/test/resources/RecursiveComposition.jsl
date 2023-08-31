@@ -36,10 +36,6 @@ transfer TransferYTO (EntityY entityY) {
     relation TransferXTO[] yxs <=> entityY.yxs;
 }
 
-transfer TransferXAutoMappedTO (EntityX entityX);
-
-transfer TransferYAutoMappedTO (EntityY entityY);
-
 entity EntityA {
     field String name;
     field EntityA a;
@@ -70,7 +66,3 @@ transfer TransferBTO (EntityB entityB) {
     @Embedded
     relation TransferATO[] bas <=> entityB.bas;
 }
-
-transfer TransferAAutoMappedTO (EntityA entityA);
-
-transfer TransferBAutoMappedTO (EntityB entityB);
