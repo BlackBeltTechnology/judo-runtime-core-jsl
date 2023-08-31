@@ -21,7 +21,6 @@ package hu.blackbelt.judo.runtime.core.jsl.entity;
  */
 
 import com.google.inject.Inject;
-import com.google.inject.Module;
 import hu.blackbelt.judo.dispatcher.api.FileType;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.myentitywithoptionalfields.MyEntityWithOptionalFields;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.myentitywithoptionalfields.MyEntityWithOptionalFieldsAttribute;
@@ -30,20 +29,25 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.m
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.myenum.MyEnum;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.PrimitivesDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
-import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import hu.blackbelt.judo.sdk.query.StringFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
-import java.time.*;
-import java.util.List;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Slf4j
-public class QueryCustomizerFunctionsTest extends AbstractJslTest {
+public class QueryCustomizerFunctionsTest {
+
+    @RegisterExtension
+    static JudoRuntimeExtension runtimeExtension = new JudoRuntimeExtension("Primitives", new PrimitivesDaoModules());
+
     @Inject
     MyEntityWithOptionalFieldsDao myEntityWithOptionalFieldsDao;
 
@@ -52,8 +56,7 @@ public class QueryCustomizerFunctionsTest extends AbstractJslTest {
     MyEntityWithOptionalFields entity2;
 
     @BeforeEach
-    protected void init(JudoDatasourceFixture datasource) throws Exception {
-        super.init(datasource);
+    protected void init() {
 
         entity1 = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
                 .withIntegerAttr(2)
@@ -80,16 +83,6 @@ public class QueryCustomizerFunctionsTest extends AbstractJslTest {
                 .withBinaryAttr(FileType.builder().fileName("test.txt").build())
                 .withEnumAttr(MyEnum.Atomic)
                 .build());
-    }
-
-    @Override
-    public Module getModelDaoModule() {
-        return new PrimitivesDaoModules();
-    }
-
-    @Override
-    public String getModelName() {
-        return "Primitives";
     }
 
     @Test

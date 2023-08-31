@@ -21,7 +21,6 @@ package hu.blackbelt.judo.runtime.core.jsl.transfer;
  */
 
 import com.google.inject.Inject;
-import com.google.inject.Module;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.a.A;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.additionalservice.AdditionalService;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.additionalservice.AdditionalServiceDao;
@@ -51,10 +50,10 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.container
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.ContainerTestDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.List;
 
@@ -62,7 +61,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Slf4j
-public class MappedTransferContainerTest extends AbstractJslTest {
+public class MappedTransferContainerTest {
+
+    @RegisterExtension
+    static JudoRuntimeExtension runtimeExtension = new JudoRuntimeExtension("ContainerTest", new ContainerTestDaoModules());
 
     @Inject
     BDao bDao;
@@ -92,16 +94,6 @@ public class MappedTransferContainerTest extends AbstractJslTest {
 
     @Inject
     AdditionalServiceDao additionalServiceDao;
-
-    @Override
-    public Module getModelDaoModule() {
-        return new ContainerTestDaoModules();
-    }
-
-    @Override
-    public String getModelName() {
-        return "ContainerTest";
-    }
 
     /**
      * The test checks the container Instance function work well on transfer object.

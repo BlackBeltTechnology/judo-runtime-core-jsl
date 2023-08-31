@@ -21,29 +21,28 @@ package hu.blackbelt.judo.runtime.core.jsl.entity;
  */
 
 import com.google.inject.Inject;
-import com.google.inject.Module;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.salesmodel.salesmodel.contractsaggregator.ContractsAggregator;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.salesmodel.salesmodel.contractsaggregator.ContractsAggregatorDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.salesmodel.salesmodel.lead.Lead;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.salesmodel.salesmodel.lead.LeadAttachedRelationsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.salesmodel.salesmodel.lead.LeadDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.salesmodel.salesmodel.salesperson.leadsover.SalesPersonLeadsOverParameter;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.salesmodel.salesmodel.myextendederror.MyExtendedError;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.salesmodel.salesmodel.person.PersonDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.salesmodel.salesmodel.salesperson.SalesPerson;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.salesmodel.salesmodel.salesperson.SalesPersonAttachedRelationsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.salesmodel.salesmodel.salesperson.SalesPersonDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.salesmodel.salesmodel.salesperson.leadsover.SalesPersonLeadsOverParameter;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.salesmodel.salesmodelcontract.contract.Contract;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.salesmodel.salesmodelcontract.contract.ContractDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.salesmodel.salesmodelcontract.contractdetail.ContractDetail;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.SalesModelDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import hu.blackbelt.judo.sdk.query.NumberFilter;
 import hu.blackbelt.judo.sdk.query.StringFilter;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.time.LocalDate;
 import java.util.Collection;
@@ -53,7 +52,11 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Slf4j
-class SalesModelTest extends AbstractJslTest {
+class SalesModelTest {
+
+    @RegisterExtension
+    static JudoRuntimeExtension runtimeExtension = new JudoRuntimeExtension("SalesModel", new SalesModelDaoModules());
+
     @Inject
     SalesPersonDao salesPersonDao;
 
@@ -68,16 +71,6 @@ class SalesModelTest extends AbstractJslTest {
 
     @Inject
     ContractsAggregatorDao contractsAggregatorDao;
-
-    @Override
-    public Module getModelDaoModule() {
-        return new SalesModelDaoModules();
-    }
-
-    @Override
-    public String getModelName() {
-        return "SalesModel";
-    }
 
     @Test
     @Requirement(reqs = {
