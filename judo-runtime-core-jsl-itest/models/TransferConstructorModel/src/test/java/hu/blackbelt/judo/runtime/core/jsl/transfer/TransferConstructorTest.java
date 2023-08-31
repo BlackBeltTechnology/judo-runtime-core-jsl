@@ -1,15 +1,21 @@
 package hu.blackbelt.judo.runtime.core.jsl.transfer;
 
 import com.google.inject.Inject;
-import com.google.inject.Module;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferconstructor.transferconstructor.entitywithmultirelation.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferconstructor.transferconstructor.entitywithsinglerelation.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferconstructor.transferconstructor.mappedentitywithmultirelation.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferconstructor.transferconstructor.mappedentitywithsinglerelation.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferconstructor.transferconstructor.entitywithmultirelation.EntityWithMultiRelation;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferconstructor.transferconstructor.entitywithmultirelation.EntityWithMultiRelationDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferconstructor.transferconstructor.entitywithmultirelation.EntityWithMultiRelationIdentifier;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferconstructor.transferconstructor.entitywithsinglerelation.EntityWithSingleRelation;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferconstructor.transferconstructor.entitywithsinglerelation.EntityWithSingleRelationDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferconstructor.transferconstructor.entitywithsinglerelation.EntityWithSingleRelationIdentifier;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferconstructor.transferconstructor.mappedentitywithmultirelation.MappedEntityWithMultiRelation;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferconstructor.transferconstructor.mappedentitywithmultirelation.MappedEntityWithMultiRelationDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferconstructor.transferconstructor.mappedentitywithsinglerelation.MappedEntityWithSingleRelation;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferconstructor.transferconstructor.mappedentitywithsinglerelation.MappedEntityWithSingleRelationDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.TransferConstructorDaoModules;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.Optional;
 
@@ -17,17 +23,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Slf4j
-public class TransferConstructorTest extends AbstractJslTest {
+public class TransferConstructorTest {
 
-    @Override
-    public Module getModelDaoModule() {
-        return new TransferConstructorDaoModules();
-    }
-
-    @Override
-    public String getModelName() {
-        return "TransferConstructor";
-    }
+    @RegisterExtension
+    static JudoRuntimeExtension runtimeExtension = new JudoRuntimeExtension("TransferConstructor", new TransferConstructorDaoModules());
 
     @Inject
     MappedEntityWithMultiRelationDao mappedEntityWithMultiRelationDao;

@@ -21,7 +21,6 @@ package hu.blackbelt.judo.runtime.core.jsl.transfer;
  */
 
 import com.google.inject.Inject;
-import com.google.inject.Module;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.a.A;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.b.B;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.b.BDao;
@@ -42,11 +41,11 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castin
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.CastingFunctionsDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
-import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.List;
 
@@ -55,7 +54,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Slf4j
-public class MappedTransferCastingFunctionsTest extends AbstractJslTest {
+public class MappedTransferCastingFunctionsTest {
+
+    @RegisterExtension
+    static JudoRuntimeExtension runtimeExtension = new JudoRuntimeExtension("CastingFunctions", new CastingFunctionsDaoModules());
 
     @Inject
     BDao bDao;
@@ -75,20 +77,9 @@ public class MappedTransferCastingFunctionsTest extends AbstractJslTest {
 
     private Tester tester;
 
-    @Override
-    public Module getModelDaoModule() {
-        return new CastingFunctionsDaoModules();
-    }
-
-    @Override
-    public String getModelName() {
-        return "CastingFunctions";
-    }
-
-    @Override
     @BeforeEach
-    protected void init(JudoDatasourceFixture datasource) throws Exception {
-        super.init(datasource);
+    protected void init() {
+
         TCA tca = tcaDao.create(TCA.builder().withNameA("aca1").withNameB("bca1").withNameCA("ca1").build());
         TCA tca1 = tcaDao.create(TCA.builder().withNameA("aca2").withNameB("bca2").withNameCA("ca2").build());
         TCA tca2 = tcaDao.create(TCA.builder().withNameA("aca3").withNameB("bca3").withNameCA("ca3").build());
@@ -97,22 +88,22 @@ public class MappedTransferCastingFunctionsTest extends AbstractJslTest {
         TB tcaAsB2 = tbDao.getById(tca2.identifier().adaptTo(TBIdentifier.class)).orElseThrow();
 
         transferTester = transferTesterDao.create(
-                                    TransferTester.builder()
-                                        .build(),
-                                    TransferTesterAttachedRelationsForCreate
-                                        .builder()
-                                        .withB(tbDao.create(TB.builder().withNameA("ab").withNameB("b").build()))
-                                        .withBs(List.of(
-                                                tbDao.create(TB.builder().withNameA("ab1").withNameB("b1").build()),
-                                                tbDao.create(TB.builder().withNameA("ab2").withNameB("b2").build())
-                                        ))
-                                        .withCaAsB(tcaAsB)
-                                        .withCaAsBs(List.of(tcaAsB1, tcaAsB2))
-                                        .build());
+                TransferTester.builder()
+                        .build(),
+                TransferTesterAttachedRelationsForCreate
+                        .builder()
+                        .withB(tbDao.create(TB.builder().withNameA("ab").withNameB("b").build()))
+                        .withBs(List.of(
+                                tbDao.create(TB.builder().withNameA("ab1").withNameB("b1").build()),
+                                tbDao.create(TB.builder().withNameA("ab2").withNameB("b2").build())
+                        ))
+                        .withCaAsB(tcaAsB)
+                        .withCaAsBs(List.of(tcaAsB1, tcaAsB2))
+                        .build());
 
         tester = testerDao.getById(transferTester.identifier().adaptTo(TesterIdentifier.class)).orElseThrow();
-
     }
+
 
     /**
      * The test checks the KindOf Instance function work well on transfer object.

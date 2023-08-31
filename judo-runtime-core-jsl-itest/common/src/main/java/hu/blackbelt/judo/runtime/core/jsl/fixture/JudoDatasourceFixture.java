@@ -21,7 +21,6 @@ package hu.blackbelt.judo.runtime.core.jsl.fixture;
  */
 
 import lombok.Getter;
-import lombok.SneakyThrows;
 import org.hsqldb.jdbc.JDBCDataSource;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.function.Executable;
@@ -34,7 +33,9 @@ import org.testcontainers.containers.JdbcDatabaseContainer;
 import org.testcontainers.containers.PostgreSQLContainer;
 
 import javax.sql.DataSource;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.Duration;
 import java.util.function.Supplier;
 

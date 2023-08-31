@@ -21,30 +21,25 @@ package hu.blackbelt.judo.runtime.core.jsl;
  */
 
 import com.google.inject.Inject;
-import com.google.inject.Module;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transactionmanagementmodel.transactionmanagementmodel.tester.Tester;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transactionmanagementmodel.transactionmanagementmodel.tester.TesterDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.TransactionManagementModelDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeFixture;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Slf4j
-public class TransactionManagementTest extends AbstractJslTest {
+public class TransactionManagementTest {
+
+    @RegisterExtension
+    static JudoRuntimeExtension runtimeExtension = new JudoRuntimeExtension("TransactionManagementModel", new TransactionManagementModelDaoModules());
 
     @Inject TesterDao testerDao;
-
-    @Override
-    public Module getModelDaoModule() {
-        return new TransactionManagementModelDaoModules();
-    }
-
-    @Override
-    public String getModelName() {
-        return "TransactionManagementModel";
-    }
 
     @Test
     @Requirement(reqs = {
@@ -53,21 +48,21 @@ public class TransactionManagementTest extends AbstractJslTest {
             "REQ-ENT-001",
             "REQ-ENT-002"
     })
-    void testManualTransactionManagementCommitAndRollback() {
+    void testManualTransactionManagementCommitAndRollback(JudoRuntimeFixture runtime) {
         // beginTransaction(); in BeforeEach
 
         Tester tester = testerDao.create(Tester.builder().withName("TEST-A").build());
 
-        commitTransaction();
-        beginTransaction();
+        runtime.commitTransaction();
+        runtime.beginTransaction();
 
         assertEquals("TEST-A", testerDao.getById(tester.identifier()).orElseThrow().getName());
 
         tester.setName("BLAAA");
         testerDao.update(tester);
 
-        rollbackTransaction();
-        beginTransaction();
+        runtime.rollbackTransaction();
+        runtime.beginTransaction();
 
         assertEquals("TEST-A", testerDao.getById(tester.identifier()).orElseThrow().getName());
 

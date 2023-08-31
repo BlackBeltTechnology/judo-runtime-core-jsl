@@ -21,7 +21,6 @@ package hu.blackbelt.judo.runtime.core.jsl.entity;
  */
 
 import com.google.inject.Inject;
-import com.google.inject.Module;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.defaultoperators.DefaultOperators;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.defaultoperators.DefaultOperatorsDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.derivedoperators.DerivedOperators;
@@ -33,17 +32,21 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.tes
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.OperatorsDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.Optional;
 
-import static hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture.DIALECT_HSQLDB;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
-public class OperatorsTest extends AbstractJslTest {
+public class OperatorsTest {
+
+    @RegisterExtension
+    static JudoRuntimeExtension runtimeExtension = new JudoRuntimeExtension("Operators", new OperatorsDaoModules());
+
     @Inject
     DefaultOperatorsDao defaultOperatorsDao;
 
@@ -51,17 +54,6 @@ public class OperatorsTest extends AbstractJslTest {
     DerivedOperatorsDao derivedOperatorsDao;
 
     @Inject E1Dao e1Dao;
-
-
-    @Override
-    public Module getModelDaoModule() {
-        return new OperatorsDaoModules();
-    }
-
-    @Override
-    public String getModelName() {
-        return "Operators";
-    }
 
     @Test
     @Requirement(reqs = {

@@ -1,36 +1,32 @@
 package hu.blackbelt.judo.runtime.core.jsl.transfer;
 
 import com.google.inject.Inject;
-import com.google.inject.Module;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.relationcreationwithattachment.relationcreationwithattachment.a.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.relationcreationwithattachment.relationcreationwithattachment.b.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.relationcreationwithattachment.relationcreationwithattachment.c.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.relationcreationwithattachment.relationcreationwithattachment.a.A;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.relationcreationwithattachment.relationcreationwithattachment.a.ADao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.relationcreationwithattachment.relationcreationwithattachment.b.B;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.relationcreationwithattachment.relationcreationwithattachment.b.BAttachedRelationsForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.relationcreationwithattachment.relationcreationwithattachment.b.BDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.relationcreationwithattachment.relationcreationwithattachment.c.C;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.relationcreationwithattachment.relationcreationwithattachment.c.CDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.RelationCreationWithAttachmentDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import hu.blackbelt.judo.sdk.query.StringFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
-
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 @Slf4j
-public class RelationCreateWithAttachmentTest extends AbstractJslTest {
+public class RelationCreateWithAttachmentTest {
 
-    @Override
-    public Module getModelDaoModule() {
-        return new RelationCreationWithAttachmentDaoModules();
-    }
-
-    @Override
-    public String getModelName() {
-        return "RelationCreationWithAttachment";
-    }
-
+    @RegisterExtension
+    static JudoRuntimeExtension runtimeExtension = new JudoRuntimeExtension("RelationCreationWithAttachment", new RelationCreationWithAttachmentDaoModules());
 
     @Inject
     ADao aDao;
