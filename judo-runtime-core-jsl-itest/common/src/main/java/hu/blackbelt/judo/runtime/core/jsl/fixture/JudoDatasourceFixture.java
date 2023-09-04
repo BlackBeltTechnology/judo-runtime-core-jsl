@@ -33,9 +33,7 @@ import org.testcontainers.containers.JdbcDatabaseContainer;
 import org.testcontainers.containers.PostgreSQLContainer;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.time.Duration;
 import java.util.function.Supplier;
 
@@ -98,7 +96,15 @@ public class JudoDatasourceFixture {
     public void dropSchema() {
         try (Connection connection = dataSource.getConnection(); Statement statement = connection.createStatement()) {
             if (dialect.equals(DIALECT_POSTGRESQL)) {
-                statement.execute("select 'drop table \"' || tablename || '\" cascade;' from pg_tables;");
+                ResultSet rs = connection.createStatement().executeQuery(
+                        "select 'TRUNCATE TABLE \"' || quote_ident(tablename) || '\" RESTART IDENTITY CASCADE;' as command from pg_tables where tableowner = '"
+                                + sqlContainer.getUsername() +
+                                "' AND schemaname = 'public';"
+                );
+                while (rs.next()) {
+                    statement.execute(rs.getString("command"));
+                }
+                rs.close();
             } else if (dialect.equals(DIALECT_HSQLDB)) {
                 statement.execute("TRUNCATE SCHEMA PUBLIC RESTART IDENTITY AND COMMIT NO CHECK");
                 //statement.execute("DROP SCHEMA PUBLIC CASCADE");
@@ -106,13 +112,26 @@ public class JudoDatasourceFixture {
         } catch (SQLException throwables) {
             throw new RuntimeException("Could not drop schema", throwables);
         }
+    }
 
+    public String randomDatabaseName() {
+        final String lexicon = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        final java.util.Random rand = new java.util.Random();
+
+        StringBuilder builder = new StringBuilder();
+        while(builder.toString().length() == 0) {
+            int length = rand.nextInt(5)+5;
+            for(int i = 0; i < length; i++) {
+                builder.append(lexicon.charAt(rand.nextInt(lexicon.length())));
+            }
+        }
+        return builder.toString();
     }
 
     public void prepareDatasources() {
         if (dialect.equals(DIALECT_HSQLDB)) {
             final JDBCDataSource ds = new JDBCDataSource();
-            ds.setUrl("jdbc:hsqldb:mem:memdb");
+            ds.setUrl("jdbc:hsqldb:mem:"+randomDatabaseName());
             ds.setUser("sa");
             ds.setPassword("saPassword");
             dataSource = ds;
