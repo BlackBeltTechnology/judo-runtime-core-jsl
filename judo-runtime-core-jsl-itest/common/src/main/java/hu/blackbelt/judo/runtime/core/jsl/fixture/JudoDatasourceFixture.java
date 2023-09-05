@@ -117,7 +117,7 @@ public class JudoDatasourceFixture {
                 }
             }
         } catch (SQLException throwables) {
-            throw new RuntimeException("Could not drop schema", throwables);
+            throw new RuntimeException("Could not truncate tables", throwables);
         }
     }
 
@@ -136,7 +136,7 @@ public class JudoDatasourceFixture {
                 }
             }
         } catch (SQLException throwables) {
-            throw new RuntimeException("Could not drop schema", throwables);
+            throw new RuntimeException("Could not drop tables", throwables);
         }
     }
 
