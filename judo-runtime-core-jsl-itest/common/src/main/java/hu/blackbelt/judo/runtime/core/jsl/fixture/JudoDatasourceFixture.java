@@ -103,11 +103,7 @@ public class JudoDatasourceFixture {
     }
 
     public void truncateTables(RdbmsModel rdbmsModel) {
-        sqlContainer.getUsername();
-        sqlContainer.getPassword();
-        sqlContainer.getJdbcUrl();
         RdbmsUtils rdbmsUtils = new RdbmsUtils(rdbmsModel.getResourceSet());
-
         try (Connection connection = dataSource.getConnection(); Statement statement = connection.createStatement()) {
             if (dialect.equals(DIALECT_POSTGRESQL)) {
                 for (RdbmsTable rdbmsTable : rdbmsUtils.getRdbmsTables().orElse(new BasicEList<>())) {
