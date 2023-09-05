@@ -124,14 +124,9 @@ public class JudoDatasourceFixture {
     public void dropTables(RdbmsModel rdbmsModel) {
         RdbmsUtils rdbmsUtils = new RdbmsUtils(rdbmsModel.getResourceSet());
         try (Connection connection = dataSource.getConnection(); Statement statement = connection.createStatement()) {
-            if (dialect.equals(DIALECT_POSTGRESQL)) {
+            if (dialect.equals(DIALECT_POSTGRESQL) || dialect.equals(DIALECT_HSQLDB)) {
                 for (RdbmsTable rdbmsTable : rdbmsUtils.getRdbmsTables().orElse(new BasicEList<>())) {
                     log.debug("Drop table: %s (%s)".formatted(rdbmsTable.getName(), rdbmsTable.getSqlName()));
-                    statement.execute("DROP TABLE " + rdbmsTable.getSqlName() + " CASCADE;");
-                }
-            } else if (dialect.equals(DIALECT_HSQLDB)) {
-                for (RdbmsTable rdbmsTable : rdbmsUtils.getRdbmsTables().orElse(new BasicEList<>())) {
-                    log.info("Drop table: %s (%s)".formatted(rdbmsTable.getName(), rdbmsTable.getSqlName()));
                     statement.execute("DROP TABLE " + rdbmsTable.getSqlName() + " CASCADE;");
                 }
             }
