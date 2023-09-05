@@ -108,12 +108,12 @@ public class JudoDatasourceFixture {
             if (dialect.equals(DIALECT_POSTGRESQL)) {
                 for (RdbmsTable rdbmsTable : rdbmsUtils.getRdbmsTables().orElse(new BasicEList<>())) {
                     log.debug("Truncating table: %s (%s)".formatted(rdbmsTable.getName(), rdbmsTable.getSqlName()));
-                    statement.execute("TRUNCATE TABLE \"" + rdbmsTable.getSqlName() + "\" RESTART IDENTITY CASCADE;");
+                    statement.execute("TRUNCATE TABLE " + rdbmsTable.getSqlName() + " RESTART IDENTITY CASCADE;");
                 }
             } else if (dialect.equals(DIALECT_HSQLDB)) {
                 for (RdbmsTable rdbmsTable : rdbmsUtils.getRdbmsTables().orElse(new BasicEList<>())) {
                     log.info("Truncating table: %s (%s)".formatted(rdbmsTable.getName(), rdbmsTable.getSqlName()));
-                    statement.execute("TRUNCATE TABLE \"" + rdbmsTable.getSqlName() + "\" RESTART IDENTITY AND COMMIT NO CHECK");
+                    statement.execute("TRUNCATE TABLE " + rdbmsTable.getSqlName() + " RESTART IDENTITY AND COMMIT NO CHECK");
                 }
             }
         } catch (SQLException throwables) {
@@ -127,7 +127,7 @@ public class JudoDatasourceFixture {
             if (dialect.equals(DIALECT_POSTGRESQL) || dialect.equals(DIALECT_HSQLDB)) {
                 for (RdbmsTable rdbmsTable : rdbmsUtils.getRdbmsTables().orElse(new BasicEList<>())) {
                     log.debug("Drop table: %s (%s)".formatted(rdbmsTable.getName(), rdbmsTable.getSqlName()));
-                    statement.execute("DROP TABLE \"" + rdbmsTable.getSqlName() + "\" CASCADE;");
+                    statement.execute("DROP TABLE " + rdbmsTable.getSqlName() + " CASCADE;");
                 }
             }
         } catch (SQLException throwables) {
