@@ -75,7 +75,7 @@ entity Functions {
 
 transfer TransferFunctions (Functions mapped) {
     @Embedded
-    relation TransferEntity `entity` <=> mapped.entity;
+    relation TransferEntity `entity` <=> mapped.`entity`;
     @Embedded
     relation TransferEntityWithPrimitiveDefaults entityWithPrimitives <=> mapped.entityWithPrimitives;
 }
@@ -126,7 +126,7 @@ entity AnyTypeFunctions extends Functions {
 transfer TransferAnyTypeFunctions (AnyTypeFunctions mapped) {
 
     @Embedded
-    relation TransferEntity `entity` <=> mapped.entity;
+    relation TransferEntity `entity` <=> mapped.`entity`;
     @Embedded
     relation TransferEntityWithPrimitiveDefaults entityWithPrimitives <=> mapped.entityWithPrimitives;
 
@@ -864,7 +864,7 @@ entity EnumFunctions {
 }
 
 transfer TransferEnumFunctions (EnumFunctions mapped) {
-    field MyEnum `enum` <=> mapped.enum;
+    field MyEnum `enum` <=> mapped.`enum`;
 
     field String ownEnumAsString <= mapped.ownEnumAsString;
     field String enumAsString <= mapped.enumAsString;
