@@ -4,9 +4,6 @@ package hu.blackbelt.judo.runtime.core.jsl.fixture;
 import com.google.inject.Module;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.extension.*;
-import org.springframework.transaction.TransactionDefinition;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 @Slf4j
 public class JudoRuntimeExtension implements BeforeAllCallback, AfterAllCallback, BeforeEachCallback, AfterEachCallback, ParameterResolver {
@@ -51,12 +48,7 @@ public class JudoRuntimeExtension implements BeforeAllCallback, AfterAllCallback
     @Override
     public void afterEach(ExtensionContext context) {
         judoRuntimeFixture.commitTransaction();
-        judoDatasourceFixture.dropSchema();
-        try {
-            TransactionStatus transactionStatus = judoDatasourceFixture.getTransactionManager().getTransaction(new DefaultTransactionDefinition(TransactionDefinition.PROPAGATION_MANDATORY));
-            judoDatasourceFixture.getTransactionManager().commit(transactionStatus);
-        } catch (Exception e) {
-        }
+        judoDatasourceFixture.truncateTables(judoRuntimeFixture.modelHolder.getRdbmsModel());
         log.info("Completed test: {}", context.getTestClass().map(c -> c.getSimpleName()).orElse("") + context.getTestMethod().map(m -> "#" + m.getName()).orElse(""));
     }
 
