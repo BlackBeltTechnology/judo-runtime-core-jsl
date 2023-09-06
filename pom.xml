@@ -45,7 +45,7 @@
         <judo-psm-generator-sdk-core-version>1.0.0.20230905_094943_ab089bec_develop</judo-psm-generator-sdk-core-version>
 
 
-        <judo-meta-psm-version>1.3.0.20230906_120837_eb7dc410_develop</judo-meta-psm-version>
+        <judo-meta-psm-version>1.3.0.20230905_074942_d559c1f7_develop</judo-meta-psm-version>
 
         <!-- Code Quality-->
         <sonar-maven-plugin-version>3.9.1.2184</sonar-maven-plugin-version>
