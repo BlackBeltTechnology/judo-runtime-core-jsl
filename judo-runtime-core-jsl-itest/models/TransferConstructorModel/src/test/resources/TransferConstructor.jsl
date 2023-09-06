@@ -31,7 +31,7 @@ transfer MappedEntityWithSingleRelation maps EntityWithSingleRelation as e {
     relation MappedEntityWithMultiRelation transientRelation;
     relation MappedEntityWithMultiRelation[] transientRelationCollection;
 
-	constructor {
+	event create {
 		self.mappedAssociation = EntityWithMultiRelation!any();
 		self.mappedAssociationCollection = EntityWithMultiRelation!all();
 		self.mappedAssociationOpposite = EntityWithMultiRelation!any();
