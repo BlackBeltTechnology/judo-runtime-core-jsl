@@ -105,15 +105,12 @@ public class JudoDatasourceFixture {
     public void truncateTables(RdbmsModel rdbmsModel) {
         RdbmsUtils rdbmsUtils = new RdbmsUtils(rdbmsModel.getResourceSet());
         try (Connection connection = dataSource.getConnection(); Statement statement = connection.createStatement()) {
-            if (dialect.equals(DIALECT_POSTGRESQL)) {
-                for (RdbmsTable rdbmsTable : rdbmsUtils.getRdbmsTables().orElse(new BasicEList<>())) {
-                    log.debug("Truncating table: %s (%s)".formatted(rdbmsTable.getName(), rdbmsTable.getSqlName()));
-                    statement.execute("TRUNCATE TABLE " + rdbmsTable.getSqlName() + " RESTART IDENTITY CASCADE;");
-                }
-            } else if (dialect.equals(DIALECT_HSQLDB)) {
-                for (RdbmsTable rdbmsTable : rdbmsUtils.getRdbmsTables().orElse(new BasicEList<>())) {
-                    log.info("Truncating table: %s (%s)".formatted(rdbmsTable.getName(), rdbmsTable.getSqlName()));
-                    statement.execute("TRUNCATE TABLE " + rdbmsTable.getSqlName() + " RESTART IDENTITY AND COMMIT NO CHECK");
+            for (RdbmsTable rdbmsTable : rdbmsUtils.getRdbmsTables().orElse(new BasicEList<>())) {
+                log.debug("Truncating table: %s (%s)".formatted(rdbmsTable.getName(), rdbmsTable.getSqlName()));
+                if (dialect.equals(DIALECT_POSTGRESQL)) {
+                    statement.execute("TRUNCATE TABLE %s RESTART IDENTITY CASCADE;".formatted(rdbmsTable.getSqlName()));
+                } else if (dialect.equals(DIALECT_HSQLDB)) {
+                    statement.execute("TRUNCATE TABLE %s RESTART IDENTITY AND COMMIT NO CHECK".formatted(rdbmsTable.getSqlName()));
                 }
             }
         } catch (SQLException throwables) {
@@ -124,11 +121,9 @@ public class JudoDatasourceFixture {
     public void dropTables(RdbmsModel rdbmsModel) {
         RdbmsUtils rdbmsUtils = new RdbmsUtils(rdbmsModel.getResourceSet());
         try (Connection connection = dataSource.getConnection(); Statement statement = connection.createStatement()) {
-            if (dialect.equals(DIALECT_POSTGRESQL) || dialect.equals(DIALECT_HSQLDB)) {
-                for (RdbmsTable rdbmsTable : rdbmsUtils.getRdbmsTables().orElse(new BasicEList<>())) {
-                    log.debug("Drop table: %s (%s)".formatted(rdbmsTable.getName(), rdbmsTable.getSqlName()));
-                    statement.execute("DROP TABLE " + rdbmsTable.getSqlName() + " CASCADE;");
-                }
+            for (RdbmsTable rdbmsTable : rdbmsUtils.getRdbmsTables().orElse(new BasicEList<>())) {
+                log.debug("Drop table: %s (%s)".formatted(rdbmsTable.getName(), rdbmsTable.getSqlName()));
+                statement.execute("DROP TABLE %s CASCADE;".formatted(rdbmsTable.getSqlName()));
             }
         } catch (SQLException throwables) {
             throw new RuntimeException("Could not drop tables", throwables);
