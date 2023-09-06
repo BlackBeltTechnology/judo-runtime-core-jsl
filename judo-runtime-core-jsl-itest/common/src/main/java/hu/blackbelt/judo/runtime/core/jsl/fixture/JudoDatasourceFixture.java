@@ -42,6 +42,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.Duration;
+import java.util.HashMap;
 import java.util.UUID;
 import java.util.function.Supplier;
 
@@ -104,14 +105,14 @@ public class JudoDatasourceFixture {
 
     public void truncateTables(RdbmsModel rdbmsModel) {
         RdbmsUtils rdbmsUtils = new RdbmsUtils(rdbmsModel.getResourceSet());
+        HashMap<String, String> statmentTemplate = new HashMap<>();
+        statmentTemplate.put(DIALECT_POSTGRESQL, "TRUNCATE TABLE %s RESTART IDENTITY CASCADE;");
+        statmentTemplate.put(DIALECT_HSQLDB, "TRUNCATE TABLE %s RESTART IDENTITY AND COMMIT NO CHECK");
+
         try (Connection connection = dataSource.getConnection(); Statement statement = connection.createStatement()) {
             for (RdbmsTable rdbmsTable : rdbmsUtils.getRdbmsTables().orElse(new BasicEList<>())) {
                 log.debug("Truncating table: %s (%s)".formatted(rdbmsTable.getName(), rdbmsTable.getSqlName()));
-                if (dialect.equals(DIALECT_POSTGRESQL)) {
-                    statement.execute("TRUNCATE TABLE %s RESTART IDENTITY CASCADE;".formatted(rdbmsTable.getSqlName()));
-                } else if (dialect.equals(DIALECT_HSQLDB)) {
-                    statement.execute("TRUNCATE TABLE %s RESTART IDENTITY AND COMMIT NO CHECK".formatted(rdbmsTable.getSqlName()));
-                }
+                statement.execute(statmentTemplate.get(dialect).formatted(rdbmsTable.getSqlName()));
             }
         } catch (SQLException throwables) {
             throw new RuntimeException("Could not truncate tables", throwables);
