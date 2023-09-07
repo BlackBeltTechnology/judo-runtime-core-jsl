@@ -50,7 +50,8 @@ public class JudoRuntimeExtension implements BeforeAllCallback, AfterAllCallback
 
     @Override
     public void afterEach(ExtensionContext context) {
-        judoRuntimeFixture.tearDown();
+        judoRuntimeFixture.commitTransaction();
+        judoDatasourceFixture.truncateTables(judoRuntimeFixture.modelHolder.getRdbmsModel());
         try {
             TransactionStatus transactionStatus = judoDatasourceFixture.getTransactionManager().getTransaction(new DefaultTransactionDefinition(TransactionDefinition.PROPAGATION_MANDATORY));
             judoDatasourceFixture.getTransactionManager().commit(transactionStatus);
