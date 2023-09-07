@@ -20,6 +20,7 @@ package hu.blackbelt.judo.runtime.core.jsl.fixture;
  * #L%
  */
 
+import com.google.common.collect.ImmutableMap;
 import hu.blackbelt.judo.meta.rdbms.RdbmsTable;
 import hu.blackbelt.judo.meta.rdbms.runtime.RdbmsModel;
 import hu.blackbelt.judo.meta.rdbms.runtime.RdbmsUtils;
@@ -61,7 +62,7 @@ public class JudoDatasourceFixture {
 
     public static final String DIALECT_HSQLDB = "hsqldb";
     public static final String DIALECT_POSTGRESQL = "postgresql";
-    public static final Map<String, String> STATMENT_TEMPLATE = Map.of(
+    public static final Map<String, String> STATMENT_TEMPLATE = ImmutableMap.of(
             DIALECT_POSTGRESQL, "TRUNCATE TABLE %s RESTART IDENTITY CASCADE;",
             DIALECT_HSQLDB, "TRUNCATE TABLE %s RESTART IDENTITY AND COMMIT NO CHECK"
     );
