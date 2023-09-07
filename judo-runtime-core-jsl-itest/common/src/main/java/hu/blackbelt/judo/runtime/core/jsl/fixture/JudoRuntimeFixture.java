@@ -50,7 +50,7 @@ public class JudoRuntimeFixture {
 
     private PlatformTransactionManager transactionManager;
 
-    JudoModelLoader modelHolder;
+    public JudoModelLoader modelHolder;
 
     JdbcDatabaseContainer sqlContainer;
 
