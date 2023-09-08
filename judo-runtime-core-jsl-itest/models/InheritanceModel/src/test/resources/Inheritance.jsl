@@ -17,7 +17,7 @@ entity ParentA {
     identifier String identifierA;
     field String derivedA <= self.nameA;
     relation RelationEntity[] relationEntities;
-    @Query
+    @Requested
     field String queryA(String param) <= param;
 }
 
