@@ -62,16 +62,16 @@ entity L extends K {
 }
 
 entity abstract O {
-	@Query
+	@Requested
     relation O Oany <= O!all()!any();
 }
 
 entity abstract P {
-	@Query
+	@Requested
     relation P Pany <= P!all()!any();
-	@Query
+	@Requested
     relation P PQany <= Q!all()!any();
-	@Query
+	@Requested
     relation Q Qany <= Q!all()!any();
 }
 
