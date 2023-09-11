@@ -47,6 +47,7 @@
 
         <judo-meta-psm-version>1.3.0.20230907_041147_fd92c63a_develop</judo-meta-psm-version>
 
+        
         <!-- Code Quality-->
         <sonar-maven-plugin-version>3.9.1.2184</sonar-maven-plugin-version>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
