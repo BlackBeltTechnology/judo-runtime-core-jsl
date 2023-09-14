@@ -41,8 +41,10 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercomposito
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.MappedTransferCompositonAssociationDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
+import hu.blackbelt.judo.runtime.core.exception.ValidationException;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
@@ -50,7 +52,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -202,13 +205,16 @@ public class MappedTransferCompositonAssociationTest {
 //        assertEquals(2,entityDDao.query().execute().size());
 
         //Try to create without required element
-        IllegalArgumentException thrown = assertThrows(
-                IllegalArgumentException.class,
+        ValidationException thrown = assertThrows(
+                ValidationException.class,
                 () -> transferCDao.create(TransferC.builder().build())
         );
 
-        assertTrue(thrown.getMessage().contains("There is missing mandatory attribute/reference on"));
-        assertTrue(thrown.getMessage().contains("singleRequiredEntityD"));
+        Assertions.assertEquals(1, thrown.getValidationResults().size());
+        assertThat(thrown.getValidationResults(), containsInAnyOrder(allOf(
+                hasProperty("code", equalTo("MISSING_REQUIRED_RELATION")),
+                hasProperty("location", equalTo("singleRequiredEntityD")))
+        ));
 
         //Try to delete the required element
 
