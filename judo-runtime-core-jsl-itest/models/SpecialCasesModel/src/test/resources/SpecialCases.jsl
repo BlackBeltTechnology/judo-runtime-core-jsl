@@ -22,10 +22,10 @@ entity ReferenceEntity {
     field String name;
 }
 entity entityA {
-    @Query
+    @Requested
     relation ReferenceEntity querySameName(String name) <= ReferenceEntity!any();
 }
 entity entityB {
-    @Query
+    @Requested
     relation ReferenceEntity querySameName(String name) <= ReferenceEntity!any();
 }
