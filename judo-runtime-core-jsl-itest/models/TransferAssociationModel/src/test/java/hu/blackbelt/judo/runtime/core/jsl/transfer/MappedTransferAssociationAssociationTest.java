@@ -21,6 +21,7 @@ package hu.blackbelt.judo.runtime.core.jsl.transfer;
  */
 
 import com.google.inject.Inject;
+import hu.blackbelt.judo.dao.api.ValidationResult;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationassociation.mappedtransferassociationassociation.entitya.EntityA;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationassociation.mappedtransferassociationassociation.entitya.EntityADao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationassociation.mappedtransferassociationassociation.entitya.EntityAIdentifier;
@@ -91,6 +92,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociati
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.MappedTransferAssociationAssociationDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
+import hu.blackbelt.judo.runtime.core.exception.ValidationException;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -103,7 +105,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
@@ -330,13 +333,16 @@ public class MappedTransferAssociationAssociationTest {
 
         //creation without mandatory element
 
-        IllegalArgumentException thrown1 = assertThrows(
-                IllegalArgumentException.class,
+        ValidationException thrown1 = assertThrows(
+                ValidationException.class,
                 () -> transferCDao.create(TransferC.builder().build())
         );
 
-        assertTrue(thrown1.getMessage().contains("There is missing mandatory attribute/reference"));
-        assertTrue(thrown1.getMessage().contains("relationDonC"));
+        assertEquals(1, thrown1.getValidationResults().size());
+        assertThat(thrown1.getValidationResults(), containsInAnyOrder(allOf(
+                hasProperty("code", equalTo("MISSING_REQUIRED_RELATION")),
+                hasProperty("location", equalTo("relationDonC")))
+        ));
 
         // Test dao set, unset
         transferCDao.setRelationDonC(transferC, td1);
