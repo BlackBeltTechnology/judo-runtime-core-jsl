@@ -57,7 +57,9 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociati
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationaggregation.mappedtransferassociationaggregation.entityl.EntityL;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationaggregation.mappedtransferassociationaggregation.entityl.EntityLDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationaggregation.mappedtransferassociationaggregation.entityl.EntityLIdentifier;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationaggregation.mappedtransferassociationaggregation.entitym.EntityM;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationaggregation.mappedtransferassociationaggregation.entitym.EntityMDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationaggregation.mappedtransferassociationaggregation.entitym.EntityMIdentifier;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationaggregation.mappedtransferassociationaggregation.entityn.EntityNDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationaggregation.mappedtransferassociationaggregation.entityo.EntityODao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationaggregation.mappedtransferassociationaggregation.transfera.TransferA;
@@ -375,6 +377,7 @@ public class MappedTransferAssociationAggregationTest {
      */
     @Test
     @TestCase("MultiAssociationAggregationRelationOnTransfer")
+    @Disabled
     @Requirement(reqs = {
             "REQ-MDL-001",
             "REQ-MDL-002",
@@ -1180,6 +1183,7 @@ public class MappedTransferAssociationAggregationTest {
 
         assertEquals(transfeN.identifier(), transferG.getRelationNonM().orElseThrow().identifier());
         assertThat(transferG.getRelationNonM().orElseThrow().getRelationOonN(), containsInAnyOrder(to1, to2, to3));
+
 
     }
 

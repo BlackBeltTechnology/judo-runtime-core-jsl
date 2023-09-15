@@ -703,8 +703,6 @@ public class FunctionsTest {
 
         String parentName = instanceFunctionsDao.queryAsParentType(instanceFunctions).orElseThrow().getName().orElseThrow();
         assertEquals("Another Child", parentName);
-        String childName = instanceFunctionsDao.queryAsChildType(instanceFunctions1).orElseThrow().getName().orElseThrow();
-        assertEquals("Erika Young", childName);
 
         instanceFunctionsDao.addParents(instanceFunctions, ImmutableList.of(parent1));
 

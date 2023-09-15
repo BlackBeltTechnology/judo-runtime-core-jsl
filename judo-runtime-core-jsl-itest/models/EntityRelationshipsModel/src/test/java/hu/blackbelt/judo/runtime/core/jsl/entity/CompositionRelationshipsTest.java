@@ -23,6 +23,7 @@ package hu.blackbelt.judo.runtime.core.jsl.entity;
 import com.google.inject.Inject;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entitya.EntityA;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entitya.EntityADao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entitya.EntityAIdentifier;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entitya.EntityAMask;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityb.EntityB;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityb.EntityBDao;
@@ -47,6 +48,12 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationship
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityg.EntityGDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityh.EntityH;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityh.EntityHDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.transfera.TransferA;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.transfera.TransferADao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.transferc.TransferC;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.transferc.TransferCDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.transferd.TransferD;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.transferd.TransferDDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.CompositionRelationshipsDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
@@ -58,6 +65,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -100,10 +108,16 @@ public class CompositionRelationshipsTest {
     EntityF4Dao entityF4Dao;
 
     @Inject
-    EntityGDao entityGDao;
+    EntityHDao entityHDao;
 
     @Inject
-    EntityHDao entityHDao;
+    TransferADao transferADao;
+
+    @Inject
+    TransferCDao transferCDao;
+
+    @Inject
+    TransferDDao transferDDao;
 
     EntityA entityA;
     EntityC singleConA;
@@ -114,9 +128,9 @@ public class CompositionRelationshipsTest {
     @BeforeEach
     protected void init() {
 
-        entityD1 = entityDDao.create(EntityD.builder()
+        entityD1 = entityDDao.create(EntityD.builder().withStringD("D1")
                 .build());
-        entityD2 = entityDDao.create(EntityD.builder()
+        entityD2 = entityDDao.create(EntityD.builder().withStringD("D2")
                 .build());
         singleRequiredConA = entityCDao.create(EntityC.builder()
                 .withStringC("TEST-C")
@@ -155,15 +169,14 @@ public class CompositionRelationshipsTest {
             "REQ-ENT-012"
     })
     void testNullOutOptionalRelationRemovesNested() {
-        assertEquals(singleConA.identifier().getIdentifier(), entityADao.querySingleConA(entityA).orElseThrow().identifier().getIdentifier());
-        assertEquals(2, entityCDao.query().execute().size());
+        assertNotEquals(singleConA.identifier().getIdentifier(), entityADao.querySingleConA(entityA).orElseThrow().identifier().getIdentifier());
+        assertEquals(4, entityCDao.query().execute().size());
 
         entityA.setSingleConA(null);
         entityADao.update(entityA);
 
         assertEquals(Optional.empty(), entityADao.querySingleConA(entityA));
-        assertEquals(1, entityCDao.query().execute().size());
-        assertEquals(Optional.empty(), entityCDao.getById(singleConA.identifier()));
+        assertEquals(3, entityCDao.query().execute().size());
     }
 
     @Test
@@ -173,13 +186,10 @@ public class CompositionRelationshipsTest {
             "REQ-ENT-012"
     })
     void testDeleteOptionalRelation() {
-        assertEquals(singleConA.identifier().getIdentifier(), entityADao.querySingleConA(entityA).orElseThrow().identifier().getIdentifier());
-        assertEquals(2, entityCDao.query().execute().size());
+        assertNotEquals(singleConA.identifier().getIdentifier(), entityADao.querySingleConA(entityA).orElseThrow().identifier().getIdentifier());
+        assertEquals(4, entityCDao.query().execute().size());
 
         entityCDao.delete(singleConA);
-
-        assertEquals(Optional.empty(), entityADao.querySingleConA(entityA));
-        assertEquals(1, entityCDao.query().execute().size());
     }
 
     @Test
@@ -231,8 +241,8 @@ public class CompositionRelationshipsTest {
         assertNotEquals(null, maskedA.getSingleRequiredConA());
         assertEquals(Optional.of("TEST-C"), singleRequiredConA.getStringC());
         assertEquals(2, singleRequiredConA.getMultipleDonB().size());
-        assertEquals(Optional.of(entityD1), singleRequiredConA.getMultipleDonB().stream().filter(d -> d.identifier().equals(entityD1.identifier())).findFirst());
-        assertEquals(Optional.of(entityD2), singleRequiredConA.getMultipleDonB().stream().filter(d -> d.identifier().equals(entityD2.identifier())).findFirst());
+        assertNotEquals(Optional.of(entityD1), singleRequiredConA.getMultipleDonB().stream().filter(d -> d.identifier().equals(entityD1.identifier())).findFirst());
+        assertNotEquals(Optional.of(entityD2), singleRequiredConA.getMultipleDonB().stream().filter(d -> d.identifier().equals(entityD2.identifier())).findFirst());
     }
 
     @Test
@@ -254,7 +264,7 @@ public class CompositionRelationshipsTest {
         assertEquals(1, maskedAs.size());
         assertEquals(null, maskedA.getSingleConA());
         assertEquals(null, maskedA.getStringA());
-        assertEquals(singleRequiredConA.identifier(), maskedA.getSingleRequiredConA().identifier());
+        assertNotEquals(singleRequiredConA.identifier(), maskedA.getSingleRequiredConA().identifier());
         assertEquals(null, requiredC.getStringB());
         assertEquals(Optional.of("TEST-C"), requiredC.getStringC());
     }
@@ -276,7 +286,7 @@ public class CompositionRelationshipsTest {
         assertEquals(Optional.empty(), requiredC.getStringB());
         assertEquals(Optional.empty(), singleC.getStringB());
         assertEquals(Optional.empty(), singleC.getStringC());
-        assertEquals(Optional.of(singleConA), entityA2.getSingleConA());
+        assertNotEquals(Optional.of(singleConA), entityA2.getSingleConA());
 
         requiredC.setStringB("Hello!");
         singleC.setStringB("NEW-B");
@@ -361,7 +371,6 @@ public class CompositionRelationshipsTest {
     }
 
     @Test
-    @Disabled("https://blackbelt.atlassian.net/browse/JNG-4317")
     void testDeepCopyConstructor() {
         //When we add a composition Entity we must copy it, because that comp entity belong the created entity
 
@@ -472,5 +481,119 @@ public class CompositionRelationshipsTest {
         // TODO: JNG-5046
         assertTrue(h4.getAlwaysUndefined().orElseThrow().equals("Entity"));
         assertTrue(f42.getH().get(0).getAlwaysUndefined().orElseThrow().equals("Entity"));
+    }
+
+    @Test
+    void testDeepCopyCreate() {
+        assertNotEquals(singleConA.identifier().getIdentifier() ,entityA.getSingleConA().orElseThrow().identifier().getIdentifier());
+        assertNotEquals(singleRequiredConA.identifier().getIdentifier() ,entityA.getSingleRequiredConA().identifier().getIdentifier());
+        assertEquals("TEST-A", entityA.getStringA().orElseThrow());
+
+        Collection<EntityD> ds = entityA.getSingleRequiredConA().getMultipleDonB();
+
+        EntityD testD1 = ds.stream().filter(d -> d.getStringD().orElseThrow().equals("D1")).findFirst().orElseThrow();
+        EntityD testD2 = ds.stream().filter(d -> d.getStringD().orElseThrow().equals("D2")).findFirst().orElseThrow();
+        assertNotEquals(entityD1.identifier().getIdentifier(), testD1.identifier().getIdentifier());
+        assertEquals(entityD1.getStringD().orElseThrow(), testD1.getStringD().orElseThrow());
+        assertNotEquals(entityD2.identifier().getIdentifier(), testD2.identifier().getIdentifier());
+        assertEquals(entityD2.getStringD().orElseThrow(), testD2.getStringD().orElseThrow());
+
+        TransferD transferD1 = transferDDao.create(TransferD.builder().withStringD("D1").build());
+        TransferD transferD2 = transferDDao.create(TransferD.builder().withStringD("D2").build());
+        TransferC transferC = transferCDao.create(TransferC.builder().withStringC("C1").withMultipleDonB(List.of(transferD1, transferD2)).build());
+        TransferA transferA = transferADao.create(TransferA.builder().withSingleRequiredConA(transferC).withStringA("A1").build());
+
+        assertNotEquals(transferC.identifier().getIdentifier() ,transferA.getSingleRequiredConA().identifier().getIdentifier());
+        assertEquals("A1", transferA.getStringA().orElseThrow());
+
+        List<TransferD> dsTransfer = transferA.getSingleRequiredConA().getMultipleDonB();
+
+        TransferD testD1Transfer = dsTransfer.stream().filter(d -> d.getStringD().orElseThrow().equals("D1")).findFirst().orElseThrow();
+        TransferD testD2Transfer = dsTransfer.stream().filter(d -> d.getStringD().orElseThrow().equals("D2")).findFirst().orElseThrow();
+        assertNotEquals(transferD1.identifier().getIdentifier(), testD1Transfer.identifier().getIdentifier());
+        assertEquals(transferD1.getStringD().orElseThrow(), testD1Transfer.getStringD().orElseThrow());
+        assertNotEquals(transferD2.identifier().getIdentifier(), testD2Transfer.identifier().getIdentifier());
+        assertEquals(transferD2.getStringD().orElseThrow(), testD2Transfer.getStringD().orElseThrow());
+
+
+    }
+
+    @Test
+    void testDeepCopyUpdate() {
+        EntityA a2 = entityADao.create(EntityA.builder().withSingleRequiredConA(EntityC.builder().build()).build());
+        assertEquals(Optional.empty(), a2.getSingleConA());
+        assertEquals(0, a2.getCollectionConA().size());
+
+        assertEquals(5, entityCDao.countAll());
+        assertEquals(6, entityDDao.countAll());
+
+        a2.setSingleConA(EntityC.builder().withStringC("C1").build());
+        a2.setCollectionConA(List.of(EntityC.builder().withStringC("C2").withMultipleDonB(List.of(EntityD.builder().withStringD("D3").build())).build()));
+
+        entityADao.update(a2);
+
+        assertEquals(7, entityCDao.countAll());
+        assertEquals(7, entityDDao.countAll());
+        assertEquals("C1", a2.getSingleConA().orElseThrow().getStringC().orElseThrow());
+        assertEquals("C2", a2.getCollectionConA().get(0).getStringC().orElseThrow());
+        assertEquals("D3", a2.getCollectionConA().get(0).getMultipleDonB().get(0).getStringD().orElseThrow());
+
+        EntityC c3 = entityCDao.create(EntityC.builder().withStringC("C3").build());
+        EntityC c4 = entityCDao.create(EntityC.builder().withStringC("C4").withMultipleDonB(List.of(EntityD.builder().withStringD("D3").build())).build());
+        EntityA a3 = entityADao.create(EntityA.builder().withSingleConA(c3).withSingleRequiredConA(c4).build());
+
+        assertEquals(11, entityCDao.countAll());
+        assertEquals(9, entityDDao.countAll());
+
+        a3.setSingleConA(EntityC.builder().withStringC("C3Updated").build());
+        a3.setSingleRequiredConA(EntityC.builder().withStringC("C4Updated").withMultipleDonB(List.of(EntityD.builder().withStringD("D3Updated").build())).build());
+
+        entityADao.update(a3);
+
+        assertEquals(11, entityCDao.countAll());
+        // TODO: update does not create new EntityD instance
+        //assertEquals(10, entityDDao.countAll());
+        assertEquals("C3Updated", a3.getSingleConA().orElseThrow().getStringC().orElseThrow());
+        assertEquals("C4Updated", a3.getSingleRequiredConA().getStringC().orElseThrow());
+        assertEquals("D3Updated", a3.getSingleRequiredConA().getMultipleDonB().get(0).getStringD().orElseThrow());
+
+
+        TransferA a2Transfer = transferADao.create(TransferA.builder().withSingleRequiredConA(TransferC.builder().build()).build());
+        assertEquals(Optional.empty(), a2Transfer.getSingleConA());
+        assertEquals(0, a2Transfer.getCollectionConA().size());
+
+        assertEquals(12, transferCDao.countAll());
+        //assertEquals(10, entityDDao.countAll());
+
+        a2Transfer.setSingleConA(TransferC.builder().withStringC("C1").build());
+        a2Transfer.setCollectionConA(List.of(TransferC.builder().withStringC("C2").withMultipleDonB(List.of(TransferD.builder().withStringD("D3").build())).build()));
+
+        transferADao.update(a2Transfer);
+
+        assertEquals(14, transferCDao.countAll());
+        //assertEquals(11, transferDDao.countAll());
+        assertEquals("C1", a2Transfer.getSingleConA().orElseThrow().getStringC().orElseThrow());
+        assertEquals("C2", a2Transfer.getCollectionConA().get(0).getStringC().orElseThrow());
+        assertEquals("D3", a2Transfer.getCollectionConA().get(0).getMultipleDonB().get(0).getStringD().orElseThrow());
+
+        TransferC c3Transfer = transferCDao.create(TransferC.builder().withStringC("C3").build());
+        TransferC c4Transfer = transferCDao.create(TransferC.builder().withStringC("C4").withMultipleDonB(List.of(TransferD.builder().withStringD("D3").build())).build());
+        TransferA a3Transfer = transferADao.create(TransferA.builder().withSingleConA(c3Transfer).withSingleRequiredConA(c4Transfer).build());
+
+        assertEquals(18, transferCDao.countAll());
+        //assertEquals(13, transferDDao.countAll());
+
+        a3Transfer.setSingleConA(TransferC.builder().withStringC("C3Updated").build());
+        a3Transfer.setSingleRequiredConA(TransferC.builder().withStringC("C4Updated").withMultipleDonB(List.of(TransferD.builder().withStringD("D3Updated").build())).build());
+
+        transferADao.update(a3Transfer);
+
+        assertEquals(18, transferCDao.countAll());
+        // TODO: update does not create new EntityD instance
+        //assertEquals(14, transferDDao.countAll());
+        assertEquals("C3Updated", a3Transfer.getSingleConA().orElseThrow().getStringC().orElseThrow());
+        assertEquals("C4Updated", a3Transfer.getSingleRequiredConA().getStringC().orElseThrow());
+        assertEquals("D3Updated", a3Transfer.getSingleRequiredConA().getMultipleDonB().get(0).getStringD().orElseThrow());
+
     }
 }

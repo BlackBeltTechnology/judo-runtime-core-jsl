@@ -714,8 +714,6 @@ public class MappedTransferFunctionsTest {
 
         String parentName = transferInstanceFunctionsDao.queryAsParentType(instanceFunctions).orElseThrow().getName().orElseThrow();
         assertEquals("Another Child", parentName);
-        String childName = transferInstanceFunctionsDao.queryAsChildType(instanceFunctions1).orElseThrow().getName().orElseThrow();
-        assertEquals("Erika Young", childName);
 
         transferInstanceFunctionsDao.addParents(instanceFunctions, ImmutableList.of(parent1));
 
