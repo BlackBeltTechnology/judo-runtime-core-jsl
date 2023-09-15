@@ -13,11 +13,22 @@ type binary Binary mime-type:["text/plain"] max-file-size:1 GB;
 
 error MyError {
 	field Integer code;
-	field String msg = "Internal Server Error";
+	field String msg;
+	
+	event build {
+		self.msg = "Internal Server Error";
+	}
 }
 
-error MyExtendedError extends MyError {
-	field Integer extra = 0;
+error MyExtendedError {
+	field Integer code;
+	field String msg;
+	field Integer extra;
+
+	event build {
+		self.msg = "Internal Server Error";
+		self.extra = 0;
+	}
 }
 
 enum LeadStatus {
