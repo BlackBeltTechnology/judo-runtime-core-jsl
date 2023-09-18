@@ -36,7 +36,7 @@ entity D {
 transfer TransferD maps D as d {
     field String attributeTransferD;
 
-    event build {
+    event initialize {
         self.attributeTransferD = "SomeName";
     }
 }

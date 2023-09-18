@@ -21,7 +21,7 @@ error MyExtendedError {
 	field String msg;
 	field Integer extra;
 	
-	event build {
+	event initialize {
 		self.extra = 0;
 	}
 }

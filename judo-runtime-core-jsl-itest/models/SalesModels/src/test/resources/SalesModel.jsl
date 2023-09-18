@@ -15,7 +15,7 @@ error MyError {
 	field Integer code;
 	field String msg;
 	
-	event build {
+	event initialize {
 		self.msg = "Internal Server Error";
 	}
 }
@@ -25,7 +25,7 @@ error MyExtendedError {
 	field String msg;
 	field Integer extra;
 
-	event build {
+	event initialize {
 		self.msg = "Internal Server Error";
 		self.extra = 0;
 	}
