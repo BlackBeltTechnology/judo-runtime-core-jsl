@@ -10,13 +10,13 @@ query Lead rootOneLead() <= Lead!any();
 query Integer totalNumberOfLeads() <= Lead!all()!size();
 
 entity Queries {
-    @Query
+    @Requested
 	relation Lead[] queriesAllLeadsBetween(Integer min = 0, Integer max = 100) <= Lead!all()!filter(l | l.value > min and  l.value < max);
-    @Query
+    @Requested
 	field Integer queriesCountAllLeadsBetween(Integer min = 0, Integer max = 100) <= Lead!all()!filter(l | l.value > min and  l.value < max)!size();
-    @Query
+    @Requested
     relation Lead[] queriesAllLeads <= Lead!all();
-    @Query
+    @Requested
     relation Lead queriesOneLead <= Lead!any();
 }
 

@@ -327,7 +327,7 @@ public class TestStaticQueryDao {
                         .builder()
                         .withName("B")
                         .withValue(2)
-                        .withEnum(MyEnum.Bombastic)
+                        .withMyenum(MyEnum.Bombastic)
                         .build()).map(e -> e.identifier()).orElseThrow()
         );
         assertEquals(b.identifier(), entityWithDefaultParamQueryDao.execute().map(e -> e.identifier()).orElseThrow());
@@ -392,7 +392,7 @@ public class TestStaticQueryDao {
                         .builder()
                         .withName("B")
                         .withValue(2)
-                        .withEnum(MyEnum.Bombastic)
+                        .withMyenum(MyEnum.Bombastic)
                         .build()).execute().stream().map(p -> p.identifier()).collect(Collectors.toList()),
                 containsInAnyOrder(b1.identifier(), b2.identifier())
         );
@@ -611,7 +611,7 @@ public class TestStaticQueryDao {
                                 .builder()
                                 .withName("C")
                                 .withValue(3)
-                                .withEnum(MyEnum.Crazy)
+                                .withMyenum(MyEnum.Crazy)
                                 .build())
                         .execute().stream().map(p -> p.identifier()).collect(Collectors.toList()),
                 containsInAnyOrder(c.identifier())
