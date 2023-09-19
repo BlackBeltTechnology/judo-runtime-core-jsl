@@ -41,7 +41,7 @@
         </osgi-transaction-import>
 
         <judo-tatami-jsl-version>1.1.4.20230914_124636_7e9866fb_develop</judo-tatami-jsl-version>
-        <judo-runtime-core-version>1.0.6.20230915_093305_a3e9fe45_feature_JNG_4317_support_deep_copy_for_composition</judo-runtime-core-version>
+        <judo-runtime-core-version>1.0.6-SNAPSHOT</judo-runtime-core-version>
         <judo-psm-generator-sdk-core-version>1.0.0.20230914_120625_a6090a2b_develop</judo-psm-generator-sdk-core-version>
 
 

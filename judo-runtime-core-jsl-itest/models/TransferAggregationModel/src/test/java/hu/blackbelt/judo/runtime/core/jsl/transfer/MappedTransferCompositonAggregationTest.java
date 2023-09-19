@@ -26,11 +26,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercomposito
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.entityb.EntityB;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.entityb.EntityBDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.entityb.EntityBIdentifier;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.entityc.EntityCDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.entityd.EntityDDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.entitye.EntityEDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.entityf.EntityFDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.entityg.EntityGDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.transfera.TransferA;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.transfera.TransferADao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.transferb.TransferB;
@@ -46,13 +42,18 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercomposito
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.transferg.TransferG;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.transferg.TransferGDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.transferg.TransferGIdentifier;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.transferh.TransferH;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.transferh.TransferHDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.transferj.TransferJ;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.transferj.TransferJDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.transferk.TransferK;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.transferk.TransferKDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.MappedTransferCompositonAggregationDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
@@ -62,6 +63,8 @@ import java.util.Optional;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -84,9 +87,6 @@ public class MappedTransferCompositonAggregationTest {
     TransferBDao transferBDao;
 
     @Inject
-    EntityCDao entityCDao;
-
-    @Inject
     TransferCDao transferCDao;
 
     @Inject
@@ -96,23 +96,18 @@ public class MappedTransferCompositonAggregationTest {
     TransferDDao transferDDao;
 
     @Inject
-    EntityEDao entityEDao;
-
-    @Inject
     TransferEDao transferEDao;
 
     @Inject
-    EntityFDao entityFDao;
-
-    @Inject
     TransferFDao transferFDao;
-
-
-    @Inject
-    EntityGDao entityGDao;
-
     @Inject
     TransferGDao transferGDao;
+    @Inject
+    TransferHDao transferHDao;
+    @Inject
+    TransferJDao transferJDao;
+    @Inject
+    TransferKDao transferKDao;
 
     /**
      * The test checks the aggregation mapped single field with entity type work well on transfer object.
@@ -395,6 +390,69 @@ public class MappedTransferCompositonAggregationTest {
                 transferF.getMultiEntityG().stream().map(t -> t.identifier()).toList(),
                 containsInAnyOrder(listOfG.toArray())
         );
+    }
+
+    @Test
+    void testDeepCopyCreate() {
+
+        TransferK transferK1 = transferKDao.create(TransferK.builder().withStringK("K1").build());
+        TransferK transferK2 = transferKDao.create(TransferK.builder().withStringK("K2").build());
+        TransferJ transferJ = transferJDao.create(TransferJ.builder().withStringJ("J1").withMultipleKonI(List.of(transferK1, transferK2)).build());
+        TransferH transferH = transferHDao.create(TransferH.builder().withSingleRequiredJonH(transferJ).withStringH("H1").build());
+
+        assertNotEquals(transferJ.identifier().getIdentifier() ,transferH.getSingleRequiredJonH().identifier().getIdentifier());
+        assertEquals("H1", transferH.getStringH().orElseThrow());
+
+        List<TransferK> ksTransfer = transferH.getSingleRequiredJonH().getMultipleKonI();
+
+        TransferK testK1Transfer = ksTransfer.stream().filter(d -> d.getStringK().orElseThrow().equals("K1")).findFirst().orElseThrow();
+        TransferK testK2Transfer = ksTransfer.stream().filter(d -> d.getStringK().orElseThrow().equals("K2")).findFirst().orElseThrow();
+        assertNotEquals(transferK1.identifier().getIdentifier(), testK1Transfer.identifier().getIdentifier());
+        assertEquals(transferK1.getStringK().orElseThrow(), testK1Transfer.getStringK().orElseThrow());
+        assertNotEquals(transferK2.identifier().getIdentifier(), testK2Transfer.identifier().getIdentifier());
+        assertEquals(transferK2.getStringK().orElseThrow(), testK2Transfer.getStringK().orElseThrow());
+
+    }
+
+    @Test
+    void testDeepCopyUpdate() {
+        TransferH h2Transfer = transferHDao.create(TransferH.builder().withSingleRequiredJonH(TransferJ.builder().build()).build());
+        assertEquals(Optional.empty(), h2Transfer.getSingleJonH());
+        assertEquals(0, h2Transfer.getCollectionJonH().size());
+
+        assertEquals(1, transferJDao.countAll());
+        //assertEquals(0, transferKDao.countAll());
+
+        h2Transfer.setSingleJonH(TransferJ.builder().withStringJ("J1").build());
+        h2Transfer.setCollectionJonH(List.of(TransferJ.builder().withStringJ("J2").withMultipleKonI(List.of(TransferK.builder().withStringK("K").build())).build()));
+
+        transferHDao.update(h2Transfer);
+
+        assertEquals(3, transferJDao.countAll());
+        //assertEquals(1, transferKDao.countAll());
+        assertEquals("J1", h2Transfer.getSingleJonH().orElseThrow().getStringJ().orElseThrow());
+        assertEquals("J2", h2Transfer.getCollectionJonH().get(0).getStringJ().orElseThrow());
+        assertEquals("K", h2Transfer.getCollectionJonH().get(0).getMultipleKonI().get(0).getStringK().orElseThrow());
+
+        TransferJ j3Transfer = transferJDao.create(TransferJ.builder().withStringJ("J3").build());
+        TransferJ j4Transfer = transferJDao.create(TransferJ.builder().withStringJ("J4").withMultipleKonI(List.of(TransferK.builder().withStringK("K").build())).build());
+        TransferH h3Transfer = transferHDao.create(TransferH.builder().withSingleJonH(j3Transfer).withSingleRequiredJonH(j4Transfer).build());
+
+        assertEquals(7, transferJDao.countAll());
+        //assertEquals(3, transferKDao.countAll());
+
+        h3Transfer.setSingleJonH(TransferJ.builder().withStringJ("J3Updated").build());
+        h3Transfer.setSingleRequiredJonH(TransferJ.builder().withStringJ("J4Updated").withMultipleKonI(List.of(TransferK.builder().withStringK("KUpdated").build())).build());
+
+        transferHDao.update(h3Transfer);
+
+        assertEquals(7, transferJDao.countAll());
+        // TODO: update does not create new EntityD instance
+        //assertEquals(4, transferKDao.countAll());
+        assertEquals("J3Updated", h3Transfer.getSingleJonH().orElseThrow().getStringJ().orElseThrow());
+        assertEquals("J4Updated", h3Transfer.getSingleRequiredJonH().getStringJ().orElseThrow());
+        assertEquals("KUpdated", h3Transfer.getSingleRequiredJonH().getMultipleKonI().get(0).getStringK().orElseThrow());
+
     }
 
 }

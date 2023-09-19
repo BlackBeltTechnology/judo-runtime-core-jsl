@@ -192,3 +192,44 @@ transfer TransferN (EntityN n) {
 transfer TransferO (EntityO o) {
         field String nameO <=> o.nameO;
 }
+
+entity H {
+    field String stringH;
+    field J singleJonH;
+    field J[] collectionJonH;
+    field required J singleRequiredJonH;
+}
+
+entity abstract I {
+    field String stringI;
+    field K[] multipleKonI;
+}
+
+entity J extends I {
+    field String stringJ;
+}
+
+entity K {
+    field String stringK;
+}
+
+transfer TH(H entityh) {
+    field String stringH <=> entityh.stringH;
+    @Embedded
+    relation TJ singleJonH <=> entityh.singleJonH;
+    @Embedded
+    relation TJ[] collectionJonH <=> entityh.collectionJonH;
+    @Embedded
+    relation required TJ singleRequiredJonH <=> entityh.singleRequiredJonH;
+}
+
+transfer TJ(J entityj) {
+    field String stringI <=> entityj.stringI;
+    field String stringJ <=> entityj.stringJ;
+    @Embedded
+    relation TK[] multipleKonI <=> entityj.multipleKonI;
+}
+
+transfer TK(K entityk) {
+    field String stringK <=> entityk.stringK;
+}
