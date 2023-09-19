@@ -421,7 +421,7 @@ public class MappedTransferCompositonAggregationTest {
         assertEquals(0, h2Transfer.getCollectionJonH().size());
 
         assertEquals(1, transferJDao.countAll());
-        //assertEquals(0, transferKDao.countAll());
+        assertEquals(0, transferKDao.countAll());
 
         h2Transfer.setSingleJonH(TransferJ.builder().withStringJ("J1").build());
         h2Transfer.setCollectionJonH(List.of(TransferJ.builder().withStringJ("J2").withMultipleKonI(List.of(TransferK.builder().withStringK("K").build())).build()));
@@ -429,7 +429,7 @@ public class MappedTransferCompositonAggregationTest {
         transferHDao.update(h2Transfer);
 
         assertEquals(3, transferJDao.countAll());
-        //assertEquals(1, transferKDao.countAll());
+        assertEquals(1, transferKDao.countAll());
         assertEquals("J1", h2Transfer.getSingleJonH().orElseThrow().getStringJ().orElseThrow());
         assertEquals("J2", h2Transfer.getCollectionJonH().get(0).getStringJ().orElseThrow());
         assertEquals("K", h2Transfer.getCollectionJonH().get(0).getMultipleKonI().get(0).getStringK().orElseThrow());
@@ -439,7 +439,7 @@ public class MappedTransferCompositonAggregationTest {
         TransferH h3Transfer = transferHDao.create(TransferH.builder().withSingleJonH(j3Transfer).withSingleRequiredJonH(j4Transfer).build());
 
         assertEquals(7, transferJDao.countAll());
-        //assertEquals(3, transferKDao.countAll());
+        assertEquals(3, transferKDao.countAll());
 
         h3Transfer.setSingleJonH(TransferJ.builder().withStringJ("J3Updated").build());
         h3Transfer.setSingleRequiredJonH(TransferJ.builder().withStringJ("J4Updated").withMultipleKonI(List.of(TransferK.builder().withStringK("KUpdated").build())).build());
@@ -447,8 +447,8 @@ public class MappedTransferCompositonAggregationTest {
         transferHDao.update(h3Transfer);
 
         assertEquals(7, transferJDao.countAll());
-        // TODO: update does not create new EntityD instance
-        //assertEquals(4, transferKDao.countAll());
+        // TODO: JNG-5213 update does not create new EntityD instance
+        //assertEquals(3, transferKDao.countAll());
         assertEquals("J3Updated", h3Transfer.getSingleJonH().orElseThrow().getStringJ().orElseThrow());
         assertEquals("J4Updated", h3Transfer.getSingleRequiredJonH().getStringJ().orElseThrow());
         assertEquals("KUpdated", h3Transfer.getSingleRequiredJonH().getMultipleKonI().get(0).getStringK().orElseThrow());

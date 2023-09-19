@@ -532,7 +532,7 @@ public class CompositionRelationshipsTest {
         entityADao.update(a3);
 
         assertEquals(11, entityCDao.countAll());
-        // TODO: update does not create new EntityD instance
+        // TODO: JNG-5213 update does not create new EntityD instance
         //assertEquals(9, entityDDao.countAll());
         assertEquals("C3Updated", a3.getSingleConA().orElseThrow().getStringC().orElseThrow());
         assertEquals("C4Updated", a3.getSingleRequiredConA().getStringC().orElseThrow());

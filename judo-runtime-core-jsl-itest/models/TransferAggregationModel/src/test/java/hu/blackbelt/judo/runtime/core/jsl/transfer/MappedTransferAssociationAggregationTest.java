@@ -1220,7 +1220,7 @@ public class MappedTransferAssociationAggregationTest {
         assertEquals(0, h2Transfer.getCollectionJonH().size());
 
         assertEquals(1, tjDao.countAll());
-        //assertEquals(0, tkDao.countAll());
+        assertEquals(0, tkDao.countAll());
 
         h2Transfer.setSingleJonH(TJ.builder().withStringJ("J1").build());
         h2Transfer.setCollectionJonH(List.of(TJ.builder().withStringJ("J2").withMultipleKonI(List.of(TK.builder().withStringK("K").build())).build()));
@@ -1228,7 +1228,7 @@ public class MappedTransferAssociationAggregationTest {
         thDao.update(h2Transfer);
 
         assertEquals(3, tjDao.countAll());
-        //assertEquals(1, tkDao.countAll());
+        assertEquals(1, tkDao.countAll());
         assertEquals("J1", h2Transfer.getSingleJonH().orElseThrow().getStringJ().orElseThrow());
         assertEquals("J2", h2Transfer.getCollectionJonH().get(0).getStringJ().orElseThrow());
         assertEquals("K", h2Transfer.getCollectionJonH().get(0).getMultipleKonI().get(0).getStringK().orElseThrow());
@@ -1238,7 +1238,7 @@ public class MappedTransferAssociationAggregationTest {
         TH h3Transfer = thDao.create(TH.builder().withSingleJonH(j3Transfer).withSingleRequiredJonH(j4Transfer).build());
 
         assertEquals(7, tjDao.countAll());
-        //assertEquals(3, tkDao.countAll());
+        assertEquals(3, tkDao.countAll());
 
         h3Transfer.setSingleJonH(TJ.builder().withStringJ("J3Updated").build());
         h3Transfer.setSingleRequiredJonH(TJ.builder().withStringJ("J4Updated").withMultipleKonI(List.of(TK.builder().withStringK("KUpdated").build())).build());
@@ -1246,8 +1246,8 @@ public class MappedTransferAssociationAggregationTest {
         thDao.update(h3Transfer);
 
         assertEquals(7, tjDao.countAll());
-        // TODO: update does not create new EntityD instance
-        //assertEquals(4, tkDao.countAll());
+        // TODO: JNG-5213 update does not create new EntityD instance
+        //assertEquals(3, tkDao.countAll());
         assertEquals("J3Updated", h3Transfer.getSingleJonH().orElseThrow().getStringJ().orElseThrow());
         assertEquals("J4Updated", h3Transfer.getSingleRequiredJonH().getStringJ().orElseThrow());
         assertEquals("KUpdated", h3Transfer.getSingleRequiredJonH().getMultipleKonI().get(0).getStringK().orElseThrow());
