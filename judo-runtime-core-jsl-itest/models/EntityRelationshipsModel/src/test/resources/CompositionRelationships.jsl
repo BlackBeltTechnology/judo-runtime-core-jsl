@@ -5,6 +5,7 @@ type string String min-size:0 max-size:128;
 entity EntityA {
     field String stringA;
     field EntityC singleConA;
+    field EntityC[] collectionConA;
     field required EntityC singleRequiredConA;
 }
 
@@ -47,4 +48,25 @@ entity EntityF3 {
 
 entity EntityF4 {
   field EntityH[] h;
+}
+
+transfer TransferA(EntityA entitya) {
+    field String stringA <=> entitya.stringA;
+    @Embedded
+    relation TransferC singleConA <=> entitya.singleConA;
+    @Embedded
+    relation TransferC[] collectionConA <=> entitya.collectionConA;
+    @Embedded
+    relation required TransferC singleRequiredConA <=> entitya.singleRequiredConA;
+}
+
+transfer TransferC(EntityC entityc) {
+    field String stringC <=> entityc.stringC;
+    field String stringB <=> entityc.stringB;
+    @Embedded
+    relation TransferD[] multipleDonB <=> entityc.multipleDonB;
+}
+
+transfer TransferD(EntityD entityd) {
+    field String stringD <=> entityd.stringD;
 }
