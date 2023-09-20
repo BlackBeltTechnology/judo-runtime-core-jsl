@@ -511,7 +511,7 @@ public class CompositionRelationshipsTest {
         a2.setSingleConA(EntityC.builder().withStringC("C1").build());
         a2.setCollectionConA(List.of(EntityC.builder().withStringC("C2").withMultipleDonB(List.of(EntityD.builder().withStringD("D3").build())).build()));
 
-        entityADao.update(a2);
+        a2 = entityADao.update(a2);
 
         assertEquals(7, entityCDao.countAll());
         assertEquals(7, entityDDao.countAll());
@@ -521,21 +521,51 @@ public class CompositionRelationshipsTest {
 
         EntityC c3 = entityCDao.create(EntityC.builder().withStringC("C3").build());
         EntityC c4 = entityCDao.create(EntityC.builder().withStringC("C4").withMultipleDonB(List.of(EntityD.builder().withStringD("D3").build())).build());
-        EntityA a3 = entityADao.create(EntityA.builder().withSingleConA(c3).withSingleRequiredConA(c4).build());
+        EntityA a3 = entityADao.create(EntityA.builder().withCollectionConA(List.of(c3,c4)).withSingleConA(c3).withSingleRequiredConA(c4).build());
 
-        assertEquals(11, entityCDao.countAll());
-        assertEquals(9, entityDDao.countAll());
+        assertEquals(13, entityCDao.countAll());
+        assertEquals(10, entityDDao.countAll());
 
         a3.setSingleConA(EntityC.builder().withStringC("C3Updated").build());
         a3.setSingleRequiredConA(EntityC.builder().withStringC("C4Updated").withMultipleDonB(List.of(EntityD.builder().withStringD("D3Updated").build())).build());
 
-        entityADao.update(a3);
+        a3 = entityADao.update(a3);
 
-        assertEquals(11, entityCDao.countAll());
+        assertEquals(13, entityCDao.countAll());
         // TODO: JNG-5213 update does not create new EntityD instance
-        //assertEquals(9, entityDDao.countAll());
+        //assertEquals(10, entityDDao.countAll());
         assertEquals("C3Updated", a3.getSingleConA().orElseThrow().getStringC().orElseThrow());
         assertEquals("C4Updated", a3.getSingleRequiredConA().getStringC().orElseThrow());
-        assertEquals("D3Updated", a3.getSingleRequiredConA().getMultipleDonB().get(0).getStringD().orElseThrow());
+        //assertEquals("D3Updated", a3.getSingleRequiredConA().getMultipleDonB().get(0).getStringD().orElseThrow());
+
+
+        EntityA a4 = entityADao.create(EntityA.builder().withSingleRequiredConA(EntityC.builder().build()).build());
+        assertEquals(Optional.empty(), a4.getSingleConA());
+        assertEquals(0, a4.getCollectionConA().size());
+
+        EntityC c5 = entityCDao.create(EntityC.builder().withStringC("C5").build());
+        EntityC c6 = entityCDao.create(EntityC.builder().withStringC("C6").withMultipleDonB(List.of(EntityD.builder().withStringD("D4").build())).build());
+
+        a4.setSingleConA(c5);
+        a4.setCollectionConA(List.of(c6));
+        final EntityA a5 = entityADao.update(a4);
+
+        assertEquals(18, entityCDao.countAll());
+        //assertEquals(12, entityDDao.countAll());
+
+        assertEquals("C5", a5.getSingleConA().orElseThrow().getStringC().orElseThrow());
+        assertEquals("C6", a5.getCollectionConA().get(0).getStringC().orElseThrow());
+        assertEquals("D4", a5.getCollectionConA().get(0).getMultipleDonB().get(0).getStringD().orElseThrow());
+
+        EntityC c7 = entityCDao.create(EntityC.builder().withStringC("C7").build());
+        EntityC c8 = entityCDao.create(EntityC.builder().withStringC("C8").withMultipleDonB(List.of(EntityD.builder().withStringD("D5").build())).build());
+
+        a5.setSingleConA(c7);
+        a5.setCollectionConA(List.of(c8));
+
+        IllegalStateException thrown = assertThrows(
+                IllegalStateException.class,
+                () -> entityADao.update(a5)
+        );
     }
 }

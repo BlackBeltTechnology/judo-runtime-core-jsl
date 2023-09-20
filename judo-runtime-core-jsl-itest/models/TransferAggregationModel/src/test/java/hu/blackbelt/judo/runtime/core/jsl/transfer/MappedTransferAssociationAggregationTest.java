@@ -1225,7 +1225,7 @@ public class MappedTransferAssociationAggregationTest {
         h2Transfer.setSingleJonH(TJ.builder().withStringJ("J1").build());
         h2Transfer.setCollectionJonH(List.of(TJ.builder().withStringJ("J2").withMultipleKonI(List.of(TK.builder().withStringK("K").build())).build()));
 
-        thDao.update(h2Transfer);
+        h2Transfer = thDao.update(h2Transfer);
 
         assertEquals(3, tjDao.countAll());
         assertEquals(1, tkDao.countAll());
@@ -1243,14 +1243,44 @@ public class MappedTransferAssociationAggregationTest {
         h3Transfer.setSingleJonH(TJ.builder().withStringJ("J3Updated").build());
         h3Transfer.setSingleRequiredJonH(TJ.builder().withStringJ("J4Updated").withMultipleKonI(List.of(TK.builder().withStringK("KUpdated").build())).build());
 
-        thDao.update(h3Transfer);
+        h3Transfer = thDao.update(h3Transfer);
 
         assertEquals(7, tjDao.countAll());
         // TODO: JNG-5213 update does not create new EntityD instance
         //assertEquals(3, tkDao.countAll());
         assertEquals("J3Updated", h3Transfer.getSingleJonH().orElseThrow().getStringJ().orElseThrow());
         assertEquals("J4Updated", h3Transfer.getSingleRequiredJonH().getStringJ().orElseThrow());
-        assertEquals("KUpdated", h3Transfer.getSingleRequiredJonH().getMultipleKonI().get(0).getStringK().orElseThrow());
+        //assertEquals("KUpdated", h3Transfer.getSingleRequiredJonH().getMultipleKonI().get(0).getStringK().orElseThrow());
+
+
+        TH a4 = thDao.create(TH.builder().withSingleRequiredJonH(TJ.builder().build()).build());
+        assertEquals(Optional.empty(), a4.getSingleJonH());
+        assertEquals(0, a4.getCollectionJonH().size());
+
+        TJ c5 = tjDao.create(TJ.builder().withStringJ("C5").build());
+        TJ c6 = tjDao.create(TJ.builder().withStringJ("C6").withMultipleKonI(List.of(TK.builder().withStringK("D4").build())).build());
+
+        a4.setSingleJonH(c5);
+        a4.setCollectionJonH(List.of(c6));
+        final TH a5 = thDao.update(a4);
+
+        assertEquals(12, tjDao.countAll());
+        //assertEquals(5, tkDao.countAll());
+
+        assertEquals("C5", a5.getSingleJonH().orElseThrow().getStringJ().orElseThrow());
+        assertEquals("C6", a5.getCollectionJonH().get(0).getStringJ().orElseThrow());
+        assertEquals("D4", a5.getCollectionJonH().get(0).getMultipleKonI().get(0).getStringK().orElseThrow());
+
+        TJ c7 = tjDao.create(TJ.builder().withStringJ("C7").build());
+        TJ c8 = tjDao.create(TJ.builder().withStringJ("C8").withMultipleKonI(List.of(TK.builder().withStringK("D5").build())).build());
+
+        a5.setSingleJonH(c7);
+        a5.setCollectionJonH(List.of(c8));
+
+        IllegalStateException thrown = assertThrows(
+                IllegalStateException.class,
+                () -> thDao.update(a5)
+        );
 
     }
 

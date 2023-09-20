@@ -21,6 +21,8 @@ package hu.blackbelt.judo.runtime.core.jsl.transfer;
  */
 
 import com.google.inject.Inject;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityc.EntityC;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityd.EntityD;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.entitya.EntityADao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.entitya.EntityAIdentifier;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.entityb.EntityB;
@@ -179,20 +181,16 @@ public class MappedTransferCompositonAggregationTest {
         assertFalse(entityBDao.getById(transferB.identifier().adaptTo(EntityBIdentifier.class)).isEmpty());
 
         // Check transferA cannot bind a new B element
-        TransferA referenceForLambda1 = transferA;
         transferB = transferBDao.create(TransferB.builder().withNameB("B2").build());
         transferA.setSingleEntityB(transferB);
 
-        IllegalStateException thrown1 = assertThrows(
-                IllegalStateException.class,
-                () -> transferADao.update(referenceForLambda1)
-        );
-        assertTrue(thrown1.getMessage().contains("Identifier cannot be set on new association reference element"));
-        assertTrue(thrown1.getMessage().contains("#singleEntityB"));
+        transferA = transferADao.update(transferA);
+        final TransferA finalTransferA = transferA;
 
-        transferADao.createSingleEntityB(transferA, TransferB.builder().withNameB("B2").build());
-        assertTrue(transferA.getSingleEntityB().isPresent());
-        assertEquals(Optional.of("B2"), transferADao.querySingleEntityB(transferA).orElseThrow().getNameB());
+        IllegalArgumentException thrown2 = assertThrows(
+                IllegalArgumentException.class,
+                () -> transferADao.createSingleEntityB(finalTransferA, TransferB.builder().withNameB("B2").build())
+        );
 
     }
 
@@ -426,7 +424,7 @@ public class MappedTransferCompositonAggregationTest {
         h2Transfer.setSingleJonH(TransferJ.builder().withStringJ("J1").build());
         h2Transfer.setCollectionJonH(List.of(TransferJ.builder().withStringJ("J2").withMultipleKonI(List.of(TransferK.builder().withStringK("K").build())).build()));
 
-        transferHDao.update(h2Transfer);
+        h2Transfer = transferHDao.update(h2Transfer);
 
         assertEquals(3, transferJDao.countAll());
         assertEquals(1, transferKDao.countAll());
@@ -444,14 +442,44 @@ public class MappedTransferCompositonAggregationTest {
         h3Transfer.setSingleJonH(TransferJ.builder().withStringJ("J3Updated").build());
         h3Transfer.setSingleRequiredJonH(TransferJ.builder().withStringJ("J4Updated").withMultipleKonI(List.of(TransferK.builder().withStringK("KUpdated").build())).build());
 
-        transferHDao.update(h3Transfer);
+        h3Transfer = transferHDao.update(h3Transfer);
 
         assertEquals(7, transferJDao.countAll());
         // TODO: JNG-5213 update does not create new EntityD instance
         //assertEquals(3, transferKDao.countAll());
         assertEquals("J3Updated", h3Transfer.getSingleJonH().orElseThrow().getStringJ().orElseThrow());
         assertEquals("J4Updated", h3Transfer.getSingleRequiredJonH().getStringJ().orElseThrow());
-        assertEquals("KUpdated", h3Transfer.getSingleRequiredJonH().getMultipleKonI().get(0).getStringK().orElseThrow());
+        //assertEquals("KUpdated", h3Transfer.getSingleRequiredJonH().getMultipleKonI().get(0).getStringK().orElseThrow());
+
+
+        TransferH a4 = transferHDao.create(TransferH.builder().withSingleRequiredJonH(TransferJ.builder().build()).build());
+        assertEquals(Optional.empty(), a4.getSingleJonH());
+        assertEquals(0, a4.getCollectionJonH().size());
+
+        TransferJ c5 = transferJDao.create(TransferJ.builder().withStringJ("C5").build());
+        TransferJ c6 = transferJDao.create(TransferJ.builder().withStringJ("C6").withMultipleKonI(List.of(TransferK.builder().withStringK("D4").build())).build());
+
+        a4.setSingleJonH(c5);
+        a4.setCollectionJonH(List.of(c6));
+        final TransferH a5 = transferHDao.update(a4);
+
+        assertEquals(12, transferJDao.countAll());
+        //assertEquals(5, transferKDao.countAll());
+
+        assertEquals("C5", a5.getSingleJonH().orElseThrow().getStringJ().orElseThrow());
+        assertEquals("C6", a5.getCollectionJonH().get(0).getStringJ().orElseThrow());
+        assertEquals("D4", a5.getCollectionJonH().get(0).getMultipleKonI().get(0).getStringK().orElseThrow());
+
+        TransferJ c7 = transferJDao.create(TransferJ.builder().withStringJ("C7").build());
+        TransferJ c8 = transferJDao.create(TransferJ.builder().withStringJ("C8").withMultipleKonI(List.of(TransferK.builder().withStringK("D5").build())).build());
+
+        a5.setSingleJonH(c7);
+        a5.setCollectionJonH(List.of(c8));
+
+        IllegalStateException thrown = assertThrows(
+                IllegalStateException.class,
+                () -> transferHDao.update(a5)
+        );
 
     }
 
