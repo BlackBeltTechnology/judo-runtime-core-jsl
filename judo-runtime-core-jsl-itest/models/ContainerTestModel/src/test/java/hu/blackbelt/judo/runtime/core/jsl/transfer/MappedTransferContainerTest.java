@@ -32,6 +32,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.container
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.d.D;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.d.DDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.ta.TA;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.ta.TADao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.tadditionalservice.TAdditionalService;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.tadditionalservice.TAdditionalServiceDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.tb.TB;
@@ -81,6 +82,9 @@ public class MappedTransferContainerTest {
     TDDao tdDao;
 
     @Inject
+    TADao taDao;
+
+    @Inject
     TPartnerDao tpartnerDao;
 
     @Inject
@@ -126,6 +130,8 @@ public class MappedTransferContainerTest {
             "REQ-SRV-002"
     })
     public void testContainerFunctionOnMappedTransfer() {
+        TA ta = taDao.create(TA.builder().withConA(TC.builder().build()).build());
+
         TB tb = tbDao.create(TB.builder()
                 .withConA(TC.builder().build())
                 .withDonB(TD.builder().build())
