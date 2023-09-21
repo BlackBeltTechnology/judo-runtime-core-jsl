@@ -381,7 +381,6 @@ public class MappedTransferAssociationAggregationTest {
      */
     @Test
     @TestCase("MultiAssociationAggregationRelationOnTransfer")
-    @Disabled
     @Requirement(reqs = {
             "REQ-MDL-001",
             "REQ-MDL-002",
