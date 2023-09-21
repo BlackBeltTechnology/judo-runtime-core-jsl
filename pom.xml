@@ -40,8 +40,8 @@
             javax.resource;version="[1.6,2)"
         </osgi-transaction-import>
 
-        <judo-tatami-jsl-version>1.1.4.20230918_102727_5d3cd936_feature_JNG_4356_Unmapped_transfer_throws_validation_error_to_mapped_transfer_mandatory_attributes</judo-tatami-jsl-version>
-        <judo-runtime-core-version>1.0.6.20230918_101554_91de931c_feature_JNG_4356_Unmapped_transfer_throws_validation_error_to_mapped_transfer_mandatory_attributes</judo-runtime-core-version>
+        <judo-tatami-jsl-version>1.1.4.20230921_040734_4d757a9b_develop</judo-tatami-jsl-version>
+        <judo-runtime-core-version>1.0.6.20230920_083154_aef4b5a4_develop</judo-runtime-core-version>
         <judo-psm-generator-sdk-core-version>1.0.0.20230914_120625_a6090a2b_develop</judo-psm-generator-sdk-core-version>
 
 
