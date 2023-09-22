@@ -125,15 +125,7 @@ public class AutoMappedTransferObjectSingleEntityTest {
 
         autoMappedContainerSingleComposition.setSingleComposition(autoMappedReferenceEntityDao.create(AutoMappedReferenceEntity.builder().withName("singleCompositionBind").build()));
 
-        AutoMappedContainerSingleComposition referenceForLambda = autoMappedContainerSingleComposition;
-        IllegalStateException thrown = assertThrows(
-                IllegalStateException.class,
-                () -> autoMappedContainerSingleCompositionDao.update(referenceForLambda)
-        );
-
-        assertTrue(thrown.getMessage().contains("Identifier cannot be set on new association reference element"));
-        assertTrue(thrown.getMessage().contains("#singleComposition"));
-
+        autoMappedContainerSingleComposition = autoMappedContainerSingleCompositionDao.update(autoMappedContainerSingleComposition);
 
         autoMappedContainerSingleComposition.setSingleRequiredComposition(null);
         AutoMappedContainerSingleComposition referenceForLambda1 = autoMappedContainerSingleComposition;
