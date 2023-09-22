@@ -44,6 +44,7 @@ entity EntityA {
     field String name;
     field EntityA a;
     field EntityA[] as;
+    field String childName <= self.a!isDefined() ? self.a.name : "";
 }
 
 entity EntityB extends EntityA {
@@ -57,6 +58,9 @@ transfer TransferATO (EntityA entityA) {
     relation TransferATO a <=> entityA.a;
     @Embedded
     relation TransferATO[] as <=> entityA.as;
+
+    field String childName <= entityA.a!isDefined() ? entityA.a.name : "";
+
 }
 
 transfer TransferBTO (EntityB entityB) {
@@ -69,6 +73,8 @@ transfer TransferBTO (EntityB entityB) {
     relation TransferATO ba <=> entityB.ba;
     @Embedded
     relation TransferATO[] bas <=> entityB.bas;
+
+    field String childName <= entityB.a!isDefined() ? entityB.a.name : "";
 }
 
 transfer TransferAAutoMappedTO (EntityA entityA);
