@@ -38,6 +38,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -69,8 +70,7 @@ public class RecursiveCompositionTest {
             "REQ-ENT-001",
             "REQ-ENT-002",
             "REQ-ENT-004",
-            "REQ-ENT-005",
-            "REQ-SRV-001"
+            "REQ-ENT-007",
     })
     void testRecursiveCompositionOnEntity() {
 
@@ -185,8 +185,7 @@ public class RecursiveCompositionTest {
             "REQ-ENT-001",
             "REQ-ENT-002",
             "REQ-ENT-004",
-            "REQ-ENT-005",
-            "REQ-SRV-001"
+            "REQ-ENT-007"
     })
     void testRecursiveCompositionOnInheritedEntity() {
 
@@ -228,6 +227,23 @@ public class RecursiveCompositionTest {
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-007",
+            "REQ-ENT-008",
+            "REQ-EXPR-001",
+            "REQ-EXPR-002",
+            "REQ-EXPR-003",
+            "REQ-EXPR-004",
+            "REQ-EXPR-012"
+    })
     void testForMultiLevelSingleComposition() {
 
         EntityA a = entityADao.create(EntityA.builder().withName("level1")
@@ -240,29 +256,35 @@ public class RecursiveCompositionTest {
 
         assertEquals(4, entityADao.countAll());
 
-        assertEquals(a.getA().get().getName().get(),"level2");
-        assertEquals(a.getA().get().getA().get().getName().get(),"level3");
-        assertEquals(a.getA().get().getA().get().getA().get().getName().get(),"level4");
+        assertEquals("level2", a.getA().get().getName().get());
+        assertEquals("level3", a.getA().get().getA().get().getName().get());
+        assertEquals("level4", a.getA().get().getA().get().getA().get().getName().get());
 
         // childName with derived
-        assertEquals(a.getChildName().get(),"level2");
-        assertEquals(a.getA().get().getChildName().get(),"level3");
-        assertEquals(a.getA().get().getA().get().getChildName().get(),"level4");
-        assertEquals(a.getA().get().getA().get().getA().get().getChildName().get(),"");
+        assertEquals("level2", a.getChildName().get());
+        assertEquals("level3", a.getA().get().getChildName().get());
+        assertEquals("level4", a.getA().get().getA().get().getChildName().get());
+        assertEquals("", a.getA().get().getA().get().getA().get().getChildName().get());
 
+        // recursive navigation through derived
+        assertEquals("level3", a.getChildNameThirdLevel().get());
+        assertEquals("level4", a.getChildNameFourthLevel().get());
 
         // After update
         a = entityADao.update(a);
-        assertEquals(a.getA().get().getName().get(),"level2");
-        assertEquals(a.getA().get().getA().get().getName().get(),"level3");
-        assertEquals(a.getA().get().getA().get().getA().get().getName().get(),"level4");
+        assertEquals("level2", a.getA().get().getName().get());
+        assertEquals("level3", a.getA().get().getA().get().getName().get());
+        assertEquals("level4", a.getA().get().getA().get().getA().get().getName().get());
 
         // childName with derived
-        assertEquals(a.getChildName().get(),"level2");
-        assertEquals(a.getA().get().getChildName().get(),"level3");
-        assertEquals(a.getA().get().getA().get().getChildName().get(),"level4");
-        assertEquals(a.getA().get().getA().get().getA().get().getChildName().get(),"");
+        assertEquals("level2", a.getChildName().get());
+        assertEquals("level3", a.getA().get().getChildName().get());
+        assertEquals("level4", a.getA().get().getA().get().getChildName().get());
+        assertEquals("", a.getA().get().getA().get().getA().get().getChildName().get());
 
+        // recursive navigation through derived
+        assertEquals("level3", a.getChildNameThirdLevel().get());
+        assertEquals("level4", a.getChildNameFourthLevel().get());
 
         // Remove element
         a.getA().orElseThrow().getA().orElseThrow().setA(null);
@@ -270,18 +292,39 @@ public class RecursiveCompositionTest {
 
         assertEquals(3, entityADao.countAll());
 
-        assertEquals(a.getA().get().getName().get(),"level2");
-        assertEquals(a.getA().get().getA().get().getName().get(),"level3");
+        assertEquals("level2", a.getA().get().getName().get());
+        assertEquals("level3", a.getA().get().getA().get().getName().get());
         assertTrue(a.getA().get().getA().get().getA().isEmpty());
 
         // childName with derived
-        assertEquals(a.getChildName().get(),"level2");
-        assertEquals(a.getA().get().getChildName().get(),"level3");
-        assertEquals(a.getA().get().getA().get().getChildName().get(),"");
+        assertEquals("level2", a.getChildName().get());
+        assertEquals("level3", a.getA().get().getChildName().get());
+        assertEquals("", a.getA().get().getA().get().getChildName().get());
 
+        // recursive navigation through derived
+        assertEquals("level3", a.getChildNameThirdLevel().orElseThrow());
+        assertEquals(Optional.empty(), a.getChildNameFourthLevel());
     }
 
     @Test
+    @Requirement(reqs = {
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-007",
+            "REQ-ENT-008",
+            "REQ-ENT-012",
+            "REQ-EXPR-001",
+            "REQ-EXPR-002",
+            "REQ-EXPR-003",
+            "REQ-EXPR-004",
+            "REQ-EXPR-012"
+    })
     void testForInheritedMultiLevelSingleComposition() {
 
         EntityB b = entityBDao.create(EntityB.builder().withName("level1")
@@ -301,39 +344,51 @@ public class RecursiveCompositionTest {
         assertEquals(7, entityADao.countAll());
         assertEquals(1, entityBDao.countAll());
 
-        assertEquals(b.getA().get().getName().get(),"level2");
-        assertEquals(b.getA().get().getA().get().getName().get(),"level3");
-        assertEquals(b.getA().get().getA().get().getA().get().getName().get(),"level4");
-        assertEquals(b.getBa().get().getName().get(),"level2");
-        assertEquals(b.getBa().get().getA().get().getName().get(),"level3");
-        assertEquals(b.getBa().get().getA().get().getA().get().getName().get(),"level4");
+        assertEquals("level2", b.getA().get().getName().get());
+        assertEquals("level3", b.getA().get().getA().get().getName().get());
+        assertEquals("level4", b.getA().get().getA().get().getA().get().getName().get());
+        assertEquals("level2", b.getBa().get().getName().get());
+        assertEquals("level3", b.getBa().get().getA().get().getName().get());
+        assertEquals("level4", b.getBa().get().getA().get().getA().get().getName().get());
 
         // childName with derived
-        assertEquals(b.getChildName().get(),"level2");
-        assertEquals(b.getA().get().getChildName().get(),"level3");
-        assertEquals(b.getA().get().getA().get().getChildName().get(),"level4");
-        assertEquals(b.getA().get().getA().get().getA().get().getChildName().get(),"");
-        assertEquals(b.getBa().get().getChildName().get(),"level3");
-        assertEquals(b.getBa().get().getA().get().getChildName().get(),"level4");
-        assertEquals(b.getBa().get().getA().get().getA().get().getChildName().get(),"");
+        assertEquals("level2", b.getChildName().get());
+        assertEquals("level3", b.getA().get().getChildName().get());
+        assertEquals("level4", b.getA().get().getA().get().getChildName().get());
+        assertEquals("", b.getA().get().getA().get().getA().get().getChildName().get());
+        assertEquals("level3", b.getBa().get().getChildName().get());
+        assertEquals("level4", b.getBa().get().getA().get().getChildName().get());
+        assertEquals("", b.getBa().get().getA().get().getA().get().getChildName().get());
+
+        // recursive navigation through derived
+        assertEquals("level3", b.getChildNameThirdLevel().get());
+        assertEquals("level4", b.getChildNameFourthLevel().get());
+        assertEquals("level4", b.getBa().get().getChildNameThirdLevel().get());
+        assertEquals(Optional.empty(), b.getBa().get().getChildNameFourthLevel());
 
         // After update
         b = entityBDao.update(b);
-        assertEquals(b.getA().get().getName().get(),"level2");
-        assertEquals(b.getA().get().getA().get().getName().get(),"level3");
-        assertEquals(b.getA().get().getA().get().getA().get().getName().get(),"level4");
-        assertEquals(b.getBa().get().getName().get(),"level2");
-        assertEquals(b.getBa().get().getA().get().getName().get(),"level3");
-        assertEquals(b.getBa().get().getA().get().getA().get().getName().get(),"level4");
+        assertEquals("level2", b.getA().get().getName().get());
+        assertEquals("level3", b.getA().get().getA().get().getName().get());
+        assertEquals("level4", b.getA().get().getA().get().getA().get().getName().get());
+        assertEquals("level2", b.getBa().get().getName().get());
+        assertEquals("level3", b.getBa().get().getA().get().getName().get());
+        assertEquals("level4", b.getBa().get().getA().get().getA().get().getName().get());
 
         // childName with derived
-        assertEquals(b.getChildName().get(),"level2");
-        assertEquals(b.getA().get().getChildName().get(),"level3");
-        assertEquals(b.getA().get().getA().get().getChildName().get(),"level4");
-        assertEquals(b.getA().get().getA().get().getA().get().getChildName().get(),"");
-        assertEquals(b.getBa().get().getChildName().get(),"level3");
-        assertEquals(b.getBa().get().getA().get().getChildName().get(),"level4");
-        assertEquals(b.getBa().get().getA().get().getA().get().getChildName().get(),"");
+        assertEquals("level2", b.getChildName().get());
+        assertEquals("level3", b.getA().get().getChildName().get());
+        assertEquals("level4", b.getA().get().getA().get().getChildName().get());
+        assertEquals("", b.getA().get().getA().get().getA().get().getChildName().get());
+        assertEquals("level3", b.getBa().get().getChildName().get());
+        assertEquals("level4", b.getBa().get().getA().get().getChildName().get());
+        assertEquals("", b.getBa().get().getA().get().getA().get().getChildName().get());
+
+        // recursive navigation through derived
+        assertEquals("level3", b.getChildNameThirdLevel().get());
+        assertEquals("level4", b.getChildNameFourthLevel().get());
+        assertEquals("level4", b.getBa().get().getChildNameThirdLevel().get());
+        assertEquals(Optional.empty(), b.getBa().get().getChildNameFourthLevel());
 
         // Remove element
         b.getA().orElseThrow().getA().orElseThrow().setA(null);
@@ -343,20 +398,25 @@ public class RecursiveCompositionTest {
         assertEquals(5, entityADao.countAll());
         assertEquals(1, entityBDao.countAll());
 
-        assertEquals(b.getA().get().getName().get(),"level2");
-        assertEquals(b.getA().get().getA().get().getName().get(),"level3");
+        assertEquals("level2", b.getA().get().getName().get());
+        assertEquals("level3", b.getA().get().getA().get().getName().get());
         assertTrue(b.getA().get().getA().get().getA().isEmpty());
-        assertEquals(b.getBa().get().getName().get(),"level2");
-        assertEquals(b.getBa().get().getA().get().getName().get(),"level3");
+        assertEquals("level2", b.getBa().get().getName().get());
+        assertEquals("level3", b.getBa().get().getA().get().getName().get());
         assertTrue(b.getBa().get().getA().get().getA().isEmpty());
 
         // childName with derived
-        assertEquals(b.getChildName().get(),"level2");
-        assertEquals(b.getA().get().getChildName().get(),"level3");
-        assertEquals(b.getA().get().getA().get().getChildName().get(),"");
-        assertEquals(b.getBa().get().getChildName().get(),"level3");
-        assertEquals(b.getBa().get().getA().get().getChildName().get(),"");
+        assertEquals("level2", b.getChildName().get());
+        assertEquals("level3", b.getA().get().getChildName().get());
+        assertEquals("", b.getA().get().getA().get().getChildName().get());
+        assertEquals("level3", b.getBa().get().getChildName().get());
+        assertEquals("", b.getBa().get().getA().get().getChildName().get());
 
+        // recursive navigation through derived
+        assertEquals("level3", b.getChildNameThirdLevel().get());
+        assertEquals(Optional.empty(), b.getChildNameFourthLevel());
+        assertEquals(Optional.empty(), b.getBa().get().getChildNameThirdLevel());
+        assertEquals(Optional.empty(), b.getBa().get().getChildNameFourthLevel());
 
     }
 }
