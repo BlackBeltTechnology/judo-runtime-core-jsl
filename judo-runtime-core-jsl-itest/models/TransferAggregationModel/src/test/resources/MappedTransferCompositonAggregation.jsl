@@ -70,3 +70,44 @@ transfer TransferF (EntityF f) {
 transfer TransferG (EntityG g) {
         field String nameG <=> g.nameG;
 }
+
+entity EntityH {
+    field String stringH;
+    field EntityJ singleJonH;
+    field EntityJ[] collectionJonH;
+    field required EntityJ singleRequiredJonH;
+}
+
+entity abstract EntityI {
+    field String stringI;
+    field EntityK[] multipleKonI;
+}
+
+entity EntityJ extends EntityI {
+    field String stringJ;
+}
+
+entity EntityK {
+    field String stringK;
+}
+
+transfer TransferH(EntityH entityh) {
+    field String stringH <=> entityh.stringH;
+    @Embedded
+    relation TransferJ singleJonH <=> entityh.singleJonH;
+    @Embedded
+    relation TransferJ[] collectionJonH <=> entityh.collectionJonH;
+    @Embedded
+    relation required TransferJ singleRequiredJonH <=> entityh.singleRequiredJonH;
+}
+
+transfer TransferJ(EntityJ entityj) {
+    field String stringI <=> entityj.stringI;
+    field String stringJ <=> entityj.stringJ;
+    @Embedded
+    relation TransferK[] multipleKonI <=> entityj.multipleKonI;
+}
+
+transfer TransferK(EntityK entityk) {
+    field String stringK <=> entityk.stringK;
+}
