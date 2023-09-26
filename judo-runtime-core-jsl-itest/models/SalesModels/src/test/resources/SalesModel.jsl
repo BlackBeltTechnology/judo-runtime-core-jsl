@@ -58,15 +58,14 @@ entity Queries {
 
 entity SalesPerson extends Person {
 	relation Lead[] leads opposite:salesPerson;
-	@Requested
-	relation Lead[] leadsOver(Integer limit = 100) <= self.leads!filter(lead | lead.value > limit);
-	@Requested
-	relation Lead[] leadsBetween(Integer min = 0, Integer max = 100) <=
-    SalesPerson.leads!filter(l | l.value > min and  l.value < max);
-	relation Lead[] leadsOver10 <= self.leadsOver(limit = 10);
+	relation Lead[] leadsOver10 <= self!leadsOver(limit = 10);
 	field Integer numberOfLeads <= self.leads!size();
 	relation SC::Contract[] contracts opposite-add:salesPerson;
 }
+
+query Lead[] leadsOver(Integer limit = 100) on SalesPerson <= self.leads!filter(lead | lead.value > limit);
+query Lead[] leadsBetween(Integer min = 0, Integer max = 100) on SalesPerson <=
+	SalesPerson.leads!filter(l | l.value > min and  l.value < max);
 
 entity Lead {
 	field Integer value = 100000;

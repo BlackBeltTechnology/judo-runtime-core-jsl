@@ -23,9 +23,9 @@ entity ReferenceEntity {
 }
 entity entityA {
     @Requested
-    relation ReferenceEntity querySameName(String name) <= ReferenceEntity!any();
+    relation ReferenceEntity querySameName <= ReferenceEntity!any();
 }
 entity entityB {
     @Requested
-    relation ReferenceEntity querySameName(String name) <= ReferenceEntity!any();
+    relation ReferenceEntity querySameName <= ReferenceEntity!any();
 }
