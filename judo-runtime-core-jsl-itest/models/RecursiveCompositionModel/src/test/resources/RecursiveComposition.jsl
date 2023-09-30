@@ -4,10 +4,10 @@ type string String min-size:0 max-size:128;
 
 entity EntityX {
     field String name;
-    field EntityX x;
-    field EntityX[] xs;
-    field EntityY y;
-    field EntityY[] ys;
+    field EntityX x eager:false;
+    field EntityX[] xs  eager:false;
+    field EntityY y  eager:false;
+    field EntityY[] ys  eager:false;
 }
 
 entity EntityY {
@@ -38,8 +38,8 @@ transfer TransferYTO (EntityY entityY) {
 
 entity EntityA {
     field String name;
-    field EntityA a;
-    field EntityA[] as;
+    field EntityA a  eager:false;
+    field EntityA[] as  eager:false;
 
     field String childName <= self.a!isDefined() ? self.a.name : "";
     field String childNameThirdLevel <= self.a.a.name;
