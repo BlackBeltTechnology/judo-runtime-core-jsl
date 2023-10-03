@@ -66,6 +66,9 @@ transfer TransferF (EntityF f) {
 /*
 Two way relation pattern
 
+Left side is aggregation
+Right side is association
+
 optional <-> optional
 optional <-> required
 optional <-> collection
