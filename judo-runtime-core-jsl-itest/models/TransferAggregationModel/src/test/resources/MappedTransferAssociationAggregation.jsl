@@ -103,9 +103,9 @@ transfer TransferG (EntityG g) {
 
 transfer TransferH (EntityH h) {
     field String nameH <=> h.nameH;
-    relation TransferG relationGForOptionalH <=> h.relationGForOptionalH eager:true;
-    relation TransferG relationGForRequiredH <=> h.relationGForRequiredH eager:true;
-    relation TransferG relationGForCollectionH <=> h.relationGForCollectionH eager:true;
+    relation TransferG relationGForOptionalH <=> h.relationGForOptionalH;
+    relation TransferG relationGForRequiredH <=> h.relationGForRequiredH;
+    relation TransferG relationGForCollectionH <=> h.relationGForCollectionH;
 }
 
 entity EntityI {
@@ -128,8 +128,8 @@ transfer TransferI (EntityI i) {
 
 transfer TransferJ (EntityJ j) {
     field String nameJ <=> j.nameJ;
-    relation required TransferI relationRequiredIForOptionalJ <=> j.relationRequiredIForOptionalJ eager:true;
-    relation required TransferI relationRequiredIorCollectionJ <=> j.relationRequiredIorCollectionJ eager:true;
+    relation required TransferI relationRequiredIForOptionalJ <=> j.relationRequiredIForOptionalJ;
+    relation required TransferI relationRequiredIorCollectionJ <=> j.relationRequiredIorCollectionJ;
 }
 
 entity EntityK {
@@ -148,7 +148,7 @@ transfer TransferK (EntityK k) {
 
 transfer TransferL (EntityL l) {
     field String nameL <=> l.nameL;
-    relation TransferK[] relationCollectionKForCollectionL <=> l.relationCollectionKForCollectionL eager:true;
+    relation TransferK[] relationCollectionKForCollectionL <=> l.relationCollectionKForCollectionL;
 }
 
 // Navigation trough transfers
