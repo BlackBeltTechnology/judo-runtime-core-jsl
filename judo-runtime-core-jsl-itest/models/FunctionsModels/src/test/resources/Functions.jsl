@@ -74,10 +74,8 @@ entity Functions {
 }
 
 transfer TransferFunctions (Functions mapped) {
-    @Embedded
-    relation TransferEntity `entity` <=> mapped.`entity`;
-    @Embedded
-    relation TransferEntityWithPrimitiveDefaults entityWithPrimitives <=> mapped.entityWithPrimitives;
+    relation TransferEntity `entity` <=> mapped.`entity` eager:true;
+    relation TransferEntityWithPrimitiveDefaults entityWithPrimitives <=> mapped.entityWithPrimitives eager:true;
 }
 
 entity AnyTypeFunctions extends Functions {
@@ -125,10 +123,8 @@ entity AnyTypeFunctions extends Functions {
 
 transfer TransferAnyTypeFunctions (AnyTypeFunctions mapped) {
 
-    @Embedded
-    relation TransferEntity `entity` <=> mapped.`entity`;
-    @Embedded
-    relation TransferEntityWithPrimitiveDefaults entityWithPrimitives <=> mapped.entityWithPrimitives;
+    relation TransferEntity `entity` <=> mapped.`entity` eager:true;
+    relation TransferEntityWithPrimitiveDefaults entityWithPrimitives <=> mapped.entityWithPrimitives eager:true;
 
     field Boolean integerIsDefinedFalse  <= mapped.integerIsDefinedFalse;
     field Boolean integerIsDefinedTrue  <= mapped.integerIsDefinedTrue;
@@ -900,12 +896,9 @@ entity InstanceFunctions {
 transfer TransferInstanceFunctions (InstanceFunctions mapped){
     field String instanceField <=> mapped.instanceField;
 
-    @Embedded
-    relation FE::TransferExternalEntity external <=> mapped.external;
-    @Embedded
-    relation TransferParent parent <=> mapped.parent;
-    @Embedded
-    relation TransferChild child <=> mapped.child;
+    relation FE::TransferExternalEntity external <=> mapped.external eager:true;
+    relation TransferParent parent <=> mapped.parent eager:true;
+    relation TransferChild child <=> mapped.child eager:true;
 
     relation TransferParent[] parents <=> mapped.parents;
     relation TransferChild[] children <=> mapped.children;
@@ -1018,10 +1011,8 @@ entity CollectionFunctions {
 }
 
 transfer TransferCollectionFunctions (CollectionFunctions mapped) {
-    @Embedded
-    relation TransferParent[] parentsField <=> mapped.parentsField;
-    @Embedded
-    relation TransferChild[] childrenField <=> mapped.childrenField;
+    relation TransferParent[] parentsField <=> mapped.parentsField eager:true;
+    relation TransferChild[] childrenField <=> mapped.childrenField eager:true;
 
     relation TransferParent[] parentsRelation <=> mapped.parentsRelation;
     relation TransferChild[] childrenRelation <=> mapped.childrenRelation;

@@ -10,9 +10,7 @@ query Lead rootOneLead() <= Lead!any();
 query Integer totalNumberOfLeads() <= Lead!all()!size();
 
 entity Queries {
-    @Requested
     relation Lead[] queriesAllLeads <= Lead!all();
-    @Requested
     relation Lead queriesOneLead <= Lead!any();
 }
 
