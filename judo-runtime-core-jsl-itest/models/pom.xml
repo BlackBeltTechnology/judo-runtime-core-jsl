@@ -15,9 +15,6 @@
     <modules>
         <module>AbstractModel</module>
         <module>AllTypeOfTransferObjectsModel</module>
-        <module>AutoMappedTransferPrimitivesModel</module>
-        <module>AutoMappedTransferSingleEntityModel</module>
-        <module>AutoMappedTransferCollectionEntityModel</module>
         <module>CastingFunctionsModel</module>
         <module>ContainerTestModel</module>
         <module>ContainsTestModel</module>

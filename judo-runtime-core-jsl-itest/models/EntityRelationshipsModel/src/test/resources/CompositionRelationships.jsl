@@ -52,19 +52,15 @@ entity EntityF4 {
 
 transfer TransferA(EntityA entitya) {
     field String stringA <=> entitya.stringA;
-    @Embedded
-    relation TransferC singleConA <=> entitya.singleConA;
-    @Embedded
-    relation TransferC[] collectionConA <=> entitya.collectionConA;
-    @Embedded
-    relation required TransferC singleRequiredConA <=> entitya.singleRequiredConA;
+    relation TransferC singleConA <=> entitya.singleConA eager:true;
+    relation TransferC[] collectionConA <=> entitya.collectionConA eager:true;
+    relation required TransferC singleRequiredConA <=> entitya.singleRequiredConA eager:true;
 }
 
 transfer TransferC(EntityC entityc) {
     field String stringC <=> entityc.stringC;
     field String stringB <=> entityc.stringB;
-    @Embedded
-    relation TransferD[] multipleDonB <=> entityc.multipleDonB;
+    relation TransferD[] multipleDonB <=> entityc.multipleDonB eager:true;
 }
 
 transfer TransferD(EntityD entityd) {
