@@ -33,7 +33,7 @@ transfer TransferYTO (EntityY entityY) {
 entity EntityA {
     field String name;
     field EntityA a;
-    field EntityA[] as;
+    field EntityA[] `as`;
 
     field String childName <= self.a!isDefined() ? self.a.name : "";
     field String childNameThirdLevel <= self.a.a.name;
@@ -48,7 +48,7 @@ entity EntityB extends EntityA {
 transfer TransferATO (EntityA entityA) {
     field String name <=> entityA.name;
     relation TransferATO a <=> entityA.a eager:true;
-    relation TransferATO[] as <=> entityA.as eager:true;
+    relation TransferATO[] `as` <=> entityA.`as` eager:true;
 
     field String childName <= entityA.a!isDefined() ? entityA.a.name : "";
     field String childNameThirdLevel <= entityA.a.a.name;
@@ -58,7 +58,7 @@ transfer TransferATO (EntityA entityA) {
 transfer TransferBTO (EntityB entityB) {
     field String name <=> entityB.name;
     relation TransferATO a <=> entityB.a eager:true;
-    relation TransferATO[] as <=> entityB.as eager:true;
+    relation TransferATO[] `as` <=> entityB.`as` eager:true;
     relation TransferATO ba <=> entityB.ba eager:true;
     relation TransferATO[] bas <=> entityB.bas eager:true;
 
