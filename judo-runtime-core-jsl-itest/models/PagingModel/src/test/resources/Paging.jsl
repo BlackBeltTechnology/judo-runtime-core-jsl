@@ -22,8 +22,7 @@ entity List {
 
 transfer TransferList (List list){
     field String name <=> list.name;
-    @Embedded
-    relation TransferItem[] items <=> list.items;
+    relation TransferItem[] items <=> list.items eager:true;
 }
 
 entity LogEntry {

@@ -222,10 +222,8 @@ entity DerivedOperators {
 }
 
 transfer TransferDerivedOperators (DerivedOperators mapped) {
-    @Embedded
-    relation required TransferDerivedSource source <=> mapped.source;
-    @Embedded
-    relation TransferDerivedSource undefined <=> mapped.undefined;
+    relation required TransferDerivedSource source <=> mapped.source eager:true;
+    relation TransferDerivedSource undefined <=> mapped.undefined eager:true;
     field String stringConcat <= mapped.stringConcat;
     field Integer firstNameLength <= mapped.firstNameLength;
     field Integer rounded <= mapped.rounded;
