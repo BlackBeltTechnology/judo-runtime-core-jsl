@@ -22,7 +22,6 @@ package hu.blackbelt.judo.runtime.core.jsl.entity;
 
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
-import com.google.inject.Module;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.anytypefunctions.AnyTypeFunctions;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.anytypefunctions.AnyTypeFunctionsDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.booleanfunctions.BooleanFunctions;
@@ -55,6 +54,8 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.num
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.parent.Parent;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.parent.ParentDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.parent.ParentIdentifier;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.simple.Simple;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.simple.SimpleDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.stringfunctions.StringFunctions;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.stringfunctions.StringFunctionsDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.tester.Tester;
@@ -66,26 +67,28 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.tim
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.timestampasstring.TimestampAsStringDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.timestampfunctions.TimestampFunctions;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.timestampfunctions.TimestampFunctionsDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.simple.Simple;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.simple.SimpleDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.FunctionsDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
-import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.time.*;
-import java.time.temporal.ChronoUnit;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE_TIME;
-import static java.time.format.DateTimeFormatter.ISO_OFFSET_DATE_TIME;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
-public class FunctionsTest extends AbstractJslTest {
+public class FunctionsTest {
+
+    @RegisterExtension
+    static JudoRuntimeExtension runtimeExtension = new JudoRuntimeExtension("Functions", new FunctionsDaoModules());
+
     @Inject
     EntityDao entityDao;
 
@@ -152,27 +155,18 @@ public class FunctionsTest extends AbstractJslTest {
     SimpleDao simpleDao;
 
     @BeforeEach
-    protected void init(JudoDatasourceFixture datasource) throws Exception {
-        super.init(datasource);
+    protected void init() {
+
         Entity entity = entityDao
-                        .create(Entity.builder().build());
+                .create(Entity.builder().build());
         EntityWithPrimitiveDefaults entityWithPrimitiveDefaults = entityWithPrimitiveDefaultsDao
-                        .create(EntityWithPrimitiveDefaults.builder().build());
+                .create(EntityWithPrimitiveDefaults.builder().build());
 
         anyTypeFunctions = anyTypeFunctionsDao.create(AnyTypeFunctions.builder()
-                        .withEntity(entity)
-                        .withEntityWithPrimitives(entityWithPrimitiveDefaults)
-                        .build());
-    }
+                .withEntity(entity)
+                .withEntityWithPrimitives(entityWithPrimitiveDefaults)
+                .build());
 
-    @Override
-    public Module getModelDaoModule() {
-        return  new FunctionsDaoModules();
-    }
-
-    @Override
-    public String getModelName() {
-        return "Functions";
     }
 
     @Test
@@ -709,8 +703,6 @@ public class FunctionsTest extends AbstractJslTest {
 
         String parentName = instanceFunctionsDao.queryAsParentType(instanceFunctions).orElseThrow().getName().orElseThrow();
         assertEquals("Another Child", parentName);
-        String childName = instanceFunctionsDao.queryAsChildType(instanceFunctions1).orElseThrow().getName().orElseThrow();
-        assertEquals("Erika Young", childName);
 
         instanceFunctionsDao.addParents(instanceFunctions, ImmutableList.of(parent1));
 

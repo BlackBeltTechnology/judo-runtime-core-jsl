@@ -21,7 +21,6 @@ package hu.blackbelt.judo.runtime.core.jsl.entity.mappedto;
  */
 
 import com.google.inject.Inject;
-import com.google.inject.Module;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.entitya.EntityA;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.entitya.EntityADao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.entitya.EntityAIdentifier;
@@ -44,16 +43,21 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.re
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.transferyto.TransferYTODao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.RecursiveCompositionDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
-public class RecursiveCompositionTest extends AbstractJslTest {
+public class RecursiveCompositionTest {
+
+    @RegisterExtension
+    static JudoRuntimeExtension runtimeExtension = new JudoRuntimeExtension("RecursiveComposition", new RecursiveCompositionDaoModules());
 
     @Inject
     TransferXTODao transferXTODao;
@@ -81,16 +85,6 @@ public class RecursiveCompositionTest extends AbstractJslTest {
     @Inject
     EntityBDao entityBDao;
 
-    @Override
-    public Module getModelDaoModule() {
-        return new RecursiveCompositionDaoModules();
-    }
-
-    @Override
-    public String getModelName() {
-        return "RecursiveComposition";
-    }
-
     @Test
     @Requirement(reqs = {
             "REQ-MDL-001",
@@ -101,38 +95,33 @@ public class RecursiveCompositionTest extends AbstractJslTest {
             "REQ-ENT-001",
             "REQ-ENT-002",
             "REQ-ENT-004",
-            "REQ-ENT-005",
-            "REQ-SRV-001"
+            "REQ-ENT-007",
+            "REQ-SRV-002"
     })
     void testRecursiveCompositionOnMappedTo() {
-        TransferXTO x13 = transferXTODao.create(TransferXTO.builder().withName("x13").build());
-        TransferXTO x11 = transferXTODao.create(TransferXTO.builder().withName("x11").build());
-        TransferXTO x8 = transferXTODao.create(TransferXTO.builder().withName("x8").build());
-        TransferXTO x5 = transferXTODao.create(TransferXTO.builder().withName("x5").build());
-        TransferXTO x3 = transferXTODao.create(TransferXTO.builder().withName("x3").build());
 
-        TransferYTO y9 = transferYTODao.create(TransferYTO.builder().withName("y9").build());
-        TransferYTO y7 = transferYTODao.create(TransferYTO.builder().withName("y7").build());
-        TransferYTO y4 = transferYTODao.create(TransferYTO.builder().withName("y4").build());
-        TransferYTO y3 = transferYTODao.create(TransferYTO.builder().withName("y3").build());
-        TransferYTO y2 = transferYTODao.create(TransferYTO.builder().withName("y2").build());
-        TransferYTO y1 = transferYTODao.create(TransferYTO.builder().withName("y1").build());
-
-        TransferYTO y8 = transferYTODao.create(TransferYTO.builder().withName("y8").withYx(x13).build());
-        TransferXTO x12 = transferXTODao.create(TransferXTO.builder().withName("x12").withY(y9).build());
-        TransferXTO x4 = transferXTODao.create(TransferXTO.builder().withName("x4").withY(y4).build());
-
-        TransferXTO x10 = transferXTODao.create(TransferXTO.builder().withName("x10").withYs(List.of(y7, y8)).build());
-        TransferXTO x2 = transferXTODao.create(TransferXTO.builder().withName("x2").withX(x5).withXs(List.of(x3, x4)).build());
-
-        TransferYTO y6 = transferYTODao.create(TransferYTO.builder().withName("y6").withYxs(List.of(x11, x12)).build());
-        TransferYTO y5 = transferYTODao.create(TransferYTO.builder().withName("y5").withYx(x10).build());
-
-        TransferXTO x9 = transferXTODao.create(TransferXTO.builder().withName("x9").withYs(List.of(y5, y6)).build());
-        TransferXTO x7 = transferXTODao.create(TransferXTO.builder().withName("x7").withXs(List.of(x8, x9)).build());
-        TransferXTO x6 = transferXTODao.create(TransferXTO.builder().withName("x6").withX(x7).build());
-
-        TransferXTO x1 = transferXTODao.create(TransferXTO.builder().withName("x1").withX(x2).withXs(List.of(x6)).withY(y1).withYs(List.of(y2, y3)).build());
+        TransferXTO x1 = transferXTODao.create(TransferXTO.builder().withName("x1")
+                .withX(TransferXTO.builder().withName("x2")
+                        .withX(TransferXTO.builder().withName("x5").build())
+                        .withXs(List.of(TransferXTO.builder().withName("x3").build(), TransferXTO.builder().withName("x4")
+                                .withY(TransferYTO.builder().withName("y4").build()).build()))
+                        .build())
+                .withXs(List.of(TransferXTO.builder().withName("x6")
+                        .withX(TransferXTO.builder().withName("x7")
+                                .withXs(List.of(TransferXTO.builder().withName("x8").build(), TransferXTO.builder().withName("x9")
+                                        .withYs(List.of(TransferYTO.builder().withName("y5")
+                                                .withYx(TransferXTO.builder().withName("x10")
+                                                        .withYs(List.of(TransferYTO.builder().withName("y7").build(), TransferYTO.builder().withName("y8")
+                                                                .withYx(TransferXTO.builder().withName("x13").build()).build()))
+                                                        .build()).build(), TransferYTO.builder().withName("y6")
+                                                .withYxs(List.of(TransferXTO.builder().withName("x11").build(), TransferXTO.builder().withName("x12")
+                                                        .withY(TransferYTO.builder().withName("y9").build()).build()))
+                                                .build()))
+                                        .build()))
+                                .build())
+                        .build()))
+                .withY(TransferYTO.builder().withName("y1").build())
+                .withYs(List.of(TransferYTO.builder().withName("y2").build(), TransferYTO.builder().withName("y3").build())).build());
 
         assertEquals("x1", x1.getName().orElseThrow());
         assertEquals("x2", x1.getX().orElseThrow().getName().orElseThrow());
@@ -205,8 +194,7 @@ public class RecursiveCompositionTest extends AbstractJslTest {
         assertEquals(2, x7Test.getXs().size());
         assertTrue(x7Test.getXs().stream().anyMatch(y -> "x8".equals(y.getName().orElseThrow())));
         assertTrue(x7Test.getXs().stream().anyMatch(y -> "x9".equals(y.getName().orElseThrow())));
-        // TODO: JNG-5089
-        //assertFalse(x7Test.getX().isPresent());
+        assertFalse(x7Test.getX().isPresent());
         assertFalse(x7Test.getY().isPresent());
         assertEquals(0, x7Test.getYs().size());
 
@@ -219,7 +207,7 @@ public class RecursiveCompositionTest extends AbstractJslTest {
         assertFalse(x7EntityX.getY().isPresent());
         assertEquals(0, x7EntityX.getYs().size());
 
-        TransferXTO x9Test = x7.getXs().stream().filter(c -> "x9".equals(c.getName().orElseThrow())).findFirst().orElseThrow();
+        TransferXTO x9Test = x7Test.getXs().stream().filter(c -> "x9".equals(c.getName().orElseThrow())).findFirst().orElseThrow();
 
         assertEquals(2, x9Test.getYs().size());
         assertTrue(x9Test.getYs().stream().anyMatch(y -> "y5".equals(y.getName().orElseThrow())));
@@ -279,7 +267,7 @@ public class RecursiveCompositionTest extends AbstractJslTest {
         assertFalse(x10EntityX.getY().isPresent());
         assertEquals(0, x10EntityX.getXs().size());
 
-        TransferXTO x12test = y6.getYxs().stream().filter(c -> "x12".equals(c.getName().orElseThrow())).findFirst().orElseThrow();
+        TransferXTO x12test = y6Test.getYxs().stream().filter(c -> "x12".equals(c.getName().orElseThrow())).findFirst().orElseThrow();
 
         assertEquals("y9", x12test.getY().orElseThrow().getName().orElseThrow());
         assertFalse(x12test.getX().isPresent());
@@ -304,18 +292,19 @@ public class RecursiveCompositionTest extends AbstractJslTest {
             "REQ-ENT-001",
             "REQ-ENT-002",
             "REQ-ENT-004",
-            "REQ-ENT-005",
-            "REQ-SRV-001"
+            "REQ-ENT-007",
+            "REQ-SRV-002"
     })
     void testRecursiveCompositionOnInheritedEntity() {
-        TransferATO a4 = transferATODao.create(TransferATO.builder().withName("a4").build());
-        TransferATO a5 = transferATODao.create(TransferATO.builder().withName("a5").build());
-        TransferATO a6 = transferATODao.create(TransferATO.builder().withName("a6").build());
-        TransferATO a1 = transferATODao.create(TransferATO.builder().withName("a1").withA(a4).withAs(List.of(a5, a6)).build());
-        TransferATO a2 = transferATODao.create(TransferATO.builder().withName("a2").withA(a5).build());
-        TransferATO a3 = transferATODao.create(TransferATO.builder().withName("a3").withAs(List.of(a5, a6)).build());
 
-        TransferBTO b1 = transferBTODao.create(TransferBTO.builder().withName("b1").withBa(a1).withBas(List.of(a2, a3)).build());
+        TransferBTO b1 = transferBTODao.create(TransferBTO.builder().withName("b1")
+                .withBa(TransferATO.builder().withName("a1")
+                        .withA(TransferATO.builder().withName("a4").build())
+                        .withAs(List.of(TransferATO.builder().withName("a5").build(), TransferATO.builder().withName("a6").build())).build())
+                .withBas(List.of(TransferATO.builder().withName("a2")
+                        .withA(TransferATO.builder().withName("a5").build()).build(), TransferATO.builder().withName("a3")
+                        .withAs(List.of(TransferATO.builder().withName("a5").build(), TransferATO.builder().withName("a6").build())).build()))
+                .build());
 
         assertEquals("b1", b1.getName().orElseThrow());
         assertEquals("a1", b1.getBa().orElseThrow().getName().orElseThrow());
@@ -338,18 +327,16 @@ public class RecursiveCompositionTest extends AbstractJslTest {
         TransferATO a1Test = b1.getBa().orElseThrow();
 
         assertEquals("a4", a1Test.getA().orElseThrow().getName().orElseThrow());
-        // TODO: JNG-5091
-        //assertEquals(2, a1Test.getAs().size());
-        //assertTrue(a1Test.getAs().stream().anyMatch(c -> "a5".equals(c.getName().orElseThrow())));
-        //assertTrue(a1Test.getAs().stream().anyMatch(c -> "a6".equals(c.getName().orElseThrow())));
+        assertEquals(2, a1Test.getAs().size());
+        assertTrue(a1Test.getAs().stream().anyMatch(c -> "a5".equals(c.getName().orElseThrow())));
+        assertTrue(a1Test.getAs().stream().anyMatch(c -> "a6".equals(c.getName().orElseThrow())));
 
         EntityA a1TransferATO = entityADao.getById(a1Test.adaptTo(EntityAIdentifier.class)).orElseThrow();
 
         assertEquals("a4", a1TransferATO.getA().orElseThrow().getName().orElseThrow());
-        // TODO: JNG-5091
-        //assertEquals(2, a1TransferATO.getAs().size());
-        //assertTrue(a1TransferATO.getAs().stream().anyMatch(c -> "a5".equals(c.getName().orElseThrow())));
-        //assertTrue(a1TransferATO.getAs().stream().anyMatch(c -> "a6".equals(c.getName().orElseThrow())));
+        assertEquals(2, a1TransferATO.getAs().size());
+        assertTrue(a1TransferATO.getAs().stream().anyMatch(c -> "a5".equals(c.getName().orElseThrow())));
+        assertTrue(a1TransferATO.getAs().stream().anyMatch(c -> "a6".equals(c.getName().orElseThrow())));
 
         TransferATO a2Test = b1.getBas().stream().filter(c -> "a2".equals(c.getName().orElseThrow())).findFirst().orElseThrow();
 
@@ -370,5 +357,200 @@ public class RecursiveCompositionTest extends AbstractJslTest {
         assertEquals(2, a3TransferATO.getAs().size());
         assertTrue(a3TransferATO.getAs().stream().anyMatch(c -> "a5".equals(c.getName().orElseThrow())));
         assertTrue(a3TransferATO.getAs().stream().anyMatch(c -> "a6".equals(c.getName().orElseThrow())));
+    }
+
+    @Test
+    @Requirement(reqs = {
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-007",
+            "REQ-ENT-008",
+            "REQ-EXPR-001",
+            "REQ-EXPR-002",
+            "REQ-EXPR-003",
+            "REQ-EXPR-004",
+            "REQ-EXPR-012",
+            "REQ-SRV-002"
+    })
+    void testForMultiLevelSingleComposition() {
+
+        TransferATO a = transferATODao.create(TransferATO.builder().withName("level1")
+                .withA(TransferATO.builder().withName("level2")
+                        .withA(TransferATO.builder().withName("level3")
+                                .withA(TransferATO.builder().withName("level4").build()).build()
+                        ).build()
+                ).build()
+        );
+
+        assertEquals(4, transferATODao.countAll());
+
+        assertEquals("level2", a.getA().get().getName().get());
+        assertEquals("level3", a.getA().get().getA().get().getName().get());
+        assertEquals("level4", a.getA().get().getA().get().getA().get().getName().get());
+
+        // childName with derived
+        assertEquals("level2", a.getChildName().get());
+        assertEquals("level3", a.getA().get().getChildName().get());
+        assertEquals("level4", a.getA().get().getA().get().getChildName().get());
+        assertEquals("", a.getA().get().getA().get().getA().get().getChildName().get());
+
+        // recursive navigation through derived
+        assertEquals("level3", a.getChildNameThirdLevel().get());
+        assertEquals("level4", a.getChildNameFourthLevel().get());
+
+        // After update
+        a = transferATODao.update(a);
+        assertEquals("level2", a.getA().get().getName().get());
+        assertEquals("level3", a.getA().get().getA().get().getName().get());
+        assertEquals("level4", a.getA().get().getA().get().getA().get().getName().get());
+
+        // childName with derived
+        assertEquals("level2", a.getChildName().get());
+        assertEquals("level3", a.getA().get().getChildName().get());
+        assertEquals("level4", a.getA().get().getA().get().getChildName().get());
+        assertEquals("", a.getA().get().getA().get().getA().get().getChildName().get());
+
+        // recursive navigation through derived
+        assertEquals("level3", a.getChildNameThirdLevel().get());
+        assertEquals("level4", a.getChildNameFourthLevel().get());
+
+        // Remove element
+        a.getA().orElseThrow().getA().orElseThrow().setA(null);
+        a = transferATODao.update(a);
+
+        assertEquals(3, transferATODao.countAll());
+
+        assertEquals("level2", a.getA().get().getName().get());
+        assertEquals("level3", a.getA().get().getA().get().getName().get());
+        assertTrue(a.getA().get().getA().get().getA().isEmpty());
+
+        // childName with derived
+        assertEquals("level2", a.getChildName().get());
+        assertEquals("level3", a.getA().get().getChildName().get());
+        assertEquals("", a.getA().get().getA().get().getChildName().get());
+
+        // recursive navigation through derived
+        assertEquals("level3", a.getChildNameThirdLevel().orElseThrow());
+        assertEquals(Optional.empty(), a.getChildNameFourthLevel());
+    }
+
+    @Test
+    @Requirement(reqs = {
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-007",
+            "REQ-ENT-008",
+            "REQ-ENT-012",
+            "REQ-EXPR-001",
+            "REQ-EXPR-002",
+            "REQ-EXPR-003",
+            "REQ-EXPR-004",
+            "REQ-EXPR-012",
+            "REQ-SRV-002"
+    })
+    void testForInheritedMultiLevelSingleComposition() {
+
+        TransferBTO b = transferBTODao.create(TransferBTO.builder().withName("level1")
+                .withA(TransferATO.builder().withName("level2")
+                        .withA(TransferATO.builder().withName("level3")
+                                .withA(TransferATO.builder().withName("level4").build()).build()
+                        ).build()
+                )
+                .withBa(TransferATO.builder().withName("level2")
+                        .withA(TransferATO.builder().withName("level3")
+                                .withA(TransferATO.builder().withName("level4").build()).build()
+                        ).build()
+                )
+                .build()
+        );
+
+        assertEquals(7, transferATODao.countAll());
+        assertEquals(1, transferBTODao.countAll());
+
+        assertEquals("level2", b.getA().get().getName().get());
+        assertEquals("level3", b.getA().get().getA().get().getName().get());
+        assertEquals("level4", b.getA().get().getA().get().getA().get().getName().get());
+        assertEquals("level2", b.getBa().get().getName().get());
+        assertEquals("level3", b.getBa().get().getA().get().getName().get());
+        assertEquals("level4", b.getBa().get().getA().get().getA().get().getName().get());
+
+        // childName with derived
+        assertEquals("level2", b.getChildName().get());
+        assertEquals("level3", b.getA().get().getChildName().get());
+        assertEquals("level4", b.getA().get().getA().get().getChildName().get());
+        assertEquals("", b.getA().get().getA().get().getA().get().getChildName().get());
+        assertEquals("level3", b.getBa().get().getChildName().get());
+        assertEquals("level4", b.getBa().get().getA().get().getChildName().get());
+        assertEquals("", b.getBa().get().getA().get().getA().get().getChildName().get());
+
+        // recursive navigation through derived
+        assertEquals("level3", b.getChildNameThirdLevel().get());
+        assertEquals("level4", b.getChildNameFourthLevel().get());
+        assertEquals("level4", b.getBa().get().getChildNameThirdLevel().get());
+        assertEquals(Optional.empty(), b.getBa().get().getChildNameFourthLevel());
+
+        // After update
+        b = transferBTODao.update(b);
+        assertEquals("level2", b.getA().get().getName().get());
+        assertEquals("level3", b.getA().get().getA().get().getName().get());
+        assertEquals("level4", b.getA().get().getA().get().getA().get().getName().get());
+        assertEquals("level2", b.getBa().get().getName().get());
+        assertEquals("level3", b.getBa().get().getA().get().getName().get());
+        assertEquals("level4", b.getBa().get().getA().get().getA().get().getName().get());
+
+        // childName with derived
+        assertEquals("level2", b.getChildName().get());
+        assertEquals("level3", b.getA().get().getChildName().get());
+        assertEquals("level4", b.getA().get().getA().get().getChildName().get());
+        assertEquals("", b.getA().get().getA().get().getA().get().getChildName().get());
+        assertEquals("level3", b.getBa().get().getChildName().get());
+        assertEquals("level4", b.getBa().get().getA().get().getChildName().get());
+        assertEquals("", b.getBa().get().getA().get().getA().get().getChildName().get());
+
+        // recursive navigation through derived
+        assertEquals("level3", b.getChildNameThirdLevel().get());
+        assertEquals("level4", b.getChildNameFourthLevel().get());
+        assertEquals("level4", b.getBa().get().getChildNameThirdLevel().get());
+        assertEquals(Optional.empty(), b.getBa().get().getChildNameFourthLevel());
+
+        // Remove element
+        b.getA().orElseThrow().getA().orElseThrow().setA(null);
+        b.getBa().orElseThrow().getA().orElseThrow().setA(null);
+        b = transferBTODao.update(b);
+
+        assertEquals(5, transferATODao.countAll());
+        assertEquals(1, transferBTODao.countAll());
+
+        assertEquals("level2", b.getA().get().getName().get());
+        assertEquals("level3", b.getA().get().getA().get().getName().get());
+        assertTrue(b.getA().get().getA().get().getA().isEmpty());
+        assertEquals("level2", b.getBa().get().getName().get());
+        assertEquals("level3", b.getBa().get().getA().get().getName().get());
+        assertTrue(b.getBa().get().getA().get().getA().isEmpty());
+
+        // childName with derived
+        assertEquals("level2", b.getChildName().get());
+        assertEquals("level3", b.getA().get().getChildName().get());
+        assertEquals("", b.getA().get().getA().get().getChildName().get());
+        assertEquals("level3", b.getBa().get().getChildName().get());
+        assertEquals("", b.getBa().get().getA().get().getChildName().get());
+
+        // recursive navigation through derived
+        assertEquals("level3", b.getChildNameThirdLevel().get());
+        assertEquals(Optional.empty(), b.getChildNameFourthLevel());
+        assertEquals(Optional.empty(), b.getBa().get().getChildNameThirdLevel());
+        assertEquals(Optional.empty(), b.getBa().get().getChildNameFourthLevel());
     }
 }

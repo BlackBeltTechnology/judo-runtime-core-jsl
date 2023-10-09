@@ -1,3 +1,4 @@
+
 package hu.blackbelt.judo.runtime.core.jsl.entity.entity;
 
 /*-
@@ -21,25 +22,31 @@ package hu.blackbelt.judo.runtime.core.jsl.entity.entity;
  */
 
 import com.google.inject.Inject;
-import com.google.inject.Module;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.entitya.EntityA;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.entitya.EntityADao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.entityb.EntityB;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.entityb.EntityBDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.entityx.EntityX;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.entityx.EntityXDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.entityy.EntityY;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.entityy.EntityYDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.RecursiveCompositionDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.RecursiveCompositionDaoModules;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.entityx.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.entityy.*;
-
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.List;
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
-public class RecursiveCompositionTest extends AbstractJslTest {
+public class RecursiveCompositionTest {
+
+    @RegisterExtension
+    static JudoRuntimeExtension runtimeExtension = new JudoRuntimeExtension("RecursiveComposition", new RecursiveCompositionDaoModules());
 
     @Inject
     EntityXDao entityXDao;
@@ -53,16 +60,6 @@ public class RecursiveCompositionTest extends AbstractJslTest {
     @Inject
     EntityBDao entityBDao;
 
-    @Override
-    public Module getModelDaoModule() {
-        return new RecursiveCompositionDaoModules();
-    }
-
-    @Override
-    public String getModelName() {
-        return "RecursiveComposition";
-    }
-
     @Test
     @Requirement(reqs = {
             "REQ-MDL-001",
@@ -73,38 +70,32 @@ public class RecursiveCompositionTest extends AbstractJslTest {
             "REQ-ENT-001",
             "REQ-ENT-002",
             "REQ-ENT-004",
-            "REQ-ENT-005",
-            "REQ-SRV-001"
+            "REQ-ENT-007",
     })
     void testRecursiveCompositionOnEntity() {
-        EntityX x13 = entityXDao.create(EntityX.builder().withName("x13").build());
-        EntityX x11 = entityXDao.create(EntityX.builder().withName("x11").build());
-        EntityX x8 = entityXDao.create(EntityX.builder().withName("x8").build());
-        EntityX x5 = entityXDao.create(EntityX.builder().withName("x5").build());
-        EntityX x3 = entityXDao.create(EntityX.builder().withName("x3").build());
 
-        EntityY y9 = entityYDao.create(EntityY.builder().withName("y9").build());
-        EntityY y7 = entityYDao.create(EntityY.builder().withName("y7").build());
-        EntityY y4 = entityYDao.create(EntityY.builder().withName("y4").build());
-        EntityY y3 = entityYDao.create(EntityY.builder().withName("y3").build());
-        EntityY y2 = entityYDao.create(EntityY.builder().withName("y2").build());
-        EntityY y1 = entityYDao.create(EntityY.builder().withName("y1").build());
-
-        EntityY y8 = entityYDao.create(EntityY.builder().withName("y8").withYx(x13).build());
-        EntityX x12 = entityXDao.create(EntityX.builder().withName("x12").withY(y9).build());
-        EntityX x4 = entityXDao.create(EntityX.builder().withName("x4").withY(y4).build());
-
-        EntityX x10 = entityXDao.create(EntityX.builder().withName("x10").withYs(List.of(y7, y8)).build());
-        EntityX x2 = entityXDao.create(EntityX.builder().withName("x2").withX(x5).withXs(List.of(x3, x4)).build());
-
-        EntityY y6 = entityYDao.create(EntityY.builder().withName("y6").withYxs(List.of(x11, x12)).build());
-        EntityY y5 = entityYDao.create(EntityY.builder().withName("y5").withYx(x10).build());
-
-        EntityX x9 = entityXDao.create(EntityX.builder().withName("x9").withYs(List.of(y5, y6)).build());
-        EntityX x7 = entityXDao.create(EntityX.builder().withName("x7").withXs(List.of(x8, x9)).build());
-        EntityX x6 = entityXDao.create(EntityX.builder().withName("x6").withX(x7).build());
-
-        EntityX x1 = entityXDao.create(EntityX.builder().withName("x1").withX(x2).withXs(List.of(x6)).withY(y1).withYs(List.of(y2, y3)).build());
+        EntityX x1 = entityXDao.create(EntityX.builder().withName("x1")
+                .withX(EntityX.builder().withName("x2")
+                        .withX(EntityX.builder().withName("x5").build())
+                        .withXs(List.of(EntityX.builder().withName("x3").build(), EntityX.builder().withName("x4")
+                                .withY(EntityY.builder().withName("y4").build()).build()))
+                        .build())
+                .withXs(List.of(EntityX.builder().withName("x6")
+                        .withX(EntityX.builder().withName("x7")
+                                .withXs(List.of(EntityX.builder().withName("x8").build(), EntityX.builder().withName("x9")
+                                        .withYs(List.of(EntityY.builder().withName("y5")
+                                                .withYx(EntityX.builder().withName("x10")
+                                                        .withYs(List.of(EntityY.builder().withName("y7").build(), EntityY.builder().withName("y8")
+                                                                .withYx(EntityX.builder().withName("x13").build()).build()))
+                                                        .build()).build(), EntityY.builder().withName("y6")
+                                                .withYxs(List.of(EntityX.builder().withName("x11").build(), EntityX.builder().withName("x12")
+                                                        .withY(EntityY.builder().withName("y9").build()).build()))
+                                                .build()))
+                                        .build()))
+                                .build())
+                        .build()))
+                .withY(EntityY.builder().withName("y1").build())
+                .withYs(List.of(EntityY.builder().withName("y2").build(), EntityY.builder().withName("y3").build())).build());
 
         assertEquals("x1", x1.getName().orElseThrow());
         assertEquals("x2", x1.getX().orElseThrow().getName().orElseThrow());
@@ -142,12 +133,11 @@ public class RecursiveCompositionTest extends AbstractJslTest {
         assertEquals(2, x7Test.getXs().size());
         assertTrue(x7Test.getXs().stream().anyMatch(y -> "x8".equals(y.getName().orElseThrow())));
         assertTrue(x7Test.getXs().stream().anyMatch(y -> "x9".equals(y.getName().orElseThrow())));
-        // TODO: JNG-5089
-        //assertFalse(x7Test.getX().isPresent());
+        assertFalse(x7Test.getX().isPresent());
         assertFalse(x7Test.getY().isPresent());
         assertEquals(0, x7Test.getYs().size());
 
-        EntityX x9Test = x7.getXs().stream().filter(c -> "x9".equals(c.getName().orElseThrow())).findFirst().orElseThrow();
+        EntityX x9Test = x7Test.getXs().stream().filter(c -> "x9".equals(c.getName().orElseThrow())).findFirst().orElseThrow();
 
         assertEquals(2, x9Test.getYs().size());
         assertTrue(x9Test.getYs().stream().anyMatch(y -> "y5".equals(y.getName().orElseThrow())));
@@ -177,7 +167,7 @@ public class RecursiveCompositionTest extends AbstractJslTest {
         assertFalse(x10Test.getY().isPresent());
         assertEquals(0, x10Test.getXs().size());
 
-        EntityX x12test = y6.getYxs().stream().filter(c -> "x12".equals(c.getName().orElseThrow())).findFirst().orElseThrow();
+        EntityX x12test = y6Test.getYxs().stream().filter(c -> "x12".equals(c.getName().orElseThrow())).findFirst().orElseThrow();
 
         assertEquals("y9", x12test.getY().orElseThrow().getName().orElseThrow());
         assertFalse(x12test.getX().isPresent());
@@ -195,18 +185,18 @@ public class RecursiveCompositionTest extends AbstractJslTest {
             "REQ-ENT-001",
             "REQ-ENT-002",
             "REQ-ENT-004",
-            "REQ-ENT-005",
-            "REQ-SRV-001"
+            "REQ-ENT-007"
     })
     void testRecursiveCompositionOnInheritedEntity() {
-        EntityA a4 = entityADao.create(EntityA.builder().withName("a4").build());
-        EntityA a5 = entityADao.create(EntityA.builder().withName("a5").build());
-        EntityA a6 = entityADao.create(EntityA.builder().withName("a6").build());
-        EntityA a1 = entityADao.create(EntityA.builder().withName("a1").withA(a4).withAs(List.of(a5, a6)).build());
-        EntityA a2 = entityADao.create(EntityA.builder().withName("a2").withA(a5).build());
-        EntityA a3 = entityADao.create(EntityA.builder().withName("a3").withAs(List.of(a5, a6)).build());
 
-        EntityB b1 = entityBDao.create(EntityB.builder().withName("b1").withBa(a1).withBas(List.of(a2, a3)).build());
+        EntityB b1 = entityBDao.create(EntityB.builder().withName("b1")
+                .withBa(EntityA.builder().withName("a1")
+                        .withA(EntityA.builder().withName("a4").build())
+                        .withAs(List.of(EntityA.builder().withName("a5").build(), EntityA.builder().withName("a6").build())).build())
+                .withBas(List.of(EntityA.builder().withName("a2")
+                        .withA(EntityA.builder().withName("a5").build()).build(), EntityA.builder().withName("a3")
+                        .withAs(List.of(EntityA.builder().withName("a5").build(), EntityA.builder().withName("a6").build())).build()))
+                .build());
 
         assertEquals("b1", b1.getName().orElseThrow());
         assertEquals("a1", b1.getBa().orElseThrow().getName().orElseThrow());
@@ -219,10 +209,9 @@ public class RecursiveCompositionTest extends AbstractJslTest {
         EntityA a1Test = b1.getBa().orElseThrow();
 
         assertEquals("a4", a1Test.getA().orElseThrow().getName().orElseThrow());
-        // TODO: JNG-5091
-        //assertEquals(2, a1Test.getAs().size());
-        //assertTrue(a1Test.getAs().stream().anyMatch(c -> "a5".equals(c.getName().orElseThrow())));
-        //assertTrue(a1Test.getAs().stream().anyMatch(c -> "a6".equals(c.getName().orElseThrow())));
+        assertEquals(2, a1Test.getAs().size());
+        assertTrue(a1Test.getAs().stream().anyMatch(c -> "a5".equals(c.getName().orElseThrow())));
+        assertTrue(a1Test.getAs().stream().anyMatch(c -> "a6".equals(c.getName().orElseThrow())));
 
         EntityA a2Test = b1.getBas().stream().filter(c -> "a2".equals(c.getName().orElseThrow())).findFirst().orElseThrow();
 
@@ -234,6 +223,200 @@ public class RecursiveCompositionTest extends AbstractJslTest {
         assertTrue(a3Test.getAs().stream().anyMatch(c -> "a5".equals(c.getName().orElseThrow())));
         assertTrue(a3Test.getAs().stream().anyMatch(c -> "a6".equals(c.getName().orElseThrow())));
 
+
+    }
+
+    @Test
+    @Requirement(reqs = {
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-007",
+            "REQ-ENT-008",
+            "REQ-EXPR-001",
+            "REQ-EXPR-002",
+            "REQ-EXPR-003",
+            "REQ-EXPR-004",
+            "REQ-EXPR-012"
+    })
+    void testForMultiLevelSingleComposition() {
+
+        EntityA a = entityADao.create(EntityA.builder().withName("level1")
+                .withA(EntityA.builder().withName("level2")
+                        .withA(EntityA.builder().withName("level3")
+                                .withA(EntityA.builder().withName("level4").build()).build()
+                        ).build()
+                ).build()
+        );
+
+        assertEquals(4, entityADao.countAll());
+
+        assertEquals("level2", a.getA().get().getName().get());
+        assertEquals("level3", a.getA().get().getA().get().getName().get());
+        assertEquals("level4", a.getA().get().getA().get().getA().get().getName().get());
+
+        // childName with derived
+        assertEquals("level2", a.getChildName().get());
+        assertEquals("level3", a.getA().get().getChildName().get());
+        assertEquals("level4", a.getA().get().getA().get().getChildName().get());
+        assertEquals("", a.getA().get().getA().get().getA().get().getChildName().get());
+
+        // recursive navigation through derived
+        assertEquals("level3", a.getChildNameThirdLevel().get());
+        assertEquals("level4", a.getChildNameFourthLevel().get());
+
+        // After update
+        a = entityADao.update(a);
+        assertEquals("level2", a.getA().get().getName().get());
+        assertEquals("level3", a.getA().get().getA().get().getName().get());
+        assertEquals("level4", a.getA().get().getA().get().getA().get().getName().get());
+
+        // childName with derived
+        assertEquals("level2", a.getChildName().get());
+        assertEquals("level3", a.getA().get().getChildName().get());
+        assertEquals("level4", a.getA().get().getA().get().getChildName().get());
+        assertEquals("", a.getA().get().getA().get().getA().get().getChildName().get());
+
+        // recursive navigation through derived
+        assertEquals("level3", a.getChildNameThirdLevel().get());
+        assertEquals("level4", a.getChildNameFourthLevel().get());
+
+        // Remove element
+        a.getA().orElseThrow().getA().orElseThrow().setA(null);
+        a = entityADao.update(a);
+
+        assertEquals(3, entityADao.countAll());
+
+        assertEquals("level2", a.getA().get().getName().get());
+        assertEquals("level3", a.getA().get().getA().get().getName().get());
+        assertTrue(a.getA().get().getA().get().getA().isEmpty());
+
+        // childName with derived
+        assertEquals("level2", a.getChildName().get());
+        assertEquals("level3", a.getA().get().getChildName().get());
+        assertEquals("", a.getA().get().getA().get().getChildName().get());
+
+        // recursive navigation through derived
+        assertEquals("level3", a.getChildNameThirdLevel().orElseThrow());
+        assertEquals(Optional.empty(), a.getChildNameFourthLevel());
+    }
+
+    @Test
+    @Requirement(reqs = {
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-007",
+            "REQ-ENT-008",
+            "REQ-ENT-012",
+            "REQ-EXPR-001",
+            "REQ-EXPR-002",
+            "REQ-EXPR-003",
+            "REQ-EXPR-004",
+            "REQ-EXPR-012"
+    })
+    void testForInheritedMultiLevelSingleComposition() {
+
+        EntityB b = entityBDao.create(EntityB.builder().withName("level1")
+                .withA(EntityA.builder().withName("level2")
+                        .withA(EntityA.builder().withName("level3")
+                                .withA(EntityA.builder().withName("level4").build()).build()
+                        ).build()
+                )
+                .withBa(EntityA.builder().withName("level2")
+                        .withA(EntityA.builder().withName("level3")
+                                .withA(EntityA.builder().withName("level4").build()).build()
+                        ).build()
+                )
+                .build()
+        );
+
+        assertEquals(7, entityADao.countAll());
+        assertEquals(1, entityBDao.countAll());
+
+        assertEquals("level2", b.getA().get().getName().get());
+        assertEquals("level3", b.getA().get().getA().get().getName().get());
+        assertEquals("level4", b.getA().get().getA().get().getA().get().getName().get());
+        assertEquals("level2", b.getBa().get().getName().get());
+        assertEquals("level3", b.getBa().get().getA().get().getName().get());
+        assertEquals("level4", b.getBa().get().getA().get().getA().get().getName().get());
+
+        // childName with derived
+        assertEquals("level2", b.getChildName().get());
+        assertEquals("level3", b.getA().get().getChildName().get());
+        assertEquals("level4", b.getA().get().getA().get().getChildName().get());
+        assertEquals("", b.getA().get().getA().get().getA().get().getChildName().get());
+        assertEquals("level3", b.getBa().get().getChildName().get());
+        assertEquals("level4", b.getBa().get().getA().get().getChildName().get());
+        assertEquals("", b.getBa().get().getA().get().getA().get().getChildName().get());
+
+        // recursive navigation through derived
+        assertEquals("level3", b.getChildNameThirdLevel().get());
+        assertEquals("level4", b.getChildNameFourthLevel().get());
+        assertEquals("level4", b.getBa().get().getChildNameThirdLevel().get());
+        assertEquals(Optional.empty(), b.getBa().get().getChildNameFourthLevel());
+
+        // After update
+        b = entityBDao.update(b);
+        assertEquals("level2", b.getA().get().getName().get());
+        assertEquals("level3", b.getA().get().getA().get().getName().get());
+        assertEquals("level4", b.getA().get().getA().get().getA().get().getName().get());
+        assertEquals("level2", b.getBa().get().getName().get());
+        assertEquals("level3", b.getBa().get().getA().get().getName().get());
+        assertEquals("level4", b.getBa().get().getA().get().getA().get().getName().get());
+
+        // childName with derived
+        assertEquals("level2", b.getChildName().get());
+        assertEquals("level3", b.getA().get().getChildName().get());
+        assertEquals("level4", b.getA().get().getA().get().getChildName().get());
+        assertEquals("", b.getA().get().getA().get().getA().get().getChildName().get());
+        assertEquals("level3", b.getBa().get().getChildName().get());
+        assertEquals("level4", b.getBa().get().getA().get().getChildName().get());
+        assertEquals("", b.getBa().get().getA().get().getA().get().getChildName().get());
+
+        // recursive navigation through derived
+        assertEquals("level3", b.getChildNameThirdLevel().get());
+        assertEquals("level4", b.getChildNameFourthLevel().get());
+        assertEquals("level4", b.getBa().get().getChildNameThirdLevel().get());
+        assertEquals(Optional.empty(), b.getBa().get().getChildNameFourthLevel());
+
+        // Remove element
+        b.getA().orElseThrow().getA().orElseThrow().setA(null);
+        b.getBa().orElseThrow().getA().orElseThrow().setA(null);
+        b = entityBDao.update(b);
+
+        assertEquals(5, entityADao.countAll());
+        assertEquals(1, entityBDao.countAll());
+
+        assertEquals("level2", b.getA().get().getName().get());
+        assertEquals("level3", b.getA().get().getA().get().getName().get());
+        assertTrue(b.getA().get().getA().get().getA().isEmpty());
+        assertEquals("level2", b.getBa().get().getName().get());
+        assertEquals("level3", b.getBa().get().getA().get().getName().get());
+        assertTrue(b.getBa().get().getA().get().getA().isEmpty());
+
+        // childName with derived
+        assertEquals("level2", b.getChildName().get());
+        assertEquals("level3", b.getA().get().getChildName().get());
+        assertEquals("", b.getA().get().getA().get().getChildName().get());
+        assertEquals("level3", b.getBa().get().getChildName().get());
+        assertEquals("", b.getBa().get().getA().get().getChildName().get());
+
+        // recursive navigation through derived
+        assertEquals("level3", b.getChildNameThirdLevel().get());
+        assertEquals(Optional.empty(), b.getChildNameFourthLevel());
+        assertEquals(Optional.empty(), b.getBa().get().getChildNameThirdLevel());
+        assertEquals(Optional.empty(), b.getBa().get().getChildNameFourthLevel());
 
     }
 }

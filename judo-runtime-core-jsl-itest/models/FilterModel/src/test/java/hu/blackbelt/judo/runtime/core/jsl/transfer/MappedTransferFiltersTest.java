@@ -21,7 +21,6 @@ package hu.blackbelt.judo.runtime.core.jsl.transfer;
  */
 
 import com.google.inject.Inject;
-import com.google.inject.Module;
 import hu.blackbelt.judo.dispatcher.api.FileType;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.continent.Continent;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.myenum.MyEnum;
@@ -44,12 +43,12 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transfert
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transfertester.TransferTesterDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.FilterDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
-import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import hu.blackbelt.judo.sdk.query.*;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -62,7 +61,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Slf4j
-public class MappedTransferFiltersTest extends AbstractJslTest {
+public class MappedTransferFiltersTest {
+
+    @RegisterExtension
+    static JudoRuntimeExtension runtimeExtension = new JudoRuntimeExtension("Filter", new FilterDaoModules());
+
     @Inject
     TransferMyEntityWithOptionalFieldsDao transferMyEntityWithOptionalFieldsDao;
 
@@ -113,8 +116,7 @@ public class MappedTransferFiltersTest extends AbstractJslTest {
     static final MyEnum ENUM_2 = MyEnum.Atomic;
 
     @BeforeEach
-    protected void init(JudoDatasourceFixture datasource) throws Exception {
-        super.init(datasource);
+    protected void init() {
 
         transfer1 = transferMyEntityWithOptionalFieldsDao.create(TransferMyEntityWithOptionalFields.builder()
                 .withIntegerAttr(INTEGER_1)
@@ -146,16 +148,6 @@ public class MappedTransferFiltersTest extends AbstractJslTest {
                 .build());
 
         transferFilterEntity = transferFilterEntityDao.create(TransferFilterEntity.builder().build());
-    }
-
-    @Override
-    public Module getModelDaoModule() {
-        return new FilterDaoModules();
-    }
-
-    @Override
-    public String getModelName() {
-        return "Filter";
     }
 
     @Test

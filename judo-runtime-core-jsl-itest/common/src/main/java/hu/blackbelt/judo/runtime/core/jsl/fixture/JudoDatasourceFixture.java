@@ -20,8 +20,13 @@ package hu.blackbelt.judo.runtime.core.jsl.fixture;
  * #L%
  */
 
+import com.google.common.collect.ImmutableMap;
+import hu.blackbelt.judo.meta.rdbms.RdbmsTable;
+import hu.blackbelt.judo.meta.rdbms.runtime.RdbmsModel;
+import hu.blackbelt.judo.meta.rdbms.runtime.RdbmsUtils;
 import lombok.Getter;
-import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+import org.eclipse.emf.common.util.BasicEList;
 import org.hsqldb.jdbc.JDBCDataSource;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.function.Executable;
@@ -34,10 +39,15 @@ import org.testcontainers.containers.JdbcDatabaseContainer;
 import org.testcontainers.containers.PostgreSQLContainer;
 
 import javax.sql.DataSource;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.Duration;
+import java.util.Map;
+import java.util.UUID;
 import java.util.function.Supplier;
 
+@Slf4j
 public class JudoDatasourceFixture {
 
 //    static {
@@ -52,6 +62,10 @@ public class JudoDatasourceFixture {
 
     public static final String DIALECT_HSQLDB = "hsqldb";
     public static final String DIALECT_POSTGRESQL = "postgresql";
+    public static final Map<String, String> STATMENT_TEMPLATE = ImmutableMap.of(
+            DIALECT_POSTGRESQL, "TRUNCATE TABLE %s RESTART IDENTITY CASCADE;",
+            DIALECT_HSQLDB, "TRUNCATE TABLE %s RESTART IDENTITY AND COMMIT NO CHECK"
+    );
 
     @Getter
     protected String dialect = System.getProperty("dialect", DIALECT_HSQLDB);
@@ -94,24 +108,34 @@ public class JudoDatasourceFixture {
         }
     }
 
-    public void dropSchema() {
+    public void truncateTables(RdbmsModel rdbmsModel) {
+        RdbmsUtils rdbmsUtils = new RdbmsUtils(rdbmsModel.getResourceSet());
         try (Connection connection = dataSource.getConnection(); Statement statement = connection.createStatement()) {
-            if (dialect.equals(DIALECT_POSTGRESQL)) {
-                statement.execute("select 'drop table \"' || tablename || '\" cascade;' from pg_tables;");
-            } else if (dialect.equals(DIALECT_HSQLDB)) {
-                statement.execute("TRUNCATE SCHEMA PUBLIC RESTART IDENTITY AND COMMIT NO CHECK");
-                //statement.execute("DROP SCHEMA PUBLIC CASCADE");
+            for (RdbmsTable rdbmsTable : rdbmsUtils.getRdbmsTables().orElse(new BasicEList<>())) {
+                log.debug("Truncating table: %s (%s)".formatted(rdbmsTable.getName(), rdbmsTable.getSqlName()));
+                statement.execute(STATMENT_TEMPLATE.get(dialect).formatted(rdbmsTable.getSqlName()));
             }
         } catch (SQLException throwables) {
-            throw new RuntimeException("Could not drop schema", throwables);
+            throw new RuntimeException("Could not truncate tables", throwables);
         }
+    }
 
+    public void dropTables(RdbmsModel rdbmsModel) {
+        RdbmsUtils rdbmsUtils = new RdbmsUtils(rdbmsModel.getResourceSet());
+        try (Connection connection = dataSource.getConnection(); Statement statement = connection.createStatement()) {
+            for (RdbmsTable rdbmsTable : rdbmsUtils.getRdbmsTables().orElse(new BasicEList<>())) {
+                log.debug("Drop table: %s (%s)".formatted(rdbmsTable.getName(), rdbmsTable.getSqlName()));
+                statement.execute("DROP TABLE %s CASCADE;".formatted(rdbmsTable.getSqlName()));
+            }
+        } catch (SQLException throwables) {
+            throw new RuntimeException("Could not drop tables", throwables);
+        }
     }
 
     public void prepareDatasources() {
         if (dialect.equals(DIALECT_HSQLDB)) {
             final JDBCDataSource ds = new JDBCDataSource();
-            ds.setUrl("jdbc:hsqldb:mem:memdb");
+            ds.setUrl("jdbc:hsqldb:mem:" + UUID.randomUUID());
             ds.setUser("sa");
             ds.setPassword("saPassword");
             dataSource = ds;

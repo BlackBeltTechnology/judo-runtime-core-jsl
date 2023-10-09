@@ -1,7 +1,6 @@
 package hu.blackbelt.judo.runtime.core.jsl;
 
 import com.google.inject.Inject;
-import com.google.inject.Module;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.teststaticquerieswithconstantparameters.teststaticquerieswithconstantparameters.lastaddedmyentity.LastAddedMyEntityDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.teststaticquerieswithconstantparameters.teststaticquerieswithconstantparameters.myentity.MyEntity;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.teststaticquerieswithconstantparameters.teststaticquerieswithconstantparameters.myentity.MyEntityDao;
@@ -13,20 +12,27 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.teststaticquerieswithco
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.TestStaticQueriesWithConstantParametersDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
-import org.testcontainers.shaded.com.fasterxml.jackson.databind.ser.std.UUIDSerializer;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.Serializable;
 import java.time.*;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Slf4j
-public class TestStaticQueriesWithConstantParameters extends AbstractJslTest {
+public class TestStaticQueriesWithConstantParameters {
+
+    @RegisterExtension
+    static JudoRuntimeExtension runtimeExtension = new JudoRuntimeExtension("TestStaticQueriesWithConstantParameters", new TestStaticQueriesWithConstantParametersDaoModules());
 
     @Inject
     MyEntityDao myEntityDao;
@@ -39,16 +45,6 @@ public class TestStaticQueriesWithConstantParameters extends AbstractJslTest {
 
     @Inject
     LastAddedMyEntityDao lastAddedMyEntityDao;
-
-    @Override
-    public Module getModelDaoModule() {
-        return new TestStaticQueriesWithConstantParametersDaoModules();
-    }
-
-    @Override
-    public String getModelName() {
-        return "TestStaticQueriesWithConstantParameters";
-    }
 
     /**
      * Testing the working of static queries with constant parameters.

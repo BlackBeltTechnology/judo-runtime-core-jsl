@@ -21,7 +21,6 @@ package hu.blackbelt.judo.runtime.core.jsl.entity;
  */
 
 import com.google.inject.Inject;
-import com.google.inject.Module;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entitya.EntityA;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entitya.EntityAAttachedRelationsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entitya.EntityADao;
@@ -39,21 +38,27 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationship
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.AssociationRelationshipsDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
-import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture;
+import hu.blackbelt.judo.runtime.core.exception.ValidationException;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
-public class AssociationRelationshipsTest extends AbstractJslTest {
+public class AssociationRelationshipsTest {
+
+    @RegisterExtension
+    static JudoRuntimeExtension runtimeExtension = new JudoRuntimeExtension("AssociationRelationships", new AssociationRelationshipsDaoModules());
+
     @Inject
     EntityADao entityADao;
 
@@ -74,23 +79,13 @@ public class AssociationRelationshipsTest extends AbstractJslTest {
     EntityA entityA;
 
     @BeforeEach
-    protected void init(JudoDatasourceFixture datasource) throws Exception {
-        super.init(datasource);
+    protected void init() {
+
         entityD = entityDDao.create(EntityD.builder()
                 .build());
         entityC = entityCDao.create(EntityC.builder()
                 .build());
         entityA = createA(entityC, List.of(entityD));
-    }
-
-    @Override
-    public Module getModelDaoModule() {
-        return new AssociationRelationshipsDaoModules();
-    }
-
-    @Override
-    public String getModelName() {
-        return "AssociationRelationships";
     }
 
     @Test
@@ -216,13 +211,16 @@ public class AssociationRelationshipsTest extends AbstractJslTest {
             "REQ-ENT-012"
     })
     public void testRequiredRelationEnforced() {
-        IllegalArgumentException thrown = assertThrows(
-                IllegalArgumentException.class,
+        ValidationException thrown = assertThrows(
+                ValidationException.class,
                 () -> entityADao.create(EntityA.builder().build())
         );
 
-        assertTrue(thrown.getMessage().contains("missing mandatory attribute"));
-        assertTrue(thrown.getMessage().contains("name: singleRequiredConA"));
+        Assertions.assertEquals(1, thrown.getValidationResults().size());
+        assertThat(thrown.getValidationResults(), containsInAnyOrder(allOf(
+                hasProperty("code", equalTo("MISSING_REQUIRED_RELATION")),
+                hasProperty("location", equalTo("singleRequiredConA")))
+        ));
 
         List<EntityA> list = entityADao.query().execute();
 

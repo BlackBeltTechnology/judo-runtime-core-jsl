@@ -21,7 +21,6 @@ package hu.blackbelt.judo.runtime.core.jsl.entity;
  */
 
 import com.google.inject.Inject;
-import com.google.inject.Module;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.taskmodel.taskmodel.marketplace.MarketPlace;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.taskmodel.taskmodel.marketplace.MarketPlaceDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.taskmodel.taskmodel.person.Person;
@@ -34,10 +33,10 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.taskmodel.taskmodel.tas
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.taskmodel.taskmodel.workplace.Workplace;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.TaskModelDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,7 +46,10 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Slf4j
-public class TaskModelTest extends AbstractJslTest {
+public class TaskModelTest {
+
+    @RegisterExtension
+    static JudoRuntimeExtension runtimeExtension = new JudoRuntimeExtension("TaskModel", new TaskModelDaoModules());
 
     @Inject
     PersonDao personDao;
@@ -60,16 +62,6 @@ public class TaskModelTest extends AbstractJslTest {
 
     @Inject
     MarketPlaceDao marketPlaceDao;
-
-    @Override
-    public Module getModelDaoModule() {
-        return new TaskModelDaoModules();
-    }
-
-    @Override
-    public String getModelName() {
-        return "TaskModel";
-    }
 
     @Test
     @Disabled("https://blackbelt.atlassian.net/browse/JNG-4150")

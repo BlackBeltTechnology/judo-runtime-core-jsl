@@ -1,31 +1,30 @@
 package hu.blackbelt.judo.runtime.core.jsl.transfer;
 
 import com.google.inject.Inject;
-import com.google.inject.Module;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfersingleentity.automappedtransfersingleentity.automappedcontainersingleassociation.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfersingleentity.automappedtransfersingleentity.automappedcontainersinglecompositionderivedentity.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfersingleentity.automappedtransfersingleentity.automappedcontainersinglerelationderivedentity.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfersingleentity.automappedtransfersingleentity.automappedcontainersingleassociation.AutoMappedContainerSingleAssociation;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfersingleentity.automappedtransfersingleentity.automappedcontainersingleassociation.AutoMappedContainerSingleAssociationAttachedRelationsForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfersingleentity.automappedtransfersingleentity.automappedcontainersingleassociation.AutoMappedContainerSingleAssociationDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfersingleentity.automappedtransfersingleentity.automappedcontainersinglecomposition.AutoMappedContainerSingleComposition;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfersingleentity.automappedtransfersingleentity.automappedcontainersinglecomposition.AutoMappedContainerSingleCompositionDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfersingleentity.automappedtransfersingleentity.automappedcontainersinglecompositionderivedentity.AutoMappedContainerSingleCompositionDerivedEntity;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfersingleentity.automappedtransfersingleentity.automappedcontainersinglecompositionderivedentity.AutoMappedContainerSingleCompositionDerivedEntityDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfersingleentity.automappedtransfersingleentity.automappedcontainersinglerelationderivedentity.AutoMappedContainerSingleRelationDerivedEntity;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfersingleentity.automappedtransfersingleentity.automappedcontainersinglerelationderivedentity.AutoMappedContainerSingleRelationDerivedEntityAttachedRelationsForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfersingleentity.automappedtransfersingleentity.automappedcontainersinglerelationderivedentity.AutoMappedContainerSingleRelationDerivedEntityDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfersingleentity.automappedtransfersingleentity.automappedreferenceentity.AutoMappedReferenceEntity;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfersingleentity.automappedtransfersingleentity.automappedreferenceentity.AutoMappedReferenceEntityDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfersingleentity.automappedtransfersingleentity.automappedtwowayreferenceentity.AutoMappedTwoWayReferenceEntity;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfersingleentity.automappedtransfersingleentity.automappedtwowayreferenceentity.AutoMappedTwoWayReferenceEntityDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfersingleentity.automappedtransfersingleentity.containersingleassociationentity.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfersingleentity.automappedtransfersingleentity.containersinglecompositionentity.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfersingleentity.automappedtransfersingleentity.referenceentity.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfersingleentity.automappedtransfersingleentity.twowayreferenceentity.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfersingleentity.automappedtransfersingleentity.automappedcontainersinglecomposition.*;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.automappedtransfersingleentity.automappedtransfersingleentity.automappedreferenceentity.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.AutoMappedTransferSingleEntityDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import lombok.extern.slf4j.Slf4j;
 import org.hamcrest.Matcher;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -33,18 +32,10 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
-public class AutoMappedTransferObjectSingleEntityTest extends AbstractJslTest {
+public class AutoMappedTransferObjectSingleEntityTest {
 
-    @Override
-    public Module getModelDaoModule() {
-        return new AutoMappedTransferSingleEntityDaoModules();
-    }
-
-    @Override
-    public String getModelName() {
-        return "AutoMappedTransferSingleEntity";
-    }
-
+    @RegisterExtension
+    static JudoRuntimeExtension runtimeExtension = new JudoRuntimeExtension("AutoMappedTransferSingleEntity", new AutoMappedTransferSingleEntityDaoModules());
 
     @Inject
     AutoMappedContainerSingleAssociationDao autoMappedContainerSingleAssociationDao;
@@ -134,15 +125,7 @@ public class AutoMappedTransferObjectSingleEntityTest extends AbstractJslTest {
 
         autoMappedContainerSingleComposition.setSingleComposition(autoMappedReferenceEntityDao.create(AutoMappedReferenceEntity.builder().withName("singleCompositionBind").build()));
 
-        AutoMappedContainerSingleComposition referenceForLambda = autoMappedContainerSingleComposition;
-        IllegalStateException thrown = assertThrows(
-                IllegalStateException.class,
-                () -> autoMappedContainerSingleCompositionDao.update(referenceForLambda)
-        );
-
-        assertTrue(thrown.getMessage().contains("Identifier cannot be set on new association reference element"));
-        assertTrue(thrown.getMessage().contains("#singleComposition"));
-
+        autoMappedContainerSingleComposition = autoMappedContainerSingleCompositionDao.update(autoMappedContainerSingleComposition);
 
         autoMappedContainerSingleComposition.setSingleRequiredComposition(null);
         AutoMappedContainerSingleComposition referenceForLambda1 = autoMappedContainerSingleComposition;

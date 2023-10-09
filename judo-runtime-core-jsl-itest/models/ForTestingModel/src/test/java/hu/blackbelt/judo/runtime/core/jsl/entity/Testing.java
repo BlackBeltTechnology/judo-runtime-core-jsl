@@ -21,39 +21,32 @@ package hu.blackbelt.judo.runtime.core.jsl.entity;
  */
 
 import com.google.inject.Inject;
-import com.google.inject.Module;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testing.testing.a.A;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testing.testing.a.ADao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testing.testing.b.B;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testing.testing.b.BDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.FormsTestDaoModules;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.TestingDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
-import liquibase.pro.packaged.P;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Slf4j
-public class Testing extends AbstractJslTest {
+public class Testing {
 
-    @Inject ADao aDao;
+    @RegisterExtension
+    static JudoRuntimeExtension runtimeExtension = new JudoRuntimeExtension("Testing", new TestingDaoModules());
 
-    @Inject BDao bDao;
 
-    @Override
-    public Module getModelDaoModule() {
-        return new TestingDaoModules();
-    }
+    @Inject
+    ADao aDao;
 
-    @Override
-    public String getModelName() {
-        return "Testing";
-    }
+    @Inject
+    BDao bDao;
 
     @Test
     public void testContainerFunction() {

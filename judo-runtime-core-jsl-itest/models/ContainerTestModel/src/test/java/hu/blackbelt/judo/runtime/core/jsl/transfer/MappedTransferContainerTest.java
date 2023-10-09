@@ -21,7 +21,6 @@ package hu.blackbelt.judo.runtime.core.jsl.transfer;
  */
 
 import com.google.inject.Inject;
-import com.google.inject.Module;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.a.A;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.additionalservice.AdditionalService;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.additionalservice.AdditionalServiceDao;
@@ -33,6 +32,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.container
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.d.D;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.d.DDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.ta.TA;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.ta.TADao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.tadditionalservice.TAdditionalService;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.tadditionalservice.TAdditionalServiceDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.tb.TB;
@@ -51,10 +51,10 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.container
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.ContainerTestDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
-import hu.blackbelt.judo.runtime.core.jsl.AbstractJslTest;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.List;
 
@@ -62,7 +62,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Slf4j
-public class MappedTransferContainerTest extends AbstractJslTest {
+public class MappedTransferContainerTest {
+
+    @RegisterExtension
+    static JudoRuntimeExtension runtimeExtension = new JudoRuntimeExtension("ContainerTest", new ContainerTestDaoModules());
 
     @Inject
     BDao bDao;
@@ -79,6 +82,9 @@ public class MappedTransferContainerTest extends AbstractJslTest {
     TDDao tdDao;
 
     @Inject
+    TADao taDao;
+
+    @Inject
     TPartnerDao tpartnerDao;
 
     @Inject
@@ -92,16 +98,6 @@ public class MappedTransferContainerTest extends AbstractJslTest {
 
     @Inject
     AdditionalServiceDao additionalServiceDao;
-
-    @Override
-    public Module getModelDaoModule() {
-        return new ContainerTestDaoModules();
-    }
-
-    @Override
-    public String getModelName() {
-        return "ContainerTest";
-    }
 
     /**
      * The test checks the container Instance function work well on transfer object.
@@ -134,6 +130,8 @@ public class MappedTransferContainerTest extends AbstractJslTest {
             "REQ-SRV-002"
     })
     public void testContainerFunctionOnMappedTransfer() {
+        TA ta = taDao.create(TA.builder().withConA(TC.builder().build()).build());
+
         TB tb = tbDao.create(TB.builder()
                 .withConA(TC.builder().build())
                 .withDonB(TD.builder().build())
