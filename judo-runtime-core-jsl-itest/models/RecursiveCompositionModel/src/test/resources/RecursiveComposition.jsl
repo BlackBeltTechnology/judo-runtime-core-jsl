@@ -17,17 +17,17 @@ entity EntityY {
 }
 
 transfer TransferXTO (EntityX entityX) {
-    field String name <=> entityX.name;
-    relation TransferXTO x <=> entityX.x eager:true;
-    relation TransferXTO[] xs <=> entityX.xs eager:true;
-    relation TransferYTO y <=> entityX.y eager:true;
-    relation TransferYTO[] ys <=> entityX.ys eager:true;
+    field String name <= entityX.name input:true;
+    relation TransferXTO x <= entityX.x eager:true choices:EntityX!all();
+    relation TransferXTO[] xs <= entityX.xs eager:true choices:EntityX!all();
+    relation TransferYTO y <= entityX.y eager:true choices:EntityY!all();
+    relation TransferYTO[] ys <= entityX.ys eager:true choices:EntityY!all();
 }
 
 transfer TransferYTO (EntityY entityY) {
-    field String name <=> entityY.name;
-    relation TransferXTO yx <=> entityY.yx eager:true;
-    relation TransferXTO[] yxs <=> entityY.yxs eager:true;
+    field String name <= entityY.name input:true;
+    relation TransferXTO yx <= entityY.yx eager:true choices:EntityX!all();
+    relation TransferXTO[] yxs <= entityY.yxs eager:true choices:EntityX!all();
 }
 
 entity EntityA {
@@ -46,9 +46,9 @@ entity EntityB extends EntityA {
 }
 
 transfer TransferATO (EntityA entityA) {
-    field String name <=> entityA.name;
-    relation TransferATO a <=> entityA.a eager:true;
-    relation TransferATO[] `as` <=> entityA.`as` eager:true;
+    field String name <= entityA.name input:true;
+    relation TransferATO a <= entityA.a eager:true choices:EntityA!all();
+    relation TransferATO[] `as` <= entityA.`as` eager:true choices:EntityA!all();
 
     field String childName <= entityA.a!isDefined() ? entityA.a.name : "";
     field String childNameThirdLevel <= entityA.a.a.name;
@@ -56,11 +56,11 @@ transfer TransferATO (EntityA entityA) {
 }
 
 transfer TransferBTO (EntityB entityB) {
-    field String name <=> entityB.name;
-    relation TransferATO a <=> entityB.a eager:true;
-    relation TransferATO[] `as` <=> entityB.`as` eager:true;
-    relation TransferATO ba <=> entityB.ba eager:true;
-    relation TransferATO[] bas <=> entityB.bas eager:true;
+    field String name <= entityB.name input:true;
+    relation TransferATO a <= entityB.a eager:true choices:EntityA!all();
+    relation TransferATO[] `as` <= entityB.`as` eager:true choices:EntityA!all();
+    relation TransferATO ba <= entityB.ba eager:true choices:EntityA!all();
+    relation TransferATO[] bas <= entityB.bas eager:true choices:EntityA!all();
 
     field String childName <= entityB.a!isDefined() ? entityB.a.name : "";
     field String childNameThirdLevel <= entityB.a.a.name;

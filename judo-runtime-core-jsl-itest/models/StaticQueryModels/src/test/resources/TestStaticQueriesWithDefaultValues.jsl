@@ -15,7 +15,7 @@ enum MyEnum {
 
 // MyEntity
 entity MyEntity {
-    field Timestamp fldCreated = Timestamp!now();
+    field Timestamp fldCreated default:Timestamp!now();
     field Boolean   fldBool;
     field Date      fldDate;
     field Time      fldTime;
@@ -28,7 +28,7 @@ entity MyEntity {
 
 // Entity for the results of queries
 entity Snapshot1 {
-    field Timestamp created = Timestamp!now();
+    field Timestamp created default:Timestamp!now();
     
     // fields
     relation MyEntity fldMyEntity001 <= anyMyEntity001();

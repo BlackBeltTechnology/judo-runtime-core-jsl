@@ -31,7 +31,7 @@ entity EntityF {
 }
 
 entity EntityG {
-  field required String name = EntityH!any().alwaysUndefined;
+  field required String name default:EntityH!any().alwaysUndefined;
 }
 
 entity EntityH {
@@ -51,18 +51,18 @@ entity EntityF4 {
 }
 
 transfer TransferA(EntityA entitya) {
-    field String stringA <=> entitya.stringA;
-    relation TransferC singleConA <=> entitya.singleConA eager:true;
-    relation TransferC[] collectionConA <=> entitya.collectionConA eager:true;
-    relation required TransferC singleRequiredConA <=> entitya.singleRequiredConA eager:true;
+    field String stringA <= entitya.stringA input:true;
+    relation TransferC singleConA <= entitya.singleConA eager:true choices:EntityC!all();
+    relation TransferC[] collectionConA <= entitya.collectionConA eager:true choices:EntityC!all();
+    relation required TransferC singleRequiredConA <= entitya.singleRequiredConA eager:true choices:EntityC!all();
 }
 
 transfer TransferC(EntityC entityc) {
-    field String stringC <=> entityc.stringC;
-    field String stringB <=> entityc.stringB;
-    relation TransferD[] multipleDonB <=> entityc.multipleDonB eager:true;
+    field String stringC <= entityc.stringC input:true;
+    field String stringB <= entityc.stringB input:true;
+    relation TransferD[] multipleDonB <= entityc.multipleDonB eager:true choices:EntityD!all();
 }
 
 transfer TransferD(EntityD entityd) {
-    field String stringD <=> entityd.stringD;
+    field String stringD <= entityd.stringD input:true;
 }

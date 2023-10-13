@@ -71,45 +71,45 @@ entity EntityWithIdentifiersContainer {
 
 
 entity EntityWithPrimitiveDefaults {
-    field Integer integerAttr = 1;
-    field Scaled scaledAttr = 2.34;
-    field String stringAttr = "test";
-    field PhoneNumber regexAttr = "+36 (30) 123 1234";
-    field Boolean boolAttr = true;
-    field Date dateAttr = `2022-07-11`;
-    field Timestamp timestampAttr = `2022-07-11T19:09:33Z`;
-    field Time timeAttr = `23:59:59`;
-    field Time shortTimeAttr = `23:59`;
+    field Integer integerAttr default:1;
+    field Scaled scaledAttr default:2.34;
+    field String stringAttr default:"test";
+    field PhoneNumber regexAttr default:"+36 (30) 123 1234";
+    field Boolean boolAttr default:true;
+    field Date dateAttr default:`2022-07-11`;
+    field Timestamp timestampAttr default:`2022-07-11T19:09:33Z`;
+    field Time timeAttr default:`23:59:59`;
+    field Time shortTimeAttr default:`23:59`;
     field Binary binaryAttr; // There is no syntax for define default value for binary
-    field MyEnum enumAttr = MyEnum#Bombastic;
+    field MyEnum enumAttr default:MyEnum#Bombastic;
 }
 
 entity EntityRequiredWithPrimitiveDefaults {
-    field required Integer integerAttr = 1;
-    field required Scaled scaledAttr = 2.34;
-    field required String stringAttr = "test";
-    field required PhoneNumber regexAttr = "+36 (30) 123 1234";
-    field required Boolean boolAttr = true;
-    field required Date dateAttr = `2022-07-11`;
-    field required Timestamp timestampAttr = `2022-07-11T19:09:33Z`;
-    field required Time timeAttr = `23:59:59`;
+    field required Integer integerAttr default:1;
+    field required Scaled scaledAttr default:2.34;
+    field required String stringAttr default:"test";
+    field required PhoneNumber regexAttr default:"+36 (30) 123 1234";
+    field required Boolean boolAttr default:true;
+    field required Date dateAttr default:`2022-07-11`;
+    field required Timestamp timestampAttr default:`2022-07-11T19:09:33Z`;
+    field required Time timeAttr default:`23:59:59`;
     // field required Binary binaryAttr; // There is no syntax for define default value for binary
-    field required MyEnum enumAttr = MyEnum#Bombastic;
+    field required MyEnum enumAttr default:MyEnum#Bombastic;
 }
 
 entity EntityWithPrimitiveDefaultExpressions {
-    field Integer integerAttr = 1.23!round();
-    field Scaled scaledAttr = 2.9!abs();
-    field String stringAttr = true!asString();
-    field PhoneNumber regexAttr = "+36 (30) 123 1234";
-    field Boolean boolAttr = 2 > -1;
-    field Date dateAttr = Date!now();
-    field Timestamp timestampAttr = Timestamp!now();
-    field Time timeAttr = Time!of(hour = 23, minute = 59, second = 59);
+    field Integer integerAttr default:1.23!round();
+    field Scaled scaledAttr default:2.9!abs();
+    field String stringAttr default:true!asString();
+    field PhoneNumber regexAttr default:"+36 (30) 123 1234";
+    field Boolean boolAttr default:2 > -1;
+    field Date dateAttr default:Date!now();
+    field Timestamp timestampAttr default:Timestamp!now();
+    field Time timeAttr default:Time!of(hour = 23, minute = 59, second = 59);
 }
 
 entity ReferenceEntity {
-    field Integer intAtt = 3;
+    field Integer intAtt default:3;
 }
 
 entity DefaultRequiredEntity {
@@ -117,30 +117,30 @@ entity DefaultRequiredEntity {
     //TODO JNG-4242
     //TODO JNG-3721
 
-    identifier required Date createDate = Date!of(year = 2022, month = 11, day = 4);
-    field required Integer sumEntitiesIntegerValue = ReferenceEntity!all()!sum(e | e.intAtt);
+    identifier required Date createDate default:Date!of(year = 2022, month = 11, day = 4);
+    field required Integer sumEntitiesIntegerValue default:ReferenceEntity!all()!sum(e | e.intAtt);
 
 }
 
 //Entity with not valid default values
 
 entity EntityWithNotValidIntegerDefaultValue {
-        field Integer integerAttr = 1234567890;
+        field Integer integerAttr default:1234567890;
 }
 
 entity EntityWithNotValidPrecisionDefaultValue {
-        field Scaled scaledAttrWithWrongPrecision = 123456789.34;
+        field Scaled scaledAttrWithWrongPrecision default:123456789.34;
 }
 
 entity EntityWithNotValidScaleDefaultValue {
-        field Scaled scaledAttrWithWrongScale = 2.3466;
+        field Scaled scaledAttrWithWrongScale default:2.3466;
 }
 
 // TODO JNG-JNG-4899 Cause issue when the PrimitivesDaoModule injection
 // entity EntityWithNotValidStringDefaultValue {
-//         field SmallString stringAttr = "To large string literal. To large string literal.To large string literal.To large string literal.To large string literal.Too larg";
+//         field SmallString stringAttr default:"To large string literal. To large string literal.To large string literal.To large string literal.To large string literal.Too larg";
 // }
 
 entity EntityWithNotValidRegexDefaultValue {
-        field PhoneNumber regexAttrWrongPattern = "+36-30 123 1234";
+        field PhoneNumber regexAttrWrongPattern default:"+36-30 123 1234";
 }

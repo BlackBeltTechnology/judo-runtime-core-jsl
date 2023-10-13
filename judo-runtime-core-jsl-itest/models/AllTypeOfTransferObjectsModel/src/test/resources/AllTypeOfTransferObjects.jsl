@@ -17,7 +17,7 @@ entity B {
 
 transfer TransferB (B b) {
     field String attributeTransferB;
-    field String mappedNameB <=> b.nameB;
+    field String mappedNameB <= b.nameB input:true;
 }
 
 entity C {
@@ -34,9 +34,5 @@ entity D {
 }
 
 transfer TransferD maps D as d {
-    field String attributeTransferD;
-
-    event initialize {
-        self.attributeTransferD = "SomeName";
-    }
+    field String attributeTransferD default:"SomeName";
 }

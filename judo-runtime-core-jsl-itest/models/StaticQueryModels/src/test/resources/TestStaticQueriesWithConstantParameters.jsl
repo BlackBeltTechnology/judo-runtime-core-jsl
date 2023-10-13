@@ -15,7 +15,7 @@ enum MyEnum {
 
 // MyEntity
 entity MyEntity {
-    field Timestamp ffCreated = Timestamp!now();
+    field Timestamp ffCreated default:Timestamp!now();
     field Boolean   ffBool;
     field Date      ffDate;
     field Time      ffTime;
@@ -28,22 +28,22 @@ entity MyEntity {
 
 // Entity for the results of queries
 entity Snapshot1 {
-    field Timestamp created = Timestamp!now();
+    field Timestamp created default:Timestamp!now();
 
     // fields
-    field Boolean   ffBool      = anyMyEntityFBool(str = "ABC");
-    field Date      ffDate      = anyMyEntityFDate(min = -12.2301, max = 10000.9999);
-    field Time      ffTime      = anyMyEntityFTime(ll = 1234567890, me = MyEnum#A02);
-    field Timestamp ffTimestamp = anyMyEntityFTimestamp(str = "AAA", min = 2.71);
-    field Long      ffLong      = anyMyEntityFLong(d = `2023-01-01`, t = `12:00:13`);
-    field String    ffString    = anyMyEntityFString(l = 1234567890, ts = `2020-01-01T01:11:12-12:00`);
-    field Decimal   ffDecimal   = anyMyEntityFDecimal(str = "cbaaa", d = `2023-01-05`, b = false);
-    field MyEnum    ffEnum      = anyMyEntityFEnum(d = 3.14, t1 = `08:00:00`, t2 = `09:00:00`);
+    field Boolean   ffBool      default:anyMyEntityFBool(str = "ABC");
+    field Date      ffDate      default:anyMyEntityFDate(min = -12.2301, max = 10000.9999);
+    field Time      ffTime      default:anyMyEntityFTime(ll = 1234567890, me = MyEnum#A02);
+    field Timestamp ffTimestamp default:anyMyEntityFTimestamp(str = "AAA", min = 2.71);
+    field Long      ffLong      default:anyMyEntityFLong(d = `2023-01-01`, t = `12:00:13`);
+    field String    ffString    default:anyMyEntityFString(l = 1234567890, ts = `2020-01-01T01:11:12-12:00`);
+    field Decimal   ffDecimal   default:anyMyEntityFDecimal(str = "cbaaa", d = `2023-01-05`, b = false);
+    field MyEnum    ffEnum      default:anyMyEntityFEnum(d = 3.14, t1 = `08:00:00`, t2 = `09:00:00`);
 }
 
 // Entity with derived fields for the results of queries
 entity Snapshot2 {
-    field Timestamp created = Timestamp!now();
+    field Timestamp created default:Timestamp!now();
     // derived
     field Boolean   ffBool      <= anyMyEntityFBool(str = "ABC");
     field Date      ffDate      <= anyMyEntityFDate(min = -12.2301, max = 10000.9999);

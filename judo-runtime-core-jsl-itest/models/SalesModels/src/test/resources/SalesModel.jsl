@@ -13,22 +13,13 @@ type binary Binary mime-type:["text/plain"] max-file-size:1 GB;
 
 error MyError {
 	field Integer code;
-	field String msg;
-	
-	event initialize {
-		self.msg = "Internal Server Error";
-	}
+	field String msg default:"Internal Server Error";
 }
 
 error MyExtendedError {
-	field Integer code;
-	field String msg;
+	field Integer code default:0;
+	field String msg default:"Internal Server Error";
 	field Integer extra;
-
-	event initialize {
-		self.msg = "Internal Server Error";
-		self.extra = 0;
-	}
 }
 
 enum LeadStatus {
@@ -68,7 +59,7 @@ query Lead[] leadsBetween(Integer min = 0, Integer max = 100) on SalesPerson <=
 	SalesPerson.leads!filter(l | l.value > min and  l.value < max);
 
 entity Lead {
-	field Integer value = 100000;
+	field Integer value default:100000;
 
 	relation required SalesPerson salesPerson opposite:leads;
 	relation SC::Contract contract opposite-add:lead;

@@ -13,12 +13,12 @@ entity EntityB {
 }
 
 transfer TransferA (EntityA a) {
-    relation TransferB singleEntityB <=> a.singleEntityB;
-    relation TransferB[] multiEntityB <=> a.multiEntityB;
+    relation TransferB singleEntityB <= a.singleEntityB choices:EntityB!all();
+    relation TransferB[] multiEntityB <= a.multiEntityB choices:EntityB!all();
 }
 
 transfer TransferB (EntityB b) {
-    field String nameB <=> b.nameB;
+    field String nameB <= b.nameB input:true;
 }
 
 // required single
@@ -32,10 +32,10 @@ entity EntityD {
 }
 
 transfer TransferC (EntityC c) {
-    relation required TransferD singleRequiredEntityD <=> c.singleRequiredEntityD;
+    relation required TransferD singleRequiredEntityD <= c.singleRequiredEntityD choices:EntityD!all();
 }
 
 transfer TransferD (EntityD d) {
-    field String nameD <=> d.nameD;
+    field String nameD <= d.nameD input:true;
 }
 

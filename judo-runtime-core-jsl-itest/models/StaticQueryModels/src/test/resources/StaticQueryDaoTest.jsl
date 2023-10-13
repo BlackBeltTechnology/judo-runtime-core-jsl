@@ -13,14 +13,14 @@ enum MyEnum {
 // Primitives
 
 entity EntityWithPrimitives {
-    field Integer integerAttr = 1;
-    field Scaled scaledAttr = 2.34;
-    field String stringAttr = "test";
-    field Boolean boolAttr = true;
-    field Date dateAttr = `2022-07-11`;
-    field Time timeAttr = `22:59:59`;
-    field Timestamp timestampAttr = `2022-07-11T19:09:33Z`;
-    field MyEnum enumAttr = MyEnum#Bombastic;
+    field Integer integerAttr default:1;
+    field Scaled scaledAttr default:2.34;
+    field String stringAttr default:"test";
+    field Boolean boolAttr default:true;
+    field Date dateAttr default:`2022-07-11`;
+    field Time timeAttr default:`22:59:59`;
+    field Timestamp timestampAttr default:`2022-07-11T19:09:33Z`;
+    field MyEnum enumAttr default:MyEnum#Bombastic;
 }
 
 //Integer primitives queries
