@@ -18,168 +18,168 @@ enum TestLiteral {
 }
 
 entity DefaultOperators {
-    field Integer rounded = 1.23!round();
-    field Integer unary = -1 -(-1 + -2) + (11-19); // -6
-    field Integer abs = -2!abs();
-    field Integer addition = 5 + 2;
-    field Integer subtraction = 5 - 2;
-    field Integer pow = 5 ^ 2;
-    field Integer multiplication = 5 * 2;
-    field Scaled division = 5 / 2;
-    field Integer divisionWhole = 5 div 2;
-    field Integer modulo = 5 mod 2;
-    field Boolean lt = 5 < 5;
-    field Boolean lt2 = 2 < 5;
-    field Boolean gt = 5 > 5;
-    field Boolean gt2 = 5 > 2;
-    field Boolean lte = 5 <= 5;
-    field Boolean lte2 = 2 <= 5;
-    field Boolean gte = 5 >= 5;
-    field Boolean gte2 = 5 >= 2;
-    field Boolean eq = 5 == 2;
-    field Boolean neq = 5 != 2;
-    field Integer conditional = 5 > 2 ? 1 : 2;
-    field Boolean groupAnd = (5 - 2 < 2 and 5 + 2 > 2);
-    field Boolean groupOr = (5 - 2 > 2 or 5 + 2 < 2);
+    field Integer rounded default:1.23!round();
+    field Integer unary default:-1 -(-1 + -2) + (11-19); // -6
+    field Integer abs default:-2!abs();
+    field Integer addition default:5 + 2;
+    field Integer subtraction default:5 - 2;
+    field Integer pow default:5 ^ 2;
+    field Integer multiplication default:5 * 2;
+    field Scaled division default:5 / 2;
+    field Integer divisionWhole default:5 div 2;
+    field Integer modulo default:5 mod 2;
+    field Boolean lt default:5 < 5;
+    field Boolean lt2 default:2 < 5;
+    field Boolean gt default:5 > 5;
+    field Boolean gt2 default:5 > 2;
+    field Boolean lte default:5 <= 5;
+    field Boolean lte2 default:2 <= 5;
+    field Boolean gte default:5 >= 5;
+    field Boolean gte2 default:5 >= 2;
+    field Boolean eq default:5 == 2;
+    field Boolean neq default:5 != 2;
+    field Integer conditional default:5 > 2 ? 1 : 2;
+    field Boolean groupAnd default:(5 - 2 < 2 and 5 + 2 > 2);
+    field Boolean groupOr default:(5 - 2 > 2 or 5 + 2 < 2);
 
-    field Integer oneModOne = 1 mod 1;
-    field Scaled oneModOnePointNine = 1 mod 1.9;
-    field Scaled onePointNineModOnePointNine = 1.9 mod 1.9;
-    field Scaled onePointNineModOne = 1.9 mod 1;
-    field Integer oneDivOne = 1 div 1;
-    field Scaled oneDivOnePointNine = 1 div 1.9;
-    field Scaled onePointNineDivOnePointNine = 1.9 div 1.9;
-    field Scaled onePointNineDivOne = 1.9 div 1;
+    field Integer oneModOne default:1 mod 1;
+    field Scaled oneModOnePointNine default:1 mod 1.9;
+    field Scaled onePointNineModOnePointNine default:1.9 mod 1.9;
+    field Scaled onePointNineModOne default:1.9 mod 1;
+    field Integer oneDivOne default:1 div 1;
+    field Scaled oneDivOnePointNine default:1 div 1.9;
+    field Scaled onePointNineDivOnePointNine default:1.9 div 1.9;
+    field Scaled onePointNineDivOne default:1.9 div 1;
 
-    field Boolean dateLt = `2022-07-07` < `2022-07-08`;
-    field Boolean dateLte = `2022-07-07` <= `2022-07-07`;
-    field Boolean dateLte2 = `2022-07-07` <= `2022-07-08`;
-    field Boolean dateGt = `2022-07-09` > `2022-07-08`;
-    field Boolean dateGte = `2022-07-08` >= `2022-07-08`;
-    field Boolean dateGte2 = `2022-07-09` >= `2022-07-08`;
-    field Boolean dateEq = `2022-07-09` == `2022-07-09`;
-    field Boolean dateNeq = `2022-07-10` != `2022-07-09`;
+    field Boolean dateLt default:`2022-07-07` < `2022-07-08`;
+    field Boolean dateLte default:`2022-07-07` <= `2022-07-07`;
+    field Boolean dateLte2 default:`2022-07-07` <= `2022-07-08`;
+    field Boolean dateGt default:`2022-07-09` > `2022-07-08`;
+    field Boolean dateGte default:`2022-07-08` >= `2022-07-08`;
+    field Boolean dateGte2 default:`2022-07-09` >= `2022-07-08`;
+    field Boolean dateEq default:`2022-07-09` == `2022-07-09`;
+    field Boolean dateNeq default:`2022-07-10` != `2022-07-09`;
 
-    field Boolean timeLt = `11:29` < `11:30`;
-    field Boolean timeLte = `11:30` <= `11:30`;
-    field Boolean timeLte2 = `11:29` <= `11:30`;
-    field Boolean timeGt = `11:30` > `11:29`;
-    field Boolean timeGte = `11:29` >= `11:29`;
-    field Boolean timeGte2 = `11:30` >= `11:29`;
-    field Boolean timeEq = `11:30` == `11:30`;
-    field Boolean timeNeq = `11:30` != `11:29`;
+    field Boolean timeLt default:`11:29` < `11:30`;
+    field Boolean timeLte default:`11:30` <= `11:30`;
+    field Boolean timeLte2 default:`11:29` <= `11:30`;
+    field Boolean timeGt default:`11:30` > `11:29`;
+    field Boolean timeGte default:`11:29` >= `11:29`;
+    field Boolean timeGte2 default:`11:30` >= `11:29`;
+    field Boolean timeEq default:`11:30` == `11:30`;
+    field Boolean timeNeq default:`11:30` != `11:29`;
 
-    field Boolean timestampEq = `2020-02-18T09:11:12Z` == `2020-02-18T10:11:12+01:00`;
-    field Boolean timestampNeq = `2020-02-18T10:11:12Z` != `2020-02-18T00:00:00Z`;
+    field Boolean timestampEq default:`2020-02-18T09:11:12Z` == `2020-02-18T10:11:12+01:00`;
+    field Boolean timestampNeq default:`2020-02-18T10:11:12Z` != `2020-02-18T00:00:00Z`;
 
-    field Boolean stringLt = "abc" < "bcd";
-    field Boolean stringLte = "abc" <= "abc";
-    field Boolean stringLte2 = "abc" <= "bcd";
-    field Boolean stringGt = "abc" > "ab";
-    field Boolean stringGte = "abc" >= "abc";
-    field Boolean stringGte2 = "abc" >= "ab";
-    field Boolean stringEq = "abc" == "abc";
-    field Boolean stringNeq = "abc" != "ab";
+    field Boolean stringLt default:"abc" < "bcd";
+    field Boolean stringLte default:"abc" <= "abc";
+    field Boolean stringLte2 default:"abc" <= "bcd";
+    field Boolean stringGt default:"abc" > "ab";
+    field Boolean stringGte default:"abc" >= "abc";
+    field Boolean stringGte2 default:"abc" >= "ab";
+    field Boolean stringEq default:"abc" == "abc";
+    field Boolean stringNeq default:"abc" != "ab";
 
-    field Boolean csStringLt = "aBc" < "abc";
-    field Boolean csStringLte = "aBc" <= "aBc";
-    field Boolean csStringLte2 = "aBc" <= "abc";
-    field Boolean csStringGt = "abc" > "aBc";
-    field Boolean csStringGte = "aBc" >= "aBc";
-    field Boolean csStringGte2 = "abc" >= "aBc";
-    field Boolean csStringEq = "ABC" == "ABC";
-    field Boolean csStringEqFalse = "ABC" == "abc";
-    field Boolean csStringNeq = "ABC" != "abc";
+    field Boolean csStringLt default:"aBc" < "abc";
+    field Boolean csStringLte default:"aBc" <= "aBc";
+    field Boolean csStringLte2 default:"aBc" <= "abc";
+    field Boolean csStringGt default:"abc" > "aBc";
+    field Boolean csStringGte default:"aBc" >= "aBc";
+    field Boolean csStringGte2 default:"abc" >= "aBc";
+    field Boolean csStringEq default:"ABC" == "ABC";
+    field Boolean csStringEqFalse default:"ABC" == "abc";
+    field Boolean csStringNeq default:"ABC" != "abc";
 }
 
 transfer TransferDefaultOperators (DefaultOperators mapped) {
-    field Integer rounded <=> mapped.rounded;
-    field Integer unary <=> mapped.unary; // -6
-    field Integer abs <=> mapped.abs;
-    field Integer addition <=> mapped.addition;
-    field Integer subtraction <=> mapped.subtraction;
-    field Integer pow <=> mapped.pow;
-    field Integer multiplication <=> mapped.multiplication;
-    field Scaled division <=> mapped.division;
-    field Integer divisionWhole <=> mapped.divisionWhole;
-    field Integer modulo <=> mapped.modulo;
-    field Boolean lt <=> mapped.lt;
-    field Boolean lt2 <=> mapped.lt2;
-    field Boolean gt <=> mapped.gt;
-    field Boolean gt2 <=> mapped.gt2;
-    field Boolean lte <=> mapped.lte;
-    field Boolean lte2 <=> mapped.lte2;
-    field Boolean gte <=> mapped.gte;
-    field Boolean gte2 <=> mapped.gte2;
-    field Boolean eq <=> mapped.eq;
-    field Boolean neq <=> mapped.neq;
-    field Integer conditional <=> mapped.conditional;
-    field Boolean groupAnd <=> mapped.groupAnd;
-    field Boolean groupOr <=> mapped.groupOr;
+    field Integer rounded <= mapped.rounded input:true;
+    field Integer unary <= mapped.unary input:true; // -6
+    field Integer abs <= mapped.abs input:true;
+    field Integer addition <= mapped.addition input:true;
+    field Integer subtraction <= mapped.subtraction input:true;
+    field Integer pow <= mapped.pow input:true;
+    field Integer multiplication <= mapped.multiplication input:true;
+    field Scaled division <= mapped.division input:true;
+    field Integer divisionWhole <= mapped.divisionWhole input:true;
+    field Integer modulo <= mapped.modulo input:true;
+    field Boolean lt <= mapped.lt input:true;
+    field Boolean lt2 <= mapped.lt2 input:true;
+    field Boolean gt <= mapped.gt input:true;
+    field Boolean gt2 <= mapped.gt2 input:true;
+    field Boolean lte <= mapped.lte input:true;
+    field Boolean lte2 <= mapped.lte2 input:true;
+    field Boolean gte <= mapped.gte input:true;
+    field Boolean gte2 <= mapped.gte2 input:true;
+    field Boolean eq <= mapped.eq input:true;
+    field Boolean neq <= mapped.neq input:true;
+    field Integer conditional <= mapped.conditional input:true;
+    field Boolean groupAnd <= mapped.groupAnd input:true;
+    field Boolean groupOr <= mapped.groupOr input:true;
 
-    field Integer oneModOne <=> mapped.oneModOne;
-    field Scaled oneModOnePointNine <=> mapped.oneModOnePointNine;
-    field Scaled onePointNineModOnePointNine <=> mapped.onePointNineModOnePointNine;
-    field Scaled onePointNineModOne <=> mapped.onePointNineModOne;
-    field Integer oneDivOne <=> mapped.oneDivOne;
-    field Scaled oneDivOnePointNine <=> mapped.oneDivOnePointNine;
-    field Scaled onePointNineDivOnePointNine <=> mapped.onePointNineDivOnePointNine;
-    field Scaled onePointNineDivOne <=> mapped.onePointNineDivOne;
+    field Integer oneModOne <= mapped.oneModOne input:true;
+    field Scaled oneModOnePointNine <= mapped.oneModOnePointNine input:true;
+    field Scaled onePointNineModOnePointNine <= mapped.onePointNineModOnePointNine input:true;
+    field Scaled onePointNineModOne <= mapped.onePointNineModOne input:true;
+    field Integer oneDivOne <= mapped.oneDivOne input:true;
+    field Scaled oneDivOnePointNine <= mapped.oneDivOnePointNine input:true;
+    field Scaled onePointNineDivOnePointNine <= mapped.onePointNineDivOnePointNine input:true;
+    field Scaled onePointNineDivOne <= mapped.onePointNineDivOne input:true;
 
-    field Boolean dateLt <=> mapped.dateLt;
-    field Boolean dateLte <=> mapped.dateLte;
-    field Boolean dateLte2 <=> mapped.dateLte2;
-    field Boolean dateGt <=> mapped.dateGt;
-    field Boolean dateGte <=> mapped.dateGte;
-    field Boolean dateGte2 <=> mapped.dateGte2;
-    field Boolean dateEq <=> mapped.dateEq;
-    field Boolean dateNeq <=> mapped.dateNeq;
+    field Boolean dateLt <= mapped.dateLt input:true;
+    field Boolean dateLte <= mapped.dateLte input:true;
+    field Boolean dateLte2 <= mapped.dateLte2 input:true;
+    field Boolean dateGt <= mapped.dateGt input:true;
+    field Boolean dateGte <= mapped.dateGte input:true;
+    field Boolean dateGte2 <= mapped.dateGte2 input:true;
+    field Boolean dateEq <= mapped.dateEq input:true;
+    field Boolean dateNeq <= mapped.dateNeq input:true;
 
-    field Boolean timeLt <=> mapped.timeLt;
-    field Boolean timeLte <=> mapped.timeLte;
-    field Boolean timeLte2 <=> mapped.timeLte2;
-    field Boolean timeGt <=> mapped.timeGt;
-    field Boolean timeGte <=> mapped.timeGte;
-    field Boolean timeGte2 <=> mapped.timeGte2;
-    field Boolean timeEq <=> mapped.timeEq;
-    field Boolean timeNeq <=> mapped.timeNeq;
+    field Boolean timeLt <= mapped.timeLt input:true;
+    field Boolean timeLte <= mapped.timeLte input:true;
+    field Boolean timeLte2 <= mapped.timeLte2 input:true;
+    field Boolean timeGt <= mapped.timeGt input:true;
+    field Boolean timeGte <= mapped.timeGte input:true;
+    field Boolean timeGte2 <= mapped.timeGte2 input:true;
+    field Boolean timeEq <= mapped.timeEq input:true;
+    field Boolean timeNeq <= mapped.timeNeq input:true;
 
-    field Boolean timestampEq <=> mapped.timestampEq;
-    field Boolean timestampNeq <=> mapped.timestampNeq;
+    field Boolean timestampEq <= mapped.timestampEq input:true;
+    field Boolean timestampNeq <= mapped.timestampNeq input:true;
 
-    field Boolean stringLt <=> mapped.stringLt;
-    field Boolean stringLte <=> mapped.stringLte;
-    field Boolean stringLte2 <=> mapped.stringLte2;
-    field Boolean stringGt <=> mapped.stringGt;
-    field Boolean stringGte <=> mapped.stringGte;
-    field Boolean stringGte2 <=> mapped.stringGte2;
-    field Boolean stringEq <=> mapped.stringEq;
-    field Boolean stringNeq <=> mapped.stringNeq;
+    field Boolean stringLt <= mapped.stringLt input:true;
+    field Boolean stringLte <= mapped.stringLte input:true;
+    field Boolean stringLte2 <= mapped.stringLte2 input:true;
+    field Boolean stringGt <= mapped.stringGt input:true;
+    field Boolean stringGte <= mapped.stringGte input:true;
+    field Boolean stringGte2 <= mapped.stringGte2 input:true;
+    field Boolean stringEq <= mapped.stringEq input:true;
+    field Boolean stringNeq <= mapped.stringNeq input:true;
 
-    field Boolean csStringLt <=> mapped.csStringLt;
-    field Boolean csStringLte <=> mapped.csStringLte;
-    field Boolean csStringLte2 <=> mapped.csStringLte2;
-    field Boolean csStringGt <=> mapped.csStringGt;
-    field Boolean csStringGte <=> mapped.csStringGte;
-    field Boolean csStringGte2 <=> mapped.csStringGte2;
-    field Boolean csStringEq <=> mapped.csStringEq;
-    field Boolean csStringEqFalse <=> mapped.csStringEqFalse;
-    field Boolean csStringNeq <=> mapped.csStringNeq;
+    field Boolean csStringLt <= mapped.csStringLt input:true;
+    field Boolean csStringLte <= mapped.csStringLte input:true;
+    field Boolean csStringLte2 <= mapped.csStringLte2 input:true;
+    field Boolean csStringGt <= mapped.csStringGt input:true;
+    field Boolean csStringGte <= mapped.csStringGte input:true;
+    field Boolean csStringGte2 <= mapped.csStringGte2 input:true;
+    field Boolean csStringEq <= mapped.csStringEq input:true;
+    field Boolean csStringEqFalse <= mapped.csStringEqFalse input:true;
+    field Boolean csStringNeq <= mapped.csStringNeq input:true;
 }
 
 
 entity DerivedSource {
-    field String firstName = "John";
-    field String lastName = "Pro";
-    field Integer age = 35;
-    field Scaled score = 98.75;
+    field String firstName default:"John";
+    field String lastName default:"Pro";
+    field Integer age default:35;
+    field Scaled score default:98.75;
 }
 
 transfer TransferDerivedSource (DerivedSource mapped) {
-    field String firstName <=> mapped.firstName;
-    field String lastName <=> mapped.lastName;
-    field Integer age <=> mapped.age;
-    field Scaled score <=> mapped.score;
+    field String firstName <= mapped.firstName input:true;
+    field String lastName <= mapped.lastName input:true;
+    field Integer age <= mapped.age input:true;
+    field Scaled score <= mapped.score input:true;
 }
 
 
@@ -222,10 +222,8 @@ entity DerivedOperators {
 }
 
 transfer TransferDerivedOperators (DerivedOperators mapped) {
-    @Embedded
-    relation required TransferDerivedSource source <=> mapped.source;
-    @Embedded
-    relation TransferDerivedSource undefined <=> mapped.undefined;
+    relation required TransferDerivedSource source <= mapped.source eager:true choices:DerivedSource!all();
+    relation TransferDerivedSource undefined <= mapped.undefined eager:true choices:DerivedSource!all();
     field String stringConcat <= mapped.stringConcat;
     field Integer firstNameLength <= mapped.firstNameLength;
     field Integer rounded <= mapped.rounded;
@@ -262,8 +260,8 @@ transfer TransferDerivedOperators (DerivedOperators mapped) {
 }
 
 entity E1 {
-    field TestLiteral f1 = TestLiteral#ZZ00;
-    field TestLiteral f2 = TestLiteral#Aaa01;
+    field TestLiteral f1 default:TestLiteral#ZZ00;
+    field TestLiteral f2 default:TestLiteral#Aaa01;
     field Boolean f3 <= self.f1 < self.f2;
     field Boolean f4 <= self.f1 <= self.f2;
     field Boolean f5 <= self.f1 > self.f2;
@@ -274,8 +272,8 @@ entity E1 {
 }
 
 transfer TE1 (E1 mapped){
-    field TestLiteral f1 <=> mapped.f1;
-    field TestLiteral f2  <=> mapped.f2;
+    field TestLiteral f1 <= mapped.f1 input:true;
+    field TestLiteral f2  <= mapped.f2 input:true;
     field Boolean f3 <= mapped.f3;
     field Boolean f4 <= mapped.f4;
     field Boolean f5 <= mapped.f5;

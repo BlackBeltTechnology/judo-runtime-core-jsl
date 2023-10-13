@@ -38,16 +38,16 @@ entity EntityForMapping {
 }
 
 transfer TransferOptionalPrimitives (EntityForMapping mappedEntity) {
-    field Integer integerAttr <=> mappedEntity.integerAttr;
-    field Scaled scaledAttr <=> mappedEntity.scaledAttr;
-    field SmallString stringAttr <=> mappedEntity.stringAttr;
-    field PhoneNumber regexAttr <=> mappedEntity.regexAttr;
-    field Boolean boolAttr <=> mappedEntity.boolAttr;
-    field Date dateAttr <=> mappedEntity.dateAttr;
-    field Timestamp timestampAttr <=> mappedEntity.timestampAttr;
-    field Time timeAttr <=> mappedEntity.timeAttr;
-    field Enum enumAttr <=> mappedEntity.enumAttr;
-    field Binary binaryAttr <=> mappedEntity.binaryAttr;
+    field Integer integerAttr <= mappedEntity.integerAttr input:true;
+    field Scaled scaledAttr <= mappedEntity.scaledAttr input:true;
+    field SmallString stringAttr <= mappedEntity.stringAttr input:true;
+    field PhoneNumber regexAttr <= mappedEntity.regexAttr input:true;
+    field Boolean boolAttr <= mappedEntity.boolAttr input:true;
+    field Date dateAttr <= mappedEntity.dateAttr input:true;
+    field Timestamp timestampAttr <= mappedEntity.timestampAttr input:true;
+    field Time timeAttr <= mappedEntity.timeAttr input:true;
+    field Enum enumAttr <= mappedEntity.enumAttr input:true;
+    field Binary binaryAttr <= mappedEntity.binaryAttr input:true;
 
     field Boolean derivedBoolAttr <= mappedEntity.derivedBoolAttr;
     field Binary derivedBinaryAttr <= mappedEntity.derivedBinaryAttr;
@@ -75,104 +75,104 @@ entity EntityForMappingRequired {
 }
 
 transfer TransferRequiredPrimitives (EntityForMappingRequired mappedEntity) {
-    field required Integer integerAttr <=> mappedEntity.integerAttr;
-    field required Scaled scaledAttr <=> mappedEntity.scaledAttr;
-    field required String stringAttr <=> mappedEntity.stringAttr;
-    field required PhoneNumber regexAttr <=> mappedEntity.regexAttr;
-    field required Boolean boolAttr <=> mappedEntity.boolAttr;
-    field required Date dateAttr <=> mappedEntity.dateAttr;
-    field required Timestamp timestampAttr <=> mappedEntity.timestampAttr;
-    field required Time timeAttr <=> mappedEntity.timeAttr;
-    field required Enum enumAttr <=> mappedEntity.enumAttr;
-    field required Binary binaryAttr <=> mappedEntity.binaryAttr;
+    field required Integer integerAttr <= mappedEntity.integerAttr input:true;
+    field required Scaled scaledAttr <= mappedEntity.scaledAttr input:true;
+    field required String stringAttr <= mappedEntity.stringAttr input:true;
+    field required PhoneNumber regexAttr <= mappedEntity.regexAttr input:true;
+    field required Boolean boolAttr <= mappedEntity.boolAttr input:true;
+    field required Date dateAttr <= mappedEntity.dateAttr input:true;
+    field required Timestamp timestampAttr <= mappedEntity.timestampAttr input:true;
+    field required Time timeAttr <= mappedEntity.timeAttr input:true;
+    field required Enum enumAttr <= mappedEntity.enumAttr input:true;
+    field required Binary binaryAttr <= mappedEntity.binaryAttr input:true;
 }
 
 entity EntityWithPrimitiveDefaults {
-    field Integer integerAttr = 1;
-    field Scaled scaledAttr = 2.34;
-    field String stringAttr = "test";
-    field PhoneNumber regexAttr = "+36 (30) 123 1234";
-    field Boolean boolAttr = true;
-    field Date dateAttr = `2022-07-11`;
-    field Timestamp timestampAttr = `2022-07-11T19:09:33Z`;
-    field Time timeAttr = `23:59:59`;
-    field Time shortTimeAttr = `23:59`;
+    field Integer integerAttr default:1;
+    field Scaled scaledAttr default:2.34;
+    field String stringAttr default:"test";
+    field PhoneNumber regexAttr default:"+36 (30) 123 1234";
+    field Boolean boolAttr default:true;
+    field Date dateAttr default:`2022-07-11`;
+    field Timestamp timestampAttr default:`2022-07-11T19:09:33Z`;
+    field Time timeAttr default:`23:59:59`;
+    field Time shortTimeAttr default:`23:59`;
     field Binary binaryAttr; // There is no syntax to define default value for binary
-    field Enum enumAttr = Enum#EnumA;
+    field Enum enumAttr default:Enum#EnumA;
 }
 
 transfer TransferWithPrimitiveDefaults(EntityWithPrimitiveDefaults mappedEntity) {
-    field Integer integerAttr <=> mappedEntity.integerAttr;
-    field Scaled scaledAttr <=> mappedEntity.scaledAttr;
-    field String stringAttr <=> mappedEntity.stringAttr;
-    field PhoneNumber regexAttr <=> mappedEntity.regexAttr;
-    field Boolean boolAttr <=> mappedEntity.boolAttr;
-    field Date dateAttr <=> mappedEntity.dateAttr;
-    field Timestamp timestampAttr <=> mappedEntity.timestampAttr;
-    field Time timeAttr <=> mappedEntity.timeAttr;
-    field Time shortTimeAttr <=> mappedEntity.shortTimeAttr;
-    field Enum enumAttr <=> mappedEntity.enumAttr;
-    field Binary binaryAttr <=> mappedEntity.binaryAttr;
+    field Integer integerAttr <= mappedEntity.integerAttr input:true;
+    field Scaled scaledAttr <= mappedEntity.scaledAttr input:true;
+    field String stringAttr <= mappedEntity.stringAttr input:true;
+    field PhoneNumber regexAttr <= mappedEntity.regexAttr input:true;
+    field Boolean boolAttr <= mappedEntity.boolAttr input:true;
+    field Date dateAttr <= mappedEntity.dateAttr input:true;
+    field Timestamp timestampAttr <= mappedEntity.timestampAttr input:true;
+    field Time timeAttr <= mappedEntity.timeAttr input:true;
+    field Time shortTimeAttr <= mappedEntity.shortTimeAttr input:true;
+    field Enum enumAttr <= mappedEntity.enumAttr input:true;
+    field Binary binaryAttr <= mappedEntity.binaryAttr input:true;
 }
 
 entity EntityRequiredWithPrimitiveDefaults {
-    field required Integer integerAttr = 1;
-    field required Scaled scaledAttr = 2.34;
-    field required String stringAttr = "test";
-    field required PhoneNumber regexAttr = "+36 (30) 123 1234";
-    field required Boolean boolAttr = true;
-    field required Date dateAttr = `2022-07-11`;
-    field required Timestamp timestampAttr = `2022-07-11T19:09:33Z`;
-    field required Time timeAttr = `23:59:59`;
-    field required Time shortTimeAttr = `23:59`;
-    field required Enum enumAttr = Enum#EnumA;
+    field required Integer integerAttr default:1;
+    field required Scaled scaledAttr default:2.34;
+    field required String stringAttr default:"test";
+    field required PhoneNumber regexAttr default:"+36 (30) 123 1234";
+    field required Boolean boolAttr default:true;
+    field required Date dateAttr default:`2022-07-11`;
+    field required Timestamp timestampAttr default:`2022-07-11T19:09:33Z`;
+    field required Time timeAttr default:`23:59:59`;
+    field required Time shortTimeAttr default:`23:59`;
+    field required Enum enumAttr default:Enum#EnumA;
 }
 
 transfer TransferPrimitiveDefaults(EntityRequiredWithPrimitiveDefaults mappedEntity) {
-    field Integer integerAttr <=> mappedEntity.integerAttr;
-    field Scaled scaledAttr <=> mappedEntity.scaledAttr;
-    field String stringAttr <=> mappedEntity.stringAttr;
-    field PhoneNumber regexAttr <=> mappedEntity.regexAttr;
-    field Boolean boolAttr <=> mappedEntity.boolAttr;
-    field Date dateAttr <=> mappedEntity.dateAttr;
-    field Timestamp timestampAttr <=> mappedEntity.timestampAttr;
-    field Time timeAttr <=> mappedEntity.timeAttr;
-    field Enum enumAttr <=> mappedEntity.enumAttr;
+    field Integer integerAttr <= mappedEntity.integerAttr input:true;
+    field Scaled scaledAttr <= mappedEntity.scaledAttr input:true;
+    field String stringAttr <= mappedEntity.stringAttr input:true;
+    field PhoneNumber regexAttr <= mappedEntity.regexAttr input:true;
+    field Boolean boolAttr <= mappedEntity.boolAttr input:true;
+    field Date dateAttr <= mappedEntity.dateAttr input:true;
+    field Timestamp timestampAttr <= mappedEntity.timestampAttr input:true;
+    field Time timeAttr <= mappedEntity.timeAttr input:true;
+    field Enum enumAttr <= mappedEntity.enumAttr input:true;
 }
 
 transfer TransferWithRequiredPrimitiveDefaults(EntityRequiredWithPrimitiveDefaults mappedEntity) {
-    field required Integer integerAttr <=> mappedEntity.integerAttr;
-    field required Scaled scaledAttr <=> mappedEntity.scaledAttr;
-    field required String stringAttr <=> mappedEntity.stringAttr;
-    field required PhoneNumber regexAttr <=> mappedEntity.regexAttr;
-    field required Boolean boolAttr <=> mappedEntity.boolAttr;
-    field required Date dateAttr <=> mappedEntity.dateAttr;
-    field required Timestamp timestampAttr <=> mappedEntity.timestampAttr;
-    field required Time timeAttr <=> mappedEntity.timeAttr;
-    field required Enum enumAttr <=> mappedEntity.enumAttr;
+    field required Integer integerAttr <= mappedEntity.integerAttr input:true;
+    field required Scaled scaledAttr <= mappedEntity.scaledAttr input:true;
+    field required String stringAttr <= mappedEntity.stringAttr input:true;
+    field required PhoneNumber regexAttr <= mappedEntity.regexAttr input:true;
+    field required Boolean boolAttr <= mappedEntity.boolAttr input:true;
+    field required Date dateAttr <= mappedEntity.dateAttr input:true;
+    field required Timestamp timestampAttr <= mappedEntity.timestampAttr input:true;
+    field required Time timeAttr <= mappedEntity.timeAttr input:true;
+    field required Enum enumAttr <= mappedEntity.enumAttr input:true;
 }
 
 
 entity EntityWithPrimitiveDefaultExpressions {
-    field Integer integerAttr = 1.23!round();
-    field Scaled scaledAttr = 2.9!abs();
-    field String stringAttr = true!asString();
-    field PhoneNumber regexAttr = "+36 (30) 123 1234";
-    field Boolean boolAttr = 2 > -1;
-    field Date dateAttr = Date!now();
-    field Timestamp timestampAttr = Timestamp!now();
-    field Time timeAttr = Time!of(hour = 23, minute = 59, second = 59);
+    field Integer integerAttr default:1.23!round();
+    field Scaled scaledAttr default:2.9!abs();
+    field String stringAttr default:true!asString();
+    field PhoneNumber regexAttr default:"+36 (30) 123 1234";
+    field Boolean boolAttr default:2 > -1;
+    field Date dateAttr default:Date!now();
+    field Timestamp timestampAttr default:Timestamp!now();
+    field Time timeAttr default:Time!of(hour = 23, minute = 59, second = 59);
 }
 
 transfer TransferWithPrimitiveDefaultExpressions(EntityWithPrimitiveDefaultExpressions mappedEntity) {
-    field Integer integerAttr <=> mappedEntity.integerAttr;
-    field Scaled scaledAttr <=> mappedEntity.scaledAttr;
-    field String stringAttr <=> mappedEntity.stringAttr;
-    field PhoneNumber regexAttr <=> mappedEntity.regexAttr;
-    field Boolean boolAttr <=> mappedEntity.boolAttr;
-    field Date dateAttr <=> mappedEntity.dateAttr;
-    field Timestamp timestampAttr <=> mappedEntity.timestampAttr;
-    field Time timeAttr <=> mappedEntity.timeAttr;
+    field Integer integerAttr <= mappedEntity.integerAttr input:true;
+    field Scaled scaledAttr <= mappedEntity.scaledAttr input:true;
+    field String stringAttr <= mappedEntity.stringAttr input:true;
+    field PhoneNumber regexAttr <= mappedEntity.regexAttr input:true;
+    field Boolean boolAttr <= mappedEntity.boolAttr input:true;
+    field Date dateAttr <= mappedEntity.dateAttr input:true;
+    field Timestamp timestampAttr <= mappedEntity.timestampAttr input:true;
+    field Time timeAttr <= mappedEntity.timeAttr input:true;
 }
 
 entity RequiredForNotRequiredTransfer {
@@ -189,16 +189,16 @@ entity RequiredForNotRequiredTransfer {
 }
 
 transfer TransferWithRequiredEntityPrimitives (RequiredForNotRequiredTransfer mappedEntity) {
-    field Integer integerAttr <=> mappedEntity.integerAttr;
-    field Scaled scaledAttr <=> mappedEntity.scaledAttr;
-    field String stringAttr <=> mappedEntity.stringAttr;
-    field PhoneNumber regexAttr <=> mappedEntity.regexAttr;
-    field Boolean boolAttr <=> mappedEntity.boolAttr;
-    field Date dateAttr <=> mappedEntity.dateAttr;
-    field Timestamp timestampAttr <=> mappedEntity.timestampAttr;
-    field Time timeAttr <=> mappedEntity.timeAttr;
-    field Enum enumAttr <=> mappedEntity.enumAttr;
-    field Binary binaryAttr <=> mappedEntity.binaryAttr;
+    field Integer integerAttr <= mappedEntity.integerAttr input:true;
+    field Scaled scaledAttr <= mappedEntity.scaledAttr input:true;
+    field String stringAttr <= mappedEntity.stringAttr input:true;
+    field PhoneNumber regexAttr <= mappedEntity.regexAttr input:true;
+    field Boolean boolAttr <= mappedEntity.boolAttr input:true;
+    field Date dateAttr <= mappedEntity.dateAttr input:true;
+    field Timestamp timestampAttr <= mappedEntity.timestampAttr input:true;
+    field Time timeAttr <= mappedEntity.timeAttr input:true;
+    field Enum enumAttr <= mappedEntity.enumAttr input:true;
+    field Binary binaryAttr <= mappedEntity.binaryAttr input:true;
 }
 
 entity EntityWithIdentifiers {
@@ -215,14 +215,14 @@ entity EntityWithIdentifiers {
 }
 
 transfer TransferWithIdentifiers (EntityWithIdentifiers mappedEntity) {
-    field Integer integerAttr <=> mappedEntity.integerAttr;
-    field Scaled scaledAttr <=> mappedEntity.scaledAttr;
-    field String stringAttr <=> mappedEntity.stringAttr;
-    field PhoneNumber regexAttr <=> mappedEntity.regexAttr;
-    field Boolean boolAttr <=> mappedEntity.boolAttr;
-    field Date dateAttr <=> mappedEntity.dateAttr;
-    field Timestamp timestampAttr <=> mappedEntity.timestampAttr;
-    field Time timeAttr <=> mappedEntity.timeAttr;
-    field Enum enumAttr <=> mappedEntity.enumAttr;
-    field Binary binaryAttr <=> mappedEntity.binaryAttr;
+    field Integer integerAttr <= mappedEntity.integerAttr input:true;
+    field Scaled scaledAttr <= mappedEntity.scaledAttr input:true;
+    field String stringAttr <= mappedEntity.stringAttr input:true;
+    field PhoneNumber regexAttr <= mappedEntity.regexAttr input:true;
+    field Boolean boolAttr <= mappedEntity.boolAttr input:true;
+    field Date dateAttr <= mappedEntity.dateAttr input:true;
+    field Timestamp timestampAttr <= mappedEntity.timestampAttr input:true;
+    field Time timeAttr <= mappedEntity.timeAttr input:true;
+    field Enum enumAttr <= mappedEntity.enumAttr input:true;
+    field Binary binaryAttr <= mappedEntity.binaryAttr input:true;
 }

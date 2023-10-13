@@ -17,9 +17,9 @@ entity ParentA {
     identifier String identifierA;
     field String derivedA <= self.nameA;
     relation RelationEntity[] relationEntities;
-    @Query
-    field String queryA(String param) <= param;
 }
+
+query String queryA(String param) on ParentA <= param;
 
 entity ParentB {
     field String nameB;
@@ -38,16 +38,16 @@ entity ParentRequiredC {
 }
 
 entity ParentDefaultD {
-    field Integer integerAttr = 1;
-    field Scaled scaledAttr = 2.34;
-    field String stringAttr = "test";
-    field PhoneNumber regexAttr = "+36 (30) 123 1234";
-    field Boolean boolAttr = true;
-    field Date dateAttr = `2022-07-11`;
-    field Timestamp timestampAttr = `2022-07-11T19:09:33Z`;
-    field Time timeAttr = `23:59:59`;
-    field Time shortTimeAttr = `23:59`;
-    field MyEnum enumAttr = MyEnum#Bombastic;
+    field Integer integerAttr default:1;
+    field Scaled scaledAttr default:2.34;
+    field String stringAttr default:"test";
+    field PhoneNumber regexAttr default:"+36 (30) 123 1234";
+    field Boolean boolAttr default:true;
+    field Date dateAttr default:`2022-07-11`;
+    field Timestamp timestampAttr default:`2022-07-11T19:09:33Z`;
+    field Time timeAttr default:`23:59:59`;
+    field Time shortTimeAttr default:`23:59`;
+    field MyEnum enumAttr default:MyEnum#Bombastic;
 }
 
 entity abstract ParentAbstract {
@@ -55,7 +55,7 @@ entity abstract ParentAbstract {
 }
 
 entity RelationEntity {
-	field Integer number = 1 ;
+	field Integer number default:1 ;
 }
 
 entity E extends ParentA {

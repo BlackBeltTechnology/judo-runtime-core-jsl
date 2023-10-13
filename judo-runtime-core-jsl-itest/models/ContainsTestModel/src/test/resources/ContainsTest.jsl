@@ -15,12 +15,12 @@ entity B {
 }
 
 transfer TA maps A as a {
-    relation TB[] bs <=> a.bs;
-    relation TB b <=> a.b;
+    relation TB[] bs <= a.bs choices:B!all();
+    relation TB b <= a.b  choices:B!all();
     field Boolean containsTest <= a.containsTest;
     field Boolean containsTest1 <= a.containsTest1;
 }
 
 transfer TB maps B as b {
-    field String name <=> b.name;
+    field String name <= b.name input:true;
 }
