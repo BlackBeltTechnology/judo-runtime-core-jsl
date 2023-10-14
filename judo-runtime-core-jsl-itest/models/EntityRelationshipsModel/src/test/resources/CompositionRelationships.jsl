@@ -52,15 +52,15 @@ entity EntityF4 {
 
 transfer TransferA(EntityA entitya) {
     field String stringA <= entitya.stringA input:true;
-    relation TransferC singleConA <= entitya.singleConA eager:true choices:EntityC!all();
-    relation TransferC[] collectionConA <= entitya.collectionConA eager:true choices:EntityC!all();
-    relation required TransferC singleRequiredConA <= entitya.singleRequiredConA eager:true choices:EntityC!all();
+    relation TransferC singleConA <= entitya.singleConA eager:true;
+    relation TransferC[] collectionConA <= entitya.collectionConA eager:true;
+    relation required TransferC singleRequiredConA <= entitya.singleRequiredConA eager:true;
 }
 
 transfer TransferC(EntityC entityc) {
     field String stringC <= entityc.stringC input:true;
     field String stringB <= entityc.stringB input:true;
-    relation TransferD[] multipleDonB <= entityc.multipleDonB eager:true choices:EntityD!all();
+    relation TransferD[] multipleDonB <= entityc.multipleDonB eager:true;
 }
 
 transfer TransferD(EntityD entityd) {

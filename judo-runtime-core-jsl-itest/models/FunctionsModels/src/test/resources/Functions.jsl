@@ -74,8 +74,8 @@ entity Functions {
 }
 
 transfer TransferFunctions (Functions mapped) {
-    relation TransferEntity `entity` <= mapped.`entity` eager:true choices:Entity!all();
-    relation TransferEntityWithPrimitiveDefaults entityWithPrimitives <= mapped.entityWithPrimitives eager:true choices:EntityWithPrimitiveDefaults!all();
+    relation TransferEntity `entity` <= mapped.`entity` eager:true;
+    relation TransferEntityWithPrimitiveDefaults entityWithPrimitives <= mapped.entityWithPrimitives eager:true;
 }
 
 entity AnyTypeFunctions extends Functions {
@@ -123,8 +123,8 @@ entity AnyTypeFunctions extends Functions {
 
 transfer TransferAnyTypeFunctions (AnyTypeFunctions mapped) {
 
-    relation TransferEntity `entity` <= mapped.`entity` eager:true choices:Entity!all();
-    relation TransferEntityWithPrimitiveDefaults entityWithPrimitives <= mapped.entityWithPrimitives eager:true choices:EntityWithPrimitiveDefaults!all();
+    relation TransferEntity `entity` <= mapped.`entity` eager:true;
+    relation TransferEntityWithPrimitiveDefaults entityWithPrimitives <= mapped.entityWithPrimitives eager:true;
 
     field Boolean integerIsDefinedFalse  <= mapped.integerIsDefinedFalse;
     field Boolean integerIsDefinedTrue  <= mapped.integerIsDefinedTrue;
@@ -896,9 +896,9 @@ entity InstanceFunctions {
 transfer TransferInstanceFunctions (InstanceFunctions mapped){
     field String instanceField <= mapped.instanceField input:true;
 
-    relation FE::TransferExternalEntity external <= mapped.external eager:true choices:FE::ExternalEntity!all();
-    relation TransferParent parent <= mapped.parent eager:true choices:Parent!all();
-    relation TransferChild child <= mapped.child eager:true choices:Child!all();
+    relation FE::TransferExternalEntity external <= mapped.external eager:true;
+    relation TransferParent parent <= mapped.parent eager:true;
+    relation TransferChild child <= mapped.child eager:true;
 
     relation TransferParent[] parents <= mapped.parents choices:Parent!all();
     relation TransferChild[] children <= mapped.children choices:Child!all();
@@ -1011,8 +1011,8 @@ entity CollectionFunctions {
 }
 
 transfer TransferCollectionFunctions (CollectionFunctions mapped) {
-    relation TransferParent[] parentsField <= mapped.parentsField eager:true choices:Parent!all();
-    relation TransferChild[] childrenField <= mapped.childrenField eager:true choices:Child!all();
+    relation TransferParent[] parentsField <= mapped.parentsField eager:true;
+    relation TransferChild[] childrenField <= mapped.childrenField eager:true;
 
     relation TransferParent[] parentsRelation <= mapped.parentsRelation choices:Parent!all();
     relation TransferChild[] childrenRelation <= mapped.childrenRelation choices:Child!all();

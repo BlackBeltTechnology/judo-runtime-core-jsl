@@ -13,8 +13,8 @@ entity EntityB {
 }
 
 transfer TransferA (EntityA a) {
-    relation TransferB singleEntityB <= a.singleEntityB choices:EntityB!all();
-    relation TransferB[] multiEntityB <= a.multiEntityB choices:EntityB!all();
+    relation TransferB singleEntityB <= a.singleEntityB;
+    relation TransferB[] multiEntityB <= a.multiEntityB;
 }
 
 transfer TransferB (EntityB b) {
@@ -32,10 +32,9 @@ entity EntityD {
 }
 
 transfer TransferC (EntityC c) {
-    relation required TransferD singleRequiredEntityD <= c.singleRequiredEntityD choices:EntityD!all();
+    relation required TransferD singleRequiredEntityD <= c.singleRequiredEntityD;
 }
 
 transfer TransferD (EntityD d) {
     field String nameD <= d.nameD input:true;
 }
-

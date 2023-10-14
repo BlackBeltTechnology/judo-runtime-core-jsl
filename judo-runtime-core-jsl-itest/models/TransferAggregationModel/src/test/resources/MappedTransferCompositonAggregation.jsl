@@ -13,8 +13,8 @@ entity EntityB {
 }
 
 transfer TransferA (EntityA a) {
-    relation TransferB singleEntityB <= a.singleEntityB eager:true choices:EntityB!all();
-    relation TransferB[] multiEntityB <= a.multiEntityB eager:true choices:EntityB!all();
+    relation TransferB singleEntityB <= a.singleEntityB eager:true;
+    relation TransferB[] multiEntityB <= a.multiEntityB eager:true;
 }
 
 transfer TransferB (EntityB b) {
@@ -32,7 +32,7 @@ entity EntityD {
 }
 
 transfer TransferC (EntityC c) {
-    relation required TransferD singleRequiredEntityD <= c.singleRequiredEntityD eager:true choices:EntityD!all();
+    relation required TransferD singleRequiredEntityD <= c.singleRequiredEntityD eager:true;
 
 }
 
@@ -55,11 +55,11 @@ entity EntityG {
 }
 
 transfer TransferE (EntityE e) {
-    relation TransferF singleEntityF <= e.singleEntityF eager:true choices:EntityF!all();
+    relation TransferF singleEntityF <= e.singleEntityF eager:true;
 }
 
 transfer TransferF (EntityF f) {
-    relation TransferG[] multiEntityG <= f.multiEntityG eager:true choices:EntityG!all();
+    relation TransferG[] multiEntityG <= f.multiEntityG eager:true;
 }
 
 transfer TransferG (EntityG g) {
@@ -88,15 +88,15 @@ entity EntityK {
 
 transfer TransferH(EntityH entityh) {
     field String stringH <= entityh.stringH input:true;
-    relation TransferJ singleJonH <= entityh.singleJonH eager:true choices:EntityJ!all();
-    relation TransferJ[] collectionJonH <= entityh.collectionJonH eager:true choices:EntityJ!all();
-    relation required TransferJ singleRequiredJonH <= entityh.singleRequiredJonH eager:true choices:EntityJ!all();
+    relation TransferJ singleJonH <= entityh.singleJonH eager:true;
+    relation TransferJ[] collectionJonH <= entityh.collectionJonH eager:true;
+    relation required TransferJ singleRequiredJonH <= entityh.singleRequiredJonH eager:true;
 }
 
 transfer TransferJ(EntityJ entityj) {
     field String stringI <= entityj.stringI input:true;
     field String stringJ <= entityj.stringJ input:true;
-    relation TransferK[] multipleKonI <= entityj.multipleKonI eager:true choices:EntityK!all();
+    relation TransferK[] multipleKonI <= entityj.multipleKonI eager:true;
 }
 
 transfer TransferK(EntityK entityk) {

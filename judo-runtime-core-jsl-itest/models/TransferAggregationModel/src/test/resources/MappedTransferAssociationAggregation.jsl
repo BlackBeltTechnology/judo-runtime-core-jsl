@@ -201,15 +201,15 @@ entity K {
 
 transfer TH(H entityh) {
     field String stringH <= entityh.stringH input:true;
-    relation TJ singleJonH <= entityh.singleJonH eager:true choices:J!all();
-    relation TJ[] collectionJonH <= entityh.collectionJonH eager:true choices:J!all();
-    relation required TJ singleRequiredJonH <= entityh.singleRequiredJonH eager:true choices:J!all();
+    relation TJ singleJonH <= entityh.singleJonH eager:true;
+    relation TJ[] collectionJonH <= entityh.collectionJonH eager:true;
+    relation required TJ singleRequiredJonH <= entityh.singleRequiredJonH eager:true;
 }
 
 transfer TJ(J entityj) {
     field String stringI <= entityj.stringI input:true;
     field String stringJ <= entityj.stringJ input:true;
-    relation TK[] multipleKonI <= entityj.multipleKonI eager:true choices:K!all();
+    relation TK[] multipleKonI <= entityj.multipleKonI eager:true;
 }
 
 transfer TK(K entityk) {

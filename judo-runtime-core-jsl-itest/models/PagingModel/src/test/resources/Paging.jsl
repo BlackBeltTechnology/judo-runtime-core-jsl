@@ -22,7 +22,7 @@ entity List {
 
 transfer TransferList (List list){
     field String name <= list.name input:true;
-    relation TransferItem[] items <= list.items eager:true choices:Item!all();
+    relation TransferItem[] items <= list.items eager:true;
 }
 
 entity LogEntry {
