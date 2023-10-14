@@ -14,13 +14,12 @@ entity EntityB {
 }
 
 transfer TransferA (EntityA a) {
-    field String nameB <=> a.nameA;
-    @Embedded
-    relation TransferB relationBonA <=> a.relationBonA;
+    field String nameB <= a.nameA input:true;
+    relation TransferB relationBonA <= a.relationBonA eager:true choices:EntityB!all();
 }
 
 transfer TransferB (EntityB b) {
-    field String nameB <=> b.nameB;
+    field String nameB <= b.nameB input:true;
 }
 
 // Single required relation
@@ -34,13 +33,12 @@ entity EntityD {
 }
 
 transfer TransferC (EntityC c) {
-    field String nameC <=> c.nameC;
-    @Embedded
-    relation required TransferD relationDonC <=> c.relationDonC;
+    field String nameC <= c.nameC input:true;
+    relation required TransferD relationDonC <= c.relationDonC eager:true choices:EntityD!all();
 }
 
 transfer TransferD (EntityD d) {
-    field String nameD <=> d.nameD;
+    field String nameD <= d.nameD input:true;
 }
 
 // Multi relation
@@ -54,13 +52,12 @@ entity EntityF {
 }
 
 transfer TransferE (EntityE e) {
-    field String nameE <=> e.nameE;
-    @Embedded
-    relation TransferF[] relationFonE <=> e.relationFonE;
+    field String nameE <= e.nameE input:true;
+    relation TransferF[] relationFonE <= e.relationFonE eager:true choices:EntityF!all();
 }
 
 transfer TransferF (EntityF f) {
-    field String nameF <=> f.nameF;
+    field String nameF <= f.nameF input:true;
 }
 
 
@@ -98,20 +95,17 @@ entity EntityH {
 }
 
 transfer TransferG (EntityG g) {
-    field String nameG <=> g.nameG;
-    @Embedded
-    relation TransferH relationOptionalH <=> g.relationOptionalH;
-    @Embedded
-    relation required TransferH relationRequiredH <=> g.relationRequiredH;
-    @Embedded
-    relation TransferH[] relationCollectionH <=> g.relationCollectionH;
+    field String nameG <= g.nameG input:true;
+    relation TransferH relationOptionalH <= g.relationOptionalH eager:true choices:EntityH!all();
+    relation required TransferH relationRequiredH <= g.relationRequiredH eager:true choices:EntityH!all();
+    relation TransferH[] relationCollectionH <= g.relationCollectionH eager:true choices:EntityH!all();
 }
 
 transfer TransferH (EntityH h) {
-    field String nameH <=> h.nameH;
-    relation TransferG relationGForOptionalH <=> h.relationGForOptionalH;
-    relation TransferG relationGForRequiredH <=> h.relationGForRequiredH;
-    relation TransferG relationGForCollectionH <=> h.relationGForCollectionH;
+    field String nameH <= h.nameH input:true;
+    relation TransferG relationGForOptionalH <= h.relationGForOptionalH choices:EntityG!all();
+    relation TransferG relationGForRequiredH <= h.relationGForRequiredH choices:EntityG!all();
+    relation TransferG relationGForCollectionH <= h.relationGForCollectionH choices:EntityG!all();
 }
 
 entity EntityI {
@@ -127,17 +121,15 @@ entity EntityJ {
 }
 
 transfer TransferI (EntityI i) {
-    field String nameI <=> i.nameI;
-    @Embedded
-    relation TransferJ relationOptionalJ <=> i.relationOptionalJ;
-    @Embedded
-    relation TransferJ[] relationCollectionJ <=> i.relationCollectionJ;
+    field String nameI <= i.nameI input:true;
+    relation TransferJ relationOptionalJ <= i.relationOptionalJ eager:true choices:EntityJ!all();
+    relation TransferJ[] relationCollectionJ <= i.relationCollectionJ eager:true choices:EntityJ!all();
 }
 
 transfer TransferJ (EntityJ j) {
-    field String nameJ <=> j.nameJ;
-    relation required TransferI relationRequiredIForOptionalJ <=> j.relationRequiredIForOptionalJ;
-    relation required TransferI relationRequiredIorCollectionJ <=> j.relationRequiredIorCollectionJ;
+    field String nameJ <= j.nameJ input:true;
+    relation required TransferI relationRequiredIForOptionalJ <= j.relationRequiredIForOptionalJ choices:EntityI!all();
+    relation required TransferI relationRequiredIorCollectionJ <= j.relationRequiredIorCollectionJ choices:EntityI!all();
 }
 
 entity EntityK {
@@ -150,14 +142,13 @@ entity EntityL {
 }
 
 transfer TransferK (EntityK k) {
-    field String nameK <=> k.nameK;
-    @Embedded
-    relation TransferL[] relationCollectionL <=> k.relationCollectionL;
+    field String nameK <= k.nameK input:true;
+    relation TransferL[] relationCollectionL <= k.relationCollectionL eager:true choices:EntityL!all();
 }
 
 transfer TransferL (EntityL l) {
-    field String nameL <=> l.nameL;
-    relation TransferK[] relationCollectionKForCollectionL <=> l.relationCollectionKForCollectionL;
+    field String nameL <= l.nameL input:true;
+    relation TransferK[] relationCollectionKForCollectionL <= l.relationCollectionKForCollectionL choices:EntityK!all();
 }
 
 // Navigation trough transfers
@@ -176,18 +167,16 @@ entity EntityO {
 }
 
 transfer TransferM (EntityM m) {
-    field String nameM <=> m.nameM;
-    @Embedded
-    relation TransferN relationNonM <=> m.relationNonM;
+    field String nameM <= m.nameM input:true;
+    relation TransferN relationNonM <= m.relationNonM eager:true choices:EntityN!all();
 }
 
 transfer TransferN (EntityN n) {
-    @Embedded
-    relation TransferO[] relationOonN <=> n.relationOonN;
+    relation TransferO[] relationOonN <= n.relationOonN eager:true choices:EntityO!all();
 }
 
 transfer TransferO (EntityO o) {
-        field String nameO <=> o.nameO;
+        field String nameO <= o.nameO input:true;
 }
 
 entity H {
@@ -211,22 +200,18 @@ entity K {
 }
 
 transfer TH(H entityh) {
-    field String stringH <=> entityh.stringH;
-    @Embedded
-    relation TJ singleJonH <=> entityh.singleJonH;
-    @Embedded
-    relation TJ[] collectionJonH <=> entityh.collectionJonH;
-    @Embedded
-    relation required TJ singleRequiredJonH <=> entityh.singleRequiredJonH;
+    field String stringH <= entityh.stringH input:true;
+    relation TJ singleJonH <= entityh.singleJonH eager:true;
+    relation TJ[] collectionJonH <= entityh.collectionJonH eager:true;
+    relation required TJ singleRequiredJonH <= entityh.singleRequiredJonH eager:true;
 }
 
 transfer TJ(J entityj) {
-    field String stringI <=> entityj.stringI;
-    field String stringJ <=> entityj.stringJ;
-    @Embedded
-    relation TK[] multipleKonI <=> entityj.multipleKonI;
+    field String stringI <= entityj.stringI input:true;
+    field String stringJ <= entityj.stringJ input:true;
+    relation TK[] multipleKonI <= entityj.multipleKonI eager:true;
 }
 
 transfer TK(K entityk) {
-    field String stringK <=> entityk.stringK;
+    field String stringK <= entityk.stringK input:true;
 }

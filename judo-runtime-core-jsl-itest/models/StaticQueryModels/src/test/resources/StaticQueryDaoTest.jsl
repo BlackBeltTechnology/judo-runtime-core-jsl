@@ -13,14 +13,14 @@ enum MyEnum {
 // Primitives
 
 entity EntityWithPrimitives {
-    field Integer integerAttr = 1;
-    field Scaled scaledAttr = 2.34;
-    field String stringAttr = "test";
-    field Boolean boolAttr = true;
-    field Date dateAttr = `2022-07-11`;
-    field Time timeAttr = `22:59:59`;
-    field Timestamp timestampAttr = `2022-07-11T19:09:33Z`;
-    field MyEnum enumAttr = MyEnum#Bombastic;
+    field Integer integerAttr default:1;
+    field Scaled scaledAttr default:2.34;
+    field String stringAttr default:"test";
+    field Boolean boolAttr default:true;
+    field Date dateAttr default:`2022-07-11`;
+    field Time timeAttr default:`22:59:59`;
+    field Timestamp timestampAttr default:`2022-07-11T19:09:33Z`;
+    field MyEnum enumAttr default:MyEnum#Bombastic;
 }
 
 //Integer primitives queries
@@ -72,11 +72,11 @@ entity EntityQueryElement {
 
 //Single Entity queries
 query EntityQueryElement entityWithoutParamQuery() <=  EntityQueryElement!all()!filter(e | e.name == "A")!any();
-query EntityQueryElement entityWithParamQuery(String name, Integer value, MyEnum enum) <=  EntityQueryElement!all()!filter(e | e.name == name and e.value == value and e.category == enum)!any();
-query EntityQueryElement entityWithDefaultParamQuery(String name = "B", Integer value = 2, MyEnum enum = MyEnum#Bombastic) <=  EntityQueryElement!all()!filter(e | e.name == name and e.value == value and e.category == enum)!any();
+query EntityQueryElement entityWithParamQuery(String name, Integer value, MyEnum myenum) <=  EntityQueryElement!all()!filter(e | e.name == name and e.value == value and e.category == myenum)!any();
+query EntityQueryElement entityWithDefaultParamQuery(String name = "B", Integer value = 2, MyEnum myenum = MyEnum#Bombastic) <=  EntityQueryElement!all()!filter(e | e.name == name and e.value == value and e.category == myenum)!any();
 
 //Collection Entity queries
 query EntityQueryElement[] entityCollectionWithoutParamQuery() <=  EntityQueryElement!all()!filter(e | e.value == 3);
-query EntityQueryElement[] entityCollectionWithParamQuery(String name, Integer value, MyEnum enum) <=  EntityQueryElement!all()!filter(e | e.name == name and e.value == value and e.category == enum);
+query EntityQueryElement[] entityCollectionWithParamQuery(String name, Integer value, MyEnum myenum) <=  EntityQueryElement!all()!filter(e | e.name == name and e.value == value and e.category == myenum);
 query EntityQueryElement[] entityCollectionWithValueParamQuery(Integer value) <=  EntityQueryElement!all()!filter(e | e.value == value);
-query EntityQueryElement[] entityCollectionWithDefaultParamQuery(String name = "B", Integer value = 2, MyEnum enum = MyEnum#Bombastic) <=  EntityQueryElement!all()!filter(e | e.name == name and e.value == value and e.category == enum);
+query EntityQueryElement[] entityCollectionWithDefaultParamQuery(String name = "B", Integer value = 2, MyEnum myenum = MyEnum#Bombastic) <=  EntityQueryElement!all()!filter(e | e.name == name and e.value == value and e.category == myenum);
