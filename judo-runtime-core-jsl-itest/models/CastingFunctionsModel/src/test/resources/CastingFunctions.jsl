@@ -27,32 +27,32 @@ entity Tester {
     relation B[] caAsBs;
 
     // kind of
-    field Boolean kindOfA <= self.b!kindOf(entityType = A);        // true
-    field Boolean kindOfB <= self.b!kindOf(entityType = B);        // true
-    field Boolean kindOfCA <= self.b!kindOf(entityType = CA);      // false
-    field Boolean kindOfCA1 <= self.caAsB!kindOf(entityType = CA); // true
-    field Boolean kindOfCB <= self.b!kindOf(entityType = CB);      // false
+    field Boolean kindOfA <= self.b.kindOf(entityType = A);        // true
+    field Boolean kindOfB <= self.b.kindOf(entityType = B);        // true
+    field Boolean kindOfCA <= self.b.kindOf(entityType = CA);      // false
+    field Boolean kindOfCA1 <= self.caAsB.kindOf(entityType = CA); // true
+    field Boolean kindOfCB <= self.b.kindOf(entityType = CB);      // false
 
     // type of
-    field Boolean typeOfA <= self.b!typeOf(entityType = A);        // false
-    field Boolean typeOfB <= self.b!typeOf(entityType = B);        // true
-    field Boolean typeOfCA <= self.b!typeOf(entityType = CA);      // false
-    field Boolean typeOfCA1 <= self.caAsB!typeOf(entityType = CA); // true
-    field Boolean typeOfCB <= self.b!typeOf(entityType = CB);      // false
+    field Boolean typeOfA <= self.b.typeOf(entityType = A);        // false
+    field Boolean typeOfB <= self.b.typeOf(entityType = B);        // true
+    field Boolean typeOfCA <= self.b.typeOf(entityType = CA);      // false
+    field Boolean typeOfCA1 <= self.caAsB.typeOf(entityType = CA); // true
+    field Boolean typeOfCB <= self.b.typeOf(entityType = CB);      // false
 
     // as type
-    relation A asTypeA <= self.b!asType(entityType = A);         // B
-    relation B asTypeB <= self.b!asType(entityType = B);         // B
-    relation CA asTypeCA <= self.b!asType(entityType = CA);      // undefined
-    relation CA asTypeCA1 <= self.caAsB!asType(entityType = CA); // CA
-    relation CB asTypeCB <= self.b!asType(entityType = CB);      // undefined
+    relation A asTypeA <= self.b.asType(entityType = A);         // B
+    relation B asTypeB <= self.b.asType(entityType = B);         // B
+    relation CA asTypeCA <= self.b.asType(entityType = CA);      // undefined
+    relation CA asTypeCA1 <= self.caAsB.asType(entityType = CA); // CA
+    relation CB asTypeCB <= self.b.asType(entityType = CB);      // undefined
 
     // as collection
-    relation A[] asCollectionA <= self.bs!asCollection(entityType = A);         // B-s
-    relation B[] asCollectionB <= self.bs!asCollection(entityType = B);         // B-s
-    relation CA[] asCollectionCA <= self.bs!asCollection(entityType = CA);      // empty
-    relation CA[] asCollectionCA1 <= self.caAsBs!asCollection(entityType = CA); // CA-s
-    relation CB[] asCollectionCB <= self.bs!asCollection(entityType = CB);      // empty
+    relation A[] asCollectionA <= self.bs.asCollection(entityType = A);         // B-s
+    relation B[] asCollectionB <= self.bs.asCollection(entityType = B);         // B-s
+    relation CA[] asCollectionCA <= self.bs.asCollection(entityType = CA);      // empty
+    relation CA[] asCollectionCA1 <= self.caAsBs.asCollection(entityType = CA); // CA-s
+    relation CB[] asCollectionCB <= self.bs.asCollection(entityType = CB);      // empty
 
 }
 
@@ -83,10 +83,10 @@ transfer TCB maps CB as cb {
 
 transfer TransferTester maps Tester as t {
 
-    relation TB b <= t.b choices:B!all();
-    relation TB[] bs <= t.bs choices:B!all();
-    relation TB caAsB <= t.caAsB choices:B!all();
-    relation TB[] caAsBs <= t.caAsBs choices:B!all();
+    relation TB b <= t.b choices:B.all();
+    relation TB[] bs <= t.bs choices:B.all();
+    relation TB caAsB <= t.caAsB choices:B.all();
+    relation TB[] caAsBs <= t.caAsBs choices:B.all();
 
     field Boolean kindOfA <= t.kindOfA;        // true
     field Boolean kindOfB <= t.kindOfB;        // true

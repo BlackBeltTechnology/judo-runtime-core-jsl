@@ -23,13 +23,13 @@ entity EntityWithMultiRelation {
 
 transfer MappedEntityWithSingleRelation maps EntityWithSingleRelation as e {
 
-	relation MappedEntityWithMultiRelation mappedAssociation <= e.association choices:EntityWithMultiRelation!all() default:EntityWithMultiRelation!any();
-	relation MappedEntityWithMultiRelation[] mappedAssociationCollection <= e.associationCollection choices:EntityWithMultiRelation!all() default:EntityWithMultiRelation!all();
-    relation MappedEntityWithMultiRelation mappedAssociationOpposite <= e.entityWithTwoWayOpposite choices:EntityWithMultiRelation!all() default:EntityWithMultiRelation!any();
-    relation MappedEntityWithMultiRelation[] mappedAssociationOppositeCollection <= e.entityWithTwoWayOppositeCollection choices:EntityWithMultiRelation!all() default:EntityWithMultiRelation!all();
+	relation MappedEntityWithMultiRelation mappedAssociation <= e.association choices:EntityWithMultiRelation.all() default:EntityWithMultiRelation.any();
+	relation MappedEntityWithMultiRelation[] mappedAssociationCollection <= e.associationCollection choices:EntityWithMultiRelation.all() default:EntityWithMultiRelation.all();
+    relation MappedEntityWithMultiRelation mappedAssociationOpposite <= e.entityWithTwoWayOpposite choices:EntityWithMultiRelation.all() default:EntityWithMultiRelation.any();
+    relation MappedEntityWithMultiRelation[] mappedAssociationOppositeCollection <= e.entityWithTwoWayOppositeCollection choices:EntityWithMultiRelation.all() default:EntityWithMultiRelation.all();
 
-    relation MappedEntityWithMultiRelation transientRelation default:EntityWithMultiRelation!any();
-    relation MappedEntityWithMultiRelation[] transientRelationCollection default:EntityWithMultiRelation!all();
+    relation MappedEntityWithMultiRelation transientRelation default:EntityWithMultiRelation.any();
+    relation MappedEntityWithMultiRelation[] transientRelationCollection default:EntityWithMultiRelation.all();
 }
 
 transfer MappedEntityWithMultiRelation maps EntityWithMultiRelation as e {

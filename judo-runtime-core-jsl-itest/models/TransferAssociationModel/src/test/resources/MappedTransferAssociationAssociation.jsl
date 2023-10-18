@@ -15,7 +15,7 @@ entity EntityB {
 
 transfer TransferA (EntityA a) {
     field String nameB <= a.nameA input:true;
-    relation TransferB relationBonA <= a.relationBonA choices:EntityB!all();
+    relation TransferB relationBonA <= a.relationBonA choices:EntityB.all();
 }
 
 transfer TransferB (EntityB b) {
@@ -34,7 +34,7 @@ entity EntityD {
 
 transfer TransferC (EntityC c) {
     field String nameC <= c.nameC input:true;
-    relation required TransferD relationDonC <= c.relationDonC choices:EntityD!all();
+    relation required TransferD relationDonC <= c.relationDonC choices:EntityD.all();
 }
 
 transfer TransferD (EntityD d) {
@@ -53,7 +53,7 @@ entity EntityF {
 
 transfer TransferE (EntityE e) {
     field String nameE <= e.nameE input:true;
-    relation TransferF[] relationFonE <= e.relationFonE choices:EntityF!all();
+    relation TransferF[] relationFonE <= e.relationFonE choices:EntityF.all();
 }
 
 transfer TransferF (EntityF f) {
@@ -92,16 +92,16 @@ entity EntityH {
 
 transfer TransferG (EntityG g) {
     field String nameG <= g.nameG input:true;
-    relation TransferH relationOptionalH <= g.relationOptionalH choices:EntityH!all();
-    relation required TransferH relationRequiredH <= g.relationRequiredH choices:EntityH!all();
-    relation TransferH[] relationCollectionH <= g.relationCollectionH choices:EntityH!all();
+    relation TransferH relationOptionalH <= g.relationOptionalH choices:EntityH.all();
+    relation required TransferH relationRequiredH <= g.relationRequiredH choices:EntityH.all();
+    relation TransferH[] relationCollectionH <= g.relationCollectionH choices:EntityH.all();
 }
 
 transfer TransferH (EntityH h) {
     field String nameH <= h.nameH input:true;
-    relation TransferG relationGForOptionalH <= h.relationGForOptionalH choices:EntityG!all();
-    relation TransferG relationGForRequiredH <= h.relationGForRequiredH choices:EntityG!all();
-    relation TransferG relationGForCollectionH <= h.relationGForCollectionH choices:EntityG!all();
+    relation TransferG relationGForOptionalH <= h.relationGForOptionalH choices:EntityG.all();
+    relation TransferG relationGForRequiredH <= h.relationGForRequiredH choices:EntityG.all();
+    relation TransferG relationGForCollectionH <= h.relationGForCollectionH choices:EntityG.all();
 }
 
 entity EntityI {
@@ -118,14 +118,14 @@ entity EntityJ {
 
 transfer TransferI (EntityI i) {
     field String nameI <= i.nameI input:true;
-    relation TransferJ relationOptionalJ <= i.relationOptionalJ choices:EntityJ!all();
-    relation TransferJ[] relationCollectionJ <= i.relationCollectionJ choices:EntityJ!all();
+    relation TransferJ relationOptionalJ <= i.relationOptionalJ choices:EntityJ.all();
+    relation TransferJ[] relationCollectionJ <= i.relationCollectionJ choices:EntityJ.all();
 }
 
 transfer TransferJ (EntityJ j) {
     field String nameJ <= j.nameJ input:true;
-    relation required TransferI relationRequiredIForOptionalJ <= j.relationRequiredIForOptionalJ choices:EntityI!all();
-    relation required TransferI relationRequiredIorCollectionJ <= j.relationRequiredIorCollectionJ choices:EntityI!all();
+    relation required TransferI relationRequiredIForOptionalJ <= j.relationRequiredIForOptionalJ choices:EntityI.all();
+    relation required TransferI relationRequiredIorCollectionJ <= j.relationRequiredIorCollectionJ choices:EntityI.all();
 }
 
 entity EntityK {
@@ -139,10 +139,10 @@ entity EntityL {
 
 transfer TransferK (EntityK k) {
     field String nameK <= k.nameK input:true;
-    relation TransferL[] relationCollectionL <= k.relationCollectionL choices:EntityL!all();
+    relation TransferL[] relationCollectionL <= k.relationCollectionL choices:EntityL.all();
 }
 
 transfer TransferL (EntityL l) {
     field String nameL <= l.nameL input:true;
-    relation TransferK[] relationCollectionKForCollectionL <= l.relationCollectionKForCollectionL choices:EntityK!all();
+    relation TransferK[] relationCollectionKForCollectionL <= l.relationCollectionKForCollectionL choices:EntityK.all();
 }

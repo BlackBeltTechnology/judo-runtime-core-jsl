@@ -15,7 +15,7 @@ enum MyEnum {
 
 // MyEntity
 entity MyEntity {
-    field Timestamp ffCreated default:Timestamp!now();
+    field Timestamp ffCreated default:Timestamp.now();
     field Boolean   ffBool;
     field Date      ffDate;
     field Time      ffTime;
@@ -28,7 +28,7 @@ entity MyEntity {
 
 // Entity for the results of queries
 entity Snapshot1 {
-    field Timestamp created default:Timestamp!now();
+    field Timestamp created default:Timestamp.now();
 
     // fields
     field Boolean   ffBool      default:anyMyEntityFBool(str = "ABC");
@@ -43,7 +43,7 @@ entity Snapshot1 {
 
 // Entity with derived fields for the results of queries
 entity Snapshot2 {
-    field Timestamp created default:Timestamp!now();
+    field Timestamp created default:Timestamp.now();
     // derived
     field Boolean   ffBool      <= anyMyEntityFBool(str = "ABC");
     field Date      ffDate      <= anyMyEntityFDate(min = -12.2301, max = 10000.9999);
@@ -60,31 +60,31 @@ entity Snapshot2 {
 
 // static queries
 query Boolean    anyMyEntityFBool(String str) <=
-                    MyEntity!all()!filter(e | e.ffString == str)!any().ffBool;
+                    MyEntity.all().filter(e | e.ffString == str).any().ffBool;
 
 query Date       anyMyEntityFDate(Decimal min, Decimal max) <=
-                    MyEntity!all()!filter(e | min <= e.ffDecimal and e.ffDecimal <= max)!any().ffDate;
+                    MyEntity.all().filter(e | min <= e.ffDecimal and e.ffDecimal <= max).any().ffDate;
 
 query Time       anyMyEntityFTime(Long ll, MyEnum me) <=
-                    MyEntity!all()!filter(e | e.ffLong != ll and e.ffEnum == me)!any().ffTime;
+                    MyEntity.all().filter(e | e.ffLong != ll and e.ffEnum == me).any().ffTime;
 
 query Timestamp  anyMyEntityFTimestamp(String str, Decimal min) <=
-                    MyEntity!all()!filter(e | e.ffString == str and min < e.ffDecimal)!any().ffTimestamp;
+                    MyEntity.all().filter(e | e.ffString == str and min < e.ffDecimal).any().ffTimestamp;
 
 query Long       anyMyEntityFLong(Date d, Time t) <=
-                    MyEntity!all()!filter(e | e.ffDate == d and e.ffTime < t)!any().ffLong;
+                    MyEntity.all().filter(e | e.ffDate == d and e.ffTime < t).any().ffLong;
 
 query String     anyMyEntityFString(Timestamp ts, Long l) <=
-                    MyEntity!all()!filter(e | e.ffTimestamp <= ts and l == e.ffLong)!any().ffString;
+                    MyEntity.all().filter(e | e.ffTimestamp <= ts and l == e.ffLong).any().ffString;
 
 query Decimal    anyMyEntityFDecimal(String str, Date d, Boolean b) <=
-                    MyEntity!all()!filter(e | e.ffString == str and e.ffDate == d and e.ffBool == b)!any().ffDecimal;
+                    MyEntity.all().filter(e | e.ffString == str and e.ffDate == d and e.ffBool == b).any().ffDecimal;
 
 query MyEnum     anyMyEntityFEnum(Decimal d, Time t1, Time t2) <=
-                    MyEntity!all()!filter(e | e.ffDecimal == d or (t1 <= e.ffTime and e.ffTime < t2))!any().ffEnum;
+                    MyEntity.all().filter(e | e.ffDecimal == d or (t1 <= e.ffTime and e.ffTime < t2)).any().ffEnum;
 
 query MyEntity[] listOfMyEntities(String str, Date d, Boolean b, Long l) <=
-                    MyEntity!all()!filter(e | (e.ffString!lower() == str and e.ffDate == d) or (e.ffBool == b and e.ffLong < l));
+                    MyEntity.all().filter(e | (e.ffString.lower() == str and e.ffDate == d) or (e.ffBool == b and e.ffLong < l));
 
 query MyEntity   lastAddedMyEntity() <=
-                    MyEntity!all()!last(e | e.ffCreated)!any();
+                    MyEntity.all().last(e | e.ffCreated).any();

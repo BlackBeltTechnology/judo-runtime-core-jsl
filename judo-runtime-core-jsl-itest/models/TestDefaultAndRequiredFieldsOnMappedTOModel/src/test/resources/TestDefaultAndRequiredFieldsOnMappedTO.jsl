@@ -330,5 +330,5 @@ transfer TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFi
     field required SmallString stringAttr <= mappedEntity.stringAttr input:true default:queryStringAttribute();
 }
 
-query String queryStringAttribute() <= EntityWithOptionalFields!all()!any().stringAttr;
+query String queryStringAttribute() <= EntityWithOptionalFields.all().any().stringAttr;
 

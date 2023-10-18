@@ -4,7 +4,7 @@ import SalesModelContract as SC;
 
 type numeric Integer precision:9 scale:0;
 type string String min-size:0 max-size:128;
-type string PhoneNumber min-size:0 max-size:32 regex:"^(\\+\\d{1,2}\\s)?\\(?\\d{2,3}\\)?[\\s.-]\\d{3}[\\s.-]\\d{4}$";   // escape sequencing does not work in regexp!!!!
+type string PhoneNumber min-size:0 max-size:32 regex:"^(\\+\\d{1,2}\\s)?\\(?\\d{2,3}\\)?[\\s.-]\\d{3}[\\s.-]\\d{4}$";   // escape sequencing does not work in regexp....
 type boolean Boolean;
 
 type date Date;
@@ -38,25 +38,25 @@ entity abstract Person {
 }
 
 /*
-query Lead[] rootAllLeadsBetween(Integer min = 0, Integer max = 100) <= Lead!filter(l | l.value > min and  l.value < max);
-query Integer rootCountAllLeadsBetween(Integer min = 0, Integer max = 100) <= Lead!filter(l | l.value > min and  l.value < max)!size();
+query Lead[] rootAllLeadsBetween(Integer min = 0, Integer max = 100) <= Lead.filter(l | l.value > min and  l.value < max);
+query Integer rootCountAllLeadsBetween(Integer min = 0, Integer max = 100) <= Lead.filter(l | l.value > min and  l.value < max).size();
 
 entity Queries {
-	query Lead[] queriesAllLeadsBetween(Integer min = 0, Integer max = 100) <= Lead!filter(l | l.value > min and  l.value < max);
-	query Integer queriesCountAllLeadsBetween(Integer min = 0, Integer max = 100) <= Lead!filter(l | l.value > min and  l.value < max)!size();	
+	query Lead[] queriesAllLeadsBetween(Integer min = 0, Integer max = 100) <= Lead.filter(l | l.value > min and  l.value < max);
+	query Integer queriesCountAllLeadsBetween(Integer min = 0, Integer max = 100) <= Lead.filter(l | l.value > min and  l.value < max).size();	
 }
 */
 
 entity SalesPerson extends Person {
 	relation Lead[] leads opposite:salesPerson;
-	relation Lead[] leadsOver10 <= self!leadsOver(limit = 10);
-	field Integer numberOfLeads <= self.leads!size();
+	relation Lead[] leadsOver10 <= self.leadsOver(limit = 10);
+	field Integer numberOfLeads <= self.leads.size();
 	relation SC::Contract[] contracts opposite-add:salesPerson;
 }
 
-query Lead[] leadsOver(Integer limit = 100) on SalesPerson <= self.leads!filter(lead | lead.value > limit);
+query Lead[] leadsOver(Integer limit = 100) on SalesPerson <= self.leads.filter(lead | lead.value > limit);
 query Lead[] leadsBetween(Integer min = 0, Integer max = 100) on SalesPerson <=
-	SalesPerson.leads!filter(l | l.value > min and  l.value < max);
+	SalesPerson.leads.filter(l | l.value > min and  l.value < max);
 
 entity Lead {
 	field Integer value default:100000;
@@ -75,7 +75,7 @@ entity Customer {
 
 entity ContractsAggregator {
 	
-    relation SC::ContractDetail[] contractDetails <= SC::Contract!all().detail;
+    relation SC::ContractDetail[] contractDetails <= SC::Contract.all().detail;
 
-    relation SC::Contract[] contracts <= SC::Contract!all();
+    relation SC::Contract[] contracts <= SC::Contract.all();
 }

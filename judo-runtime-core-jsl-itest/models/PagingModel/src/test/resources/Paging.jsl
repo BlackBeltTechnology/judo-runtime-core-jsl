@@ -5,7 +5,7 @@ import judo::types;
 entity Item {
     field Integer number;
     field String topic;
-    field String listName <= self!container(entityType = List).name;
+    field String listName <= self.container(entityType = List).name;
 }
 
 transfer TransferItem (Item item){

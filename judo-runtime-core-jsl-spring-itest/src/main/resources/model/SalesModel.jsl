@@ -39,11 +39,11 @@ entity abstract Person {
 
 entity SalesPerson extends Person {
 	relation Lead[] leads opposite:salesPerson;
-	relation Lead[] leadsOver10 <= self!leadsOver(limit = 10);
+	relation Lead[] leadsOver10 <= self.leadsOver(limit = 10);
 	relation SC::Contract[] contracts opposite-add:salesPerson;
 }
 
-query Lead[] leadsOver(Integer limit = 100) on SalesPerson <= self.leads!filter(lead | lead.value > limit);
+query Lead[] leadsOver(Integer limit = 100) on SalesPerson <= self.leads.filter(lead | lead.value > limit);
 
 entity Lead {
 	field Integer value default:100000;
@@ -60,6 +60,6 @@ entity Customer {
 	relation Lead lead opposite-add:customer;
 }
 
-query Lead[] rootAllLeads() <= Lead!all();
-query Lead rootOneLead() <= Lead!any();
-query Integer totalNumberOfLeads() <= Lead!all()!size();
+query Lead[] rootAllLeads() <= Lead.all();
+query Lead rootOneLead() <= Lead.any();
+query Integer totalNumberOfLeads() <= Lead.all().size();

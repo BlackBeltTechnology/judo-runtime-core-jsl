@@ -4,66 +4,66 @@ import judo::types;
 
 // TC010
 entity EnvVars1 {
-    field Boolean fbool default:Boolean!getVariable(category = "ENVIRONMENT", key = "JUDO_ENV_BOOLEAN1");
-    field Date fdate default:Date!getVariable(category = "ENVIRONMENT", key = "JUDO_ENV_DATE1");
-    field Time ftime default:Time!getVariable(category = "ENVIRONMENT", key = "JUDO_ENV_TIME1");
-    field Timestamp ftimestamp default:Timestamp!getVariable(category = "ENVIRONMENT", key = "JUDO_ENV_TIMESTAMP1");
-    field Integer fint default:Integer!getVariable(category = "ENVIRONMENT", key = "JUDO_ENV_INTEGER1");
-    field Long flong default:Long!getVariable(category = "ENVIRONMENT", key = "JUDO_ENV_LONG1");
-    field String fstring default:String!getVariable(category = "ENVIRONMENT", key = "JUDO_ENV_STRING1");
+    field Boolean fbool default:Boolean.getVariable(category = "ENVIRONMENT", key = "JUDO_ENV_BOOLEAN1");
+    field Date fdate default:Date.getVariable(category = "ENVIRONMENT", key = "JUDO_ENV_DATE1");
+    field Time ftime default:Time.getVariable(category = "ENVIRONMENT", key = "JUDO_ENV_TIME1");
+    field Timestamp ftimestamp default:Timestamp.getVariable(category = "ENVIRONMENT", key = "JUDO_ENV_TIMESTAMP1");
+    field Integer fint default:Integer.getVariable(category = "ENVIRONMENT", key = "JUDO_ENV_INTEGER1");
+    field Long flong default:Long.getVariable(category = "ENVIRONMENT", key = "JUDO_ENV_LONG1");
+    field String fstring default:String.getVariable(category = "ENVIRONMENT", key = "JUDO_ENV_STRING1");
 }
 
 entity EnvVars2 {
-    field Boolean fbool default:Boolean!getVariable(category = "ENVIRONMENT", key = "JUDO_ENV_BOOLEAN2");
-    field Date fdate default:Date!getVariable(category = "ENVIRONMENT", key = "JUDO_ENV_DATE2");
-    field Time ftime default:Time!getVariable(category = "ENVIRONMENT", key = "JUDO_ENV_TIME2");
-    field Timestamp ftimestamp default:Timestamp!getVariable(category = "ENVIRONMENT", key = "JUDO_ENV_TIMESTAMP2");
-    field Integer fint default:Integer!getVariable(category = "ENVIRONMENT", key = "JUDO_ENV_INTEGER2");
-    field Long flong default:Long!getVariable(category = "ENVIRONMENT", key = "JUDO_ENV_LONG2");
-    field String fstring default:String!getVariable(category = "ENVIRONMENT", key = "JUDO_ENV_STRING2");
+    field Boolean fbool default:Boolean.getVariable(category = "ENVIRONMENT", key = "JUDO_ENV_BOOLEAN2");
+    field Date fdate default:Date.getVariable(category = "ENVIRONMENT", key = "JUDO_ENV_DATE2");
+    field Time ftime default:Time.getVariable(category = "ENVIRONMENT", key = "JUDO_ENV_TIME2");
+    field Timestamp ftimestamp default:Timestamp.getVariable(category = "ENVIRONMENT", key = "JUDO_ENV_TIMESTAMP2");
+    field Integer fint default:Integer.getVariable(category = "ENVIRONMENT", key = "JUDO_ENV_INTEGER2");
+    field Long flong default:Long.getVariable(category = "ENVIRONMENT", key = "JUDO_ENV_LONG2");
+    field String fstring default:String.getVariable(category = "ENVIRONMENT", key = "JUDO_ENV_STRING2");
 }
 
 
 // TC011
 entity EnvVarBool {
-    field Boolean fbool default:Boolean!getVariable(category = "ENVIRONMENT", key = "JUDO_ENV_XXX");
+    field Boolean fbool default:Boolean.getVariable(category = "ENVIRONMENT", key = "JUDO_ENV_XXX");
 }
 
 entity EnvVarDate {
-    field Date fdate default:Date!getVariable(category = "ENVIRONMENT", key = "JUDO_ENV_XXX");
+    field Date fdate default:Date.getVariable(category = "ENVIRONMENT", key = "JUDO_ENV_XXX");
 }
 
 entity EnvVarTime {
-    field Time ftime default:Time!getVariable(category = "ENVIRONMENT", key = "JUDO_ENV_XXX");
+    field Time ftime default:Time.getVariable(category = "ENVIRONMENT", key = "JUDO_ENV_XXX");
 }
 
 entity EnvVarTimestamp {
-    field Timestamp ftimestamp default:Timestamp!getVariable(category = "ENVIRONMENT", key = "JUDO_ENV_XXX");
+    field Timestamp ftimestamp default:Timestamp.getVariable(category = "ENVIRONMENT", key = "JUDO_ENV_XXX");
 }
 
 entity EnvVarInteger {
-    field Integer fint default:Integer!getVariable(category = "ENVIRONMENT", key = "JUDO_ENV_XXX");
+    field Integer fint default:Integer.getVariable(category = "ENVIRONMENT", key = "JUDO_ENV_XXX");
 }
 
 entity EnvVarLong {
-    field Long flong default:Long!getVariable(category = "ENVIRONMENT", key = "JUDO_ENV_XXX");
+    field Long flong default:Long.getVariable(category = "ENVIRONMENT", key = "JUDO_ENV_XXX");
 }
 
 // TC012
 entity EnvVars {
-    field Date cd default:Date!getVariable(category = "SYSTEM", key = "current_date");
-    field Date cd1 default:Date!now();
+    field Date cd default:Date.getVariable(category = "SYSTEM", key = "current_date");
+    field Date cd1 default:Date.now();
 
-    field Timestamp cts default:Timestamp!getVariable(category = "SYSTEM", key = "current_timestamp");
-    field Timestamp cts1 default:Timestamp!now();
+    field Timestamp cts default:Timestamp.getVariable(category = "SYSTEM", key = "current_timestamp");
+    field Timestamp cts1 default:Timestamp.now();
 
-    field Time ct default:Time!getVariable(category = "SYSTEM", key = "current_time");
-    field Time ct1 default:Time!now();
+    field Time ct default:Time.getVariable(category = "SYSTEM", key = "current_time");
+    field Time ct1 default:Time.now();
 }
 
 // TC013
 entity Sequences {
-    field Long f1 default:Long!getVariable(category = "SEQUENCE", key = "Order");
-    field Long f2 default:Long!getVariable(category = "SEQUENCE", key = "Order");
-    field Long f3 default:Long!getVariable(category = "SEQUENCE", key = "Other");
+    field Long f1 default:Long.getVariable(category = "SEQUENCE", key = "Order");
+    field Long f2 default:Long.getVariable(category = "SEQUENCE", key = "Order");
+    field Long f3 default:Long.getVariable(category = "SEQUENCE", key = "Other");
 }

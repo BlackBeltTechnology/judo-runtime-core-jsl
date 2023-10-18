@@ -18,9 +18,9 @@ enum TestLiteral {
 }
 
 entity DefaultOperators {
-    field Integer rounded default:1.23!round();
+    field Integer rounded default:1.23.round();
     field Integer unary default:-1 -(-1 + -2) + (11-19); // -6
-    field Integer abs default:-2!abs();
+    field Integer abs default:-2.abs();
     field Integer addition default:5 + 2;
     field Integer subtraction default:5 - 2;
     field Integer pow default:5 ^ 2;
@@ -187,13 +187,13 @@ entity DerivedOperators {
     field required DerivedSource source;
     field DerivedSource undefined;
     field String stringConcat <= self.source.firstName + " " + self.source.lastName;
-    field Integer firstNameLength <= self.source.firstName!size();
-    field Integer rounded <= self.source.score!round();
+    field Integer firstNameLength <= self.source.firstName.size();
+    field Integer rounded <= self.source.score.round();
     field Integer addition <= self.source.age + 2;
-    field Boolean additionTrue <= (self.source.age + 2)!isDefined();
-    field Boolean additionFalse <= (self.source.age + 2)!isUndefined();
-    field Boolean additionUndefinedFalse <= (self.undefined.age + 2)!isDefined();
-    field Boolean additionUndefinedTrue <= (self.undefined.age + 2)!isUndefined();
+    field Boolean additionTrue <= (self.source.age + 2).isDefined();
+    field Boolean additionFalse <= (self.source.age + 2).isUndefined();
+    field Boolean additionUndefinedFalse <= (self.undefined.age + 2).isDefined();
+    field Boolean additionUndefinedTrue <= (self.undefined.age + 2).isUndefined();
     field Integer subtraction <= self.source.age - 2;
     field BigInteger pow <= self.source.age ^ 2;
     field Integer multiplication <= self.source.age * 2;
@@ -201,10 +201,10 @@ entity DerivedOperators {
     field Integer divisionWhole <= self.source.age div 2;
     field Integer modulo <= self.source.age mod 2;
     field Boolean lt <= self.source.age < 5;
-    field Boolean ltTrue <= (self.source.age < 5)!isDefined();
-    field Boolean ltFalse <= (self.source.age < 5)!isUndefined();
-    field Boolean ltUndefinedFalse <= (self.undefined.age < 5)!isDefined();
-    field Boolean ltUndefinedTrue <= (self.undefined.age < 5)!isUndefined();
+    field Boolean ltTrue <= (self.source.age < 5).isDefined();
+    field Boolean ltFalse <= (self.source.age < 5).isUndefined();
+    field Boolean ltUndefinedFalse <= (self.undefined.age < 5).isDefined();
+    field Boolean ltUndefinedTrue <= (self.undefined.age < 5).isUndefined();
     field Boolean lt2 <= 2 < self.source.age;
     field Boolean gt <= self.source.age > 5;
     field Boolean gt2 <= self.source.age > 2;
@@ -215,10 +215,10 @@ entity DerivedOperators {
     field Boolean eq <= self.source.age == 2;
     field Boolean neq <= self.source.age != 2;
     field Integer conditional <= self.source.age > 2 ? 1 : 2;
-    field Boolean conditionalTrue <= (self.source.age > 2 ? 1 : 2)!isDefined();
-    field Boolean conditionalFalse <= (self.source.age > 2 ? 1 : 2)!isUndefined();
-    field Boolean conditionalUndefinedTrue <= (self.undefined.age > 2 ? 1 : 2)!isDefined();
-    field Boolean conditionalUndefinedFalse <= (self.undefined.age > 2 ? 1 : 2)!isUndefined();
+    field Boolean conditionalTrue <= (self.source.age > 2 ? 1 : 2).isDefined();
+    field Boolean conditionalFalse <= (self.source.age > 2 ? 1 : 2).isUndefined();
+    field Boolean conditionalUndefinedTrue <= (self.undefined.age > 2 ? 1 : 2).isDefined();
+    field Boolean conditionalUndefinedFalse <= (self.undefined.age > 2 ? 1 : 2).isUndefined();
 }
 
 transfer TransferDerivedOperators (DerivedOperators mapped) {
@@ -268,7 +268,7 @@ entity E1 {
     field Boolean f6 <= self.f1 >= self.f2;
     field Boolean f7 <= self.f1 == self.f2;
     field Boolean f8 <= self.f1 != self.f2;
-    field String f9 <= self.f1!asString();
+    field String f9 <= self.f1.asString();
 }
 
 transfer TE1 (E1 mapped){
