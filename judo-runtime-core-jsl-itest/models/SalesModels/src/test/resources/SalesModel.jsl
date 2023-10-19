@@ -56,7 +56,7 @@ entity SalesPerson extends Person {
 
 query Lead[] leadsOver(Integer limit = 100) on SalesPerson <= self.leads.filter(lead | lead.value > limit);
 query Lead[] leadsBetween(Integer min = 0, Integer max = 100) on SalesPerson <=
-	SalesPerson.leads.filter(l | l.value > min and  l.value < max);
+	self.leads.filter(l | l.value > min and  l.value < max);
 
 entity Lead {
 	field Integer value default:100000;
