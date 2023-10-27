@@ -5,31 +5,31 @@ type string String min-size:0 max-size:255;
 entity A {
     relation B[] blist;
     relation C[] clist <= self.blist.c;
-    relation B[] bbAll <= B!all();
-    relation B bbAny <= B!any();
+    relation B[] bbAll <= B.all();
+    relation B bbAny <= B.any();
 
-    field String bbAnyName <= B!any().name;
+    field String bbAnyName <= B.any().name;
     field String selfBName <= self.bbAny.name;
 
-    relation B[] bbAllFilter <= B!all()!filter(b | b.name == "b");
-    relation B bbAllFilterAny <= B!all()!filter(b | b.name == "b")!any();
-    relation B bbAllFilterAny1 <= self.bbAllFilter!any();
+    relation B[] bbAllFilter <= B.all().filter(b | b.name == "b");
+    relation B bbAllFilterAny <= B.all().filter(b | b.name == "b").any();
+    relation B bbAllFilterAny1 <= self.bbAllFilter.any();
 
-    field String bbAllFilterAnyName <= B!all()!filter(b | b.name == "b")!any().name;
-    field String bbAllFilterAnyName1 <= self.bbAllFilter!any().name;
+    field String bbAllFilterAnyName <= B.all().filter(b | b.name == "b").any().name;
+    field String bbAllFilterAnyName1 <= self.bbAllFilter.any().name;
     field String bbAllFilterAnyName2 <= self.bbAllFilterAny1.name;
 
     relation C[] selfbAllC <= self.bbAll.c;
-    relation C selfbAllCAny <= self.bbAll.c!any();
-    field String selfbAllCAnyName <= self.bbAll.c!any().name;
+    relation C selfbAllCAny <= self.bbAll.c.any();
+    field String selfbAllCAnyName <= self.bbAll.c.any().name;
 
-    relation C[] bbAllC <= B!all().c;
-    relation C bbAllCAny <= B!all().c!any();
-    field String bbAllCAnyName <= B!all().c!any().name;
+    relation C[] bbAllC <= B.all().c;
+    relation C bbAllCAny <= B.all().c.any();
+    field String bbAllCAnyName <= B.all().c.any().name;
 }
 
 transfer TA (A mapped) {
-    relation TB[] blist <=> mapped.blist;
+    relation TB[] blist <= mapped.blist choices:B.all();
     relation TC[] clist  <= mapped.clist;
     relation TB[] bbAll  <= mapped.bbAll;
     relation TB bbAny  <= mapped.bbAny;
@@ -60,8 +60,8 @@ entity B {
 }
 
 transfer TB (B mapped){
-    field String name <=> mapped.name;
-    relation TC c <=> mapped.c;
+    field String name <= mapped.name input:true;
+    relation TC c <= mapped.c choices:C.all();
 }
 
 entity C {
@@ -69,5 +69,5 @@ entity C {
 }
 
 transfer TC (C mapped){
-    field String name <=> mapped.name;
+    field String name <= mapped.name input:true;
 }

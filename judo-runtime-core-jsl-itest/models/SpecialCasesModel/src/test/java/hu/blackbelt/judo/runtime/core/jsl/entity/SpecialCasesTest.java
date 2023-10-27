@@ -25,10 +25,8 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcas
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.abstract_.AbstractDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.entitya.EntityA;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.entitya.EntityADao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.entitya.querysamename.EntityAQuerySameNameParameter;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.entityb.EntityB;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.entityb.EntityBDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.entityb.querysamename.EntityBQuerySameNameParameter;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.referenceentity.ReferenceEntity;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.referenceentity.ReferenceEntityDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.testentity.TestEntity;
@@ -112,9 +110,8 @@ public class SpecialCasesTest {
         EntityA entA = entityADao.create(EntityA.builder().build());
         EntityB entB = entityBDao.create(EntityB.builder().build());
 
-        assertEquals(ref.identifier(), entityADao.queryQuerySameName(entA, EntityAQuerySameNameParameter.builder().withName("ReferenceEntity").build()).orElseThrow().identifier() );
-        assertEquals(ref.identifier(), entityBDao.queryQuerySameName(entB, EntityBQuerySameNameParameter.builder().withName("ReferenceEntity").build()).orElseThrow().identifier() );
-
+        assertEquals(ref.identifier(), entityADao.queryQuerySameName(entA).get().identifier());
+        assertEquals(ref.identifier(), entityBDao.queryQuerySameName(entB).get().identifier());
     }
 
 
