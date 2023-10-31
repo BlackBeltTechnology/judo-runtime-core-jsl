@@ -23,11 +23,15 @@ package hu.blackbelt.judo.runtime.core.jsl.entity;
 import com.google.inject.Inject;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.a.A;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.b.B;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.b.BAttachedRelationsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.b.BDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.c.C;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.c.CDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.d.D;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.d.DDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.e.E;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.e.EDao;
+
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.ContainerTestDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
@@ -35,7 +39,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
 public class ContainerTest {
@@ -45,7 +49,9 @@ public class ContainerTest {
 
     @Inject BDao bDao;
     @Inject CDao cDao;
-    @Inject DDao dDao;
+    @Inject
+    DDao dDao;
+    @Inject EDao eDao;
 
     @Test
     @Requirement(reqs = {
@@ -91,6 +97,71 @@ public class ContainerTest {
         assertEquals(b1.identifier().getIdentifier(), dA.identifier().getIdentifier());
         assertEquals(b1.identifier().getIdentifier(), dA1.identifier().getIdentifier());
         assertEquals(b1.identifier().getIdentifier(), dB.identifier().getIdentifier());
+    }
+
+    @Test
+    @Requirement(reqs = {
+            "REQ-ENT-001",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-ENT-007",
+            "REQ-ENT-008",
+            "REQ-ENT-012",
+            "REQ-EXPR-001",
+            "REQ-EXPR-003",
+            "REQ-EXPR-004",
+            "REQ-EXPR-006",
+            "REQ-EXPR-021",
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-SYNT-001",
+            "REQ-SYNT-002",
+            "REQ-SYNT-003"
+    })
+    public void testInheritedContainerFunction() {
+
+        E e = eDao.create(E.builder().withName("E").build());
+
+        B b = bDao.create(B.builder()
+                .withConA(C.builder().build())
+                .withDonB(D.builder().build())
+                .build(),
+                BAttachedRelationsForCreate.builder()
+                        .withRelEonB(e)
+                        .build()
+        );
+
+        // the container is on the parent, the relation is on the child entity
+        C c = b.getConA();
+
+        assertEquals(e.identifier(), cDao.queryContainerAasBrelEonB(c).get().identifier());
+        // TODO No value present
+        //assertEquals(e.identifier(), cDao.queryContainerBrelEonB(c).get().identifier());
+
+        // Recursive C relation
+        assertFalse(cDao.queryContainerAasBrelConB(c).isPresent());
+        // TODO When no relConB relation is attached, the recursive relation contains the c instance.
+        //assertFalse(cDao.queryContainerBrelConB(c).isPresent()); // not work
+
+        C c1 = bDao.createRelConB(b, C.builder().build());
+        assertEquals(c1.identifier(), cDao.queryContainerAasBrelConB(c).get().identifier());
+        // TODO Recursive relation contains the c instance always, not the c.container.relConB if it is present
+        //assertEquals(c1.identifier(), cDao.queryContainerBrelConB(c).get().identifier()); // not work
+
+        // the container and the relation are in the same entity
+        D d = b.getDonB();
+
+        assertEquals(e.identifier(), dDao.queryContainerAasBrelEonB(d).get().identifier());
+        assertEquals(e.identifier(), dDao.queryContainerBrelEonB(d).get().identifier());
+
+        // Recursive D relation
+        assertFalse(dDao.queryContainerAasBrelDonB(d).isPresent());
+        assertFalse(dDao.queryContainerBrelDonB(d).isPresent());
+
+        D d1 = bDao.createRelDonB(b, D.builder().build());
+        assertEquals(d1.identifier(), dDao.queryContainerAasBrelDonB(d).get().identifier());
+        assertEquals(d1.identifier(), dDao.queryContainerBrelDonB(d).get().identifier());
+
     }
 
 }

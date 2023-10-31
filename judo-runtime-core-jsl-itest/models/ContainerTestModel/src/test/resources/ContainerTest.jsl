@@ -8,18 +8,39 @@ entity A {
 
 entity B extends A {
     field required D donB;
+
+    relation E relEonB;
+    relation C relConB;
+    relation D relDonB;
 }
 
 entity C {
     relation A containerA <= self!container(entityType = A);
     relation B containerB <= self!container(entityType = A)!asType(entityType = B);
     relation B containerB1 <= self!container(entityType = B);
+
+    relation E containerAasBrelEonB <= self!container(entityType = A)!asType(entityType = B).relEonB;
+    relation E containerBrelEonB <= self!container(entityType = B).relEonB; // cause problem
+
+    relation C containerAasBrelConB <= self!container(entityType = A)!asType(entityType = B).relConB;
+    relation C containerBrelConB <= self!container(entityType = B).relConB; // cause problem
 }
 
 entity D {
     relation A containerA <= self!container(entityType = B)!asType(entityType = A);
     relation A containerA1 <= self!container(entityType = A);
     relation B containerB <= self!container(entityType = B);
+
+    relation E containerAasBrelEonB <= self!container(entityType = A)!asType(entityType = B).relEonB;
+    relation E containerBrelEonB <= self!container(entityType = B).relEonB;
+
+    relation D containerAasBrelDonB <= self!container(entityType = A)!asType(entityType = B).relDonB;
+    relation D containerBrelDonB <= self!container(entityType = B).relDonB;
+
+}
+
+entity E {
+    field String name;
 }
 
 // TRANSFER representation
@@ -34,18 +55,36 @@ transfer TB maps B as b {
     relation required TD donB <=> b.donB;
     @Embedded
     relation required TC conA <=> b.conA;
+
+    relation TE relEonB <=> b.relEonB;
+    relation TC relConB <=> b.relConB;
+    relation TD relDonB <=> b.relDonB;
 }
 
 transfer TC maps C as c {
     relation TA containerA <= c.containerA;
     relation TB containerB <= c.containerB;
     relation TB containerB1 <= c.containerB1;
+
+    relation TE containerAasBrelEonB <= c.containerAasBrelEonB;
+    relation TE containerBrelEonB <= c.containerBrelEonB;
+    relation TC containerAasBrelConB <= c.containerAasBrelConB;
+    relation TC containerBrelConB <= c.containerBrelConB;
 }
 
 transfer TD maps D as d {
     relation TA containerA <= d.containerA;
     relation TA containerA1 <= d.containerA1;
     relation TB containerB <= d.containerB;
+
+    relation TE containerAasBrelEonB <= d.containerAasBrelEonB;
+    relation TE containerBrelEonB <= d.containerBrelEonB;
+    relation TD containerAasBrelDonB <= d.containerAasBrelDonB;
+    relation TD containerBrelDonB <= d.containerBrelDonB;
+}
+
+transfer TE maps E as e {
+    field String name <=> e.name;
 }
 
 
