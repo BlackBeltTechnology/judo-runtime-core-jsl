@@ -466,11 +466,11 @@ public class MappedTransferCompositonAggregationTest {
         assertEquals(Optional.empty(), a4.getSingleJonH());
         assertEquals(0, a4.getCollectionJonH().size());
 
-        TransferJ b5 = transferJDao.create(TransferJ.builder().withStringJ("C5").build());
-        TransferJ b6 = transferJDao.create(TransferJ.builder().withStringJ("C6").withMultipleKonI(List.of(TransferK.builder().withStringK("D4").build())).build());
+        TransferJ c5 = transferJDao.create(TransferJ.builder().withStringJ("C5").build());
+        TransferJ c6 = transferJDao.create(TransferJ.builder().withStringJ("C6").withMultipleKonI(List.of(TransferK.builder().withStringK("D4").build())).build());
 
-        a4.setSingleJonH(b5);
-        a4.setCollectionJonH(List.of(b6));
+        a4.setSingleJonH(c5);
+        a4.setCollectionJonH(List.of(c6));
         final TransferH a5 = transferHDao.update(a4);
 
         assertEquals(12, transferJDao.countAll());
@@ -480,11 +480,11 @@ public class MappedTransferCompositonAggregationTest {
         assertEquals("C6", a5.getCollectionJonH().get(0).getStringJ().orElseThrow());
         assertEquals("D4", a5.getCollectionJonH().get(0).getMultipleKonI().get(0).getStringK().orElseThrow());
 
-        TransferJ b7 = transferJDao.create(TransferJ.builder().withStringJ("C7").build());
-        TransferJ b8 = transferJDao.create(TransferJ.builder().withStringJ("C8").withMultipleKonI(List.of(TransferK.builder().withStringK("D5").build())).build());
+        TransferJ c7 = transferJDao.create(TransferJ.builder().withStringJ("C7").build());
+        TransferJ c8 = transferJDao.create(TransferJ.builder().withStringJ("C8").withMultipleKonI(List.of(TransferK.builder().withStringK("D5").build())).build());
 
-        a5.setSingleJonH(b7);
-        a5.setCollectionJonH(List.of(b8));
+        a5.setSingleJonH(c7);
+        a5.setCollectionJonH(List.of(c8));
 
         IllegalStateException thrown = assertThrows(
                 IllegalStateException.class,
