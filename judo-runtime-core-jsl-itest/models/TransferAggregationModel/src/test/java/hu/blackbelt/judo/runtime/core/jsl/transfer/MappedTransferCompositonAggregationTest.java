@@ -21,8 +21,10 @@ package hu.blackbelt.judo.runtime.core.jsl.transfer;
  */
 
 import com.google.inject.Inject;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityc.EntityC;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityd.EntityD;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.composition.Composition;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.composition.CompositionDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.composition.CompositionIdentifier;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.entitya.EntityA;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.entitya.EntityADao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.entitya.EntityAIdentifier;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.entityb.EntityB;
@@ -35,6 +37,8 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercomposito
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.transferb.TransferBDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.transferc.TransferC;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.transferc.TransferCDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.transfercomposition.TransferComposition;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.transfercomposition.TransferCompositionDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.transferd.TransferD;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.transferd.TransferDDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.transfere.TransferE;
@@ -56,6 +60,7 @@ import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
@@ -110,6 +115,11 @@ public class MappedTransferCompositonAggregationTest {
     TransferJDao transferJDao;
     @Inject
     TransferKDao transferKDao;
+    @Inject
+    TransferCompositionDao transferCompositionDao;
+    
+    @Inject
+    CompositionDao compositionDao;
 
     /**
      * The test checks the aggregation mapped single field with entity type work well on transfer object.
@@ -481,6 +491,164 @@ public class MappedTransferCompositonAggregationTest {
                 () -> transferHDao.update(a5)
         );
 
+    }
+
+    @Test
+    void testAddAndRemoveOnCollections() {
+        TransferB b2 = transferBDao.create(TransferB.builder().withNameB("B2").build());
+        TransferB b3 = transferBDao.create(TransferB.builder().withNameB("B3").build());
+        TransferA transferA1 = transferADao.create(TransferA.builder()
+                .withSingleEntityB(TransferB.builder().withNameB("B1").build())
+                .withMultiEntityB(List.of(b2, b3))
+                .build());
+
+        assertEquals("B1", transferA1.getSingleEntityB().orElseThrow().getNameB().orElseThrow());
+        assertEquals(2, transferA1.getMultiEntityB().size());
+        assertEquals("B2", transferA1.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B2")).findFirst().orElseThrow().getNameB().orElseThrow());
+        assertEquals("B3", transferA1.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B3")).findFirst().orElseThrow().getNameB().orElseThrow());
+
+        TransferB b4 = TransferB.builder().withNameB("B4").build();
+        TransferB b5 = TransferB.builder().withNameB("B5").build();
+        TransferB b6 = TransferB.builder().withNameB("B6").build();
+        transferA1.addToMultiEntityB(b4);
+        transferA1.addToMultiEntityB(b5, b6);
+
+        assertEquals("B1", transferA1.getSingleEntityB().orElseThrow().getNameB().orElseThrow());
+        assertEquals(5, transferA1.getMultiEntityB().size());
+        assertEquals("B2", transferA1.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B2")).findFirst().orElseThrow().getNameB().orElseThrow());
+        assertEquals("B3", transferA1.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B3")).findFirst().orElseThrow().getNameB().orElseThrow());
+        assertEquals("B4", transferA1.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B4")).findFirst().orElseThrow().getNameB().orElseThrow());
+        assertEquals("B5", transferA1.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B5")).findFirst().orElseThrow().getNameB().orElseThrow());
+        assertEquals("B6", transferA1.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B6")).findFirst().orElseThrow().getNameB().orElseThrow());
+
+        transferA1.addToMultiEntityB(null);
+        assertEquals(6, transferA1.getMultiEntityB().size());
+        TransferB b7 = TransferB.builder().withNameB("B7").build();
+        transferA1.addToMultiEntityB(null, b7);
+        assertEquals("B6", transferA1.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B6")).findFirst().orElseThrow().getNameB().orElseThrow());
+        assertEquals("B7", transferA1.getMultiEntityB().stream()
+                .filter(c -> c != null && c.getNameB().orElseThrow().equals("B7")).findFirst().orElseThrow().getNameB().orElseThrow());
+        assertEquals(8, transferA1.getMultiEntityB().size());
+
+        // The ID of b3 was changed after entity A1 was created
+        transferA1.removeFromMultiEntityB(b3,b4);
+        assertEquals(7, transferA1.getMultiEntityB().size());
+        assertEquals(1, transferA1.getMultiEntityB().stream().filter(c -> c != null && c.getNameB().orElseThrow().equals("B3")).count());
+        assertEquals(0, transferA1.getMultiEntityB().stream().filter(c -> c != null && c.getNameB().orElseThrow().equals("B4")).count());
+
+        transferA1.removeFromMultiEntityB(b6);
+        assertEquals(6, transferA1.getMultiEntityB().size());
+        assertEquals(0, transferA1.getMultiEntityB().stream().filter(c -> c != null && c.getNameB().orElseThrow().equals("B6")).count());
+
+        b5.setNameB("B5Updated");
+        transferA1.removeFromMultiEntityB(b5);
+
+        assertEquals(5, transferA1.getMultiEntityB().size());
+        assertEquals(0, transferA1.getMultiEntityB().stream().filter(c -> c != null && c.getNameB().orElseThrow().equals("B5")).count());
+        assertEquals(0, transferA1.getMultiEntityB().stream().filter(c -> c != null && c.getNameB().orElseThrow().equals("B5Updated")).count());
+
+        TransferB b8 = TransferB.builder().withNameB("B8").build();
+        TransferB b9 = TransferB.builder().withNameB("B9").build();
+        TransferB b10 = TransferB.builder().withNameB("B10").build();
+        TransferA transferA2 = TransferA.builder().withStringA("A2").withSingleEntityB(TransferB.builder().build()).build();
+        TransferA transferA3 = TransferA.builder().withStringA("A3").withSingleEntityB(TransferB.builder().build()).build();
+        TransferA transferA4 = TransferA.builder().withStringA("A4").withSingleEntityB(TransferB.builder().build()).build();
+        TransferComposition composition = TransferComposition.builder().build();
+        transferA2.addToMultiEntityB(b9, b10);
+        transferA3.addToMultiEntityB(b3, b4);
+        transferA4.addToMultiEntityB(b7, b8);
+        composition.setTransferA(transferA2);
+        composition.addToTransferAs(transferA3, transferA4);
+
+        assertEquals(2, composition.getTransferAs().size());
+
+        transferA2 = composition.getTransferA().orElseThrow();
+        transferA3 = composition.getTransferAs().stream().filter(a -> a.getStringA().orElseThrow().equals("A3")).findFirst().orElseThrow();
+        transferA4 = composition.getTransferAs().stream().filter(a -> a.getStringA().orElseThrow().equals("A4")).findFirst().orElseThrow();
+        assertEquals("A2", transferA2.getStringA().orElseThrow());
+        assertEquals("A3", transferA3.getStringA().orElseThrow());
+        assertEquals("A4", transferA4.getStringA().orElseThrow());
+        assertEquals("B3", transferA3.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B3")).findFirst().orElseThrow().getNameB().orElseThrow());
+        assertEquals("B4", transferA3.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B4")).findFirst().orElseThrow().getNameB().orElseThrow());
+        assertEquals("B7", transferA4.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B7")).findFirst().orElseThrow().getNameB().orElseThrow());
+        assertEquals("B8", transferA4.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B8")).findFirst().orElseThrow().getNameB().orElseThrow());
+        assertEquals("B9", transferA2.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B9")).findFirst().orElseThrow().getNameB().orElseThrow());
+        assertEquals("B10", transferA2.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B10")).findFirst().orElseThrow().getNameB().orElseThrow());
+
+        transferA3.removeFromMultiEntityB(b3);
+        composition.getTransferA().orElseThrow().removeFromMultiEntityB(b9);
+
+        assertEquals(0, transferA2.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B9")).count());
+        assertEquals(0, transferA3.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B3")).count());
+
+        composition = transferCompositionDao.create(composition);
+
+        transferA2 = composition.getTransferA().orElseThrow();
+        transferA3 = composition.getTransferAs().stream().filter(a -> a.getStringA().orElseThrow().equals("A3")).findFirst().orElseThrow();
+        transferA4 = composition.getTransferAs().stream().filter(a -> a.getStringA().orElseThrow().equals("A4")).findFirst().orElseThrow();
+        assertEquals("A2", transferA2.getStringA().orElseThrow());
+        assertEquals("A3", transferA3.getStringA().orElseThrow());
+        assertEquals("A4", transferA4.getStringA().orElseThrow());
+        assertEquals("B4", transferA3.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B4")).findFirst().orElseThrow().getNameB().orElseThrow());
+        assertEquals("B7", transferA4.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B7")).findFirst().orElseThrow().getNameB().orElseThrow());
+        assertEquals("B8", transferA4.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B8")).findFirst().orElseThrow().getNameB().orElseThrow());
+        assertEquals("B10", transferA2.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B10")).findFirst().orElseThrow().getNameB().orElseThrow());
+
+        Composition compositionEntity = compositionDao.getById(composition.adaptTo(CompositionIdentifier.class)).orElseThrow();
+
+        EntityA entityA2 = compositionEntity.getEntityA().orElseThrow();
+        EntityA entityA3 = compositionEntity.getEntityAs().stream().filter(a -> a.getStringA().orElseThrow().equals("A3")).findFirst().orElseThrow();
+        EntityA entityA4 = compositionEntity.getEntityAs().stream().filter(a -> a.getStringA().orElseThrow().equals("A4")).findFirst().orElseThrow();
+        assertEquals("A2", entityA2.getStringA().orElseThrow());
+        assertEquals("A3", entityA3.getStringA().orElseThrow());
+        assertEquals("A4", entityA4.getStringA().orElseThrow());
+        assertEquals("B4", entityA3.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B4")).findFirst().orElseThrow().getNameB().orElseThrow());
+        assertEquals("B7", entityA4.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B7")).findFirst().orElseThrow().getNameB().orElseThrow());
+        assertEquals("B8", entityA4.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B8")).findFirst().orElseThrow().getNameB().orElseThrow());
+        assertEquals("B10", entityA2.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B10")).findFirst().orElseThrow().getNameB().orElseThrow());
+
+        TransferA transferA5 = TransferA.builder().withStringA("AA").withSingleEntityB(TransferB.builder().withNameB("BB").build()).build();
+        transferA5.addToMultiEntityB(TransferB.builder().withNameB("B12").build());
+        composition.addToTransferAs(transferA5);
+        TransferB b11 = TransferB.builder().withNameB("B11").build();
+        transferA2.addToMultiEntityB(b11);
+        b7 = transferA4.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B7")).findFirst().orElseThrow();
+        transferA4.removeFromMultiEntityB(b7);
+
+        composition = transferCompositionDao.update(composition);
+
+        assertEquals(3, composition.getTransferAs().size());
+
+        transferA2 = composition.getTransferA().orElseThrow();
+        transferA3 = composition.getTransferAs().stream().filter(a -> a.getStringA().orElseThrow().equals("A3")).findFirst().orElseThrow();
+        transferA4 = composition.getTransferAs().stream().filter(a -> a.getStringA().orElseThrow().equals("A4")).findFirst().orElseThrow();
+        transferA5 = composition.getTransferAs().stream().filter(a -> a.getStringA().orElseThrow().equals("AA")).findFirst().orElseThrow();
+        assertEquals("A2", transferA2.getStringA().orElseThrow());
+        assertEquals("A3", transferA3.getStringA().orElseThrow());
+        assertEquals("A4", transferA4.getStringA().orElseThrow());
+        assertEquals("A4", transferA4.getStringA().orElseThrow());
+        assertEquals("AA", transferA5.getStringA().orElseThrow());
+        assertEquals("B4", transferA3.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B4")).findFirst().orElseThrow().getNameB().orElseThrow());
+        assertEquals("B8", transferA4.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B8")).findFirst().orElseThrow().getNameB().orElseThrow());
+        assertEquals("B10", transferA2.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B10")).findFirst().orElseThrow().getNameB().orElseThrow());
+        assertEquals("BB", transferA5.getSingleEntityB().orElseThrow().getNameB().orElseThrow());
+        assertEquals("B12", transferA5.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B12")).findFirst().orElseThrow().getNameB().orElseThrow());
+
+        compositionEntity = compositionDao.getById(composition.adaptTo(CompositionIdentifier.class)).orElseThrow();
+
+        entityA2 = compositionEntity.getEntityA().orElseThrow();
+        entityA3 = compositionEntity.getEntityAs().stream().filter(a -> a.getStringA().orElseThrow().equals("A3")).findFirst().orElseThrow();
+        entityA4 = compositionEntity.getEntityAs().stream().filter(a -> a.getStringA().orElseThrow().equals("A4")).findFirst().orElseThrow();
+        EntityA entityA5 = compositionEntity.getEntityAs().stream().filter(a -> a.getStringA().orElseThrow().equals("AA")).findFirst().orElseThrow();
+        assertEquals("A2", entityA2.getStringA().orElseThrow());
+        assertEquals("A3", entityA3.getStringA().orElseThrow());
+        assertEquals("A4", entityA4.getStringA().orElseThrow());
+        assertEquals("AA", entityA5.getStringA().orElseThrow());
+        assertEquals("B4", entityA3.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B4")).findFirst().orElseThrow().getNameB().orElseThrow());
+        assertEquals("B8", entityA4.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B8")).findFirst().orElseThrow().getNameB().orElseThrow());
+        assertEquals("B10", entityA2.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B10")).findFirst().orElseThrow().getNameB().orElseThrow());
+        assertEquals("BB", transferA5.getSingleEntityB().orElseThrow().getNameB().orElseThrow());
+        assertEquals("B12", transferA5.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B12")).findFirst().orElseThrow().getNameB().orElseThrow());
     }
 
 }
