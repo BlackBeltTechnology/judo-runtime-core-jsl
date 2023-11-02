@@ -21,9 +21,10 @@ package hu.blackbelt.judo.runtime.core.jsl.entity;
  */
 
 import com.google.inject.Inject;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.composition.Composition;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.composition.CompositionDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entitya.EntityA;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entitya.EntityADao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entitya.EntityAIdentifier;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entitya.EntityAMask;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityb.EntityB;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityb.EntityBDao;
@@ -45,15 +46,8 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationship
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityf4.EntityF4;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityf4.EntityF4Dao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityg.EntityG;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityg.EntityGDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityh.EntityH;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityh.EntityHDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.transfera.TransferA;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.transfera.TransferADao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.transferc.TransferC;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.transferc.TransferCDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.transferd.TransferD;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.transferd.TransferDDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.CompositionRelationshipsDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
@@ -111,13 +105,7 @@ public class CompositionRelationshipsTest {
     EntityHDao entityHDao;
 
     @Inject
-    TransferADao transferADao;
-
-    @Inject
-    TransferCDao transferCDao;
-
-    @Inject
-    TransferDDao transferDDao;
+    CompositionDao compositionDao;
 
     EntityA entityA;
     EntityC singleConA;
@@ -501,6 +489,7 @@ public class CompositionRelationshipsTest {
 
     @Test
     void testDeepCopyUpdate() {
+
         EntityA a2 = entityADao.create(EntityA.builder().withSingleRequiredConA(EntityC.builder().build()).build());
         assertEquals(Optional.empty(), a2.getSingleConA());
         assertEquals(0, a2.getCollectionConA().size());
@@ -567,5 +556,140 @@ public class CompositionRelationshipsTest {
                 IllegalStateException.class,
                 () -> entityADao.update(a5)
         );
+    }
+
+    @Test
+    void testAddAndRemoveOnCollections() {
+        EntityC c2 = entityCDao.create(EntityC.builder().withStringC("C2").build());
+        EntityC c3 = entityCDao.create(EntityC.builder().withStringC("C3").build());
+        EntityA entityA1 = entityADao.create(EntityA.builder()
+                .withSingleRequiredConA(EntityC.builder().withStringC("C1").build())
+                .withCollectionConA(List.of(c2, c3))
+                .build());
+
+        assertEquals("C1", entityA1.getSingleRequiredConA().getStringC().orElseThrow());
+        assertEquals(2, entityA1.getCollectionConA().size());
+        assertEquals("C2", entityA1.getCollectionConA().stream().filter(c -> c.getStringC().orElseThrow().equals("C2")).findFirst().orElseThrow().getStringC().orElseThrow());
+        assertEquals("C3", entityA1.getCollectionConA().stream().filter(c -> c.getStringC().orElseThrow().equals("C3")).findFirst().orElseThrow().getStringC().orElseThrow());
+
+        EntityC c4 = EntityC.builder().withStringC("C4").build();
+        EntityC c5 = EntityC.builder().withStringC("C5").build();
+        EntityC c6 = EntityC.builder().withStringC("C6").build();
+        entityA1.addToCollectionConA(c4);
+        entityA1.addToCollectionConA(c5, c6);
+
+        assertEquals("C1", entityA1.getSingleRequiredConA().getStringC().orElseThrow());
+        assertEquals(5, entityA1.getCollectionConA().size());
+        assertEquals("C2", entityA1.getCollectionConA().stream().filter(c -> c.getStringC().orElseThrow().equals("C2")).findFirst().orElseThrow().getStringC().orElseThrow());
+        assertEquals("C3", entityA1.getCollectionConA().stream().filter(c -> c.getStringC().orElseThrow().equals("C3")).findFirst().orElseThrow().getStringC().orElseThrow());
+        assertEquals("C4", entityA1.getCollectionConA().stream().filter(c -> c.getStringC().orElseThrow().equals("C4")).findFirst().orElseThrow().getStringC().orElseThrow());
+        assertEquals("C5", entityA1.getCollectionConA().stream().filter(c -> c.getStringC().orElseThrow().equals("C5")).findFirst().orElseThrow().getStringC().orElseThrow());
+        assertEquals("C6", entityA1.getCollectionConA().stream().filter(c -> c.getStringC().orElseThrow().equals("C6")).findFirst().orElseThrow().getStringC().orElseThrow());
+
+        entityA1.addToCollectionConA(null);
+        assertEquals(6, entityA1.getCollectionConA().size());
+        EntityC c7 = EntityC.builder().withStringC("C7").build();
+        entityA1.addToCollectionConA(null, c7);
+        assertEquals("C6", entityA1.getCollectionConA().stream().filter(c -> c.getStringC().orElseThrow().equals("C6")).findFirst().orElseThrow().getStringC().orElseThrow());
+        assertEquals("C7", entityA1.getCollectionConA().stream()
+                .filter(c -> c != null && c.getStringC().orElseThrow().equals("C7")).findFirst().orElseThrow().getStringC().orElseThrow());
+        assertEquals(8, entityA1.getCollectionConA().size());
+
+        // The ID of c3 was changed after entity A1 was created
+        entityA1.removeFromCollectionConA(c3,c4);
+        assertEquals(7, entityA1.getCollectionConA().size());
+        assertEquals(1, entityA1.getCollectionConA().stream().filter(c -> c != null && c.getStringC().orElseThrow().equals("C3")).count());
+        assertEquals(0, entityA1.getCollectionConA().stream().filter(c -> c != null && c.getStringC().orElseThrow().equals("C4")).count());
+
+        entityA1.removeFromCollectionConA(c6);
+        assertEquals(6, entityA1.getCollectionConA().size());
+        assertEquals(0, entityA1.getCollectionConA().stream().filter(c -> c != null && c.getStringC().orElseThrow().equals("C6")).count());
+
+        c5.setStringC("C5Updated");
+        entityA1.removeFromCollectionConA(c5);
+
+        assertEquals(5, entityA1.getCollectionConA().size());
+        assertEquals(0, entityA1.getCollectionConA().stream().filter(c -> c != null && c.getStringC().orElseThrow().equals("C5")).count());
+        assertEquals(0, entityA1.getCollectionConA().stream().filter(c -> c != null && c.getStringC().orElseThrow().equals("C5Updated")).count());
+
+        EntityC c8 = EntityC.builder().withStringC("C8").build();
+        EntityC c9 = EntityC.builder().withStringC("C9").build();
+        EntityC c10 = EntityC.builder().withStringC("C10").build();
+        EntityA entityA2 = EntityA.builder().withStringA("A2").withSingleRequiredConA(EntityC.builder().build()).build();
+        EntityA entityA3 = EntityA.builder().withStringA("A3").withSingleRequiredConA(EntityC.builder().build()).build();
+        EntityA entityA4 = EntityA.builder().withStringA("A4").withSingleRequiredConA(EntityC.builder().build()).build();
+        Composition composition = Composition.builder().build();
+        entityA2.addToCollectionConA(c9, c10);
+        entityA3.addToCollectionConA(c3, c4);
+        entityA4.addToCollectionConA(c7, c8);
+        composition.setEntityA(entityA2);
+        composition.addToEntityAs(entityA3, entityA4);
+
+        assertEquals(2, composition.getEntityAs().size());
+
+        entityA2 = composition.getEntityA().orElseThrow();
+        entityA3 = composition.getEntityAs().stream().filter(a -> a.getStringA().orElseThrow().equals("A3")).findFirst().orElseThrow();
+        entityA4 = composition.getEntityAs().stream().filter(a -> a.getStringA().orElseThrow().equals("A4")).findFirst().orElseThrow();
+        assertEquals("A2", entityA2.getStringA().orElseThrow());
+        assertEquals("A3", entityA3.getStringA().orElseThrow());
+        assertEquals("A4", entityA4.getStringA().orElseThrow());
+        assertEquals("C3", entityA3.getCollectionConA().stream().filter(c -> c.getStringC().orElseThrow().equals("C3")).findFirst().orElseThrow().getStringC().orElseThrow());
+        assertEquals("C4", entityA3.getCollectionConA().stream().filter(c -> c.getStringC().orElseThrow().equals("C4")).findFirst().orElseThrow().getStringC().orElseThrow());
+        assertEquals("C7", entityA4.getCollectionConA().stream().filter(c -> c.getStringC().orElseThrow().equals("C7")).findFirst().orElseThrow().getStringC().orElseThrow());
+        assertEquals("C8", entityA4.getCollectionConA().stream().filter(c -> c.getStringC().orElseThrow().equals("C8")).findFirst().orElseThrow().getStringC().orElseThrow());
+        assertEquals("C9", entityA2.getCollectionConA().stream().filter(c -> c.getStringC().orElseThrow().equals("C9")).findFirst().orElseThrow().getStringC().orElseThrow());
+        assertEquals("C10", entityA2.getCollectionConA().stream().filter(c -> c.getStringC().orElseThrow().equals("C10")).findFirst().orElseThrow().getStringC().orElseThrow());
+
+        entityA3.removeFromCollectionConA(c3);
+        composition.getEntityA().orElseThrow().removeFromCollectionConA(c9);
+
+        assertEquals(0, entityA2.getCollectionConA().stream().filter(c -> c.getStringC().orElseThrow().equals("C9")).count());
+        assertEquals(0, entityA3.getCollectionConA().stream().filter(c -> c.getStringC().orElseThrow().equals("C3")).count());
+
+        composition = compositionDao.create(composition);
+
+        assertEquals(2, composition.getEntityAs().size());
+
+        entityA2 = composition.getEntityA().orElseThrow();
+        entityA3 = composition.getEntityAs().stream().filter(a -> a.getStringA().orElseThrow().equals("A3")).findFirst().orElseThrow();
+        entityA4 = composition.getEntityAs().stream().filter(a -> a.getStringA().orElseThrow().equals("A4")).findFirst().orElseThrow();
+        assertEquals("A2", entityA2.getStringA().orElseThrow());
+        assertEquals("A3", entityA3.getStringA().orElseThrow());
+        assertEquals("A4", entityA4.getStringA().orElseThrow());
+        assertEquals("C4", entityA3.getCollectionConA().stream().filter(c -> c.getStringC().orElseThrow().equals("C4")).findFirst().orElseThrow().getStringC().orElseThrow());
+        assertEquals("C7", entityA4.getCollectionConA().stream().filter(c -> c.getStringC().orElseThrow().equals("C7")).findFirst().orElseThrow().getStringC().orElseThrow());
+        assertEquals("C8", entityA4.getCollectionConA().stream().filter(c -> c.getStringC().orElseThrow().equals("C8")).findFirst().orElseThrow().getStringC().orElseThrow());
+        assertEquals("C10", entityA2.getCollectionConA().stream().filter(c -> c.getStringC().orElseThrow().equals("C10")).findFirst().orElseThrow().getStringC().orElseThrow());
+
+        EntityA entityA5 = EntityA.builder().withStringA("AA").withSingleRequiredConA(EntityC.builder().withStringC("CC").build()).build();
+        entityA5.addToCollectionConA(EntityC.builder().withStringC("C12").build());
+        composition.addToEntityAs(entityA5);
+        EntityC c11 = EntityC.builder().withStringC("C11").build();
+        entityA2.addToCollectionConA(c11);
+        c7 = entityA3.getCollectionConA().stream().filter(c -> c.getStringC().orElseThrow().equals("C4")).findFirst().orElseThrow();
+        entityA4.removeFromCollectionConA(c7);
+
+        composition = compositionDao.update(composition);
+
+        assertEquals(3, composition.getEntityAs().size());
+
+        entityA2 = composition.getEntityA().orElseThrow();
+        entityA3 = composition.getEntityAs().stream().filter(a -> a.getStringA().orElseThrow().equals("A3")).findFirst().orElseThrow();
+        entityA4 = composition.getEntityAs().stream().filter(a -> a.getStringA().orElseThrow().equals("A4")).findFirst().orElseThrow();
+        entityA5 = composition.getEntityAs().stream().filter(a -> a.getStringA().orElseThrow().equals("AA")).findFirst().orElseThrow();
+        assertEquals("A2", entityA2.getStringA().orElseThrow());
+        assertEquals("A3", entityA3.getStringA().orElseThrow());
+        assertEquals("A4", entityA4.getStringA().orElseThrow());
+        assertEquals("A4", entityA4.getStringA().orElseThrow());
+        assertEquals("AA", entityA5.getStringA().orElseThrow());
+        assertEquals("C4", entityA3.getCollectionConA().stream().filter(c -> c.getStringC().orElseThrow().equals("C4")).findFirst().orElseThrow().getStringC().orElseThrow());
+        assertEquals("C8", entityA4.getCollectionConA().stream().filter(c -> c.getStringC().orElseThrow().equals("C8")).findFirst().orElseThrow().getStringC().orElseThrow());
+        assertEquals("C10", entityA2.getCollectionConA().stream().filter(c -> c.getStringC().orElseThrow().equals("C10")).findFirst().orElseThrow().getStringC().orElseThrow());
+        assertEquals("CC", entityA5.getSingleRequiredConA().getStringC().orElseThrow());
+        assertEquals("C12", entityA5.getCollectionConA().stream().filter(c -> c.getStringC().orElseThrow().equals("C12")).findFirst().orElseThrow().getStringC().orElseThrow());
+
+        EntityA entityA = entityADao.create(EntityA.builder().withSingleRequiredConA(EntityC.builder().build()).build());
+
+        entityA.setCollectionConA(List.of(EntityC.builder().withStringC("C1").build(), EntityC.builder().withStringC("C2").build()));
     }
 }
