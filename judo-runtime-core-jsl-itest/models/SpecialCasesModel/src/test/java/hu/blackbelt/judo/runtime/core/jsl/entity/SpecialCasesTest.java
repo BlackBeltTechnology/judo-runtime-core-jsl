@@ -249,6 +249,8 @@ public class SpecialCasesTest {
         assertEquals(2, c11.getCompD().get(0).getCompE().size());
         assertEquals(2, c2.getCompD().get(0).getCompE().size());
 
+        cDao.queryCompD(c1).count();
+
         c2.getCompD().get(0).getCompE().remove(c2.getCompD().get(0).getCompE().get(0));
 
         assertEquals(1, c1.getCompD().get(0).getCompE().size());
