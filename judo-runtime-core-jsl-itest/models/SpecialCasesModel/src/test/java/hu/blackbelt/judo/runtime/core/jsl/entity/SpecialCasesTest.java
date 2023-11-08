@@ -239,21 +239,21 @@ public class SpecialCasesTest {
 
         CBuilder cBuilder2 = cBuilder1.withName("Name");
 
-        C a1 = cBuilder1.build();
-        C a11 = cBuilder1.build();
-        C a2 = cBuilder2.build();
+        C c1 = cBuilder1.build();
+        C c11 = cBuilder1.build();
+        C c2 = cBuilder2.build();
 
-        a1.getCompD().get(0).getCompE().remove(a1.getCompD().get(0).getCompE().get(0));
+        c1.getCompD().get(0).getCompE().remove(c1.getCompD().get(0).getCompE().get(0));
 
-        assertEquals(1, a1.getCompD().get(0).getCompE().size());
-        assertEquals(2, a11.getCompD().get(0).getCompE().size());
-        assertEquals(2, a2.getCompD().get(0).getCompE().size());
+        assertEquals(1, c1.getCompD().get(0).getCompE().size());
+        assertEquals(2, c11.getCompD().get(0).getCompE().size());
+        assertEquals(2, c2.getCompD().get(0).getCompE().size());
 
-        a2.getCompD().get(0).getCompE().remove(a2.getCompD().get(0).getCompE().get(0));
+        c2.getCompD().get(0).getCompE().remove(c2.getCompD().get(0).getCompE().get(0));
 
-        assertEquals(1, a1.getCompD().get(0).getCompE().size());
-        assertEquals(2, a11.getCompD().get(0).getCompE().size());
-        assertEquals(1, a2.getCompD().get(0).getCompE().size());
+        assertEquals(1, c1.getCompD().get(0).getCompE().size());
+        assertEquals(2, c11.getCompD().get(0).getCompE().size());
+        assertEquals(1, c2.getCompD().get(0).getCompE().size());
 
     }
 
