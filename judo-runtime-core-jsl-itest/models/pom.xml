@@ -13,39 +13,38 @@
     <name>JUDO Runtime Core :: JUDO Language Specification DSL Integration Tests :: Model</name>
 
     <modules>
-<!--        <module>AbstractModel</module>-->
-<!--        <module>AllTypeOfTransferObjectsModel</module>-->
-<!--        <module>AutoMappedTransferPrimitivesModel</module>-->
-<!--        <module>AutoMappedTransferSingleEntityModel</module>-->
-<!--        <module>AutoMappedTransferCollectionEntityModel</module>-->
-<!--        <module>CastingFunctionsModel</module>-->
-<!--        <module>ContainerTestModel</module>-->
-<!--        <module>ContainsTestModel</module>-->
-<!--        <module>EntityRelationshipsModel</module>-->
-<!--        <module>EnvironmentAndSequenceModel</module>-->
-<!--        <module>FilterModel</module>-->
-<!--        <module>FunctionsModels</module>-->
-<!--        <module>InheritanceModel</module>-->
-<!--        <module>MappedTransferPrimitivesModel</module>-->
-<!--        <module>NavigationTestModel</module>-->
-<!--        <module>OperatorsModel</module>-->
-<!--        <module>PagingModel</module>-->
-<!--        <module>PrimitivesModel</module>-->
-<!--        <module>QueryModel</module>-->
-<!--        <module>SalesModels</module>-->
-<!--&lt;!&ndash;        <module>SampleModels</module> &ndash;&gt;-->
-<!--        <module>StaticQueryModels</module>-->
+        <module>AbstractModel</module>
+        <module>AllTypeOfTransferObjectsModel</module>
+        <module>AutoMappedTransferPrimitivesModel</module>
+        <module>AutoMappedTransferSingleEntityModel</module>
+        <module>AutoMappedTransferCollectionEntityModel</module>
+        <module>CastingFunctionsModel</module>
+        <module>ContainerTestModel</module>
+        <module>ContainsTestModel</module>
+        <module>EntityRelationshipsModel</module>
+        <module>EnvironmentAndSequenceModel</module>
+        <module>FilterModel</module>
+        <module>FunctionsModels</module>
+        <module>InheritanceModel</module>
+        <module>MappedTransferPrimitivesModel</module>
+        <module>NavigationTestModel</module>
+        <module>OperatorsModel</module>
+        <module>PagingModel</module>
+        <module>PrimitivesModel</module>
+        <module>QueryModel</module>
+        <module>SalesModels</module>
+<!--        <module>SampleModels</module> -->
+        <module>StaticQueryModels</module>
         <module>SpecialCasesModel</module>
-<!--        <module>TaskModel</module>-->
-<!--        <module>TernaryTestModel</module>-->
-<!--        <module>TestDefaultAndRequiredFieldsOnMappedTOModel</module>-->
-<!--        <module>TransactionManagementModel</module>-->
-<!--        <module>TransferAggregationModel</module>-->
-<!--        <module>TransferAssociationModel</module>-->
-<!--        <module>TransferConstructorModel</module>-->
-<!--        <module>RecursiveCompositionModel</module>-->
-<!--        <module>RelationCreateWithAttachmentTestModel</module>-->
-        <module>ForTestingModel</module>
+        <module>TaskModel</module>
+        <module>TernaryTestModel</module>
+        <module>TestDefaultAndRequiredFieldsOnMappedTOModel</module>
+        <module>TransactionManagementModel</module>
+        <module>TransferAggregationModel</module>
+        <module>TransferAssociationModel</module>
+        <module>TransferConstructorModel</module>
+        <module>RecursiveCompositionModel</module>
+        <module>RelationCreateWithAttachmentTestModel</module>
     </modules>
 
     <build>
