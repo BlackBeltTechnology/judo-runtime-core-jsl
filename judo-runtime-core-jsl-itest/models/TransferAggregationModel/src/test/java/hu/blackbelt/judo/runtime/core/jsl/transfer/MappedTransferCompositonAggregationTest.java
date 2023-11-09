@@ -630,7 +630,7 @@ public class MappedTransferCompositonAggregationTest {
         assertEquals(1, transferA3.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B4")).count());
         assertEquals(1, transferA4.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B8")).count());
         assertEquals(1, transferA2.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B10")).count());
-        assertEquals(1, transferA5.getSingleEntityB().orElseThrow().getNameB().orElseThrow());
+        assertEquals("BB", transferA5.getSingleEntityB().orElseThrow().getNameB().orElseThrow());
         assertEquals(1, transferA5.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B12")).count());
 
         compositionEntity = compositionDao.getById(composition.adaptTo(CompositionIdentifier.class)).orElseThrow();
@@ -646,7 +646,7 @@ public class MappedTransferCompositonAggregationTest {
         assertEquals(1, entityA3.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B4")).count());
         assertEquals(1, entityA4.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B8")).count());
         assertEquals(1, entityA2.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B10")).count());
-        assertEquals(1, transferA5.getSingleEntityB().orElseThrow().getNameB().orElseThrow());
+        assertEquals("BB", transferA5.getSingleEntityB().orElseThrow().getNameB().orElseThrow());
         assertEquals(1, transferA5.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B12")).count());
     }
 
