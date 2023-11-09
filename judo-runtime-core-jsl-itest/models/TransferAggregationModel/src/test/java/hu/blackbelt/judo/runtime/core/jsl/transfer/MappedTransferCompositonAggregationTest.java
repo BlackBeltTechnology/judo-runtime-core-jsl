@@ -504,8 +504,8 @@ public class MappedTransferCompositonAggregationTest {
 
         assertEquals("B1", transferA1.getSingleEntityB().orElseThrow().getNameB().orElseThrow());
         assertEquals(2, transferA1.getMultiEntityB().size());
-        assertEquals("B2", transferA1.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B2")).findFirst().orElseThrow().getNameB().orElseThrow());
-        assertEquals("B3", transferA1.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B3")).findFirst().orElseThrow().getNameB().orElseThrow());
+        assertEquals(1, transferA1.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B2")).count());
+        assertEquals(1, transferA1.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B3")).count());
 
         TransferB b4 = TransferB.builder().withNameB("B4").build();
         TransferB b5 = TransferB.builder().withNameB("B5").build();
@@ -515,19 +515,19 @@ public class MappedTransferCompositonAggregationTest {
 
         assertEquals("B1", transferA1.getSingleEntityB().orElseThrow().getNameB().orElseThrow());
         assertEquals(5, transferA1.getMultiEntityB().size());
-        assertEquals("B2", transferA1.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B2")).findFirst().orElseThrow().getNameB().orElseThrow());
-        assertEquals("B3", transferA1.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B3")).findFirst().orElseThrow().getNameB().orElseThrow());
-        assertEquals("B4", transferA1.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B4")).findFirst().orElseThrow().getNameB().orElseThrow());
-        assertEquals("B5", transferA1.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B5")).findFirst().orElseThrow().getNameB().orElseThrow());
-        assertEquals("B6", transferA1.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B6")).findFirst().orElseThrow().getNameB().orElseThrow());
+        assertEquals(1, transferA1.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B2")).count());
+        assertEquals(1, transferA1.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B3")).count());
+        assertEquals(1, transferA1.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B4")).count());
+        assertEquals(1, transferA1.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B5")).count());
+        assertEquals(1, transferA1.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B6")).count());
 
         transferA1.addToMultiEntityB(null);
         assertEquals(6, transferA1.getMultiEntityB().size());
         TransferB b7 = TransferB.builder().withNameB("B7").build();
         transferA1.addToMultiEntityB(null, b7);
-        assertEquals("B6", transferA1.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B6")).findFirst().orElseThrow().getNameB().orElseThrow());
-        assertEquals("B7", transferA1.getMultiEntityB().stream()
-                .filter(c -> c != null && c.getNameB().orElseThrow().equals("B7")).findFirst().orElseThrow().getNameB().orElseThrow());
+        assertEquals(1, transferA1.getMultiEntityB().stream().filter(c -> c != null && c.getNameB().orElseThrow().equals("B6")).count());
+        assertEquals(1, transferA1.getMultiEntityB().stream()
+                .filter(c -> c != null && c.getNameB().orElseThrow().equals("B7")).count());
         assertEquals(8, transferA1.getMultiEntityB().size());
 
         // The ID of b3 was changed after entity A1 was created
@@ -568,13 +568,12 @@ public class MappedTransferCompositonAggregationTest {
         assertEquals("A2", transferA2.getStringA().orElseThrow());
         assertEquals("A3", transferA3.getStringA().orElseThrow());
         assertEquals("A4", transferA4.getStringA().orElseThrow());
-        assertEquals("B3", transferA3.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B3")).findFirst().orElseThrow().getNameB().orElseThrow());
-        assertEquals("B4", transferA3.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B4")).findFirst().orElseThrow().getNameB().orElseThrow());
-        assertEquals("B7", transferA4.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B7")).findFirst().orElseThrow().getNameB().orElseThrow());
-        assertEquals("B8", transferA4.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B8")).findFirst().orElseThrow().getNameB().orElseThrow());
-        assertEquals("B9", transferA2.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B9")).findFirst().orElseThrow().getNameB().orElseThrow());
-        assertEquals("B10", transferA2.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B10")).findFirst().orElseThrow().getNameB().orElseThrow());
-
+        assertEquals(1, transferA3.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B3")).count());
+        assertEquals(1, transferA3.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B4")).count());
+        assertEquals(1, transferA4.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B7")).count());
+        assertEquals(1, transferA4.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B8")).count());
+        assertEquals(1, transferA2.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B9")).count());
+        assertEquals(1, transferA2.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B10")).count());
         transferA3.removeFromMultiEntityB(b3);
         composition.getTransferA().orElseThrow().removeFromMultiEntityB(b9);
 
@@ -589,10 +588,10 @@ public class MappedTransferCompositonAggregationTest {
         assertEquals("A2", transferA2.getStringA().orElseThrow());
         assertEquals("A3", transferA3.getStringA().orElseThrow());
         assertEquals("A4", transferA4.getStringA().orElseThrow());
-        assertEquals("B4", transferA3.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B4")).findFirst().orElseThrow().getNameB().orElseThrow());
-        assertEquals("B7", transferA4.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B7")).findFirst().orElseThrow().getNameB().orElseThrow());
-        assertEquals("B8", transferA4.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B8")).findFirst().orElseThrow().getNameB().orElseThrow());
-        assertEquals("B10", transferA2.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B10")).findFirst().orElseThrow().getNameB().orElseThrow());
+        assertEquals(1, transferA3.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B4")).count());
+        assertEquals(1, transferA4.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B7")).count());
+        assertEquals(1, transferA4.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B8")).count());
+        assertEquals(1, transferA2.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B10")).count());
 
         Composition compositionEntity = compositionDao.getById(composition.adaptTo(CompositionIdentifier.class)).orElseThrow();
 
@@ -602,10 +601,10 @@ public class MappedTransferCompositonAggregationTest {
         assertEquals("A2", entityA2.getStringA().orElseThrow());
         assertEquals("A3", entityA3.getStringA().orElseThrow());
         assertEquals("A4", entityA4.getStringA().orElseThrow());
-        assertEquals("B4", entityA3.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B4")).findFirst().orElseThrow().getNameB().orElseThrow());
-        assertEquals("B7", entityA4.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B7")).findFirst().orElseThrow().getNameB().orElseThrow());
-        assertEquals("B8", entityA4.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B8")).findFirst().orElseThrow().getNameB().orElseThrow());
-        assertEquals("B10", entityA2.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B10")).findFirst().orElseThrow().getNameB().orElseThrow());
+        assertEquals(1, entityA3.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B4")).count());
+        assertEquals(1, entityA4.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B7")).count());
+        assertEquals(1, entityA4.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B8")).count());
+        assertEquals(1, entityA2.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B10")).count());
 
         TransferA transferA5 = TransferA.builder().withStringA("AA").withSingleEntityB(TransferB.builder().withNameB("BB").build()).build();
         transferA5.addToMultiEntityB(TransferB.builder().withNameB("B12").build());
@@ -628,11 +627,11 @@ public class MappedTransferCompositonAggregationTest {
         assertEquals("A4", transferA4.getStringA().orElseThrow());
         assertEquals("A4", transferA4.getStringA().orElseThrow());
         assertEquals("AA", transferA5.getStringA().orElseThrow());
-        assertEquals("B4", transferA3.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B4")).findFirst().orElseThrow().getNameB().orElseThrow());
-        assertEquals("B8", transferA4.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B8")).findFirst().orElseThrow().getNameB().orElseThrow());
-        assertEquals("B10", transferA2.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B10")).findFirst().orElseThrow().getNameB().orElseThrow());
-        assertEquals("BB", transferA5.getSingleEntityB().orElseThrow().getNameB().orElseThrow());
-        assertEquals("B12", transferA5.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B12")).findFirst().orElseThrow().getNameB().orElseThrow());
+        assertEquals(1, transferA3.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B4")).count());
+        assertEquals(1, transferA4.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B8")).count());
+        assertEquals(1, transferA2.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B10")).count());
+        assertEquals(1, transferA5.getSingleEntityB().orElseThrow().getNameB().orElseThrow());
+        assertEquals(1, transferA5.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B12")).count());
 
         compositionEntity = compositionDao.getById(composition.adaptTo(CompositionIdentifier.class)).orElseThrow();
 
@@ -644,11 +643,11 @@ public class MappedTransferCompositonAggregationTest {
         assertEquals("A3", entityA3.getStringA().orElseThrow());
         assertEquals("A4", entityA4.getStringA().orElseThrow());
         assertEquals("AA", entityA5.getStringA().orElseThrow());
-        assertEquals("B4", entityA3.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B4")).findFirst().orElseThrow().getNameB().orElseThrow());
-        assertEquals("B8", entityA4.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B8")).findFirst().orElseThrow().getNameB().orElseThrow());
-        assertEquals("B10", entityA2.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B10")).findFirst().orElseThrow().getNameB().orElseThrow());
-        assertEquals("BB", transferA5.getSingleEntityB().orElseThrow().getNameB().orElseThrow());
-        assertEquals("B12", transferA5.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B12")).findFirst().orElseThrow().getNameB().orElseThrow());
+        assertEquals(1, entityA3.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B4")).count());
+        assertEquals(1, entityA4.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B8")).count());
+        assertEquals(1, entityA2.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B10")).count());
+        assertEquals(1, transferA5.getSingleEntityB().orElseThrow().getNameB().orElseThrow());
+        assertEquals(1, transferA5.getMultiEntityB().stream().filter(c -> c.getNameB().orElseThrow().equals("B12")).count());
     }
 
 }
