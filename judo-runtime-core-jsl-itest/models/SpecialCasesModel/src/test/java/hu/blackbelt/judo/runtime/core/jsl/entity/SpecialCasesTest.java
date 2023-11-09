@@ -228,8 +228,7 @@ public class SpecialCasesTest {
             "REQ-SRV-002",
     })
     public void TestBuilderCopyTheCollectionRecursively() {
-
-
+        
         CBuilder cBuilder1 = C.builder()
                 .withCompD(List.of(D.builder()
                                 .withCompE(List.of(E.builder().build(), E.builder().build()))
@@ -248,8 +247,6 @@ public class SpecialCasesTest {
         assertEquals(1, c1.getCompD().get(0).getCompE().size());
         assertEquals(2, c11.getCompD().get(0).getCompE().size());
         assertEquals(2, c2.getCompD().get(0).getCompE().size());
-
-        cDao.queryCompD(c1).count();
 
         c2.getCompD().get(0).getCompE().remove(c2.getCompD().get(0).getCompE().get(0));
 
