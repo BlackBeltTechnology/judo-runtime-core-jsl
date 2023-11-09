@@ -17,6 +17,7 @@ entity ParentA {
     identifier String identifierA;
     field String derivedA <= self.nameA;
     relation RelationEntity[] relationEntities;
+    field CompositionEntity entity;
     @Query
     field String queryA(String param) <= param;
 }
@@ -56,6 +57,12 @@ entity abstract ParentAbstract {
 
 entity RelationEntity {
 	field Integer number = 1 ;
+	field String name;
+}
+
+entity CompositionEntity {
+	field Integer number = 1 ;
+	field String name;
 }
 
 entity E extends ParentA {
