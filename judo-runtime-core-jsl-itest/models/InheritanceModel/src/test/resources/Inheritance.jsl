@@ -17,6 +17,7 @@ entity ParentA {
     identifier String identifierA;
     field String derivedA <= self.nameA;
     relation RelationEntity[] relationEntities;
+    field CompositionEntity entity;
     @Query
     field String queryA(String param) <= param;
 }
@@ -56,6 +57,12 @@ entity abstract ParentAbstract {
 
 entity RelationEntity {
 	field Integer number = 1 ;
+	field String name;
+}
+
+entity CompositionEntity {
+	field Integer number = 1 ;
+	field String name;
 }
 
 entity E extends ParentA {
@@ -73,4 +80,29 @@ entity H extends ParentRequiredC {
 
 entity I extends ParentDefaultD {
 
+}
+
+transfer ParentATransfer(ParentA parenta) {
+    field String nameA <=> parenta.nameA;
+    @Embedded
+    relation RelationTransfer[] relationTransfers <=> parenta.relationEntities;
+    @Embedded
+    relation CompositionTransfer entity <=> parenta.entity;
+}
+
+transfer RelationTransfer(RelationEntity entity) {
+	field String name <=> entity.name;
+}
+
+transfer CompositionTransfer(CompositionEntity entity) {
+	field String name <=> entity.name;
+}
+
+transfer transferE(E entity) {
+    field String nameA <=> entity.nameA;
+    field String nameE <=> entity.nameE;
+}
+
+transfer ParentBTransfer(ParentB entity) {
+    field String nameB <=> entity.nameB;
 }
