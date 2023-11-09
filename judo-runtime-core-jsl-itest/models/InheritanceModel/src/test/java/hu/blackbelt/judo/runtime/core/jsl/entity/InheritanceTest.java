@@ -393,7 +393,7 @@ public class InheritanceTest {
                                                 , RelationEntity.builder().withName("R2").build()));
         parentADao.createRelationEntities(parentA2, List.of(RelationEntity.builder().withName("R3").build()));
         List<UUID> uuids = new ArrayList<>();
-        Collection<ParentA> parentAS = parentADao.findAllById(uuids);
+        List<ParentA> parentAS = parentADao.findAllById(uuids);
         assertEquals(0, parentAS.size());
 
         uuids.add((UUID) parentA1.identifier().getIdentifier());
@@ -445,14 +445,20 @@ public class InheritanceTest {
         assertEquals(1, relationEntities.stream()
                 .filter(r -> r.getName().orElseThrow().equals("R3")).count());
 
+        assertEquals(1, parentAS.stream().filter(p -> p.getNameA().orElseThrow().equals("A3")).count());
+
         // E is a descandent of ParentA
-        E entityE = eDao.create(E.builder().withNameE("E1").build());
+        E entityE = eDao.create(E.builder().withNameA("AInherited").build());
 
         uuids.add((UUID) entityE.identifier().getIdentifier());
 
         parentAS = parentADao.findAllById(uuids);
 
         assertEquals(4, parentAS.size());
+        assertEquals(1, parentAS.stream().filter(p -> !Optional.empty().equals(p.getNameA()) && p.getNameA().orElseThrow().equals("A1")).count());
+        assertEquals(1, parentAS.stream().filter(p -> !Optional.empty().equals(p.getNameA()) && p.getNameA().orElseThrow().equals("A2")).count());
+        assertEquals(1, parentAS.stream().filter(p -> !Optional.empty().equals(p.getNameA()) && p.getNameA().orElseThrow().equals("A3")).count());
+        assertEquals(1, parentAS.stream().filter(p -> !Optional.empty().equals(p.getNameA()) && p.getNameA().orElseThrow().equals("AInherited")).count());
 
         // ParentB is not a descandent of ParentA
         ParentB parentB = parentBDao.create(ParentB.builder().build());
@@ -462,6 +468,10 @@ public class InheritanceTest {
         parentAS = parentADao.findAllById(uuids);
 
         assertEquals(4, parentAS.size());
+        assertEquals(1, parentAS.stream().filter(p -> !Optional.empty().equals(p.getNameA()) && p.getNameA().orElseThrow().equals("A1")).count());
+        assertEquals(1, parentAS.stream().filter(p -> !Optional.empty().equals(p.getNameA()) && p.getNameA().orElseThrow().equals("A2")).count());
+        assertEquals(1, parentAS.stream().filter(p -> !Optional.empty().equals(p.getNameA()) && p.getNameA().orElseThrow().equals("A3")).count());
+        assertEquals(1, parentAS.stream().filter(p -> !Optional.empty().equals(p.getNameA()) && p.getNameA().orElseThrow().equals("AInherited")).count());
     }
 
 
