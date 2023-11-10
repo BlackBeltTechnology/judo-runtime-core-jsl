@@ -290,21 +290,21 @@ public class MappedTransferCastingFunctionsTest {
             "REQ-SRV-002"
     })
     public void testAsCollectionOnTransfer() {
-        List<TA> asCollectionTA = transferTesterDao.queryAsCollectionA(transferTester).execute();
+        List<TA> asCollectionTA = transferTesterDao.queryAsCollectionA(transferTester).selectList();
         assertEquals(2, asCollectionTA.size());
         assertTrue(asCollectionTA.stream().anyMatch(a -> a.getNameA().orElseThrow().equals("ab1")));
         assertTrue(asCollectionTA.stream().anyMatch(a -> a.getNameA().orElseThrow().equals("ab2")));
 
-        List<TB> asCollectionTB = transferTesterDao.queryAsCollectionB(transferTester).execute();
+        List<TB> asCollectionTB = transferTesterDao.queryAsCollectionB(transferTester).selectList();
         assertEquals(2, asCollectionTB.size());
         assertTrue(asCollectionTB.stream().anyMatch(lb -> lb.getNameA().orElseThrow().equals("ab1") &&
                                                          lb.getNameB().orElseThrow().equals("b1")));
         assertTrue(asCollectionTB.stream().anyMatch(lb -> lb.getNameA().orElseThrow().equals("ab2") &&
                                                          lb.getNameB().orElseThrow().equals("b2")));
 
-        assertEquals(0, transferTesterDao.queryAsCollectionCA(transferTester).execute().size());
+        assertEquals(0, transferTesterDao.queryAsCollectionCA(transferTester).selectList().size());
 
-        List<TCA> asCollectionTCA1 = transferTesterDao.queryAsCollectionCA1(transferTester).execute();
+        List<TCA> asCollectionTCA1 = transferTesterDao.queryAsCollectionCA1(transferTester).selectList();
         assertEquals(2, asCollectionTCA1.size());
         assertTrue(asCollectionTCA1.stream().anyMatch(lca -> lca.getNameA().orElseThrow().equals("aca2") &&
                                                             lca.getNameB().orElseThrow().equals("bca2") &&
@@ -315,21 +315,21 @@ public class MappedTransferCastingFunctionsTest {
 
         // representation
 
-        List<A> asCollectionA = testerDao.queryAsCollectionA(tester).execute();
+        List<A> asCollectionA = testerDao.queryAsCollectionA(tester).selectList();
         assertEquals(2, asCollectionA.size());
         assertTrue(asCollectionA.stream().anyMatch(a -> a.getNameA().orElseThrow().equals("ab1")));
         assertTrue(asCollectionA.stream().anyMatch(a -> a.getNameA().orElseThrow().equals("ab2")));
 
-        List<B> asCollectionB = testerDao.queryAsCollectionB(tester).execute();
+        List<B> asCollectionB = testerDao.queryAsCollectionB(tester).selectList();
         assertEquals(2, asCollectionB.size());
         assertTrue(asCollectionB.stream().anyMatch(lb -> lb.getNameA().orElseThrow().equals("ab1") &&
                 lb.getNameB().orElseThrow().equals("b1")));
         assertTrue(asCollectionB.stream().anyMatch(lb -> lb.getNameA().orElseThrow().equals("ab2") &&
                 lb.getNameB().orElseThrow().equals("b2")));
 
-        assertEquals(0, testerDao.queryAsCollectionCA(tester).execute().size());
+        assertEquals(0, testerDao.queryAsCollectionCA(tester).selectList().size());
 
-        List<CA> asCollectionCA1 = testerDao.queryAsCollectionCA1(tester).execute();
+        List<CA> asCollectionCA1 = testerDao.queryAsCollectionCA1(tester).selectList();
         assertEquals(2, asCollectionCA1.size());
         assertTrue(asCollectionCA1.stream().anyMatch(lca -> lca.getNameA().orElseThrow().equals("aca2") &&
                 lca.getNameB().orElseThrow().equals("bca2") &&

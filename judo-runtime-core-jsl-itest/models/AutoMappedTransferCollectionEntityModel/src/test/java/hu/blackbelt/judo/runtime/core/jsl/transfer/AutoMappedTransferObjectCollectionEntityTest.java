@@ -77,7 +77,7 @@ public class AutoMappedTransferObjectCollectionEntityTest {
         assertEquals(4, transferReferenceEntityDao.countAll());
         List<TransferReferenceEntity> allRef = transferReferenceEntityDao.getAll();
 
-        assertThat(transferCollectionEntityDao.queryCompositionCollection(collection).execute(),
+        assertThat(transferCollectionEntityDao.queryCompositionCollection(collection).selectList(),
                 containsInAnyOrder(allRef.toArray()));
 
         // Update
@@ -175,10 +175,10 @@ public class AutoMappedTransferObjectCollectionEntityTest {
         assertEquals(7, transferReferenceEntityDao.countAll());
         assertEquals(1, transferCollectionEntityDao.countAll());
 
-        assertThat(transferCollectionEntityDao.queryRelationCollection(collection).execute().stream().map(t -> t.identifier()).toList(),
+        assertThat(transferCollectionEntityDao.queryRelationCollection(collection).selectList().stream().map(t -> t.identifier()).toList(),
                 containsInAnyOrder(uniRel1.identifier(), uniRel2.identifier(), uniRel3.identifier(), uniRel4.identifier()));
 
-        assertThat(transferCollectionEntityDao.queryTwoWayRelationCollection(collection).execute().stream().map(t -> t.identifier()).toList(),
+        assertThat(transferCollectionEntityDao.queryTwoWayRelationCollection(collection).selectList().stream().map(t -> t.identifier()).toList(),
                 containsInAnyOrder(biRel1.identifier(), biRel2.identifier(), biRel3.identifier()));
 
         assertEquals(transferReferenceEntityDao.queryRelationOptional(biRel1).orElseThrow().identifier(), collection.identifier());
@@ -205,10 +205,10 @@ public class AutoMappedTransferObjectCollectionEntityTest {
         biRel2 = transferReferenceEntityDao.update(biRel2);
         biRel3 = transferReferenceEntityDao.update(biRel3);
 
-        transferCollectionEntityDao.queryRelationCollection(collection).execute().forEach(
+        transferCollectionEntityDao.queryRelationCollection(collection).selectList().forEach(
                 t -> assertTrue(t.getName().get().contains("R"))
         );
-        transferCollectionEntityDao.queryTwoWayRelationCollection(collection).execute().forEach(
+        transferCollectionEntityDao.queryTwoWayRelationCollection(collection).selectList().forEach(
                 t -> assertTrue(t.getName().get().contains("R"))
         );
 
@@ -218,13 +218,13 @@ public class AutoMappedTransferObjectCollectionEntityTest {
 
         assertTrue(transferReferenceEntityDao.getById(uniRel4.identifier()).isEmpty());
         TransferReferenceEntity ref = uniRel4;
-        assertFalse(transferCollectionEntityDao.queryRelationCollection(collection).execute().stream().anyMatch(t -> t.identifier().equals(ref.identifier())));
+        assertFalse(transferCollectionEntityDao.queryRelationCollection(collection).selectList().stream().anyMatch(t -> t.identifier().equals(ref.identifier())));
 
         transferReferenceEntityDao.delete(biRel3);
 
         assertTrue(transferReferenceEntityDao.getById(biRel3.identifier()).isEmpty());
         TransferReferenceEntity ref2 = biRel3;
-        assertFalse(transferCollectionEntityDao.queryTwoWayRelationCollection(collection).execute().stream().anyMatch(t -> t.identifier().equals(ref2.identifier())));
+        assertFalse(transferCollectionEntityDao.queryTwoWayRelationCollection(collection).selectList().stream().anyMatch(t -> t.identifier().equals(ref2.identifier())));
 
         // add
 
@@ -232,33 +232,33 @@ public class AutoMappedTransferObjectCollectionEntityTest {
 
         transferCollectionEntityDao.addRelationCollection(collection, uniRel4);
         TransferReferenceEntity ref3 = uniRel4;
-        assertTrue(transferCollectionEntityDao.queryRelationCollection(collection).execute().stream().anyMatch(t -> t.identifier().equals(ref3.identifier())));
+        assertTrue(transferCollectionEntityDao.queryRelationCollection(collection).selectList().stream().anyMatch(t -> t.identifier().equals(ref3.identifier())));
 
         biRel3 = transferReferenceEntityDao.create(TransferReferenceEntity.builder().withName("biRel3").build());
 
         transferCollectionEntityDao.addTwoWayRelationCollection(collection, biRel3);
         TransferReferenceEntity ref4 = biRel3;
-        assertTrue(transferCollectionEntityDao.queryTwoWayRelationCollection(collection).execute().stream().anyMatch(t -> t.identifier().equals(ref4.identifier())));
+        assertTrue(transferCollectionEntityDao.queryTwoWayRelationCollection(collection).selectList().stream().anyMatch(t -> t.identifier().equals(ref4.identifier())));
         assertEquals(collection.identifier(), transferReferenceEntityDao.queryRelationOptional(biRel3).orElseThrow().identifier());
 
         // create
 
         TransferReferenceEntity uniRel5 = transferCollectionEntityDao.createRelationCollection(collection, TransferReferenceEntity.builder().withName("uniRel5").build());
         TransferReferenceEntity ref5 = uniRel5;
-        assertTrue(transferCollectionEntityDao.queryRelationCollection(collection).execute().stream().anyMatch(t -> t.identifier().equals(ref5.identifier())));
+        assertTrue(transferCollectionEntityDao.queryRelationCollection(collection).selectList().stream().anyMatch(t -> t.identifier().equals(ref5.identifier())));
 
         TransferReferenceEntity biRel4 = transferCollectionEntityDao.createTwoWayRelationCollection(collection, TransferReferenceEntity.builder().withName("biRel4").build());
         TransferReferenceEntity ref6 = biRel4;
-        assertTrue(transferCollectionEntityDao.queryTwoWayRelationCollection(collection).execute().stream().anyMatch(t -> t.identifier().equals(ref6.identifier())));
+        assertTrue(transferCollectionEntityDao.queryTwoWayRelationCollection(collection).selectList().stream().anyMatch(t -> t.identifier().equals(ref6.identifier())));
 
 
         // remove
 
         transferCollectionEntityDao.removeRelationCollection(collection, uniRel5);
-        assertFalse(transferCollectionEntityDao.queryRelationCollection(collection).execute().stream().anyMatch(t -> t.identifier().equals(ref5.identifier())));
+        assertFalse(transferCollectionEntityDao.queryRelationCollection(collection).selectList().stream().anyMatch(t -> t.identifier().equals(ref5.identifier())));
 
         transferCollectionEntityDao.removeTwoWayRelationCollection(collection, biRel4);
-        assertFalse(transferCollectionEntityDao.queryTwoWayRelationCollection(collection).execute().stream().anyMatch(t -> t.identifier().equals(ref6.identifier())));
+        assertFalse(transferCollectionEntityDao.queryTwoWayRelationCollection(collection).selectList().stream().anyMatch(t -> t.identifier().equals(ref6.identifier())));
 
 
         transferCollectionEntityDao.delete(collection);
@@ -324,10 +324,10 @@ public class AutoMappedTransferObjectCollectionEntityTest {
         assertEquals(6, transferReferenceEntityDao.countAll());
         assertEquals(1, transferCollectionEntityDao.countAll());
 
-        assertThat(transferCollectionEntityDao.queryRelationCollection(collection).execute().stream().map(t -> t.identifier()).toList(),
+        assertThat(transferCollectionEntityDao.queryRelationCollection(collection).selectList().stream().map(t -> t.identifier()).toList(),
                 containsInAnyOrder(uniRel1.identifier(), uniRel2.identifier()));
 
-        assertThat(transferCollectionEntityDao.queryTwoWayRelationCollection(collection).execute().stream().map(t -> t.identifier()).toList(),
+        assertThat(transferCollectionEntityDao.queryTwoWayRelationCollection(collection).selectList().stream().map(t -> t.identifier()).toList(),
                 containsInAnyOrder(biRel1.identifier(), biRel2.identifier()));
 
         assertEquals(transferReferenceEntityDao.queryRelationOptional(biRel1).orElseThrow().identifier(), collection.identifier());
@@ -337,39 +337,39 @@ public class AutoMappedTransferObjectCollectionEntityTest {
 
         //derived members
 
-        assertThat(transferCollectionEntityDao.queryCollectionCompositionEntityExpressionDerived(collection).execute(),
+        assertThat(transferCollectionEntityDao.queryCollectionCompositionEntityExpressionDerived(collection).selectList(),
                 containsInAnyOrder(comps.toArray())
         );
 
-        assertThat(transferCollectionEntityDao.queryCollectionRelationEntityExpressionDerived(collection).execute(),
+        assertThat(transferCollectionEntityDao.queryCollectionRelationEntityExpressionDerived(collection).selectList(),
                 containsInAnyOrder(uniRel1)
         );
 
-        assertThat(transferCollectionEntityDao.queryCollectionTwoWayRelationEntityExpressionDerived(collection).execute(),
+        assertThat(transferCollectionEntityDao.queryCollectionTwoWayRelationEntityExpressionDerived(collection).selectList(),
                 containsInAnyOrder(biRel1)
         );
 
-        assertThat(transferCollectionEntityDao.queryCollectionCompositionEntityMemberDerived(collection).execute(),
+        assertThat(transferCollectionEntityDao.queryCollectionCompositionEntityMemberDerived(collection).selectList(),
                 containsInAnyOrder(comps.toArray())
         );
 
-        assertThat(transferCollectionEntityDao.queryCollectionRelationEntityMemberDerived(collection).execute(),
+        assertThat(transferCollectionEntityDao.queryCollectionRelationEntityMemberDerived(collection).selectList(),
                 containsInAnyOrder(uniRel1, uniRel2)
         );
 
-        assertThat(transferCollectionEntityDao.queryCollectionTwoWayRelationEntityMemberDerived(collection).execute(),
+        assertThat(transferCollectionEntityDao.queryCollectionTwoWayRelationEntityMemberDerived(collection).selectList(),
                 containsInAnyOrder(biRel2, biRel1)
         );
 
-        assertThat(transferCollectionEntityDao.queryCollectionCompositionEntityQueryMemberDerived(collection).execute(),
+        assertThat(transferCollectionEntityDao.queryCollectionCompositionEntityQueryMemberDerived(collection).selectList(),
                 containsInAnyOrder(comps.toArray())
         );
 
-        assertThat(transferCollectionEntityDao.queryCollectionRelationEntityQueryMemberDerived(collection).execute(),
+        assertThat(transferCollectionEntityDao.queryCollectionRelationEntityQueryMemberDerived(collection).selectList(),
                 containsInAnyOrder(uniRel1)
         );
 
-        assertThat(transferCollectionEntityDao.queryCollectionTwoWayRelationEntityQueryMemberDerived(collection).execute(),
+        assertThat(transferCollectionEntityDao.queryCollectionTwoWayRelationEntityQueryMemberDerived(collection).selectList(),
                 containsInAnyOrder(biRel1)
         );
 

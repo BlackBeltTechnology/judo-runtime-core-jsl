@@ -244,7 +244,7 @@ public class InheritanceTest {
                 matchMissingAttribute("timeAttr"),
                 matchMissingAttribute("enumAttr")
         ));
-        List<H> list = hDao.query().execute();
+        List<H> list = hDao.query().selectList();
 
         assertEquals(0, list.size());
 

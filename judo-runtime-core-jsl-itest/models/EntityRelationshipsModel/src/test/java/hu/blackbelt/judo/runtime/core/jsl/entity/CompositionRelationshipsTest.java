@@ -170,13 +170,13 @@ public class CompositionRelationshipsTest {
     })
     void testNullOutOptionalRelationRemovesNested() {
         assertNotEquals(singleConA.identifier().getIdentifier(), entityADao.querySingleConA(entityA).orElseThrow().identifier().getIdentifier());
-        assertEquals(4, entityCDao.query().execute().size());
+        assertEquals(4, entityCDao.query().selectList().size());
 
         entityA.setSingleConA(null);
         entityADao.update(entityA);
 
         assertEquals(Optional.empty(), entityADao.querySingleConA(entityA));
-        assertEquals(3, entityCDao.query().execute().size());
+        assertEquals(3, entityCDao.query().selectList().size());
     }
 
     @Test
@@ -187,7 +187,7 @@ public class CompositionRelationshipsTest {
     })
     void testDeleteOptionalRelation() {
         assertNotEquals(singleConA.identifier().getIdentifier(), entityADao.querySingleConA(entityA).orElseThrow().identifier().getIdentifier());
-        assertEquals(4, entityCDao.query().execute().size());
+        assertEquals(4, entityCDao.query().selectList().size());
 
         entityCDao.delete(singleConA);
     }
@@ -231,10 +231,8 @@ public class CompositionRelationshipsTest {
             "REQ-ENT-012"
     })
     void testTraverse() {
-        List<EntityA> maskedAs = entityADao.query().execute();
-        EntityA maskedA = maskedAs.get(0);
+        EntityA maskedA = entityADao.query().selectOne().get();
         EntityC singleRequiredConA = maskedA.getSingleRequiredConA();
-
 
         assertEquals(Optional.of("TEST-A"), maskedA.getStringA());
         assertNotEquals(Optional.empty(), maskedA.getSingleConA());
@@ -256,7 +254,7 @@ public class CompositionRelationshipsTest {
     })
     void testMask() {
         List<EntityA> maskedAs = entityADao.query().maskedBy(
-                EntityAMask.entityAMask().withSingleRequiredConA(EntityCMask.entityCMask().withStringC())).execute();
+                EntityAMask.entityAMask().withSingleRequiredConA(EntityCMask.entityCMask().withStringC())).selectList();
 
         EntityA maskedA = maskedAs.get(0);
         EntityC requiredC = maskedA.getSingleRequiredConA();
@@ -279,7 +277,7 @@ public class CompositionRelationshipsTest {
             "REQ-ENT-012"
     })
     void testUpdateRootUpdatesInterimElement() {
-        EntityA entityA2 = entityADao.query().execute().get(0);
+        EntityA entityA2 = entityADao.query().selectOne().get();
         EntityC requiredC = entityA2.getSingleRequiredConA();
         EntityC singleC = entityA2.getSingleConA().get();
 

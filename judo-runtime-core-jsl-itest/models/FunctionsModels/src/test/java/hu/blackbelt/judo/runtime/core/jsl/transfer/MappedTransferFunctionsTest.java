@@ -790,23 +790,23 @@ public class MappedTransferFunctionsTest {
         assertNotNull(transferCollectionFunctionsDao.queryAnyParentsRelation(collectionFunctions));
 
         List<TransferParent> asCollectionChildrenParentField = transferCollectionFunctionsDao
-                .queryAsCollectionChildrenParentField(collectionFunctions).execute();
+                .queryAsCollectionChildrenParentField(collectionFunctions).selectList();
         assertEquals(2, asCollectionChildrenParentField.size());
         assertTrue(asCollectionChildrenParentField.stream().anyMatch(p -> p.getName().orElseThrow().equals("John")));
         assertTrue(asCollectionChildrenParentField.stream().anyMatch(p -> p.getName().orElseThrow().equals("Another Person")));
 
         List<TransferParent> asCollectionChildrenParentRelation = transferCollectionFunctionsDao
-                .queryAsCollectionChildrenParentRelation(collectionFunctions).execute();
+                .queryAsCollectionChildrenParentRelation(collectionFunctions).selectList();
         assertEquals(2, asCollectionChildrenParentRelation.size());
         assertTrue(asCollectionChildrenParentRelation.stream().anyMatch(p -> p.getName().orElseThrow().equals("Mark")));
         assertTrue(asCollectionChildrenParentRelation.stream().anyMatch(p -> p.getName().orElseThrow().equals("Billy")));
 
         List<TransferChild> asCollectionChildrenChildField = transferCollectionFunctionsDao
-                .queryAsCollectionChildrenChildField(collectionFunctions).execute();
+                .queryAsCollectionChildrenChildField(collectionFunctions).selectList();
         assertEquals(0, asCollectionChildrenChildField.size());
 
         List<TransferChild> asCollectionChildrenChildRelation = transferCollectionFunctionsDao
-                .queryAsCollectionChildrenChildRelation(collectionFunctions).execute();
+                .queryAsCollectionChildrenChildRelation(collectionFunctions).selectList();
         assertEquals(0, asCollectionChildrenChildRelation.size());
 
         assertEquals(Optional.of(23L), collectionFunctions.getMinChildrenField());
@@ -827,25 +827,25 @@ public class MappedTransferFunctionsTest {
         assertEquals(Optional.of(34L), collectionFunctions.getDivisionConst());
         assertEquals(Optional.of(35L), collectionFunctions.getRoundConst());
 
-        assertEquals(2, transferCollectionFunctionsDao.queryFirstChildrenField(collectionFunctions).execute().size());
-        assertEquals(2, transferCollectionFunctionsDao.queryFirstChildrenRelation(collectionFunctions).execute().size());
+        assertEquals(2, transferCollectionFunctionsDao.queryFirstChildrenField(collectionFunctions).selectList().size());
+        assertEquals(2, transferCollectionFunctionsDao.queryFirstChildrenRelation(collectionFunctions).selectList().size());
 
-        assertEquals(2, transferCollectionFunctionsDao.queryLastChildrenField(collectionFunctions).execute().size());
-        assertEquals(2, transferCollectionFunctionsDao.queryLastChildrenRelation(collectionFunctions).execute().size());
+        assertEquals(2, transferCollectionFunctionsDao.queryLastChildrenField(collectionFunctions).selectList().size());
+        assertEquals(2, transferCollectionFunctionsDao.queryLastChildrenRelation(collectionFunctions).selectList().size());
 
-        assertEquals(2, transferCollectionFunctionsDao.queryFrontChildrenField(collectionFunctions).execute().size());
-        assertEquals(2, transferCollectionFunctionsDao.queryFrontChildrenRelation(collectionFunctions).execute().size());
+        assertEquals(2, transferCollectionFunctionsDao.queryFrontChildrenField(collectionFunctions).selectList().size());
+        assertEquals(2, transferCollectionFunctionsDao.queryFrontChildrenRelation(collectionFunctions).selectList().size());
 
-        assertEquals(2, transferCollectionFunctionsDao.queryBackChildrenField(collectionFunctions).execute().size());
-        assertEquals(2, transferCollectionFunctionsDao.queryBackChildrenRelation(collectionFunctions).execute().size());
+        assertEquals(2, transferCollectionFunctionsDao.queryBackChildrenField(collectionFunctions).selectList().size());
+        assertEquals(2, transferCollectionFunctionsDao.queryBackChildrenRelation(collectionFunctions).selectList().size());
 
         assertTrue(collectionFunctions.getContainsParent().orElseThrow());
 
-        assertEquals(1, transferCollectionFunctionsDao.queryFilterParentsField(collectionFunctions).execute().size());
-        assertEquals(1, transferCollectionFunctionsDao.queryFilterParentsRelation(collectionFunctions).execute().size());
+        assertEquals(1, transferCollectionFunctionsDao.queryFilterParentsField(collectionFunctions).selectList().size());
+        assertEquals(1, transferCollectionFunctionsDao.queryFilterParentsRelation(collectionFunctions).selectList().size());
 
-        assertEquals(1, transferCollectionFunctionsDao.queryFilterChildrenField(collectionFunctions).execute().size());
-        assertEquals(1, transferCollectionFunctionsDao.queryFilterChildrenRelation(collectionFunctions).execute().size());
+        assertEquals(1, transferCollectionFunctionsDao.queryFilterChildrenField(collectionFunctions).selectList().size());
+        assertEquals(1, transferCollectionFunctionsDao.queryFilterChildrenRelation(collectionFunctions).selectList().size());
 
         assertEquals(Optional.of(true), collectionFunctions.getAnyTrueChildrenField());
         assertEquals(Optional.of(false), collectionFunctions.getAnyTrueChildrenRelation());
@@ -958,7 +958,7 @@ public class MappedTransferFunctionsTest {
     }
 
     private void assertBoolers(Boolean anyTrue, Boolean allTrue, Boolean anyFalse, Boolean allFalse) {
-        Optional<TransferBoolerTester> testerOptional = transferBoolerTesterDao.query().execute().stream().findAny();
+        Optional<TransferBoolerTester> testerOptional = transferBoolerTesterDao.query().selectOne();
         assertTrue(testerOptional.isPresent());
         TransferBoolerTester tester = testerOptional.get();
         Boolean anyTrueGot = tester.getAnyTrue().orElseThrow();
