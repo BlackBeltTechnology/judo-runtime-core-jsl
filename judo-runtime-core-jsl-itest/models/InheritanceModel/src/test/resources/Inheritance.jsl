@@ -17,10 +17,10 @@ entity ParentA {
     identifier String identifierA;
     field String derivedA <= self.nameA;
     relation RelationEntity[] relationEntities;
-    field CompositionEntity entity;
-    @Query
-    field String queryA(String param) <= param;
+    field CompositionEntity `entity`;
 }
+
+query String queryA(String param) on ParentA <= param;
 
 entity ParentB {
     field String nameB;
@@ -39,16 +39,16 @@ entity ParentRequiredC {
 }
 
 entity ParentDefaultD {
-    field Integer integerAttr = 1;
-    field Scaled scaledAttr = 2.34;
-    field String stringAttr = "test";
-    field PhoneNumber regexAttr = "+36 (30) 123 1234";
-    field Boolean boolAttr = true;
-    field Date dateAttr = `2022-07-11`;
-    field Timestamp timestampAttr = `2022-07-11T19:09:33Z`;
-    field Time timeAttr = `23:59:59`;
-    field Time shortTimeAttr = `23:59`;
-    field MyEnum enumAttr = MyEnum#Bombastic;
+    field Integer integerAttr default:1;
+    field Scaled scaledAttr default:2.34;
+    field String stringAttr default:"test";
+    field PhoneNumber regexAttr default:"+36 (30) 123 1234";
+    field Boolean boolAttr default:true;
+    field Date dateAttr default:`2022-07-11`;
+    field Timestamp timestampAttr default:`2022-07-11T19:09:33Z`;
+    field Time timeAttr default:`23:59:59`;
+    field Time shortTimeAttr default:`23:59`;
+    field MyEnum enumAttr default:MyEnum#Bombastic;
 }
 
 entity abstract ParentAbstract {
@@ -56,12 +56,12 @@ entity abstract ParentAbstract {
 }
 
 entity RelationEntity {
-	field Integer number = 1 ;
+	field Integer number default:1 ;
 	field String name;
 }
 
 entity CompositionEntity {
-	field Integer number = 1 ;
+	field Integer number default:1 ;
 	field String name;
 }
 
@@ -83,26 +83,24 @@ entity I extends ParentDefaultD {
 }
 
 transfer ParentATransfer(ParentA parenta) {
-    field String nameA <=> parenta.nameA;
-    @Embedded
-    relation RelationTransfer[] relationTransfers <=> parenta.relationEntities;
-    @Embedded
-    relation CompositionTransfer entity <=> parenta.entity;
+    field String nameA <= parenta.nameA;
+    relation RelationTransfer[] relationTransfers <= parenta.relationEntities eager:true;
+    relation CompositionTransfer `entity` <= parenta.`entity` eager:true;
 }
 
-transfer RelationTransfer(RelationEntity entity) {
-	field String name <=> entity.name;
+transfer RelationTransfer(RelationEntity `entity`) {
+	field String name <= `entity`.name;
 }
 
-transfer CompositionTransfer(CompositionEntity entity) {
-	field String name <=> entity.name;
+transfer CompositionTransfer(CompositionEntity `entity`) {
+	field String name <= `entity`.name;
 }
 
-transfer transferE(E entity) {
-    field String nameA <=> entity.nameA;
-    field String nameE <=> entity.nameE;
+transfer transferE(E `entity`) {
+    field String nameA <= `entity`.nameA;
+    field String nameE <= `entity`.nameE;
 }
 
-transfer ParentBTransfer(ParentB entity) {
-    field String nameB <=> entity.nameB;
+transfer ParentBTransfer(ParentB `entity`) {
+    field String nameB <= `entity`.nameB;
 }
