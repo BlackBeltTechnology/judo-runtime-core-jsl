@@ -558,12 +558,12 @@ public class AbstractTest {
 
         //remove
         assertEquals(3, kDao.countRelationMOnKMulti(k));
-        kDao.removeRelationMOnKMulti(k, List.of(kDao.queryRelationMOnKMulti(k).selectOne().get()));
+        kDao.removeRelationMOnKMulti(k, List.of(kDao.queryRelationMOnKMulti(k).selectList().get(0)));
         assertEquals(2, kDao.countRelationMOnKMulti(k));
         assertEquals(2, lDao.countRelationMOnKMulti(l));
 
         assertEquals(2, kDao.countRelationMOnKMulti(k));
-        kDao.removeRelationMOnKMulti(k, List.of(kDao.queryRelationMOnKMulti(k).selectOne().get(), kDao.queryRelationMOnKMulti(k).selectList().get(1)));
+        kDao.removeRelationMOnKMulti(k, List.of(kDao.queryRelationMOnKMulti(k).selectList().get(0), kDao.queryRelationMOnKMulti(k).selectList().get(1)));
         assertEquals(0, kDao.countRelationMOnKMulti(k));
         assertEquals(0, lDao.countRelationMOnKMulti(l));
 
