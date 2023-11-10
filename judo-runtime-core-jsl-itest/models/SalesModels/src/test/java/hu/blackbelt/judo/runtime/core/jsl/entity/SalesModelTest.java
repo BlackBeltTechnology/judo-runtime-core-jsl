@@ -104,7 +104,7 @@ class SalesModelTest {
 
         List<SalesPerson> personList = salesPersonDao.query()
                         .filterByFirstName(StringFilter.equalTo("Test"))
-                .execute();
+                .selectList();
 
         assertEquals(1, personList.size());
 
@@ -128,18 +128,18 @@ class SalesModelTest {
                 .queryLeadsOver(createdSalesPerson, SalesPersonLeadsOverParameter.builder()
                         .withLimit(10)
                         .build())
-                    .execute();
+                    .selectList();
         assertEquals(1, leadListOfQuery.size());
         assertEquals(Optional.of(100), leadListOfQuery.get(0).getValue());
 
         leadListOfQuery = salesPersonDao
                 .queryLeads(createdSalesPerson)
                 .filterByValue(NumberFilter.equalTo(100))
-                .execute();
+                .selectList();
         assertEquals(1, leadListOfQuery.size());
         assertEquals(Optional.of(100), leadListOfQuery.get(0).getValue());
 
-        List<Lead> leadsBetween = salesPersonDao.queryLeadsBetween(createdSalesPerson).execute();
+        List<Lead> leadsBetween = salesPersonDao.queryLeadsBetween(createdSalesPerson).selectList();
 
         assertEquals(1, leadsBetween.size());
 
@@ -148,7 +148,7 @@ class SalesModelTest {
         createdSalesPerson = salesPersonDao.getById(createdSalesPerson.identifier()).get();
         assertEquals(Optional.of(2), createdSalesPerson.getNumberOfLeads());
 
-        List<Lead> leadsOver10 = salesPersonDao.queryLeadsOver10(createdSalesPerson).execute();
+        List<Lead> leadsOver10 = salesPersonDao.queryLeadsOver10(createdSalesPerson).selectList();
 
         assertEquals(1, leadsOver10.size());
     }
@@ -193,10 +193,8 @@ class SalesModelTest {
                 .withContracts(List.of(contract))
                 .build());
 
-        List<Contract> checkContracts = salesPersonDao.queryContracts(createdSalesPerson).execute();
-        Contract checkContract = checkContracts.get(0);
+        Contract checkContract = salesPersonDao.queryContracts(createdSalesPerson).selectOne().orElseThrow();
 
-        assertEquals(1, checkContracts.size());
         assertEquals(contract, checkContract);
         assertEquals(Optional.of(LocalDate.parse("2022-07-21")), checkContract.getCreationDate());
     }
@@ -235,13 +233,13 @@ class SalesModelTest {
         Optional<ContractsAggregator> fetched = contractsAggregatorDao.getById(staticNavigationHost.identifier());
 
         // Collection<ContractDetail> details = fetched.get().getContractDetails() - derived relations are not embedded
-        Collection<ContractDetail> details = contractsAggregatorDao.queryContractDetails(fetched.get()).execute();
+        Collection<ContractDetail> details = contractsAggregatorDao.queryContractDetails(fetched.get()).selectList();
 
         assertEquals(Optional.of("Hello"), contract1.getDetail().get().getDetails());
         assertEquals(Optional.empty(), contract2.getDetail());
 
         // Collection<Contract> contracts = contractsAggregatorDao.getContracts(fetched.get()) - derived relations are not embedded
-        Collection<Contract> contracts = contractsAggregatorDao.queryContracts(fetched.get()).execute();
+        Collection<Contract> contracts = contractsAggregatorDao.queryContracts(fetched.get()).selectList();
 
         assertEquals(2, contracts.size());
         assertEquals(1, details.size());

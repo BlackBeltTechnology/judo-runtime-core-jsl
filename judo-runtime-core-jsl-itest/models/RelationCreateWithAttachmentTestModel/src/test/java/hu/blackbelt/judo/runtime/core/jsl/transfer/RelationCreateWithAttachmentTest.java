@@ -76,8 +76,8 @@ public class RelationCreateWithAttachmentTest {
         aDao.createRelBColl(a, List.of(B.builder().withName("B1").build(), B.builder().withName("B2").build()), List.of(BAttachedRelationsForCreate.builder().withRelC(c).build(), BAttachedRelationsForCreate.builder().withRelC(c1).build()));
 
         assertEquals(2, aDao.queryRelBColl(a).count());
-        B b1 = aDao.queryRelBColl(a).filterByName(StringFilter.equalTo("B1")).execute().get(0);
-        B b2 = aDao.queryRelBColl(a).filterByName(StringFilter.equalTo("B2")).execute().get(0);
+        B b1 = aDao.queryRelBColl(a).filterByName(StringFilter.equalTo("B1")).selectOne().get();
+        B b2 = aDao.queryRelBColl(a).filterByName(StringFilter.equalTo("B2")).selectOne().get();
 
         assertEquals(c.identifier(), bDao.queryRelC(b1).get().identifier());
         assertEquals(c1.identifier(), bDao.queryRelC(b2).get().identifier());

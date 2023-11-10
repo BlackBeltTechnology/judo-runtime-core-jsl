@@ -121,7 +121,7 @@ public class AutoMappedTransferObjectSingleEntityTest {
 
         autoMappedContainerSingleComposition = autoMappedContainerSingleCompositionDao.update(autoMappedContainerSingleComposition);
 
-        assertTrue(autoMappedReferenceEntityDao.query().execute().stream().filter(t -> t.getName().equals(Optional.of("singleCompositionRenamed"))).toList().isEmpty());
+        assertTrue(autoMappedReferenceEntityDao.query().selectList().stream().filter(t -> t.getName().equals(Optional.of("singleCompositionRenamed"))).toList().isEmpty());
 
         autoMappedContainerSingleComposition.setSingleComposition(autoMappedReferenceEntityDao.create(AutoMappedReferenceEntity.builder().withName("singleCompositionBind").build()));
 

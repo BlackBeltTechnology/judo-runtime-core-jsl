@@ -192,7 +192,7 @@ public class MappedTransferPrimitivesTest {
                 .withEnumAttr(Enum.EnumA)
                 .build());
 
-        assertEquals(1, transferOptionalPrimitivesDao.query().execute().size());
+        assertEquals(1, transferOptionalPrimitivesDao.query().selectList().size());
         assertEquals(Optional.of(1), transferOptionalPrimitives.getIntegerAttr());
         assertEquals(Optional.of(1.23), transferOptionalPrimitives.getScaledAttr());
         assertEquals(Optional.of("test"), transferOptionalPrimitives.getStringAttr());
@@ -205,7 +205,7 @@ public class MappedTransferPrimitivesTest {
         assertEquals(Optional.of(Enum.EnumA), transferOptionalPrimitives.getEnumAttr());
 
         EntityForMapping entityForMapping = entityForMappingDao.getById(transferOptionalPrimitives.identifier().adaptTo(EntityForMappingIdentifier.class)).orElseThrow();
-        assertEquals(1, entityForMappingDao.query().execute().size());
+        assertEquals(1, entityForMappingDao.query().selectList().size());
 
         assertEquals(Optional.of(1), entityForMapping.getIntegerAttr());
         assertEquals(Optional.of(1.23), entityForMapping.getScaledAttr());
@@ -279,7 +279,7 @@ public class MappedTransferPrimitivesTest {
                 matchMissingAttribute("enumAttr")
         ));
 
-        List<TransferRequiredPrimitives> list = transferRequiredPrimitivesDao.query().execute();
+        List<TransferRequiredPrimitives> list = transferRequiredPrimitivesDao.query().selectList();
         assertEquals(0, list.size());
     }
 
@@ -343,7 +343,7 @@ public class MappedTransferPrimitivesTest {
                 matchMissingAttribute("enumAttr")
         ));
 
-        List<TransferRequiredPrimitives> list = transferRequiredPrimitivesDao.query().execute();
+        List<TransferRequiredPrimitives> list = transferRequiredPrimitivesDao.query().selectList();
         assertEquals(0, list.size());
     }
 
@@ -537,7 +537,7 @@ public class MappedTransferPrimitivesTest {
     public void testUpdateOptionalTransferAfterCreation() {
         TransferOptionalPrimitives transferOptionalPrimitives = transferOptionalPrimitivesDao.create(TransferOptionalPrimitives.builder().build());
 
-        List<TransferOptionalPrimitives> list = transferOptionalPrimitivesDao.query().execute();
+        List<TransferOptionalPrimitives> list = transferOptionalPrimitivesDao.query().selectList();
 
         assertEquals(1, list.size());
 
@@ -577,7 +577,7 @@ public class MappedTransferPrimitivesTest {
         assertEquals(Optional.of(Enum.EnumA), transferOptionalPrimitives.getEnumAttr());
 
         EntityForMapping entityForMapping = entityForMappingDao.getById(transferOptionalPrimitives.identifier().adaptTo(EntityForMappingIdentifier.class)).orElseThrow();
-        assertEquals(1, entityForMappingDao.query().execute().size());
+        assertEquals(1, entityForMappingDao.query().selectList().size());
 
         assertEquals(Optional.of(1), entityForMapping.getIntegerAttr());
         assertEquals(Optional.of(1.23), entityForMapping.getScaledAttr());
@@ -632,7 +632,7 @@ public class MappedTransferPrimitivesTest {
     public void testTransferCreationWithPrimitiveDefaults() {
         TransferWithPrimitiveDefaults transferWithPrimitiveDefaults = transferWithPrimitiveDefaultsDao.create(TransferWithPrimitiveDefaults.builder().build());
 
-        List<TransferWithPrimitiveDefaults> list = transferWithPrimitiveDefaultsDao.query().execute();
+        List<TransferWithPrimitiveDefaults> list = transferWithPrimitiveDefaultsDao.query().selectList();
 
         assertEquals(1, list.size());
 
@@ -688,7 +688,7 @@ public class MappedTransferPrimitivesTest {
     })
     public void testTransferCreationRequiredWithPrimitiveDefaults() {
         TransferPrimitiveDefaults transferPrimitiveDefaults = transferPrimitiveDefaultsDao.create(TransferPrimitiveDefaults.builder().build());
-        List<TransferWithRequiredPrimitiveDefaults> list = transferWithRequiredPrimitiveDefaultsDao.query().execute();
+        List<TransferWithRequiredPrimitiveDefaults> list = transferWithRequiredPrimitiveDefaultsDao.query().selectList();
 
         assertEquals(1, list.size());
 
@@ -892,7 +892,7 @@ public class MappedTransferPrimitivesTest {
     public void testTransferCreationWithPrimitiveDefaultExpressions() {
         TransferWithPrimitiveDefaultExpressions transferWithPrimitiveDefaultExpressions = transferWithPrimitiveDefaultExpressionsDao.create(TransferWithPrimitiveDefaultExpressions.builder().build());
 
-        List<TransferWithPrimitiveDefaultExpressions> list = transferWithPrimitiveDefaultExpressionsDao.query().execute();
+        List<TransferWithPrimitiveDefaultExpressions> list = transferWithPrimitiveDefaultExpressionsDao.query().selectList();
 
         assertEquals(1, list.size());
 

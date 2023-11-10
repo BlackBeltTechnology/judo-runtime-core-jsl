@@ -143,15 +143,15 @@ public class MappedTransferCompositonAggregationTest {
 
         TransferB transferB = transferBDao.create(TransferB.builder().withNameB("B1").build());
 
-        assertEquals(1, transferBDao.query().execute().size());
+        assertEquals(1, transferBDao.query().selectList().size());
 
         TransferA transferA = transferADao.create(TransferA.builder()
                 .withSingleEntityB(transferB)
                 .build()
         );
 
-        assertEquals(2,transferBDao.query().execute().size());
-        assertEquals(2,entityBDao.query().execute().size());
+        assertEquals(2,transferBDao.query().selectList().size());
+        assertEquals(2,entityBDao.query().selectList().size());
 
         // Check transferA contains transferB
         assertNotEquals(transferB.identifier().getIdentifier(),transferA.getSingleEntityB().orElseThrow().identifier().getIdentifier());
@@ -226,15 +226,15 @@ public class MappedTransferCompositonAggregationTest {
 
         TransferD transferD = transferDDao.create(TransferD.builder().withNameD("D1").build());
 
-        assertEquals(1, transferDDao.query().execute().size());
+        assertEquals(1, transferDDao.query().selectList().size());
 
         TransferC transferC = transferCDao.create(TransferC.builder()
                 .withSingleRequiredEntityD(transferD)
                 .build()
         );
 
-        assertEquals(2,transferDDao.query().execute().size());
-        assertEquals(2,entityDDao.query().execute().size());
+        assertEquals(2,transferDDao.query().selectList().size());
+        assertEquals(2,entityDDao.query().selectList().size());
 
         //Try to create without required element
 
@@ -292,15 +292,15 @@ public class MappedTransferCompositonAggregationTest {
         TransferB transferB2 = transferBDao.create(TransferB.builder().withNameB("B2").build());
         TransferB transferB3 = transferBDao.create(TransferB.builder().withNameB("B3").build());
 
-        assertEquals(3, transferBDao.query().execute().size());
+        assertEquals(3, transferBDao.query().selectList().size());
 
         TransferA transferA = transferADao.create(TransferA.builder()
                 .withMultiEntityB(List.of(transferB1, transferB2, transferB3))
                 .build()
         );
 
-        assertEquals(6, transferBDao.query().execute().size());
-        assertEquals(6, entityBDao.query().execute().size());
+        assertEquals(6, transferBDao.query().selectList().size());
+        assertEquals(6, entityBDao.query().selectList().size());
 
         assertFalse(transferA.getMultiEntityB().stream().map(t -> t.identifier()).toList().contains(transferB1.identifier()));
         assertFalse(transferA.getMultiEntityB().stream().map(t -> t.identifier()).toList().contains(transferB2.identifier()));
