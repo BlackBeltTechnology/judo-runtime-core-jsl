@@ -17,7 +17,7 @@ entity ParentA {
     identifier String identifierA;
     field String derivedA <= self.nameA;
     relation RelationEntity[] relationEntities;
-    field CompositionEntity entity;
+    field CompositionEntity `entity`;
 }
 
 query String queryA(String param) on ParentA <= param;
@@ -85,22 +85,22 @@ entity I extends ParentDefaultD {
 transfer ParentATransfer(ParentA parenta) {
     field String nameA <= parenta.nameA;
     relation RelationTransfer[] relationTransfers <= parenta.relationEntities eager:true;
-    relation CompositionTransfer entity <= parenta.entity egaer:true;
+    relation CompositionTransfer `entity` <= parenta.`entity` eager:true;
 }
 
-transfer RelationTransfer(RelationEntity entity) {
-	field String name <= entity.name;
+transfer RelationTransfer(RelationEntity `entity`) {
+	field String name <= `entity`.name;
 }
 
-transfer CompositionTransfer(CompositionEntity entity) {
-	field String name <= entity.name;
+transfer CompositionTransfer(CompositionEntity `entity`) {
+	field String name <= `entity`.name;
 }
 
-transfer transferE(E entity) {
-    field String nameA <= entity.nameA;
-    field String nameE <= entity.nameE;
+transfer transferE(E `entity`) {
+    field String nameA <= `entity`.nameA;
+    field String nameE <= `entity`.nameE;
 }
 
-transfer ParentBTransfer(ParentB entity) {
-    field String nameB <= entity.nameB;
+transfer ParentBTransfer(ParentB `entity`) {
+    field String nameB <= `entity`.nameB;
 }
