@@ -27,3 +27,19 @@ entity entityA {
 entity entityB {
     relation ReferenceEntity querySameName <= ReferenceEntity.any();
 }
+
+// Builder copy the collection recursively
+
+entity C {
+    field String name;
+    field D[] compD;
+}
+
+entity D {
+    field E[] compE;
+}
+
+entity E {
+
+}
+
