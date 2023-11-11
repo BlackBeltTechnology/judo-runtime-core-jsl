@@ -216,52 +216,52 @@ public class TestStaticQueryDao {
         EntityWithPrimitives entityWithPrimitives = entityWithPrimitivesDao.create(EntityWithPrimitives.builder().build());
 
         // Integer query
-        assertEquals(1, integerWithoutParamQueryDao.execute());
-        assertEquals(2, integerWithParamQueryDao.execute(IntegerWithParamQueryParameter.builder().withNum(1).build()));
-        assertEquals(2, integerWithDefaultParamQueryDao.execute(IntegerWithDefaultParamQueryParameter.builder().build()));
+        assertEquals(1, integerWithoutParamQueryDao.selectValue());
+        assertEquals(2, integerWithParamQueryDao.selectValue(IntegerWithParamQueryParameter.builder().withNum(1).build()));
+        assertEquals(2, integerWithDefaultParamQueryDao.selectValue(IntegerWithDefaultParamQueryParameter.builder().build()));
 
         // Scaled query
-        assertEquals(2.34, scaledWithoutParamQueryDao.execute());
-        assertEquals(3.34, scaledWithParamQueryDao.execute(ScaledWithParamQueryParameter.builder().withNum(1.0).build()));
-        assertEquals(4.68, scaledWithDefaultParamQueryDao.execute(ScaledWithDefaultParamQueryParameter.builder().build()));
+        assertEquals(2.34, scaledWithoutParamQueryDao.selectValue());
+        assertEquals(3.34, scaledWithParamQueryDao.selectValue(ScaledWithParamQueryParameter.builder().withNum(1.0).build()));
+        assertEquals(4.68, scaledWithDefaultParamQueryDao.selectValue(ScaledWithDefaultParamQueryParameter.builder().build()));
 
         // String query
-        assertEquals("test", stringWithoutParamQueryDao.execute());
-        assertEquals("testhello", stringWithParamQueryDao.execute(StringWithParamQueryParameter.builder().withString("hello").build()));
-        assertEquals("testhello", stringWithDefaultParamQueryDao.execute(StringWithDefaultParamQueryParameter.builder().build()));
+        assertEquals("test", stringWithoutParamQueryDao.selectValue());
+        assertEquals("testhello", stringWithParamQueryDao.selectValue(StringWithParamQueryParameter.builder().withString("hello").build()));
+        assertEquals("testhello", stringWithDefaultParamQueryDao.selectValue(StringWithDefaultParamQueryParameter.builder().build()));
 
         // Boolean query
-        assertEquals(true, booleanWithoutParamQueryDao.execute());
-        assertEquals(false, booleanWithParamQueryDao.execute(BooleanWithParamQueryParameter.builder().withBool(false).build()));
-        assertEquals(true, booleanWithDefaultParamQueryDao.execute(BooleanWithDefaultParamQueryParameter.builder().build()));
+        assertEquals(true, booleanWithoutParamQueryDao.selectValue());
+        assertEquals(false, booleanWithParamQueryDao.selectValue(BooleanWithParamQueryParameter.builder().withBool(false).build()));
+        assertEquals(true, booleanWithDefaultParamQueryDao.selectValue(BooleanWithDefaultParamQueryParameter.builder().build()));
 
         // Date query
-        assertEquals(LocalDate.of(2022, 7, 11), dateWithoutParamQueryDao.execute());
+        assertEquals(LocalDate.of(2022, 7, 11), dateWithoutParamQueryDao.selectValue());
         assertEquals(
                 LocalDate.of(2023, 4, 3),
-                dateWithParamQueryDao.execute(DateWithParamQueryParameter.builder().withDateYear(2023).withDateMonth(4).withDateDay(3).build())
+                dateWithParamQueryDao.selectValue(DateWithParamQueryParameter.builder().withDateYear(2023).withDateMonth(4).withDateDay(3).build())
         );
         assertEquals(
                 LocalDate.of(2023, 3, 3),
-                dateWithDefaultParamQueryDao.execute(DateWithDefaultParamQueryParameter.builder().build())
+                dateWithDefaultParamQueryDao.selectValue(DateWithDefaultParamQueryParameter.builder().build())
         );
 
         // Time
-        assertEquals(LocalTime.of(22, 59, 59), timeWithoutParamQueryDao.execute());
+        assertEquals(LocalTime.of(22, 59, 59), timeWithoutParamQueryDao.selectValue());
         assertEquals(
                 LocalTime.of(12, 24, 45),
-                timeWithParamQueryDao.execute(TimeWithParamQueryParameter.builder().withTimeHour(12).withTimeMinute(24).withTimeSecond(45).build())
+                timeWithParamQueryDao.selectValue(TimeWithParamQueryParameter.builder().withTimeHour(12).withTimeMinute(24).withTimeSecond(45).build())
         );
         assertEquals(
                 LocalTime.of(13, 4, 5),
-                timeWithDefaultParamQueryDao.execute(TimeWithDefaultParamQueryParameter.builder().build())
+                timeWithDefaultParamQueryDao.selectValue(TimeWithDefaultParamQueryParameter.builder().build())
         );
 
         // Timestamp
-        assertEquals(LocalDateTime.parse("2022-07-11T19:09:33"), timestampWithoutParamQueryDao.execute());
+        assertEquals(LocalDateTime.parse("2022-07-11T19:09:33"), timestampWithoutParamQueryDao.selectValue());
         assertEquals(
                 LocalDateTime.parse("2023-03-03T12:24:45"),
-                timestampWithParamQueryDao.execute(TimestampWithParamQueryParameter
+                timestampWithParamQueryDao.selectValue(TimestampWithParamQueryParameter
                         .builder()
                         .withTimestampDate(LocalDate.of(2023, 3, 3))
                         .withTimestampTime(LocalTime.of(12, 24, 45))
@@ -269,15 +269,15 @@ public class TestStaticQueryDao {
         );
         assertEquals(
                 LocalDateTime.parse("2021-02-28T10:30:01"),
-                timestampWithDefaultParamQueryDao.execute(TimestampWithDefaultParamQueryParameter.builder().build())
+                timestampWithDefaultParamQueryDao.selectValue(TimestampWithDefaultParamQueryParameter.builder().build())
         );
 
         //Enum
-        assertEquals(MyEnum.Bombastic, enumWithoutParamQueryDao.execute());
+        assertEquals(MyEnum.Bombastic, enumWithoutParamQueryDao.selectValue());
 
         entityWithPrimitivesDao.delete(entityWithPrimitives);
 
-        assertNull(integerWithoutParamQueryDao.execute());
+        assertNull(integerWithoutParamQueryDao.selectValue());
 
     }
 
@@ -320,17 +320,17 @@ public class TestStaticQueryDao {
         EntityQueryElement c = entityQueryElementDao.create(EntityQueryElement.builder().withName("C").withValue(3).withCategory(MyEnum.Crazy).build());
         EntityQueryElement d = entityQueryElementDao.create(EntityQueryElement.builder().withName("D").withValue(4).withCategory(MyEnum.Atomic).build());
 
-        assertEquals(a.identifier(), entityWithoutParamQueryDao.execute().map(e -> e.identifier()).orElseThrow());
+        assertEquals(a.identifier(), entityWithoutParamQueryDao.selectOne().map(e -> e.identifier()).orElseThrow());
         assertEquals(
                 b.identifier(),
-                entityWithParamQueryDao.execute(EntityWithParamQueryParameter
+                entityWithParamQueryDao.selectOne(EntityWithParamQueryParameter
                         .builder()
                         .withName("B")
                         .withValue(2)
                         .withMyenum(MyEnum.Bombastic)
                         .build()).map(e -> e.identifier()).orElseThrow()
         );
-        assertEquals(b.identifier(), entityWithDefaultParamQueryDao.execute().map(e -> e.identifier()).orElseThrow());
+        assertEquals(b.identifier(), entityWithDefaultParamQueryDao.selectOne().map(e -> e.identifier()).orElseThrow());
 
     }
 
@@ -380,9 +380,9 @@ public class TestStaticQueryDao {
 
 
         // Without parameter
-        assertEquals(3, entityCollectionWithoutParamQueryDao.query().execute().size());
+        assertEquals(3, entityCollectionWithoutParamQueryDao.query().selectList().size());
         assertThat(
-                entityCollectionWithoutParamQueryDao.query().execute().stream().map(p -> p.identifier()).collect(Collectors.toList()),
+                entityCollectionWithoutParamQueryDao.query().selectList().stream().map(p -> p.identifier()).collect(Collectors.toList()),
                 containsInAnyOrder(c.identifier(), g.identifier(), f.identifier())
         );
 
@@ -393,13 +393,13 @@ public class TestStaticQueryDao {
                         .withName("B")
                         .withValue(2)
                         .withMyenum(MyEnum.Bombastic)
-                        .build()).execute().stream().map(p -> p.identifier()).collect(Collectors.toList()),
+                        .build()).selectList().stream().map(p -> p.identifier()).collect(Collectors.toList()),
                 containsInAnyOrder(b1.identifier(), b2.identifier())
         );
 
         // This is the expected behaviour
-        List<EntityQueryElement> execute = entityCollectionWithValueParamQueryDao.query().execute();
-        assertEquals(0, execute.size());
+        List<EntityQueryElement> selectList = entityCollectionWithValueParamQueryDao.query().selectList();
+        assertEquals(0, selectList.size());
 
         assertThat(
                 entityCollectionWithValueParamQueryDao
@@ -407,7 +407,7 @@ public class TestStaticQueryDao {
                                 .builder()
                                 .withValue(4)
                                 .build())
-                        .execute().stream().map(p -> p.identifier()).collect(Collectors.toList()),
+                        .selectList().stream().map(p -> p.identifier()).collect(Collectors.toList()),
                 containsInAnyOrder(d.identifier(), e.identifier())
         );
 
@@ -421,7 +421,7 @@ public class TestStaticQueryDao {
                                 .withValue(4)
                                 .build())
                         .filterByName(StringFilter.equalTo("D"))
-                        .execute()
+                        .selectList()
                         .stream().map(p -> p.identifier()).collect(Collectors.toList()),
                 containsInAnyOrder(d.identifier())
         );
@@ -433,7 +433,7 @@ public class TestStaticQueryDao {
                         .withValue(4)
                         .build())
                 .orderByDescending(EntityQueryElementAttribute.NAME)
-                .execute(1);
+                .selectList(1);
 
         assertEquals(1, list.size());
         assertEquals(e.identifier(), list.get(0).identifier());
@@ -444,7 +444,7 @@ public class TestStaticQueryDao {
                         .withValue(4)
                         .build())
                 .orderByDescending(EntityQueryElementAttribute.NAME)
-                .execute(null);
+                .selectList(null);
 
         assertEquals(2, list.size());
         assertEquals(e.identifier(), list.get(0).identifier());
@@ -456,7 +456,7 @@ public class TestStaticQueryDao {
                         .withValue(4)
                         .build())
                 .orderByDescending(EntityQueryElementAttribute.NAME)
-                .execute(0);
+                .selectList(0);
 
         assertEquals(2, list.size());
         assertEquals(e.identifier(), list.get(0).identifier());
@@ -468,7 +468,7 @@ public class TestStaticQueryDao {
                         .withValue(4)
                         .build())
                 .orderByDescending(EntityQueryElementAttribute.NAME)
-                .execute(2);
+                .selectList(2);
 
         list = entityCollectionWithValueParamQueryDao
                         .query(EntityCollectionWithValueParamQueryParameter
@@ -476,7 +476,7 @@ public class TestStaticQueryDao {
                                 .withValue(4)
                                 .build())
                         .orderByDescending(EntityQueryElementAttribute.NAME)
-                        .execute(1, null);
+                        .selectList(1, null);
 
         assertEquals(1, list.size());
         assertEquals(e.identifier(), list.get(0).identifier());
@@ -487,7 +487,7 @@ public class TestStaticQueryDao {
                         .withValue(4)
                         .build())
                 .orderByDescending(EntityQueryElementAttribute.NAME)
-                .execute(null, null);
+                .selectList(null, null);
 
         assertEquals(2, list.size());
         assertEquals(e.identifier(), list.get(0).identifier());
@@ -499,7 +499,7 @@ public class TestStaticQueryDao {
                         .withValue(4)
                         .build())
                 .orderByDescending(EntityQueryElementAttribute.NAME)
-                .execute(0, null);
+                .selectList(0, null);
 
         assertEquals(2, list.size());
         assertEquals(e.identifier(), list.get(0).identifier());
@@ -511,7 +511,7 @@ public class TestStaticQueryDao {
                         .withValue(4)
                         .build())
                 .orderByDescending(EntityQueryElementAttribute.NAME)
-                .execute(2, null);
+                .selectList(2, null);
 
         assertEquals(2, list.size());
         assertEquals(e.identifier(), list.get(0).identifier());
@@ -523,7 +523,7 @@ public class TestStaticQueryDao {
                         .withValue(4)
                         .build())
                 .orderByDescending(EntityQueryElementAttribute.NAME)
-                .execute(2, 0);
+                .selectList(2, 0);
 
         assertEquals(2, list.size());
         assertEquals(e.identifier(), list.get(0).identifier());
@@ -536,7 +536,7 @@ public class TestStaticQueryDao {
                         .withValue(4)
                         .build())
                 .orderByDescending(EntityQueryElementAttribute.NAME)
-                .execute(2, 1);
+                .selectList(2, 1);
 
         assertEquals(1, list.size());
         assertEquals(d.identifier(), list.get(0).identifier());
@@ -548,7 +548,7 @@ public class TestStaticQueryDao {
                         .withValue(4)
                         .build())
                 .orderByDescending(EntityQueryElementAttribute.NAME)
-                .execute(2, 2);
+                .selectList(2, 2);
 
         assertEquals(0, list.size());
 
@@ -559,7 +559,7 @@ public class TestStaticQueryDao {
                         .withValue(4)
                         .build())
                 .maskedBy(EntityQueryElementMask.entityQueryElementMask().withName())
-                .execute();
+                .selectList();
 
         assertNull(maskedList.get(0).getCategory());
         assertNull(maskedList.get(0).getValue());
@@ -576,7 +576,7 @@ public class TestStaticQueryDao {
                         .withValue(4)
                         .build())
                 .orderBy(EntityQueryElementAttribute.NAME)
-                .execute();
+                .selectList();
 
         assertEquals(d.identifier(), orderByList.get(0).identifier());
         assertEquals(e.identifier(), orderByList.get(1).identifier());
@@ -588,13 +588,13 @@ public class TestStaticQueryDao {
                         .withValue(4)
                         .build())
                 .orderByDescending(EntityQueryElementAttribute.NAME)
-                .execute();
+                .selectList();
 
         assertEquals(e.identifier(), orderByDescList.get(0).identifier());
         assertEquals(d.identifier(), orderByDescList.get(1).identifier());
 
         // With parameter and count
-        assertEquals(2, entityCollectionWithValueParamQueryDao.query(EntityCollectionWithValueParamQueryParameter.builder().withValue(4).build()).execute().size());
+        assertEquals(2, entityCollectionWithValueParamQueryDao.query(EntityCollectionWithValueParamQueryParameter.builder().withValue(4).build()).selectList().size());
         assertEquals(2, entityCollectionWithValueParamQueryDao.query(EntityCollectionWithValueParamQueryParameter.builder().withValue(4).build()).count());
 
         // With parameter default
@@ -602,7 +602,7 @@ public class TestStaticQueryDao {
                 entityCollectionWithDefaultParamQueryDao.query(EntityCollectionWithDefaultParamQueryParameter
                                 .builder()
                                 .build())
-                        .execute().stream().map(p -> p.identifier()).collect(Collectors.toList()),
+                        .selectList().stream().map(p -> p.identifier()).collect(Collectors.toList()),
                 containsInAnyOrder(b1.identifier(), b2.identifier())
         );
 
@@ -613,7 +613,7 @@ public class TestStaticQueryDao {
                                 .withValue(3)
                                 .withMyenum(MyEnum.Crazy)
                                 .build())
-                        .execute().stream().map(p -> p.identifier()).collect(Collectors.toList()),
+                        .selectList().stream().map(p -> p.identifier()).collect(Collectors.toList()),
                 containsInAnyOrder(c.identifier())
         );
 

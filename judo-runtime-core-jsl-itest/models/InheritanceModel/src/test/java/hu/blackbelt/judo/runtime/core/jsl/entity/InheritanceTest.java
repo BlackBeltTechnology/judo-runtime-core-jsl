@@ -279,7 +279,7 @@ public class InheritanceTest {
                 matchMissingAttribute("timeAttr"),
                 matchMissingAttribute("enumAttr")
         ));
-        List<H> list = hDao.query().execute();
+        List<H> list = hDao.query().selectList();
 
         assertEquals(0, list.size());
 
@@ -412,7 +412,7 @@ public class InheritanceTest {
         assertEquals(parentA1Test.identifier().getIdentifier(), parentA1.identifier().getIdentifier());
         assertEquals("C1", parentA1Test.getEntity().orElseThrow().getName().orElseThrow());
 
-        List<RelationEntity> relationEntities = parentADao.queryRelationEntities(parentA1Test).execute();
+        List<RelationEntity> relationEntities = parentADao.queryRelationEntities(parentA1Test).selectList();
 
         assertEquals(2, relationEntities.size());
         assertEquals(1, relationEntities.stream()
@@ -432,7 +432,7 @@ public class InheritanceTest {
         assertEquals(parentA1Test.identifier().getIdentifier(), parentA1.identifier().getIdentifier());
         assertEquals("C1", parentA1Test.getEntity().orElseThrow().getName().orElseThrow());
 
-        relationEntities = parentADao.queryRelationEntities(parentA1Test).execute();
+        relationEntities = parentADao.queryRelationEntities(parentA1Test).selectList();
 
         assertEquals(2, relationEntities.size());
         assertEquals(1, relationEntities.stream()
@@ -445,7 +445,7 @@ public class InheritanceTest {
         assertEquals(parentA1Test.identifier().getIdentifier(), parentA1.identifier().getIdentifier());
         assertEquals("C2", parentA2Test.getEntity().orElseThrow().getName().orElseThrow());
 
-        relationEntities = parentADao.queryRelationEntities(parentA2Test).execute();
+        relationEntities = parentADao.queryRelationEntities(parentA2Test).selectList();
 
         assertEquals(1, relationEntities.size());
         assertEquals(1, relationEntities.stream()
@@ -507,7 +507,7 @@ public class InheritanceTest {
         assertEquals(parentA1Test.identifier().getIdentifier(), parentA1.identifier().getIdentifier());
         assertEquals("C1", parentA1Test.getEntity().orElseThrow().getName().orElseThrow());
 
-        List<RelationTransfer> relationEntities = parentATransferDao.queryRelationTransfers(parentA1Test).execute();
+        List<RelationTransfer> relationEntities = parentATransferDao.queryRelationTransfers(parentA1Test).selectList();
 
         assertEquals(2, relationEntities.size());
         assertEquals(1, relationEntities.stream()
@@ -527,7 +527,7 @@ public class InheritanceTest {
         assertEquals(parentA1Test.identifier().getIdentifier(), parentA1.identifier().getIdentifier());
         assertEquals("C1", parentA1Test.getEntity().orElseThrow().getName().orElseThrow());
 
-        relationEntities = parentATransferDao.queryRelationTransfers(parentA1Test).execute();
+        relationEntities = parentATransferDao.queryRelationTransfers(parentA1Test).selectList();
 
         assertEquals(2, relationEntities.size());
         assertEquals(1, relationEntities.stream()
@@ -540,7 +540,7 @@ public class InheritanceTest {
         assertEquals(parentA1Test.identifier().getIdentifier(), parentA1.identifier().getIdentifier());
         assertEquals("C2", parentA2Test.getEntity().orElseThrow().getName().orElseThrow());
 
-        relationEntities = parentATransferDao.queryRelationTransfers(parentA2Test).execute();
+        relationEntities = parentATransferDao.queryRelationTransfers(parentA2Test).selectList();
 
         assertEquals(1, relationEntities.size());
         assertEquals(1, relationEntities.stream()

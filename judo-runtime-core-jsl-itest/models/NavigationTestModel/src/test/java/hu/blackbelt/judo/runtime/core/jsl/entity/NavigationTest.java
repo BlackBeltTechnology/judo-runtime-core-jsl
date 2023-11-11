@@ -81,7 +81,7 @@ class NavigationTest {
         bDao.setC(b, c);
 
         // Read derived list over DAO call
-        List<C> cList = aDao.queryClist(a).execute();
+        List<C> cList = aDao.queryClist(a).selectList();
         assertEquals(1, cList.size());
     }
 
@@ -120,13 +120,13 @@ class NavigationTest {
     }
 
     private void assertEmptyBAndC(A a) {
-        assertEmpty(aDao.queryBbAll(a).execute());
+        assertEmpty(aDao.queryBbAll(a).selectList());
         assertEmpty(aDao.queryBbAny(a));
 
         assertEmpty(a.getBbAnyName());
         assertEmpty(a.getSelfBName());
 
-        assertEmpty(aDao.queryBbAllFilter(a).execute());
+        assertEmpty(aDao.queryBbAllFilter(a).selectList());
         assertEmpty(aDao.queryBbAllFilterAny(a));
         assertEmpty(aDao.queryBbAllFilterAny1(a));
 
@@ -134,24 +134,24 @@ class NavigationTest {
         assertEmpty(a.getBbAllFilterAnyName1());
         assertEmpty(a.getBbAllFilterAnyName2());
 
-        assertEmpty(aDao.querySelfbAllC(a).execute());
+        assertEmpty(aDao.querySelfbAllC(a).selectList());
         assertEmpty(aDao.querySelfbAllCAny(a));
         assertEmpty(a.getSelfbAllCAnyName());
 
-        assertEmpty(aDao.queryBbAllC(a).execute());
+        assertEmpty(aDao.queryBbAllC(a).selectList());
         assertEmpty(aDao.queryBbAllCAny(a));
         assertEmpty(a.getBbAllCAnyName());
     }
 
     @SuppressWarnings("unchecked")
     private void assertAttributesAndRelations(A a, Collection<Identifiable> bIds, Collection<Identifiable> cIds) {
-        assertThat(aDao.queryBbAll(a).execute().stream().map(B::identifier).collect(Collectors.toList()), anyOf(toHasItems(bIds)));
+        assertThat(aDao.queryBbAll(a).selectList().stream().map(B::identifier).collect(Collectors.toList()), anyOf(toHasItems(bIds)));
         assertThat(aDao.queryBbAny(a).orElseThrow().identifier(), anyOf(toIss(bIds)));
 
         assertEquals("b", a.getBbAnyName().orElseThrow());
         assertEquals("b", a.getSelfBName().orElseThrow());
 
-        assertThat(aDao.queryBbAllFilter(a).execute().stream().map(B::identifier).collect(Collectors.toList()), anyOf(toHasItems(bIds)));
+        assertThat(aDao.queryBbAllFilter(a).selectList().stream().map(B::identifier).collect(Collectors.toList()), anyOf(toHasItems(bIds)));
         assertThat(aDao.queryBbAllFilterAny(a).orElseThrow().identifier(), anyOf(toIss(bIds)));
         assertThat(aDao.queryBbAllFilterAny1(a).orElseThrow().identifier(), anyOf(toIss(bIds)));
 
@@ -159,11 +159,11 @@ class NavigationTest {
         assertEquals("b", a.getBbAllFilterAnyName1().orElseThrow());
         assertEquals("b", a.getBbAllFilterAnyName2().orElseThrow());
 
-        assertThat(aDao.querySelfbAllC(a).execute().stream().map(C::identifier).collect(Collectors.toList()), anyOf(toHasItems(cIds)));
+        assertThat(aDao.querySelfbAllC(a).selectList().stream().map(C::identifier).collect(Collectors.toList()), anyOf(toHasItems(cIds)));
         assertThat(aDao.querySelfbAllCAny(a).orElseThrow().identifier(), anyOf(toIss(cIds)));
         assertEquals("c", a.getSelfbAllCAnyName().orElseThrow());
 
-        assertThat(aDao.queryBbAllC(a).execute().stream().map(C::identifier).collect(Collectors.toList()), anyOf(toHasItems(cIds)));
+        assertThat(aDao.queryBbAllC(a).selectList().stream().map(C::identifier).collect(Collectors.toList()), anyOf(toHasItems(cIds)));
         assertThat(aDao.queryBbAllCAny(a).orElseThrow().identifier(), anyOf(toIss(cIds)));
         assertEquals("c", a.getBbAllCAnyName().orElseThrow());
     }
