@@ -196,9 +196,9 @@ public class TestStaticQueriesWithDefaultValues {
                 || fldMyEntity006ID.equals(e4.identifier().getIdentifier())
             );
         List<MyEntity> defEntities = new ArrayList<>(List.of(e2));
-        assertEquals(defEntities, snapshot1Dao.queryDefEntities(s1).execute());
+        assertEquals(defEntities, snapshot1Dao.queryDefEntities(s1).selectList());
         List<MyEntity> otherEntities = new ArrayList<>(List.of(e4));
-        assertEquals(otherEntities, snapshot1Dao.queryOtherEntities(s1).execute());
+        assertEquals(otherEntities, snapshot1Dao.queryOtherEntities(s1).selectList());
 
     }
 

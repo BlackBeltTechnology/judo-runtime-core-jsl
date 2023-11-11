@@ -119,14 +119,14 @@ public class PagingTest {
 
         // List 1 to 4
 
-        java.util.List<ListIdentifier> list1to4Ids = listDao.query().orderBy(ListAttribute.NAME).execute(4).stream().map(List::identifier).toList();
+        java.util.List<ListIdentifier> list1to4Ids = listDao.query().orderBy(ListAttribute.NAME).selectList(4).stream().map(List::identifier).toList();
         java.util.List<ListIdentifier> expectedList1to4Ids = listIds.values().stream().limit(4).toList();
         assertThat(list1to4Ids, equalTo(expectedList1to4Ids));
         assertThat(list1to4Ids, equalTo(java.util.List.of(listIds.get('A'), listIds.get('B'), listIds.get('C'), listIds.get('D'))));
 
         // List 5 to 8
 
-        java.util.List<ListIdentifier> list5to8Ids = listDao.query().orderBy(ListAttribute.NAME).execute(4, 4).stream().map(List::identifier).toList();
+        java.util.List<ListIdentifier> list5to8Ids = listDao.query().orderBy(ListAttribute.NAME).selectList(4, 4).stream().map(List::identifier).toList();
         java.util.List<ListIdentifier> expectedList5to8Ids = listIds.values().stream().skip(4).limit(4).toList();
         assertThat(list5to8Ids, equalTo(expectedList5to8Ids));
         assertThat(list5to8Ids, equalTo(java.util.List.of(listIds.get('E'), listIds.get('F'), listIds.get('G'), listIds.get('H'))));
@@ -137,7 +137,7 @@ public class PagingTest {
                 .query()
                 .orderBy(ListAttribute.NAME)
                 .filterBy("this.name == 'List_A' or this.name == 'List_B'")
-                .execute(4)
+                .selectList(4)
                 .stream().map(List::identifier)
                 .toList();
         java.util.List<ListIdentifier> expectedLists2Of4Ids = listIds.entrySet().stream()
@@ -153,7 +153,7 @@ public class PagingTest {
         java.util.List<ListIdentifier> reversedList1to4Ids = listDao
                 .query()
                 .orderByDescending(ListAttribute.NAME)
-                .execute(4)
+                .selectList(4)
                 .stream().map(List::identifier)
                 .toList();
         assertThat(reversedList1to4Ids, equalTo(java.util.List.of(listIds.get('Z'), listIds.get('Y'), listIds.get('X'), listIds.get('W'))));
@@ -163,7 +163,7 @@ public class PagingTest {
         java.util.List<ListIdentifier> reversedList5to8Ids = listDao
                 .query()
                 .orderByDescending(ListAttribute.NAME)
-                .execute(4, 4)
+                .selectList(4, 4)
                 .stream()
                 .map(List::identifier)
                 .toList();
@@ -174,7 +174,7 @@ public class PagingTest {
         java.util.List<String> itemsList1To10FqNames = itemDao
                 .query().orderByDescending(ItemAttribute.NUMBER)
                 .orderBy(ItemAttribute.LIST_NAME)
-                .execute(10)
+                .selectList(10)
                 .stream()
                 .map(l -> l.getListName().get() + "." + l.getNumber().get())
                 .toList();
@@ -185,7 +185,7 @@ public class PagingTest {
         java.util.List<String> itemsList11To20FqNames = itemDao
                 .query().orderByDescending(ItemAttribute.NUMBER)
                 .orderBy(ItemAttribute.LIST_NAME)
-                .execute(10, 10)
+                .selectList(10, 10)
                 .stream()
                 .map(l -> l.getListName().get() + "." + l.getNumber().get())
                 .toList();
@@ -197,7 +197,7 @@ public class PagingTest {
                 .query().orderBy(ItemAttribute.TOPIC)
                 .orderByDescending(ItemAttribute.NUMBER)
                 .orderBy(ItemAttribute.LIST_NAME)
-                .execute(10)
+                .selectList(10)
                 .stream()
                 .map(l -> l.getListName().get() + "." + l.getNumber().get() + "#" + l.getTopic().get())
                 .toList();
@@ -209,7 +209,7 @@ public class PagingTest {
                 .query().orderBy(ItemAttribute.TOPIC)
                 .orderByDescending(ItemAttribute.NUMBER)
                 .orderBy(ItemAttribute.LIST_NAME)
-                .execute(10,10)
+                .selectList(10,10)
                 .stream()
                 .map(l -> l.getListName().get() + "." + l.getNumber().get() + "#" + l.getTopic().orElse(null))
                 .toList();
@@ -221,7 +221,7 @@ public class PagingTest {
                 .query().orderBy(ItemAttribute.TOPIC)
                 .orderByDescending(ItemAttribute.NUMBER)
                 .orderBy(ItemAttribute.LIST_NAME)
-                .execute(10,20)
+                .selectList(10,20)
                 .stream()
                 .map(l -> l.getListName().get() + "." + l.getNumber().get() + "#" + l.getTopic().orElse(null))
                 .toList();
@@ -232,17 +232,17 @@ public class PagingTest {
 
         List a = listDao.getById(listIds.get('A')).orElseThrow();
 
-        java.util.List<Integer> customSortedItemsOfListA = listDao.queryItems(a).orderBy(ItemAttribute.NUMBER).execute().stream().map(i -> i.getNumber().get()).toList();
+        java.util.List<Integer> customSortedItemsOfListA = listDao.queryItems(a).orderBy(ItemAttribute.NUMBER).selectList().stream().map(i -> i.getNumber().get()).toList();
         assertThat(customSortedItemsOfListA, equalTo(integersFrom1To26));
 
-        java.util.List<Integer> customReservedSortedItemsOfListA = listDao.queryItems(a).orderByDescending(ItemAttribute.NUMBER).execute().stream().map(i -> i.getNumber().get()).toList();
+        java.util.List<Integer> customReservedSortedItemsOfListA = listDao.queryItems(a).orderByDescending(ItemAttribute.NUMBER).selectList().stream().map(i -> i.getNumber().get()).toList();
         assertThat(customReservedSortedItemsOfListA, equalTo(integersFrom26To1));
 
     }
 
 
     /**
-     * Testing the query customizer execute method with limit and offset parameter variants.
+     * Testing the query customizer selectList method with limit and offset parameter variants.
      *
      * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
@@ -272,7 +272,7 @@ public class PagingTest {
         java.util.List<Item> list = itemDao
                 .query()
                 .orderBy(ItemAttribute.NUMBER)
-                .execute(1);
+                .selectList(1);
 
         assertEquals(1, list.size());
         assertEquals(ent2.identifier(), list.get(0).identifier());
@@ -280,7 +280,7 @@ public class PagingTest {
         list = itemDao
                 .query()
                 .orderBy(ItemAttribute.NUMBER)
-                .execute(null);
+                .selectList(null);
 
         assertEquals(2, list.size());
         assertEquals(ent2.identifier(), list.get(0).identifier());
@@ -289,7 +289,7 @@ public class PagingTest {
         list = itemDao
                 .query()
                 .orderBy(ItemAttribute.NUMBER)
-                .execute(0);
+                .selectList(0);
 
         assertEquals(2, list.size());
         assertEquals(ent2.identifier(), list.get(0).identifier());
@@ -298,7 +298,7 @@ public class PagingTest {
         list = itemDao
                 .query()
                 .orderBy(ItemAttribute.NUMBER)
-                .execute(3);
+                .selectList(3);
 
         assertEquals(2, list.size());
         assertEquals(ent2.identifier(), list.get(0).identifier());
@@ -307,7 +307,7 @@ public class PagingTest {
         list = itemDao
                 .query()
                 .orderBy(ItemAttribute.NUMBER)
-                .execute(1, null);
+                .selectList(1, null);
 
         assertEquals(1, list.size());
         assertEquals(ent2.identifier(), list.get(0).identifier());
@@ -315,7 +315,7 @@ public class PagingTest {
         list = itemDao
                 .query()
                 .orderBy(ItemAttribute.NUMBER)
-                .execute(null, null);
+                .selectList(null, null);
 
         assertEquals(2, list.size());
         assertEquals(ent2.identifier(), list.get(0).identifier());
@@ -324,7 +324,7 @@ public class PagingTest {
         list = itemDao
                 .query()
                 .orderBy(ItemAttribute.NUMBER)
-                .execute(0, null);
+                .selectList(0, null);
 
         assertEquals(2, list.size());
         assertEquals(ent2.identifier(), list.get(0).identifier());
@@ -333,7 +333,7 @@ public class PagingTest {
         list = itemDao
                 .query()
                 .orderBy(ItemAttribute.NUMBER)
-                .execute(3, null);
+                .selectList(3, null);
 
         assertEquals(2, list.size());
         assertEquals(ent2.identifier(), list.get(0).identifier());
@@ -342,7 +342,7 @@ public class PagingTest {
         list = itemDao
                 .query()
                 .orderBy(ItemAttribute.NUMBER)
-                .execute(2, 0);
+                .selectList(2, 0);
 
         assertEquals(2, list.size());
         assertEquals(ent2.identifier(), list.get(0).identifier());
@@ -351,7 +351,7 @@ public class PagingTest {
         list = itemDao
                 .query()
                 .orderBy(ItemAttribute.NUMBER)
-                .execute(2, 1);
+                .selectList(2, 1);
 
         assertEquals(1, list.size());
         assertEquals(ent1.identifier(), list.get(0).identifier());
@@ -359,7 +359,7 @@ public class PagingTest {
         list = itemDao
                 .query()
                 .orderBy(ItemAttribute.NUMBER)
-                .execute(2, 2);
+                .selectList(2, 2);
 
         assertEquals(0, list.size());
     }
@@ -399,19 +399,19 @@ public class PagingTest {
         LogEntry entry7 = logEntryDao.create(LogEntry.builder().withTimestamp(LocalDateTime.of(LocalDate.of( 2021, 7, 29), LocalTime.of(15, 7, 1, 100_000_000))).withMessage("Message7").build());
         LogEntry entry8 = logEntryDao.create(LogEntry.builder().withTimestamp(LocalDateTime.of(LocalDate.of( 2021, 7, 29), LocalTime.of(15, 7, 1, 0))).withMessage("Message8").build());
 
-        java.util.List<LogEntryIdentifier> logEntries48 = logEntryDao.query().orderBy(LogEntryAttribute.TIMESTAMP).execute(2).stream().map(LogEntry::identifier).toList();
+        java.util.List<LogEntryIdentifier> logEntries48 = logEntryDao.query().orderBy(LogEntryAttribute.TIMESTAMP).selectList(2).stream().map(LogEntry::identifier).toList();
 
         assertThat(logEntries48, containsInAnyOrder(entry4.identifier(), entry8.identifier()));
 
-        java.util.List<LogEntryIdentifier> logEntries37 = logEntryDao.query().orderBy(LogEntryAttribute.TIMESTAMP).execute(2,2).stream().map(LogEntry::identifier).toList();
+        java.util.List<LogEntryIdentifier> logEntries37 = logEntryDao.query().orderBy(LogEntryAttribute.TIMESTAMP).selectList(2,2).stream().map(LogEntry::identifier).toList();
 
         assertThat(logEntries37, containsInAnyOrder(entry3.identifier(), entry7.identifier()));
 
-        java.util.List<LogEntryIdentifier> logEntries26 = logEntryDao.query().orderBy(LogEntryAttribute.TIMESTAMP).execute(2,4).stream().map(LogEntry::identifier).toList();
+        java.util.List<LogEntryIdentifier> logEntries26 = logEntryDao.query().orderBy(LogEntryAttribute.TIMESTAMP).selectList(2,4).stream().map(LogEntry::identifier).toList();
 
         assertThat(logEntries26, containsInAnyOrder(entry2.identifier(), entry6.identifier()));
 
-        java.util.List<LogEntryIdentifier> logEntries15 = logEntryDao.query().orderBy(LogEntryAttribute.TIMESTAMP).execute(2,6).stream().map(LogEntry::identifier).toList();
+        java.util.List<LogEntryIdentifier> logEntries15 = logEntryDao.query().orderBy(LogEntryAttribute.TIMESTAMP).selectList(2,6).stream().map(LogEntry::identifier).toList();
 
         assertThat(logEntries15, containsInAnyOrder(entry1.identifier(), entry5.identifier()));
     }

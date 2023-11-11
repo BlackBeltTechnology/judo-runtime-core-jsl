@@ -100,12 +100,12 @@ class MappedTransferNavigationTest {
         tbDao.setC(tb, tc);
 
         // Read derived list over DAO call
-        assertEquals(1, taDao.queryClist(ta).execute().size());
+        assertEquals(1, taDao.queryClist(ta).selectList().size());
 
         // Entity representation
         A a = aDao.getById(ta.identifier().adaptTo(AIdentifier.class)).orElseThrow();
 
-        assertEquals(1, aDao.queryClist(a).execute().size());
+        assertEquals(1, aDao.queryClist(a).selectList().size());
     }
 
     @Test
@@ -145,13 +145,13 @@ class MappedTransferNavigationTest {
     }
 
     private void assertEmptyBAndC(TA ta) {
-        assertEmpty(taDao.queryBbAll(ta).execute());
+        assertEmpty(taDao.queryBbAll(ta).selectList());
         assertEmpty(taDao.queryBbAny(ta));
 
         assertEmpty(ta.getBbAnyName());
         assertEmpty(ta.getSelfBName());
 
-        assertEmpty(taDao.queryBbAllFilter(ta).execute());
+        assertEmpty(taDao.queryBbAllFilter(ta).selectList());
         assertEmpty(taDao.queryBbAllFilterAny(ta));
         assertEmpty(taDao.queryBbAllFilterAny1(ta));
 
@@ -159,24 +159,24 @@ class MappedTransferNavigationTest {
         assertEmpty(ta.getBbAllFilterAnyName1());
         assertEmpty(ta.getBbAllFilterAnyName2());
 
-        assertEmpty(taDao.querySelfbAllC(ta).execute());
+        assertEmpty(taDao.querySelfbAllC(ta).selectList());
         assertEmpty(taDao.querySelfbAllCAny(ta));
         assertEmpty(ta.getSelfbAllCAnyName());
 
-        assertEmpty(taDao.queryBbAllC(ta).execute());
+        assertEmpty(taDao.queryBbAllC(ta).selectList());
         assertEmpty(taDao.queryBbAllCAny(ta));
         assertEmpty(ta.getBbAllCAnyName());
     }
 
     @SuppressWarnings("unchecked")
     private void assertAttributesAndRelations(TA ta, Collection<Identifiable> tbIds, Collection<Identifiable> tcIds) {
-        assertThat(taDao.queryBbAll(ta).execute().stream().map(TB::identifier).collect(Collectors.toList()), anyOf(toHasItems(tbIds)));
+        assertThat(taDao.queryBbAll(ta).selectList().stream().map(TB::identifier).collect(Collectors.toList()), anyOf(toHasItems(tbIds)));
         assertThat(taDao.queryBbAny(ta).orElseThrow().identifier(), anyOf(toIss(tbIds)));
 
         assertEquals("b", ta.getBbAnyName().orElseThrow());
         assertEquals("b", ta.getSelfBName().orElseThrow());
 
-        assertThat(taDao.queryBbAllFilter(ta).execute().stream().map(TB::identifier).collect(Collectors.toList()), anyOf(toHasItems(tbIds)));
+        assertThat(taDao.queryBbAllFilter(ta).selectList().stream().map(TB::identifier).collect(Collectors.toList()), anyOf(toHasItems(tbIds)));
         assertThat(taDao.queryBbAllFilterAny(ta).orElseThrow().identifier(), anyOf(toIss(tbIds)));
         assertThat(taDao.queryBbAllFilterAny1(ta).orElseThrow().identifier(), anyOf(toIss(tbIds)));
 
@@ -184,11 +184,11 @@ class MappedTransferNavigationTest {
         assertEquals("b", ta.getBbAllFilterAnyName1().orElseThrow());
         assertEquals("b", ta.getBbAllFilterAnyName2().orElseThrow());
 
-        assertThat(taDao.querySelfbAllC(ta).execute().stream().map(TC::identifier).collect(Collectors.toList()), anyOf(toHasItems(tcIds)));
+        assertThat(taDao.querySelfbAllC(ta).selectList().stream().map(TC::identifier).collect(Collectors.toList()), anyOf(toHasItems(tcIds)));
         assertThat(taDao.querySelfbAllCAny(ta).orElseThrow().identifier(), anyOf(toIss(tcIds)));
         assertEquals("c", ta.getSelfbAllCAnyName().orElseThrow());
 
-        assertThat(taDao.queryBbAllC(ta).execute().stream().map(TC::identifier).collect(Collectors.toList()), anyOf(toHasItems(tcIds)));
+        assertThat(taDao.queryBbAllC(ta).selectList().stream().map(TC::identifier).collect(Collectors.toList()), anyOf(toHasItems(tcIds)));
         assertThat(taDao.queryBbAllCAny(ta).orElseThrow().identifier(), anyOf(toIss(tcIds)));
         assertEquals("c", ta.getBbAllCAnyName().orElseThrow());
     }

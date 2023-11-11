@@ -168,21 +168,21 @@ public class CastingFunctionsTest {
             "REQ-EXPR-022"
     })
     public void testAsCollection() {
-        List<A> asCollectionA = testerDao.queryAsCollectionA(tester).execute();
+        List<A> asCollectionA = testerDao.queryAsCollectionA(tester).selectList();
         assertEquals(2, asCollectionA.size());
         assertTrue(asCollectionA.stream().anyMatch(a -> a.getNameA().orElseThrow().equals("ab1")));
         assertTrue(asCollectionA.stream().anyMatch(a -> a.getNameA().orElseThrow().equals("ab2")));
 
-        List<B> asCollectionB = testerDao.queryAsCollectionB(tester).execute();
+        List<B> asCollectionB = testerDao.queryAsCollectionB(tester).selectList();
         assertEquals(2, asCollectionB.size());
         assertTrue(asCollectionB.stream().anyMatch(lb -> lb.getNameA().orElseThrow().equals("ab1") &&
                                                          lb.getNameB().orElseThrow().equals("b1")));
         assertTrue(asCollectionB.stream().anyMatch(lb -> lb.getNameA().orElseThrow().equals("ab2") &&
                                                          lb.getNameB().orElseThrow().equals("b2")));
 
-        assertEquals(0, testerDao.queryAsCollectionCA(tester).execute().size());
+        assertEquals(0, testerDao.queryAsCollectionCA(tester).selectList().size());
 
-        List<CA> asCollectionCA1 = testerDao.queryAsCollectionCA1(tester).execute();
+        List<CA> asCollectionCA1 = testerDao.queryAsCollectionCA1(tester).selectList();
         assertEquals(2, asCollectionCA1.size());
         assertTrue(asCollectionCA1.stream().anyMatch(lca -> lca.getNameA().orElseThrow().equals("aca2") &&
                                                             lca.getNameB().orElseThrow().equals("bca2") &&
