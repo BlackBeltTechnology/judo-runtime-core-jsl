@@ -4,8 +4,8 @@ type string String min-size:0 max-size:255;
 type boolean Boolean;
 
 entity AAA {
-    field String name = "aaa";
-    field String name1 = "  aaa";
+    field String name default:"aaa";
+    field String name1 default:"  aaa";
 
     field String ts <= true ? "true" : "false";
     field String ts1 <= true ? self.name : "false";
@@ -15,8 +15,8 @@ entity AAA {
     field String ts5 <= false ? self.name : "false";
     field String ts6 <= false ? "true  " : "!!false!!";
     field String ts7 <= false ? self.name : self.name1;
-    // derived BBB tb <= TernaryTest::CCC!size() == 1 ? TernaryTest::CCC!any() : TernaryTest::DDD!any(); // TODO: JNG-3839
-    // derived BBB[] tb1 <= TernaryTest::BBB!size() == 1 ? TernaryTest::CCC : TernaryTest::DDD; // TODO: JNG-3839
+    // derived BBB tb <= TernaryTest::CCC.size() == 1 ? TernaryTest::CCC.any() : TernaryTest::DDD.any(); // TODO: JNG-3839
+    // derived BBB[] tb1 <= TernaryTest::BBB.size() == 1 ? TernaryTest::CCC : TernaryTest::DDD; // TODO: JNG-3839
 }
 
 entity BBB {

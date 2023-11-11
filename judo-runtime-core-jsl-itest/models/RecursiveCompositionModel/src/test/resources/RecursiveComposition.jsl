@@ -17,35 +17,25 @@ entity EntityY {
 }
 
 transfer TransferXTO (EntityX entityX) {
-    field String name <=> entityX.name;
-    @Embedded
-    relation TransferXTO x <=> entityX.x;
-    @Embedded
-    relation TransferXTO[] xs <=> entityX.xs;
-    @Embedded
-    relation TransferYTO y <=> entityX.y;
-    @Embedded
-    relation TransferYTO[] ys <=> entityX.ys;
+    field String name <= entityX.name input:true;
+    relation TransferXTO x <= entityX.x eager:true;
+    relation TransferXTO[] xs <= entityX.xs eager:true;
+    relation TransferYTO y <= entityX.y eager:true;
+    relation TransferYTO[] ys <= entityX.ys eager:true;
 }
 
 transfer TransferYTO (EntityY entityY) {
-    field String name <=> entityY.name;
-    @Embedded
-    relation TransferXTO yx <=> entityY.yx;
-    @Embedded
-    relation TransferXTO[] yxs <=> entityY.yxs;
+    field String name <= entityY.name input:true;
+    relation TransferXTO yx <= entityY.yx eager:true;
+    relation TransferXTO[] yxs <= entityY.yxs eager:true;
 }
-
-transfer TransferXAutoMappedTO (EntityX entityX);
-
-transfer TransferYAutoMappedTO (EntityY entityY);
 
 entity EntityA {
     field String name;
     field EntityA a;
-    field EntityA[] as;
+    field EntityA[] `as`;
 
-    field String childName <= self.a!isDefined() ? self.a.name : "";
+    field String childName <= self.a.isDefined() ? self.a.name : "";
     field String childNameThirdLevel <= self.a.a.name;
     field String childNameFourthLevel <= self.a.a.a.name;
 }
@@ -56,33 +46,23 @@ entity EntityB extends EntityA {
 }
 
 transfer TransferATO (EntityA entityA) {
-    field String name <=> entityA.name;
-    @Embedded
-    relation TransferATO a <=> entityA.a;
-    @Embedded
-    relation TransferATO[] as <=> entityA.as;
+    field String name <= entityA.name input:true;
+    relation TransferATO a <= entityA.a eager:true;
+    relation TransferATO[] `as` <= entityA.`as` eager:true;
 
-    field String childName <= entityA.a!isDefined() ? entityA.a.name : "";
+    field String childName <= entityA.a.isDefined() ? entityA.a.name : "";
     field String childNameThirdLevel <= entityA.a.a.name;
     field String childNameFourthLevel <= entityA.a.a.a.name;
 }
 
 transfer TransferBTO (EntityB entityB) {
-    field String name <=> entityB.name;
-    @Embedded
-    relation TransferATO a <=> entityB.a;
-    @Embedded
-    relation TransferATO[] as <=> entityB.as;
-    @Embedded
-    relation TransferATO ba <=> entityB.ba;
-    @Embedded
-    relation TransferATO[] bas <=> entityB.bas;
+    field String name <= entityB.name input:true;
+    relation TransferATO a <= entityB.a eager:true;
+    relation TransferATO[] `as` <= entityB.`as` eager:true;
+    relation TransferATO ba <= entityB.ba eager:true;
+    relation TransferATO[] bas <= entityB.bas eager:true;
 
-    field String childName <= entityB.a!isDefined() ? entityB.a.name : "";
+    field String childName <= entityB.a.isDefined() ? entityB.a.name : "";
     field String childNameThirdLevel <= entityB.a.a.name;
     field String childNameFourthLevel <= entityB.a.a.a.name;
 }
-
-transfer TransferAAutoMappedTO (EntityA entityA);
-
-transfer TransferBAutoMappedTO (EntityB entityB);

@@ -11,29 +11,26 @@ entity B extends A {
 }
 
 entity C {
-    relation A containerA <= self!container(entityType = A);
-    relation B containerB <= self!container(entityType = A)!asType(entityType = B);
-    relation B containerB1 <= self!container(entityType = B);
+    relation A containerA <= self.container(entityType = A);
+    relation B containerB <= self.container(entityType = A).asType(entityType = B);
+    relation B containerB1 <= self.container(entityType = B);
 }
 
 entity D {
-    relation A containerA <= self!container(entityType = B)!asType(entityType = A);
-    relation A containerA1 <= self!container(entityType = A);
-    relation B containerB <= self!container(entityType = B);
+    relation A containerA <= self.container(entityType = B).asType(entityType = A);
+    relation A containerA1 <= self.container(entityType = A);
+    relation B containerB <= self.container(entityType = B);
 }
 
 // TRANSFER representation
 
 transfer TA maps A as a {
-    @Embedded
-    relation required TC conA <=> a.conA;
+    relation required TC conA <= a.conA eager:true;
 }
 
 transfer TB maps B as b {
-    @Embedded
-    relation required TD donB <=> b.donB;
-    @Embedded
-    relation required TC conA <=> b.conA;
+    relation required TD donB <= b.donB eager:true;
+    relation required TC conA <= b.conA eager:true;
 }
 
 transfer TC maps C as c {
@@ -63,23 +60,21 @@ entity StockTransaction {
 
 entity AdditionalService {
   relation ServicePrice servicePrice;
-  relation ServicePrice[] servicePriceDerived <= self!container(entityType = StockTransaction).client.servicePrices;
+  relation ServicePrice[] servicePriceDerived <= self.container(entityType = StockTransaction).client.servicePrices;
 }
 
 transfer TPartner (Partner p) {
-    @Embedded
-    relation TServicePrice[] servicePrices <=> p.servicePrices;
+    relation TServicePrice[] servicePrices <= p.servicePrices eager:true;
 }
 
 transfer TServicePrice (ServicePrice s) {
 }
 
 transfer TStockTransaction (StockTransaction s) {
-  @Embedded
-  relation TAdditionalService[] additionalServices <=> s.additionalServices;
-  relation required TPartner client <=> s.client;
+  relation TAdditionalService[] additionalServices <= s.additionalServices eager:true;
+  relation required TPartner client <= s.client choices:Partner.all();
 }
 
 transfer TAdditionalService (AdditionalService a) {
-  relation TServicePrice servicePrice <=> a.servicePrice choices : a.servicePriceDerived;
+  relation TServicePrice servicePrice <= a.servicePrice choices : a.servicePriceDerived;
 }

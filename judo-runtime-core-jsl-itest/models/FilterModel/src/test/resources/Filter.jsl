@@ -3,7 +3,7 @@ model Filter;
 import judo::types;
 
 type numeric Scaled precision:9 scale:2;
-type string PhoneNumber min-size:0 max-size:32 regex:"^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]\\d{3}[\\s.-]\\d{4}$";   // escape sequencing does not work in regexp!!!!
+type string PhoneNumber min-size:0 max-size:32 regex:"^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]\\d{3}[\\s.-]\\d{4}$";   // escape sequencing does not work in regexp....
 type binary Binary mime-type:["text/plain"] max-file-size:1 GB ;
 type string SmallString min-size:0 max-size:128;
 type string CarId min-size:0 max-size:32 regex:"^\\w{4}-\\d{3}$";
@@ -40,16 +40,16 @@ entity MyEntityWithOptionalFields {
 }
 
 transfer TransferMyEntityWithOptionalFields (MyEntityWithOptionalFields mapped) {
-    field Boolean boolAttr <=> mapped.boolAttr;
-    field Binary binaryAttr <=> mapped.binaryAttr;
-    field Integer integerAttr <=> mapped.integerAttr;
-    field SmallString stringAttr <=> mapped.stringAttr;
-    field PhoneNumber regexAttr <=> mapped.regexAttr;
-    field Scaled scaledAttr <=> mapped.scaledAttr;
-    field Date dateAttr <=> mapped.dateAttr;
-    field Time timeAttr <=> mapped.timeAttr;
-    field Timestamp timestampAttr <=> mapped.timestampAttr;
-    field MyEnum enumAttr <=> mapped.enumAttr;
+    field Boolean boolAttr <= mapped.boolAttr input:true;
+    field Binary binaryAttr <= mapped.binaryAttr input:true;
+    field Integer integerAttr <= mapped.integerAttr input:true;
+    field SmallString stringAttr <= mapped.stringAttr input:true;
+    field PhoneNumber regexAttr <= mapped.regexAttr input:true;
+    field Scaled scaledAttr <= mapped.scaledAttr input:true;
+    field Date dateAttr <= mapped.dateAttr input:true;
+    field Time timeAttr <= mapped.timeAttr input:true;
+    field Timestamp timestampAttr <= mapped.timestampAttr input:true;
+    field MyEnum enumAttr <= mapped.enumAttr input:true;
 
     field Boolean derivedBoolAttr  <= mapped.derivedBoolAttr;
     field Binary derivedBinaryAttr  <= mapped.derivedBinaryAttr;
@@ -64,11 +64,11 @@ transfer TransferMyEntityWithOptionalFields (MyEntityWithOptionalFields mapped) 
 }
 
 entity FilterEntity {
-    relation MyEntityWithOptionalFields[] haveTOnTheStringAttr <= MyEntityWithOptionalFields!all()!filter(e | e.stringAttr!matches(pattern = ".*t.*"));
-    relation MyEntityWithOptionalFields[] TestIsTheStringAttr <= MyEntityWithOptionalFields!all()!filter(e | e.stringAttr!matches(pattern = "test"));
-    relation MyEntityWithOptionalFields[] haveNoMatchOnTheStringAttr <= MyEntityWithOptionalFields!all()!filter(e | e.stringAttr!matches(pattern = "noMatch"));
-    relation MyEntityWithOptionalFields[] haveUndefinedOnTheStringAttr <= MyEntityWithOptionalFields!all()!filter(e | e.stringAttr!isUndefined());
-    relation MyEntityWithOptionalFields[] haveDefinedOnTheStringAttr <= MyEntityWithOptionalFields!all()!filter(e | e.stringAttr!isDefined());
+    relation MyEntityWithOptionalFields[] haveTOnTheStringAttr <= MyEntityWithOptionalFields.all().filter(e | e.stringAttr.matches(pattern = ".*t.*"));
+    relation MyEntityWithOptionalFields[] TestIsTheStringAttr <= MyEntityWithOptionalFields.all().filter(e | e.stringAttr.matches(pattern = "test"));
+    relation MyEntityWithOptionalFields[] haveNoMatchOnTheStringAttr <= MyEntityWithOptionalFields.all().filter(e | e.stringAttr.matches(pattern = "noMatch"));
+    relation MyEntityWithOptionalFields[] haveUndefinedOnTheStringAttr <= MyEntityWithOptionalFields.all().filter(e | e.stringAttr.isUndefined());
+    relation MyEntityWithOptionalFields[] haveDefinedOnTheStringAttr <= MyEntityWithOptionalFields.all().filter(e | e.stringAttr.isDefined());
 }
 
 transfer TransferFilterEntity (FilterEntity mapped) {
@@ -96,8 +96,8 @@ entity Country {
 }
 
 transfer TransferCountry (Country mapped) {
-    field String name <=> mapped.name;
-    field Continent continent <=> mapped.continent;
+    field String name <= mapped.name  input:true;
+    field Continent continent <= mapped.continent input:true;
 }
 
 entity City {
@@ -106,8 +106,8 @@ entity City {
 }
 
 transfer TransferCity (City mapped) {
-    field String name <=> mapped.name;
-    relation TransferCountry country <=> mapped.country;
+    field String name <= mapped.name input:true;
+    relation TransferCountry country <= mapped.country choices:Country.all();
 }
 
 entity Person {
@@ -116,8 +116,8 @@ entity Person {
 }
 
 transfer TransferPerson (Person mapped) {
-    field String name <=> mapped.name;
-    relation TransferCity city <=> mapped.city;
+    field String name <= mapped.name input:true;
+    relation TransferCity city <= mapped.city choices:City.all();
 }
 
 entity Car {
@@ -126,15 +126,15 @@ entity Car {
 }
 
 transfer TransferCar (Car mapped) {
-    field String licensePlate <=> mapped.licensePlate;
-    relation TransferPerson owner <=> mapped.owner;
+    field String licensePlate <= mapped.licensePlate input:true;
+    relation TransferPerson owner <= mapped.owner choices:Person.all();
 }
 
 entity Tester {
-    relation Car[] carsOfTesztElek <= Car!all()!filter(c | c.owner.name == "Teszt Elek");
-    relation Car[] carsInBudapest <= Car!all()!filter(c | c.owner.city.name == "Budapest");
-    relation Car[] carsInHungary <= Car!all()!filter(c | c.owner.city.country.name == "Hungary");
-    relation Car[] carsOfKnownContinents <= Car!all()!filter(c | c.owner.city.country.continent!isDefined());
+    relation Car[] carsOfTesztElek <= Car.all().filter(c | c.owner.name == "Teszt Elek");
+    relation Car[] carsInBudapest <= Car.all().filter(c | c.owner.city.name == "Budapest");
+    relation Car[] carsInHungary <= Car.all().filter(c | c.owner.city.country.name == "Hungary");
+    relation Car[] carsOfKnownContinents <= Car.all().filter(c | c.owner.city.country.continent.isDefined());
 }
 
 transfer TransferTester (Tester mapped) {
