@@ -637,8 +637,6 @@ public class InheritanceTest {
         ParentB parentB = parentBDao.create(ParentB.builder().build());
 
         assertFalse(parentADao.existsById((UUID) parentB.identifier().getIdentifier()));
-
-        parentA1 = parentADao.create(parentA1);
     }
 
     @Test
