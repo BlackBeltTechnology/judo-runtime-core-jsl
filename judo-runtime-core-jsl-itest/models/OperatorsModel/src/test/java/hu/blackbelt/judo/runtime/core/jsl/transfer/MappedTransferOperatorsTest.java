@@ -32,12 +32,15 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.e1.
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.e1.E1Identifier;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.te1.TE1;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.te1.TE1Dao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.te1.TE1ForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.testliteral.TestLiteral;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.transferdefaultoperators.TransferDefaultOperators;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.transferdefaultoperators.TransferDefaultOperatorsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.transferdefaultoperators.TransferDefaultOperatorsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.transferderivedoperators.TransferDerivedOperators;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.transferderivedoperators.TransferDerivedOperatorsDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.transferderivedsource.TransferDerivedSource;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.transferderivedoperators.TransferDerivedOperatorsForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.transferderivedsource.TransferDerivedSourceForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.OperatorsDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
@@ -99,7 +102,7 @@ public class MappedTransferOperatorsTest {
             "REQ-SRV-002"
     })
     void testOperatorsForDefaultValuesOnTransfer() {
-        TransferDefaultOperators transferOperators = transferDefaultOperatorsDao.create(TransferDefaultOperators.builder().build());
+        TransferDefaultOperators transferOperators = transferDefaultOperatorsDao.create(TransferDefaultOperatorsForCreate.builder().build());
 
         assertEquals(Optional.of(1), transferOperators.getRounded());
         assertEquals(Optional.of(-6), transferOperators.getUnary());
@@ -290,8 +293,8 @@ public class MappedTransferOperatorsTest {
             "REQ-SRV-002"
     })
     void testOperatorsForDerivedFieldsOnTransfer() {
-        TransferDerivedOperators transferOperators = transferDerivedOperatorsDao.create(TransferDerivedOperators.builder()
-                .withSource(TransferDerivedSource.builder().build())
+        TransferDerivedOperators transferOperators = transferDerivedOperatorsDao.create(TransferDerivedOperatorsForCreate.builder()
+                .withSource(TransferDerivedSourceForCreate.builder().build())
                 .build());
 
         assertEquals(Optional.of("John Pro"), transferOperators.getStringConcat());
@@ -438,7 +441,7 @@ public class MappedTransferOperatorsTest {
     })
     void testEnumOperatorsAndFunctionsOnTransfer() {
 
-        TE1 te1 = te1Dao.create(TE1.builder().build());
+        TE1 te1 = te1Dao.create(TE1ForCreate.builder().build());
         assertEquals(TestLiteral.ZZ00, te1.getF1().orElseThrow());
         assertEquals(TestLiteral.Aaa01, te1.getF2().orElseThrow());
         assertTrue(te1.getF3().orElseThrow());

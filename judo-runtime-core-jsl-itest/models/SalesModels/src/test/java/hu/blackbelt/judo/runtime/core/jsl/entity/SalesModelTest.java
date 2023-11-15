@@ -23,25 +23,29 @@ package hu.blackbelt.judo.runtime.core.jsl.entity;
 import com.google.inject.Inject;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.salesmodel.salesmodel.contractsaggregator.ContractsAggregator;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.salesmodel.salesmodel.contractsaggregator.ContractsAggregatorDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.salesmodel.salesmodel.contractsaggregator.ContractsAggregatorForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.salesmodel.salesmodel.lead.Lead;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.salesmodel.salesmodel.lead.LeadAttachedRelationsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.salesmodel.salesmodel.lead.LeadDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.salesmodel.salesmodel.lead.LeadForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.salesmodel.salesmodel.myextendederror.MyExtendedError;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.salesmodel.salesmodel.person.PersonDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.salesmodel.salesmodel.salesperson.SalesPerson;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.salesmodel.salesmodel.salesperson.SalesPersonAttachedRelationsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.salesmodel.salesmodel.salesperson.SalesPersonDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.salesmodel.salesmodel.salesperson.SalesPersonForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.salesmodel.salesmodel.salesperson.leadsover.SalesPersonLeadsOverParameter;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.salesmodel.salesmodelcontract.contract.Contract;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.salesmodel.salesmodelcontract.contract.ContractDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.salesmodel.salesmodelcontract.contract.ContractForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.salesmodel.salesmodelcontract.contractdetail.ContractDetail;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.salesmodel.salesmodelcontract.contractdetail.ContractDetailForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.SalesModelDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import hu.blackbelt.judo.sdk.query.NumberFilter;
 import hu.blackbelt.judo.sdk.query.StringFilter;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.time.LocalDate;
@@ -94,7 +98,7 @@ class SalesModelTest {
     })
     public void test() {
 
-        SalesPerson createdSalesPerson = salesPersonDao.create(SalesPerson.builder()
+        SalesPerson createdSalesPerson = salesPersonDao.create(SalesPersonForCreate.builder()
                         .withFirstName("Test")
                         .withLastName("Elek")
                         .build());
@@ -108,17 +112,15 @@ class SalesModelTest {
 
         assertEquals(1, personList.size());
 
-        Lead lead1 = leadDao.create(Lead.builder()
+        Lead lead1 = leadDao.create(LeadForCreate.builder()
                 .withValue(100)
-                .build(), LeadAttachedRelationsForCreate.builder()
                 .withSalesPerson(createdSalesPerson)
                 .build());
         assertEquals(Optional.of(100), lead1.getValue());
         assertEquals(Optional.of("Test"), leadDao.querySalesPerson(lead1).getFirstName());
 
-        Lead lead2 = leadDao.create(Lead.builder()
+        Lead lead2 = leadDao.create(LeadForCreate.builder()
                 .withValue(9)
-                .build(), LeadAttachedRelationsForCreate.builder()
                 .withSalesPerson(createdSalesPerson)
                 .build());
         assertEquals(Optional.of(9), lead2.getValue());
@@ -164,11 +166,10 @@ class SalesModelTest {
             "REQ-EXPR-001"
     })
     public void testDefaultValue() {
-        SalesPerson createdSalesPerson = salesPersonDao.create(SalesPerson.builder()
+        SalesPerson createdSalesPerson = salesPersonDao.create(SalesPersonForCreate.builder()
                 .build());
 
-        Lead lead = leadDao.create(Lead.builder()
-                .build(), LeadAttachedRelationsForCreate.builder()
+        Lead lead = leadDao.create(LeadForCreate.builder()
                 .withSalesPerson(createdSalesPerson)
                 .build());
 
@@ -186,10 +187,9 @@ class SalesModelTest {
             "REQ-ENT-006"
     })
     public void testImportedEntityType() {
-        Contract contract = contractDao.create(Contract.builder().withCreationDate(LocalDate.parse("2022-07-21")).build());
+        Contract contract = contractDao.create(ContractForCreate.builder().withCreationDate(LocalDate.parse("2022-07-21")).build());
 
-        SalesPerson createdSalesPerson = salesPersonDao.create(SalesPerson.builder()
-                .build(), SalesPersonAttachedRelationsForCreate.builder()
+        SalesPerson createdSalesPerson = salesPersonDao.create(SalesPersonForCreate.builder()
                 .withContracts(List.of(contract))
                 .build());
 
@@ -215,19 +215,19 @@ class SalesModelTest {
             "REQ-EXPR-003"
     })
     public void testNavigationOnStaticCollection() {
-        Contract contract1 = contractDao.create(Contract.builder()
+        Contract contract1 = contractDao.create(ContractForCreate.builder()
                 .withCreationDate(LocalDate.parse("2022-07-21"))
-                .withDetail(ContractDetail.builder()
+                .withDetail(ContractDetailForCreate.builder()
                         .withDetails("Hello")
                         .build())
                 .build()
         );
-        Contract contract2 = contractDao.create(Contract.builder()
+        Contract contract2 = contractDao.create(ContractForCreate.builder()
                 .withCreationDate(LocalDate.parse("2022-08-01"))
                 .build()
         );
 
-        ContractsAggregator staticNavigationHost = contractsAggregatorDao.create(ContractsAggregator.builder()
+        ContractsAggregator staticNavigationHost = contractsAggregatorDao.create(ContractsAggregatorForCreate.builder()
                 .build());
 
         Optional<ContractsAggregator> fetched = contractsAggregatorDao.getById(staticNavigationHost.identifier());

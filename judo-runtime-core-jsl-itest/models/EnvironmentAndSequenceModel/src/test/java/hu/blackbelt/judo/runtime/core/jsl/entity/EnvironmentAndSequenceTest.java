@@ -1,26 +1,30 @@
 package hu.blackbelt.judo.runtime.core.jsl.entity;
 
 import com.google.inject.Inject;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.envvarbool.EnvVarBool;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.envvarbool.EnvVarBoolDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.envvardate.EnvVarDate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.envvarbool.EnvVarBoolForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.envvardate.EnvVarDateDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.envvarinteger.EnvVarInteger;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.envvardate.EnvVarDateForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.envvarinteger.EnvVarIntegerDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.envvarlong.EnvVarLong;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.envvarinteger.EnvVarIntegerForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.envvarlong.EnvVarLongDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.envvarlong.EnvVarLongForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.envvars.EnvVars;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.envvars.EnvVarsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.envvars.EnvVarsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.envvars1.EnvVars1;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.envvars1.EnvVars1Dao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.envvars1.EnvVars1ForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.envvars2.EnvVars2;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.envvars2.EnvVars2Dao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.envvartime.EnvVarTime;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.envvars2.EnvVars2ForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.envvartime.EnvVarTimeDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.envvartimestamp.EnvVarTimestamp;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.envvartime.EnvVarTimeForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.envvartimestamp.EnvVarTimestampDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.envvartimestamp.EnvVarTimestampForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.sequences.Sequences;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.sequences.SequencesDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.sequences.SequencesForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.EnvironmentAndSequenceModelDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
@@ -194,7 +198,7 @@ end text"
         try {
             environmentVariables
                     .execute(() -> {
-                        EnvVars1 ev1 = envVars1Dao.create(EnvVars1.builder().build());
+                        EnvVars1 ev1 = envVars1Dao.create(EnvVars1ForCreate.builder().build());
 
                         assertTrue(ev1.getFbool().orElseThrow());
                         assertEquals(JUDO_ENV_BOOLEAN1, ev1.getFbool().orElseThrow());
@@ -205,7 +209,7 @@ end text"
                         assertEquals(JUDO_ENV_TIME1, ev1.getFtime().orElseThrow());
                         assertEquals(JUDO_ENV_TIMESTAMP1.atZoneSameInstant(ZoneOffset.UTC).toLocalDateTime(), ev1.getFtimestamp().orElseThrow());
 
-                        EnvVars2 ev2 = envVars2Dao.create(EnvVars2.builder().build());
+                        EnvVars2 ev2 = envVars2Dao.create(EnvVars2ForCreate.builder().build());
 
                         assertFalse(ev2.getFbool().orElseThrow());
                         assertEquals(JUDO_ENV_BOOLEAN2, ev2.getFbool().orElseThrow());
@@ -284,12 +288,12 @@ end text"
         try {
             environmentVariables
                     .execute(() -> {
-                        assertThrows(RuntimeException.class, () -> envVarBoolDao.create(EnvVarBool.builder().build()));
-                        assertThrows(RuntimeException.class, () -> envVarDateDao.create(EnvVarDate.builder().build()));
-                        assertThrows(RuntimeException.class, () -> envVarTimeDao.create(EnvVarTime.builder().build()));
-                        assertThrows(RuntimeException.class, () -> envVarTimestampDao.create(EnvVarTimestamp.builder().build()));
-                        assertThrows(RuntimeException.class, () -> envVarIntegerDao.create(EnvVarInteger.builder().build()));
-                        assertThrows(RuntimeException.class, () -> envVarLongDao.create(EnvVarLong.builder().build()));
+                        assertThrows(RuntimeException.class, () -> envVarBoolDao.create(EnvVarBoolForCreate.builder().build()));
+                        assertThrows(RuntimeException.class, () -> envVarDateDao.create(EnvVarDateForCreate.builder().build()));
+                        assertThrows(RuntimeException.class, () -> envVarTimeDao.create(EnvVarTimeForCreate.builder().build()));
+                        assertThrows(RuntimeException.class, () -> envVarTimestampDao.create(EnvVarTimestampForCreate.builder().build()));
+                        assertThrows(RuntimeException.class, () -> envVarIntegerDao.create(EnvVarIntegerForCreate.builder().build()));
+                        assertThrows(RuntimeException.class, () -> envVarLongDao.create(EnvVarLongForCreate.builder().build()));
                     });
         } finally {
             environmentVariables.teardown();
@@ -344,7 +348,7 @@ end text"
             "REQ-EXPR-012"
     })
     void testVerifyTheGetVariableShortcuts() {
-        EnvVars envVars = envVarsDao.create(EnvVars.builder().build());
+        EnvVars envVars = envVarsDao.create(EnvVarsForCreate.builder().build());
 
         LocalDate localDate = envVars.getCd().orElseThrow();
         LocalDate localDate1 = envVars.getCd1().orElseThrow();
@@ -423,12 +427,12 @@ end text"
             "REQ-EXPR-012"
     })
     void testGetVariableSequence() {
-        Sequences s1 = sequencesDao.create(Sequences.builder().build());
+        Sequences s1 = sequencesDao.create(SequencesForCreate.builder().build());
         assertEquals(1L, s1.getF1().orElseThrow());
         assertEquals(2L, s1.getF2().orElseThrow());
         assertEquals(1L, s1.getF3().orElseThrow());
 
-        Sequences s2 = sequencesDao.create(Sequences.builder().build());
+        Sequences s2 = sequencesDao.create(SequencesForCreate.builder().build());
         assertEquals(3L, s2.getF1().orElseThrow());
         assertEquals(4L, s2.getF2().orElseThrow());
         assertEquals(2L, s2.getF3().orElseThrow());
