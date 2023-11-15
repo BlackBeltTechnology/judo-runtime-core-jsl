@@ -22,10 +22,11 @@ package hu.blackbelt.judo.runtime.core.jsl.entity;
 
 import com.google.inject.Inject;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containsmodel.containsmodel.a.A;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containsmodel.containsmodel.a.AAttachedRelationsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containsmodel.containsmodel.a.ADao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containsmodel.containsmodel.a.AForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containsmodel.containsmodel.b.B;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containsmodel.containsmodel.b.BDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containsmodel.containsmodel.b.BForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.ContainsModelDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
@@ -59,14 +60,13 @@ public class ContainsTest {
             "REQ-EXPR-022",
     })
     public void testContains() {
-        A a = aDao.create(A.builder().build());
+        A a = aDao.create(AForCreate.builder().build());
         assertFalse(a.getContainsTest().orElseThrow());
         assertFalse(a.getContainsTest1().orElseThrow());
 
-        B b = bDao.create(B.builder().withName("test").build());
-        B b1 = bDao.create(B.builder().withName("not test").build());
-        A a1 = aDao.create(A.builder()
-                            .build(), AAttachedRelationsForCreate.builder()
+        B b = bDao.create(BForCreate.builder().withName("test").build());
+        B b1 = bDao.create(BForCreate.builder().withName("not test").build());
+        A a1 = aDao.create(AForCreate.builder()
                             .withB(b)
                             .withBs(List.of(b, b1))
                             .build());

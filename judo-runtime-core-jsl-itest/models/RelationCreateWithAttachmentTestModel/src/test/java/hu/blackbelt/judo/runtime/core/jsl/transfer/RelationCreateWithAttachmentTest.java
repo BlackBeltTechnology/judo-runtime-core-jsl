@@ -3,11 +3,13 @@ package hu.blackbelt.judo.runtime.core.jsl.transfer;
 import com.google.inject.Inject;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.relationcreationwithattachment.relationcreationwithattachment.a.A;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.relationcreationwithattachment.relationcreationwithattachment.a.ADao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.relationcreationwithattachment.relationcreationwithattachment.a.AForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.relationcreationwithattachment.relationcreationwithattachment.b.B;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.relationcreationwithattachment.relationcreationwithattachment.b.BAttachedRelationsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.relationcreationwithattachment.relationcreationwithattachment.b.BDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.relationcreationwithattachment.relationcreationwithattachment.b.BForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.relationcreationwithattachment.relationcreationwithattachment.c.C;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.relationcreationwithattachment.relationcreationwithattachment.c.CDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.relationcreationwithattachment.relationcreationwithattachment.c.CForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.RelationCreationWithAttachmentDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
@@ -62,18 +64,18 @@ public class RelationCreateWithAttachmentTest {
     })
     void testAttachedRelationsForCreateMethod() {
 
-        A a = aDao.create(A.builder().build());
+        A a = aDao.create(AForCreate.builder().build());
 
-        C c = cDao.create(C.builder().withName("H").build());
-        C c1 = cDao.create(C.builder().build());
+        C c = cDao.create(CForCreate.builder().withName("H").build());
+        C c1 = cDao.create(CForCreate.builder().build());
 
-        B b = aDao.createRelB(a, B.builder().build(), BAttachedRelationsForCreate.builder().withRelC(c).build());
+        B b = aDao.createRelB(a, BForCreate.builder().withRelC(c).build());
 
         assertTrue(aDao.queryRelB(a).isPresent());
         assertTrue(bDao.queryRelC(b).isPresent());
         assertEquals(Optional.of("H"), bDao.queryRelC(b).get().getName());
 
-        aDao.createRelBColl(a, List.of(B.builder().withName("B1").build(), B.builder().withName("B2").build()), List.of(BAttachedRelationsForCreate.builder().withRelC(c).build(), BAttachedRelationsForCreate.builder().withRelC(c1).build()));
+        aDao.createRelBColl(a, List.of(BForCreate.builder().withName("B1").withRelC(c).build(), BForCreate.builder().withName("B2").withRelC(c1).build()));
 
         assertEquals(2, aDao.queryRelBColl(a).count());
         B b1 = aDao.queryRelBColl(a).filterByName(StringFilter.equalTo("B1")).selectOne().get();
@@ -82,7 +84,7 @@ public class RelationCreateWithAttachmentTest {
         assertEquals(c.identifier(), bDao.queryRelC(b1).get().identifier());
         assertEquals(c1.identifier(), bDao.queryRelC(b2).get().identifier());
 
-        B b3 = aDao.createCompB(a, B.builder().build(), BAttachedRelationsForCreate.builder().withRelC(c).build());
+        B b3 = aDao.createCompB(a, BForCreate.builder().withRelC(c).build());
 
         assertEquals(c.identifier(), bDao.queryRelC(b3).get().identifier());
 

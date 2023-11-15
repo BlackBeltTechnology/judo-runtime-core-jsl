@@ -23,6 +23,7 @@ package hu.blackbelt.judo.runtime.core.jsl.entity;
 import com.google.inject.Inject;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.myentitywithoptionalfields.MyEntityWithOptionalFields;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.myentitywithoptionalfields.MyEntityWithOptionalFieldsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.myentitywithoptionalfields.MyEntityWithOptionalFieldsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.PrimitivesDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
@@ -56,7 +57,7 @@ public class PrecisionTest {
     public void testPrecisionValidatorFailsWithPrecisionOverflow() {
         ValidationException thrown = assertThrows(
                 ValidationException.class,
-                () -> myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
+                () -> myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFieldsForCreate.builder()
                         .withIntegerAttr(1234567890)
                         .build()));
 
@@ -76,7 +77,7 @@ public class PrecisionTest {
     public void testScaleValidatorFailsWithScaleOverflow() {
         ValidationException thrown = assertThrows(
                 ValidationException.class,
-                () -> myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
+                () -> myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFieldsForCreate.builder()
                         .withScaledAttr(123456.123)
                         .build()));
 
@@ -96,7 +97,7 @@ public class PrecisionTest {
     public void testValidateDoubleWithPrecisionAndScaleOverflow() {
         ValidationException thrown = assertThrows(
                 ValidationException.class,
-                () -> myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
+                () -> myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFieldsForCreate.builder()
                         .withScaledAttr(1234567.123)
                         .build()));
 
@@ -119,7 +120,7 @@ public class PrecisionTest {
             "REQ-ENT-012"
     })
     public void testScaleValidatorPassesForValueWithoutScale() {
-        MyEntityWithOptionalFields created = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
+        MyEntityWithOptionalFields created = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFieldsForCreate.builder()
                 .withScaledAttr(123456789.0)
                 .build());
 

@@ -9,20 +9,27 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitive
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.enum_.Enum;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferoptionalprimitives.TransferOptionalPrimitives;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferoptionalprimitives.TransferOptionalPrimitivesDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferoptionalprimitives.TransferOptionalPrimitivesForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferprimitivedefaults.TransferPrimitiveDefaults;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferprimitivedefaults.TransferPrimitiveDefaultsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferprimitivedefaults.TransferPrimitiveDefaultsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferrequiredprimitives.TransferRequiredPrimitives;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferrequiredprimitives.TransferRequiredPrimitivesDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferrequiredprimitives.TransferRequiredPrimitivesForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferwithidentifiers.TransferWithIdentifiers;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferwithidentifiers.TransferWithIdentifiersDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferwithidentifiers.TransferWithIdentifiersForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferwithprimitivedefaultexpressions.TransferWithPrimitiveDefaultExpressions;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferwithprimitivedefaultexpressions.TransferWithPrimitiveDefaultExpressionsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferwithprimitivedefaultexpressions.TransferWithPrimitiveDefaultExpressionsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferwithprimitivedefaults.TransferWithPrimitiveDefaults;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferwithprimitivedefaults.TransferWithPrimitiveDefaultsDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferwithrequiredentityprimitives.TransferWithRequiredEntityPrimitives;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferwithprimitivedefaults.TransferWithPrimitiveDefaultsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferwithrequiredentityprimitives.TransferWithRequiredEntityPrimitivesDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferwithrequiredentityprimitives.TransferWithRequiredEntityPrimitivesForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferwithrequiredprimitivedefaults.TransferWithRequiredPrimitiveDefaults;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferwithrequiredprimitivedefaults.TransferWithRequiredPrimitiveDefaultsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferwithrequiredprimitivedefaults.TransferWithRequiredPrimitiveDefaultsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.MappedTransferPrimitivesDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
@@ -30,7 +37,8 @@ import hu.blackbelt.judo.runtime.core.exception.ValidationException;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import lombok.extern.slf4j.Slf4j;
 import org.hamcrest.Matcher;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.time.LocalDate;
@@ -121,7 +129,7 @@ public class MappedTransferPrimitivesTest {
     })
     void testMappedTransferOptionalPrimitivesWithoutValue() {
 
-        TransferOptionalPrimitives transferOptionalPrimitives = transferOptionalPrimitivesDao.create(TransferOptionalPrimitives.builder().build());
+        TransferOptionalPrimitives transferOptionalPrimitives = transferOptionalPrimitivesDao.create(TransferOptionalPrimitivesForCreate.builder().build());
 
         assertEquals(Optional.empty(), transferOptionalPrimitives.getIntegerAttr());
         assertEquals(Optional.empty(), transferOptionalPrimitives.getScaledAttr());
@@ -179,7 +187,7 @@ public class MappedTransferPrimitivesTest {
     })
     void testMappedTransferOptionalPrimitives() {
 
-        TransferOptionalPrimitives transferOptionalPrimitives = transferOptionalPrimitivesDao.create(TransferOptionalPrimitives.builder()
+        TransferOptionalPrimitives transferOptionalPrimitives = transferOptionalPrimitivesDao.create(TransferOptionalPrimitivesForCreate.builder()
                 .withIntegerAttr(1)
                 .withScaledAttr(1.23)
                 .withStringAttr("test")
@@ -263,7 +271,7 @@ public class MappedTransferPrimitivesTest {
     public void testMissingRequiredFieldsThrowExceptions() {
         ValidationException thrown = assertThrows(
                 ValidationException.class,
-                () -> transferRequiredPrimitivesDao.create(TransferRequiredPrimitives.builder().build())
+                () -> transferRequiredPrimitivesDao.create(TransferRequiredPrimitivesForCreate.builder().build())
         );
 
         assertThat(thrown.getValidationResults(), containsInAnyOrder(
@@ -327,7 +335,7 @@ public class MappedTransferPrimitivesTest {
         //TODO JNG-4824
         ValidationException thrown = assertThrows(
                 ValidationException.class,
-                () -> transferWithRequiredEntityPrimitivesDao.create(TransferWithRequiredEntityPrimitives.builder().build())
+                () -> transferWithRequiredEntityPrimitivesDao.create(TransferWithRequiredEntityPrimitivesForCreate.builder().build())
         );
 
         assertThat(thrown.getValidationResults(), containsInAnyOrder(
@@ -388,7 +396,7 @@ public class MappedTransferPrimitivesTest {
     })
     public void testTransferMapsIdentifierFieldsAreUnique() {
         LocalDate now = LocalDate.now();
-        TransferWithIdentifiers transf1 = transferWithIdentifiersDao.create(TransferWithIdentifiers.builder()
+        TransferWithIdentifiers transf1 = transferWithIdentifiersDao.create(TransferWithIdentifiersForCreate.builder()
                 .withIntegerAttr(1)
                 .withBoolAttr(true)
                 .withDateAttr(now)
@@ -400,7 +408,7 @@ public class MappedTransferPrimitivesTest {
 
         ValidationException thrown = assertThrows(
                 ValidationException.class,
-                () -> transferWithIdentifiersDao.create(TransferWithIdentifiers.builder()
+                () -> transferWithIdentifiersDao.create(TransferWithIdentifiersForCreate.builder()
                         .withIntegerAttr(1)
                         .withBoolAttr(true)
                         .withDateAttr(now)
@@ -470,7 +478,7 @@ public class MappedTransferPrimitivesTest {
     })
     public void testTransferFieldsAreNonUnique() {
         LocalDate now = LocalDate.now();
-        TransferOptionalPrimitives transf1 = transferOptionalPrimitivesDao.create(TransferOptionalPrimitives.builder()
+        TransferOptionalPrimitives transf1 = transferOptionalPrimitivesDao.create(TransferOptionalPrimitivesForCreate.builder()
                 .withIntegerAttr(1)
                 .withBoolAttr(true)
                 .withDateAttr(now)
@@ -480,7 +488,7 @@ public class MappedTransferPrimitivesTest {
 
         assertEquals(1, transf1.getIntegerAttr().get());
 
-        TransferOptionalPrimitives transf2 = transferOptionalPrimitivesDao.create(TransferOptionalPrimitives.builder()
+        TransferOptionalPrimitives transf2 = transferOptionalPrimitivesDao.create(TransferOptionalPrimitivesForCreate.builder()
                 .withIntegerAttr(1)
                 .withBoolAttr(true)
                 .withDateAttr(now)
@@ -535,7 +543,7 @@ public class MappedTransferPrimitivesTest {
             "REQ-SRV-002",
     })
     public void testUpdateOptionalTransferAfterCreation() {
-        TransferOptionalPrimitives transferOptionalPrimitives = transferOptionalPrimitivesDao.create(TransferOptionalPrimitives.builder().build());
+        TransferOptionalPrimitives transferOptionalPrimitives = transferOptionalPrimitivesDao.create(TransferOptionalPrimitivesForCreate.builder().build());
 
         List<TransferOptionalPrimitives> list = transferOptionalPrimitivesDao.query().selectList();
 
@@ -630,7 +638,7 @@ public class MappedTransferPrimitivesTest {
             "REQ-EXPR-001",
     })
     public void testTransferCreationWithPrimitiveDefaults() {
-        TransferWithPrimitiveDefaults transferWithPrimitiveDefaults = transferWithPrimitiveDefaultsDao.create(TransferWithPrimitiveDefaults.builder().build());
+        TransferWithPrimitiveDefaults transferWithPrimitiveDefaults = transferWithPrimitiveDefaultsDao.create(TransferWithPrimitiveDefaultsForCreate.builder().build());
 
         List<TransferWithPrimitiveDefaults> list = transferWithPrimitiveDefaultsDao.query().selectList();
 
@@ -687,7 +695,7 @@ public class MappedTransferPrimitivesTest {
             "REQ-EXPR-001",
     })
     public void testTransferCreationRequiredWithPrimitiveDefaults() {
-        TransferPrimitiveDefaults transferPrimitiveDefaults = transferPrimitiveDefaultsDao.create(TransferPrimitiveDefaults.builder().build());
+        TransferPrimitiveDefaults transferPrimitiveDefaults = transferPrimitiveDefaultsDao.create(TransferPrimitiveDefaultsForCreate.builder().build());
         List<TransferWithRequiredPrimitiveDefaults> list = transferWithRequiredPrimitiveDefaultsDao.query().selectList();
 
         assertEquals(1, list.size());
@@ -744,7 +752,7 @@ public class MappedTransferPrimitivesTest {
             "REQ-EXPR-001",
     })
     public void testInvalidTransferCreationRequiredWithPrimitiveDefaults() {
-        TransferPrimitiveDefaults transferPrimitiveDefaults = transferPrimitiveDefaultsDao.create(TransferPrimitiveDefaults.builder().build());
+        TransferPrimitiveDefaults transferPrimitiveDefaults = transferPrimitiveDefaultsDao.create(TransferPrimitiveDefaultsForCreate.builder().build());
 
         transferPrimitiveDefaults.setIntegerAttr(null);
         transferPrimitiveDefaults.setScaledAttr(null);
@@ -820,7 +828,7 @@ public class MappedTransferPrimitivesTest {
             "REQ-EXPR-001",
     })
     public void testTransferCreationWithRequiredPrimitiveDefaults() {
-        ValidationException exception = assertThrows(ValidationException.class, () -> transferWithRequiredPrimitiveDefaultsDao.create(TransferWithRequiredPrimitiveDefaults.builder().build()));
+        ValidationException exception = assertThrows(ValidationException.class, () -> transferWithRequiredPrimitiveDefaultsDao.create(TransferWithRequiredPrimitiveDefaultsForCreate.builder().build()));
         assertEquals(9, exception.getValidationResults().size());
         Set<String> validationCodes = exception.getValidationResults().stream().map(ValidationResult::getCode).collect(Collectors.toSet());
         assertThat(validationCodes.size(), equalTo(1));
@@ -829,7 +837,7 @@ public class MappedTransferPrimitivesTest {
 
         TransferWithRequiredPrimitiveDefaults transferWithRequiredPrimitiveDefaults =
                 transferWithRequiredPrimitiveDefaultsDao.create(
-                        TransferWithRequiredPrimitiveDefaults.builder()
+                        TransferWithRequiredPrimitiveDefaultsForCreate.builder()
                                                              .withIntegerAttr(2)
                                                              .withScaledAttr(3.34)
                                                              .withStringAttr("str")
@@ -890,7 +898,7 @@ public class MappedTransferPrimitivesTest {
             "REQ-EXPR-001",
     })
     public void testTransferCreationWithPrimitiveDefaultExpressions() {
-        TransferWithPrimitiveDefaultExpressions transferWithPrimitiveDefaultExpressions = transferWithPrimitiveDefaultExpressionsDao.create(TransferWithPrimitiveDefaultExpressions.builder().build());
+        TransferWithPrimitiveDefaultExpressions transferWithPrimitiveDefaultExpressions = transferWithPrimitiveDefaultExpressionsDao.create(TransferWithPrimitiveDefaultExpressionsForCreate.builder().build());
 
         List<TransferWithPrimitiveDefaultExpressions> list = transferWithPrimitiveDefaultExpressionsDao.query().selectList();
 
@@ -959,7 +967,7 @@ public class MappedTransferPrimitivesTest {
     public void testRegexValidatorFailsForInvalidInput() {
         ValidationException thrown = assertThrows(
                 ValidationException.class,
-                () -> transferOptionalPrimitivesDao.create(TransferOptionalPrimitives.builder()
+                () -> transferOptionalPrimitivesDao.create(TransferOptionalPrimitivesForCreate.builder()
                         .withRegexAttr("hello-bello")
                         .build()));
 
@@ -1011,7 +1019,7 @@ public class MappedTransferPrimitivesTest {
 
         ValidationException thrown = assertThrows(
                 ValidationException.class,
-                () -> transferOptionalPrimitivesDao.create(TransferOptionalPrimitives.builder()
+                () -> transferOptionalPrimitivesDao.create(TransferOptionalPrimitivesForCreate.builder()
                         .withStringAttr(lipsum)
                         .build()));
 
@@ -1056,7 +1064,7 @@ public class MappedTransferPrimitivesTest {
     public void testPrecisionValidation() {
         ValidationException thrown = assertThrows(
                 ValidationException.class,
-                () -> transferOptionalPrimitivesDao.create(TransferOptionalPrimitives.builder()
+                () -> transferOptionalPrimitivesDao.create(TransferOptionalPrimitivesForCreate.builder()
                         .withIntegerAttr(1234567890)
                         .build()));
 
@@ -1104,7 +1112,7 @@ public class MappedTransferPrimitivesTest {
     public void testMaxPrecision() {
         ValidationException validationException = assertThrows(
                 ValidationException.class,
-                () -> transferOptionalPrimitivesDao.create(TransferOptionalPrimitives.builder()
+                () -> transferOptionalPrimitivesDao.create(TransferOptionalPrimitivesForCreate.builder()
                         .withScaledAttr(1234567890.0)
                         .build())
         );
@@ -1112,28 +1120,28 @@ public class MappedTransferPrimitivesTest {
 
         ValidationException validationException1 = assertThrows(
                 ValidationException.class,
-                () -> transferOptionalPrimitivesDao.create(TransferOptionalPrimitives.builder()
+                () -> transferOptionalPrimitivesDao.create(TransferOptionalPrimitivesForCreate.builder()
                         .withScaledAttr(123456789.1)
                         .build())
         );
         assertThat(validationException1.getValidationResults(), containsInAnyOrder(matchPrecisionValidationForAttribute("scaledAttr")));
 
-        TransferOptionalPrimitives t1 = transferOptionalPrimitivesDao.create(TransferOptionalPrimitives.builder()
+        TransferOptionalPrimitives t1 = transferOptionalPrimitivesDao.create(TransferOptionalPrimitivesForCreate.builder()
                 .withScaledAttr(123456789.0)
                 .build());
         assertEquals(Optional.of(123456789.0), t1.getScaledAttr());
 
-        TransferOptionalPrimitives t2 = transferOptionalPrimitivesDao.create(TransferOptionalPrimitives.builder()
+        TransferOptionalPrimitives t2 = transferOptionalPrimitivesDao.create(TransferOptionalPrimitivesForCreate.builder()
                 .withScaledAttr(12345678.1)
                 .build());
         assertEquals(Optional.of(12345678.1), t2.getScaledAttr());
 
-        TransferOptionalPrimitives t3 = transferOptionalPrimitivesDao.create(TransferOptionalPrimitives.builder()
+        TransferOptionalPrimitives t3 = transferOptionalPrimitivesDao.create(TransferOptionalPrimitivesForCreate.builder()
                 .withScaledAttr(1234567.12)
                 .build());
         assertEquals(Optional.of(1234567.12), t3.getScaledAttr());
 
-        TransferOptionalPrimitives t4 = transferOptionalPrimitivesDao.create(TransferOptionalPrimitives.builder()
+        TransferOptionalPrimitives t4 = transferOptionalPrimitivesDao.create(TransferOptionalPrimitivesForCreate.builder()
                 .withScaledAttr(1234567.1200)
                 .build());
         assertEquals(Optional.of(1234567.12), t4.getScaledAttr());
@@ -1175,7 +1183,7 @@ public class MappedTransferPrimitivesTest {
     public void testScaleValidation() {
         ValidationException thrown = assertThrows(
                 ValidationException.class,
-                () -> transferOptionalPrimitivesDao.create(TransferOptionalPrimitives.builder()
+                () -> transferOptionalPrimitivesDao.create(TransferOptionalPrimitivesForCreate.builder()
                         .withScaledAttr(123456.789)
                         .build()));
 

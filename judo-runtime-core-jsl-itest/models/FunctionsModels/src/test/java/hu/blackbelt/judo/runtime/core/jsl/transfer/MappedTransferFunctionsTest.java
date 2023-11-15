@@ -24,49 +24,68 @@ import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferanytypefunctions.TransferAnyTypeFunctions;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferanytypefunctions.TransferAnyTypeFunctionsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferanytypefunctions.TransferAnyTypeFunctionsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferbooleanfunctions.TransferBooleanFunctions;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferbooleanfunctions.TransferBooleanFunctionsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferbooleanfunctions.TransferBooleanFunctionsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferbooler.TransferBooler;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferbooler.TransferBoolerDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferbooler.TransferBoolerForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferboolertester.TransferBoolerTester;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferboolertester.TransferBoolerTesterDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferboolertester.TransferBoolerTesterForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferchild.TransferChild;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferchild.TransferChildDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferchild.TransferChildForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transfercollectionfunctions.TransferCollectionFunctions;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transfercollectionfunctions.TransferCollectionFunctionsAttachedRelationsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transfercollectionfunctions.TransferCollectionFunctionsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transfercollectionfunctions.TransferCollectionFunctionsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferdatefunctions.TransferDateFunctions;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferdatefunctions.TransferDateFunctionsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferdatefunctions.TransferDateFunctionsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferentity.TransferEntity;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferentity.TransferEntityDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferentity.TransferEntityForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferentitywithprimitivedefaults.TransferEntityWithPrimitiveDefaults;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferentitywithprimitivedefaults.TransferEntityWithPrimitiveDefaultsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferentitywithprimitivedefaults.TransferEntityWithPrimitiveDefaultsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferenumfunctions.TransferEnumFunctions;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferenumfunctions.TransferEnumFunctionsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferenumfunctions.TransferEnumFunctionsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferinstancefunctions.TransferInstanceFunctions;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferinstancefunctions.TransferInstanceFunctionsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferinstancefunctions.TransferInstanceFunctionsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferkleene.TransferKleene;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferkleene.TransferKleeneDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferkleene.TransferKleeneForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transfermember.TransferMember;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transfermember.TransferMemberDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transfermember.TransferMemberForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transfernumericfunctions.TransferNumericFunctions;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transfernumericfunctions.TransferNumericFunctionsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transfernumericfunctions.TransferNumericFunctionsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferparent.TransferParent;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferparent.TransferParentDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferparent.TransferParentForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferparent.TransferParentIdentifier;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transfersimple.TransferSimple;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transfersimple.TransferSimpleDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transfersimple.TransferSimpleForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferstringfunctions.TransferStringFunctions;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferstringfunctions.TransferStringFunctionsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transferstringfunctions.TransferStringFunctionsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transfertester.TransferTester;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transfertester.TransferTesterAttachedRelationsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transfertester.TransferTesterDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transfertester.TransferTesterForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transfertimefunctions.TransferTimeFunctions;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transfertimefunctions.TransferTimeFunctionsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transfertimefunctions.TransferTimeFunctionsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transfertimestampasstring.TransferTimestampAsString;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transfertimestampasstring.TransferTimestampAsStringDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transfertimestampasstring.TransferTimestampAsStringForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transfertimestampfunctions.TransferTimestampFunctions;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transfertimestampfunctions.TransferTimestampFunctionsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.transfertimestampfunctions.TransferTimestampFunctionsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.FunctionsDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
@@ -158,13 +177,13 @@ public class MappedTransferFunctionsTest {
     protected void init() {
 
         TransferEntity tentity = transferEntityDao
-                .create(TransferEntity.builder().build());
+                .create(TransferEntityForCreate.builder().build());
         TransferEntityWithPrimitiveDefaults entityWithPrimitiveDefaults = transferEntityWithPrimitiveDefaultsDao
-                .create(TransferEntityWithPrimitiveDefaults.builder().build());
+                .create(TransferEntityWithPrimitiveDefaultsForCreate.builder().build());
 
-        transferAnyTypeFunctions = transferAnyTypeFunctionsDao.create(TransferAnyTypeFunctions.builder()
-                .withEntity(tentity)
-                .withEntityWithPrimitives(entityWithPrimitiveDefaults)
+        transferAnyTypeFunctions = transferAnyTypeFunctionsDao.create(TransferAnyTypeFunctionsForCreate.builder()
+                .withEntity(TransferEntityForCreate.builderFrom(tentity).build())
+                .withEntityWithPrimitives(TransferEntityWithPrimitiveDefaultsForCreate.builderFrom(entityWithPrimitiveDefaults).build())
                 .build());
     }
 
@@ -247,7 +266,7 @@ public class MappedTransferFunctionsTest {
             "REQ-SRV-002"
     })
     public void testStringsOnMappedTransfer() {
-        TransferStringFunctions str = transferStringFunctionsDao.create(TransferStringFunctions.builder().build());
+        TransferStringFunctions str = transferStringFunctionsDao.create(TransferStringFunctionsForCreate.builder().build());
 
         assertEquals(5, str.getLength().orElseThrow());
         String first = str.getFirst().orElseThrow();
@@ -323,7 +342,7 @@ public class MappedTransferFunctionsTest {
             "REQ-SRV-002"
     })
     public void testNumericsOnMappedTransfer() {
-        TransferNumericFunctions numericFunctions = transferNumericFunctionsDao.create(TransferNumericFunctions.builder().build());
+        TransferNumericFunctions numericFunctions = transferNumericFunctionsDao.create(TransferNumericFunctionsForCreate.builder().build());
 
         Long roundInt = numericFunctions.getRoundInt().orElseThrow();
         assertEquals(1, roundInt);
@@ -386,7 +405,7 @@ public class MappedTransferFunctionsTest {
             "REQ-SRV-002"
     })
     public void testBooleansOnMappedTransfer() {
-        TransferBooleanFunctions bool = transferBooleanFunctionsDao.create(TransferBooleanFunctions.builder().build());
+        TransferBooleanFunctions bool = transferBooleanFunctionsDao.create(TransferBooleanFunctionsForCreate.builder().build());
 
         assertEquals(Optional.of("true"), bool.getOwnBoolAsString());
         assertEquals(Optional.of("true"), bool.getTrueAsString());
@@ -401,7 +420,7 @@ public class MappedTransferFunctionsTest {
             "REQ-SRV-002"
     })
     public void testKleeneOnMappedTransfer() {
-        TransferKleene kleene = transferKleeneDao.create(TransferKleene.builder().build());
+        TransferKleene kleene = transferKleeneDao.create(TransferKleeneForCreate.builder().build());
 
         /*
         |=============================================================================================
@@ -466,7 +485,7 @@ public class MappedTransferFunctionsTest {
             "REQ-SRV-002"
     })
     public void testDatesOnMappedTransfer() {
-        TransferDateFunctions date = transferDateFunctionsDao.create(TransferDateFunctions.builder().build());
+        TransferDateFunctions date = transferDateFunctionsDao.create(TransferDateFunctionsForCreate.builder().build());
 
         assertEquals(Optional.of("2022-07-11"), date.getOwnDateAsString());
         assertEquals(Optional.of("2021-03-02"), date.getDateAsString());
@@ -500,7 +519,7 @@ public class MappedTransferFunctionsTest {
         LocalTime timeHMS = LocalTime.parse("12:34:56");
         LocalTime timeHMSF = LocalTime.parse("12:34:56.789");
         TransferTimeFunctions time =
-                transferTimeFunctionsDao.create(TransferTimeFunctions.builder()
+                transferTimeFunctionsDao.create(TransferTimeFunctionsForCreate.builder()
                                                      .withTimeHM(timeHM)
                                                      .withTimeHMS(timeHMS)
                                                      .withTimeHMSF(timeHMSF)
@@ -581,7 +600,7 @@ public class MappedTransferFunctionsTest {
             "REQ-SRV-002"
     })
     public void testTimestampOnMappedTransfer() {
-        TransferTimestampFunctions timestampFunctions = transferTimestampFunctionsDao.create(TransferTimestampFunctions.builder().build());
+        TransferTimestampFunctions timestampFunctions = transferTimestampFunctionsDao.create(TransferTimestampFunctionsForCreate.builder().build());
 
         assertEquals(LocalDateTime.of(2022, 9, 29, 0, 0, 0, 0), timestampFunctions.getTimestampOfDate().orElseThrow());
         assertEquals(LocalDateTime.of(2022, 9, 29, 11, 11, 11, 0), timestampFunctions.getTimestampOfDateAndTime().orElseThrow());
@@ -627,7 +646,7 @@ public class MappedTransferFunctionsTest {
             "REQ-SRV-002"
     })
     public void testTimestampAsStringOnMappedTransfer() {
-        TransferTimestampAsString timestampAsString = transferTimestampAsStringDao.create(TransferTimestampAsString.builder().build());
+        TransferTimestampAsString timestampAsString = transferTimestampAsStringDao.create(TransferTimestampAsStringForCreate.builder().build());
 
         assertEquals("2022-03-03T14:00", timestampAsString.getTimestamp1AsString().orElseThrow());
         assertEquals("2022-03-03T14:00:00.123", timestampAsString.getTimestamp2AsString().orElseThrow());
@@ -679,7 +698,7 @@ public class MappedTransferFunctionsTest {
             "REQ-SRV-002"
     })
     public void testEnumOnMappedTransfer() {
-        TransferEnumFunctions myEnum = transferEnumFunctionsDao.create(TransferEnumFunctions.builder().build());
+        TransferEnumFunctions myEnum = transferEnumFunctionsDao.create(TransferEnumFunctionsForCreate.builder().build());
 
         assertEquals(Optional.of("Atomic"), myEnum.getOwnEnumAsString());
         assertEquals(Optional.of("Atomic"), myEnum.getEnumAsString());
@@ -695,16 +714,18 @@ public class MappedTransferFunctionsTest {
             "REQ-SRV-002"
     })
     public void testInstanceOnMappedTransfer() {
-        TransferParent parent1 = transferParentDao.create(TransferParent.builder().withName("James Webb").build());
-        TransferChild child1 = transferChildDao.create(TransferChild.builder().withName("Erika Young").withAge(11L).build());
+        TransferParent parent1 = transferParentDao.create(TransferParentForCreate.builder().withName("James Webb").build());
+        TransferChild child1 = transferChildDao.create(TransferChildForCreate.builder().withName("Erika Young").withAge(11L).build());
 
-        TransferInstanceFunctions instanceFunctions = transferInstanceFunctionsDao.create(TransferInstanceFunctions.builder()
-                        .withParent(TransferParent.builder().withName("Another Person").build())
-                        .withChild(TransferChild.builder().withName("Another Child").withAge(31L).build())
+        TransferInstanceFunctions instanceFunctions = transferInstanceFunctionsDao.create(TransferInstanceFunctionsForCreate.builder()
+                        .withParent(TransferParentForCreate.builder().withName("Another Person").build())
+                        .withChild(TransferChildForCreate.builder().withName("Another Child").withAge(31L).build())
                         .build());
 
-        TransferInstanceFunctions instanceFunctions1 = transferInstanceFunctionsDao.create(TransferInstanceFunctions.builder()
-                        .withParent(transferParentDao.getById(child1.identifier().adaptTo(TransferParentIdentifier.class)).orElseThrow())
+        TransferParent transferParent = transferParentDao.getById(child1.identifier().adaptTo(TransferParentIdentifier.class)).orElseThrow();
+
+        TransferInstanceFunctions instanceFunctions1 = transferInstanceFunctionsDao.create(TransferInstanceFunctionsForCreate.builder()
+                        .withParent(TransferParentForCreate.builderFrom(transferParent).build())
                         .build());
 
         assertTrue(instanceFunctions.getTypeOfParent().get());
@@ -721,9 +742,9 @@ public class MappedTransferFunctionsTest {
 
         assertEquals(10, instanceFunctions.getNavigationWithCalls().get());
 
-        TransferInstanceFunctions instanceFunctions2 = transferInstanceFunctionsDao.create(TransferInstanceFunctions.builder()
-                                                                                            .withParent(TransferParent.builder().withName("P1").build())
-                                                                                            .withChild(TransferChild.builder().withName("C1").build())
+        TransferInstanceFunctions instanceFunctions2 = transferInstanceFunctionsDao.create(TransferInstanceFunctionsForCreate.builder()
+                                                                                            .withParent(TransferParentForCreate.builder().withName("P1").build())
+                                                                                            .withChild(TransferChildForCreate.builder().withName("C1").build())
                                                                                             .build());
         TransferParent p1 = transferParentDao.getAll().stream().filter(p -> p.getName().orElseThrow().equals("P1")).findAny().orElseThrow();
         TransferChild c1 = transferChildDao.getAll().stream().filter(c -> c.getName().orElseThrow().equals("C1")).findAny().orElseThrow();
@@ -747,23 +768,22 @@ public class MappedTransferFunctionsTest {
             "REQ-SRV-002"
     })
     public void testCollectionOnMappedTransfer() {
-        TransferCollectionFunctions collectionFunctions = transferCollectionFunctionsDao.create(TransferCollectionFunctions.builder()
+        TransferCollectionFunctions collectionFunctions = transferCollectionFunctionsDao.create(TransferCollectionFunctionsForCreate.builder()
                 .withParentsField(
                         List.of(
-                                TransferParent.builder().withName("John").build(),
-                                TransferParent.builder().withName("Another Person").build()
+                                TransferParentForCreate.builder().withName("John").build(),
+                                TransferParentForCreate.builder().withName("Another Person").build()
                         )
                 )
                 .withChildrenField(
                         List.of(
-                                TransferChild.builder().withName("Rebecca").withAge(33L).build(),
-                                TransferChild.builder().withName("Cindy").withAge(23L).build(),
-                                TransferChild.builder().withName("Monica").withAge(23L).build(),
-                                TransferChild.builder().withName("Peter").withAge(46L).build(),
-                                TransferChild.builder().withName("Andrew").withAge(46L).build()
+                                TransferChildForCreate.builder().withName("Rebecca").withAge(33L).build(),
+                                TransferChildForCreate.builder().withName("Cindy").withAge(23L).build(),
+                                TransferChildForCreate.builder().withName("Monica").withAge(23L).build(),
+                                TransferChildForCreate.builder().withName("Peter").withAge(46L).build(),
+                                TransferChildForCreate.builder().withName("Andrew").withAge(46L).build()
                         )
                 )
-                .build(), TransferCollectionFunctionsAttachedRelationsForCreate.builder()
                 .withParentsRelation(
                         List.of(
                                 TransferParent.builder().withName("Mark").build(),
@@ -894,7 +914,7 @@ public class MappedTransferFunctionsTest {
 
         */
 
-        transferBoolerTesterDao.create(TransferBoolerTester.builder().build());
+        transferBoolerTesterDao.create(TransferBoolerTesterForCreate.builder().build());
 
         // | - | - | - ||    F    |    T    |    F     |    T     |
         assertBoolers(false, true, false, true);
@@ -972,7 +992,7 @@ public class MappedTransferFunctionsTest {
     }
 
     private TransferBooler createBooler(Boolean b) {
-        return transferBoolerDao.create(TransferBooler.builder().withB(b).build());
+        return transferBoolerDao.create(TransferBoolerForCreate.builder().withB(b).build());
     }
 
     private TransferBooler updateBooler(TransferBooler booler, Boolean b) {
@@ -986,25 +1006,24 @@ public class MappedTransferFunctionsTest {
             "REQ-SRV-002"
     })
     public void testMemberOnMappedTransfer() {
-        TransferMember m1 = transferMemberDao.create(TransferMember.builder().withName("M1").build());
-        TransferMember m2 = transferMemberDao.create(TransferMember.builder().withName("M2").build());
-        TransferMember m3 = transferMemberDao.create(TransferMember.builder().withName("M3").build());
+        TransferMember m1 = transferMemberDao.create(TransferMemberForCreate.builder().withName("M1").build());
+        TransferMember m2 = transferMemberDao.create(TransferMemberForCreate.builder().withName("M2").build());
+        TransferMember m3 = transferMemberDao.create(TransferMemberForCreate.builder().withName("M3").build());
 
         TransferTester tester = transferTesterDao.create(
-                TransferTester.builder().build(),
-                TransferTesterAttachedRelationsForCreate.builder()
-                            .withMember(m1)
-                            .withMembers(List.of(m1, m2, m3))
-                            .build());
+                TransferTesterForCreate.builder()
+                        .withMember(m1)
+                        .withMembers(List.of(m1, m2, m3))
+                        .build());
         tester = transferTesterDao.getById(tester.identifier()).orElseThrow();
         assertTrue(tester.getMemberMemberOfMembers().orElseThrow());
     }
 
     @Test
     public void testFirstOnMappedTransfer() {
-        TransferSimple s1 = transferSimpleDao.create(TransferSimple.builder().withStringAttr("A").build());
-        TransferSimple s2 = transferSimpleDao.create(TransferSimple.builder().withStringAttr("a").build());
-        TransferSimple s3 = transferSimpleDao.create(TransferSimple.builder().withStringAttr("b").build());
+        TransferSimple s1 = transferSimpleDao.create(TransferSimpleForCreate.builder().withStringAttr("A").build());
+        TransferSimple s2 = transferSimpleDao.create(TransferSimpleForCreate.builder().withStringAttr("a").build());
+        TransferSimple s3 = transferSimpleDao.create(TransferSimpleForCreate.builder().withStringAttr("b").build());
         s1 = transferSimpleDao.update(s1);
         assertEquals(Optional.of(Long.valueOf(1)), s1.getFirstNum());
     }
