@@ -632,6 +632,10 @@ public class InheritanceTest {
         assertFalse(eDao.existsById((UUID) entityE.identifier().getIdentifier()));
 
         assertFalse(parentADao.existsById(null));
+
+        ParentB parentB = parentBDao.create(ParentB.builder().build());
+
+        assertFalse(parentADao.existsById((UUID) parentB.identifier().getIdentifier()));
     }
 
     @Test
@@ -691,6 +695,10 @@ public class InheritanceTest {
         assertFalse(transferEDao.existsById((UUID) transferE.identifier().getIdentifier()));
 
         assertFalse(parentATransferDao.existsById(null));
+
+        ParentBTransfer parentB = parentBTransferDao.create(ParentBTransfer.builder().build());
+
+        assertFalse(parentATransferDao.existsById((UUID) parentB.identifier().getIdentifier()));
     }
 
 
