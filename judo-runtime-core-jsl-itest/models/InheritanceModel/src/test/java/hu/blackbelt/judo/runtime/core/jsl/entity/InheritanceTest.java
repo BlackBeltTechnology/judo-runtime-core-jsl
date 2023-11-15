@@ -679,7 +679,7 @@ public class InheritanceTest {
 
         TransferE transferE = transferEDao.create(TransferE.builder().withNameA("E1").build());
 
-        assertTrue(eDao.existsById((UUID) transferE.identifier().getIdentifier()));
+        assertTrue(transferEDao.existsById((UUID) transferE.identifier().getIdentifier()));
 
         transferE = transferEDao.getById(transferE.identifier()).orElseThrow();
         assertEquals("E1", transferE.getNameA().orElseThrow());
