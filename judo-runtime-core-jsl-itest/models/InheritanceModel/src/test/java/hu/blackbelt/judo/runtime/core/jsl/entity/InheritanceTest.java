@@ -658,6 +658,9 @@ public class InheritanceTest {
         assertTrue(relationTransferDao.existsById((UUID) relationTransfer1.identifier().getIdentifier()));
         assertEquals("R1", relationTransfer1.getName().orElseThrow());
 
+        assertTrue(parentADao.existsById((UUID) parentA1.identifier().getIdentifier()));
+        assertTrue(parentADao.existsById((UUID) parentA1.identifier().adaptTo(ParentAIdentifier.class).getIdentifier()));
+
         ParentA parentAEntity = parentADao.getById(parentA1.identifier().adaptTo(ParentAIdentifier.class)).orElseThrow();
         RelationEntity relationEntity = parentADao.queryRelationEntities(parentAEntity).selectOne().orElseThrow();
 
@@ -679,16 +682,17 @@ public class InheritanceTest {
         transferE = transferEDao.getById(transferE.identifier()).orElseThrow();
         assertEquals("E1", transferE.getNameA().orElseThrow());
 
+        assertTrue(eDao.existsById((UUID) transferE.identifier().getIdentifier()));
+        assertTrue(eDao.existsById((UUID) transferE.identifier().adaptTo(EIdentifier.class).getIdentifier()));
+
         E entityE = eDao.getById(transferE.identifier().adaptTo(EIdentifier.class)).orElseThrow();
         assertEquals("E1", entityE.getNameA().orElseThrow());
-
 
         assertTrue(parentATransferDao.existsById((UUID) transferE.identifier().getIdentifier()));
         assertTrue(parentATransferDao.existsById((UUID) transferE.identifier().adaptTo(ParentATransferIdentifier.class).getIdentifier()));
         ParentATransfer parentATransfer = parentATransferDao.getById(transferE.identifier().adaptTo(ParentATransferIdentifier.class)).orElseThrow();
 
         assertEquals("E1", parentATransfer.getNameA().orElseThrow());
-        assertTrue(transferEDao.existsById((UUID) parentATransfer.identifier().getIdentifier()));
 
         transferEDao.delete(transferE);
 
