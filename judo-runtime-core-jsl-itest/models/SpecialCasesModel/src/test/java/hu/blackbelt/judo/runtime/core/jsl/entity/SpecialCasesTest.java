@@ -23,12 +23,17 @@ package hu.blackbelt.judo.runtime.core.jsl.entity;
 import com.google.inject.Inject;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.abstract_.Abstract;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.abstract_.AbstractDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.c.C;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.c.CBuilder;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.c.CDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.d.D;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.d.DDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.e.E;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.e.EDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.entitya.EntityA;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.entitya.EntityADao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.entitya.querysamename.EntityAQuerySameNameParameter;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.entityb.EntityB;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.entityb.EntityBDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.entityb.querysamename.EntityBQuerySameNameParameter;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.referenceentity.ReferenceEntity;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.referenceentity.ReferenceEntityDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.testentity.TestEntity;
@@ -40,6 +45,10 @@ import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -64,6 +73,7 @@ public class SpecialCasesTest {
 
     @Inject
     TestEntityDao testEntityDao;
+
 
     /**
      * This test checks the entities with the same query name declaration.
@@ -112,9 +122,8 @@ public class SpecialCasesTest {
         EntityA entA = entityADao.create(EntityA.builder().build());
         EntityB entB = entityBDao.create(EntityB.builder().build());
 
-        assertEquals(ref.identifier(), entityADao.queryQuerySameName(entA, EntityAQuerySameNameParameter.builder().withName("ReferenceEntity").build()).orElseThrow().identifier() );
-        assertEquals(ref.identifier(), entityBDao.queryQuerySameName(entB, EntityBQuerySameNameParameter.builder().withName("ReferenceEntity").build()).orElseThrow().identifier() );
-
+        assertEquals(ref.identifier(), entityADao.queryQuerySameName(entA).get().identifier());
+        assertEquals(ref.identifier(), entityBDao.queryQuerySameName(entB).get().identifier());
     }
 
 
@@ -193,5 +202,55 @@ public class SpecialCasesTest {
         assertEquals(1, abstractDao.countAll());
     }
 
+    @Inject
+    CDao cDao;
+
+    @Inject
+    DDao dDao;
+
+    @Inject
+    EDao eDao;
+
+    @Test
+    @TestCase("TestBuilderCopyTheCollectionRecursively")
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-007",
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-SRV-002",
+    })
+    public void TestBuilderCopyTheCollectionRecursively() {
+        
+        CBuilder cBuilder1 = C.builder()
+                .withCompD(List.of(D.builder()
+                                .withCompE(List.of(E.builder().build(), E.builder().build()))
+                                .build(),
+                        D.builder().build())
+                );
+
+        CBuilder cBuilder2 = cBuilder1.withName("Name");
+
+        C c1 = cBuilder1.build();
+        C c11 = cBuilder1.build();
+        C c2 = cBuilder2.build();
+
+        c1.getCompD().get(0).getCompE().remove(c1.getCompD().get(0).getCompE().get(0));
+
+        assertEquals(1, c1.getCompD().get(0).getCompE().size());
+        assertEquals(2, c11.getCompD().get(0).getCompE().size());
+        assertEquals(2, c2.getCompD().get(0).getCompE().size());
+
+        c2.getCompD().get(0).getCompE().remove(c2.getCompD().get(0).getCompE().get(0));
+
+        assertEquals(1, c1.getCompD().get(0).getCompE().size());
+        assertEquals(2, c11.getCompD().get(0).getCompE().size());
+        assertEquals(1, c2.getCompD().get(0).getCompE().size());
+
+    }
 
 }

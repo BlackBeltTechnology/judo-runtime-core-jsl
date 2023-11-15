@@ -362,7 +362,7 @@ public class TestStaticQueriesWithConstantParameters {
         assertEquals(MyEnum.A02, s13.getFfEnum().orElseThrow());
 
         s21 = snapshot2Dao.getById(s21.identifier()).orElseThrow();
-        List<Serializable> s21Ids = snapshot2Dao.queryEntities(s21).execute().stream().map(e -> e.identifier().getIdentifier()).collect(Collectors.toList());
+        List<Serializable> s21Ids = snapshot2Dao.queryEntities(s21).selectList().stream().map(e -> e.identifier().getIdentifier()).collect(Collectors.toList());
         assertEquals(2, s21Ids.size());
         Set<Serializable> s21IdSet = new HashSet<>(s21Ids);
 
@@ -389,7 +389,7 @@ public class TestStaticQueriesWithConstantParameters {
         Optional<Snapshot1> s12FromDatabseOpt = snapshot1Dao.getById(s12.identifier());
         assertTrue(s12FromDatabseOpt.isPresent());
         Snapshot1 s12FromDatabse = s12FromDatabseOpt.get();
-        Serializable lastAddedEntity = lastAddedMyEntityDao.execute().map(e -> e.identifier().getIdentifier()).orElseThrow();
+        Serializable lastAddedEntity = lastAddedMyEntityDao.selectOne().map(e -> e.identifier().getIdentifier()).orElseThrow();
 
         assertTrue(s12FromDatabse.getCreated().isPresent());
         assertTrue(LocalDateTime.now().minusSeconds(2).isBefore(s12FromDatabse.getCreated().orElseThrow()));

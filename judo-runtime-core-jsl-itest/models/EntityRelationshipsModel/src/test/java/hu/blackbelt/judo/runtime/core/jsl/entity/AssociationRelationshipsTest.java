@@ -115,17 +115,17 @@ public class AssociationRelationshipsTest {
             "REQ-ENT-012"
     })
     public void testAddRemoveMultipleRelations() {
-        assertEquals(List.of(), entityCDao.queryMultipleAonB(entityC).execute());
+        assertEquals(List.of(), entityCDao.queryMultipleAonB(entityC).selectList());
 
         EntityA entityA2 = createA(entityC, List.of(entityD));
 
         entityCDao.addMultipleAonB(entityC, List.of(entityA, entityA2));
 
-        assertEquals(2, entityCDao.queryMultipleAonB(entityC).execute().size());
+        assertEquals(2, entityCDao.queryMultipleAonB(entityC).selectList().size());
 
         entityCDao.removeMultipleAonB(entityC, List.of(entityA));
 
-        assertEquals(List.of(entityA2), entityCDao.queryMultipleAonB(entityC).execute());
+        assertEquals(List.of(entityA2), entityCDao.queryMultipleAonB(entityC).selectList());
     }
 
     /**
@@ -200,7 +200,7 @@ public class AssociationRelationshipsTest {
     }
 
     private  List<EntityFIdentifier> ListOfMultipleFOnEIds(EntityE e){
-        return entityEDao.queryMultipleFOnE(e).execute().stream().map(EntityF::identifier).toList();
+        return entityEDao.queryMultipleFOnE(e).selectList().stream().map(EntityF::identifier).toList();
     }
 
     @Test
@@ -222,7 +222,7 @@ public class AssociationRelationshipsTest {
                 hasProperty("location", equalTo("singleRequiredConA")))
         ));
 
-        List<EntityA> list = entityADao.query().execute();
+        List<EntityA> list = entityADao.query().selectList();
 
         assertEquals(1, list.size()); // we are expecting 1, because the beforeEach() setup already created 1 element
     }
@@ -246,7 +246,7 @@ public class AssociationRelationshipsTest {
 
         assertEquals(entityC, entityC2);
 
-        List<EntityA> entityA2 = entityCDao.queryTwoWayMultipleAonC(entityC2).execute();
+        List<EntityA> entityA2 = entityCDao.queryTwoWayMultipleAonC(entityC2).selectList();
 
         assertEquals(1, entityA2.size());
         assertEquals(entityA, entityA2.get(0));
@@ -279,7 +279,7 @@ public class AssociationRelationshipsTest {
     public void testDeletingRelatedElementUnsetsRelationship() {
         entityDDao.delete(entityD);
 
-        List<EntityD> ds = entityADao.queryMultipleDonA(entityA).execute();
+        List<EntityD> ds = entityADao.queryMultipleDonA(entityA).selectList();
 
         assertEquals(0, ds.size());
     }
@@ -303,7 +303,7 @@ public class AssociationRelationshipsTest {
                 .build()
                 );
 
-        assertEquals(2, entityEDao.queryMultipleFOnE(entityE).execute().size());
+        assertEquals(2, entityEDao.queryMultipleFOnE(entityE).selectList().size());
         assertEquals(entityE.identifier().getIdentifier(), entityFDao.querySingleEAdded(entityF1).orElseThrow().identifier().getIdentifier());
         assertEquals(entityE.identifier().getIdentifier(), entityFDao.querySingleEAdded(entityF2).orElseThrow().identifier().getIdentifier());
     }
@@ -324,8 +324,8 @@ public class AssociationRelationshipsTest {
                 .withMultipleAonD(List.of(entityA1, entityA2, entityA3))
                 .build());
 
-        assertEquals(3, entityDDao.queryMultipleAonD(entityD1).execute().size());
-        assertEquals(1, entityADao.queryMultipleDonA(entityA1).execute().size());
+        assertEquals(3, entityDDao.queryMultipleAonD(entityD1).selectList().size());
+        assertEquals(1, entityADao.queryMultipleDonA(entityA1).selectList().size());
     }
 
     private EntityA createA(EntityC entityC, List<EntityD> entityDs) {

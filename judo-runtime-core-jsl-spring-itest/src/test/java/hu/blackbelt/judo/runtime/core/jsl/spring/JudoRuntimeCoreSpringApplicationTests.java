@@ -89,7 +89,7 @@ class JudoRuntimeCoreSpringApplicationTests {
 
         List<SalesPerson> personList = salesPersonDao.query()
                 .filterByFirstName(StringFilter.equalTo("Test"))
-                .execute();
+                .selectList();
 
         assertEquals(1, personList.size());
 
@@ -116,20 +116,20 @@ class JudoRuntimeCoreSpringApplicationTests {
                 .queryLeadsOver(createdSalesPerson, SalesPersonLeadsOverParameter.builder()
                         .withLimit(10)
                         .build())
-                .execute();
+                .selectList();
         assertEquals(1, leadListOfQuery.size());
         assertEquals(Optional.of(100000), leadListOfQuery.get(0).getValue());
 
         leadListOfQuery = salesPersonDao
                 .queryLeads(createdSalesPerson)
                 .filterByValue(NumberFilter.equalTo(100000))
-                .execute();
+                .selectList();
         assertEquals(1, leadListOfQuery.size());
         assertEquals(Optional.of(100000), leadListOfQuery.get(0).getValue());
 
-        assertEquals(2, totalNumberOfLeadsDao.execute());
-        assertEquals(2, rootAllLeadsDao.query().execute().size());
-        assertTrue(rootOneLeadDao.execute().isPresent());
+        assertEquals(2, totalNumberOfLeadsDao.selectValue());
+        assertEquals(2, rootAllLeadsDao.query().selectList().size());
+        assertTrue(rootOneLeadDao.selectOne().isPresent());
     }
 
 

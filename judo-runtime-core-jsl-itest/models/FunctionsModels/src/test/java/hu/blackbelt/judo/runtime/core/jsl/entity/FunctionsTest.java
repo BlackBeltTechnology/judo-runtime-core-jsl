@@ -778,23 +778,23 @@ public class FunctionsTest {
         assertNotNull(collectionFunctionsDao.queryAnyParentsRelation(collectionFunctions));
 
         List<Parent> asCollectionChildrenParentField = collectionFunctionsDao
-                .queryAsCollectionChildrenParentField(collectionFunctions).execute();
+                .queryAsCollectionChildrenParentField(collectionFunctions).selectList();
         assertEquals(2, asCollectionChildrenParentField.size());
         assertTrue(asCollectionChildrenParentField.stream().anyMatch(p -> p.getName().orElseThrow().equals("John")));
         assertTrue(asCollectionChildrenParentField.stream().anyMatch(p -> p.getName().orElseThrow().equals("Another Person")));
 
         List<Parent> asCollectionChildrenParentRelation = collectionFunctionsDao
-                .queryAsCollectionChildrenParentRelation(collectionFunctions).execute();
+                .queryAsCollectionChildrenParentRelation(collectionFunctions).selectList();
         assertEquals(2, asCollectionChildrenParentRelation.size());
         assertTrue(asCollectionChildrenParentRelation.stream().anyMatch(p -> p.getName().orElseThrow().equals("Mark")));
         assertTrue(asCollectionChildrenParentRelation.stream().anyMatch(p -> p.getName().orElseThrow().equals("Billy")));
 
         List<Child> asCollectionChildrenChildField = collectionFunctionsDao
-                .queryAsCollectionChildrenChildField(collectionFunctions).execute();
+                .queryAsCollectionChildrenChildField(collectionFunctions).selectList();
         assertEquals(0, asCollectionChildrenChildField.size());
 
         List<Child> asCollectionChildrenChildRelation = collectionFunctionsDao
-                .queryAsCollectionChildrenChildRelation(collectionFunctions).execute();
+                .queryAsCollectionChildrenChildRelation(collectionFunctions).selectList();
         assertEquals(0, asCollectionChildrenChildRelation.size());
 
         assertEquals(Optional.of(23L), collectionFunctions.getMinChildrenField());
@@ -815,25 +815,25 @@ public class FunctionsTest {
         assertEquals(Optional.of(34L), collectionFunctions.getDivisionConst());
         assertEquals(Optional.of(35L), collectionFunctions.getRoundConst());
 
-        assertEquals(2, collectionFunctionsDao.queryFirstChildrenField(collectionFunctions).execute().size());
-        assertEquals(2, collectionFunctionsDao.queryFirstChildrenRelation(collectionFunctions).execute().size());
+        assertEquals(2, collectionFunctionsDao.queryFirstChildrenField(collectionFunctions).selectList().size());
+        assertEquals(2, collectionFunctionsDao.queryFirstChildrenRelation(collectionFunctions).selectList().size());
 
-        assertEquals(2, collectionFunctionsDao.queryLastChildrenField(collectionFunctions).execute().size());
-        assertEquals(2, collectionFunctionsDao.queryLastChildrenRelation(collectionFunctions).execute().size());
+        assertEquals(2, collectionFunctionsDao.queryLastChildrenField(collectionFunctions).selectList().size());
+        assertEquals(2, collectionFunctionsDao.queryLastChildrenRelation(collectionFunctions).selectList().size());
 
-        assertEquals(2, collectionFunctionsDao.queryFrontChildrenField(collectionFunctions).execute().size());
-        assertEquals(2, collectionFunctionsDao.queryFrontChildrenRelation(collectionFunctions).execute().size());
+        assertEquals(2, collectionFunctionsDao.queryFrontChildrenField(collectionFunctions).selectList().size());
+        assertEquals(2, collectionFunctionsDao.queryFrontChildrenRelation(collectionFunctions).selectList().size());
 
-        assertEquals(2, collectionFunctionsDao.queryBackChildrenField(collectionFunctions).execute().size());
-        assertEquals(2, collectionFunctionsDao.queryBackChildrenRelation(collectionFunctions).execute().size());
+        assertEquals(2, collectionFunctionsDao.queryBackChildrenField(collectionFunctions).selectList().size());
+        assertEquals(2, collectionFunctionsDao.queryBackChildrenRelation(collectionFunctions).selectList().size());
 
         assertTrue(collectionFunctions.getContainsParent().orElseThrow());
 
-        assertEquals(1, collectionFunctionsDao.queryFilterParentsField(collectionFunctions).execute().size());
-        assertEquals(1, collectionFunctionsDao.queryFilterParentsRelation(collectionFunctions).execute().size());
+        assertEquals(1, collectionFunctionsDao.queryFilterParentsField(collectionFunctions).selectList().size());
+        assertEquals(1, collectionFunctionsDao.queryFilterParentsRelation(collectionFunctions).selectList().size());
 
-        assertEquals(1, collectionFunctionsDao.queryFilterChildrenField(collectionFunctions).execute().size());
-        assertEquals(1, collectionFunctionsDao.queryFilterChildrenRelation(collectionFunctions).execute().size());
+        assertEquals(1, collectionFunctionsDao.queryFilterChildrenField(collectionFunctions).selectList().size());
+        assertEquals(1, collectionFunctionsDao.queryFilterChildrenRelation(collectionFunctions).selectList().size());
 
         assertEquals(Optional.of(true), collectionFunctions.getAnyTrueChildrenField());
         assertEquals(Optional.of(false), collectionFunctions.getAnyTrueChildrenRelation());
@@ -945,7 +945,7 @@ public class FunctionsTest {
     }
 
     private void assertBoolers(Boolean anyTrue, Boolean allTrue, Boolean anyFalse, Boolean allFalse) {
-        Optional<BoolerTester> testerOptional = boolerTesterDao.query().execute().stream().findAny();
+        Optional<BoolerTester> testerOptional = boolerTesterDao.query().selectOne();
         assertTrue(testerOptional.isPresent());
         BoolerTester tester = testerOptional.get();
         Boolean anyTrueGot = tester.getAnyTrue().orElseThrow();

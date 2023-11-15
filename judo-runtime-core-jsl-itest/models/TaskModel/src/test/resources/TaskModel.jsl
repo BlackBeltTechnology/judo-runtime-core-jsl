@@ -20,7 +20,7 @@ entity Person {
     relation Workplace workplace opposite:persons;
     relation Task[] tasks;
 
-    field Integer allTaskLong <= self.tasks!sum(l|l.taskTimeInDay);
+    field Integer allTaskLong <= self.tasks.sum(l|l.taskTimeInDay);
 }
 
 entity Workplace {
@@ -29,7 +29,7 @@ entity Workplace {
     identifier String address;
 
     //ERROR WHEN THIS COMPILED
-    field Integer allTime <= self.persons!sum(p | p.allTaskLong);
+    field Integer allTime <= self.persons.sum(p | p.allTaskLong);
 }
 
 entity Task {
@@ -46,5 +46,5 @@ entity SalesPerson{
 entity MarketPlace{
     relation SalesPerson[] salesPersons opposite:workplace;
     // Compile Error
-    field Integer allTime <= self.salesPersons!sum(p| p.allTaskLong);
+    field Integer allTime <= self.salesPersons.sum(p| p.allTaskLong);
 }

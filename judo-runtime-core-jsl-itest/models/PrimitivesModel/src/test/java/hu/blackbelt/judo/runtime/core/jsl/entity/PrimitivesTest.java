@@ -105,7 +105,7 @@ public class PrimitivesTest {
     public void testPlainOptionalEntityCreationWithoutValues() {
         MyEntityWithOptionalFields myEntityWithOptionalFields = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder().build());
 
-        List<MyEntityWithOptionalFields> list = myEntityWithOptionalFieldsDao.query().execute();
+        List<MyEntityWithOptionalFields> list = myEntityWithOptionalFieldsDao.query().selectList();
 
         assertEquals(1, list.size());
         assertEquals(Optional.empty(), myEntityWithOptionalFields.getIntegerAttr());
@@ -148,7 +148,7 @@ public class PrimitivesTest {
                         .withEnumAttr(MyEnum.Bombastic)
                         .build());
 
-        List<MyEntityWithOptionalFields> list = myEntityWithOptionalFieldsDao.query().execute();
+        List<MyEntityWithOptionalFields> list = myEntityWithOptionalFieldsDao.query().selectList();
 
         assertEquals(1, list.size());
 
@@ -189,7 +189,7 @@ public class PrimitivesTest {
                 matchMissingAttribute("binaryAttr"),
                 matchMissingAttribute("enumAttr")
         ));
-        List<EntityRequiredFields> list = entityRequiredFieldsDao.query().execute();
+        List<EntityRequiredFields> list = entityRequiredFieldsDao.query().selectList();
 
         assertEquals(0, list.size());
     }
@@ -340,7 +340,7 @@ public class PrimitivesTest {
     public void testUpdateOptionalEntityAfterCreation() {
         MyEntityWithOptionalFields myEntityWithOptionalFields = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder().build());
 
-        List<MyEntityWithOptionalFields> list = myEntityWithOptionalFieldsDao.query().execute();
+        List<MyEntityWithOptionalFields> list = myEntityWithOptionalFieldsDao.query().selectList();
 
         assertEquals(1, list.size());
 
@@ -396,7 +396,7 @@ public class PrimitivesTest {
     public void testEntityCreationWithPrimitiveDefaults() {
         EntityWithPrimitiveDefaults entityWithDefaults = entityWithPrimitiveDefaultsDao.create(EntityWithPrimitiveDefaults.builder().build());
 
-        List<EntityWithPrimitiveDefaults> list = entityWithPrimitiveDefaultsDao.query().execute();
+        List<EntityWithPrimitiveDefaults> list = entityWithPrimitiveDefaultsDao.query().selectList();
 
         assertEquals(1, list.size());
 
@@ -430,7 +430,7 @@ public class PrimitivesTest {
     public void testEntityCreationRequiredWithPrimitiveDefaults() {
         EntityRequiredWithPrimitiveDefaults entityRequiredWithDefaults = entityRequiredWithPrimitiveDefaultsDao.create(EntityRequiredWithPrimitiveDefaults.builder().build());
 
-        List<EntityRequiredWithPrimitiveDefaults> list = entityRequiredWithPrimitiveDefaultsDao.query().execute();
+        List<EntityRequiredWithPrimitiveDefaults> list = entityRequiredWithPrimitiveDefaultsDao.query().selectList();
 
         assertEquals(1, list.size());
 
@@ -467,7 +467,7 @@ public class PrimitivesTest {
     public void testEntityCreationWithPrimitiveDefaultExpressions() {
         EntityWithPrimitiveDefaultExpressions entityWithDefaultExpressions = entityWithPrimitiveDefaultExpressionsDao.create(EntityWithPrimitiveDefaultExpressions.builder().build());
 
-        List<EntityWithPrimitiveDefaultExpressions> list = entityWithPrimitiveDefaultExpressionsDao.query().execute();
+        List<EntityWithPrimitiveDefaultExpressions> list = entityWithPrimitiveDefaultExpressionsDao.query().selectList();
 
         assertEquals(1, list.size());
 
