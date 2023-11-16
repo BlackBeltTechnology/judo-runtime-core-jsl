@@ -2,8 +2,19 @@ model MappedTransferCompositonAggregation;
 
 import judo::types;
 
+entity Composition {
+  field EntityA entityA;
+  field EntityA[] entityAs;
+}
+
+transfer TransferComposition (Composition comp) {
+    relation TransferA transferA <= comp.entityA eager:true;
+    relation TransferA[] transferAs <= comp.entityAs eager:true;
+}
+
 // not required Single and Multi
 entity EntityA {
+    field String stringA;
     field EntityB singleEntityB;
     field EntityB[] multiEntityB;
 }
@@ -15,6 +26,7 @@ entity EntityB {
 transfer TransferA (EntityA a) {
     relation TransferB singleEntityB <= a.singleEntityB eager:true;
     relation TransferB[] multiEntityB <= a.multiEntityB eager:true;
+    field String stringA <= a.stringA input:true;
 }
 
 transfer TransferB (EntityB b) {
