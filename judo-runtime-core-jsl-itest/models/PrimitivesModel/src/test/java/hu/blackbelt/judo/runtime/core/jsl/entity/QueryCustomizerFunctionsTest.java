@@ -231,8 +231,8 @@ public class QueryCustomizerFunctionsTest {
                 .orderBy(MyEntityWithOptionalFieldsAttribute.TIMESTAMP_ATTR)
                 .orderBy(MyEntityWithOptionalFieldsAttribute.TIME_ATTR)
                 .orderBy(MyEntityWithOptionalFieldsAttribute.ENUM_ATTR)
-                .execute()
-                .get(0);
+                .selectOne()
+                .get();
 
         assertEquals(entity2.identifier(), orderBy.identifier());
     }
@@ -265,8 +265,8 @@ public class QueryCustomizerFunctionsTest {
                 .orderByDescending(MyEntityWithOptionalFieldsAttribute.TIMESTAMP_ATTR)
                 .orderByDescending(MyEntityWithOptionalFieldsAttribute.TIME_ATTR)
                 .orderByDescending(MyEntityWithOptionalFieldsAttribute.ENUM_ATTR)
-                .execute()
-                .get(0);
+                .selectOne()
+                .get();
 
         assertEquals(entity1.identifier(), orderBy.identifier());
     }
@@ -300,8 +300,8 @@ public class QueryCustomizerFunctionsTest {
                 .orderBy(MyEntityWithOptionalFieldsAttribute.DERIVED_TIMESTAMP_ATTR)
                 .orderBy(MyEntityWithOptionalFieldsAttribute.DERIVED_TIME_ATTR)
                 .orderBy(MyEntityWithOptionalFieldsAttribute.DERIVED_ENUM_ATTR)
-                .execute()
-                .get(0);
+                .selectOne()
+                .get();
 
         assertEquals(entity2.identifier(), orderBy.identifier());
     }
@@ -335,8 +335,8 @@ public class QueryCustomizerFunctionsTest {
                 .orderByDescending(MyEntityWithOptionalFieldsAttribute.DERIVED_TIMESTAMP_ATTR)
                 .orderByDescending(MyEntityWithOptionalFieldsAttribute.DERIVED_TIME_ATTR)
                 .orderByDescending(MyEntityWithOptionalFieldsAttribute.DERIVED_ENUM_ATTR)
-                .execute()
-                .get(0);
+                .selectOne()
+                .get();
 
         assertEquals(entity1.identifier(), orderBy.identifier());
     }
@@ -370,8 +370,8 @@ public class QueryCustomizerFunctionsTest {
                 .orderBy(MyEntityWithOptionalFieldsAttribute.DERIVED_TIMESTAMP_ATTR)
                 .orderBy(MyEntityWithOptionalFieldsAttribute.TIME_ATTR)
                 .orderBy(MyEntityWithOptionalFieldsAttribute.DERIVED_ENUM_ATTR)
-                .execute()
-                .get(0);
+                .selectOne()
+                .get();
 
         assertEquals(entity2.identifier(), orderBy.identifier());
     }
@@ -405,8 +405,8 @@ public class QueryCustomizerFunctionsTest {
                 .orderByDescending(MyEntityWithOptionalFieldsAttribute.DERIVED_TIMESTAMP_ATTR)
                 .orderByDescending(MyEntityWithOptionalFieldsAttribute.TIME_ATTR)
                 .orderByDescending(MyEntityWithOptionalFieldsAttribute.DERIVED_ENUM_ATTR)
-                .execute()
-                .get(0);
+                .selectOne()
+                .get();
 
         assertEquals(entity1.identifier(), orderBy.identifier());
     }
@@ -419,8 +419,8 @@ public class QueryCustomizerFunctionsTest {
                         .withStringAttr()
                         .withIntegerAttr())
                 .filterByStringAttr(StringFilter.equalTo("test"))
-                .execute()
-                .get(0);
+                .selectOne()
+                .get();
 
         assertEquals(entity1.identifier(), maskedResult.identifier());
         assertEquals(entity1.getIntegerAttr(), maskedResult.getIntegerAttr());
@@ -433,8 +433,8 @@ public class QueryCustomizerFunctionsTest {
         MyEntityWithOptionalFields orderBy = myEntityWithOptionalFieldsDao
                 .query()
                 .orderBy(attribute)
-                .execute()
-                .get(0);
+                .selectOne()
+                .get();
 
         assertEquals(firstEntity.identifier(), orderBy.identifier());
     }
@@ -443,8 +443,8 @@ public class QueryCustomizerFunctionsTest {
         MyEntityWithOptionalFields orderByDescending = myEntityWithOptionalFieldsDao
                 .query()
                 .orderByDescending(attribute)
-                .execute()
-                .get(0);
+                .selectOne()
+                .get();
 
         assertEquals(firstEntity.identifier(), orderByDescending.identifier());
     }

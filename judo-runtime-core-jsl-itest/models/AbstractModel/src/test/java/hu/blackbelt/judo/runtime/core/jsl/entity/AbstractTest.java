@@ -326,7 +326,7 @@ public class AbstractTest {
 
         assertEquals(Optional.of("iOptionalRelationNameChanged"), hDao.queryRelationIOnHSingle(h).orElseThrow().getNameI());
         assertEquals(Optional.of("iRequiredRelationNameChanged"), hDao.queryRelationIOnHSingleRequired(h).getNameI());
-        hDao.queryRelationIOnHMulti(h).execute().stream().forEach(i -> assertEquals(Optional.of("iMultiRelationNameChanged"), i.getNameI()));
+        hDao.queryRelationIOnHMulti(h).selectList().stream().forEach(i -> assertEquals(Optional.of("iMultiRelationNameChanged"), i.getNameI()));
 
         //delete relations with IDao
 
@@ -347,11 +347,11 @@ public class AbstractTest {
         assertTrue(thrown.getMessage().contains("#relationIOnHSingleRequired"));
 
 
-        List<I> deleteMultiRelation = hDao.queryRelationIOnHMulti(h).execute();
-        iDao.delete(deleteMultiRelation.get(0));
-        assertTrue(iDao.getById(deleteMultiRelation.get(0).identifier()).isEmpty());
+        I deleteMultiRelation = hDao.queryRelationIOnHMulti(h).selectOne().get();
+        iDao.delete(deleteMultiRelation);
+        assertTrue(iDao.getById(deleteMultiRelation.identifier()).isEmpty());
         h = hDao.getById(h.identifier()).orElseThrow();
-        assertEquals(2, hDao.queryRelationIOnHMulti(h).execute().size());
+        assertEquals(2, hDao.queryRelationIOnHMulti(h).selectList().size());
 
         //check if other methods are working well
 
@@ -363,12 +363,12 @@ public class AbstractTest {
 
         //remove
         assertEquals(3, hDao.countRelationIOnHMulti(h));
-        hDao.removeRelationIOnHMulti(h, List.of(hDao.queryRelationIOnHMulti(h).execute().get(0)));
+        hDao.removeRelationIOnHMulti(h, List.of(hDao.queryRelationIOnHMulti(h).selectList().get(0)));
         assertEquals(2, hDao.countRelationIOnHMulti(h));
         h = hDao.getById(h.identifier()).orElseThrow();
 
         assertEquals(2, hDao.countRelationIOnHMulti(h));
-        hDao.removeRelationIOnHMulti(h, List.of(hDao.queryRelationIOnHMulti(h).execute().get(0), hDao.queryRelationIOnHMulti(h).execute().get(1)));
+        hDao.removeRelationIOnHMulti(h, List.of(hDao.queryRelationIOnHMulti(h).selectList().get(0), hDao.queryRelationIOnHMulti(h).selectList().get(1)));
         assertEquals(0, hDao.countRelationIOnHMulti(h));
         h = hDao.getById(h.identifier()).orElseThrow();
 
@@ -518,11 +518,11 @@ public class AbstractTest {
 
         assertEquals(Optional.of("mOptionalRelationNameChanged"), lDao.queryRelationMOnKSingle(l).orElseThrow().getNameM());
         assertEquals(Optional.of("mRequiredRelationNameChanged"), lDao.queryRelationMOnKSingleRequired(l).getNameM());
-        lDao.queryRelationMOnKMulti(l).execute().stream().forEach(i -> assertEquals(Optional.of("mMultiRelationNameChanged"), i.getNameM()));
+        lDao.queryRelationMOnKMulti(l).selectList().stream().forEach(i -> assertEquals(Optional.of("mMultiRelationNameChanged"), i.getNameM()));
 
         assertEquals(Optional.of("mOptionalRelationNameChanged"), kDao.queryRelationMOnKSingle(k).orElseThrow().getNameM());
         assertEquals(Optional.of("mRequiredRelationNameChanged"), kDao.queryRelationMOnKSingleRequired(k).getNameM());
-        kDao.queryRelationMOnKMulti(k).execute().stream().forEach(i -> assertEquals(Optional.of("mMultiRelationNameChanged"), i.getNameM()));
+        kDao.queryRelationMOnKMulti(k).selectList().stream().forEach(i -> assertEquals(Optional.of("mMultiRelationNameChanged"), i.getNameM()));
 
 
         //delete relations with IDao
@@ -542,11 +542,11 @@ public class AbstractTest {
         assertTrue(thrown.getMessage().contains("There are mandatory references that cannot be removed"));
         assertTrue(thrown.getMessage().contains("#relationMOnKSingleRequired"));
 
-        List<M> deleteMultiRelation = kDao.queryRelationMOnKMulti(k).execute();
+        List<M> deleteMultiRelation = kDao.queryRelationMOnKMulti(k).selectList();
         mDao.delete(deleteMultiRelation.get(0));
         assertTrue(mDao.getById(deleteMultiRelation.get(0).identifier()).isEmpty());
-        assertEquals(2, lDao.queryRelationMOnKMulti(l).execute().size());
-        assertEquals(2, kDao.queryRelationMOnKMulti(k).execute().size());
+        assertEquals(2, lDao.queryRelationMOnKMulti(l).selectList().size());
+        assertEquals(2, kDao.queryRelationMOnKMulti(k).selectList().size());
 
         //Check the collection methods
 
@@ -558,12 +558,12 @@ public class AbstractTest {
 
         //remove
         assertEquals(3, kDao.countRelationMOnKMulti(k));
-        kDao.removeRelationMOnKMulti(k, List.of(kDao.queryRelationMOnKMulti(k).execute().get(0)));
+        kDao.removeRelationMOnKMulti(k, List.of(kDao.queryRelationMOnKMulti(k).selectList().get(0)));
         assertEquals(2, kDao.countRelationMOnKMulti(k));
         assertEquals(2, lDao.countRelationMOnKMulti(l));
 
         assertEquals(2, kDao.countRelationMOnKMulti(k));
-        kDao.removeRelationMOnKMulti(k, List.of(kDao.queryRelationMOnKMulti(k).execute().get(0), kDao.queryRelationMOnKMulti(k).execute().get(1)));
+        kDao.removeRelationMOnKMulti(k, List.of(kDao.queryRelationMOnKMulti(k).selectList().get(0), kDao.queryRelationMOnKMulti(k).selectList().get(1)));
         assertEquals(0, kDao.countRelationMOnKMulti(k));
         assertEquals(0, lDao.countRelationMOnKMulti(l));
 
