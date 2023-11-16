@@ -22,18 +22,20 @@ package hu.blackbelt.judo.runtime.core.jsl.entity;
 
 import com.google.inject.Inject;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entitya.EntityA;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entitya.EntityAAttachedRelationsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entitya.EntityADao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entitya.EntityAForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entityc.EntityC;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entityc.EntityCDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entityc.EntityCForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entityd.EntityD;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entityd.EntityDAttachedRelationsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entityd.EntityDDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entityd.EntityDForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entitye.EntityE;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entitye.EntityEAttachedRelationsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entitye.EntityEDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entitye.EntityEForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entityf.EntityF;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entityf.EntityFDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entityf.EntityFForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entityf.EntityFIdentifier;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.AssociationRelationshipsDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
@@ -81,9 +83,9 @@ public class AssociationRelationshipsTest {
     @BeforeEach
     protected void init() {
 
-        entityD = entityDDao.create(EntityD.builder()
+        entityD = entityDDao.create(EntityDForCreate.builder()
                 .build());
-        entityC = entityCDao.create(EntityC.builder()
+        entityC = entityCDao.create(EntityCForCreate.builder()
                 .build());
         entityA = createA(entityC, List.of(entityD));
     }
@@ -152,21 +154,21 @@ public class AssociationRelationshipsTest {
     })
     public void testCreateAddRemoveMultipleRelationsMethodsWithOneElements() {
 
-        EntityF f1 = entityFDao.create(EntityF.builder().build());
-        EntityF f2 = entityFDao.create(EntityF.builder().build());
+        EntityF f1 = entityFDao.create(EntityFForCreate.builder().build());
+        EntityF f2 = entityFDao.create(EntityFForCreate.builder().build());
 
         // create method's with one instance
 
-        EntityE entityE = entityEDao.create(EntityE.builder().build());
+        EntityE entityE = entityEDao.create(EntityEForCreate.builder().build());
 
         assertEquals(0, entityEDao.queryMultipleFOnE(entityE).count());
 
-        EntityF f3 = entityEDao.createMultipleFOnE(entityE, EntityF.builder().build());
+        EntityF f3 = entityEDao.createMultipleFOnE(entityE, EntityFForCreate.builder().build());
 
         assertEquals(1, entityEDao.queryMultipleFOnE(entityE).count());
         assertThat(ListOfMultipleFOnEIds(entityE), hasItems(f3.identifier()));
 
-        EntityF f4 = entityEDao.createMultipleFOnE(entityE, f1);
+        EntityF f4 = entityEDao.createMultipleFOnE(entityE,  EntityFForCreate.builderFrom(f1).build());
 
         assertNotEquals(f4.identifier(), f1.identifier());
         assertEquals(2, entityEDao.queryMultipleFOnE(entityE).count());
@@ -213,7 +215,7 @@ public class AssociationRelationshipsTest {
     public void testRequiredRelationEnforced() {
         ValidationException thrown = assertThrows(
                 ValidationException.class,
-                () -> entityADao.create(EntityA.builder().build())
+                () -> entityADao.create(EntityAForCreate.builder().build())
         );
 
         Assertions.assertEquals(1, thrown.getValidationResults().size());
@@ -236,7 +238,7 @@ public class AssociationRelationshipsTest {
             "REQ-ENT-012"
     })
     public void testTraverse() {
-        EntityD entityD2 = entityDDao.create(EntityD.builder().build());
+        EntityD entityD2 = entityDDao.create(EntityDForCreate.builder().build());
 
         entityCDao.addMultipleDonC(entityC, List.of(entityD2));
 
@@ -293,12 +295,9 @@ public class AssociationRelationshipsTest {
             "REQ-ENT-012"
     })
     public void testOppositeAdd() {
-        EntityF entityF1 = entityFDao.create(EntityF.builder().build());
-        EntityF entityF2 = entityFDao.create(EntityF.builder().build());
-        EntityE entityE = entityEDao.create(EntityE.builder()
-                .build(),
-                EntityEAttachedRelationsForCreate
-                .builder()
+        EntityF entityF1 = entityFDao.create(EntityFForCreate.builder().build());
+        EntityF entityF2 = entityFDao.create(EntityFForCreate.builder().build());
+        EntityE entityE = entityEDao.create(EntityEForCreate.builder()
                 .withMultipleFOnE(List.of(entityF1, entityF2))
                 .build()
                 );
@@ -320,7 +319,7 @@ public class AssociationRelationshipsTest {
         EntityA entityA1 = createA(entityC, List.of());
         EntityA entityA2 = createA(entityC, List.of());
         EntityA entityA3 = createA(entityC, List.of());
-        EntityD entityD1 = entityDDao.create(EntityD.builder().build(), EntityDAttachedRelationsForCreate.builder()
+        EntityD entityD1 = entityDDao.create(EntityDForCreate.builder()
                 .withMultipleAonD(List.of(entityA1, entityA2, entityA3))
                 .build());
 
@@ -329,8 +328,7 @@ public class AssociationRelationshipsTest {
     }
 
     private EntityA createA(EntityC entityC, List<EntityD> entityDs) {
-        return entityADao.create(EntityA.builder().build(),
-                EntityAAttachedRelationsForCreate.builder()
+        return entityADao.create(EntityAForCreate.builder()
                 .withMultipleDonA(entityDs)
                 .withSingleRequiredConA(entityC)
                 .build());

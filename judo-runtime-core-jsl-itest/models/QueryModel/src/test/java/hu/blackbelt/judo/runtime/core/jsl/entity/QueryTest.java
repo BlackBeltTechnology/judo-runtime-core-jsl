@@ -23,6 +23,7 @@ package hu.blackbelt.judo.runtime.core.jsl.entity;
 import com.google.inject.Inject;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.querymodel.querymodel.lead.Lead;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.querymodel.querymodel.lead.LeadDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.querymodel.querymodel.lead.LeadForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.querymodel.querymodel.rootallleads.RootAllLeadsDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.querymodel.querymodel.rootallleadsbetween.RootAllLeadsBetweenDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.querymodel.querymodel.rootallleadsbetween.RootAllLeadsBetweenParameter;
@@ -77,8 +78,8 @@ public class QueryTest {
             "REQ-EXPR-022"
     })
     public void testStaticQuery() {
-        leadDao.create(Lead.builder().withValue(50).build());
-        leadDao.create(Lead.builder().withValue(175).build());
+        leadDao.create(LeadForCreate.builder().withValue(50).build());
+        leadDao.create(LeadForCreate.builder().withValue(175).build());
 
         assertEquals(2, totalNumberOfLeadsDao.selectValue());
         assertEquals(2, rootAllLeadsDao.query().selectList().size());

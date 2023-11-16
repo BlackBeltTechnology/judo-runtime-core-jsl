@@ -3,32 +3,46 @@ package hu.blackbelt.judo.runtime.core.jsl.entity;
 import com.google.inject.Inject;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.compositionentity.CompositionEntity;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.compositionentity.CompositionEntityDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.compositionentity.CompositionEntityForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.compositiontransfer.CompositionTransfer;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.compositiontransfer.CompositionTransferDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.compositiontransfer.CompositionTransferForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.e.E;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.e.EDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.e.EForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.f.F;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.f.FDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.f.FForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.g.G;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.g.GDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.g.GForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.h.H;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.h.HDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.h.HForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.i.I;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.i.IDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.i.IForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.myenum.MyEnum;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.parenta.ParentA;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.parenta.ParentADao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.parenta.ParentAForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.parentabstract.ParentAbstractDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.parentatransfer.ParentATransfer;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.parentatransfer.ParentATransferDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.parentatransfer.ParentATransferForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.parentb.ParentB;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.parentb.ParentBDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.parentb.ParentBForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.parentbtransfer.ParentBTransfer;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.parentbtransfer.ParentBTransferDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.parentbtransfer.ParentBTransferForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.relationentity.RelationEntity;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.relationentity.RelationEntityForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.relationtransfer.RelationTransfer;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.relationtransfer.RelationTransferForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.transfere.TransferE;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.transfere.TransferEDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.inheritance.inheritance.transfere.TransferEForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.InheritanceDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
@@ -143,7 +157,7 @@ public class InheritanceTest {
     void testInheritedEntitiesContainsAllOfParentAttributes() {
 
 
-        E e = eDao.create(E.builder().build());
+        E e = eDao.create(EForCreate.builder().build());
 
         assertTrue(hasMethodWithName("getNameA", e));
         assertTrue(hasMethodWithName("getIdentifierA", e));
@@ -151,7 +165,7 @@ public class InheritanceTest {
         assertTrue(hasMethodWithName("queryRelationEntities", eDao));
 
 
-        F f = fDao.create(F.builder().build());
+        F f = fDao.create(FForCreate.builder().build());
 
         assertTrue(hasMethodWithName("getNameA", f));
         assertTrue(hasMethodWithName("getNameB", f));
@@ -206,7 +220,7 @@ public class InheritanceTest {
     })
     void testMultiLevelInheritanceIsAllowed() {
 
-        G g = gDao.create(G.builder().build());
+        G g = gDao.create(GForCreate.builder().build());
 
         assertTrue(hasMethodWithName("getNameA", g));
         assertTrue(hasMethodWithName("getNameB", g));
@@ -265,7 +279,7 @@ public class InheritanceTest {
 
         ValidationException thrown = assertThrows(
                 ValidationException.class,
-                () -> hDao.create(H.builder().build())
+                () -> hDao.create(HForCreate.builder().build())
         );
 
         assertThat(thrown.getValidationResults(), containsInAnyOrder(
@@ -333,7 +347,7 @@ public class InheritanceTest {
     })
     void testInheritedEntitiesContainsAllOfDefaultValueParentAttributes() {
 
-        I i = iDao.create(I.builder().build());
+        I i = iDao.create(IForCreate.builder().build());
 
         assertEquals(Optional.of(1), i.getIntegerAttr());
         assertEquals(Optional.of(2.34), i.getScaledAttr());
@@ -389,15 +403,15 @@ public class InheritanceTest {
 
     @Test
     void testMultipleQueryByID() {
-        CompositionEntity compositionEntity1 = compositionEntityDao.create(CompositionEntity.builder().withName("C1").build());
-        CompositionEntity compositionEntity2 = compositionEntityDao.create(CompositionEntity.builder().withName("C2").build());
+        CompositionEntity compositionEntity1 = compositionEntityDao.create(CompositionEntityForCreate.builder().withName("C1").build());
+        CompositionEntity compositionEntity2 = compositionEntityDao.create(CompositionEntityForCreate.builder().withName("C2").build());
 
-        ParentA parentA1 = parentADao.create(ParentA.builder().withNameA("A1").withEntity(compositionEntity1).build());
-        ParentA parentA2 = parentADao.create(ParentA.builder().withNameA("A2").withEntity(compositionEntity2).build());
-        ParentA parentA3 = parentADao.create(ParentA.builder().withNameA("A3").build());
-        parentADao.createRelationEntities(parentA1, List.of(RelationEntity.builder().withName("R1").build()
-                                                , RelationEntity.builder().withName("R2").build()));
-        parentADao.createRelationEntities(parentA2, List.of(RelationEntity.builder().withName("R3").build()));
+        ParentA parentA1 = parentADao.create(ParentAForCreate.builder().withNameA("A1").withEntity(CompositionEntityForCreate.builderFrom(compositionEntity1).build()).build());
+        ParentA parentA2 = parentADao.create(ParentAForCreate.builder().withNameA("A2").withEntity(CompositionEntityForCreate.builderFrom(compositionEntity2).build()).build());
+        ParentA parentA3 = parentADao.create(ParentAForCreate.builder().withNameA("A3").build());
+        parentADao.createRelationEntities(parentA1, List.of(RelationEntityForCreate.builder().withName("R1").build()
+                                                , RelationEntityForCreate.builder().withName("R2").build()));
+        parentADao.createRelationEntities(parentA2, List.of(RelationEntityForCreate.builder().withName("R3").build()));
         List<UUID> uuids = new ArrayList<>();
         List<ParentA> parentAS = parentADao.findAllById(uuids);
         assertEquals(0, parentAS.size());
@@ -454,7 +468,7 @@ public class InheritanceTest {
         assertEquals(1, parentAS.stream().filter(p -> p.getNameA().orElseThrow().equals("A3")).count());
 
         // E is a descandent of ParentA
-        E entityE = eDao.create(E.builder().withNameA("AInherited").build());
+        E entityE = eDao.create(EForCreate.builder().withNameA("AInherited").build());
 
         uuids.add((UUID) entityE.identifier().getIdentifier());
 
@@ -467,7 +481,7 @@ public class InheritanceTest {
         assertEquals(1, parentAS.stream().filter(p -> !Optional.empty().equals(p.getNameA()) && p.getNameA().orElseThrow().equals("AInherited")).count());
 
         // ParentB is not a descandent of ParentA
-        ParentB parentB = parentBDao.create(ParentB.builder().build());
+        ParentB parentB = parentBDao.create(ParentBForCreate.builder().build());
 
         uuids.add((UUID) parentB.identifier().getIdentifier());
 
@@ -484,15 +498,15 @@ public class InheritanceTest {
     @Test
     void testMultipleQueryByIDOnTransfer() {
 
-        CompositionTransfer compositionTransfer1 = compositionTransferDao.create(CompositionTransfer.builder().withName("C1").build());
-        CompositionTransfer compositionTransfer2 = compositionTransferDao.create(CompositionTransfer.builder().withName("C2").build());
+        CompositionTransfer compositionTransfer1 = compositionTransferDao.create(CompositionTransferForCreate.builder().withName("C1").build());
+        CompositionTransfer compositionTransfer2 = compositionTransferDao.create(CompositionTransferForCreate.builder().withName("C2").build());
 
-        ParentATransfer parentA1 = parentATransferDao.create(ParentATransfer.builder().withNameA("A1").withEntity(compositionTransfer1).build());
-        ParentATransfer parentA2 = parentATransferDao.create(ParentATransfer.builder().withNameA("A2").withEntity(compositionTransfer2).build());
-        ParentATransfer parentA3 = parentATransferDao.create(ParentATransfer.builder().withNameA("A3").build());
-        parentATransferDao.createRelationTransfers(parentA1, List.of(RelationTransfer.builder().withName("R1").build()
-                , RelationTransfer.builder().withName("R2").build()));
-        parentATransferDao.createRelationTransfers(parentA2, List.of(RelationTransfer.builder().withName("R3").build()));
+        ParentATransfer parentA1 = parentATransferDao.create(ParentATransferForCreate.builder().withNameA("A1").withEntity(CompositionTransferForCreate.builderFrom(compositionTransfer1).build()).build());
+        ParentATransfer parentA2 = parentATransferDao.create(ParentATransferForCreate.builder().withNameA("A2").withEntity(CompositionTransferForCreate.builderFrom(compositionTransfer2).build()).build());
+        ParentATransfer parentA3 = parentATransferDao.create(ParentATransferForCreate.builder().withNameA("A3").build());
+        parentATransferDao.createRelationTransfers(parentA1, List.of(RelationTransferForCreate.builder().withName("R1").build()
+                , RelationTransferForCreate.builder().withName("R2").build()));
+        parentATransferDao.createRelationTransfers(parentA2, List.of(RelationTransferForCreate.builder().withName("R3").build()));
         List<UUID> uuids = new ArrayList<>();
         List<ParentATransfer> parentAS = parentATransferDao.findAllById(uuids);
         assertEquals(0, parentAS.size());
@@ -549,7 +563,7 @@ public class InheritanceTest {
         assertEquals(1, parentAS.stream().filter(p -> p.getNameA().orElseThrow().equals("A3")).count());
 
         // E is a descandent of ParentATransfer
-        TransferE transferE = transferEDao.create(TransferE.builder().withNameA("AInherited").build());
+        TransferE transferE = transferEDao.create(TransferEForCreate.builder().withNameA("AInherited").build());
 
         uuids.add((UUID) transferE.identifier().getIdentifier());
 
@@ -562,7 +576,7 @@ public class InheritanceTest {
         assertEquals(1, parentAS.stream().filter(p -> !Optional.empty().equals(p.getNameA()) && p.getNameA().orElseThrow().equals("AInherited")).count());
 
         // ParentB is not a descandent of ParentATransfer
-        ParentBTransfer parentB = parentBTransferDao.create(ParentBTransfer.builder().build());
+        ParentBTransfer parentB = parentBTransferDao.create(ParentBTransferForCreate.builder().build());
 
         uuids.add((UUID) parentB.identifier().getIdentifier());
 

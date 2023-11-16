@@ -23,12 +23,14 @@ package hu.blackbelt.judo.runtime.core.jsl.entity;
 import com.google.inject.Inject;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.a.A;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.a.ADao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.a.AForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.b.B;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.b.BAttachedRelationsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.b.BDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.b.BForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.b.BIdentifier;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.c.C;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.c.CDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.c.CForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.c.CIdentifier;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.NavigationTestDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
@@ -73,9 +75,9 @@ class NavigationTest {
             "REQ-EXPR-003"
     })
     public void test() {
-        A a = aDao.create(A.builder().build());
-        B b = bDao.create(B.builder().build());
-        C c = cDao.create(C.builder().build());
+        A a = aDao.create(AForCreate.builder().build());
+        B b = bDao.create(BForCreate.builder().build());
+        C c = cDao.create(CForCreate.builder().build());
 
         aDao.addBlist(a, List.of(b));
         bDao.setC(b, c);
@@ -100,20 +102,20 @@ class NavigationTest {
             "REQ-EXPR-022"
     })
     public void testStaticNavigation() {
-        A a = aDao.create(A.builder().build());
+        A a = aDao.create(AForCreate.builder().build());
 
         assertEmptyBAndC(a);
 
-        C c = cDao.create(C.builder().withName("c").build());
+        C c = cDao.create(CForCreate.builder().withName("c").build());
         CIdentifier cId = c.identifier();
-        B b = bDao.create(B.builder().withName("b").build(), BAttachedRelationsForCreate.builder().withC(c).build());
+        B b = bDao.create(BForCreate.builder().withName("b").withC(c).build());
         BIdentifier bId = b.identifier();
 
         assertAttributesAndRelations(aDao.getById(a.identifier()).orElseThrow(), List.of(bId), List.of(cId));
 
-        C c2 = cDao.create(C.builder().withName("c").build());
+        C c2 = cDao.create(CForCreate.builder().withName("c").build());
         CIdentifier c2Id = c2.identifier();
-        B b2 = bDao.create(B.builder().withName("b").build(), BAttachedRelationsForCreate.builder().withC(c).build());
+        B b2 = bDao.create(BForCreate.builder().withName("b").withC(c).build());
         BIdentifier b2Id = b2.identifier();
 
         assertAttributesAndRelations(aDao.getById(a.identifier()).orElseThrow(), List.of(bId, b2Id), List.of(cId, c2Id));

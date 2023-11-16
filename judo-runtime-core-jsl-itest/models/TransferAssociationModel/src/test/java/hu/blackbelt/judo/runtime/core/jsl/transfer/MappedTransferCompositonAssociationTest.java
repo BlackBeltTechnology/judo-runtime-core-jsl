@@ -29,16 +29,18 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercomposito
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonassociation.mappedtransfercompositonassociation.entityc.EntityCDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonassociation.mappedtransfercompositonassociation.entityd.EntityDDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonassociation.mappedtransfercompositonassociation.transfera.TransferA;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonassociation.mappedtransfercompositonassociation.transfera.TransferAAttachedRelationsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonassociation.mappedtransfercompositonassociation.transfera.TransferADao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonassociation.mappedtransfercompositonassociation.transfera.TransferAForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonassociation.mappedtransfercompositonassociation.transferb.TransferB;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonassociation.mappedtransfercompositonassociation.transferb.TransferBDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonassociation.mappedtransfercompositonassociation.transferb.TransferBForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonassociation.mappedtransfercompositonassociation.transferb.TransferBIdentifier;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonassociation.mappedtransfercompositonassociation.transferc.TransferC;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonassociation.mappedtransfercompositonassociation.transferc.TransferCAttachedRelationsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonassociation.mappedtransfercompositonassociation.transferc.TransferCDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonassociation.mappedtransfercompositonassociation.transferc.TransferCForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonassociation.mappedtransfercompositonassociation.transferd.TransferD;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonassociation.mappedtransfercompositonassociation.transferd.TransferDDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonassociation.mappedtransfercompositonassociation.transferd.TransferDForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.MappedTransferCompositonAssociationDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
@@ -53,12 +55,8 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
 public class MappedTransferCompositonAssociationTest {
@@ -120,13 +118,12 @@ public class MappedTransferCompositonAssociationTest {
     })
     public void testSingleCompositionAssociationOnTransfer() {
 
-        TransferB transferB = transferBDao.create(TransferB.builder().withNameB("B1").build());
+        TransferB transferB = transferBDao.create(TransferBForCreate.builder().withNameB("B1").build());
 
         assertEquals(1, transferBDao.query().selectList().size());
 
-        TransferA transferA = transferADao.create(TransferA.builder()
-                .build(),
-                TransferAAttachedRelationsForCreate.builder().withSingleEntityB(transferB).build()
+        TransferA transferA = transferADao.create(TransferAForCreate.builder()
+                .withSingleEntityB(transferB).build()
         );
 
         assertEquals(2,transferBDao.query().selectList().size());
@@ -143,7 +140,7 @@ public class MappedTransferCompositonAssociationTest {
         TransferA referenceForLambda = transferA;
         IllegalArgumentException thrown = assertThrows(
                 IllegalArgumentException.class,
-                () -> transferADao.createSingleEntityB(referenceForLambda, TransferB.builder().withNameB("B2").build())
+                () -> transferADao.createSingleEntityB(referenceForLambda, TransferBForCreate.builder().withNameB("B2").build())
         );
         assertTrue(thrown.getMessage().contains("Upper cardinality violated"));
 
@@ -189,12 +186,11 @@ public class MappedTransferCompositonAssociationTest {
     })
     public void testSingleRequiredCompositionAssociationOnTransfer() {
 
-        TransferD transferD = transferDDao.create(TransferD.builder().withNameD("D1").build());
+        TransferD transferD = transferDDao.create(TransferDForCreate.builder().withNameD("D1").build());
 
         assertEquals(1, transferDDao.query().selectList().size());
 
-        TransferC transferC = transferCDao.create(TransferC.builder().build(),
-                TransferCAttachedRelationsForCreate.builder().withSingleRequiredEntityD(transferD).build()
+        TransferC transferC = transferCDao.create(TransferCForCreate.builder().withSingleRequiredEntityD(transferD).build()
         );
 
         assertEquals(2,transferDDao.query().selectList().size());
@@ -203,7 +199,7 @@ public class MappedTransferCompositonAssociationTest {
         //Try to create without required element
         ValidationException thrown = assertThrows(
                 ValidationException.class,
-                () -> transferCDao.create(TransferC.builder().build())
+                () -> transferCDao.create(TransferCForCreate.builder().build())
         );
 
         Assertions.assertEquals(1, thrown.getValidationResults().size());
@@ -216,7 +212,7 @@ public class MappedTransferCompositonAssociationTest {
 
         IllegalArgumentException thrown2 = assertThrows(
                 IllegalArgumentException.class,
-                () -> transferCDao.createSingleRequiredEntityD(transferC, TransferD.builder().build())
+                () -> transferCDao.createSingleRequiredEntityD(transferC, TransferDForCreate.builder().build())
         );
         assertTrue(thrown2.getMessage().contains("Upper cardinality violated"));
 
@@ -252,14 +248,13 @@ public class MappedTransferCompositonAssociationTest {
     })
     public void testMultiCompositionAssociationOnTransfer() {
 
-        TransferB transferB1 = transferBDao.create(TransferB.builder().withNameB("B1").build());
-        TransferB transferB2 = transferBDao.create(TransferB.builder().withNameB("B2").build());
-        TransferB transferB3 = transferBDao.create(TransferB.builder().withNameB("B3").build());
+        TransferB transferB1 = transferBDao.create(TransferBForCreate.builder().withNameB("B1").build());
+        TransferB transferB2 = transferBDao.create(TransferBForCreate.builder().withNameB("B2").build());
+        TransferB transferB3 = transferBDao.create(TransferBForCreate.builder().withNameB("B3").build());
 
         assertEquals(3, transferBDao.query().selectList().size());
 
-        TransferA transferA = transferADao.create(TransferA.builder().build(),
-                TransferAAttachedRelationsForCreate.builder().withMultiEntityB(List.of(transferB1, transferB2, transferB3)).build()
+        TransferA transferA = transferADao.create(TransferAForCreate.builder().withMultiEntityB(List.of(transferB1, transferB2, transferB3)).build()
         );
 
         assertEquals(6, transferBDao.query().selectList().size());
@@ -297,7 +292,7 @@ public class MappedTransferCompositonAssociationTest {
         assertEquals(3, transferADao.countMultiEntityB(transferA));
 
         // Create new List with elements
-        transferADao.createMultiEntityB(transferA, List.of(TransferB.builder().build()));
+        transferADao.createMultiEntityB(transferA, List.of(TransferBForCreate.builder().build()));
         assertEquals(4, transferADao.countMultiEntityB(transferA));
 
 

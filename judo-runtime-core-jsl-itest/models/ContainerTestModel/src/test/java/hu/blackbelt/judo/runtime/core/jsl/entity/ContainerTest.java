@@ -24,10 +24,13 @@ import com.google.inject.Inject;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.a.A;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.b.B;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.b.BDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.b.BForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.c.C;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.c.CDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.c.CForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.d.D;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.d.DDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.d.DForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.ContainerTestDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
@@ -67,9 +70,9 @@ public class ContainerTest {
             "REQ-SYNT-003"
     })
     public void testContainerFunction() {
-        B b = bDao.create(B.builder()
-                           .withConA(C.builder().build())
-                           .withDonB(D.builder().build())
+        B b = bDao.create(BForCreate.builder()
+                           .withConA(CForCreate.builder().build())
+                           .withDonB(DForCreate.builder().build())
                            .build());
         C c = b.getConA();
 
@@ -80,9 +83,9 @@ public class ContainerTest {
         assertEquals(b.identifier().getIdentifier(), cB.identifier().getIdentifier());
         assertEquals(b.identifier().getIdentifier(), cB1.identifier().getIdentifier());
 
-        B b1 = bDao.create(B.builder()
-                            .withConA(C.builder().build())
-                            .withDonB(D.builder().build())
+        B b1 = bDao.create(BForCreate.builder()
+                            .withConA(CForCreate.builder().build())
+                            .withDonB(DForCreate.builder().build())
                             .build());
         D d = b1.getDonB();
         A dA = dDao.queryContainerA(d).orElseThrow();

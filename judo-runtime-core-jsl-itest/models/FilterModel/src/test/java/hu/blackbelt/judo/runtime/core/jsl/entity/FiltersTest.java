@@ -23,24 +23,28 @@ package hu.blackbelt.judo.runtime.core.jsl.entity;
 import com.google.inject.Inject;
 import hu.blackbelt.judo.dispatcher.api.FileType;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.car.Car;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.car.CarAttachedRelationsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.car.CarDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.car.CarForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.city.City;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.city.CityAttachedRelationsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.city.CityDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.city.CityForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.continent.Continent;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.country.Country;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.country.CountryDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.country.CountryForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.filterentity.FilterEntity;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.filterentity.FilterEntityDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.filterentity.FilterEntityForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.myentitywithoptionalfields.MyEntityWithOptionalFields;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.myentitywithoptionalfields.MyEntityWithOptionalFieldsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.myentitywithoptionalfields.MyEntityWithOptionalFieldsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.myenum.MyEnum;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.person.Person;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.person.PersonAttachedRelationsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.person.PersonDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.person.PersonForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.tester.Tester;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.tester.TesterDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.tester.TesterForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.FilterDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
@@ -118,7 +122,7 @@ public class FiltersTest {
     @BeforeEach
     protected void init() {
 
-        entity1 = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
+        entity1 = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFieldsForCreate.builder()
                 .withIntegerAttr(INTEGER_1)
                 .withScaledAttr(SCALED_1)
                 .withStringAttr(STRING_1)
@@ -131,7 +135,7 @@ public class FiltersTest {
                 .withEnumAttr(ENUM_1)
                 .build());
 
-        entity2 = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
+        entity2 = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFieldsForCreate.builder()
                 .withIntegerAttr(INTEGER_2)
                 .withScaledAttr(SCALED_2)
                 .withStringAttr(STRING_2)
@@ -144,10 +148,10 @@ public class FiltersTest {
                 .withEnumAttr(ENUM_2)
                 .build());
 
-        entity3 = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
+        entity3 = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFieldsForCreate.builder()
                 .build());
 
-        filterEntity = filterEntityDao.create(FilterEntity.builder().build());
+        filterEntity = filterEntityDao.create(FilterEntityForCreate.builder().build());
     }
 
     @Test
@@ -1778,15 +1782,15 @@ public class FiltersTest {
     })
     void testNavigationOnFilter() {
 
-        Country country1 = countryDao.create(Country.builder().withName("Hungary").withContinent(Continent.Europe).build());
-        City city1 = cityDao.create(City.builder().withName("Budapest").build(), CityAttachedRelationsForCreate.builder().withCountry(country1).build());
-        City city2 = cityDao.create(City.builder().withName("Debrecen").build(), CityAttachedRelationsForCreate.builder().withCountry(country1).build());
-        Person p1 = personDao.create(Person.builder().withName("Gibpsz Jakab").build(), PersonAttachedRelationsForCreate.builder().withCity(city1).build());
-        Person p2 = personDao.create(Person.builder().withName("Teszt Elek").build(), PersonAttachedRelationsForCreate.builder().withCity(city2).build());
-        Car c1 = carDao.create(Car.builder().withLicensePlate("ABC-123").build(), CarAttachedRelationsForCreate.builder().withOwner(p1).build());
-        Car c2 = carDao.create(Car.builder().withLicensePlate("ABC-124").build(), CarAttachedRelationsForCreate.builder().withOwner(p2).build());
+        Country country1 = countryDao.create(CountryForCreate.builder().withName("Hungary").withContinent(Continent.Europe).build());
+        City city1 = cityDao.create(CityForCreate.builder().withName("Budapest").withCountry(country1).build());
+        City city2 = cityDao.create(CityForCreate.builder().withName("Debrecen").withCountry(country1).build());
+        Person p1 = personDao.create(PersonForCreate.builder().withName("Gibpsz Jakab").withCity(city1).build());
+        Person p2 = personDao.create(PersonForCreate.builder().withName("Teszt Elek").withCity(city2).build());
+        Car c1 = carDao.create(CarForCreate.builder().withLicensePlate("ABC-123").withOwner(p1).build());
+        Car c2 = carDao.create(CarForCreate.builder().withLicensePlate("ABC-124").withOwner(p2).build());
 
-        Tester tester = testerDao.create(Tester.builder().build());
+        Tester tester = testerDao.create(TesterForCreate.builder().build());
 
         assertEquals(1, testerDao.countCarsOfTesztElek(tester));
         assertThat(testerDao.queryCarsOfTesztElek(tester).selectList(), containsInAnyOrder(c2));

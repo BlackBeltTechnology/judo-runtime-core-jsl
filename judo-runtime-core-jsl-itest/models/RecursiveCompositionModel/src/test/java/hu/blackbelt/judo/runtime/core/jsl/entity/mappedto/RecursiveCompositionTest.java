@@ -35,12 +35,16 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.re
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.entityy.EntityYIdentifier;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.transferato.TransferATO;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.transferato.TransferATODao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.transferato.TransferATOForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.transferbto.TransferBTO;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.transferbto.TransferBTODao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.transferbto.TransferBTOForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.transferxto.TransferXTO;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.transferxto.TransferXTODao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.transferxto.TransferXTOForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.transferyto.TransferYTO;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.transferyto.TransferYTODao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.transferyto.TransferYTOForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.RecursiveCompositionDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
@@ -100,28 +104,28 @@ public class RecursiveCompositionTest {
     })
     void testRecursiveCompositionOnMappedTo() {
 
-        TransferXTO x1 = transferXTODao.create(TransferXTO.builder().withName("x1")
-                .withX(TransferXTO.builder().withName("x2")
-                        .withX(TransferXTO.builder().withName("x5").build())
-                        .withXs(List.of(TransferXTO.builder().withName("x3").build(), TransferXTO.builder().withName("x4")
-                                .withY(TransferYTO.builder().withName("y4").build()).build()))
+        TransferXTO x1 = transferXTODao.create(TransferXTOForCreate.builder().withName("x1")
+                .withX(TransferXTOForCreate.builder().withName("x2")
+                        .withX(TransferXTOForCreate.builder().withName("x5").build())
+                        .withXs(List.of(TransferXTOForCreate.builder().withName("x3").build(), TransferXTOForCreate.builder().withName("x4")
+                                .withY(TransferYTOForCreate.builder().withName("y4").build()).build()))
                         .build())
-                .withXs(List.of(TransferXTO.builder().withName("x6")
-                        .withX(TransferXTO.builder().withName("x7")
-                                .withXs(List.of(TransferXTO.builder().withName("x8").build(), TransferXTO.builder().withName("x9")
-                                        .withYs(List.of(TransferYTO.builder().withName("y5")
-                                                .withYx(TransferXTO.builder().withName("x10")
-                                                        .withYs(List.of(TransferYTO.builder().withName("y7").build(), TransferYTO.builder().withName("y8")
-                                                                .withYx(TransferXTO.builder().withName("x13").build()).build()))
-                                                        .build()).build(), TransferYTO.builder().withName("y6")
-                                                .withYxs(List.of(TransferXTO.builder().withName("x11").build(), TransferXTO.builder().withName("x12")
-                                                        .withY(TransferYTO.builder().withName("y9").build()).build()))
+                .withXs(List.of(TransferXTOForCreate.builder().withName("x6")
+                        .withX(TransferXTOForCreate.builder().withName("x7")
+                                .withXs(List.of(TransferXTOForCreate.builder().withName("x8").build(), TransferXTOForCreate.builder().withName("x9")
+                                        .withYs(List.of(TransferYTOForCreate.builder().withName("y5")
+                                                .withYx(TransferXTOForCreate.builder().withName("x10")
+                                                        .withYs(List.of(TransferYTOForCreate.builder().withName("y7").build(), TransferYTOForCreate.builder().withName("y8")
+                                                                .withYx(TransferXTOForCreate.builder().withName("x13").build()).build()))
+                                                        .build()).build(), TransferYTOForCreate.builder().withName("y6")
+                                                .withYxs(List.of(TransferXTOForCreate.builder().withName("x11").build(), TransferXTOForCreate.builder().withName("x12")
+                                                        .withY(TransferYTOForCreate.builder().withName("y9").build()).build()))
                                                 .build()))
                                         .build()))
                                 .build())
                         .build()))
-                .withY(TransferYTO.builder().withName("y1").build())
-                .withYs(List.of(TransferYTO.builder().withName("y2").build(), TransferYTO.builder().withName("y3").build())).build());
+                .withY(TransferYTOForCreate.builder().withName("y1").build())
+                .withYs(List.of(TransferYTOForCreate.builder().withName("y2").build(), TransferYTOForCreate.builder().withName("y3").build())).build());
 
         assertEquals("x1", x1.getName().orElseThrow());
         assertEquals("x2", x1.getX().orElseThrow().getName().orElseThrow());
@@ -297,13 +301,13 @@ public class RecursiveCompositionTest {
     })
     void testRecursiveCompositionOnInheritedEntity() {
 
-        TransferBTO b1 = transferBTODao.create(TransferBTO.builder().withName("b1")
-                .withBa(TransferATO.builder().withName("a1")
-                        .withA(TransferATO.builder().withName("a4").build())
-                        .withAs(List.of(TransferATO.builder().withName("a5").build(), TransferATO.builder().withName("a6").build())).build())
-                .withBas(List.of(TransferATO.builder().withName("a2")
-                        .withA(TransferATO.builder().withName("a5").build()).build(), TransferATO.builder().withName("a3")
-                        .withAs(List.of(TransferATO.builder().withName("a5").build(), TransferATO.builder().withName("a6").build())).build()))
+        TransferBTO b1 = transferBTODao.create(TransferBTOForCreate.builder().withName("b1")
+                .withBa(TransferATOForCreate.builder().withName("a1")
+                        .withA(TransferATOForCreate.builder().withName("a4").build())
+                        .withAs(List.of(TransferATOForCreate.builder().withName("a5").build(), TransferATOForCreate.builder().withName("a6").build())).build())
+                .withBas(List.of(TransferATOForCreate.builder().withName("a2")
+                        .withA(TransferATOForCreate.builder().withName("a5").build()).build(), TransferATOForCreate.builder().withName("a3")
+                        .withAs(List.of(TransferATOForCreate.builder().withName("a5").build(), TransferATOForCreate.builder().withName("a6").build())).build()))
                 .build());
 
         assertEquals("b1", b1.getName().orElseThrow());
@@ -380,10 +384,10 @@ public class RecursiveCompositionTest {
     })
     void testForMultiLevelSingleComposition() {
 
-        TransferATO a = transferATODao.create(TransferATO.builder().withName("level1")
-                .withA(TransferATO.builder().withName("level2")
-                        .withA(TransferATO.builder().withName("level3")
-                                .withA(TransferATO.builder().withName("level4").build()).build()
+        TransferATO a = transferATODao.create(TransferATOForCreate.builder().withName("level1")
+                .withA(TransferATOForCreate.builder().withName("level2")
+                        .withA(TransferATOForCreate.builder().withName("level3")
+                                .withA(TransferATOForCreate.builder().withName("level4").build()).build()
                         ).build()
                 ).build()
         );
@@ -462,15 +466,15 @@ public class RecursiveCompositionTest {
     })
     void testForInheritedMultiLevelSingleComposition() {
 
-        TransferBTO b = transferBTODao.create(TransferBTO.builder().withName("level1")
-                .withA(TransferATO.builder().withName("level2")
-                        .withA(TransferATO.builder().withName("level3")
-                                .withA(TransferATO.builder().withName("level4").build()).build()
+        TransferBTO b = transferBTODao.create(TransferBTOForCreate.builder().withName("level1")
+                .withA(TransferATOForCreate.builder().withName("level2")
+                        .withA(TransferATOForCreate.builder().withName("level3")
+                                .withA(TransferATOForCreate.builder().withName("level4").build()).build()
                         ).build()
                 )
-                .withBa(TransferATO.builder().withName("level2")
-                        .withA(TransferATO.builder().withName("level3")
-                                .withA(TransferATO.builder().withName("level4").build()).build()
+                .withBa(TransferATOForCreate.builder().withName("level2")
+                        .withA(TransferATOForCreate.builder().withName("level3")
+                                .withA(TransferATOForCreate.builder().withName("level4").build()).build()
                         ).build()
                 )
                 .build()

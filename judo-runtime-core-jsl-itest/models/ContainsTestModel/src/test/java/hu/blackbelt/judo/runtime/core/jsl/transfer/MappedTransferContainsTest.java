@@ -26,10 +26,11 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containsmodel.containsm
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containsmodel.containsmodel.a.AIdentifier;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containsmodel.containsmodel.b.BDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containsmodel.containsmodel.ta.TA;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containsmodel.containsmodel.ta.TAAttachedRelationsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containsmodel.containsmodel.ta.TADao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containsmodel.containsmodel.ta.TAForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containsmodel.containsmodel.tb.TB;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containsmodel.containsmodel.tb.TBDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containsmodel.containsmodel.tb.TBForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.ContainsModelDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
@@ -86,14 +87,13 @@ public class MappedTransferContainsTest {
             "REQ-SRV-002"
     })
     public void testContainsOnMappedTransfer() {
-        TA ta = taDao.create(TA.builder().build());
+        TA ta = taDao.create(TAForCreate.builder().build());
         assertFalse(ta.getContainsTest().orElseThrow());
         assertFalse(ta.getContainsTest1().orElseThrow());
 
-        TB tb = tbDao.create(TB.builder().withName("test").build());
-        TB tb1 = tbDao.create(TB.builder().withName("not test").build());
-        TA ta1 = taDao.create(TA.builder()
-                            .build(), TAAttachedRelationsForCreate.builder()
+        TB tb = tbDao.create(TBForCreate.builder().withName("test").build());
+        TB tb1 = tbDao.create(TBForCreate.builder().withName("not test").build());
+        TA ta1 = taDao.create(TAForCreate.builder()
                             .withB(tb)
                             .withBs(List.of(tb, tb1))
                             .build());
