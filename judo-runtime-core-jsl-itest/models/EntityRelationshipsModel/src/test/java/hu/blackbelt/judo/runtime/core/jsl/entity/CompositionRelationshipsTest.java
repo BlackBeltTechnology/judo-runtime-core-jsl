@@ -557,6 +557,85 @@ public class CompositionRelationshipsTest {
     }
 
     @Test
+    void testAddMethodOnBuilder() {
+        EntityC c1 = entityCDao.create(EntityC.builder().withStringC("C1").build());
+        EntityC c2 = entityCDao.create(EntityC.builder().withStringC("C2").build());
+        EntityC c3 = entityCDao.create(EntityC.builder().withStringC("C3").build());
+        EntityC c4 = entityCDao.create(EntityC.builder().withStringC("C4").build());
+
+        EntityA entityA = entityADao.create(EntityA.builder()
+                .withSingleRequiredConA(EntityC.builder().withStringC("C1").build())
+                .addToCollectionConA(c2)
+                .build());
+
+        assertEquals(1, entityA.getCollectionConA().size());
+        assertEquals(1, entityA.getCollectionConA().stream().filter(entityC -> entityC.getStringC().orElseThrow().equals("C2")).count());
+
+        entityA = entityADao.create(EntityA.builder()
+                .withSingleRequiredConA(EntityC.builder().withStringC("C1").build())
+                .addToCollectionConA(c2, c3)
+                .build());
+
+        assertEquals(2, entityA.getCollectionConA().size());
+        assertEquals(1, entityA.getCollectionConA().stream().filter(entityC -> entityC.getStringC().orElseThrow().equals("C2")).count());
+        assertEquals(1, entityA.getCollectionConA().stream().filter(entityC -> entityC.getStringC().orElseThrow().equals("C3")).count());
+
+        entityA = entityADao.create(EntityA.builder()
+                .withSingleRequiredConA(EntityC.builder().withStringC("C1").build())
+                .addToCollectionConA(c2, c2)
+                .build());
+
+        assertEquals(2, entityA.getCollectionConA().size());
+        assertEquals(2, entityA.getCollectionConA().stream().filter(entityC -> entityC.getStringC().orElseThrow().equals("C2")).count());
+
+        entityA = entityADao.create(EntityA.builder()
+                .withSingleRequiredConA(EntityC.builder().withStringC("C1").build())
+                .addToCollectionConA(c2)
+                .addToCollectionConA(c2)
+                .build());
+
+        assertEquals(2, entityA.getCollectionConA().size());
+        assertEquals(2, entityA.getCollectionConA().stream().filter(entityC -> entityC.getStringC().orElseThrow().equals("C2")).count());
+
+        entityA = entityADao.create(EntityA.builder()
+                .withSingleRequiredConA(EntityC.builder().withStringC("C1").build())
+                .addToCollectionConA(c2)
+                .addToCollectionConA(c3)
+                .addToCollectionConA(c4)
+                .build());
+
+        assertEquals(3, entityA.getCollectionConA().size());
+        assertEquals(1, entityA.getCollectionConA().stream().filter(entityC -> entityC.getStringC().orElseThrow().equals("C2")).count());
+        assertEquals(1, entityA.getCollectionConA().stream().filter(entityC -> entityC.getStringC().orElseThrow().equals("C3")).count());
+        assertEquals(1, entityA.getCollectionConA().stream().filter(entityC -> entityC.getStringC().orElseThrow().equals("C4")).count());
+
+        entityA = entityADao.create(EntityA.builder()
+                .withSingleRequiredConA(EntityC.builder().withStringC("C1").build())
+                .withCollectionConA(List.of(c1, c2))
+                .addToCollectionConA(c3)
+                .addToCollectionConA(c4)
+                .build());
+
+        assertEquals(4, entityA.getCollectionConA().size());
+        assertEquals(1, entityA.getCollectionConA().stream().filter(entityC -> entityC.getStringC().orElseThrow().equals("C1")).count());
+        assertEquals(1, entityA.getCollectionConA().stream().filter(entityC -> entityC.getStringC().orElseThrow().equals("C2")).count());
+        assertEquals(1, entityA.getCollectionConA().stream().filter(entityC -> entityC.getStringC().orElseThrow().equals("C3")).count());
+        assertEquals(1, entityA.getCollectionConA().stream().filter(entityC -> entityC.getStringC().orElseThrow().equals("C4")).count());
+
+        entityA = entityADao.create(EntityA.builder()
+                .withSingleRequiredConA(EntityC.builder().withStringC("C1").build())
+                .withCollectionConA(List.of(c1, c2))
+                .addToCollectionConA(c3, c4)
+                .build());
+
+        assertEquals(4, entityA.getCollectionConA().size());
+        assertEquals(1, entityA.getCollectionConA().stream().filter(entityC -> entityC.getStringC().orElseThrow().equals("C1")).count());
+        assertEquals(1, entityA.getCollectionConA().stream().filter(entityC -> entityC.getStringC().orElseThrow().equals("C2")).count());
+        assertEquals(1, entityA.getCollectionConA().stream().filter(entityC -> entityC.getStringC().orElseThrow().equals("C3")).count());
+        assertEquals(1, entityA.getCollectionConA().stream().filter(entityC -> entityC.getStringC().orElseThrow().equals("C4")).count());
+    }
+
+    @Test
     void testAddAndRemoveOnCollections() {
         EntityC c2 = entityCDao.create(EntityC.builder().withStringC("C2").build());
         EntityC c3 = entityCDao.create(EntityC.builder().withStringC("C3").build());
