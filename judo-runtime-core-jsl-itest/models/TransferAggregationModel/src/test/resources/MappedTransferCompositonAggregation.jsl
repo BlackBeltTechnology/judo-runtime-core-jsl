@@ -8,10 +8,8 @@ entity Composition {
 }
 
 transfer TransferComposition (Composition comp) {
-	@Embedded
-    relation TransferA transferA <=> comp.entityA;
-    @Embedded
-    relation TransferA[] transferAs <=> comp.entityAs;
+    relation TransferA transferA <= comp.entityA eager:true;
+    relation TransferA[] transferAs <= comp.entityAs eager:true;
 }
 
 // not required Single and Multi
@@ -28,6 +26,7 @@ entity EntityB {
 transfer TransferA (EntityA a) {
     relation TransferB singleEntityB <= a.singleEntityB eager:true;
     relation TransferB[] multiEntityB <= a.multiEntityB eager:true;
+    field String stringA <= a.stringA input:true;
 }
 
 transfer TransferB (EntityB b) {
