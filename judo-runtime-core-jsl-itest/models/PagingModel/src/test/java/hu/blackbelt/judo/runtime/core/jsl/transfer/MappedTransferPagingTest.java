@@ -24,14 +24,9 @@ import com.google.inject.Inject;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.paging.paging.transferitem.TransferItem;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.paging.paging.transferitem.TransferItemAttribute;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.paging.paging.transferitem.TransferItemDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.paging.paging.transferlist.TransferList;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.paging.paging.transferlist.TransferListAttribute;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.paging.paging.transferlist.TransferListDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.paging.paging.transferlist.TransferListIdentifier;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.paging.paging.transferlogentry.TransferLogEntry;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.paging.paging.transferlogentry.TransferLogEntryAttribute;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.paging.paging.transferlogentry.TransferLogEntryDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.paging.paging.transferlogentry.TransferLogEntryIdentifier;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.paging.paging.transferitem.TransferItemForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.paging.paging.transferlist.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.paging.paging.transferlogentry.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.PagingDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
@@ -104,7 +99,7 @@ public class MappedTransferPagingTest {
 
         Map<Character, TransferListIdentifier> listIds = new TreeMap<>();
         for (char ch = 'A'; ch <= 'Z'; ch++) {
-            final List<TransferItem> items = new ArrayList<>();
+            final List<TransferItemForCreate> items = new ArrayList<>();
             for (int i = 0; i < 'Z' - ch + 1; i++) {
                 final String topic;
                 if (ch < 'E' && i < 3) {
@@ -112,9 +107,9 @@ public class MappedTransferPagingTest {
                 } else {
                     topic = null;
                 }
-                items.add(TransferItem.builder().withNumber(i + 1).withTopic(topic).build());
+                items.add(TransferItemForCreate.builder().withNumber(i + 1).withTopic(topic).build());
             }
-            TransferList list = transferListDao.create(TransferList.builder().withName("List_" + ch).withItems(items).build());
+            TransferList list = transferListDao.create(TransferListForCreate.builder().withName("List_" + ch).withItems(items).build());
 
             listIds.put(ch, list.identifier());
         }
@@ -268,8 +263,8 @@ public class MappedTransferPagingTest {
     })
     public void testLimitAndOffsetVariationsOnTransfer() {
 
-        TransferItem ent1 = transferItemDao.create(TransferItem.builder().withNumber(2).build());
-        TransferItem ent2 = transferItemDao.create(TransferItem.builder().withNumber(1).build());
+        TransferItem ent1 = transferItemDao.create(TransferItemForCreate.builder().withNumber(2).build());
+        TransferItem ent2 = transferItemDao.create(TransferItemForCreate.builder().withNumber(1).build());
 
         List<TransferItem> list = transferItemDao
                 .query()
@@ -393,14 +388,14 @@ public class MappedTransferPagingTest {
     })
     public void testPaginationByTimestampOnTransfer() {
 
-        TransferLogEntry entry1 = transferLogEntryDao.create(TransferLogEntry.builder().withTimestamp(LocalDateTime.of(LocalDate.of( 2021, 7, 29), LocalTime.of(15, 7, 1, 111_000_000))).withMessage("Message1").build());
-        TransferLogEntry entry2 = transferLogEntryDao.create(TransferLogEntry.builder().withTimestamp(LocalDateTime.of(LocalDate.of( 2021, 7, 29), LocalTime.of(15, 7, 1, 110_000_000))).withMessage("Message2").build());
-        TransferLogEntry entry3 = transferLogEntryDao.create(TransferLogEntry.builder().withTimestamp(LocalDateTime.of(LocalDate.of( 2021, 7, 29), LocalTime.of(15, 7, 1, 100_000_000))).withMessage("Message3").build());
-        TransferLogEntry entry4 = transferLogEntryDao.create(TransferLogEntry.builder().withTimestamp(LocalDateTime.of(LocalDate.of( 2021, 7, 29), LocalTime.of(15, 7, 1, 0))).withMessage("Message4").build());
-        TransferLogEntry entry5 = transferLogEntryDao.create(TransferLogEntry.builder().withTimestamp(LocalDateTime.of(LocalDate.of( 2021, 7, 29), LocalTime.of(15, 7, 1, 111_000_000))).withMessage("Message5").build());
-        TransferLogEntry entry6 = transferLogEntryDao.create(TransferLogEntry.builder().withTimestamp(LocalDateTime.of(LocalDate.of( 2021, 7, 29), LocalTime.of(15, 7, 1, 110_000_000))).withMessage("Message6").build());
-        TransferLogEntry entry7 = transferLogEntryDao.create(TransferLogEntry.builder().withTimestamp(LocalDateTime.of(LocalDate.of( 2021, 7, 29), LocalTime.of(15, 7, 1, 100_000_000))).withMessage("Message7").build());
-        TransferLogEntry entry8 = transferLogEntryDao.create(TransferLogEntry.builder().withTimestamp(LocalDateTime.of(LocalDate.of( 2021, 7, 29), LocalTime.of(15, 7, 1, 0))).withMessage("Message8").build());
+        TransferLogEntry entry1 = transferLogEntryDao.create(TransferLogEntryForCreate.builder().withTimestamp(LocalDateTime.of(LocalDate.of( 2021, 7, 29), LocalTime.of(15, 7, 1, 111_000_000))).withMessage("Message1").build());
+        TransferLogEntry entry2 = transferLogEntryDao.create(TransferLogEntryForCreate.builder().withTimestamp(LocalDateTime.of(LocalDate.of( 2021, 7, 29), LocalTime.of(15, 7, 1, 110_000_000))).withMessage("Message2").build());
+        TransferLogEntry entry3 = transferLogEntryDao.create(TransferLogEntryForCreate.builder().withTimestamp(LocalDateTime.of(LocalDate.of( 2021, 7, 29), LocalTime.of(15, 7, 1, 100_000_000))).withMessage("Message3").build());
+        TransferLogEntry entry4 = transferLogEntryDao.create(TransferLogEntryForCreate.builder().withTimestamp(LocalDateTime.of(LocalDate.of( 2021, 7, 29), LocalTime.of(15, 7, 1, 0))).withMessage("Message4").build());
+        TransferLogEntry entry5 = transferLogEntryDao.create(TransferLogEntryForCreate.builder().withTimestamp(LocalDateTime.of(LocalDate.of( 2021, 7, 29), LocalTime.of(15, 7, 1, 111_000_000))).withMessage("Message5").build());
+        TransferLogEntry entry6 = transferLogEntryDao.create(TransferLogEntryForCreate.builder().withTimestamp(LocalDateTime.of(LocalDate.of( 2021, 7, 29), LocalTime.of(15, 7, 1, 110_000_000))).withMessage("Message6").build());
+        TransferLogEntry entry7 = transferLogEntryDao.create(TransferLogEntryForCreate.builder().withTimestamp(LocalDateTime.of(LocalDate.of( 2021, 7, 29), LocalTime.of(15, 7, 1, 100_000_000))).withMessage("Message7").build());
+        TransferLogEntry entry8 = transferLogEntryDao.create(TransferLogEntryForCreate.builder().withTimestamp(LocalDateTime.of(LocalDate.of( 2021, 7, 29), LocalTime.of(15, 7, 1, 0))).withMessage("Message8").build());
 
         List<TransferLogEntryIdentifier> logEntries48 = transferLogEntryDao.query().orderBy(TransferLogEntryAttribute.TIMESTAMP).selectList(2).stream().map(TransferLogEntry::identifier).toList();
 

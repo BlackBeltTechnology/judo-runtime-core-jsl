@@ -3,6 +3,7 @@ package hu.blackbelt.judo.runtime.core.jsl.transfer;
 import com.google.inject.Inject;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferoptionalprimitives.TransferOptionalPrimitives;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferoptionalprimitives.TransferOptionalPrimitivesDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferoptionalprimitives.TransferOptionalPrimitivesForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.MappedTransferPrimitivesDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
@@ -62,7 +63,7 @@ public class TransferPrecisionTest {
     public void testPrecisionValidatorFailsWithPrecisionOverflow() {
         ValidationException thrown = assertThrows(
                 ValidationException.class,
-                () -> transferOptionalPrimitivesDao.create(TransferOptionalPrimitives.builder()
+                () -> transferOptionalPrimitivesDao.create(TransferOptionalPrimitivesForCreate.builder()
                         .withIntegerAttr(1234567890)
                         .build()));
 
@@ -106,7 +107,7 @@ public class TransferPrecisionTest {
     public void testScaleValidatorFailsWithScaleOverflow() {
         ValidationException thrown = assertThrows(
                 ValidationException.class,
-                () -> transferOptionalPrimitivesDao.create(TransferOptionalPrimitives.builder()
+                () -> transferOptionalPrimitivesDao.create(TransferOptionalPrimitivesForCreate.builder()
                         .withScaledAttr(123456.123)
                         .build()));
 
@@ -151,7 +152,7 @@ public class TransferPrecisionTest {
     public void testValidatePrecisionAndScaleOverflow() {
         ValidationException thrown = assertThrows(
                 ValidationException.class,
-                () -> transferOptionalPrimitivesDao.create(TransferOptionalPrimitives.builder()
+                () -> transferOptionalPrimitivesDao.create(TransferOptionalPrimitivesForCreate.builder()
                         .withScaledAttr(1234567.123)
                         .build()));
 
@@ -199,7 +200,7 @@ public class TransferPrecisionTest {
             "REQ-SRV-002",
     })
     public void testScaleValidatorPassesForValueWithoutScale() {
-        TransferOptionalPrimitives created = transferOptionalPrimitivesDao.create(TransferOptionalPrimitives.builder().withScaledAttr(123456789.0).build());
+        TransferOptionalPrimitives created = transferOptionalPrimitivesDao.create(TransferOptionalPrimitivesForCreate.builder().withScaledAttr(123456789.0).build());
 
         assertThat(created.getScaledAttr(), equalTo(Optional.of(123456789.0)));
 

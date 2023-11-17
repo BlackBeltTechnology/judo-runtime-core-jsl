@@ -28,12 +28,14 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigati
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.c.CDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.ta.TA;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.ta.TADao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.ta.TAForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.tb.TB;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.tb.TBAttachedRelationsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.tb.TBDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.tb.TBForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.tb.TBIdentifier;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.tc.TC;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.tc.TCDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.tc.TCForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.tc.TCIdentifier;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.NavigationTestDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
@@ -92,9 +94,9 @@ class MappedTransferNavigationTest {
             "REQ-SRV-002"
     })
     public void testDerivedNavigationOnTransfer() {
-        TA ta = taDao.create(TA.builder().build());
-        TB tb = tbDao.create(TB.builder().build());
-        TC tc = tcDao.create(TC.builder().build());
+        TA ta = taDao.create(TAForCreate.builder().build());
+        TB tb = tbDao.create(TBForCreate.builder().build());
+        TC tc = tcDao.create(TCForCreate.builder().build());
 
         taDao.addBlist(ta, List.of(tb));
         tbDao.setC(tb, tc);
@@ -125,20 +127,20 @@ class MappedTransferNavigationTest {
             "REQ-SRV-002"
     })
     public void testStaticNavigationOnTransfer() {
-        TA ta = taDao.create(TA.builder().build());
+        TA ta = taDao.create(TAForCreate.builder().build());
 
         assertEmptyBAndC(ta);
 
-        TC tc = tcDao.create(TC.builder().withName("c").build());
+        TC tc = tcDao.create(TCForCreate.builder().withName("c").build());
         TCIdentifier tcId = tc.identifier();
-        TB tb = tbDao.create(TB.builder().withName("b").build(), TBAttachedRelationsForCreate.builder().withC(tc).build());
+        TB tb = tbDao.create(TBForCreate.builder().withName("b").withC(tc).build());
         TBIdentifier tbId = tb.identifier();
 
         assertAttributesAndRelations(taDao.getById(ta.identifier()).orElseThrow(), List.of(tbId), List.of(tcId));
 
-        TC tc2 = tcDao.create(TC.builder().withName("c").build());
+        TC tc2 = tcDao.create(TCForCreate.builder().withName("c").build());
         TCIdentifier tc2Id = tc2.identifier();
-        TB tb2 = tbDao.create(TB.builder().withName("b").build(), TBAttachedRelationsForCreate.builder().withC(tc).build());
+        TB tb2 = tbDao.create(TBForCreate.builder().withName("b").withC(tc).build());
         TBIdentifier b2Id = tb2.identifier();
 
         assertAttributesAndRelations(taDao.getById(ta.identifier()).orElseThrow(), List.of(tbId, b2Id), List.of(tcId, tc2Id));
