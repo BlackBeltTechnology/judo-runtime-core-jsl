@@ -23,10 +23,11 @@ package hu.blackbelt.judo.runtime.core.jsl;
 import com.google.inject.Inject;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transactionmanagementmodel.transactionmanagementmodel.tester.Tester;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transactionmanagementmodel.transactionmanagementmodel.tester.TesterDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transactionmanagementmodel.transactionmanagementmodel.tester.TesterForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.TransactionManagementModelDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
-import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeFixture;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeFixture;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -51,7 +52,7 @@ public class TransactionManagementTest {
     void testManualTransactionManagementCommitAndRollback(JudoRuntimeFixture runtime) {
         // beginTransaction(); in BeforeEach
 
-        Tester tester = testerDao.create(Tester.builder().withName("TEST-A").build());
+        Tester tester = testerDao.create(TesterForCreate.builder().withName("TEST-A").build());
 
         runtime.commitTransaction();
         runtime.beginTransaction();

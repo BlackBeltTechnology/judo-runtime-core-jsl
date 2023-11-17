@@ -21,20 +21,24 @@ package hu.blackbelt.judo.runtime.core.jsl.entity;
  */
 
 import com.google.inject.Inject;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.entitywithnotvalidintegerdefaultvalue.EntityWithNotValidIntegerDefaultValue;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.entitywithnotvalidintegerdefaultvalue.EntityWithNotValidIntegerDefaultValueDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.entitywithnotvalidintegerdefaultvalue.EntityWithNotValidIntegerDefaultValueForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.entitywithnotvalidprecisiondefaultvalue.EntityWithNotValidPrecisionDefaultValue;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.entitywithnotvalidprecisiondefaultvalue.EntityWithNotValidPrecisionDefaultValueDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.entitywithnotvalidprecisiondefaultvalue.EntityWithNotValidPrecisionDefaultValueForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.entitywithnotvalidregexdefaultvalue.EntityWithNotValidRegexDefaultValue;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.entitywithnotvalidregexdefaultvalue.EntityWithNotValidRegexDefaultValueDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.entitywithnotvalidregexdefaultvalue.EntityWithNotValidRegexDefaultValueForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.entitywithnotvalidscaledefaultvalue.EntityWithNotValidScaleDefaultValue;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.entitywithnotvalidscaledefaultvalue.EntityWithNotValidScaleDefaultValueDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.entitywithnotvalidscaledefaultvalue.EntityWithNotValidScaleDefaultValueForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.PrimitivesDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.dao.DataIntegrityViolationException;
 
@@ -108,11 +112,11 @@ public class DefaultValueValidationTest {
 
         DataIntegrityViolationException thrown = assertThrows(
                 DataIntegrityViolationException.class,
-                () -> entityWithNotValidIntegerDefaultValueDao.create(EntityWithNotValidIntegerDefaultValue.builder().build())
+                () -> entityWithNotValidIntegerDefaultValueDao.create(EntityWithNotValidIntegerDefaultValueForCreate.builder().build())
         );
         assertTrue(thrown.getMessage().contains("numeric value out of range"));
 
-        EntityWithNotValidPrecisionDefaultValue entityWithNotValidPrecisionDefaultValue = entityWithNotValidPrecisionDefaultValueDao.create(EntityWithNotValidPrecisionDefaultValue.builder().build());
+        EntityWithNotValidPrecisionDefaultValue entityWithNotValidPrecisionDefaultValue = entityWithNotValidPrecisionDefaultValueDao.create(EntityWithNotValidPrecisionDefaultValueForCreate.builder().build());
 
         ValidationException thrown1 = assertThrows(
                 ValidationException.class,
@@ -124,13 +128,13 @@ public class DefaultValueValidationTest {
                         hasProperty("location", equalTo("scaledAttrWithWrongPrecision")))
         ));
 
-        EntityWithNotValidScaleDefaultValue entityWithNotValidScaleDefaultValue = entityWithNotValidScaleDefaultValueDao.create(EntityWithNotValidScaleDefaultValue.builder().build());
+        EntityWithNotValidScaleDefaultValue entityWithNotValidScaleDefaultValue = entityWithNotValidScaleDefaultValueDao.create(EntityWithNotValidScaleDefaultValueForCreate.builder().build());
         //We are round the too much scale
         assertEquals(Optional.of(2.35),entityWithNotValidScaleDefaultValue.getScaledAttrWithWrongScale() );
         entityWithNotValidScaleDefaultValue = entityWithNotValidScaleDefaultValueDao.update(entityWithNotValidScaleDefaultValue);
         assertEquals(Optional.of(2.35),entityWithNotValidScaleDefaultValue.getScaledAttrWithWrongScale() );
 
-        EntityWithNotValidRegexDefaultValue entityWithNotValidRegexDefaultValue = entityWithNotValidRegexDefaultValueDao.create(EntityWithNotValidRegexDefaultValue.builder().build());
+        EntityWithNotValidRegexDefaultValue entityWithNotValidRegexDefaultValue = entityWithNotValidRegexDefaultValueDao.create(EntityWithNotValidRegexDefaultValueForCreate.builder().build());
 
         ValidationException thrown2 = assertThrows(
                 ValidationException.class,
