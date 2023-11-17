@@ -18,16 +18,14 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.staticquerydaotest.stat
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.staticquerydaotest.staticquerydaotest.entitycollectionwithparamquery.EntityCollectionWithParamQueryParameter;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.staticquerydaotest.staticquerydaotest.entitycollectionwithvalueparamquery.EntityCollectionWithValueParamQueryDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.staticquerydaotest.staticquerydaotest.entitycollectionwithvalueparamquery.EntityCollectionWithValueParamQueryParameter;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.staticquerydaotest.staticquerydaotest.entityqueryelement.EntityQueryElement;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.staticquerydaotest.staticquerydaotest.entityqueryelement.EntityQueryElementAttribute;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.staticquerydaotest.staticquerydaotest.entityqueryelement.EntityQueryElementDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.staticquerydaotest.staticquerydaotest.entityqueryelement.EntityQueryElementMask;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.staticquerydaotest.staticquerydaotest.entityqueryelement.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.staticquerydaotest.staticquerydaotest.entitywithdefaultparamquery.EntityWithDefaultParamQueryDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.staticquerydaotest.staticquerydaotest.entitywithoutparamquery.EntityWithoutParamQueryDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.staticquerydaotest.staticquerydaotest.entitywithparamquery.EntityWithParamQueryDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.staticquerydaotest.staticquerydaotest.entitywithparamquery.EntityWithParamQueryParameter;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.staticquerydaotest.staticquerydaotest.entitywithprimitives.EntityWithPrimitives;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.staticquerydaotest.staticquerydaotest.entitywithprimitives.EntityWithPrimitivesDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.staticquerydaotest.staticquerydaotest.entitywithprimitives.EntityWithPrimitivesForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.staticquerydaotest.staticquerydaotest.enumwithoutparamquery.EnumWithoutParamQueryDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.staticquerydaotest.staticquerydaotest.integerwithdefaultparamquery.IntegerWithDefaultParamQueryDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.staticquerydaotest.staticquerydaotest.integerwithdefaultparamquery.IntegerWithDefaultParamQueryParameter;
@@ -213,7 +211,7 @@ public class TestStaticQueryDao {
     })
     void testPrimitiveQueriesDao() {
 
-        EntityWithPrimitives entityWithPrimitives = entityWithPrimitivesDao.create(EntityWithPrimitives.builder().build());
+        EntityWithPrimitives entityWithPrimitives = entityWithPrimitivesDao.create(EntityWithPrimitivesForCreate.builder().build());
 
         // Integer query
         assertEquals(1, integerWithoutParamQueryDao.selectValue());
@@ -315,10 +313,10 @@ public class TestStaticQueryDao {
     })
     void testEntitySingleQueriesDao() {
 
-        EntityQueryElement a = entityQueryElementDao.create(EntityQueryElement.builder().withName("A").withValue(1).withCategory(MyEnum.Bombastic).build());
-        EntityQueryElement b = entityQueryElementDao.create(EntityQueryElement.builder().withName("B").withValue(2).withCategory(MyEnum.Bombastic).build());
-        EntityQueryElement c = entityQueryElementDao.create(EntityQueryElement.builder().withName("C").withValue(3).withCategory(MyEnum.Crazy).build());
-        EntityQueryElement d = entityQueryElementDao.create(EntityQueryElement.builder().withName("D").withValue(4).withCategory(MyEnum.Atomic).build());
+        EntityQueryElement a = entityQueryElementDao.create(EntityQueryElementForCreate.builder().withName("A").withValue(1).withCategory(MyEnum.Bombastic).build());
+        EntityQueryElement b = entityQueryElementDao.create(EntityQueryElementForCreate.builder().withName("B").withValue(2).withCategory(MyEnum.Bombastic).build());
+        EntityQueryElement c = entityQueryElementDao.create(EntityQueryElementForCreate.builder().withName("C").withValue(3).withCategory(MyEnum.Crazy).build());
+        EntityQueryElement d = entityQueryElementDao.create(EntityQueryElementForCreate.builder().withName("D").withValue(4).withCategory(MyEnum.Atomic).build());
 
         assertEquals(a.identifier(), entityWithoutParamQueryDao.selectOne().map(e -> e.identifier()).orElseThrow());
         assertEquals(
@@ -368,15 +366,15 @@ public class TestStaticQueryDao {
     })
     void testEntityCollectionQueriesDao() {
 
-        EntityQueryElement a = entityQueryElementDao.create(EntityQueryElement.builder().withName("A").withValue(1).withCategory(MyEnum.Bombastic).build());
-        EntityQueryElement b1 = entityQueryElementDao.create(EntityQueryElement.builder().withName("B").withValue(2).withCategory(MyEnum.Bombastic).build());
-        EntityQueryElement b2 = entityQueryElementDao.create(EntityQueryElement.builder().withName("B").withValue(2).withCategory(MyEnum.Bombastic).build());
-        EntityQueryElement c = entityQueryElementDao.create(EntityQueryElement.builder().withName("C").withValue(3).withCategory(MyEnum.Crazy).build());
-        EntityQueryElement d = entityQueryElementDao.create(EntityQueryElement.builder().withName("D").withValue(4).withCategory(MyEnum.Atomic).build());
-        EntityQueryElement e = entityQueryElementDao.create(EntityQueryElement.builder().withName("E").withValue(4).withCategory(MyEnum.Atomic).build());
-        EntityQueryElement f = entityQueryElementDao.create(EntityQueryElement.builder().withName("F").withValue(3).withCategory(MyEnum.Bombastic).build());
-        EntityQueryElement g = entityQueryElementDao.create(EntityQueryElement.builder().withName("G").withValue(3).withCategory(MyEnum.Crazy).build());
-        EntityQueryElement empty = entityQueryElementDao.create(EntityQueryElement.builder().build());
+        EntityQueryElement a = entityQueryElementDao.create(EntityQueryElementForCreate.builder().withName("A").withValue(1).withCategory(MyEnum.Bombastic).build());
+        EntityQueryElement b1 = entityQueryElementDao.create(EntityQueryElementForCreate.builder().withName("B").withValue(2).withCategory(MyEnum.Bombastic).build());
+        EntityQueryElement b2 = entityQueryElementDao.create(EntityQueryElementForCreate.builder().withName("B").withValue(2).withCategory(MyEnum.Bombastic).build());
+        EntityQueryElement c = entityQueryElementDao.create(EntityQueryElementForCreate.builder().withName("C").withValue(3).withCategory(MyEnum.Crazy).build());
+        EntityQueryElement d = entityQueryElementDao.create(EntityQueryElementForCreate.builder().withName("D").withValue(4).withCategory(MyEnum.Atomic).build());
+        EntityQueryElement e = entityQueryElementDao.create(EntityQueryElementForCreate.builder().withName("E").withValue(4).withCategory(MyEnum.Atomic).build());
+        EntityQueryElement f = entityQueryElementDao.create(EntityQueryElementForCreate.builder().withName("F").withValue(3).withCategory(MyEnum.Bombastic).build());
+        EntityQueryElement g = entityQueryElementDao.create(EntityQueryElementForCreate.builder().withName("G").withValue(3).withCategory(MyEnum.Crazy).build());
+        EntityQueryElement empty = entityQueryElementDao.create(EntityQueryElementForCreate.builder().build());
 
 
         // Without parameter

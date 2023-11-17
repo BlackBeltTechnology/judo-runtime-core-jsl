@@ -25,22 +25,26 @@ import hu.blackbelt.judo.dispatcher.api.FileType;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.continent.Continent;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.myenum.MyEnum;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transfercar.TransferCar;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transfercar.TransferCarAttachedRelationsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transfercar.TransferCarDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transfercar.TransferCarForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transfercity.TransferCity;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transfercity.TransferCityAttachedRelationsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transfercity.TransferCityDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transfercity.TransferCityForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transfercountry.TransferCountry;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transfercountry.TransferCountryDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transfercountry.TransferCountryForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transferfilterentity.TransferFilterEntity;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transferfilterentity.TransferFilterEntityDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transferfilterentity.TransferFilterEntityForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transfermyentitywithoptionalfields.TransferMyEntityWithOptionalFields;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transfermyentitywithoptionalfields.TransferMyEntityWithOptionalFieldsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transfermyentitywithoptionalfields.TransferMyEntityWithOptionalFieldsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transferperson.TransferPerson;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transferperson.TransferPersonAttachedRelationsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transferperson.TransferPersonDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transferperson.TransferPersonForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transfertester.TransferTester;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transfertester.TransferTesterDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transfertester.TransferTesterForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.FilterDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
@@ -118,7 +122,7 @@ public class MappedTransferFiltersTest {
     @BeforeEach
     protected void init() {
 
-        transfer1 = transferMyEntityWithOptionalFieldsDao.create(TransferMyEntityWithOptionalFields.builder()
+        transfer1 = transferMyEntityWithOptionalFieldsDao.create(TransferMyEntityWithOptionalFieldsForCreate.builder()
                 .withIntegerAttr(INTEGER_1)
                 .withScaledAttr(SCALED_1)
                 .withStringAttr(STRING_1)
@@ -131,7 +135,7 @@ public class MappedTransferFiltersTest {
                 .withEnumAttr(ENUM_1)
                 .build());
 
-        transfer2 = transferMyEntityWithOptionalFieldsDao.create(TransferMyEntityWithOptionalFields.builder()
+        transfer2 = transferMyEntityWithOptionalFieldsDao.create(TransferMyEntityWithOptionalFieldsForCreate.builder()
                 .withIntegerAttr(INTEGER_2)
                 .withScaledAttr(SCALED_2)
                 .withStringAttr(STRING_2)
@@ -144,10 +148,10 @@ public class MappedTransferFiltersTest {
                 .withEnumAttr(ENUM_2)
                 .build());
 
-        transfer3 = transferMyEntityWithOptionalFieldsDao.create(TransferMyEntityWithOptionalFields.builder()
+        transfer3 = transferMyEntityWithOptionalFieldsDao.create(TransferMyEntityWithOptionalFieldsForCreate.builder()
                 .build());
 
-        transferFilterEntity = transferFilterEntityDao.create(TransferFilterEntity.builder().build());
+        transferFilterEntity = transferFilterEntityDao.create(TransferFilterEntityForCreate.builder().build());
     }
 
     @Test
@@ -1790,15 +1794,15 @@ public class MappedTransferFiltersTest {
     })
     void testNavigationOnFilterOnTransfer() {
 
-        TransferCountry tcountry1 = transferCountryDao.create(TransferCountry.builder().withName("Hungary").withContinent(Continent.Europe).build());
-        TransferCity tcity1 = transferCityDao.create(TransferCity.builder().withName("Budapest").build(), TransferCityAttachedRelationsForCreate.builder().withCountry(tcountry1).build());
-        TransferCity tcity2 = transferCityDao.create(TransferCity.builder().withName("Debrecen").build(), TransferCityAttachedRelationsForCreate.builder().withCountry(tcountry1).build());
-        TransferPerson tp1 = transferPersonDao.create(TransferPerson.builder().withName("Gibpsz Jakab").build(), TransferPersonAttachedRelationsForCreate.builder().withCity(tcity1).build());
-        TransferPerson tp2 = transferPersonDao.create(TransferPerson.builder().withName("Teszt Elek").build(), TransferPersonAttachedRelationsForCreate.builder().withCity(tcity2).build());
-        TransferCar tc1 = transferCarDao.create(TransferCar.builder().withLicensePlate("ABC-123").build(), TransferCarAttachedRelationsForCreate.builder().withOwner(tp1).build());
-        TransferCar tc2 = transferCarDao.create(TransferCar.builder().withLicensePlate("ABC-124").build(), TransferCarAttachedRelationsForCreate.builder().withOwner(tp2).build());
+        TransferCountry tcountry1 = transferCountryDao.create(TransferCountryForCreate.builder().withName("Hungary").withContinent(Continent.Europe).build());
+        TransferCity tcity1 = transferCityDao.create(TransferCityForCreate.builder().withName("Budapest").withCountry(tcountry1).build());
+        TransferCity tcity2 = transferCityDao.create(TransferCityForCreate.builder().withName("Debrecen").withCountry(tcountry1).build());
+        TransferPerson tp1 = transferPersonDao.create(TransferPersonForCreate.builder().withName("Gibpsz Jakab").withCity(tcity1).build());
+        TransferPerson tp2 = transferPersonDao.create(TransferPersonForCreate.builder().withName("Teszt Elek").withCity(tcity2).build());
+        TransferCar tc1 = transferCarDao.create(TransferCarForCreate.builder().withLicensePlate("ABC-123").withOwner(tp1).build());
+        TransferCar tc2 = transferCarDao.create(TransferCarForCreate.builder().withLicensePlate("ABC-124").withOwner(tp2).build());
 
-        TransferTester tester = transferTesterDao.create(TransferTester.builder().build());
+        TransferTester tester = transferTesterDao.create(TransferTesterForCreate.builder().build());
 
         assertEquals(1, transferTesterDao.countCarsOfTesztElek(tester));
         assertThat(transferTesterDao.queryCarsOfTesztElek(tester).selectList(), containsInAnyOrder(tc2));

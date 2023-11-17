@@ -23,10 +23,7 @@ package hu.blackbelt.judo.runtime.core.jsl.transfer;
 import com.google.inject.Inject;
 import hu.blackbelt.judo.dispatcher.api.FileType;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.enum_.Enum;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferoptionalprimitives.TransferOptionalPrimitives;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferoptionalprimitives.TransferOptionalPrimitivesAttribute;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferoptionalprimitives.TransferOptionalPrimitivesDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferoptionalprimitives.TransferOptionalPrimitivesMask;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferoptionalprimitives.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.MappedTransferPrimitivesDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
@@ -59,7 +56,7 @@ public class MappedTransferQueryCustomizerFunctionsTest {
     @BeforeEach
     protected void init() {
 
-        transf1 = transferOptionalPrimitivesDao.create(TransferOptionalPrimitives.builder()
+        transf1 = transferOptionalPrimitivesDao.create(TransferOptionalPrimitivesForCreate.builder()
                 .withIntegerAttr(2)
                 .withScaledAttr(2.34)
                 .withStringAttr("test")
@@ -72,7 +69,7 @@ public class MappedTransferQueryCustomizerFunctionsTest {
                 .withEnumAttr(Enum.EnumC)
                 .build());
 
-        transf2 = transferOptionalPrimitivesDao.create(TransferOptionalPrimitives.builder()
+        transf2 = transferOptionalPrimitivesDao.create(TransferOptionalPrimitivesForCreate.builder()
                 .withIntegerAttr(1)
                 .withScaledAttr(1.23)
                 .withStringAttr("Another")

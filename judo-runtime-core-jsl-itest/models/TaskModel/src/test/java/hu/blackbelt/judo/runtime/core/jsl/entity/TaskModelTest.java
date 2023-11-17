@@ -23,19 +23,23 @@ package hu.blackbelt.judo.runtime.core.jsl.entity;
 import com.google.inject.Inject;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.taskmodel.taskmodel.marketplace.MarketPlace;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.taskmodel.taskmodel.marketplace.MarketPlaceDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.taskmodel.taskmodel.marketplace.MarketPlaceForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.taskmodel.taskmodel.person.Person;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.taskmodel.taskmodel.person.PersonAttachedRelationsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.taskmodel.taskmodel.person.PersonDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.taskmodel.taskmodel.person.PersonForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.taskmodel.taskmodel.salesperson.SalesPerson;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.taskmodel.taskmodel.salesperson.SalesPersonDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.taskmodel.taskmodel.task.Task;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.taskmodel.taskmodel.salesperson.SalesPersonForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.taskmodel.taskmodel.task.TaskDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.taskmodel.taskmodel.task.TaskForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.taskmodel.taskmodel.workplace.Workplace;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.taskmodel.taskmodel.workplace.WorkplaceForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.TaskModelDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.ArrayList;
@@ -79,10 +83,10 @@ public class TaskModelTest {
     })
     public void testSumDerivedWithOtherDerived() {
 
-        MarketPlace marketPlace = marketPlaceDao.create(MarketPlace.builder().build());
+        MarketPlace marketPlace = marketPlaceDao.create(MarketPlaceForCreate.builder().build());
 
-        SalesPerson person1 = salesPersonDao.create(SalesPerson.builder().build());
-        SalesPerson person2 = salesPersonDao.create(SalesPerson.builder().build());
+        SalesPerson person1 = salesPersonDao.create(SalesPersonForCreate.builder().build());
+        SalesPerson person2 = salesPersonDao.create(SalesPersonForCreate.builder().build());
 
         List<SalesPerson> list = new ArrayList<>(Arrays.asList(person1, person2));
 
@@ -114,22 +118,22 @@ public class TaskModelTest {
     })
     public void testSumDerivedInSumDerived() {
 
-        Person person1 = personDao.create(Person.builder().withFirstName("Adam").build());
-        Workplace blackbelt = personDao.createWorkplace(person1, Workplace.builder().withName("Blackbelt").withAddress("Ganz utca 2").build());
-        Person person2 = personDao.create(Person.builder().withFirstName("Patrik").build(), PersonAttachedRelationsForCreate.builder()
+        Person person1 = personDao.create(PersonForCreate.builder().withFirstName("Adam").build());
+        Workplace blackbelt = personDao.createWorkplace(person1, WorkplaceForCreate.builder().withName("Blackbelt").withAddress("Ganz utca 2").build());
+        Person person2 = personDao.create(PersonForCreate.builder().withFirstName("Patrik")
                 .withWorkplace(blackbelt)
                 .build());
 
         personDao.createTasks(person1, new ArrayList<>(Arrays.asList(
-                taskDao.create(Task.builder().withName("Build").withTaskTimeInDay(2).build()),
-                taskDao.create(Task.builder().withName("Architect").withTaskTimeInDay(3).build()),
-                taskDao.create(Task.builder().withName("Think").withTaskTimeInDay(5).build()
-                ))));
+                TaskForCreate.builder().withName("Build").withTaskTimeInDay(2).build(),
+                TaskForCreate.builder().withName("Architect").withTaskTimeInDay(3).build(),
+                TaskForCreate.builder().withName("Think").withTaskTimeInDay(5).build()
+        )));
 
         personDao.createTasks(person2, new ArrayList<>(Arrays.asList(
-                taskDao.create(Task.builder().withName("Drink").withTaskTimeInDay(1).build()),
-                taskDao.create(Task.builder().withName("Architect").withTaskTimeInDay(5).build()
-                ))));
+                TaskForCreate.builder().withName("Drink").withTaskTimeInDay(1).build(),
+                TaskForCreate.builder().withName("Architect").withTaskTimeInDay(5).build()
+        )));
 
 
         person1 = personDao.getById(person1.identifier()).orElseThrow();
