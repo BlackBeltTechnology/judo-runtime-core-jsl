@@ -502,77 +502,77 @@ public class MappedTransferCompositonAggregationTest {
 
     }
 
-//    @Test
-//    void testAddMethodOnBuilder() {
-//        TransferB b1 = transferBDao.create(TransferBForCreate.builder().withNameB("B1").build());
-//        TransferB b2 = transferBDao.create(TransferBForCreate.builder().withNameB("B2").build());
-//        TransferB b3 = transferBDao.create(TransferBForCreate.builder().withNameB("B3").build());
-//        TransferB b4 = transferBDao.create(TransferBForCreate.builder().withNameB("B4").build());
-//
-//        TransferA transferA = transferADao.create(TransferAForCreate.builder()
-//                .addToMultiEntityB(b2)
-//                .build());
-//
-//        assertEquals(1, transferA.getMultiEntityB().size());
-//        assertEquals(1, transferA.getMultiEntityB().stream().filter(entityC -> entityC.getNameB().orElseThrow().equals("B2")).count());
-//
-//        transferA = transferADao.create(TransferA.builder()
-//                .addToMultiEntityB(b2, b3)
-//                .build());
-//
-//        assertEquals(2, transferA.getMultiEntityB().size());
-//        assertEquals(1, transferA.getMultiEntityB().stream().filter(entityC -> entityC.getNameB().orElseThrow().equals("B2")).count());
-//        assertEquals(1, transferA.getMultiEntityB().stream().filter(entityC -> entityC.getNameB().orElseThrow().equals("B3")).count());
-//
-//        transferA = transferADao.create(TransferA.builder()
-//                .addToMultiEntityB(b2, b2)
-//                .build());
-//
-//        assertEquals(2, transferA.getMultiEntityB().size());
-//        assertEquals(2, transferA.getMultiEntityB().stream().filter(entityC -> entityC.getNameB().orElseThrow().equals("B2")).count());
-//
-//        transferA = transferADao.create(TransferA.builder()
-//                .addToMultiEntityB(b2)
-//                .addToMultiEntityB(b2)
-//                .build());
-//
-//        assertEquals(2, transferA.getMultiEntityB().size());
-//        assertEquals(2, transferA.getMultiEntityB().stream().filter(entityC -> entityC.getNameB().orElseThrow().equals("B2")).count());
-//
-//        transferA = transferADao.create(TransferA.builder()
-//                .addToMultiEntityB(b2)
-//                .addToMultiEntityB(b3)
-//                .addToMultiEntityB(b4)
-//                .build());
-//
-//        assertEquals(3, transferA.getMultiEntityB().size());
-//        assertEquals(1, transferA.getMultiEntityB().stream().filter(entityC -> entityC.getNameB().orElseThrow().equals("B2")).count());
-//        assertEquals(1, transferA.getMultiEntityB().stream().filter(entityC -> entityC.getNameB().orElseThrow().equals("B3")).count());
-//        assertEquals(1, transferA.getMultiEntityB().stream().filter(entityC -> entityC.getNameB().orElseThrow().equals("B4")).count());
-//
-//        transferA = transferADao.create(TransferA.builder()
-//                .withMultiEntityB(List.of(b1, b2))
-//                .addToMultiEntityB(b3)
-//                .addToMultiEntityB(b4)
-//                .build());
-//
-//        assertEquals(4, transferA.getMultiEntityB().size());
-//        assertEquals(1, transferA.getMultiEntityB().stream().filter(entityC -> entityC.getNameB().orElseThrow().equals("B1")).count());
-//        assertEquals(1, transferA.getMultiEntityB().stream().filter(entityC -> entityC.getNameB().orElseThrow().equals("B2")).count());
-//        assertEquals(1, transferA.getMultiEntityB().stream().filter(entityC -> entityC.getNameB().orElseThrow().equals("B3")).count());
-//        assertEquals(1, transferA.getMultiEntityB().stream().filter(entityC -> entityC.getNameB().orElseThrow().equals("B4")).count());
-//
-//        transferA = transferADao.create(TransferA.builder()
-//                .withMultiEntityB(List.of(b1, b2))
-//                .addToMultiEntityB(b3, b4)
-//                .build());
-//
-//        assertEquals(4, transferA.getMultiEntityB().size());
-//        assertEquals(1, transferA.getMultiEntityB().stream().filter(entityC -> entityC.getNameB().orElseThrow().equals("B1")).count());
-//        assertEquals(1, transferA.getMultiEntityB().stream().filter(entityC -> entityC.getNameB().orElseThrow().equals("B2")).count());
-//        assertEquals(1, transferA.getMultiEntityB().stream().filter(entityC -> entityC.getNameB().orElseThrow().equals("B3")).count());
-//        assertEquals(1, transferA.getMultiEntityB().stream().filter(entityC -> entityC.getNameB().orElseThrow().equals("B4")).count());
-//    }
+    @Test
+    void testAddMethodOnBuilder() {
+        TransferB b1 = transferBDao.create(TransferBForCreate.builder().withNameB("B1").build());
+        TransferB b2 = transferBDao.create(TransferBForCreate.builder().withNameB("B2").build());
+        TransferB b3 = transferBDao.create(TransferBForCreate.builder().withNameB("B3").build());
+        TransferB b4 = transferBDao.create(TransferBForCreate.builder().withNameB("B4").build());
+
+        TransferA transferA = transferADao.create(TransferAForCreate.builder()
+                .addToMultiEntityB(TransferBForCreate.builderFrom(b2).build())
+                .build());
+
+        assertEquals(1, transferA.getMultiEntityB().size());
+        assertEquals(1, transferA.getMultiEntityB().stream().filter(entityC -> entityC.getNameB().orElseThrow().equals("B2")).count());
+
+        transferA = transferADao.create(TransferAForCreate.builder()
+                .addToMultiEntityB(TransferBForCreate.builderFrom(b2).build(), TransferBForCreate.builderFrom(b3).build())
+                .build());
+
+        assertEquals(2, transferA.getMultiEntityB().size());
+        assertEquals(1, transferA.getMultiEntityB().stream().filter(entityC -> entityC.getNameB().orElseThrow().equals("B2")).count());
+        assertEquals(1, transferA.getMultiEntityB().stream().filter(entityC -> entityC.getNameB().orElseThrow().equals("B3")).count());
+
+        transferA = transferADao.create(TransferAForCreate.builder()
+                .addToMultiEntityB(TransferBForCreate.builderFrom(b2).build(), TransferBForCreate.builderFrom(b2).build())
+                .build());
+
+        assertEquals(2, transferA.getMultiEntityB().size());
+        assertEquals(2, transferA.getMultiEntityB().stream().filter(entityC -> entityC.getNameB().orElseThrow().equals("B2")).count());
+
+        transferA = transferADao.create(TransferAForCreate.builder()
+                .addToMultiEntityB(TransferBForCreate.builderFrom(b2).build())
+                .addToMultiEntityB(TransferBForCreate.builderFrom(b2).build())
+                .build());
+
+        assertEquals(2, transferA.getMultiEntityB().size());
+        assertEquals(2, transferA.getMultiEntityB().stream().filter(entityC -> entityC.getNameB().orElseThrow().equals("B2")).count());
+
+        transferA = transferADao.create(TransferAForCreate.builder()
+                .addToMultiEntityB(TransferBForCreate.builderFrom(b2).build())
+                .addToMultiEntityB(TransferBForCreate.builderFrom(b3).build())
+                .addToMultiEntityB(TransferBForCreate.builderFrom(b4).build())
+                .build());
+
+        assertEquals(3, transferA.getMultiEntityB().size());
+        assertEquals(1, transferA.getMultiEntityB().stream().filter(entityC -> entityC.getNameB().orElseThrow().equals("B2")).count());
+        assertEquals(1, transferA.getMultiEntityB().stream().filter(entityC -> entityC.getNameB().orElseThrow().equals("B3")).count());
+        assertEquals(1, transferA.getMultiEntityB().stream().filter(entityC -> entityC.getNameB().orElseThrow().equals("B4")).count());
+
+        transferA = transferADao.create(TransferAForCreate.builder()
+                .withMultiEntityB(List.of(TransferBForCreate.builderFrom(b1).build(), TransferBForCreate.builderFrom(b2).build()))
+                .addToMultiEntityB(TransferBForCreate.builderFrom(b3).build())
+                .addToMultiEntityB(TransferBForCreate.builderFrom(b4).build())
+                .build());
+
+        assertEquals(4, transferA.getMultiEntityB().size());
+        assertEquals(1, transferA.getMultiEntityB().stream().filter(entityC -> entityC.getNameB().orElseThrow().equals("B1")).count());
+        assertEquals(1, transferA.getMultiEntityB().stream().filter(entityC -> entityC.getNameB().orElseThrow().equals("B2")).count());
+        assertEquals(1, transferA.getMultiEntityB().stream().filter(entityC -> entityC.getNameB().orElseThrow().equals("B3")).count());
+        assertEquals(1, transferA.getMultiEntityB().stream().filter(entityC -> entityC.getNameB().orElseThrow().equals("B4")).count());
+
+        transferA = transferADao.create(TransferAForCreate.builder()
+                .withMultiEntityB(List.of(TransferBForCreate.builderFrom(b1).build(), TransferBForCreate.builderFrom(b2).build()))
+                .addToMultiEntityB(TransferBForCreate.builderFrom(b3).build(), TransferBForCreate.builderFrom(b4).build())
+                .build());
+
+        assertEquals(4, transferA.getMultiEntityB().size());
+        assertEquals(1, transferA.getMultiEntityB().stream().filter(entityC -> entityC.getNameB().orElseThrow().equals("B1")).count());
+        assertEquals(1, transferA.getMultiEntityB().stream().filter(entityC -> entityC.getNameB().orElseThrow().equals("B2")).count());
+        assertEquals(1, transferA.getMultiEntityB().stream().filter(entityC -> entityC.getNameB().orElseThrow().equals("B3")).count());
+        assertEquals(1, transferA.getMultiEntityB().stream().filter(entityC -> entityC.getNameB().orElseThrow().equals("B4")).count());
+    }
 
     @Test
     void testAddAndRemoveOnCollections() {
