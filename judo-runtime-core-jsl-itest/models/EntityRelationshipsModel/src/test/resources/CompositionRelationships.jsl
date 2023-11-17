@@ -2,6 +2,11 @@ model CompositionRelationships;
 
 type string String min-size:0 max-size:128;
 
+entity Composition {
+  field EntityA entityA;
+  field EntityA[] entityAs;
+}
+
 entity EntityA {
     field String stringA;
     field EntityC singleConA;
