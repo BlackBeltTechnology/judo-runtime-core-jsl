@@ -29,15 +29,17 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castin
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.ta.TA;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.tb.TB;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.tb.TBDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.tb.TBForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.tb.TBIdentifier;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.tca.TCA;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.tca.TCADao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.tca.TCAForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.tester.Tester;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.tester.TesterDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.tester.TesterIdentifier;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.transfertester.TransferTester;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.transfertester.TransferTesterAttachedRelationsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.transfertester.TransferTesterDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.transfertester.TransferTesterForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.CastingFunctionsDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
@@ -80,30 +82,27 @@ public class MappedTransferCastingFunctionsTest {
     @BeforeEach
     protected void init() {
 
-        TCA tca = tcaDao.create(TCA.builder().withNameA("aca1").withNameB("bca1").withNameCA("ca1").build());
-        TCA tca1 = tcaDao.create(TCA.builder().withNameA("aca2").withNameB("bca2").withNameCA("ca2").build());
-        TCA tca2 = tcaDao.create(TCA.builder().withNameA("aca3").withNameB("bca3").withNameCA("ca3").build());
+        TCA tca = tcaDao.create(TCAForCreate.builder().withNameA("aca1").withNameB("bca1").withNameCA("ca1").build());
+        TCA tca1 = tcaDao.create(TCAForCreate.builder().withNameA("aca2").withNameB("bca2").withNameCA("ca2").build());
+        TCA tca2 = tcaDao.create(TCAForCreate.builder().withNameA("aca3").withNameB("bca3").withNameCA("ca3").build());
         TB tcaAsB = tbDao.getById(tca.identifier().adaptTo(TBIdentifier.class)).orElseThrow();
         TB tcaAsB1 = tbDao.getById(tca1.identifier().adaptTo(TBIdentifier.class)).orElseThrow();
         TB tcaAsB2 = tbDao.getById(tca2.identifier().adaptTo(TBIdentifier.class)).orElseThrow();
 
         transferTester = transferTesterDao.create(
-                TransferTester.builder()
-                        .build(),
-                TransferTesterAttachedRelationsForCreate
-                        .builder()
-                        .withB(tbDao.create(TB.builder().withNameA("ab").withNameB("b").build()))
+                TransferTesterForCreate.builder()
+                        .withB(tbDao.create(TBForCreate.builder().withNameA("ab").withNameB("b").build()))
                         .withBs(List.of(
-                                tbDao.create(TB.builder().withNameA("ab1").withNameB("b1").build()),
-                                tbDao.create(TB.builder().withNameA("ab2").withNameB("b2").build())
+                                tbDao.create(TBForCreate.builder().withNameA("ab1").withNameB("b1").build()),
+                                tbDao.create(TBForCreate.builder().withNameA("ab2").withNameB("b2").build())
                         ))
                         .withCaAsB(tcaAsB)
                         .withCaAsBs(List.of(tcaAsB1, tcaAsB2))
-                        .build());
+                        .build()
+        );
 
         tester = testerDao.getById(transferTester.identifier().adaptTo(TesterIdentifier.class)).orElseThrow();
     }
-
 
     /**
      * The test checks the KindOf Instance function work well on transfer object.

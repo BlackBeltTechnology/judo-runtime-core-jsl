@@ -24,14 +24,9 @@ import com.google.inject.Inject;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.paging.paging.item.Item;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.paging.paging.item.ItemAttribute;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.paging.paging.item.ItemDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.paging.paging.list.List;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.paging.paging.list.ListAttribute;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.paging.paging.list.ListDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.paging.paging.list.ListIdentifier;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.paging.paging.logentry.LogEntry;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.paging.paging.logentry.LogEntryAttribute;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.paging.paging.logentry.LogEntryDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.paging.paging.logentry.LogEntryIdentifier;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.paging.paging.item.ItemForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.paging.paging.list.*;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.paging.paging.logentry.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.PagingDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
@@ -102,7 +97,7 @@ public class PagingTest {
 
         Map<Character, ListIdentifier> listIds = new TreeMap<>();
         for (char ch = 'A'; ch <= 'Z'; ch++) {
-            final java.util.List<Item> items = new ArrayList<>();
+            final java.util.List<ItemForCreate> items = new ArrayList<>();
             for (int i = 0; i < 'Z' - ch + 1; i++) {
                 final String topic;
                 if (ch < 'E' && i < 3) {
@@ -110,9 +105,9 @@ public class PagingTest {
                 } else {
                     topic = null;
                 }
-                items.add(Item.builder().withNumber(i + 1).withTopic(topic).build());
+                items.add(ItemForCreate.builder().withNumber(i + 1).withTopic(topic).build());
             }
-            List list = listDao.create(List.builder().withName("List_" + ch).withItems(items).build());
+            List list = listDao.create(ListForCreate.builder().withName("List_" + ch).withItems(items).build());
 
             listIds.put(ch, list.identifier());
         }
@@ -266,8 +261,8 @@ public class PagingTest {
     })
     public void testLimitAndOffsetVariations() {
 
-        Item ent1 = itemDao.create(Item.builder().withNumber(2).build());
-        Item ent2 = itemDao.create(Item.builder().withNumber(1).build());
+        Item ent1 = itemDao.create(ItemForCreate.builder().withNumber(2).build());
+        Item ent2 = itemDao.create(ItemForCreate.builder().withNumber(1).build());
 
         java.util.List<Item> list = itemDao
                 .query()
@@ -390,14 +385,14 @@ public class PagingTest {
     })
     public void testPaginationByTimestamp() {
 
-        LogEntry entry1 = logEntryDao.create(LogEntry.builder().withTimestamp(LocalDateTime.of(LocalDate.of( 2021, 7, 29), LocalTime.of(15, 7, 1, 111_000_000))).withMessage("Message1").build());
-        LogEntry entry2 = logEntryDao.create(LogEntry.builder().withTimestamp(LocalDateTime.of(LocalDate.of( 2021, 7, 29), LocalTime.of(15, 7, 1, 110_000_000))).withMessage("Message2").build());
-        LogEntry entry3 = logEntryDao.create(LogEntry.builder().withTimestamp(LocalDateTime.of(LocalDate.of( 2021, 7, 29), LocalTime.of(15, 7, 1, 100_000_000))).withMessage("Message3").build());
-        LogEntry entry4 = logEntryDao.create(LogEntry.builder().withTimestamp(LocalDateTime.of(LocalDate.of( 2021, 7, 29), LocalTime.of(15, 7, 1, 0))).withMessage("Message4").build());
-        LogEntry entry5 = logEntryDao.create(LogEntry.builder().withTimestamp(LocalDateTime.of(LocalDate.of( 2021, 7, 29), LocalTime.of(15, 7, 1, 111_000_000))).withMessage("Message5").build());
-        LogEntry entry6 = logEntryDao.create(LogEntry.builder().withTimestamp(LocalDateTime.of(LocalDate.of( 2021, 7, 29), LocalTime.of(15, 7, 1, 110_000_000))).withMessage("Message6").build());
-        LogEntry entry7 = logEntryDao.create(LogEntry.builder().withTimestamp(LocalDateTime.of(LocalDate.of( 2021, 7, 29), LocalTime.of(15, 7, 1, 100_000_000))).withMessage("Message7").build());
-        LogEntry entry8 = logEntryDao.create(LogEntry.builder().withTimestamp(LocalDateTime.of(LocalDate.of( 2021, 7, 29), LocalTime.of(15, 7, 1, 0))).withMessage("Message8").build());
+        LogEntry entry1 = logEntryDao.create(LogEntryForCreate.builder().withTimestamp(LocalDateTime.of(LocalDate.of( 2021, 7, 29), LocalTime.of(15, 7, 1, 111_000_000))).withMessage("Message1").build());
+        LogEntry entry2 = logEntryDao.create(LogEntryForCreate.builder().withTimestamp(LocalDateTime.of(LocalDate.of( 2021, 7, 29), LocalTime.of(15, 7, 1, 110_000_000))).withMessage("Message2").build());
+        LogEntry entry3 = logEntryDao.create(LogEntryForCreate.builder().withTimestamp(LocalDateTime.of(LocalDate.of( 2021, 7, 29), LocalTime.of(15, 7, 1, 100_000_000))).withMessage("Message3").build());
+        LogEntry entry4 = logEntryDao.create(LogEntryForCreate.builder().withTimestamp(LocalDateTime.of(LocalDate.of( 2021, 7, 29), LocalTime.of(15, 7, 1, 0))).withMessage("Message4").build());
+        LogEntry entry5 = logEntryDao.create(LogEntryForCreate.builder().withTimestamp(LocalDateTime.of(LocalDate.of( 2021, 7, 29), LocalTime.of(15, 7, 1, 111_000_000))).withMessage("Message5").build());
+        LogEntry entry6 = logEntryDao.create(LogEntryForCreate.builder().withTimestamp(LocalDateTime.of(LocalDate.of( 2021, 7, 29), LocalTime.of(15, 7, 1, 110_000_000))).withMessage("Message6").build());
+        LogEntry entry7 = logEntryDao.create(LogEntryForCreate.builder().withTimestamp(LocalDateTime.of(LocalDate.of( 2021, 7, 29), LocalTime.of(15, 7, 1, 100_000_000))).withMessage("Message7").build());
+        LogEntry entry8 = logEntryDao.create(LogEntryForCreate.builder().withTimestamp(LocalDateTime.of(LocalDate.of( 2021, 7, 29), LocalTime.of(15, 7, 1, 0))).withMessage("Message8").build());
 
         java.util.List<LogEntryIdentifier> logEntries48 = logEntryDao.query().orderBy(LogEntryAttribute.TIMESTAMP).selectList(2).stream().map(LogEntry::identifier).toList();
 
