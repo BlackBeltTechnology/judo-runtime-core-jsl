@@ -44,9 +44,13 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.e
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.entitywithprimitivedefaults.EntityWithPrimitiveDefaultsDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.entitywithprimitivedefaults.EntityWithPrimitiveDefaultsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.myentitywithoptionalfields.MyEntityWithOptionalFields;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.myentitywithoptionalfields.MyEntityWithOptionalFieldsDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.myentitywithoptionalfields.MyEntityWithOptionalFieldsForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.myentitywithoptionalfields.MyEntityWithOptionalFieldsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.myentitywithoptionalfields.MyEntityWithOptionalFieldsIdentifier;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.myenum.MyEnum;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.mytransferwithoptionalfields.MyTransferWithOptionalFields;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.mytransferwithoptionalfields.MyTransferWithOptionalFieldsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.mytransferwithoptionalfields.MyTransferWithOptionalFieldsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.referenceentity.ReferenceEntityDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.referenceentity.ReferenceEntityForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.PrimitivesDaoModules;
@@ -101,6 +105,9 @@ public class PrimitivesTest {
 
     @Inject
     DefaultRequiredEntityDao defaultRequiredEntityDao;
+
+    @Inject
+    MyTransferWithOptionalFieldsDao myTransferWithOptionalFieldsDao;
 
     @Test
     @Requirement(reqs = {
@@ -650,5 +657,146 @@ public class PrimitivesTest {
 
         assertEquals(5, defaultEntity1.getSumEntitiesIntegerValue());
         assertEquals(LocalDate.of(2022, 11, 5), defaultEntity1.getCreateDate());
+    }
+
+    @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-005",
+            "REQ-TYPE-007",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-EXPR-016",
+            "REQ-EXPR-022"
+    })
+    public void testStringSubstitution() {
+        MyEntityWithOptionalFields entity1 = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFieldsForCreate.builder()
+                .withStringAttr("name %d", 1)
+                .build());
+
+        assertEquals("name 1", entity1.getStringAttr().orElseThrow());
+
+        entity1.setStringAttr("%s %d", "name", 2);
+
+        entity1 = myEntityWithOptionalFieldsDao.update(entity1);
+
+        assertEquals("name 2", entity1.getStringAttr().orElseThrow());
+
+        entity1 = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFieldsForCreate.builder()
+                .withStringAttr("%s %.2f %d", "name", 2.34, 1)
+                .build());
+
+        assertEquals("name 2.34 1", entity1.getStringAttr().orElseThrow());
+
+        entity1.setStringAttr("%s", "name");
+
+        entity1 = myEntityWithOptionalFieldsDao.update(entity1);
+
+        assertEquals("name", entity1.getStringAttr().orElseThrow());
+
+        entity1.setStringAttr("name");
+
+        entity1 = myEntityWithOptionalFieldsDao.update(entity1);
+
+        assertEquals("name", entity1.getStringAttr().orElseThrow());
+
+        MyEntityWithOptionalFields myEntityWithOptionalFields = MyEntityWithOptionalFields.builder()
+                .withStringAttr("name %d", 1)
+                .build();
+
+        entity1 = myEntityWithOptionalFieldsDao.create(myEntityWithOptionalFields.adaptTo(MyEntityWithOptionalFieldsForCreate.class));
+
+        assertEquals("name 1", entity1.getStringAttr().orElseThrow());
+
+        myEntityWithOptionalFields = MyEntityWithOptionalFields.builder()
+                .withStringAttr("%s %.2f %d", "name", 2.34, 1)
+                .build();
+
+        entity1 = myEntityWithOptionalFieldsDao.create(myEntityWithOptionalFields.adaptTo(MyEntityWithOptionalFieldsForCreate.class));
+
+        assertEquals("name 2.34 1", entity1.getStringAttr().orElseThrow());
+    }
+
+
+    @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-005",
+            "REQ-TYPE-007",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-EXPR-016",
+            "REQ-EXPR-022"
+    })
+    public void testStringSubstitutionOnTransfer() {
+        MyTransferWithOptionalFields transfer = myTransferWithOptionalFieldsDao.create(MyTransferWithOptionalFieldsForCreate.builder()
+                .withStringAttr("name %d", 1)
+                .build());
+
+        assertEquals("name 1", transfer.getStringAttr().orElseThrow());
+
+        MyEntityWithOptionalFields entity = myEntityWithOptionalFieldsDao.getById(transfer.identifier().adaptTo(MyEntityWithOptionalFieldsIdentifier.class)).orElseThrow();
+
+        assertEquals("name 1", entity.getStringAttr().orElseThrow());
+
+        transfer.setStringAttr("%s %d", "name", 2);
+
+        transfer = myTransferWithOptionalFieldsDao.update(transfer);
+
+        assertEquals("name 2", transfer.getStringAttr().orElseThrow());
+
+        entity = myEntityWithOptionalFieldsDao.getById(transfer.identifier().adaptTo(MyEntityWithOptionalFieldsIdentifier.class)).orElseThrow();
+
+        assertEquals("name 2", entity.getStringAttr().orElseThrow());
+
+        transfer = myTransferWithOptionalFieldsDao.create(MyTransferWithOptionalFieldsForCreate.builder()
+                .withStringAttr("%s %.2f %d", "name", 2.34, 1)
+                .build());
+
+        assertEquals("name 2.34 1", transfer.getStringAttr().orElseThrow());
+
+        entity = myEntityWithOptionalFieldsDao.getById(transfer.identifier().adaptTo(MyEntityWithOptionalFieldsIdentifier.class)).orElseThrow();
+
+        assertEquals("name 2.34 1", entity.getStringAttr().orElseThrow());
+
+        transfer.setStringAttr("%s", "name");
+
+        transfer = myTransferWithOptionalFieldsDao.update(transfer);
+
+        assertEquals("name", transfer.getStringAttr().orElseThrow());
+
+        entity = myEntityWithOptionalFieldsDao.getById(transfer.identifier().adaptTo(MyEntityWithOptionalFieldsIdentifier.class)).orElseThrow();
+
+        assertEquals("name", entity.getStringAttr().orElseThrow());
+
+        transfer.setStringAttr("name");
+
+        transfer = myTransferWithOptionalFieldsDao.update(transfer);
+
+        assertEquals("name", transfer.getStringAttr().orElseThrow());
+
+        entity = myEntityWithOptionalFieldsDao.getById(transfer.identifier().adaptTo(MyEntityWithOptionalFieldsIdentifier.class)).orElseThrow();
+
+        assertEquals("name", entity.getStringAttr().orElseThrow());
+
+        transfer = MyTransferWithOptionalFields.builder().withStringAttr("name %d",1).build();
+
+        transfer = myTransferWithOptionalFieldsDao.create(transfer.adaptTo(MyTransferWithOptionalFieldsForCreate.class));
+
+        assertEquals("name 1", transfer.getStringAttr().orElseThrow());
+
+        entity = myEntityWithOptionalFieldsDao.getById(transfer.identifier().adaptTo(MyEntityWithOptionalFieldsIdentifier.class)).orElseThrow();
+
+        assertEquals("name 1", entity.getStringAttr().orElseThrow());
+
+        transfer = MyTransferWithOptionalFields.builder().withStringAttr("%s %.2f %d", "name", 2.34, 1).build();
+
+        transfer = myTransferWithOptionalFieldsDao.create(transfer.adaptTo(MyTransferWithOptionalFieldsForCreate.class));
+
+        assertEquals("name 2.34 1", transfer.getStringAttr().orElseThrow());
+
+        entity = myEntityWithOptionalFieldsDao.getById(transfer.identifier().adaptTo(MyEntityWithOptionalFieldsIdentifier.class)).orElseThrow();
+
+        assertEquals("name 2.34 1", entity.getStringAttr().orElseThrow());
     }
 }

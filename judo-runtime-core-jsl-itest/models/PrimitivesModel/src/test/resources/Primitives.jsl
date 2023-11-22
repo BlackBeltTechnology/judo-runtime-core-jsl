@@ -144,3 +144,7 @@ entity EntityWithNotValidScaleDefaultValue {
 entity EntityWithNotValidRegexDefaultValue {
         field PhoneNumber regexAttrWrongPattern default:"+36-30 123 1234";
 }
+
+transfer MyTransferWithOptionalFields(MyEntityWithOptionalFields ent) {
+    field SmallString stringAttr <= ent.stringAttr input:true;
+}
