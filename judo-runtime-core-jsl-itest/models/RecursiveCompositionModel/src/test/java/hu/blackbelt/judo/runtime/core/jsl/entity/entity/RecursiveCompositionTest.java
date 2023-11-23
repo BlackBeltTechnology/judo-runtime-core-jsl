@@ -22,14 +22,18 @@ package hu.blackbelt.judo.runtime.core.jsl.entity.entity;
  */
 
 import com.google.inject.Inject;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.entitya.EntityAForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.entitya.EntityA;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.entitya.EntityADao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.entityb.EntityB;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.entityb.EntityBDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.entityb.EntityBForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.entityx.EntityX;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.entityx.EntityXDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.entityx.EntityXForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.entityy.EntityY;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.entityy.EntityYDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.recursivecomposition.recursivecomposition.entityy.EntityYForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.RecursiveCompositionDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
@@ -74,28 +78,28 @@ public class RecursiveCompositionTest {
     })
     void testRecursiveCompositionOnEntity() {
 
-        EntityX x1 = entityXDao.create(EntityX.builder().withName("x1")
-                .withX(EntityX.builder().withName("x2")
-                        .withX(EntityX.builder().withName("x5").build())
-                        .withXs(List.of(EntityX.builder().withName("x3").build(), EntityX.builder().withName("x4")
-                                .withY(EntityY.builder().withName("y4").build()).build()))
+        EntityX x1 = entityXDao.create(EntityXForCreate.builder().withName("x1")
+                .withX(EntityXForCreate.builder().withName("x2")
+                        .withX(EntityXForCreate.builder().withName("x5").build())
+                        .withXs(List.of(EntityXForCreate.builder().withName("x3").build(), EntityXForCreate.builder().withName("x4")
+                                .withY(EntityYForCreate.builder().withName("y4").build()).build()))
                         .build())
-                .withXs(List.of(EntityX.builder().withName("x6")
-                        .withX(EntityX.builder().withName("x7")
-                                .withXs(List.of(EntityX.builder().withName("x8").build(), EntityX.builder().withName("x9")
-                                        .withYs(List.of(EntityY.builder().withName("y5")
-                                                .withYx(EntityX.builder().withName("x10")
-                                                        .withYs(List.of(EntityY.builder().withName("y7").build(), EntityY.builder().withName("y8")
-                                                                .withYx(EntityX.builder().withName("x13").build()).build()))
-                                                        .build()).build(), EntityY.builder().withName("y6")
-                                                .withYxs(List.of(EntityX.builder().withName("x11").build(), EntityX.builder().withName("x12")
-                                                        .withY(EntityY.builder().withName("y9").build()).build()))
+                .withXs(List.of(EntityXForCreate.builder().withName("x6")
+                        .withX(EntityXForCreate.builder().withName("x7")
+                                .withXs(List.of(EntityXForCreate.builder().withName("x8").build(), EntityXForCreate.builder().withName("x9")
+                                        .withYs(List.of(EntityYForCreate.builder().withName("y5")
+                                                .withYx(EntityXForCreate.builder().withName("x10")
+                                                        .withYs(List.of(EntityYForCreate.builder().withName("y7").build(), EntityYForCreate.builder().withName("y8")
+                                                                .withYx(EntityXForCreate.builder().withName("x13").build()).build()))
+                                                        .build()).build(), EntityYForCreate.builder().withName("y6")
+                                                .withYxs(List.of(EntityXForCreate.builder().withName("x11").build(), EntityXForCreate.builder().withName("x12")
+                                                        .withY(EntityYForCreate.builder().withName("y9").build()).build()))
                                                 .build()))
                                         .build()))
                                 .build())
                         .build()))
-                .withY(EntityY.builder().withName("y1").build())
-                .withYs(List.of(EntityY.builder().withName("y2").build(), EntityY.builder().withName("y3").build())).build());
+                .withY(EntityYForCreate.builder().withName("y1").build())
+                .withYs(List.of(EntityYForCreate.builder().withName("y2").build(), EntityYForCreate.builder().withName("y3").build())).build());
 
         assertEquals("x1", x1.getName().orElseThrow());
         assertEquals("x2", x1.getX().orElseThrow().getName().orElseThrow());
@@ -189,13 +193,13 @@ public class RecursiveCompositionTest {
     })
     void testRecursiveCompositionOnInheritedEntity() {
 
-        EntityB b1 = entityBDao.create(EntityB.builder().withName("b1")
-                .withBa(EntityA.builder().withName("a1")
-                        .withA(EntityA.builder().withName("a4").build())
-                        .withAs(List.of(EntityA.builder().withName("a5").build(), EntityA.builder().withName("a6").build())).build())
-                .withBas(List.of(EntityA.builder().withName("a2")
-                        .withA(EntityA.builder().withName("a5").build()).build(), EntityA.builder().withName("a3")
-                        .withAs(List.of(EntityA.builder().withName("a5").build(), EntityA.builder().withName("a6").build())).build()))
+        EntityB b1 = entityBDao.create(EntityBForCreate.builder().withName("b1")
+                .withBa(EntityAForCreate.builder().withName("a1")
+                        .withA(EntityAForCreate.builder().withName("a4").build())
+                        .withAs(List.of(EntityAForCreate.builder().withName("a5").build(), EntityAForCreate.builder().withName("a6").build())).build())
+                .withBas(List.of(EntityAForCreate.builder().withName("a2")
+                        .withA(EntityAForCreate.builder().withName("a5").build()).build(), EntityAForCreate.builder().withName("a3")
+                        .withAs(List.of(EntityAForCreate.builder().withName("a5").build(), EntityAForCreate.builder().withName("a6").build())).build()))
                 .build());
 
         assertEquals("b1", b1.getName().orElseThrow());
@@ -246,10 +250,10 @@ public class RecursiveCompositionTest {
     })
     void testForMultiLevelSingleComposition() {
 
-        EntityA a = entityADao.create(EntityA.builder().withName("level1")
-                .withA(EntityA.builder().withName("level2")
-                        .withA(EntityA.builder().withName("level3")
-                                .withA(EntityA.builder().withName("level4").build()).build()
+        EntityA a = entityADao.create(EntityAForCreate.builder().withName("level1")
+                .withA(EntityAForCreate.builder().withName("level2")
+                        .withA(EntityAForCreate.builder().withName("level3")
+                                .withA(EntityAForCreate.builder().withName("level4").build()).build()
                         ).build()
                 ).build()
         );
@@ -327,15 +331,15 @@ public class RecursiveCompositionTest {
     })
     void testForInheritedMultiLevelSingleComposition() {
 
-        EntityB b = entityBDao.create(EntityB.builder().withName("level1")
-                .withA(EntityA.builder().withName("level2")
-                        .withA(EntityA.builder().withName("level3")
-                                .withA(EntityA.builder().withName("level4").build()).build()
+        EntityB b = entityBDao.create(EntityBForCreate.builder().withName("level1")
+                .withA(EntityAForCreate.builder().withName("level2")
+                        .withA(EntityAForCreate.builder().withName("level3")
+                                .withA(EntityAForCreate.builder().withName("level4").build()).build()
                         ).build()
                 )
-                .withBa(EntityA.builder().withName("level2")
-                        .withA(EntityA.builder().withName("level3")
-                                .withA(EntityA.builder().withName("level4").build()).build()
+                .withBa(EntityAForCreate.builder().withName("level2")
+                        .withA(EntityAForCreate.builder().withName("level3")
+                                .withA(EntityAForCreate.builder().withName("level4").build()).build()
                         ).build()
                 )
                 .build()

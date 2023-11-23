@@ -23,10 +23,7 @@ package hu.blackbelt.judo.runtime.core.jsl.transfer;
 import com.google.inject.Inject;
 import hu.blackbelt.judo.dispatcher.api.FileType;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.enum_.Enum;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferoptionalprimitives.TransferOptionalPrimitives;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferoptionalprimitives.TransferOptionalPrimitivesAttribute;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferoptionalprimitives.TransferOptionalPrimitivesDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferoptionalprimitives.TransferOptionalPrimitivesMask;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferoptionalprimitives.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.MappedTransferPrimitivesDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
@@ -59,7 +56,7 @@ public class MappedTransferQueryCustomizerFunctionsTest {
     @BeforeEach
     protected void init() {
 
-        transf1 = transferOptionalPrimitivesDao.create(TransferOptionalPrimitives.builder()
+        transf1 = transferOptionalPrimitivesDao.create(TransferOptionalPrimitivesForCreate.builder()
                 .withIntegerAttr(2)
                 .withScaledAttr(2.34)
                 .withStringAttr("test")
@@ -72,7 +69,7 @@ public class MappedTransferQueryCustomizerFunctionsTest {
                 .withEnumAttr(Enum.EnumC)
                 .build());
 
-        transf2 = transferOptionalPrimitivesDao.create(TransferOptionalPrimitives.builder()
+        transf2 = transferOptionalPrimitivesDao.create(TransferOptionalPrimitivesForCreate.builder()
                 .withIntegerAttr(1)
                 .withScaledAttr(1.23)
                 .withStringAttr("Another")
@@ -276,8 +273,8 @@ public class MappedTransferQueryCustomizerFunctionsTest {
                 .orderBy(TransferOptionalPrimitivesAttribute.TIMESTAMP_ATTR)
                 .orderBy(TransferOptionalPrimitivesAttribute.TIME_ATTR)
                 .orderBy(TransferOptionalPrimitivesAttribute.ENUM_ATTR)
-                .execute()
-                .get(0);
+                .selectOne()
+                .get();
 
         assertEquals(transf2.identifier(), orderBy.identifier());
     }
@@ -310,8 +307,8 @@ public class MappedTransferQueryCustomizerFunctionsTest {
                 .orderByDescending(TransferOptionalPrimitivesAttribute.TIMESTAMP_ATTR)
                 .orderByDescending(TransferOptionalPrimitivesAttribute.TIME_ATTR)
                 .orderByDescending(TransferOptionalPrimitivesAttribute.ENUM_ATTR)
-                .execute()
-                .get(0);
+                .selectOne()
+                .get();
 
         assertEquals(transf1.identifier(), orderBy.identifier());
     }
@@ -345,8 +342,8 @@ public class MappedTransferQueryCustomizerFunctionsTest {
                 .orderBy(TransferOptionalPrimitivesAttribute.DERIVED_TIMESTAMP_ATTR)
                 .orderBy(TransferOptionalPrimitivesAttribute.DERIVED_TIME_ATTR)
                 .orderBy(TransferOptionalPrimitivesAttribute.DERIVED_ENUM_ATTR)
-                .execute()
-                .get(0);
+                .selectOne()
+                .get();
 
         assertEquals(transf2.identifier(), orderBy.identifier());
     }
@@ -380,8 +377,8 @@ public class MappedTransferQueryCustomizerFunctionsTest {
                 .orderByDescending(TransferOptionalPrimitivesAttribute.DERIVED_TIMESTAMP_ATTR)
                 .orderByDescending(TransferOptionalPrimitivesAttribute.DERIVED_TIME_ATTR)
                 .orderByDescending(TransferOptionalPrimitivesAttribute.DERIVED_ENUM_ATTR)
-                .execute()
-                .get(0);
+                .selectOne()
+                .get();
 
         assertEquals(transf1.identifier(), orderBy.identifier());
     }
@@ -415,8 +412,8 @@ public class MappedTransferQueryCustomizerFunctionsTest {
                 .orderBy(TransferOptionalPrimitivesAttribute.DERIVED_TIMESTAMP_ATTR)
                 .orderBy(TransferOptionalPrimitivesAttribute.TIME_ATTR)
                 .orderBy(TransferOptionalPrimitivesAttribute.DERIVED_ENUM_ATTR)
-                .execute()
-                .get(0);
+                .selectOne()
+                .get();
 
         assertEquals(transf2.identifier(), orderBy.identifier());
     }
@@ -450,8 +447,8 @@ public class MappedTransferQueryCustomizerFunctionsTest {
                 .orderByDescending(TransferOptionalPrimitivesAttribute.DERIVED_TIMESTAMP_ATTR)
                 .orderByDescending(TransferOptionalPrimitivesAttribute.TIME_ATTR)
                 .orderByDescending(TransferOptionalPrimitivesAttribute.DERIVED_ENUM_ATTR)
-                .execute()
-                .get(0);
+                .selectOne()
+                .get();
 
         assertEquals(transf1.identifier(), orderBy.identifier());
     }
@@ -496,8 +493,8 @@ public class MappedTransferQueryCustomizerFunctionsTest {
                         .withStringAttr()
                         .withIntegerAttr())
                 .filterByStringAttr(StringFilter.equalTo("test"))
-                .execute()
-                .get(0);
+                .selectOne()
+                .get();
 
         assertEquals(transf1.identifier(), maskedResult.identifier());
         assertEquals(transf1.getIntegerAttr(), maskedResult.getIntegerAttr());
@@ -510,8 +507,8 @@ public class MappedTransferQueryCustomizerFunctionsTest {
         TransferOptionalPrimitives orderBy = transferOptionalPrimitivesDao
                 .query()
                 .orderBy(attribute)
-                .execute()
-                .get(0);
+                .selectOne()
+                .get();
 
         assertEquals(firstTransfer.identifier(), orderBy.identifier());
     }
@@ -520,8 +517,8 @@ public class MappedTransferQueryCustomizerFunctionsTest {
         TransferOptionalPrimitives orderByDescending = transferOptionalPrimitivesDao
                 .query()
                 .orderByDescending(attribute)
-                .execute()
-                .get(0);
+                .selectOne()
+                .get();
 
         assertEquals(firstEntity.identifier(), orderByDescending.identifier());
     }

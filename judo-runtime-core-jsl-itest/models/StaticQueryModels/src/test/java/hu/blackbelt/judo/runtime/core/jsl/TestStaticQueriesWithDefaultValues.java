@@ -1,8 +1,10 @@
 package hu.blackbelt.judo.runtime.core.jsl;
 
 import com.google.inject.Inject;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.teststaticquerieswithdefaultvalues.teststaticquerieswithdefaultvalues.snapshot1.Snapshot1ForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.teststaticquerieswithdefaultvalues.teststaticquerieswithdefaultvalues.myentity.MyEntity;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.teststaticquerieswithdefaultvalues.teststaticquerieswithdefaultvalues.myentity.MyEntityDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.teststaticquerieswithdefaultvalues.teststaticquerieswithdefaultvalues.myentity.MyEntityForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.teststaticquerieswithdefaultvalues.teststaticquerieswithdefaultvalues.myenum.MyEnum;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.teststaticquerieswithdefaultvalues.teststaticquerieswithdefaultvalues.snapshot1.Snapshot1;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.teststaticquerieswithdefaultvalues.teststaticquerieswithdefaultvalues.snapshot1.Snapshot1Dao;
@@ -144,8 +146,8 @@ public class TestStaticQueriesWithDefaultValues {
             "REQ-EXPR-022"
     })
     void testStaticQueriesWithDefaultValuesByConstantsOrExpressions() {
-        MyEntity e1 = myEntityDao.create(MyEntity.builder().build());
-        MyEntity e2 = myEntityDao.create(MyEntity.builder()
+        MyEntity e1 = myEntityDao.create(MyEntityForCreate.builder().build());
+        MyEntity e2 = myEntityDao.create(MyEntityForCreate.builder()
                 .withFldBool(true)
                 .withFldDate(LocalDate.parse("1900-01-01"))
                 .withFldTime(LocalTime.parse("12:00:13"))
@@ -156,7 +158,7 @@ public class TestStaticQueriesWithDefaultValues {
                 .withFldEnum(MyEnum.A03)
                 .build());
 
-        MyEntity e3 = myEntityDao.create(MyEntity.builder()
+        MyEntity e3 = myEntityDao.create(MyEntityForCreate.builder()
                 .withFldBool(false)
                 .withFldDate(LocalDate.now())
                 .withFldTime(LocalTime.parse("15:15:01"))
@@ -167,7 +169,7 @@ public class TestStaticQueriesWithDefaultValues {
                 .withFldEnum(MyEnum.A02)
                 .build());
 
-        MyEntity e4 = myEntityDao.create(MyEntity.builder()
+        MyEntity e4 = myEntityDao.create(MyEntityForCreate.builder()
                 .withFldBool(true)
                 .withFldDate(LocalDate.parse("2023-01-01"))
                 .withFldTime(LocalTime.parse("15:20"))
@@ -179,7 +181,7 @@ public class TestStaticQueriesWithDefaultValues {
                 .build());
 
         
-        Snapshot1 s1 = snapshot1Dao.create(Snapshot1.builder().build());
+        Snapshot1 s1 = snapshot1Dao.create(Snapshot1ForCreate.builder().build());
         assertEquals(e2.identifier().getIdentifier(), snapshot1Dao.queryFldMyEntity001(s1).orElseThrow().identifier().getIdentifier());
         assertEquals(e3.identifier().getIdentifier(), snapshot1Dao.queryFldMyEntity002(s1).orElseThrow().identifier().getIdentifier());
         Serializable fldMyEntity003ID = snapshot1Dao.queryFldMyEntity003(s1).orElseThrow().identifier().getIdentifier();
@@ -196,9 +198,9 @@ public class TestStaticQueriesWithDefaultValues {
                 || fldMyEntity006ID.equals(e4.identifier().getIdentifier())
             );
         List<MyEntity> defEntities = new ArrayList<>(List.of(e2));
-        assertEquals(defEntities, snapshot1Dao.queryDefEntities(s1).execute());
+        assertEquals(defEntities, snapshot1Dao.queryDefEntities(s1).selectList());
         List<MyEntity> otherEntities = new ArrayList<>(List.of(e4));
-        assertEquals(otherEntities, snapshot1Dao.queryOtherEntities(s1).execute());
+        assertEquals(otherEntities, snapshot1Dao.queryOtherEntities(s1).selectList());
 
     }
 

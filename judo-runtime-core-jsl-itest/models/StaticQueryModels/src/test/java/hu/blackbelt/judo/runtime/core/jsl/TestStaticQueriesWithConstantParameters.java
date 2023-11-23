@@ -4,11 +4,14 @@ import com.google.inject.Inject;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.teststaticquerieswithconstantparameters.teststaticquerieswithconstantparameters.lastaddedmyentity.LastAddedMyEntityDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.teststaticquerieswithconstantparameters.teststaticquerieswithconstantparameters.myentity.MyEntity;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.teststaticquerieswithconstantparameters.teststaticquerieswithconstantparameters.myentity.MyEntityDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.teststaticquerieswithconstantparameters.teststaticquerieswithconstantparameters.myentity.MyEntityForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.teststaticquerieswithconstantparameters.teststaticquerieswithconstantparameters.myenum.MyEnum;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.teststaticquerieswithconstantparameters.teststaticquerieswithconstantparameters.snapshot1.Snapshot1;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.teststaticquerieswithconstantparameters.teststaticquerieswithconstantparameters.snapshot1.Snapshot1Dao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.teststaticquerieswithconstantparameters.teststaticquerieswithconstantparameters.snapshot1.Snapshot1ForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.teststaticquerieswithconstantparameters.teststaticquerieswithconstantparameters.snapshot2.Snapshot2;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.teststaticquerieswithconstantparameters.teststaticquerieswithconstantparameters.snapshot2.Snapshot2Dao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.teststaticquerieswithconstantparameters.teststaticquerieswithconstantparameters.snapshot2.Snapshot2ForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.TestStaticQueriesWithConstantParametersDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
@@ -240,7 +243,7 @@ public class TestStaticQueriesWithConstantParameters {
             "REQ-EXPR-022"
     })
     void testStaticQueryWithConstantParameters() {
-        MyEntity e1 = myEntityDao.create(MyEntity.builder().build());
+        MyEntity e1 = myEntityDao.create(MyEntityForCreate.builder().build());
         assertTrue(e1.getFfCreated().isPresent());
         assertTrue(LocalDateTime.now().minusSeconds(2).isBefore(e1.getFfCreated().orElseThrow()));
         assertTrue(e1.getFfBool().isEmpty());
@@ -252,7 +255,7 @@ public class TestStaticQueriesWithConstantParameters {
         assertTrue(e1.getFfDecimal().isEmpty());
         assertTrue(e1.getFfEnum().isEmpty());
 
-        MyEntity e2 = myEntityDao.create(MyEntity.builder()
+        MyEntity e2 = myEntityDao.create(MyEntityForCreate.builder()
                 .withFfBool(true)
                 .withFfDate(LocalDate.parse("2023-01-01"))
                 .withFfTime(LocalTime.parse("12:00:13"))
@@ -263,7 +266,7 @@ public class TestStaticQueriesWithConstantParameters {
                 .withFfEnum(MyEnum.A02)
                 .build());
 
-        Snapshot1 s11 = snapshot1Dao.create(Snapshot1.builder().build());
+        Snapshot1 s11 = snapshot1Dao.create(Snapshot1ForCreate.builder().build());
 
         assertTrue(s11.getCreated().isPresent());
         assertTrue(LocalDateTime.now().minusSeconds(2).isBefore(s11.getCreated().orElseThrow()));
@@ -276,7 +279,7 @@ public class TestStaticQueriesWithConstantParameters {
         assertTrue(s11.getFfDecimal().isEmpty());
         assertTrue(s11.getFfEnum().isEmpty());
 
-        Snapshot2 s21 = snapshot2Dao.create(Snapshot2.builder().build());
+        Snapshot2 s21 = snapshot2Dao.create(Snapshot2ForCreate.builder().build());
 
         assertTrue(s21.getCreated().isPresent());
         assertTrue(LocalDateTime.now().minusSeconds(2).isBefore(s21.getCreated().orElseThrow()));
@@ -290,7 +293,7 @@ public class TestStaticQueriesWithConstantParameters {
         assertTrue(s21.getFfEnum().isEmpty());
         assertEquals(0, snapshot2Dao.countEntities(s21));
 
-        MyEntity e3 = myEntityDao.create(MyEntity.builder()
+        MyEntity e3 = myEntityDao.create(MyEntityForCreate.builder()
                 .withFfBool(true)
                 .withFfDate(LocalDate.parse("2023-01-01"))
                 .withFfTime(LocalTime.parse("08:00:00"))
@@ -301,7 +304,7 @@ public class TestStaticQueriesWithConstantParameters {
                 .withFfEnum(MyEnum.A02)
                 .build());
 
-        Snapshot1 s12 = snapshot1Dao.create(Snapshot1.builder().build());
+        Snapshot1 s12 = snapshot1Dao.create(Snapshot1ForCreate.builder().build());
 
         assertTrue(s12.getCreated().isPresent());
         assertTrue(LocalDateTime.now().minusSeconds(2).isBefore(s12.getCreated().orElseThrow()));
@@ -319,7 +322,7 @@ public class TestStaticQueriesWithConstantParameters {
         assertTrue(s12.getFfEnum().isPresent());
         assertEquals(MyEnum.A02, s12.getFfEnum().orElseThrow());
 
-        MyEntity e4 = myEntityDao.create(MyEntity.builder()
+        MyEntity e4 = myEntityDao.create(MyEntityForCreate.builder()
                 .withFfBool(true)
                 .withFfDate(LocalDate.parse("2023-01-01"))
                 .withFfTime(LocalTime.parse("12:00:13"))
@@ -330,7 +333,7 @@ public class TestStaticQueriesWithConstantParameters {
                 .withFfEnum(MyEnum.A01)
                 .build());
 
-        MyEntity e5 = myEntityDao.create(MyEntity.builder()
+        MyEntity e5 = myEntityDao.create(MyEntityForCreate.builder()
                 .withFfBool(false)
                 .withFfDate(LocalDate.parse("2023-01-05"))
                 .withFfTime(LocalTime.parse("12:00:13"))
@@ -341,7 +344,7 @@ public class TestStaticQueriesWithConstantParameters {
                 .withFfEnum(MyEnum.A03)
                 .build());
 
-        Snapshot1 s13 = snapshot1Dao.create(Snapshot1.builder().build());
+        Snapshot1 s13 = snapshot1Dao.create(Snapshot1ForCreate.builder().build());
 
         assertTrue(s13.getFfBool().isPresent());
         assertTrue(s13.getFfBool().orElseThrow());
@@ -362,7 +365,7 @@ public class TestStaticQueriesWithConstantParameters {
         assertEquals(MyEnum.A02, s13.getFfEnum().orElseThrow());
 
         s21 = snapshot2Dao.getById(s21.identifier()).orElseThrow();
-        List<Serializable> s21Ids = snapshot2Dao.queryEntities(s21).execute().stream().map(e -> e.identifier().getIdentifier()).collect(Collectors.toList());
+        List<Serializable> s21Ids = snapshot2Dao.queryEntities(s21).selectList().stream().map(e -> e.identifier().getIdentifier()).collect(Collectors.toList());
         assertEquals(2, s21Ids.size());
         Set<Serializable> s21IdSet = new HashSet<>(s21Ids);
 
@@ -389,7 +392,7 @@ public class TestStaticQueriesWithConstantParameters {
         Optional<Snapshot1> s12FromDatabseOpt = snapshot1Dao.getById(s12.identifier());
         assertTrue(s12FromDatabseOpt.isPresent());
         Snapshot1 s12FromDatabse = s12FromDatabseOpt.get();
-        Serializable lastAddedEntity = lastAddedMyEntityDao.execute().map(e -> e.identifier().getIdentifier()).orElseThrow();
+        Serializable lastAddedEntity = lastAddedMyEntityDao.selectOne().map(e -> e.identifier().getIdentifier()).orElseThrow();
 
         assertTrue(s12FromDatabse.getCreated().isPresent());
         assertTrue(LocalDateTime.now().minusSeconds(2).isBefore(s12FromDatabse.getCreated().orElseThrow()));

@@ -21,13 +21,14 @@ package hu.blackbelt.judo.runtime.core.jsl.spring;
  */
 
 import hu.blackbelt.judo.runtime.core.jsl.spring.test.api.salesmodel.salesmodel.lead.Lead;
-import hu.blackbelt.judo.runtime.core.jsl.spring.test.api.salesmodel.salesmodel.lead.LeadAttachedRelationsForCreate;
 import hu.blackbelt.judo.runtime.core.jsl.spring.test.api.salesmodel.salesmodel.lead.LeadDao;
+import hu.blackbelt.judo.runtime.core.jsl.spring.test.api.salesmodel.salesmodel.lead.LeadForCreate;
 import hu.blackbelt.judo.runtime.core.jsl.spring.test.api.salesmodel.salesmodel.person.PersonDao;
 import hu.blackbelt.judo.runtime.core.jsl.spring.test.api.salesmodel.salesmodel.rootallleads.RootAllLeadsDao;
 import hu.blackbelt.judo.runtime.core.jsl.spring.test.api.salesmodel.salesmodel.rootonelead.RootOneLeadDao;
 import hu.blackbelt.judo.runtime.core.jsl.spring.test.api.salesmodel.salesmodel.salesperson.SalesPerson;
 import hu.blackbelt.judo.runtime.core.jsl.spring.test.api.salesmodel.salesmodel.salesperson.SalesPersonDao;
+import hu.blackbelt.judo.runtime.core.jsl.spring.test.api.salesmodel.salesmodel.salesperson.SalesPersonForCreate;
 import hu.blackbelt.judo.runtime.core.jsl.spring.test.api.salesmodel.salesmodel.salesperson.SalesPersonIdentifier;
 import hu.blackbelt.judo.runtime.core.jsl.spring.test.api.salesmodel.salesmodel.salesperson.leadsover.SalesPersonLeadsOverParameter;
 import hu.blackbelt.judo.runtime.core.jsl.spring.test.api.salesmodel.salesmodel.totalnumberofleads.TotalNumberOfLeadsDao;
@@ -79,7 +80,7 @@ class JudoRuntimeCoreSpringApplicationTests {
     @Test
     void testDaoFunctions() {
 
-        SalesPerson createdSalesPerson = salesPersonDao.create(SalesPerson.builder()
+        SalesPerson createdSalesPerson = salesPersonDao.create(SalesPersonForCreate.builder()
                 .withFirstName("Test")
                 .withLastName("Elek")
                 .build());
@@ -89,12 +90,11 @@ class JudoRuntimeCoreSpringApplicationTests {
 
         List<SalesPerson> personList = salesPersonDao.query()
                 .filterByFirstName(StringFilter.equalTo("Test"))
-                .execute();
+                .selectList();
 
         assertEquals(1, personList.size());
 
-        Lead lead1 = leadDao.create(Lead.builder().build(),
-                LeadAttachedRelationsForCreate.builder()
+        Lead lead1 = leadDao.create(LeadForCreate.builder()
                         .withSalesPerson(createdSalesPerson)
                         .build());
 
@@ -102,10 +102,9 @@ class JudoRuntimeCoreSpringApplicationTests {
         assertEquals(Optional.of("Test"), leadDao.querySalesPerson(lead1).getFirstName());
 
         Lead lead2 = leadDao.create(
-                Lead.builder()
+                LeadForCreate.builder()
                         .withValue(9)
-                        .build(),
-                LeadAttachedRelationsForCreate.builder()
+
                         .withSalesPerson(createdSalesPerson)
                         .build()
                 );
@@ -116,20 +115,20 @@ class JudoRuntimeCoreSpringApplicationTests {
                 .queryLeadsOver(createdSalesPerson, SalesPersonLeadsOverParameter.builder()
                         .withLimit(10)
                         .build())
-                .execute();
+                .selectList();
         assertEquals(1, leadListOfQuery.size());
         assertEquals(Optional.of(100000), leadListOfQuery.get(0).getValue());
 
         leadListOfQuery = salesPersonDao
                 .queryLeads(createdSalesPerson)
                 .filterByValue(NumberFilter.equalTo(100000))
-                .execute();
+                .selectList();
         assertEquals(1, leadListOfQuery.size());
         assertEquals(Optional.of(100000), leadListOfQuery.get(0).getValue());
 
-        assertEquals(2, totalNumberOfLeadsDao.execute());
-        assertEquals(2, rootAllLeadsDao.query().execute().size());
-        assertTrue(rootOneLeadDao.execute().isPresent());
+        assertEquals(2, totalNumberOfLeadsDao.selectValue());
+        assertEquals(2, rootAllLeadsDao.query().selectList().size());
+        assertTrue(rootOneLeadDao.selectOne().isPresent());
     }
 
 
@@ -141,7 +140,7 @@ class JudoRuntimeCoreSpringApplicationTests {
         TransactionStatus transactionStatus = transactionManager.getTransaction(defaultTransactionDefinition);
 
         // Create and commit a salesperson
-        SalesPerson salesPerson = salesPersonDao.create(SalesPerson.builder()
+        SalesPerson salesPerson = salesPersonDao.create(SalesPersonForCreate.builder()
                 .withFirstName("Test")
                 .withLastName("Elek")
                 .build());
@@ -173,7 +172,7 @@ class JudoRuntimeCoreSpringApplicationTests {
         TransactionStatus transactionStatus = transactionManager.getTransaction(defaultTransactionDefinition);
 
         // Create and commit a salesperson
-        SalesPerson salesPerson = salesPersonDao.create(SalesPerson.builder()
+        SalesPerson salesPerson = salesPersonDao.create(SalesPersonForCreate.builder()
                 .withFirstName("Test")
                 .withLastName("Elek")
                 .build());

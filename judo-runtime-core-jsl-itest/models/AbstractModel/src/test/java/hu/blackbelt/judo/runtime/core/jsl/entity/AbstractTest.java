@@ -7,36 +7,40 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractm
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.b.BIdentifier;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.c.C;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.c.CDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.c.CForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.d.DDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.e.EDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.f.FDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.g.GDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.h.H;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.h.HAttachedRelationsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.h.HDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.h.HForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.i.I;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.i.IDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.i.IIdentifier;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.j.J;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.j.JDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.j.JForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.j.JIdentifier;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.k.K;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.k.KDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.k.KIdentifier;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.l.L;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.l.LAttachedRelationsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.l.LDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.l.LForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.m.M;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.m.MDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.m.MIdentifier;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.n.N;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.n.NDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.n.NForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.o.ODao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.p.P;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.p.PDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.p.PIdentifier;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.q.Q;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.q.QDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.abstractmodel.abstractmodel.q.QForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.AbstractModelDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
@@ -200,7 +204,7 @@ public class AbstractTest {
 
         //Entities B,C
 
-        C c = cDao.create(C.builder().build());
+        C c = cDao.create(CForCreate.builder().build());
         assertTrue(cDao.getById(c.identifier()).isPresent());
 
         B b = bDao.getById(c.identifier().adaptTo(BIdentifier.class)).orElseThrow();
@@ -286,21 +290,19 @@ public class AbstractTest {
 
         //Entity H,I,J
 
-        J jOptionalRelation = jDao.create(J.builder().build());
+        J jOptionalRelation = jDao.create(JForCreate.builder().build());
         I iOptionalRelation = JtoI(jOptionalRelation);
-        J jRequiredRelation = jDao.create(J.builder().build());
+        J jRequiredRelation = jDao.create(JForCreate.builder().build());
         I iRequiredRelation = JtoI(jRequiredRelation);
 
         List<J> jMultiRelation = List.of(
-                jDao.create(J.builder().build()),
-                jDao.create(J.builder().build()),
-                jDao.create(J.builder().build())
+                jDao.create(JForCreate.builder().build()),
+                jDao.create(JForCreate.builder().build()),
+                jDao.create(JForCreate.builder().build())
         );
         List<I> iMultiRelation = jMultiRelation.stream().map(l -> JtoI(l)).collect(Collectors.toList());
 
-        H h = hDao.create(H.builder()
-                        .build(),
-                HAttachedRelationsForCreate.builder()
+        H h = hDao.create(HForCreate.builder()
                         .withRelationIOnHSingle(iOptionalRelation)
                         .withRelationIOnHSingleRequired(iRequiredRelation)
                         .withRelationIOnHMulti(iMultiRelation)
@@ -326,7 +328,7 @@ public class AbstractTest {
 
         assertEquals(Optional.of("iOptionalRelationNameChanged"), hDao.queryRelationIOnHSingle(h).orElseThrow().getNameI());
         assertEquals(Optional.of("iRequiredRelationNameChanged"), hDao.queryRelationIOnHSingleRequired(h).getNameI());
-        hDao.queryRelationIOnHMulti(h).execute().stream().forEach(i -> assertEquals(Optional.of("iMultiRelationNameChanged"), i.getNameI()));
+        hDao.queryRelationIOnHMulti(h).selectList().stream().forEach(i -> assertEquals(Optional.of("iMultiRelationNameChanged"), i.getNameI()));
 
         //delete relations with IDao
 
@@ -347,33 +349,33 @@ public class AbstractTest {
         assertTrue(thrown.getMessage().contains("#relationIOnHSingleRequired"));
 
 
-        List<I> deleteMultiRelation = hDao.queryRelationIOnHMulti(h).execute();
-        iDao.delete(deleteMultiRelation.get(0));
-        assertTrue(iDao.getById(deleteMultiRelation.get(0).identifier()).isEmpty());
+        I deleteMultiRelation = hDao.queryRelationIOnHMulti(h).selectOne().get();
+        iDao.delete(deleteMultiRelation);
+        assertTrue(iDao.getById(deleteMultiRelation.identifier()).isEmpty());
         h = hDao.getById(h.identifier()).orElseThrow();
-        assertEquals(2, hDao.queryRelationIOnHMulti(h).execute().size());
+        assertEquals(2, hDao.queryRelationIOnHMulti(h).selectList().size());
 
         //check if other methods are working well
 
         //add
         assertEquals(2, hDao.countRelationIOnHMulti(h));
-        hDao.addRelationIOnHMulti(h, List.of(JtoI(jDao.create(J.builder().build()))));
+        hDao.addRelationIOnHMulti(h, List.of(JtoI(jDao.create(JForCreate.builder().build()))));
         assertEquals(3, hDao.countRelationIOnHMulti(h));
         h = hDao.getById(h.identifier()).orElseThrow();
 
         //remove
         assertEquals(3, hDao.countRelationIOnHMulti(h));
-        hDao.removeRelationIOnHMulti(h, List.of(hDao.queryRelationIOnHMulti(h).execute().get(0)));
+        hDao.removeRelationIOnHMulti(h, List.of(hDao.queryRelationIOnHMulti(h).selectList().get(0)));
         assertEquals(2, hDao.countRelationIOnHMulti(h));
         h = hDao.getById(h.identifier()).orElseThrow();
 
         assertEquals(2, hDao.countRelationIOnHMulti(h));
-        hDao.removeRelationIOnHMulti(h, List.of(hDao.queryRelationIOnHMulti(h).execute().get(0), hDao.queryRelationIOnHMulti(h).execute().get(1)));
+        hDao.removeRelationIOnHMulti(h, List.of(hDao.queryRelationIOnHMulti(h).selectList().get(0), hDao.queryRelationIOnHMulti(h).selectList().get(1)));
         assertEquals(0, hDao.countRelationIOnHMulti(h));
         h = hDao.getById(h.identifier()).orElseThrow();
 
         //set
-        hDao.setRelationIOnHSingle(h, JtoI(jDao.create(J.builder().withNameI("SetNewElement").build())));
+        hDao.setRelationIOnHSingle(h, JtoI(jDao.create(JForCreate.builder().withNameI("SetNewElement").build())));
 
         h = hDao.getById(h.identifier()).orElseThrow();
 
@@ -474,21 +476,19 @@ public class AbstractTest {
 
         //Entity K.M,N,L
 
-        N nOptionalRelation = nDao.create(N.builder().build());
+        N nOptionalRelation = nDao.create(NForCreate.builder().build());
         M mOptionalRelation = NtoM(nOptionalRelation);
-        N nRequiredRelation = nDao.create(N.builder().build());
+        N nRequiredRelation = nDao.create(NForCreate.builder().build());
         M mRequiredRelation = NtoM(nRequiredRelation);
 
         List<N> nMultiRelation = List.of(
-                nDao.create(N.builder().build()),
-                nDao.create(N.builder().build()),
-                nDao.create(N.builder().build())
+                nDao.create(NForCreate.builder().build()),
+                nDao.create(NForCreate.builder().build()),
+                nDao.create(NForCreate.builder().build())
         );
         List<M> mMultiRelation = nMultiRelation.stream().map(l -> NtoM(l)).collect(Collectors.toList());
 
-        L l = lDao.create(L.builder()
-                        .build(),
-                LAttachedRelationsForCreate.builder()
+        L l = lDao.create(LForCreate.builder()
                         .withRelationMOnKSingle(mOptionalRelation)
                         .withRelationMOnKSingleRequired(mRequiredRelation)
                         .withRelationMOnKMulti(mMultiRelation)
@@ -518,11 +518,11 @@ public class AbstractTest {
 
         assertEquals(Optional.of("mOptionalRelationNameChanged"), lDao.queryRelationMOnKSingle(l).orElseThrow().getNameM());
         assertEquals(Optional.of("mRequiredRelationNameChanged"), lDao.queryRelationMOnKSingleRequired(l).getNameM());
-        lDao.queryRelationMOnKMulti(l).execute().stream().forEach(i -> assertEquals(Optional.of("mMultiRelationNameChanged"), i.getNameM()));
+        lDao.queryRelationMOnKMulti(l).selectList().stream().forEach(i -> assertEquals(Optional.of("mMultiRelationNameChanged"), i.getNameM()));
 
         assertEquals(Optional.of("mOptionalRelationNameChanged"), kDao.queryRelationMOnKSingle(k).orElseThrow().getNameM());
         assertEquals(Optional.of("mRequiredRelationNameChanged"), kDao.queryRelationMOnKSingleRequired(k).getNameM());
-        kDao.queryRelationMOnKMulti(k).execute().stream().forEach(i -> assertEquals(Optional.of("mMultiRelationNameChanged"), i.getNameM()));
+        kDao.queryRelationMOnKMulti(k).selectList().stream().forEach(i -> assertEquals(Optional.of("mMultiRelationNameChanged"), i.getNameM()));
 
 
         //delete relations with IDao
@@ -542,33 +542,33 @@ public class AbstractTest {
         assertTrue(thrown.getMessage().contains("There are mandatory references that cannot be removed"));
         assertTrue(thrown.getMessage().contains("#relationMOnKSingleRequired"));
 
-        List<M> deleteMultiRelation = kDao.queryRelationMOnKMulti(k).execute();
+        List<M> deleteMultiRelation = kDao.queryRelationMOnKMulti(k).selectList();
         mDao.delete(deleteMultiRelation.get(0));
         assertTrue(mDao.getById(deleteMultiRelation.get(0).identifier()).isEmpty());
-        assertEquals(2, lDao.queryRelationMOnKMulti(l).execute().size());
-        assertEquals(2, kDao.queryRelationMOnKMulti(k).execute().size());
+        assertEquals(2, lDao.queryRelationMOnKMulti(l).selectList().size());
+        assertEquals(2, kDao.queryRelationMOnKMulti(k).selectList().size());
 
         //Check the collection methods
 
         //add
         assertEquals(2, kDao.countRelationMOnKMulti(k));
-        kDao.addRelationMOnKMulti(k, List.of(NtoM(nDao.create(N.builder().build()))));
+        kDao.addRelationMOnKMulti(k, List.of(NtoM(nDao.create(NForCreate.builder().build()))));
         assertEquals(3, kDao.countRelationMOnKMulti(k));
         assertEquals(3, lDao.countRelationMOnKMulti(l));
 
         //remove
         assertEquals(3, kDao.countRelationMOnKMulti(k));
-        kDao.removeRelationMOnKMulti(k, List.of(kDao.queryRelationMOnKMulti(k).execute().get(0)));
+        kDao.removeRelationMOnKMulti(k, List.of(kDao.queryRelationMOnKMulti(k).selectList().get(0)));
         assertEquals(2, kDao.countRelationMOnKMulti(k));
         assertEquals(2, lDao.countRelationMOnKMulti(l));
 
         assertEquals(2, kDao.countRelationMOnKMulti(k));
-        kDao.removeRelationMOnKMulti(k, List.of(kDao.queryRelationMOnKMulti(k).execute().get(0), kDao.queryRelationMOnKMulti(k).execute().get(1)));
+        kDao.removeRelationMOnKMulti(k, List.of(kDao.queryRelationMOnKMulti(k).selectList().get(0), kDao.queryRelationMOnKMulti(k).selectList().get(1)));
         assertEquals(0, kDao.countRelationMOnKMulti(k));
         assertEquals(0, lDao.countRelationMOnKMulti(l));
 
         //set
-        kDao.setRelationMOnKSingle(k, NtoM(nDao.create(N.builder().withNameM("SetNewElement").build())));
+        kDao.setRelationMOnKSingle(k, NtoM(nDao.create(NForCreate.builder().withNameM("SetNewElement").build())));
 
         l = lDao.getById(l.identifier()).orElseThrow();
         k = kDao.getById(l.identifier().adaptTo(KIdentifier.class)).orElseThrow();
@@ -630,7 +630,7 @@ public class AbstractTest {
 
         //Entity O,P,Q
 
-        Q q = qDao.create(Q.builder().build());
+        Q q = qDao.create(QForCreate.builder().build());
         P p = pDao.getById(q.identifier().adaptTo(PIdentifier.class)).orElseThrow();
 
         assertEquals(p.identifier().getIdentifier(), pDao.queryPany(p).orElseThrow().identifier().getIdentifier());

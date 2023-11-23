@@ -24,12 +24,14 @@ import com.google.inject.Inject;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.a.A;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.b.B;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.b.BDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.b.BForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.b.BIdentifier;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.ca.CA;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.ca.CADao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.ca.CAForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.tester.Tester;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.tester.TesterAttachedRelationsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.tester.TesterDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.tester.TesterForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.CastingFunctionsDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
@@ -60,26 +62,24 @@ public class CastingFunctionsTest {
     @BeforeEach
     protected void init() throws Exception {
 
-        CA ca = caDao.create(CA.builder().withNameA("aca1").withNameB("bca1").withNameCA("ca1").build());
-        CA ca1 = caDao.create(CA.builder().withNameA("aca2").withNameB("bca2").withNameCA("ca2").build());
-        CA ca2 = caDao.create(CA.builder().withNameA("aca3").withNameB("bca3").withNameCA("ca3").build());
+        CA ca = caDao.create(CAForCreate.builder().withNameA("aca1").withNameB("bca1").withNameCA("ca1").build());
+        CA ca1 = caDao.create(CAForCreate.builder().withNameA("aca2").withNameB("bca2").withNameCA("ca2").build());
+        CA ca2 = caDao.create(CAForCreate.builder().withNameA("aca3").withNameB("bca3").withNameCA("ca3").build());
         B caAsB = bDao.getById(ca.identifier().adaptTo(BIdentifier.class)).orElseThrow();
         B caAsB1 = bDao.getById(ca1.identifier().adaptTo(BIdentifier.class)).orElseThrow();
         B caAsB2 = bDao.getById(ca2.identifier().adaptTo(BIdentifier.class)).orElseThrow();
 
         tester = testerDao.create(
-                Tester.builder()
-                        .build(),
-                TesterAttachedRelationsForCreate
-                        .builder()
-                        .withB(bDao.create(B.builder().withNameA("ab").withNameB("b").build()))
+                TesterForCreate.builder()
+                        .withB(bDao.create(BForCreate.builder().withNameA("ab").withNameB("b").build()))
                         .withBs(List.of(
-                                bDao.create(B.builder().withNameA("ab1").withNameB("b1").build()),
-                                bDao.create(B.builder().withNameA("ab2").withNameB("b2").build())
+                                bDao.create(BForCreate.builder().withNameA("ab1").withNameB("b1").build()),
+                                bDao.create(BForCreate.builder().withNameA("ab2").withNameB("b2").build())
                         ))
                         .withCaAsB(caAsB)
                         .withCaAsBs(List.of(caAsB1, caAsB2))
-                        .build());
+                        .build()
+        );
     }
 
     @Test
@@ -168,21 +168,21 @@ public class CastingFunctionsTest {
             "REQ-EXPR-022"
     })
     public void testAsCollection() {
-        List<A> asCollectionA = testerDao.queryAsCollectionA(tester).execute();
+        List<A> asCollectionA = testerDao.queryAsCollectionA(tester).selectList();
         assertEquals(2, asCollectionA.size());
         assertTrue(asCollectionA.stream().anyMatch(a -> a.getNameA().orElseThrow().equals("ab1")));
         assertTrue(asCollectionA.stream().anyMatch(a -> a.getNameA().orElseThrow().equals("ab2")));
 
-        List<B> asCollectionB = testerDao.queryAsCollectionB(tester).execute();
+        List<B> asCollectionB = testerDao.queryAsCollectionB(tester).selectList();
         assertEquals(2, asCollectionB.size());
         assertTrue(asCollectionB.stream().anyMatch(lb -> lb.getNameA().orElseThrow().equals("ab1") &&
                                                          lb.getNameB().orElseThrow().equals("b1")));
         assertTrue(asCollectionB.stream().anyMatch(lb -> lb.getNameA().orElseThrow().equals("ab2") &&
                                                          lb.getNameB().orElseThrow().equals("b2")));
 
-        assertEquals(0, testerDao.queryAsCollectionCA(tester).execute().size());
+        assertEquals(0, testerDao.queryAsCollectionCA(tester).selectList().size());
 
-        List<CA> asCollectionCA1 = testerDao.queryAsCollectionCA1(tester).execute();
+        List<CA> asCollectionCA1 = testerDao.queryAsCollectionCA1(tester).selectList();
         assertEquals(2, asCollectionCA1.size());
         assertTrue(asCollectionCA1.stream().anyMatch(lca -> lca.getNameA().orElseThrow().equals("aca2") &&
                                                             lca.getNameB().orElseThrow().equals("bca2") &&

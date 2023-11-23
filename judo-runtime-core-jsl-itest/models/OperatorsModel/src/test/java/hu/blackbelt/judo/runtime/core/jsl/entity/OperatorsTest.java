@@ -23,11 +23,14 @@ package hu.blackbelt.judo.runtime.core.jsl.entity;
 import com.google.inject.Inject;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.defaultoperators.DefaultOperators;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.defaultoperators.DefaultOperatorsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.defaultoperators.DefaultOperatorsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.derivedoperators.DerivedOperators;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.derivedoperators.DerivedOperatorsDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.derivedsource.DerivedSource;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.derivedoperators.DerivedOperatorsForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.derivedsource.DerivedSourceForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.e1.E1;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.e1.E1Dao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.e1.E1ForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.testliteral.TestLiteral;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.OperatorsDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
@@ -66,7 +69,7 @@ public class OperatorsTest {
             "REQ-EXPR-014"
     })
     void testOperatorsForDefaultValues() {
-        DefaultOperators operators = defaultOperatorsDao.create(DefaultOperators.builder().build());
+        DefaultOperators operators = defaultOperatorsDao.create(DefaultOperatorsForCreate.builder().build());
 
         assertEquals(Optional.of(1), operators.getRounded());
         assertEquals(Optional.of(-6), operators.getUnary());
@@ -163,8 +166,8 @@ public class OperatorsTest {
             "REQ-EXPR-014"
     })
     void testOperatorsForDerivedFields() {
-        DerivedOperators operators = derivedOperatorsDao.create(DerivedOperators.builder()
-                .withSource(DerivedSource.builder().build())
+        DerivedOperators operators = derivedOperatorsDao.create(DerivedOperatorsForCreate.builder()
+                .withSource(DerivedSourceForCreate.builder().build())
                 .build());
 
         assertEquals(Optional.of("John Pro"), operators.getStringConcat());
@@ -273,7 +276,7 @@ public class OperatorsTest {
             "REQ-EXPR-020"
     })
     void testEnumOperatorsAndFunctions() {
-        E1 e1 = e1Dao.create(E1.builder().build());
+        E1 e1 = e1Dao.create(E1ForCreate.builder().build());
         assertEquals(TestLiteral.ZZ00, e1.getF1().orElseThrow());
         assertEquals(TestLiteral.Aaa01, e1.getF2().orElseThrow());
         assertTrue(e1.getF3().orElseThrow());

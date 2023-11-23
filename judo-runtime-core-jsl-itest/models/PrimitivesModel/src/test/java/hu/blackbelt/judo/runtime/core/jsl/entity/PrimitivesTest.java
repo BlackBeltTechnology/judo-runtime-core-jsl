@@ -25,23 +25,34 @@ import com.google.inject.Inject;
 import hu.blackbelt.judo.dispatcher.api.FileType;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.defaultrequiredentity.DefaultRequiredEntity;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.defaultrequiredentity.DefaultRequiredEntityDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.defaultrequiredentity.DefaultRequiredEntityForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.entityrequiredfields.EntityRequiredFields;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.entityrequiredfields.EntityRequiredFieldsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.entityrequiredfields.EntityRequiredFieldsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.entityrequiredwithprimitivedefaults.EntityRequiredWithPrimitiveDefaults;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.entityrequiredwithprimitivedefaults.EntityRequiredWithPrimitiveDefaultsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.entityrequiredwithprimitivedefaults.EntityRequiredWithPrimitiveDefaultsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.entitywithidentifiers.EntityWithIdentifiers;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.entitywithidentifiers.EntityWithIdentifiersDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.entitywithidentifierscontainer.EntityWithIdentifiersContainer;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.entitywithidentifiers.EntityWithIdentifiersForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.entitywithidentifierscontainer.EntityWithIdentifiersContainerDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.entitywithidentifierscontainer.EntityWithIdentifiersContainerForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.entitywithprimitivedefaultexpressions.EntityWithPrimitiveDefaultExpressions;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.entitywithprimitivedefaultexpressions.EntityWithPrimitiveDefaultExpressionsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.entitywithprimitivedefaultexpressions.EntityWithPrimitiveDefaultExpressionsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.entitywithprimitivedefaults.EntityWithPrimitiveDefaults;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.entitywithprimitivedefaults.EntityWithPrimitiveDefaultsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.entitywithprimitivedefaults.EntityWithPrimitiveDefaultsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.myentitywithoptionalfields.MyEntityWithOptionalFields;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.myentitywithoptionalfields.MyEntityWithOptionalFieldsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.myentitywithoptionalfields.MyEntityWithOptionalFieldsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.myentitywithoptionalfields.MyEntityWithOptionalFieldsIdentifier;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.myenum.MyEnum;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.referenceentity.ReferenceEntity;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.mytransferwithoptionalfields.MyTransferWithOptionalFields;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.mytransferwithoptionalfields.MyTransferWithOptionalFieldsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.mytransferwithoptionalfields.MyTransferWithOptionalFieldsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.referenceentity.ReferenceEntityDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.referenceentity.ReferenceEntityForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.PrimitivesDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
@@ -95,6 +106,9 @@ public class PrimitivesTest {
     @Inject
     DefaultRequiredEntityDao defaultRequiredEntityDao;
 
+    @Inject
+    MyTransferWithOptionalFieldsDao myTransferWithOptionalFieldsDao;
+
     @Test
     @Requirement(reqs = {
             "REQ-TYPE-001",
@@ -103,9 +117,9 @@ public class PrimitivesTest {
             "REQ-ENT-002"
     })
     public void testPlainOptionalEntityCreationWithoutValues() {
-        MyEntityWithOptionalFields myEntityWithOptionalFields = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder().build());
+        MyEntityWithOptionalFields myEntityWithOptionalFields = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFieldsForCreate.builder().build());
 
-        List<MyEntityWithOptionalFields> list = myEntityWithOptionalFieldsDao.query().execute();
+        List<MyEntityWithOptionalFields> list = myEntityWithOptionalFieldsDao.query().selectList();
 
         assertEquals(1, list.size());
         assertEquals(Optional.empty(), myEntityWithOptionalFields.getIntegerAttr());
@@ -135,7 +149,7 @@ public class PrimitivesTest {
             "REQ-ENT-002"
     })
     public void testPlainOptionalEntityCreationWithValues() {
-        MyEntityWithOptionalFields myEntityWithOptionalFields = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
+        MyEntityWithOptionalFields myEntityWithOptionalFields = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFieldsForCreate.builder()
                         .withIntegerAttr(1)
                         .withScaledAttr(1.23)
                         .withStringAttr("test")
@@ -148,7 +162,7 @@ public class PrimitivesTest {
                         .withEnumAttr(MyEnum.Bombastic)
                         .build());
 
-        List<MyEntityWithOptionalFields> list = myEntityWithOptionalFieldsDao.query().execute();
+        List<MyEntityWithOptionalFields> list = myEntityWithOptionalFieldsDao.query().selectList();
 
         assertEquals(1, list.size());
 
@@ -174,7 +188,7 @@ public class PrimitivesTest {
     public void testMissingRequiredFieldsThrowExceptions() {
         ValidationException thrown = assertThrows(
             ValidationException.class,
-            () -> entityRequiredFieldsDao.create(EntityRequiredFields.builder().build())
+            () -> entityRequiredFieldsDao.create(EntityRequiredFieldsForCreate.builder().build())
         );
 
         assertThat(thrown.getValidationResults(), containsInAnyOrder(
@@ -189,7 +203,7 @@ public class PrimitivesTest {
                 matchMissingAttribute("binaryAttr"),
                 matchMissingAttribute("enumAttr")
         ));
-        List<EntityRequiredFields> list = entityRequiredFieldsDao.query().execute();
+        List<EntityRequiredFields> list = entityRequiredFieldsDao.query().selectList();
 
         assertEquals(0, list.size());
     }
@@ -228,7 +242,7 @@ public class PrimitivesTest {
     })
     public void testIdentifierFieldsAreUnique() {
         LocalDate now = LocalDate.now();
-        EntityWithIdentifiers ent1 = entityWithIdentifiersDao.create(EntityWithIdentifiers.builder()
+        EntityWithIdentifiers ent1 = entityWithIdentifiersDao.create(EntityWithIdentifiersForCreate.builder()
                 .withIntegerAttr(1)
                 .withBoolAttr(true)
                 .withDateAttr(now)
@@ -240,7 +254,7 @@ public class PrimitivesTest {
 
         ValidationException thrown = assertThrows(
                 ValidationException.class,
-                () -> entityWithIdentifiersDao.create(EntityWithIdentifiers.builder()
+                () -> entityWithIdentifiersDao.create(EntityWithIdentifiersForCreate.builder()
                         .withIntegerAttr(1)
                         .withBoolAttr(true)
                         .withDateAttr(now)
@@ -270,12 +284,12 @@ public class PrimitivesTest {
                 ValidationException.class,
                 () ->
                         entityWithIdentifiersContainerDao.create(
-                                EntityWithIdentifiersContainer.builder()
+                                EntityWithIdentifiersContainerForCreate.builder()
                                         .withEntitiesWithIdentifiers(ImmutableList.of(
-                                                EntityWithIdentifiers.builder()
+                                                EntityWithIdentifiersForCreate.builder()
                                                         .withIntegerAttr(2)
                                                         .build(),
-                                                EntityWithIdentifiers.builder()
+                                                EntityWithIdentifiersForCreate.builder()
                                                         .withIntegerAttr(2)
                                                         .build()
                                         ))
@@ -301,7 +315,7 @@ public class PrimitivesTest {
     })
     public void testFieldsAreNonUnique() {
         LocalDate now = LocalDate.now();
-        MyEntityWithOptionalFields ent1 = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
+        MyEntityWithOptionalFields ent1 = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFieldsForCreate.builder()
                 .withIntegerAttr(1)
                 .withBoolAttr(true)
                 .withDateAttr(now)
@@ -311,7 +325,7 @@ public class PrimitivesTest {
 
         assertEquals(1, ent1.getIntegerAttr().get());
 
-        MyEntityWithOptionalFields ent2 = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
+        MyEntityWithOptionalFields ent2 = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFieldsForCreate.builder()
                         .withIntegerAttr(1)
                         .withBoolAttr(true)
                         .withDateAttr(now)
@@ -338,9 +352,9 @@ public class PrimitivesTest {
             "REQ-ENT-012"
     })
     public void testUpdateOptionalEntityAfterCreation() {
-        MyEntityWithOptionalFields myEntityWithOptionalFields = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder().build());
+        MyEntityWithOptionalFields myEntityWithOptionalFields = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFieldsForCreate.builder().build());
 
-        List<MyEntityWithOptionalFields> list = myEntityWithOptionalFieldsDao.query().execute();
+        List<MyEntityWithOptionalFields> list = myEntityWithOptionalFieldsDao.query().selectList();
 
         assertEquals(1, list.size());
 
@@ -394,9 +408,9 @@ public class PrimitivesTest {
             "REQ-ENT-002"
     })
     public void testEntityCreationWithPrimitiveDefaults() {
-        EntityWithPrimitiveDefaults entityWithDefaults = entityWithPrimitiveDefaultsDao.create(EntityWithPrimitiveDefaults.builder().build());
+        EntityWithPrimitiveDefaults entityWithDefaults = entityWithPrimitiveDefaultsDao.create(EntityWithPrimitiveDefaultsForCreate.builder().build());
 
-        List<EntityWithPrimitiveDefaults> list = entityWithPrimitiveDefaultsDao.query().execute();
+        List<EntityWithPrimitiveDefaults> list = entityWithPrimitiveDefaultsDao.query().selectList();
 
         assertEquals(1, list.size());
 
@@ -428,9 +442,9 @@ public class PrimitivesTest {
             "REQ-ENT-002"
     })
     public void testEntityCreationRequiredWithPrimitiveDefaults() {
-        EntityRequiredWithPrimitiveDefaults entityRequiredWithDefaults = entityRequiredWithPrimitiveDefaultsDao.create(EntityRequiredWithPrimitiveDefaults.builder().build());
+        EntityRequiredWithPrimitiveDefaults entityRequiredWithDefaults = entityRequiredWithPrimitiveDefaultsDao.create(EntityRequiredWithPrimitiveDefaultsForCreate.builder().build());
 
-        List<EntityRequiredWithPrimitiveDefaults> list = entityRequiredWithPrimitiveDefaultsDao.query().execute();
+        List<EntityRequiredWithPrimitiveDefaults> list = entityRequiredWithPrimitiveDefaultsDao.query().selectList();
 
         assertEquals(1, list.size());
 
@@ -465,9 +479,9 @@ public class PrimitivesTest {
             "REQ-EXPR-017"
     })
     public void testEntityCreationWithPrimitiveDefaultExpressions() {
-        EntityWithPrimitiveDefaultExpressions entityWithDefaultExpressions = entityWithPrimitiveDefaultExpressionsDao.create(EntityWithPrimitiveDefaultExpressions.builder().build());
+        EntityWithPrimitiveDefaultExpressions entityWithDefaultExpressions = entityWithPrimitiveDefaultExpressionsDao.create(EntityWithPrimitiveDefaultExpressionsForCreate.builder().build());
 
-        List<EntityWithPrimitiveDefaultExpressions> list = entityWithPrimitiveDefaultExpressionsDao.query().execute();
+        List<EntityWithPrimitiveDefaultExpressions> list = entityWithPrimitiveDefaultExpressionsDao.query().selectList();
 
         assertEquals(1, list.size());
 
@@ -492,7 +506,7 @@ public class PrimitivesTest {
     public void testRegexValidatorFailsForInvalidInput() {
         ValidationException thrown = assertThrows(
                 ValidationException.class,
-                () -> myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
+                () -> myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFieldsForCreate.builder()
                         .withRegexAttr("hello-bello")
                         .build()));
 
@@ -519,7 +533,7 @@ public class PrimitivesTest {
 
         ValidationException thrown = assertThrows(
                 ValidationException.class,
-                () -> myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
+                () -> myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFieldsForCreate.builder()
                         .withStringAttr(lipsum)
                         .build()));
 
@@ -539,7 +553,7 @@ public class PrimitivesTest {
     public void testPrecisionValidation() {
         ValidationException thrown = assertThrows(
                 ValidationException.class,
-                () -> myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
+                () -> myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFieldsForCreate.builder()
                         .withIntegerAttr(1234567890)
                         .build()));
 
@@ -559,7 +573,7 @@ public class PrimitivesTest {
     public void testMaxPrecision() {
         ValidationException validationException = assertThrows(
                 ValidationException.class,
-                () -> myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
+                () -> myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFieldsForCreate.builder()
                         .withScaledAttr(1234567890.0)
                         .build())
         );
@@ -567,28 +581,28 @@ public class PrimitivesTest {
 
         ValidationException validationException1 = assertThrows(
                 ValidationException.class,
-                () -> myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
+                () -> myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFieldsForCreate.builder()
                         .withScaledAttr(123456789.1)
                         .build())
         );
         assertThat(validationException1.getValidationResults(), containsInAnyOrder(matchPrecisionValidationForAttribute("scaledAttr")));
 
-        MyEntityWithOptionalFields e1 = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
+        MyEntityWithOptionalFields e1 = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFieldsForCreate.builder()
                 .withScaledAttr(123456789.0)
                 .build());
         assertEquals(Optional.of(123456789.0), e1.getScaledAttr());
 
-        MyEntityWithOptionalFields e2 = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
+        MyEntityWithOptionalFields e2 = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFieldsForCreate.builder()
                 .withScaledAttr(12345678.1)
                 .build());
         assertEquals(Optional.of(12345678.1), e2.getScaledAttr());
 
-        MyEntityWithOptionalFields e3 = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
+        MyEntityWithOptionalFields e3 = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFieldsForCreate.builder()
                 .withScaledAttr(1234567.12)
                 .build());
         assertEquals(Optional.of(1234567.12), e3.getScaledAttr());
 
-        MyEntityWithOptionalFields e4 = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
+        MyEntityWithOptionalFields e4 = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFieldsForCreate.builder()
                 .withScaledAttr(1234567.1200)
                 .build());
         assertEquals(Optional.of(1234567.12), e4.getScaledAttr());
@@ -604,7 +618,7 @@ public class PrimitivesTest {
     public void testScaleValidation() {
         ValidationException thrown = assertThrows(
                 ValidationException.class,
-                () -> myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFields.builder()
+                () -> myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFieldsForCreate.builder()
                         .withScaledAttr(123456.789)
                         .build()));
 
@@ -625,23 +639,164 @@ public class PrimitivesTest {
     })
     public void testDefaultRequiredValuesInEntity() {
 
-        referenceEntityDao.create(ReferenceEntity.builder().build());
-        referenceEntityDao.create(ReferenceEntity.builder().build());
+        referenceEntityDao.create(ReferenceEntityForCreate.builder().build());
+        referenceEntityDao.create(ReferenceEntityForCreate.builder().build());
 
-        DefaultRequiredEntity defaultEntity = defaultRequiredEntityDao.create(DefaultRequiredEntity.builder().build());
+        DefaultRequiredEntity defaultEntity = defaultRequiredEntityDao.create(DefaultRequiredEntityForCreate.builder().build());
 
         assertEquals(6, defaultEntity.getSumEntitiesIntegerValue());
         assertEquals(LocalDate.of(2022, 11, 4), defaultEntity.getCreateDate());
-        assertThrows(ValidationException.class, () -> defaultRequiredEntityDao.create(DefaultRequiredEntity.builder()
+        assertThrows(ValidationException.class, () -> defaultRequiredEntityDao.create(DefaultRequiredEntityForCreate.builder()
                 .withCreateDate(LocalDate.of(2022, 11, 4))
                 .build()));
 
-        DefaultRequiredEntity defaultEntity1 = defaultRequiredEntityDao.create(DefaultRequiredEntity.builder()
+        DefaultRequiredEntity defaultEntity1 = defaultRequiredEntityDao.create(DefaultRequiredEntityForCreate.builder()
                 .withCreateDate(LocalDate.of(2022, 11, 5))
                 .withSumEntitiesIntegerValue(5)
                 .build());
 
         assertEquals(5, defaultEntity1.getSumEntitiesIntegerValue());
         assertEquals(LocalDate.of(2022, 11, 5), defaultEntity1.getCreateDate());
+    }
+
+    @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-005",
+            "REQ-TYPE-007",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-EXPR-016",
+            "REQ-EXPR-022"
+    })
+    public void testStringSubstitution() {
+        MyEntityWithOptionalFields entity1 = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFieldsForCreate.builder()
+                .withStringAttr("name %d", 1)
+                .build());
+
+        assertEquals("name 1", entity1.getStringAttr().orElseThrow());
+
+        entity1.setStringAttr("%s %d", "name", 2);
+
+        entity1 = myEntityWithOptionalFieldsDao.update(entity1);
+
+        assertEquals("name 2", entity1.getStringAttr().orElseThrow());
+
+        entity1 = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFieldsForCreate.builder()
+                .withStringAttr("%s %.2f %d", "name", 2.34, 1)
+                .build());
+
+        assertEquals("name 2.34 1", entity1.getStringAttr().orElseThrow());
+
+        entity1.setStringAttr("%s", "name");
+
+        entity1 = myEntityWithOptionalFieldsDao.update(entity1);
+
+        assertEquals("name", entity1.getStringAttr().orElseThrow());
+
+        entity1.setStringAttr("name");
+
+        entity1 = myEntityWithOptionalFieldsDao.update(entity1);
+
+        assertEquals("name", entity1.getStringAttr().orElseThrow());
+
+        MyEntityWithOptionalFields myEntityWithOptionalFields = MyEntityWithOptionalFields.builder()
+                .withStringAttr("name %d", 1)
+                .build();
+
+        entity1 = myEntityWithOptionalFieldsDao.create(myEntityWithOptionalFields.adaptTo(MyEntityWithOptionalFieldsForCreate.class));
+
+        assertEquals("name 1", entity1.getStringAttr().orElseThrow());
+
+        myEntityWithOptionalFields = MyEntityWithOptionalFields.builder()
+                .withStringAttr("%s %.2f %d", "name", 2.34, 1)
+                .build();
+
+        entity1 = myEntityWithOptionalFieldsDao.create(myEntityWithOptionalFields.adaptTo(MyEntityWithOptionalFieldsForCreate.class));
+
+        assertEquals("name 2.34 1", entity1.getStringAttr().orElseThrow());
+    }
+
+
+    @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-005",
+            "REQ-TYPE-007",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-EXPR-016",
+            "REQ-EXPR-022"
+    })
+    public void testStringSubstitutionOnTransfer() {
+        MyTransferWithOptionalFields transfer = myTransferWithOptionalFieldsDao.create(MyTransferWithOptionalFieldsForCreate.builder()
+                .withStringAttr("name %d", 1)
+                .build());
+
+        assertEquals("name 1", transfer.getStringAttr().orElseThrow());
+
+        MyEntityWithOptionalFields entity = myEntityWithOptionalFieldsDao.getById(transfer.identifier().adaptTo(MyEntityWithOptionalFieldsIdentifier.class)).orElseThrow();
+
+        assertEquals("name 1", entity.getStringAttr().orElseThrow());
+
+        transfer.setStringAttr("%s %d", "name", 2);
+
+        transfer = myTransferWithOptionalFieldsDao.update(transfer);
+
+        assertEquals("name 2", transfer.getStringAttr().orElseThrow());
+
+        entity = myEntityWithOptionalFieldsDao.getById(transfer.identifier().adaptTo(MyEntityWithOptionalFieldsIdentifier.class)).orElseThrow();
+
+        assertEquals("name 2", entity.getStringAttr().orElseThrow());
+
+        transfer = myTransferWithOptionalFieldsDao.create(MyTransferWithOptionalFieldsForCreate.builder()
+                .withStringAttr("%s %.2f %d", "name", 2.34, 1)
+                .build());
+
+        assertEquals("name 2.34 1", transfer.getStringAttr().orElseThrow());
+
+        entity = myEntityWithOptionalFieldsDao.getById(transfer.identifier().adaptTo(MyEntityWithOptionalFieldsIdentifier.class)).orElseThrow();
+
+        assertEquals("name 2.34 1", entity.getStringAttr().orElseThrow());
+
+        transfer.setStringAttr("%s", "name");
+
+        transfer = myTransferWithOptionalFieldsDao.update(transfer);
+
+        assertEquals("name", transfer.getStringAttr().orElseThrow());
+
+        entity = myEntityWithOptionalFieldsDao.getById(transfer.identifier().adaptTo(MyEntityWithOptionalFieldsIdentifier.class)).orElseThrow();
+
+        assertEquals("name", entity.getStringAttr().orElseThrow());
+
+        transfer.setStringAttr("name");
+
+        transfer = myTransferWithOptionalFieldsDao.update(transfer);
+
+        assertEquals("name", transfer.getStringAttr().orElseThrow());
+
+        entity = myEntityWithOptionalFieldsDao.getById(transfer.identifier().adaptTo(MyEntityWithOptionalFieldsIdentifier.class)).orElseThrow();
+
+        assertEquals("name", entity.getStringAttr().orElseThrow());
+
+        transfer = MyTransferWithOptionalFields.builder().withStringAttr("name %d",1).build();
+
+        transfer = myTransferWithOptionalFieldsDao.create(transfer.adaptTo(MyTransferWithOptionalFieldsForCreate.class));
+
+        assertEquals("name 1", transfer.getStringAttr().orElseThrow());
+
+        entity = myEntityWithOptionalFieldsDao.getById(transfer.identifier().adaptTo(MyEntityWithOptionalFieldsIdentifier.class)).orElseThrow();
+
+        assertEquals("name 1", entity.getStringAttr().orElseThrow());
+
+        transfer = MyTransferWithOptionalFields.builder().withStringAttr("%s %.2f %d", "name", 2.34, 1).build();
+
+        transfer = myTransferWithOptionalFieldsDao.create(transfer.adaptTo(MyTransferWithOptionalFieldsForCreate.class));
+
+        assertEquals("name 2.34 1", transfer.getStringAttr().orElseThrow());
+
+        entity = myEntityWithOptionalFieldsDao.getById(transfer.identifier().adaptTo(MyEntityWithOptionalFieldsIdentifier.class)).orElseThrow();
+
+        assertEquals("name 2.34 1", entity.getStringAttr().orElseThrow());
     }
 }

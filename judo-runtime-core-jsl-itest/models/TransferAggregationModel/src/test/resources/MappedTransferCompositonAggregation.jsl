@@ -2,8 +2,19 @@ model MappedTransferCompositonAggregation;
 
 import judo::types;
 
+entity Composition {
+  field EntityA entityA;
+  field EntityA[] entityAs;
+}
+
+transfer TransferComposition (Composition comp) {
+    relation TransferA transferA <= comp.entityA eager:true;
+    relation TransferA[] transferAs <= comp.entityAs eager:true;
+}
+
 // not required Single and Multi
 entity EntityA {
+    field String stringA;
     field EntityB singleEntityB;
     field EntityB[] multiEntityB;
 }
@@ -13,14 +24,13 @@ entity EntityB {
 }
 
 transfer TransferA (EntityA a) {
-	@Embedded
-    relation TransferB singleEntityB <=> a.singleEntityB;
-    @Embedded
-    relation TransferB[] multiEntityB <=> a.multiEntityB;
+    relation TransferB singleEntityB <= a.singleEntityB eager:true;
+    relation TransferB[] multiEntityB <= a.multiEntityB eager:true;
+    field String stringA <= a.stringA input:true;
 }
 
 transfer TransferB (EntityB b) {
-    field String nameB <=> b.nameB;
+    field String nameB <= b.nameB input:true;
 }
 
 // required single
@@ -34,13 +44,12 @@ entity EntityD {
 }
 
 transfer TransferC (EntityC c) {
-    @Embedded
-    relation required TransferD singleRequiredEntityD <=> c.singleRequiredEntityD;
+    relation required TransferD singleRequiredEntityD <= c.singleRequiredEntityD eager:true;
 
 }
 
 transfer TransferD (EntityD d) {
-    field String nameD <=> d.nameD;
+    field String nameD <= d.nameD input:true;
 }
 
 // Navigation trough transfers
@@ -58,17 +67,15 @@ entity EntityG {
 }
 
 transfer TransferE (EntityE e) {
-    @Embedded
-    relation TransferF singleEntityF <=> e.singleEntityF;
+    relation TransferF singleEntityF <= e.singleEntityF eager:true;
 }
 
 transfer TransferF (EntityF f) {
-    @Embedded
-    relation TransferG[] multiEntityG <=> f.multiEntityG;
+    relation TransferG[] multiEntityG <= f.multiEntityG eager:true;
 }
 
 transfer TransferG (EntityG g) {
-        field String nameG <=> g.nameG;
+        field String nameG <= g.nameG input:true;
 }
 
 entity EntityH {
@@ -92,22 +99,18 @@ entity EntityK {
 }
 
 transfer TransferH(EntityH entityh) {
-    field String stringH <=> entityh.stringH;
-    @Embedded
-    relation TransferJ singleJonH <=> entityh.singleJonH;
-    @Embedded
-    relation TransferJ[] collectionJonH <=> entityh.collectionJonH;
-    @Embedded
-    relation required TransferJ singleRequiredJonH <=> entityh.singleRequiredJonH;
+    field String stringH <= entityh.stringH input:true;
+    relation TransferJ singleJonH <= entityh.singleJonH eager:true;
+    relation TransferJ[] collectionJonH <= entityh.collectionJonH eager:true;
+    relation required TransferJ singleRequiredJonH <= entityh.singleRequiredJonH eager:true;
 }
 
 transfer TransferJ(EntityJ entityj) {
-    field String stringI <=> entityj.stringI;
-    field String stringJ <=> entityj.stringJ;
-    @Embedded
-    relation TransferK[] multipleKonI <=> entityj.multipleKonI;
+    field String stringI <= entityj.stringI input:true;
+    field String stringJ <= entityj.stringJ input:true;
+    relation TransferK[] multipleKonI <= entityj.multipleKonI eager:true;
 }
 
 transfer TransferK(EntityK entityk) {
-    field String stringK <=> entityk.stringK;
+    field String stringK <= entityk.stringK input:true;
 }

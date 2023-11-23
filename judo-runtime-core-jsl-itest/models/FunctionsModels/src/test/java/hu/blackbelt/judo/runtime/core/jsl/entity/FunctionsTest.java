@@ -24,49 +24,68 @@ import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.anytypefunctions.AnyTypeFunctions;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.anytypefunctions.AnyTypeFunctionsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.anytypefunctions.AnyTypeFunctionsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.booleanfunctions.BooleanFunctions;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.booleanfunctions.BooleanFunctionsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.booleanfunctions.BooleanFunctionsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.booler.Booler;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.booler.BoolerDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.booler.BoolerForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.boolertester.BoolerTester;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.boolertester.BoolerTesterDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.boolertester.BoolerTesterForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.child.Child;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.child.ChildDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.child.ChildForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.collectionfunctions.CollectionFunctions;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.collectionfunctions.CollectionFunctionsAttachedRelationsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.collectionfunctions.CollectionFunctionsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.collectionfunctions.CollectionFunctionsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.datefunctions.DateFunctions;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.datefunctions.DateFunctionsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.datefunctions.DateFunctionsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.entity.Entity;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.entity.EntityDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.entity.EntityForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.entitywithprimitivedefaults.EntityWithPrimitiveDefaults;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.entitywithprimitivedefaults.EntityWithPrimitiveDefaultsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.entitywithprimitivedefaults.EntityWithPrimitiveDefaultsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.enumfunctions.EnumFunctions;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.enumfunctions.EnumFunctionsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.enumfunctions.EnumFunctionsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.instancefunctions.InstanceFunctions;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.instancefunctions.InstanceFunctionsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.instancefunctions.InstanceFunctionsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.kleene.Kleene;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.kleene.KleeneDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.kleene.KleeneForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.member.Member;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.member.MemberDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.member.MemberForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.numericfunctions.NumericFunctions;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.numericfunctions.NumericFunctionsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.numericfunctions.NumericFunctionsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.parent.Parent;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.parent.ParentDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.parent.ParentForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.parent.ParentIdentifier;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.simple.Simple;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.simple.SimpleDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.simple.SimpleForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.stringfunctions.StringFunctions;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.stringfunctions.StringFunctionsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.stringfunctions.StringFunctionsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.tester.Tester;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.tester.TesterAttachedRelationsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.tester.TesterDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.tester.TesterForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.timefunctions.TimeFunctions;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.timefunctions.TimeFunctionsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.timefunctions.TimeFunctionsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.timestampasstring.TimestampAsString;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.timestampasstring.TimestampAsStringDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.timestampasstring.TimestampAsStringForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.timestampfunctions.TimestampFunctions;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.timestampfunctions.TimestampFunctionsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.functions.functions.timestampfunctions.TimestampFunctionsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.FunctionsDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
@@ -158,13 +177,13 @@ public class FunctionsTest {
     protected void init() {
 
         Entity entity = entityDao
-                .create(Entity.builder().build());
+                .create(EntityForCreate.builder().build());
         EntityWithPrimitiveDefaults entityWithPrimitiveDefaults = entityWithPrimitiveDefaultsDao
-                .create(EntityWithPrimitiveDefaults.builder().build());
+                .create(EntityWithPrimitiveDefaultsForCreate.builder().build());
 
-        anyTypeFunctions = anyTypeFunctionsDao.create(AnyTypeFunctions.builder()
-                .withEntity(entity)
-                .withEntityWithPrimitives(entityWithPrimitiveDefaults)
+        anyTypeFunctions = anyTypeFunctionsDao.create(AnyTypeFunctionsForCreate.builder()
+                .withEntity(EntityForCreate.builderFrom(entity).build())
+                .withEntityWithPrimitives(EntityWithPrimitiveDefaultsForCreate.builderFrom(entityWithPrimitiveDefaults).build())
                 .build());
 
     }
@@ -245,7 +264,7 @@ public class FunctionsTest {
             "REQ-EXPR-014"
     })
     public void testStrings() {
-        StringFunctions str = stringFunctionsDao.create(StringFunctions.builder().build());
+        StringFunctions str = stringFunctionsDao.create(StringFunctionsForCreate.builder().build());
 
         assertEquals(5, str.getLength().orElseThrow());
         String first = str.getFirst().orElseThrow();
@@ -320,7 +339,7 @@ public class FunctionsTest {
             "REQ-EXPR-014"
     })
     public void testNumerics() {
-        NumericFunctions numericFunctions = numericFunctionsDao.create(NumericFunctions.builder().build());
+        NumericFunctions numericFunctions = numericFunctionsDao.create(NumericFunctionsForCreate.builder().build());
 
         Long roundInt = numericFunctions.getRoundInt().orElseThrow();
         assertEquals(1, roundInt);
@@ -382,7 +401,7 @@ public class FunctionsTest {
             "REQ-EXPR-015"
     })
     public void testBooleans() {
-        BooleanFunctions bool = booleanFunctionsDao.create(BooleanFunctions.builder().build());
+        BooleanFunctions bool = booleanFunctionsDao.create(BooleanFunctionsForCreate.builder().build());
 
         assertEquals(Optional.of("true"), bool.getOwnBoolAsString());
         assertEquals(Optional.of("true"), bool.getTrueAsString());
@@ -396,7 +415,7 @@ public class FunctionsTest {
             "REQ-TYPE-006"
     })
     public void testKleene() {
-        Kleene kleene = kleeneDao.create(Kleene.builder().build());
+        Kleene kleene = kleeneDao.create(KleeneForCreate.builder().build());
 
         /*
         |=============================================================================================
@@ -460,7 +479,7 @@ public class FunctionsTest {
             "REQ-EXPR-016"
     })
     public void testDates() {
-        DateFunctions date = dateFunctionsDao.create(DateFunctions.builder().build());
+        DateFunctions date = dateFunctionsDao.create(DateFunctionsForCreate.builder().build());
 
         assertEquals(Optional.of("2022-07-11"), date.getOwnDateAsString());
         assertEquals(Optional.of("2021-03-02"), date.getDateAsString());
@@ -493,7 +512,7 @@ public class FunctionsTest {
         LocalTime timeHMS = LocalTime.parse("12:34:56");
         LocalTime timeHMSF = LocalTime.parse("12:34:56.789");
         TimeFunctions time =
-                timeFunctionsDao.create(TimeFunctions.builder()
+                timeFunctionsDao.create(TimeFunctionsForCreate.builder()
                                                      .withTimeHM(timeHM)
                                                      .withTimeHMS(timeHMS)
                                                      .withTimeHMSF(timeHMSF)
@@ -573,7 +592,7 @@ public class FunctionsTest {
             "REQ-EXPR-018"
     })
     public void testTimestamp() {
-        TimestampFunctions timestampFunctions = timestampFunctionsDao.create(TimestampFunctions.builder().build());
+        TimestampFunctions timestampFunctions = timestampFunctionsDao.create(TimestampFunctionsForCreate.builder().build());
 
         assertEquals(LocalDateTime.of(2022, 9, 29, 0, 0, 0, 0), timestampFunctions.getTimestampOfDate().orElseThrow());
         assertEquals(LocalDateTime.of(2022, 9, 29, 11, 11, 11, 0), timestampFunctions.getTimestampOfDateAndTime().orElseThrow());
@@ -618,7 +637,7 @@ public class FunctionsTest {
             "REQ-EXPR-018"
     })
     public void testTimestampAsString() {
-        TimestampAsString timestampAsString = timestampAsStringDao.create(TimestampAsString.builder().build());
+        TimestampAsString timestampAsString = timestampAsStringDao.create(TimestampAsStringForCreate.builder().build());
 
         assertEquals("2022-03-03T14:00", timestampAsString.getTimestamp1AsString().orElseThrow());
         assertEquals("2022-03-03T14:00:00.123", timestampAsString.getTimestamp2AsString().orElseThrow());
@@ -669,7 +688,7 @@ public class FunctionsTest {
             "REQ-EXPR-020"
     })
     public void testEnum() {
-        EnumFunctions myEnum = enumFunctionsDao.create(EnumFunctions.builder().build());
+        EnumFunctions myEnum = enumFunctionsDao.create(EnumFunctionsForCreate.builder().build());
 
         assertEquals(Optional.of("Atomic"), myEnum.getOwnEnumAsString());
         assertEquals(Optional.of("Atomic"), myEnum.getEnumAsString());
@@ -684,16 +703,18 @@ public class FunctionsTest {
             "REQ-EXPR-022"
     })
     public void testInstance() {
-        Parent parent1 = parentDao.create(Parent.builder().withName("James Webb").build());
-        Child child1 = childDao.create(Child.builder().withName("Erika Young").withAge(11L).build());
+        Parent parent1 = parentDao.create(ParentForCreate.builder().withName("James Webb").build());
+        Child child1 = childDao.create(ChildForCreate.builder().withName("Erika Young").withAge(11L).build());
 
-        InstanceFunctions instanceFunctions = instanceFunctionsDao.create(InstanceFunctions.builder()
-                        .withParent(Parent.builder().withName("Another Person").build())
-                        .withChild(Child.builder().withName("Another Child").withAge(31L).build())
+        InstanceFunctions instanceFunctions = instanceFunctionsDao.create(InstanceFunctionsForCreate.builder()
+                        .withParent(ParentForCreate.builder().withName("Another Person").build())
+                        .withChild(ChildForCreate.builder().withName("Another Child").withAge(31L).build())
                         .build());
 
-        InstanceFunctions instanceFunctions1 = instanceFunctionsDao.create(InstanceFunctions.builder()
-                        .withParent(parentDao.getById(child1.identifier().adaptTo(ParentIdentifier.class)).orElseThrow())
+        Parent parent = parentDao.getById(child1.identifier().adaptTo(ParentIdentifier.class)).orElseThrow();
+
+        InstanceFunctions instanceFunctions1 = instanceFunctionsDao.create(InstanceFunctionsForCreate.builder()
+                        .withParent(ParentForCreate.builderFrom(parent).build())
                         .build());
 
         assertTrue(instanceFunctions.getTypeOfParent().get());
@@ -710,9 +731,9 @@ public class FunctionsTest {
 
         assertEquals(10, instanceFunctions.getNavigationWithCalls().get());
 
-        InstanceFunctions instanceFunctions2 = instanceFunctionsDao.create(InstanceFunctions.builder()
-                                                                                            .withParent(Parent.builder().withName("P1").build())
-                                                                                            .withChild(Child.builder().withName("C1").build())
+        InstanceFunctions instanceFunctions2 = instanceFunctionsDao.create(InstanceFunctionsForCreate.builder()
+                                                                                            .withParent(ParentForCreate.builder().withName("P1").build())
+                                                                                            .withChild(ChildForCreate.builder().withName("C1").build())
                                                                                             .build());
         Parent p1 = parentDao.getAll().stream().filter(p -> p.getName().orElseThrow().equals("P1")).findAny().orElseThrow();
         Child c1 = childDao.getAll().stream().filter(c -> c.getName().orElseThrow().equals("C1")).findAny().orElseThrow();
@@ -735,23 +756,22 @@ public class FunctionsTest {
             "REQ-EXPR-022"
     })
     public void testCollection() {
-        CollectionFunctions collectionFunctions = collectionFunctionsDao.create(CollectionFunctions.builder()
+        CollectionFunctions collectionFunctions = collectionFunctionsDao.create(CollectionFunctionsForCreate.builder()
                 .withParentsField(
                         List.of(
-                                Parent.builder().withName("John").build(),
-                                Parent.builder().withName("Another Person").build()
+                                ParentForCreate.builder().withName("John").build(),
+                                ParentForCreate.builder().withName("Another Person").build()
                         )
                 )
                 .withChildrenField(
                         List.of(
-                                Child.builder().withName("Rebecca").withAge(33L).build(),
-                                Child.builder().withName("Cindy").withAge(23L).build(),
-                                Child.builder().withName("Monica").withAge(23L).build(),
-                                Child.builder().withName("Peter").withAge(46L).build(),
-                                Child.builder().withName("Andrew").withAge(46L).build()
+                                ChildForCreate.builder().withName("Rebecca").withAge(33L).build(),
+                                ChildForCreate.builder().withName("Cindy").withAge(23L).build(),
+                                ChildForCreate.builder().withName("Monica").withAge(23L).build(),
+                                ChildForCreate.builder().withName("Peter").withAge(46L).build(),
+                                ChildForCreate.builder().withName("Andrew").withAge(46L).build()
                         )
                 )
-                .build(), CollectionFunctionsAttachedRelationsForCreate.builder()
                 .withParentsRelation(
                         List.of(
                                 Parent.builder().withName("Mark").build(),
@@ -778,23 +798,23 @@ public class FunctionsTest {
         assertNotNull(collectionFunctionsDao.queryAnyParentsRelation(collectionFunctions));
 
         List<Parent> asCollectionChildrenParentField = collectionFunctionsDao
-                .queryAsCollectionChildrenParentField(collectionFunctions).execute();
+                .queryAsCollectionChildrenParentField(collectionFunctions).selectList();
         assertEquals(2, asCollectionChildrenParentField.size());
         assertTrue(asCollectionChildrenParentField.stream().anyMatch(p -> p.getName().orElseThrow().equals("John")));
         assertTrue(asCollectionChildrenParentField.stream().anyMatch(p -> p.getName().orElseThrow().equals("Another Person")));
 
         List<Parent> asCollectionChildrenParentRelation = collectionFunctionsDao
-                .queryAsCollectionChildrenParentRelation(collectionFunctions).execute();
+                .queryAsCollectionChildrenParentRelation(collectionFunctions).selectList();
         assertEquals(2, asCollectionChildrenParentRelation.size());
         assertTrue(asCollectionChildrenParentRelation.stream().anyMatch(p -> p.getName().orElseThrow().equals("Mark")));
         assertTrue(asCollectionChildrenParentRelation.stream().anyMatch(p -> p.getName().orElseThrow().equals("Billy")));
 
         List<Child> asCollectionChildrenChildField = collectionFunctionsDao
-                .queryAsCollectionChildrenChildField(collectionFunctions).execute();
+                .queryAsCollectionChildrenChildField(collectionFunctions).selectList();
         assertEquals(0, asCollectionChildrenChildField.size());
 
         List<Child> asCollectionChildrenChildRelation = collectionFunctionsDao
-                .queryAsCollectionChildrenChildRelation(collectionFunctions).execute();
+                .queryAsCollectionChildrenChildRelation(collectionFunctions).selectList();
         assertEquals(0, asCollectionChildrenChildRelation.size());
 
         assertEquals(Optional.of(23L), collectionFunctions.getMinChildrenField());
@@ -815,25 +835,25 @@ public class FunctionsTest {
         assertEquals(Optional.of(34L), collectionFunctions.getDivisionConst());
         assertEquals(Optional.of(35L), collectionFunctions.getRoundConst());
 
-        assertEquals(2, collectionFunctionsDao.queryFirstChildrenField(collectionFunctions).execute().size());
-        assertEquals(2, collectionFunctionsDao.queryFirstChildrenRelation(collectionFunctions).execute().size());
+        assertEquals(2, collectionFunctionsDao.queryFirstChildrenField(collectionFunctions).selectList().size());
+        assertEquals(2, collectionFunctionsDao.queryFirstChildrenRelation(collectionFunctions).selectList().size());
 
-        assertEquals(2, collectionFunctionsDao.queryLastChildrenField(collectionFunctions).execute().size());
-        assertEquals(2, collectionFunctionsDao.queryLastChildrenRelation(collectionFunctions).execute().size());
+        assertEquals(2, collectionFunctionsDao.queryLastChildrenField(collectionFunctions).selectList().size());
+        assertEquals(2, collectionFunctionsDao.queryLastChildrenRelation(collectionFunctions).selectList().size());
 
-        assertEquals(2, collectionFunctionsDao.queryFrontChildrenField(collectionFunctions).execute().size());
-        assertEquals(2, collectionFunctionsDao.queryFrontChildrenRelation(collectionFunctions).execute().size());
+        assertEquals(2, collectionFunctionsDao.queryFrontChildrenField(collectionFunctions).selectList().size());
+        assertEquals(2, collectionFunctionsDao.queryFrontChildrenRelation(collectionFunctions).selectList().size());
 
-        assertEquals(2, collectionFunctionsDao.queryBackChildrenField(collectionFunctions).execute().size());
-        assertEquals(2, collectionFunctionsDao.queryBackChildrenRelation(collectionFunctions).execute().size());
+        assertEquals(2, collectionFunctionsDao.queryBackChildrenField(collectionFunctions).selectList().size());
+        assertEquals(2, collectionFunctionsDao.queryBackChildrenRelation(collectionFunctions).selectList().size());
 
         assertTrue(collectionFunctions.getContainsParent().orElseThrow());
 
-        assertEquals(1, collectionFunctionsDao.queryFilterParentsField(collectionFunctions).execute().size());
-        assertEquals(1, collectionFunctionsDao.queryFilterParentsRelation(collectionFunctions).execute().size());
+        assertEquals(1, collectionFunctionsDao.queryFilterParentsField(collectionFunctions).selectList().size());
+        assertEquals(1, collectionFunctionsDao.queryFilterParentsRelation(collectionFunctions).selectList().size());
 
-        assertEquals(1, collectionFunctionsDao.queryFilterChildrenField(collectionFunctions).execute().size());
-        assertEquals(1, collectionFunctionsDao.queryFilterChildrenRelation(collectionFunctions).execute().size());
+        assertEquals(1, collectionFunctionsDao.queryFilterChildrenField(collectionFunctions).selectList().size());
+        assertEquals(1, collectionFunctionsDao.queryFilterChildrenRelation(collectionFunctions).selectList().size());
 
         assertEquals(Optional.of(true), collectionFunctions.getAnyTrueChildrenField());
         assertEquals(Optional.of(false), collectionFunctions.getAnyTrueChildrenRelation());
@@ -881,7 +901,7 @@ public class FunctionsTest {
 
         */
 
-        boolerTesterDao.create(BoolerTester.builder().build());
+        boolerTesterDao.create(BoolerTesterForCreate.builder().build());
 
         // | - | - | - ||    F    |    T    |    F     |    T     |
         assertBoolers(false, true, false, true);
@@ -945,7 +965,7 @@ public class FunctionsTest {
     }
 
     private void assertBoolers(Boolean anyTrue, Boolean allTrue, Boolean anyFalse, Boolean allFalse) {
-        Optional<BoolerTester> testerOptional = boolerTesterDao.query().execute().stream().findAny();
+        Optional<BoolerTester> testerOptional = boolerTesterDao.query().selectOne();
         assertTrue(testerOptional.isPresent());
         BoolerTester tester = testerOptional.get();
         Boolean anyTrueGot = tester.getAnyTrue().orElseThrow();
@@ -959,7 +979,7 @@ public class FunctionsTest {
     }
 
     private Booler createBooler(Boolean b) {
-        return boolerDao.create(Booler.builder().withB(b).build());
+        return boolerDao.create(BoolerForCreate.builder().withB(b).build());
     }
 
     private Booler updateBooler(Booler booler, Boolean b) {
@@ -972,13 +992,12 @@ public class FunctionsTest {
             "REQ-EXPR-021"
     })
     public void testMember() {
-        Member m1 = memberDao.create(Member.builder().withName("M1").build());
-        Member m2 = memberDao.create(Member.builder().withName("M2").build());
-        Member m3 = memberDao.create(Member.builder().withName("M3").build());
+        Member m1 = memberDao.create(MemberForCreate.builder().withName("M1").build());
+        Member m2 = memberDao.create(MemberForCreate.builder().withName("M2").build());
+        Member m3 = memberDao.create(MemberForCreate.builder().withName("M3").build());
 
         Tester tester = testerDao.create(
-                Tester.builder().build(),
-                TesterAttachedRelationsForCreate.builder()
+                TesterForCreate.builder()
                             .withMember(m1)
                             .withMembers(List.of(m1, m2, m3))
                             .build());
@@ -988,9 +1007,9 @@ public class FunctionsTest {
 
     @Test
     public void testFirst() {
-        Simple s1 = simpleDao.create(Simple.builder().withStringAttr("A").build());
-        Simple s2 = simpleDao.create(Simple.builder().withStringAttr("a").build());
-        Simple s3 = simpleDao.create(Simple.builder().withStringAttr("b").build());
+        Simple s1 = simpleDao.create(SimpleForCreate.builder().withStringAttr("A").build());
+        Simple s2 = simpleDao.create(SimpleForCreate.builder().withStringAttr("a").build());
+        Simple s3 = simpleDao.create(SimpleForCreate.builder().withStringAttr("b").build());
         s1 = simpleDao.update(s1);
         assertEquals(Optional.of(Long.valueOf(1)), s1.getFirstNum());
     }

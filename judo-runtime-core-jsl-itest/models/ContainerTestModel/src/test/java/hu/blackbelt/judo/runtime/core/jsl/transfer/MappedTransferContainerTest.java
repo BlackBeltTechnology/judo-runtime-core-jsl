@@ -25,7 +25,6 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.container
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.additionalservice.AdditionalService;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.additionalservice.AdditionalServiceDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.b.B;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.b.BAttachedRelationsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.b.BDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.b.BIdentifier;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.c.C;
@@ -37,32 +36,38 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.container
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.e.E;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.ta.TA;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.ta.TADao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.ta.TAForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.tadditionalservice.TAdditionalService;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.tadditionalservice.TAdditionalServiceDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.tadditionalservice.TAdditionalServiceForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.tb.TB;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.tb.TBAttachedRelationsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.tb.TBDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.tb.TBForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.tc.TC;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.tc.TCDao;
-//import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.td.TD;
-//import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.td.TDDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.tc.TCForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.td.TD;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.td.TDDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.td.TDForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.te.TE;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.te.TEDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.te.TEForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.tpartner.TPartner;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.tpartner.TPartnerDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.tpartner.TPartnerForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.tserviceprice.TServicePrice;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.tserviceprice.TServicePriceDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.tserviceprice.TServicePriceForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.tstocktransaction.TStockTransaction;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.tstocktransaction.TStockTransactionAttachedRelationsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.tstocktransaction.TStockTransactionDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.tstocktransaction.TStockTransactionForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.ContainerTestDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.List;
@@ -143,11 +148,11 @@ public class MappedTransferContainerTest {
             "REQ-SRV-002"
     })
     public void testContainerFunctionOnMappedTransfer() {
-        TA ta = taDao.create(TA.builder().withConA(TC.builder().build()).build());
+        TA ta = taDao.create(TAForCreate.builder().withConA(TCForCreate.builder().build()).build());
 
-        TB tb = tbDao.create(TB.builder()
-                .withConA(TC.builder().build())
-                .withDonB(TD.builder().build())
+        TB tb = tbDao.create(TBForCreate.builder()
+                .withConA(TCForCreate.builder().build())
+                .withDonB(TDForCreate.builder().build())
                 .build());
         TC tc = tb.getConA();
         TA tcA = tcDao.queryContainerA(tc).orElseThrow();
@@ -157,9 +162,9 @@ public class MappedTransferContainerTest {
         assertEquals(tb.identifier().getIdentifier(), tcB.identifier().getIdentifier());
         assertEquals(tb.identifier().getIdentifier(), tcB1.identifier().getIdentifier());
 
-        TB tb1 = tbDao.create(TB.builder()
-                .withConA(TC.builder().build())
-                .withDonB(TD.builder().build())
+        TB tb1 = tbDao.create(TBForCreate.builder()
+                .withConA(TCForCreate.builder().build())
+                .withDonB(TDForCreate.builder().build())
                 .build());
         TD td = tb1.getDonB();
         TA tdA = tdDao.queryContainerA(td).orElseThrow();
@@ -214,27 +219,27 @@ public class MappedTransferContainerTest {
     })
     public void testTransferContainerFunctionWithRange() {
         // TODO JNG-5104
-        TServicePrice outOfPrice = tservicePriceDao.create(TServicePrice.builder().build());
+        TServicePrice outOfPrice = tservicePriceDao.create(TServicePriceForCreate.builder().build());
 
-        TPartner partner = tpartnerDao.create(TPartner
+        TPartner partner = tpartnerDao.create(TPartnerForCreate
                 .builder()
                 .withServicePrices(List.of(
-                        TServicePrice.builder().build(),
-                        TServicePrice.builder().build(),
-                        TServicePrice.builder().build()
+                        TServicePriceForCreate.builder().build(),
+                        TServicePriceForCreate.builder().build(),
+                        TServicePriceForCreate.builder().build()
                 ))
                 .build()
         );
         TStockTransaction stockTransaction = tstockTransactionDao.create(
-                TStockTransaction
+                TStockTransactionForCreate
                         .builder()
                         .withAdditionalServices(List.of(
-                                TAdditionalService
+                                TAdditionalServiceForCreate
                                         .builder()
                                         .build()
                         ))
+                        .withClient(partner)
                         .build()
-                , TStockTransactionAttachedRelationsForCreate.builder().withClient(partner).build()
         );
 
         AdditionalService additionalService = additionalServiceDao.getAll().get(0);
@@ -276,13 +281,11 @@ public class MappedTransferContainerTest {
     })
     public void testTransferInheritedContainerFunction() {
 
-        TE te = teDao.create(TE.builder().withName("E").build());
+        TE te = teDao.create(TEForCreate.builder().withName("E").build());
 
-        TB tb = tbDao.create(TB.builder()
-                        .withConA(TC.builder().build())
-                        .withDonB(TD.builder().build())
-                        .build(),
-                TBAttachedRelationsForCreate.builder()
+        TB tb = tbDao.create(TBForCreate.builder()
+                        .withConA(TCForCreate.builder().build())
+                        .withDonB(TDForCreate.builder().build())
                         .withRelEonB(te)
                         .build()
         );
@@ -299,7 +302,7 @@ public class MappedTransferContainerTest {
         // TODO When no relConB relation is attached, the recursive relation contains the c instance.
         //assertFalse(tcDao.queryContainerBrelConB(tc).isPresent()); // not work
 
-        TC tc1 = tbDao.createRelConB(tb, TC.builder().build());
+        TC tc1 = tbDao.createRelConB(tb, TCForCreate.builder().build());
         Assertions.assertEquals(tc1.identifier(), tcDao.queryContainerAasBrelConB(tc).get().identifier());
         // TODO Recursive relation contains the c instance always, not the c.container.relConB if it is present
         //assertEquals(tc1.identifier(), tcDao.queryContainerBrelConB(tc).get().identifier()); // not work
@@ -314,7 +317,7 @@ public class MappedTransferContainerTest {
         assertFalse(tdDao.queryContainerAasBrelDonB(td).isPresent());
         assertFalse(tdDao.queryContainerBrelDonB(td).isPresent());
 
-        TD td1 = tbDao.createRelDonB(tb, TD.builder().build());
+        TD td1 = tbDao.createRelDonB(tb, TDForCreate.builder().build());
         Assertions.assertEquals(td1.identifier(), tdDao.queryContainerAasBrelDonB(td).get().identifier());
         Assertions.assertEquals(td1.identifier(), tdDao.queryContainerBrelDonB(td).get().identifier());
 
