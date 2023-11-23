@@ -29,8 +29,11 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.container
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.b.BIdentifier;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.c.C;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.c.CDao;
+//import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.d.D;
+//import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.d.DDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.d.D;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.d.DDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.e.E;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.ta.TA;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.ta.TADao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.ta.TAForCreate;
@@ -46,6 +49,9 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.container
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.td.TD;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.td.TDDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.td.TDForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.te.TE;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.te.TEDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.te.TEForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.tpartner.TPartner;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.tpartner.TPartnerDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.tpartner.TPartnerForCreate;
@@ -67,6 +73,7 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Slf4j
@@ -91,6 +98,9 @@ public class MappedTransferContainerTest {
 
     @Inject
     TADao taDao;
+
+    @Inject
+    TEDao teDao;
 
     @Inject
     TPartnerDao tpartnerDao;
@@ -249,4 +259,68 @@ public class MappedTransferContainerTest {
 
 
     }
+
+    @Test
+    @Requirement(reqs = {
+            "REQ-ENT-001",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-ENT-007",
+            "REQ-ENT-008",
+            "REQ-ENT-012",
+            "REQ-EXPR-001",
+            "REQ-EXPR-003",
+            "REQ-EXPR-004",
+            "REQ-EXPR-006",
+            "REQ-EXPR-021",
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-SYNT-001",
+            "REQ-SYNT-002",
+            "REQ-SYNT-003"
+    })
+    public void testTransferInheritedContainerFunction() {
+
+        TE te = teDao.create(TEForCreate.builder().withName("E").build());
+
+        TB tb = tbDao.create(TBForCreate.builder()
+                        .withConA(TCForCreate.builder().build())
+                        .withDonB(TDForCreate.builder().build())
+                        .withRelEonB(te)
+                        .build()
+        );
+
+        // the container is on the parent, the relation is on the child entity
+        TC tc = tb.getConA();
+
+        Assertions.assertEquals(te.identifier(), tcDao.queryContainerAasBrelEonB(tc).get().identifier());
+        // TODO No value present
+        //assertEquals(te.identifier(), tcDao.queryContainerBrelEonB(tc).get().identifier());
+
+        // Recursive C relation
+        assertFalse(tcDao.queryContainerAasBrelConB(tc).isPresent());
+        // TODO When no relConB relation is attached, the recursive relation contains the c instance.
+        //assertFalse(tcDao.queryContainerBrelConB(tc).isPresent()); // not work
+
+        TC tc1 = tbDao.createRelConB(tb, TCForCreate.builder().build());
+        Assertions.assertEquals(tc1.identifier(), tcDao.queryContainerAasBrelConB(tc).get().identifier());
+        // TODO Recursive relation contains the c instance always, not the c.container.relConB if it is present
+        //assertEquals(tc1.identifier(), tcDao.queryContainerBrelConB(tc).get().identifier()); // not work
+
+        // the container and the relation are in the same entity
+        TD td = tb.getDonB();
+
+        Assertions.assertEquals(te.identifier(), tdDao.queryContainerAasBrelEonB(td).get().identifier());
+        Assertions.assertEquals(te.identifier(), tdDao.queryContainerBrelEonB(td).get().identifier());
+
+        // Recursive D relation
+        assertFalse(tdDao.queryContainerAasBrelDonB(td).isPresent());
+        assertFalse(tdDao.queryContainerBrelDonB(td).isPresent());
+
+        TD td1 = tbDao.createRelDonB(tb, TDForCreate.builder().build());
+        Assertions.assertEquals(td1.identifier(), tdDao.queryContainerAasBrelDonB(td).get().identifier());
+        Assertions.assertEquals(td1.identifier(), tdDao.queryContainerBrelDonB(td).get().identifier());
+
+    }
+
 }
