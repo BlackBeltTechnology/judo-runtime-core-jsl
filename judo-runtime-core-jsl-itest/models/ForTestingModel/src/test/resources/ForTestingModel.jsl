@@ -1,0 +1,29 @@
+model ForTestingModel;
+
+type string String min-size:0 max-size:255;
+
+entity A {
+    field required C conA;
+}
+
+entity B extends A {
+
+    relation E relEonB;
+    relation C relConB;
+}
+
+entity C {
+    relation A containerA <= self.container(entityType = A);
+    relation B containerB <= self.container(entityType = A).asType(entityType = B);
+    relation B containerB1 <= self.container(entityType = B);
+
+    relation E containerAasBrelEonB <= self.container(entityType = A).asType(entityType = B).relEonB;
+    relation E containerBrelEonB <= self.container(entityType = B).relEonB; // JNG-5103 cause problem - no value presented
+
+    relation C containerAasBrelConB <= self.container(entityType = A).asType(entityType = B).relConB;
+    relation C containerBrelConB <= self.container(entityType = B).relConB; // JNG-5103 cause problem - same C as root returned
+}
+entity E {
+    field String name;
+}
+
