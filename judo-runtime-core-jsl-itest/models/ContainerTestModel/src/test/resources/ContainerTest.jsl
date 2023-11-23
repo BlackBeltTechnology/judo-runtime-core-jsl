@@ -20,10 +20,10 @@ entity C {
     relation B containerB1 <= self.container(entityType = B);
 
     relation E containerAasBrelEonB <= self.container(entityType = A).asType(entityType = B).relEonB;
-    relation E containerBrelEonB <= self.container(entityType = B).relEonB; // cause problem - no value presented
+    relation E containerBrelEonB <= self.container(entityType = B).relEonB; // JNG-5103 cause problem - no value presented
 
     relation C containerAasBrelConB <= self.container(entityType = A).asType(entityType = B).relConB;
-    relation C containerBrelConB <= self.container(entityType = B).relConB; // cause problem - same C as root returned
+    relation C containerBrelConB <= self.container(entityType = B).relConB; // JNG-5103 cause problem - same C as root returned
 }
 
 entity D {

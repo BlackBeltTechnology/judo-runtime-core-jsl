@@ -294,17 +294,17 @@ public class MappedTransferContainerTest {
         TC tc = tb.getConA();
 
         Assertions.assertEquals(te.identifier(), tcDao.queryContainerAasBrelEonB(tc).get().identifier());
-        // TODO No value present
+        // TODO JNG-5103 No value present
         //assertEquals(te.identifier(), tcDao.queryContainerBrelEonB(tc).get().identifier());
 
         // Recursive C relation
         assertFalse(tcDao.queryContainerAasBrelConB(tc).isPresent());
-        // TODO When no relConB relation is attached, the recursive relation contains the c instance.
+        // TODO JNG-5103 When no relConB relation is attached, the recursive relation contains the c instance.
         //assertFalse(tcDao.queryContainerBrelConB(tc).isPresent()); // not work
 
         TC tc1 = tbDao.createRelConB(tb, TCForCreate.builder().build());
         Assertions.assertEquals(tc1.identifier(), tcDao.queryContainerAasBrelConB(tc).get().identifier());
-        // TODO Recursive relation contains the c instance always, not the c.container.relConB if it is present
+        // TODO JNG-5103 Recursive relation contains the c instance always, not the c.container.relConB if it is present
         //assertEquals(tc1.identifier(), tcDao.queryContainerBrelConB(tc).get().identifier()); // not work
 
         // the container and the relation are in the same entity

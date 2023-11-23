@@ -134,17 +134,17 @@ public class ContainerTest {
         C c = b.getConA();
 
         assertEquals(e.identifier(), cDao.queryContainerAasBrelEonB(c).get().identifier());
-        // TODO No value present
+        // TODO JNG-5103 No value present
         //assertEquals(e.identifier(), cDao.queryContainerBrelEonB(c).get().identifier());
 
         // Recursive C relation
         assertFalse(cDao.queryContainerAasBrelConB(c).isPresent());
-        // TODO When no relConB relation is attached, the recursive relation contains the c instance.
+        // TODO JNG-5103 When no relConB relation is attached, the recursive relation contains the c instance.
         //assertFalse(cDao.queryContainerBrelConB(c).isPresent()); // not work
 
         C c1 = bDao.createRelConB(b, CForCreate.builder().build());
         assertEquals(c1.identifier(), cDao.queryContainerAasBrelConB(c).get().identifier());
-        // TODO Recursive relation contains the c instance always, not the c.container.relConB if it is present
+        // TODO JNG-5103 Recursive relation contains the c instance always, not the c.container.relConB if it is present
         //assertEquals(c1.identifier(), cDao.queryContainerBrelConB(c).get().identifier()); // not work
 
         // the container and the relation are in the same entity
