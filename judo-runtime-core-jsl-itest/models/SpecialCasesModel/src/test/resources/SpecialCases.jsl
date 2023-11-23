@@ -43,3 +43,20 @@ entity E {
 
 }
 
+// Test UUID methods work well
+
+entity F {
+    field E compE;
+    field required E reqCompE;
+    field E[] compECol;
+    relation E relE;
+    relation required E reqRelE;
+    relation E[] relECol;
+
+    field Integer calculatedPrimitive <= 1;
+    relation E calculatedEntity <= self.reqRelE;
+
+}
+
+query Integer queryPrimitive(Integer num) on F <= num;
+query E queryEntity(Integer num) on F <= self.reqRelE;
