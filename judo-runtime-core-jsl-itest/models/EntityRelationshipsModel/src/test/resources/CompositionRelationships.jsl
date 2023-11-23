@@ -55,6 +55,11 @@ entity EntityF4 {
   field EntityH[] h;
 }
 
+entity EntityI {
+    field required String stringI;
+    field EntityD[] multipleDonI;
+}
+
 transfer TransferA(EntityA entitya) {
     field String stringA <= entitya.stringA input:true;
     relation TransferC singleConA <= entitya.singleConA eager:true;
@@ -70,4 +75,9 @@ transfer TransferC(EntityC entityc) {
 
 transfer TransferD(EntityD entityd) {
     field String stringD <= entityd.stringD input:true;
+}
+
+transfer TransferI(EntityI entityi) {
+    field required String stringI <= entityi.stringI input:true;
+    relation TransferD[] multipleDonI <= entityi.multipleDonI eager:true;
 }

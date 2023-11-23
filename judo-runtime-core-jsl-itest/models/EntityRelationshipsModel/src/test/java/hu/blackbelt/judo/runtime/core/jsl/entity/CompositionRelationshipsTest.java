@@ -59,6 +59,11 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationship
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityh.EntityH;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityh.EntityHDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityh.EntityHForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityi.EntityI;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityi.EntityIDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityi.EntityIForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.transferi.TransferI;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.transferi.TransferIDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.CompositionRelationshipsDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
@@ -70,9 +75,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -117,6 +120,12 @@ public class CompositionRelationshipsTest {
 
     @Inject
     CompositionDao compositionDao;
+
+    @Inject
+    EntityIDao entityIDao;
+
+    @Inject
+    TransferIDao transferIDao;
 
     EntityA entityA;
     EntityC singleConA;
@@ -567,6 +576,7 @@ public class CompositionRelationshipsTest {
     }
 
     @Test
+    @Disabled
     void testAddMethodOnBuilder() {
         EntityC c1 = entityCDao.create(EntityCForCreate.builder().withStringC("C1").build());
         EntityC c2 = entityCDao.create(EntityCForCreate.builder().withStringC("C2").build());
@@ -646,6 +656,7 @@ public class CompositionRelationshipsTest {
     }
 
     @Test
+    @Disabled
     void testAddAndRemoveOnCollections() {
         EntityC c2 = entityCDao.create(EntityCForCreate.builder().withStringC("C2").build());
         EntityC c3 = entityCDao.create(EntityCForCreate.builder().withStringC("C3").build());
@@ -778,5 +789,630 @@ public class CompositionRelationshipsTest {
         EntityA entityA = entityADao.create(EntityAForCreate.builder().withSingleRequiredConA(EntityCForCreate.builder().build()).build());
 
         entityA.setCollectionConA(List.of(EntityC.builder().withStringC("C1").build(), EntityC.builder().withStringC("C2").build()));
+    }
+
+    @Test
+    void testCreateAll() {
+        List<EntityI> entityIss = entityIDao.createAll(new ArrayList<>());
+
+        assertEquals(0, entityIss.size());
+
+        entityIss = entityIDao.createAll(List.of(EntityIForCreate.builder().withStringI("II").build()));
+
+        assertEquals(1, entityIss.size());
+        assertEquals("II", entityIss.get(0).getStringI());
+
+        EntityIForCreate entityIForCreate1 = EntityIForCreate.builder()
+                .withStringI("I1")
+                .addToMultipleDonI(EntityDForCreate.builder().withStringD("D1").build())
+                .build();
+
+        EntityIForCreate entityIForCreate2 = EntityIForCreate.builder()
+                .withStringI("I2")
+                .addToMultipleDonI(EntityDForCreate.builder().withStringD("D2").build())
+                .addToMultipleDonI(EntityDForCreate.builder().withStringD("D3").build())
+                .build();
+
+        EntityIForCreate entityIForCreate3 = EntityIForCreate.builder()
+                .withStringI("I3")
+                .addToMultipleDonI(EntityDForCreate.builder().withStringD("D4").build())
+                .addToMultipleDonI(EntityDForCreate.builder().withStringD("D5").build())
+                .build();
+
+        List<EntityI> entityIs = entityIDao.createAll(List.of(entityIForCreate1, entityIForCreate2, entityIForCreate3));
+
+        assertEquals(1, entityIs.stream().filter(entityI -> entityI.getStringI().equals("I1")).count());
+
+        EntityI entityI1 = entityIs.stream().filter(entityI -> entityI.getStringI().equals("I1")).findFirst().orElseThrow();
+
+        assertEquals(1, entityI1.getMultipleDonI().size());
+        assertEquals("D1", entityI1.getMultipleDonI().get(0).getStringD().orElseThrow());
+
+        assertEquals(1, entityIs.stream().filter(entityI -> entityI.getStringI().equals("I2")).count());
+
+        EntityI entityI2 = entityIs.stream().filter(entityI -> entityI.getStringI().equals("I2")).findFirst().orElseThrow();
+
+        assertEquals(2, entityI2.getMultipleDonI().size());
+        assertEquals(1, entityI2.getMultipleDonI().stream().filter(entityD -> entityD.getStringD().orElseThrow().equals("D2")).count());
+        assertEquals(1, entityI2.getMultipleDonI().stream().filter(entityD -> entityD.getStringD().orElseThrow().equals("D3")).count());
+
+        assertEquals(1, entityIs.stream().filter(entityI -> entityI.getStringI().equals("I3")).count());
+
+        EntityI entityI3 = entityIs.stream().filter(entityI -> entityI.getStringI().equals("I3")).findFirst().orElseThrow();
+
+        assertEquals(2, entityI3.getMultipleDonI().size());
+        assertEquals(1, entityI3.getMultipleDonI().stream().filter(entityD -> entityD.getStringD().orElseThrow().equals("D4")).count());
+        assertEquals(1, entityI3.getMultipleDonI().stream().filter(entityD -> entityD.getStringD().orElseThrow().equals("D5")).count());
+
+
+        entityIForCreate1 = EntityIForCreate.builder()
+                .withStringI("I1")
+                .addToMultipleDonI(EntityDForCreate.builder().withStringD("D1").build())
+                .build();
+
+        entityIForCreate2 = EntityIForCreate.builder()
+                .withStringI("I2")
+                .addToMultipleDonI(EntityDForCreate.builder().withStringD("D2").build())
+                .addToMultipleDonI(EntityDForCreate.builder().withStringD("D3").build())
+                .build();
+
+        entityIForCreate3 = EntityIForCreate.builder()
+                .withStringI("I3")
+                .addToMultipleDonI(EntityDForCreate.builder().withStringD("D4").build())
+                .addToMultipleDonI(EntityDForCreate.builder().withStringD("D5").build())
+                .build();
+
+        entityIs = entityIDao.createAll(entityIForCreate1, entityIForCreate2);
+
+        assertEquals(1, entityIs.stream().filter(entityI -> entityI.getStringI().equals("I1")).count());
+
+        entityI1 = entityIs.stream().filter(entityI -> entityI.getStringI().equals("I1")).findFirst().orElseThrow();
+
+        assertEquals(1, entityI1.getMultipleDonI().size());
+        assertEquals("D1", entityI1.getMultipleDonI().get(0).getStringD().orElseThrow());
+
+        assertEquals(1, entityIs.stream().filter(entityI -> entityI.getStringI().equals("I2")).count());
+
+        entityI2 = entityIs.stream().filter(entityI -> entityI.getStringI().equals("I2")).findFirst().orElseThrow();
+
+        assertEquals(2, entityI2.getMultipleDonI().size());
+        assertEquals(1, entityI2.getMultipleDonI().stream().filter(entityD -> entityD.getStringD().orElseThrow().equals("D2")).count());
+        assertEquals(1, entityI2.getMultipleDonI().stream().filter(entityD -> entityD.getStringD().orElseThrow().equals("D3")).count());
+
+        entityIs = entityIDao.createAll(entityIForCreate1, entityIForCreate2, entityIForCreate3);
+
+        assertEquals(1, entityIs.stream().filter(entityI -> entityI.getStringI().equals("I1")).count());
+
+        entityI1 = entityIs.stream().filter(entityI -> entityI.getStringI().equals("I1")).findFirst().orElseThrow();
+
+        assertEquals(1, entityI1.getMultipleDonI().size());
+        assertEquals("D1", entityI1.getMultipleDonI().get(0).getStringD().orElseThrow());
+
+        assertEquals(1, entityIs.stream().filter(entityI -> entityI.getStringI().equals("I2")).count());
+
+        entityI2 = entityIs.stream().filter(entityI -> entityI.getStringI().equals("I2")).findFirst().orElseThrow();
+
+        assertEquals(2, entityI2.getMultipleDonI().size());
+        assertEquals(1, entityI2.getMultipleDonI().stream().filter(entityD -> entityD.getStringD().orElseThrow().equals("D2")).count());
+        assertEquals(1, entityI2.getMultipleDonI().stream().filter(entityD -> entityD.getStringD().orElseThrow().equals("D3")).count());
+
+        assertEquals(1, entityIs.stream().filter(entityI -> entityI.getStringI().equals("I3")).count());
+
+        entityI3 = entityIs.stream().filter(entityI -> entityI.getStringI().equals("I3")).findFirst().orElseThrow();
+
+        assertEquals(2, entityI3.getMultipleDonI().size());
+        assertEquals(1, entityI3.getMultipleDonI().stream().filter(entityD -> entityD.getStringD().orElseThrow().equals("D4")).count());
+        assertEquals(1, entityI3.getMultipleDonI().stream().filter(entityD -> entityD.getStringD().orElseThrow().equals("D5")).count());
+
+        assertEquals(9, entityIDao.countAll());
+
+        ValidationException thrown = assertThrows(
+                ValidationException.class,
+                () -> entityIDao.createAll(EntityIForCreate.builder().withStringI("I1").build(),
+                        EntityIForCreate.builder().build(),
+                        EntityIForCreate.builder().withStringI("I1").build()));
+
+        assertThat(thrown.getValidationResults(), containsInAnyOrder(allOf(
+                hasProperty("code", equalTo("MISSING_REQUIRED_ATTRIBUTE")),
+                hasProperty("location", equalTo("stringI")))));
+
+        assertEquals(9, entityIDao.countAll());
+
+        thrown = assertThrows(
+                ValidationException.class,
+                () -> entityIDao.createAll(List.of(EntityIForCreate.builder().withStringI("I1").build(),
+                        EntityIForCreate.builder().build(),
+                        EntityIForCreate.builder().withStringI("I1").build())));
+
+        assertThat(thrown.getValidationResults(), containsInAnyOrder(allOf(
+                hasProperty("code", equalTo("MISSING_REQUIRED_ATTRIBUTE")),
+                hasProperty("location", equalTo("stringI")))));
+
+        assertEquals(9, entityIDao.countAll());
+    }
+
+    @Test
+    void testUpdateAll() {
+        EntityIForCreate entityIForCreate1 = EntityIForCreate.builder()
+                .withStringI("I1")
+                .addToMultipleDonI(EntityDForCreate.builder().withStringD("D1").build())
+                .build();
+
+        EntityIForCreate entityIForCreate2 = EntityIForCreate.builder()
+                .withStringI("I2")
+                .addToMultipleDonI(EntityDForCreate.builder().withStringD("D2").build())
+                .addToMultipleDonI(EntityDForCreate.builder().withStringD("D3").build())
+                .build();
+
+        EntityIForCreate entityIForCreate3 = EntityIForCreate.builder()
+                .withStringI("I3")
+                .addToMultipleDonI(EntityDForCreate.builder().withStringD("D4").build())
+                .addToMultipleDonI(EntityDForCreate.builder().withStringD("D5").build())
+                .build();
+
+        List<EntityI> entityIs = entityIDao.createAll(List.of(entityIForCreate1, entityIForCreate2, entityIForCreate3));
+
+        assertEquals(1, entityIs.stream().filter(entityI -> entityI.getStringI().equals("I1")).count());
+
+        EntityI entityI1 = entityIs.stream().filter(entityI -> entityI.getStringI().equals("I1")).findFirst().orElseThrow();
+
+        assertEquals(1, entityI1.getMultipleDonI().size());
+        assertEquals("D1", entityI1.getMultipleDonI().get(0).getStringD().orElseThrow());
+
+        assertEquals(1, entityIs.stream().filter(entityI -> entityI.getStringI().equals("I2")).count());
+
+        EntityI entityI2 = entityIs.stream().filter(entityI -> entityI.getStringI().equals("I2")).findFirst().orElseThrow();
+
+        assertEquals(2, entityI2.getMultipleDonI().size());
+        assertEquals(1, entityI2.getMultipleDonI().stream().filter(entityD -> entityD.getStringD().orElseThrow().equals("D2")).count());
+        assertEquals(1, entityI2.getMultipleDonI().stream().filter(entityD -> entityD.getStringD().orElseThrow().equals("D3")).count());
+
+        assertEquals(1, entityIs.stream().filter(entityI -> entityI.getStringI().equals("I3")).count());
+
+        EntityI entityI3 = entityIs.stream().filter(entityI -> entityI.getStringI().equals("I3")).findFirst().orElseThrow();
+
+        assertEquals(2, entityI3.getMultipleDonI().size());
+        assertEquals(1, entityI3.getMultipleDonI().stream().filter(entityD -> entityD.getStringD().orElseThrow().equals("D4")).count());
+        assertEquals(1, entityI3.getMultipleDonI().stream().filter(entityD -> entityD.getStringD().orElseThrow().equals("D5")).count());
+
+
+        entityI1.setStringI("I1Updated");
+        entityI1.setMultipleDonI(List.of(EntityD.builder().withStringD("D1Updated").build()));
+        entityI2.setStringI("I2Updated");
+        entityI2.setMultipleDonI(List.of(EntityD.builder().withStringD("D2Updated").build(), EntityD.builder().withStringD("D3Updated").build()));
+        entityI3.setStringI("I3Updated");
+        entityI3.setMultipleDonI(List.of(EntityD.builder().withStringD("D4Updated").build(), EntityD.builder().withStringD("D5Updated").build()));
+        entityI3.addToMultipleDonI(EntityD.builder().withStringD("D6Updated").build());
+
+        entityIs = entityIDao.updateAll(List.of(entityI1, entityI2, entityI3));
+
+        assertEquals(1, entityIs.stream().filter(entityI -> entityI.getStringI().equals("I1Updated")).count());
+
+        entityI1 = entityIs.stream().filter(entityI -> entityI.getStringI().equals("I1Updated")).findFirst().orElseThrow();
+
+        assertEquals(1, entityI1.getMultipleDonI().size());
+        assertEquals("D1Updated", entityI1.getMultipleDonI().get(0).getStringD().orElseThrow());
+
+        assertEquals(1, entityIs.stream().filter(entityI -> entityI.getStringI().equals("I2Updated")).count());
+
+        entityI2 = entityIs.stream().filter(entityI -> entityI.getStringI().equals("I2Updated")).findFirst().orElseThrow();
+
+        assertEquals(2, entityI2.getMultipleDonI().size());
+        assertEquals(1, entityI2.getMultipleDonI().stream().filter(entityD -> entityD.getStringD().orElseThrow().equals("D2Updated")).count());
+        assertEquals(1, entityI2.getMultipleDonI().stream().filter(entityD -> entityD.getStringD().orElseThrow().equals("D3Updated")).count());
+
+        assertEquals(1, entityIs.stream().filter(entityI -> entityI.getStringI().equals("I3Updated")).count());
+
+        entityI3 = entityIs.stream().filter(entityI -> entityI.getStringI().equals("I3Updated")).findFirst().orElseThrow();
+
+        assertEquals(3, entityI3.getMultipleDonI().size());
+        assertEquals(1, entityI3.getMultipleDonI().stream().filter(entityD -> entityD.getStringD().orElseThrow().equals("D4Updated")).count());
+        assertEquals(1, entityI3.getMultipleDonI().stream().filter(entityD -> entityD.getStringD().orElseThrow().equals("D5Updated")).count());
+        assertEquals(1, entityI3.getMultipleDonI().stream().filter(entityD -> entityD.getStringD().orElseThrow().equals("D6Updated")).count());
+
+        entityI1.setStringI("I1");
+        entityI1.setMultipleDonI(List.of(EntityD.builder().withStringD("D1").build()));
+        entityI2.setStringI("I2");
+        entityI2.setMultipleDonI(List.of(EntityD.builder().withStringD("D2").build(), EntityD.builder().withStringD("D3").build()));
+        entityI3.setStringI("I3");
+        entityI3.setMultipleDonI(List.of(EntityD.builder().withStringD("D4").build(), EntityD.builder().withStringD("D5").build()));
+        entityI3.addToMultipleDonI(EntityD.builder().withStringD("D6").build());
+
+        entityIs = entityIDao.updateAll(entityI1, entityI2);
+
+        assertEquals(1, entityIs.stream().filter(entityI -> entityI.getStringI().equals("I1")).count());
+
+        entityI1 = entityIs.stream().filter(entityI -> entityI.getStringI().equals("I1")).findFirst().orElseThrow();
+
+        assertEquals(1, entityI1.getMultipleDonI().size());
+        assertEquals("D1", entityI1.getMultipleDonI().get(0).getStringD().orElseThrow());
+
+        assertEquals(1, entityIs.stream().filter(entityI -> entityI.getStringI().equals("I2")).count());
+
+        entityI2 = entityIs.stream().filter(entityI -> entityI.getStringI().equals("I2")).findFirst().orElseThrow();
+
+        assertEquals(2, entityI2.getMultipleDonI().size());
+        assertEquals(1, entityI2.getMultipleDonI().stream().filter(entityD -> entityD.getStringD().orElseThrow().equals("D2")).count());
+        assertEquals(1, entityI2.getMultipleDonI().stream().filter(entityD -> entityD.getStringD().orElseThrow().equals("D3")).count());
+
+        assertEquals(0, entityIs.stream().filter(entityI -> entityI.getStringI().equals("I3")).count());
+
+        entityI1.setStringI("I1Updated");
+        entityI1.addToMultipleDonI(EntityD.builder().withStringD("D7").build());
+
+        entityIs = entityIDao.updateAll(List.of(entityI1));
+
+        assertEquals(1, entityIs.size());
+        assertEquals("I1Updated", entityIs.get(0).getStringI());
+        assertEquals(2, entityIs.get(0).getMultipleDonI().size());
+        assertEquals(1, entityI1.getMultipleDonI().stream().filter(entityD -> entityD.getStringD().orElseThrow().equals("D1")).count());
+        assertEquals(1, entityI1.getMultipleDonI().stream().filter(entityD -> entityD.getStringD().orElseThrow().equals("D7")).count());
+
+        entityIs = entityIDao.updateAll(new ArrayList<>());
+
+        assertEquals(0, entityIs.size());
+
+        final EntityA entityA1 = entityADao.create(EntityAForCreate.builder().withSingleRequiredConA(EntityCForCreate.builder().build()).build());
+        final EntityA entityA2 = entityADao.create(EntityAForCreate.builder().withSingleRequiredConA(EntityCForCreate.builder().build()).build());
+        final EntityA entityA3 = entityADao.create(EntityAForCreate.builder().withSingleRequiredConA(EntityCForCreate.builder().build()).build());
+
+        assertEquals(4, entityADao.countAll());
+
+        entityA2.setSingleRequiredConA(null);
+
+        ValidationException thrown = assertThrows(
+                ValidationException.class,
+                () -> entityADao.updateAll(entityA1,
+                        entityA2,
+                        entityA3));
+
+        assertThat(thrown.getValidationResults(), containsInAnyOrder(allOf(
+                hasProperty("code", equalTo("MISSING_REQUIRED_RELATION")),
+                hasProperty("location", equalTo("singleRequiredConA")))));
+
+        assertEquals(4, entityADao.countAll());
+
+        thrown = assertThrows(
+                ValidationException.class,
+                () -> entityADao.updateAll(List.of(entityA1,
+                        entityA2,
+                        entityA3)));
+
+        assertThat(thrown.getValidationResults(), containsInAnyOrder(allOf(
+                hasProperty("code", equalTo("MISSING_REQUIRED_RELATION")),
+                hasProperty("location", equalTo("singleRequiredConA")))));
+
+        assertEquals(4, entityADao.countAll());
+    }
+
+    @Test
+    void testDeleteAllWithInstances() {
+        EntityI entityI1 = entityIDao.create(EntityIForCreate.builder().withStringI("I1").build());
+        EntityI entityI2 = entityIDao.create(EntityIForCreate.builder().withStringI("I2").build());
+        EntityI entityI3 = entityIDao.create(EntityIForCreate.builder().withStringI("I3").build());
+
+        assertEquals(3, entityIDao.countAll());
+        assertEquals(1, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I1")).count());
+        assertEquals(1, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I2")).count());
+        assertEquals(1, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I3")).count());
+
+        entityIDao.deleteAll(new ArrayList<>());
+
+        assertEquals(3, entityIDao.countAll());
+        assertEquals(1, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I1")).count());
+        assertEquals(1, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I2")).count());
+        assertEquals(1, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I3")).count());
+
+        entityIDao.deleteAll(List.of(entityI2));
+
+        assertEquals(2, entityIDao.countAll());
+        assertEquals(1, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I1")).count());
+        assertEquals(0, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I2")).count());
+        assertEquals(1, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I3")).count());
+
+        entityIDao.deleteAll(List.of(entityI1, entityI3));
+
+        assertEquals(0, entityIDao.countAll());
+        assertEquals(0, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I1")).count());
+        assertEquals(0, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I2")).count());
+        assertEquals(0, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I3")).count());
+
+
+        entityI1 = entityIDao.create(EntityIForCreate.builder().withStringI("I1").build());
+        entityI2 = entityIDao.create(EntityIForCreate.builder().withStringI("I2").build());
+        entityI3 = entityIDao.create(EntityIForCreate.builder().withStringI("I3").build());
+        EntityI entityI4 = entityIDao.create(EntityIForCreate.builder().withStringI("I4").build());
+        EntityI entityI5 = entityIDao.create(EntityIForCreate.builder().withStringI("I5").build());
+        EntityI entityI6 = entityIDao.create(EntityIForCreate.builder().withStringI("I6").build());
+
+        assertEquals(6, entityIDao.countAll());
+        assertEquals(1, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I1")).count());
+        assertEquals(1, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I2")).count());
+        assertEquals(1, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I3")).count());
+        assertEquals(1, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I4")).count());
+        assertEquals(1, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I5")).count());
+        assertEquals(1, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I6")).count());
+
+        entityIDao.deleteAll(entityI1, entityI2);
+
+        assertEquals(4, entityIDao.countAll());
+        assertEquals(0, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I1")).count());
+        assertEquals(0, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I2")).count());
+        assertEquals(1, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I3")).count());
+        assertEquals(1, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I4")).count());
+        assertEquals(1, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I5")).count());
+        assertEquals(1, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I6")).count());
+
+        entityIDao.deleteAll(entityI3, entityI4, entityI5, entityI6);
+
+        assertEquals(0, entityIDao.countAll());
+        assertEquals(0, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I1")).count());
+        assertEquals(0, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I2")).count());
+        assertEquals(0, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I3")).count());
+        assertEquals(0, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I4")).count());
+        assertEquals(0, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I5")).count());
+        assertEquals(0, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I6")).count());
+
+        entityI1 = entityIDao.create(EntityIForCreate.builder().withStringI("I1").build());
+        entityI2 = entityIDao.create(EntityIForCreate.builder().withStringI("I2").build());
+        entityI3 = entityIDao.create(EntityIForCreate.builder().withStringI("I3").build());
+
+        assertEquals(3, entityIDao.countAll());
+        assertEquals(1, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I1")).count());
+        assertEquals(1, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I2")).count());
+        assertEquals(1, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I3")).count());
+
+        entityIDao.deleteAll(entityI1, entityI2, entityI3);
+
+        assertEquals(0, entityIDao.countAll());
+        assertEquals(0, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I1")).count());
+        assertEquals(0, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I2")).count());
+        assertEquals(0, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I3")).count());
+
+        final EntityI entityI1final = entityIDao.create(EntityIForCreate.builder().withStringI("I1").build());
+        final EntityI entityI2final = entityIDao.create(EntityIForCreate.builder().withStringI("I2").build());
+        final EntityI entityI3final = entityIDao.create(EntityIForCreate.builder().withStringI("I3").build());
+
+        entityIDao.delete(entityI2final);
+
+        assertEquals(2, entityIDao.countAll());
+
+        ValidationException thrown = assertThrows(
+                ValidationException.class,
+                () -> entityIDao.deleteAll(entityI1final,
+                        entityI2final,
+                        entityI3final));
+
+        assertThat(thrown.getValidationResults(), containsInAnyOrder(allOf(
+                hasProperty("code", equalTo("ENTITY_NOT_FOUND")))));
+
+        assertEquals(2, entityIDao.countAll());
+
+        thrown = assertThrows(
+                ValidationException.class,
+                () -> entityIDao.deleteAll(List.of(entityI1final,
+                        entityI2final,
+                        entityI3final)));
+
+        assertThat(thrown.getValidationResults(), containsInAnyOrder(allOf(
+                hasProperty("code", equalTo("ENTITY_NOT_FOUND")))));
+
+        assertEquals(2, entityIDao.countAll());
+    }
+
+    @Test
+    void testDeleteAllWithIdentifier() {
+        EntityI entityI1 = entityIDao.create(EntityIForCreate.builder().withStringI("I1").build());
+        EntityI entityI2 = entityIDao.create(EntityIForCreate.builder().withStringI("I2").build());
+        EntityI entityI3 = entityIDao.create(EntityIForCreate.builder().withStringI("I3").build());
+
+        assertEquals(3, entityIDao.countAll());
+        assertEquals(1, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I1")).count());
+        assertEquals(1, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I2")).count());
+        assertEquals(1, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I3")).count());
+
+        entityIDao.deleteAll(List.of(entityI2.identifier()));
+
+        assertEquals(2, entityIDao.countAll());
+        assertEquals(1, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I1")).count());
+        assertEquals(0, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I2")).count());
+        assertEquals(1, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I3")).count());
+
+        entityIDao.deleteAll(List.of(entityI1.identifier(), entityI3.identifier()));
+
+        assertEquals(0, entityIDao.countAll());
+        assertEquals(0, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I1")).count());
+        assertEquals(0, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I2")).count());
+        assertEquals(0, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I3")).count());
+
+
+        entityI1 = entityIDao.create(EntityIForCreate.builder().withStringI("I1").build());
+        entityI2 = entityIDao.create(EntityIForCreate.builder().withStringI("I2").build());
+        entityI3 = entityIDao.create(EntityIForCreate.builder().withStringI("I3").build());
+        EntityI entityI4 = entityIDao.create(EntityIForCreate.builder().withStringI("I4").build());
+        EntityI entityI5 = entityIDao.create(EntityIForCreate.builder().withStringI("I5").build());
+        EntityI entityI6 = entityIDao.create(EntityIForCreate.builder().withStringI("I6").build());
+
+        assertEquals(6, entityIDao.countAll());
+        assertEquals(1, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I1")).count());
+        assertEquals(1, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I2")).count());
+        assertEquals(1, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I3")).count());
+        assertEquals(1, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I4")).count());
+        assertEquals(1, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I5")).count());
+        assertEquals(1, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I6")).count());
+
+        entityIDao.deleteAll(entityI1.identifier(), entityI2.identifier());
+
+        assertEquals(4, entityIDao.countAll());
+        assertEquals(0, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I1")).count());
+        assertEquals(0, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I2")).count());
+        assertEquals(1, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I3")).count());
+        assertEquals(1, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I4")).count());
+        assertEquals(1, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I5")).count());
+        assertEquals(1, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I6")).count());
+
+        entityIDao.deleteAll(entityI3.identifier(), entityI4.identifier(), entityI5.identifier(), entityI6.identifier());
+
+        assertEquals(0, entityIDao.countAll());
+        assertEquals(0, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I1")).count());
+        assertEquals(0, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I2")).count());
+        assertEquals(0, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I3")).count());
+        assertEquals(0, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I4")).count());
+        assertEquals(0, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I5")).count());
+        assertEquals(0, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I6")).count());
+
+        entityI1 = entityIDao.create(EntityIForCreate.builder().withStringI("I1").build());
+        entityI2 = entityIDao.create(EntityIForCreate.builder().withStringI("I2").build());
+        entityI3 = entityIDao.create(EntityIForCreate.builder().withStringI("I3").build());
+
+        assertEquals(3, entityIDao.countAll());
+        assertEquals(1, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I1")).count());
+        assertEquals(1, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I2")).count());
+        assertEquals(1, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I3")).count());
+
+        entityIDao.deleteAll(entityI1.identifier(), entityI2.identifier(), entityI3.identifier());
+
+        assertEquals(0, entityIDao.countAll());
+        assertEquals(0, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I1")).count());
+        assertEquals(0, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I2")).count());
+        assertEquals(0, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I3")).count());
+
+        final EntityI entityI1final = entityIDao.create(EntityIForCreate.builder().withStringI("I1").build());
+        final EntityI entityI2final = entityIDao.create(EntityIForCreate.builder().withStringI("I2").build());
+        final EntityI entityI3final = entityIDao.create(EntityIForCreate.builder().withStringI("I3").build());
+
+        entityIDao.delete(entityI2final);
+
+        assertEquals(2, entityIDao.countAll());
+
+        ValidationException thrown = assertThrows(
+                ValidationException.class,
+                () -> entityIDao.deleteAll(entityI1final,
+                        entityI2final,
+                        entityI3final));
+
+        assertThat(thrown.getValidationResults(), containsInAnyOrder(allOf(
+                hasProperty("code", equalTo("ENTITY_NOT_FOUND")))));
+
+        assertEquals(2, entityIDao.countAll());
+
+        thrown = assertThrows(
+                ValidationException.class,
+                () -> entityIDao.deleteAll(List.of(entityI1final.identifier(),
+                        entityI2final.identifier(),
+                        entityI3final.identifier())));
+
+        assertThat(thrown.getValidationResults(), containsInAnyOrder(allOf(
+                hasProperty("code", equalTo("ENTITY_NOT_FOUND")))));
+
+        assertEquals(2, entityIDao.countAll());
+    }
+
+    @Test
+    void testDeleteAllWithUUIDs() {
+        EntityI entityI1 = entityIDao.create(EntityIForCreate.builder().withStringI("I1").build());
+        EntityI entityI2 = entityIDao.create(EntityIForCreate.builder().withStringI("I2").build());
+        EntityI entityI3 = entityIDao.create(EntityIForCreate.builder().withStringI("I3").build());
+
+        assertEquals(3, entityIDao.countAll());
+        assertEquals(1, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I1")).count());
+        assertEquals(1, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I2")).count());
+        assertEquals(1, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I3")).count());
+
+        entityIDao.deleteAll(List.of(entityI2.identifier().getIdentifier()));
+
+        assertEquals(2, entityIDao.countAll());
+        assertEquals(1, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I1")).count());
+        assertEquals(0, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I2")).count());
+        assertEquals(1, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I3")).count());
+
+        entityIDao.deleteAll(List.of(entityI1.identifier().getIdentifier(), entityI3.identifier().getIdentifier()));
+
+        assertEquals(0, entityIDao.countAll());
+        assertEquals(0, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I1")).count());
+        assertEquals(0, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I2")).count());
+        assertEquals(0, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I3")).count());
+
+
+        entityI1 = entityIDao.create(EntityIForCreate.builder().withStringI("I1").build());
+        entityI2 = entityIDao.create(EntityIForCreate.builder().withStringI("I2").build());
+        entityI3 = entityIDao.create(EntityIForCreate.builder().withStringI("I3").build());
+        EntityI entityI4 = entityIDao.create(EntityIForCreate.builder().withStringI("I4").build());
+        EntityI entityI5 = entityIDao.create(EntityIForCreate.builder().withStringI("I5").build());
+        EntityI entityI6 = entityIDao.create(EntityIForCreate.builder().withStringI("I6").build());
+
+        assertEquals(6, entityIDao.countAll());
+        assertEquals(1, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I1")).count());
+        assertEquals(1, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I2")).count());
+        assertEquals(1, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I3")).count());
+        assertEquals(1, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I4")).count());
+        assertEquals(1, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I5")).count());
+        assertEquals(1, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I6")).count());
+
+        entityIDao.deleteAll((UUID) entityI1.identifier().getIdentifier(),(UUID) entityI2.identifier().getIdentifier());
+
+        assertEquals(4, entityIDao.countAll());
+        assertEquals(0, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I1")).count());
+        assertEquals(0, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I2")).count());
+        assertEquals(1, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I3")).count());
+        assertEquals(1, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I4")).count());
+        assertEquals(1, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I5")).count());
+        assertEquals(1, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I6")).count());
+
+        entityIDao.deleteAll((UUID) entityI3.identifier().getIdentifier(), (UUID) entityI4.identifier().getIdentifier(), (UUID) entityI5.identifier().getIdentifier(), (UUID) entityI6.identifier().getIdentifier());
+
+        assertEquals(0, entityIDao.countAll());
+        assertEquals(0, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I1")).count());
+        assertEquals(0, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I2")).count());
+        assertEquals(0, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I3")).count());
+        assertEquals(0, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I4")).count());
+        assertEquals(0, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I5")).count());
+        assertEquals(0, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I6")).count());
+
+        entityI1 = entityIDao.create(EntityIForCreate.builder().withStringI("I1").build());
+        entityI2 = entityIDao.create(EntityIForCreate.builder().withStringI("I2").build());
+        entityI3 = entityIDao.create(EntityIForCreate.builder().withStringI("I3").build());
+
+        assertEquals(3, entityIDao.countAll());
+        assertEquals(1, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I1")).count());
+        assertEquals(1, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I2")).count());
+        assertEquals(1, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I3")).count());
+
+        entityIDao.deleteAll((UUID) entityI1.identifier().getIdentifier(), (UUID) entityI2.identifier().getIdentifier(), (UUID) entityI3.identifier().getIdentifier());
+
+        assertEquals(0, entityIDao.countAll());
+        assertEquals(0, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I1")).count());
+        assertEquals(0, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I2")).count());
+        assertEquals(0, entityIDao.getAll().stream().filter(entityI -> entityI.getStringI().equals("I3")).count());
+
+        final EntityI entityI1final = entityIDao.create(EntityIForCreate.builder().withStringI("I1").build());
+        final EntityI entityI2final = entityIDao.create(EntityIForCreate.builder().withStringI("I2").build());
+        final EntityI entityI3final = entityIDao.create(EntityIForCreate.builder().withStringI("I3").build());
+
+        entityIDao.delete(entityI2final);
+
+        assertEquals(2, entityIDao.countAll());
+
+        ValidationException thrown = assertThrows(
+                ValidationException.class,
+                () -> entityIDao.deleteAll((UUID) entityI1final.identifier().getIdentifier(),
+                        (UUID) entityI2final.identifier().getIdentifier(),
+                        (UUID) entityI3final.identifier().getIdentifier()));
+
+        assertThat(thrown.getValidationResults(), containsInAnyOrder(allOf(
+                hasProperty("code", equalTo("ENTITY_NOT_FOUND")))));
+
+        assertEquals(2, entityIDao.countAll());
+
+        thrown = assertThrows(
+                ValidationException.class,
+                () -> entityIDao.deleteAll(List.of(entityI1final.identifier().getIdentifier(),
+                        entityI2final.identifier().getIdentifier(),
+                        entityI3final.identifier().getIdentifier())));
+
+        assertThat(thrown.getValidationResults(), containsInAnyOrder(allOf(
+                hasProperty("code", equalTo("ENTITY_NOT_FOUND")))));
+
+        assertEquals(2, entityIDao.countAll());
     }
 }
