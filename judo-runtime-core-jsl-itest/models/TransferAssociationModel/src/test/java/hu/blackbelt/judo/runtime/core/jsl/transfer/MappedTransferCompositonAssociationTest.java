@@ -77,9 +77,6 @@ public class MappedTransferCompositonAssociationTest {
     TransferBDao transferBDao;
 
     @Inject
-    EntityCDao entityCDao;
-
-    @Inject
     TransferCDao transferCDao;
 
     @Inject
