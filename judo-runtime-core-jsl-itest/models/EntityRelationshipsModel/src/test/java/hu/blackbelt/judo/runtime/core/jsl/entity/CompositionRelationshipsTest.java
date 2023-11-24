@@ -59,11 +59,6 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationship
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityh.EntityH;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityh.EntityHDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityh.EntityHForCreate;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityi.EntityI;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityi.EntityIDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityi.EntityIForCreate;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.transferi.TransferI;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.transferi.TransferIDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.CompositionRelationshipsDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
@@ -120,12 +115,6 @@ public class CompositionRelationshipsTest {
 
     @Inject
     CompositionDao compositionDao;
-
-    @Inject
-    EntityIDao entityIDao;
-
-    @Inject
-    TransferIDao transferIDao;
 
     EntityA entityA;
     EntityC singleConA;
@@ -576,7 +565,6 @@ public class CompositionRelationshipsTest {
     }
 
     @Test
-    @Disabled
     void testAddMethodOnBuilder() {
         EntityC c1 = entityCDao.create(EntityCForCreate.builder().withStringC("C1").build());
         EntityC c2 = entityCDao.create(EntityCForCreate.builder().withStringC("C2").build());
@@ -656,7 +644,6 @@ public class CompositionRelationshipsTest {
     }
 
     @Test
-    @Disabled
     void testAddAndRemoveOnCollections() {
         EntityC c2 = entityCDao.create(EntityCForCreate.builder().withStringC("C2").build());
         EntityC c3 = entityCDao.create(EntityCForCreate.builder().withStringC("C3").build());

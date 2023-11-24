@@ -38,21 +38,3 @@ transfer TransferC (EntityC c) {
 transfer TransferD (EntityD d) {
     field String nameD <= d.nameD input:true;
 }
-
-entity EntityE {
-    field required String stringE;
-    field EntityD[] multipleDonE;
-}
-
-transfer TransferE(EntityE entityE) {
-    field required String stringE <= entityE.stringE input:true;
-    relation TransferD[] multipleDonE <= entityE.multipleDonE eager:true;
-}
-
-entity EntityF {
-    field required EntityD singleRequiredDonA;
-}
-
-transfer TransferF(EntityF entityf) {
-    relation required TransferD singleRequiredDonA <= entityf.singleRequiredDonA eager:true;
-}
