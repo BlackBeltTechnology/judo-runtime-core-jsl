@@ -29,6 +29,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcas
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.c.CForCreateBuilder;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.d.DDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.d.DForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.e.E;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.e.EDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.e.EForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.entitya.EntityA;
@@ -37,6 +38,11 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcas
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.entityb.EntityB;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.entityb.EntityBDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.entityb.EntityBForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.f.F;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.f.FDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.f.FForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.f.queryentity.FQueryEntityParameter;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.f.queryprimitive.FQueryPrimitiveParameter;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.referenceentity.ReferenceEntity;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.referenceentity.ReferenceEntityDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.referenceentity.ReferenceEntityForCreate;
@@ -46,15 +52,19 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcas
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.SpecialCasesDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
+import hu.blackbelt.judo.runtime.core.exception.ValidationException;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.List;
+import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.equalTo;
+import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
 public class SpecialCasesTest {
@@ -213,7 +223,7 @@ public class SpecialCasesTest {
 
     @Inject
     EDao eDao;
-
+    
     @Test
     @TestCase("TestBuilderCopyTheCollectionRecursively")
     @Requirement(reqs = {
@@ -254,6 +264,92 @@ public class SpecialCasesTest {
         assertEquals(2, c11.getCompD().get(0).getCompE().size());
         assertEquals(1, c2.getCompD().get(0).getCompE().size());
 
+    }
+
+    @Inject
+    FDao fDao;
+    
+    @Test
+    @TestCase("UUIDMethods")
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-007",
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-SRV-002",
+    })
+    public void TestUUIDMethods() {
+
+        E eOpRel = eDao.create(EForCreate.builder().build());
+        E eReqRel = eDao.create(EForCreate.builder().build());
+        E eColRel1 = eDao.create(EForCreate.builder().build());
+        E eColRel2 = eDao.create(EForCreate.builder().build());
+
+        F f = fDao.create(FForCreate.builder()
+                .withRelE(eOpRel)
+                .withReqRelE(eReqRel)
+                .withRelECol(List.of(eColRel1, eColRel2))
+                .withCompE(EForCreate.builder().build())
+                .withReqCompE(EForCreate.builder().build())
+                .withCompECol(List.of(EForCreate.builder().build(), EForCreate.builder().build()))
+                .build()
+        );
+
+        E eOpComp = f.getCompE().get();
+        E eReqComp = f.getReqCompE();
+        E eColComp1 = f.getCompECol().get(0);
+        E eColComp2 = f.getCompECol().get(1);
+
+        // queries
+
+        UUID uuidF = (UUID) f.identifier().getIdentifier();
+
+        assertEquals(eOpRel.identifier(), fDao.queryRelE(uuidF).get().identifier());
+        assertEquals(eReqRel.identifier(), fDao.queryReqRelE(uuidF).identifier());
+        assertThat(
+                List.of(eColRel1.identifier(), eColRel2.identifier()),
+                containsInAnyOrder(fDao.queryRelECol(uuidF).selectList().stream().map(e -> e.identifier()).toArray())
+        );
+
+        assertEquals(eOpComp.identifier(), fDao.queryCompE(uuidF).get().identifier());
+        assertEquals(eReqComp.identifier(), fDao.queryReqCompE(uuidF).identifier());
+        assertThat(
+                List.of(eColComp1.identifier(), eColComp2.identifier()),
+                containsInAnyOrder(fDao.queryCompECol(uuidF).selectList().stream().map(e -> e.identifier()).toArray())
+        );
+
+        assertEquals(1, fDao.queryCalculatedPrimitive(uuidF).get());
+        assertEquals(eReqRel.identifier(), fDao.queryCalculatedEntity(uuidF).get().identifier());
+
+        assertEquals(3, fDao.queryQueryPrimitive(uuidF, FQueryPrimitiveParameter.builder().withNum(3).build()).get());
+        assertEquals(eReqRel.identifier(), fDao.queryQueryEntity(uuidF, FQueryEntityParameter.builder().withNum(3).build()).get().identifier());
+
+
+        // Not related identifier added
+        UUID uuidEOpRel = (UUID) eOpRel.identifier().getIdentifier();
+        assertFalse(fDao.getById(uuidEOpRel).isPresent());
+        assertFalse(eDao.getById(uuidF).isPresent());
+
+        assertFalse(fDao.queryCompE(uuidEOpRel).isPresent());
+
+        ValidationException thrown = assertThrows(
+                ValidationException.class,
+                () -> fDao.delete(uuidEOpRel)
+        );
+        assertThat(thrown.getValidationResults(), containsInAnyOrder(allOf(
+                hasProperty("code", equalTo("ENTITY_NOT_FOUND")))
+        ));
+
+        // delete and getById
+        assertTrue(fDao.getById(uuidF).isPresent());
+
+        fDao.delete(uuidF);
+
+        assertFalse(fDao.getById(uuidF).isPresent());
     }
 
 }
