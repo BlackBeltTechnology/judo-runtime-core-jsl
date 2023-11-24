@@ -38,7 +38,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
 public class MappedTransferQueryCustomizerFunctionsTest {
@@ -277,6 +277,23 @@ public class MappedTransferQueryCustomizerFunctionsTest {
                 .get();
 
         assertEquals(transf2.identifier(), orderBy.identifier());
+
+        TransferOptionalPrimitivesOrder orderASC = TransferOptionalPrimitivesOrder.ASC;
+
+        orderBy = transferOptionalPrimitivesDao
+                .query()
+                .orderBy(TransferOptionalPrimitivesAttribute.INTEGER_ATTR, orderASC)
+                .orderBy(TransferOptionalPrimitivesAttribute.SCALED_ATTR, orderASC)
+                .orderBy(TransferOptionalPrimitivesAttribute.REGEX_ATTR, orderASC)
+                .orderBy(TransferOptionalPrimitivesAttribute.BOOL_ATTR, orderASC)
+                .orderBy(TransferOptionalPrimitivesAttribute.DATE_ATTR, orderASC)
+                .orderBy(TransferOptionalPrimitivesAttribute.TIMESTAMP_ATTR, orderASC)
+                .orderBy(TransferOptionalPrimitivesAttribute.TIME_ATTR, orderASC)
+                .orderBy(TransferOptionalPrimitivesAttribute.ENUM_ATTR, orderASC)
+                .selectOne()
+                .get();
+
+        assertEquals(transf2.identifier(), orderBy.identifier());
     }
 
     @Test
@@ -311,6 +328,24 @@ public class MappedTransferQueryCustomizerFunctionsTest {
                 .get();
 
         assertEquals(transf1.identifier(), orderBy.identifier());
+
+        TransferOptionalPrimitivesOrder orderDESC = TransferOptionalPrimitivesOrder.DESC;
+
+        orderBy = transferOptionalPrimitivesDao
+                .query()
+                .orderBy(TransferOptionalPrimitivesAttribute.INTEGER_ATTR, orderDESC)
+                .orderBy(TransferOptionalPrimitivesAttribute.SCALED_ATTR, orderDESC)
+                .orderBy(TransferOptionalPrimitivesAttribute.REGEX_ATTR, orderDESC)
+                .orderBy(TransferOptionalPrimitivesAttribute.BOOL_ATTR, orderDESC)
+                .orderBy(TransferOptionalPrimitivesAttribute.DATE_ATTR, orderDESC)
+                .orderBy(TransferOptionalPrimitivesAttribute.TIMESTAMP_ATTR, orderDESC)
+                .orderBy(TransferOptionalPrimitivesAttribute.TIME_ATTR, orderDESC)
+                .orderBy(TransferOptionalPrimitivesAttribute.ENUM_ATTR, orderDESC)
+                .selectOne()
+                .get();
+
+        assertEquals(transf1.identifier(), orderBy.identifier());
+
     }
 
     @Test
@@ -346,6 +381,25 @@ public class MappedTransferQueryCustomizerFunctionsTest {
                 .get();
 
         assertEquals(transf2.identifier(), orderBy.identifier());
+
+        TransferOptionalPrimitivesOrder orderASC = TransferOptionalPrimitivesOrder.ASC;
+
+        orderBy = transferOptionalPrimitivesDao
+                .query()
+                .orderBy(TransferOptionalPrimitivesAttribute.DERIVED_INTEGER_ATTR, orderASC)
+                .orderBy(TransferOptionalPrimitivesAttribute.DERIVED_SCALED_ATTR, orderASC)
+                .orderBy(TransferOptionalPrimitivesAttribute.DERIVED_REGEX_ATTR, orderASC)
+                .orderBy(TransferOptionalPrimitivesAttribute.DERIVED_BOOL_ATTR, orderASC)
+                .orderBy(TransferOptionalPrimitivesAttribute.DERIVED_DATE_ATTR, orderASC)
+                .orderBy(TransferOptionalPrimitivesAttribute.DERIVED_TIMESTAMP_ATTR, orderASC)
+                .orderBy(TransferOptionalPrimitivesAttribute.DERIVED_TIME_ATTR, orderASC)
+                .orderBy(TransferOptionalPrimitivesAttribute.DERIVED_ENUM_ATTR, orderASC)
+                .selectOne()
+                .get();
+
+        assertEquals(transf2.identifier(), orderBy.identifier());
+
+
     }
 
     @Test
@@ -377,6 +431,23 @@ public class MappedTransferQueryCustomizerFunctionsTest {
                 .orderByDescending(TransferOptionalPrimitivesAttribute.DERIVED_TIMESTAMP_ATTR)
                 .orderByDescending(TransferOptionalPrimitivesAttribute.DERIVED_TIME_ATTR)
                 .orderByDescending(TransferOptionalPrimitivesAttribute.DERIVED_ENUM_ATTR)
+                .selectOne()
+                .get();
+
+        assertEquals(transf1.identifier(), orderBy.identifier());
+
+        TransferOptionalPrimitivesOrder orderDESC = TransferOptionalPrimitivesOrder.DESC;
+
+        orderBy = transferOptionalPrimitivesDao
+                .query()
+                .orderBy(TransferOptionalPrimitivesAttribute.DERIVED_INTEGER_ATTR, orderDESC)
+                .orderBy(TransferOptionalPrimitivesAttribute.DERIVED_SCALED_ATTR, orderDESC)
+                .orderBy(TransferOptionalPrimitivesAttribute.DERIVED_REGEX_ATTR, orderDESC)
+                .orderBy(TransferOptionalPrimitivesAttribute.DERIVED_BOOL_ATTR, orderDESC)
+                .orderBy(TransferOptionalPrimitivesAttribute.DERIVED_DATE_ATTR, orderDESC)
+                .orderBy(TransferOptionalPrimitivesAttribute.DERIVED_TIMESTAMP_ATTR, orderDESC)
+                .orderBy(TransferOptionalPrimitivesAttribute.DERIVED_TIME_ATTR, orderDESC)
+                .orderBy(TransferOptionalPrimitivesAttribute.DERIVED_ENUM_ATTR, orderDESC)
                 .selectOne()
                 .get();
 
@@ -416,6 +487,23 @@ public class MappedTransferQueryCustomizerFunctionsTest {
                 .get();
 
         assertEquals(transf2.identifier(), orderBy.identifier());
+
+        TransferOptionalPrimitivesOrder orderASC = TransferOptionalPrimitivesOrder.ASC;
+
+        orderBy = transferOptionalPrimitivesDao
+                .query()
+                .orderBy(TransferOptionalPrimitivesAttribute.INTEGER_ATTR, orderASC)
+                .orderBy(TransferOptionalPrimitivesAttribute.DERIVED_SCALED_ATTR, orderASC)
+                .orderBy(TransferOptionalPrimitivesAttribute.REGEX_ATTR, orderASC)
+                .orderBy(TransferOptionalPrimitivesAttribute.DERIVED_BOOL_ATTR, orderASC)
+                .orderBy(TransferOptionalPrimitivesAttribute.DATE_ATTR, orderASC)
+                .orderBy(TransferOptionalPrimitivesAttribute.DERIVED_TIMESTAMP_ATTR, orderASC)
+                .orderBy(TransferOptionalPrimitivesAttribute.TIME_ATTR, orderASC)
+                .orderBy(TransferOptionalPrimitivesAttribute.DERIVED_ENUM_ATTR, orderASC)
+                .selectOne()
+                .get();
+
+        assertEquals(transf2.identifier(), orderBy.identifier());
     }
 
     @Test
@@ -451,6 +539,49 @@ public class MappedTransferQueryCustomizerFunctionsTest {
                 .get();
 
         assertEquals(transf1.identifier(), orderBy.identifier());
+
+        TransferOptionalPrimitivesOrder orderDESC = TransferOptionalPrimitivesOrder.DESC;
+
+        orderBy = transferOptionalPrimitivesDao
+                .query()
+                .orderBy(TransferOptionalPrimitivesAttribute.INTEGER_ATTR, orderDESC)
+                .orderBy(TransferOptionalPrimitivesAttribute.DERIVED_SCALED_ATTR, orderDESC)
+                .orderBy(TransferOptionalPrimitivesAttribute.REGEX_ATTR, orderDESC)
+                .orderBy(TransferOptionalPrimitivesAttribute.DERIVED_BOOL_ATTR, orderDESC)
+                .orderBy(TransferOptionalPrimitivesAttribute.DATE_ATTR, orderDESC)
+                .orderBy(TransferOptionalPrimitivesAttribute.DERIVED_TIMESTAMP_ATTR, orderDESC)
+                .orderBy(TransferOptionalPrimitivesAttribute.TIME_ATTR, orderDESC)
+                .orderBy(TransferOptionalPrimitivesAttribute.DERIVED_ENUM_ATTR, orderDESC)
+                .selectOne()
+                .get();
+
+        assertEquals(transf1.identifier(), orderBy.identifier());
+
+    }
+
+    @Test
+    @Requirement(reqs = {
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-SRV-002"
+    })
+    public void testOrderEnumMethods() {
+
+        TransferOptionalPrimitivesOrder order = TransferOptionalPrimitivesOrder.ASC;
+
+        assertTrue(order.isASC());
+        assertFalse(order.isDESC());
+        assertEquals("ASC", order.getByName());
+
+        order = TransferOptionalPrimitivesOrder.DESC;
+
+        assertFalse(order.isASC());
+        assertTrue(order.isDESC());
+        assertEquals("DESC", order.getByName());
+
     }
 
     /**
@@ -511,12 +642,29 @@ public class MappedTransferQueryCustomizerFunctionsTest {
                 .get();
 
         assertEquals(firstTransfer.identifier(), orderBy.identifier());
+
+        orderBy = transferOptionalPrimitivesDao
+                .query()
+                .orderBy(attribute, TransferOptionalPrimitivesOrder.ASC)
+                .selectOne()
+                .get();
+
+        assertEquals(firstTransfer.identifier(), orderBy.identifier());
     }
 
     private void assertOrderByDescending(TransferOptionalPrimitivesAttribute attribute, TransferOptionalPrimitives firstEntity) {
         TransferOptionalPrimitives orderByDescending = transferOptionalPrimitivesDao
                 .query()
                 .orderByDescending(attribute)
+                .selectOne()
+                .get();
+
+
+        assertEquals(firstEntity.identifier(), orderByDescending.identifier());
+
+        orderByDescending = transferOptionalPrimitivesDao
+                .query()
+                .orderBy(attribute, TransferOptionalPrimitivesOrder.DESC)
                 .selectOne()
                 .get();
 
