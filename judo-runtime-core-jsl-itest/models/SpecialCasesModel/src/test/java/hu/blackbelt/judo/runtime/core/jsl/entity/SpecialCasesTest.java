@@ -306,55 +306,50 @@ public class SpecialCasesTest {
 
         // queries
 
-        assertEquals(eOpRel.identifier(), fDao.queryRelE(getIdentifiable(f)).get().identifier());
-        assertEquals(eReqRel.identifier(), fDao.queryReqRelE(getIdentifiable(f)).identifier());
+        UUID uuidF = (UUID) f.identifier().getIdentifier();
+
+        assertEquals(eOpRel.identifier(), fDao.queryRelE(uuidF).get().identifier());
+        assertEquals(eReqRel.identifier(), fDao.queryReqRelE(uuidF).identifier());
         assertThat(
                 List.of(eColRel1.identifier(), eColRel2.identifier()),
-                containsInAnyOrder(fDao.queryRelECol(getIdentifiable(f)).selectList().stream().map(e -> e.identifier()).toArray())
+                containsInAnyOrder(fDao.queryRelECol(uuidF).selectList().stream().map(e -> e.identifier()).toArray())
         );
 
-        assertEquals(eOpComp.identifier(), fDao.queryCompE(getIdentifiable(f)).get().identifier());
-        assertEquals(eReqComp.identifier(), fDao.queryReqCompE(getIdentifiable(f)).identifier());
+        assertEquals(eOpComp.identifier(), fDao.queryCompE(uuidF).get().identifier());
+        assertEquals(eReqComp.identifier(), fDao.queryReqCompE(uuidF).identifier());
         assertThat(
                 List.of(eColComp1.identifier(), eColComp2.identifier()),
-                containsInAnyOrder(fDao.queryCompECol(getIdentifiable(f)).selectList().stream().map(e -> e.identifier()).toArray())
+                containsInAnyOrder(fDao.queryCompECol(uuidF).selectList().stream().map(e -> e.identifier()).toArray())
         );
 
-        assertEquals(1, fDao.queryCalculatedPrimitive(getIdentifiable(f)).get());
-        assertEquals(eReqRel.identifier(), fDao.queryCalculatedEntity(getIdentifiable(f)).get().identifier());
+        assertEquals(1, fDao.queryCalculatedPrimitive(uuidF).get());
+        assertEquals(eReqRel.identifier(), fDao.queryCalculatedEntity(uuidF).get().identifier());
 
-        assertEquals(3, fDao.queryQueryPrimitive(getIdentifiable(f), FQueryPrimitiveParameter.builder().withNum(3).build()).get());
-        assertEquals(eReqRel.identifier(), fDao.queryQueryEntity(getIdentifiable(f), FQueryEntityParameter.builder().withNum(3).build()).get().identifier());
+        assertEquals(3, fDao.queryQueryPrimitive(uuidF, FQueryPrimitiveParameter.builder().withNum(3).build()).get());
+        assertEquals(eReqRel.identifier(), fDao.queryQueryEntity(uuidF, FQueryEntityParameter.builder().withNum(3).build()).get().identifier());
 
 
         // Not related identifier added
-        assertFalse(fDao.getById(getIdentifiable(eOpRel)).isPresent());
-        assertFalse(eDao.getById(getIdentifiable(f)).isPresent());
+        UUID uuidEOpRel = (UUID) eOpRel.identifier().getIdentifier();
+        assertFalse(fDao.getById(uuidEOpRel).isPresent());
+        assertFalse(eDao.getById(uuidF).isPresent());
 
-        assertFalse(fDao.queryCompE(getIdentifiable(eOpRel)).isPresent());
+        assertFalse(fDao.queryCompE(uuidEOpRel).isPresent());
 
         ValidationException thrown = assertThrows(
                 ValidationException.class,
-                () -> fDao.delete(getIdentifiable(eOpRel))
+                () -> fDao.delete(uuidEOpRel)
         );
         assertThat(thrown.getValidationResults(), containsInAnyOrder(allOf(
                 hasProperty("code", equalTo("ENTITY_NOT_FOUND")))
         ));
 
         // delete and getById
-        assertTrue(fDao.getById(getIdentifiable(f)).isPresent());
+        assertTrue(fDao.getById(uuidF).isPresent());
 
-        fDao.delete(getIdentifiable(f));
+        fDao.delete(uuidF);
 
-        assertFalse(fDao.getById(getIdentifiable(f)).isPresent());
-    }
-
-    private static UUID getIdentifiable(F f) {
-        return (UUID) f.identifier().getIdentifier();
-    }
-
-    private static UUID getIdentifiable(E e) {
-        return (UUID) e.identifier().getIdentifier();
+        assertFalse(fDao.getById(uuidF).isPresent());
     }
 
 }
