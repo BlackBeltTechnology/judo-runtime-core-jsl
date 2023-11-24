@@ -21,7 +21,6 @@ package hu.blackbelt.judo.runtime.core.jsl.entity;
  */
 
 import com.google.inject.Inject;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entitye.EntityEDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.abstract_.Abstract;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.abstract_.AbstractDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.abstract_.AbstractForCreate;
@@ -54,7 +53,6 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcas
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.testentity.TestEntityForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.transferd.TransferD;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.transferd.TransferDForCreate;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.transfere.TransferEDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.transfere.TransferEForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.transferf.TransferF;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.transferf.TransferFDao;
@@ -96,13 +94,13 @@ public class SpecialCasesTest {
     EntityBDao entityBDao;
 
     @Inject
-    ReferenceEntityDao referenceDao;
+    ReferenceEntityDao referenceEntityDao;
 
     @Inject
     AbstractDao abstractDao;
 
     @Inject
-    TestEntityDao testDao;
+    TestEntityDao testEntityDao;
 
     @Inject
     EntityFDao entityFDao;
@@ -154,7 +152,7 @@ public class SpecialCasesTest {
     })
     public void testEntityWithTheSameQueryName() {
 
-        ReferenceEntity ref = referenceDao.create(
+        ReferenceEntity ref = referenceEntityDao.create(
                 ReferenceEntityForCreate
                         .builder()
                         .withName("ReferenceEntity")
@@ -220,7 +218,7 @@ public class SpecialCasesTest {
             "REQ-EXPR-012"
     })
     void testPrimitiveTypeUseOnlyExpression() {
-        TestEntity evs1 = testDao.create(TestEntityForCreate.builder().build());
+        TestEntity evs1 = testEntityDao.create(TestEntityForCreate.builder().build());
 
         assertTrue(evs1.getDateSmaller().orElseThrow());
         assertTrue(evs1.getTimeSmaller().orElseThrow());
@@ -243,15 +241,6 @@ public class SpecialCasesTest {
 
         assertEquals(1, abstractDao.countAll());
     }
-
-    @Inject
-    CDao cDao;
-
-    @Inject
-    DDao dDao;
-
-    @Inject
-    EDao eDao;
 
     @Test
     @TestCase("TestBuilderCopyTheCollectionRecursively")
@@ -347,24 +336,6 @@ public class SpecialCasesTest {
         assertEquals(2, entityF3.getMultipleDonF().size());
         assertEquals(1, entityF3.getMultipleDonF().stream().filter(entityD -> entityD.getStringD().orElseThrow().equals("D4")).count());
         assertEquals(1, entityF3.getMultipleDonF().stream().filter(entityD -> entityD.getStringD().orElseThrow().equals("D5")).count());
-
-
-        entityFForCreate1 = EntityFForCreate.builder()
-                .withStringF("F1")
-                .addToMultipleDonF(DForCreate.builder().withStringD("D1").build())
-                .build();
-
-        entityFForCreate2 = EntityFForCreate.builder()
-                .withStringF("F2")
-                .addToMultipleDonF(DForCreate.builder().withStringD("D2").build())
-                .addToMultipleDonF(DForCreate.builder().withStringD("D3").build())
-                .build();
-
-        entityFForCreate3 = EntityFForCreate.builder()
-                .withStringF("F3")
-                .addToMultipleDonF(DForCreate.builder().withStringD("D4").build())
-                .addToMultipleDonF(DForCreate.builder().withStringD("D5").build())
-                .build();
 
         entityFs = entityFDao.createAll(entityFForCreate1, entityFForCreate2);
 
@@ -551,6 +522,42 @@ public class SpecialCasesTest {
         assertEquals(2, entityFs.get(0).getMultipleDonF().size());
         assertEquals(1, entityF1.getMultipleDonF().stream().filter(entityD -> entityD.getStringD().orElseThrow().equals("D1")).count());
         assertEquals(1, entityF1.getMultipleDonF().stream().filter(entityD -> entityD.getStringD().orElseThrow().equals("D7")).count());
+
+        entityF1 = entityFs.get(0);
+
+        entityF1.setStringF("F1Updated");
+        entityF1.setMultipleDonF(List.of(D.builder().withStringD("D1Updated").build()));
+        entityF2.setStringF("F2Updated");
+        entityF2.setMultipleDonF(List.of(D.builder().withStringD("D2Updated").build(), D.builder().withStringD("D3Updated").build()));
+        entityF3.setStringF("F3Updated");
+        entityF3.setMultipleDonF(List.of(D.builder().withStringD("D4Updated").build(), D.builder().withStringD("D5Updated").build()));
+        entityF3.addToMultipleDonF(D.builder().withStringD("D6Updated").build());
+
+        entityFs = entityFDao.updateAll(entityF1, entityF2, entityF3);
+
+        assertEquals(1, entityFs.stream().filter(entityF -> entityF.getStringF().equals("F1Updated")).count());
+
+        entityF1 = entityFs.stream().filter(entityF -> entityF.getStringF().equals("F1Updated")).findFirst().orElseThrow();
+
+        assertEquals(1, entityF1.getMultipleDonF().size());
+        assertEquals("D1Updated", entityF1.getMultipleDonF().get(0).getStringD().orElseThrow());
+
+        assertEquals(1, entityFs.stream().filter(entityF -> entityF.getStringF().equals("F2Updated")).count());
+
+        entityF2 = entityFs.stream().filter(entityF -> entityF.getStringF().equals("F2Updated")).findFirst().orElseThrow();
+
+        assertEquals(2, entityF2.getMultipleDonF().size());
+        assertEquals(1, entityF2.getMultipleDonF().stream().filter(entityD -> entityD.getStringD().orElseThrow().equals("D2Updated")).count());
+        assertEquals(1, entityF2.getMultipleDonF().stream().filter(entityD -> entityD.getStringD().orElseThrow().equals("D3Updated")).count());
+
+        assertEquals(1, entityFs.stream().filter(entityF -> entityF.getStringF().equals("F3Updated")).count());
+
+        entityF3 = entityFs.stream().filter(entityF -> entityF.getStringF().equals("F3Updated")).findFirst().orElseThrow();
+
+        assertEquals(3, entityF3.getMultipleDonF().size());
+        assertEquals(1, entityF3.getMultipleDonF().stream().filter(entityD -> entityD.getStringD().orElseThrow().equals("D4Updated")).count());
+        assertEquals(1, entityF3.getMultipleDonF().stream().filter(entityD -> entityD.getStringD().orElseThrow().equals("D5Updated")).count());
+        assertEquals(1, entityF3.getMultipleDonF().stream().filter(entityD -> entityD.getStringD().orElseThrow().equals("D6Updated")).count());
 
         entityFs = entityFDao.updateAll(new ArrayList<>());
 
@@ -992,24 +999,6 @@ public class SpecialCasesTest {
         Assertions.assertEquals(1, entityE3.getMultipleDonF().stream().filter(entityD -> entityD.getStringD().orElseThrow().equals("D4")).count());
         Assertions.assertEquals(1, entityE3.getMultipleDonF().stream().filter(entityD -> entityD.getStringD().orElseThrow().equals("D5")).count());
 
-
-        TransferFForCreate1 = TransferFForCreate.builder()
-                .withStringF("F1")
-                .addToMultipleDonF(TransferDForCreate.builder().withStringD("D1").build())
-                .build();
-
-        TransferFForCreate2 = TransferFForCreate.builder()
-                .withStringF("F2")
-                .addToMultipleDonF(TransferDForCreate.builder().withStringD("D2").build())
-                .addToMultipleDonF(TransferDForCreate.builder().withStringD("D3").build())
-                .build();
-
-        TransferFForCreate3 = TransferFForCreate.builder()
-                .withStringF("F3")
-                .addToMultipleDonF(TransferDForCreate.builder().withStringD("D4").build())
-                .addToMultipleDonF(TransferDForCreate.builder().withStringD("D5").build())
-                .build();
-
         transferFs = transferFDao.createAll(TransferFForCreate1, TransferFForCreate2);
 
         Assertions.assertEquals(1, transferFs.stream().filter(transferF -> transferF.getStringF().equals("F1")).count());
@@ -1279,6 +1268,61 @@ public class SpecialCasesTest {
 
         Assertions.assertEquals(1, entityE1.getMultipleDonF().stream().filter(entityD -> entityD.getStringD().orElseThrow().equals("D1")).count());
         Assertions.assertEquals(1, entityE1.getMultipleDonF().stream().filter(entityD -> entityD.getStringD().orElseThrow().equals("D7")).count());
+
+        transferF1 = transferFs.get(0);
+
+        transferF1.setStringF("F1Updated");
+        transferF1.setMultipleDonF(List.of(TransferD.builder().withStringD("D1Updated").build()));
+        transferF2.setStringF("F2Updated");
+        transferF2.setMultipleDonF(List.of(TransferD.builder().withStringD("D2Updated").build(), TransferD.builder().withStringD("D3Updated").build()));
+        transferF3.setStringF("F3Updated");
+        transferF3.setMultipleDonF(List.of(TransferD.builder().withStringD("D4Updated").build(), TransferD.builder().withStringD("D5Updated").build()));
+        transferF3.addToMultipleDonF(TransferD.builder().withStringD("D6Updated").build());
+
+        transferFs = transferFDao.updateAll(transferF1, transferF2, transferF3);
+
+        Assertions.assertEquals(1, transferFs.stream().filter(transferF -> transferF.getStringF().equals("F1Updated")).count());
+
+        transferF1 = transferFs.stream().filter(transferF -> transferF.getStringF().equals("F1Updated")).findFirst().orElseThrow();
+
+        Assertions.assertEquals(1, transferF1.getMultipleDonF().size());
+        Assertions.assertEquals("D1Updated", transferF1.getMultipleDonF().get(0).getStringD().orElseThrow());
+
+        Assertions.assertEquals(1, transferFs.stream().filter(transferF -> transferF.getStringF().equals("F2Updated")).count());
+
+        transferF2 = transferFs.stream().filter(transferF -> transferF.getStringF().equals("F2Updated")).findFirst().orElseThrow();
+
+        Assertions.assertEquals(2, transferF2.getMultipleDonF().size());
+        Assertions.assertEquals(1, transferF2.getMultipleDonF().stream().filter(entityD -> entityD.getStringD().orElseThrow().equals("D2Updated")).count());
+        Assertions.assertEquals(1, transferF2.getMultipleDonF().stream().filter(entityD -> entityD.getStringD().orElseThrow().equals("D3Updated")).count());
+
+        Assertions.assertEquals(1, transferFs.stream().filter(transferF -> transferF.getStringF().equals("F3Updated")).count());
+
+        transferF3 = transferFs.stream().filter(transferF -> transferF.getStringF().equals("F3Updated")).findFirst().orElseThrow();
+
+        Assertions.assertEquals(3, transferF3.getMultipleDonF().size());
+        Assertions.assertEquals(1, transferF3.getMultipleDonF().stream().filter(entityD -> entityD.getStringD().orElseThrow().equals("D4Updated")).count());
+        Assertions.assertEquals(1, transferF3.getMultipleDonF().stream().filter(entityD -> entityD.getStringD().orElseThrow().equals("D5Updated")).count());
+        Assertions.assertEquals(1, transferF3.getMultipleDonF().stream().filter(entityD -> entityD.getStringD().orElseThrow().equals("D6Updated")).count());
+
+        entityE1 = entityFDao.getById(transferF1.identifier().adaptTo(EntityFIdentifier.class)).orElseThrow();
+
+        Assertions.assertEquals(1, entityE1.getMultipleDonF().size());
+        Assertions.assertEquals("D1Updated", entityE1.getMultipleDonF().get(0).getStringD().orElseThrow());
+
+        entityE2 = entityFDao.getById(transferF2.identifier().adaptTo(EntityFIdentifier.class)).orElseThrow();
+
+        Assertions.assertEquals(2, entityE2.getMultipleDonF().size());
+        Assertions.assertEquals(1, entityE2.getMultipleDonF().stream().filter(entityD -> entityD.getStringD().orElseThrow().equals("D2Updated")).count());
+        Assertions.assertEquals(1, entityE2.getMultipleDonF().stream().filter(entityD -> entityD.getStringD().orElseThrow().equals("D3Updated")).count());
+
+
+        entityE3 = entityFDao.getById(transferF3.identifier().adaptTo(EntityFIdentifier.class)).orElseThrow();
+
+        Assertions.assertEquals(3, entityE3.getMultipleDonF().size());
+        Assertions.assertEquals(1, entityE3.getMultipleDonF().stream().filter(entityD -> entityD.getStringD().orElseThrow().equals("D4Updated")).count());
+        Assertions.assertEquals(1, entityE3.getMultipleDonF().stream().filter(entityD -> entityD.getStringD().orElseThrow().equals("D5Updated")).count());
+        Assertions.assertEquals(1, entityE3.getMultipleDonF().stream().filter(entityD -> entityD.getStringD().orElseThrow().equals("D6Updated")).count());
 
         transferFs = transferFDao.updateAll(new ArrayList<>());
 
