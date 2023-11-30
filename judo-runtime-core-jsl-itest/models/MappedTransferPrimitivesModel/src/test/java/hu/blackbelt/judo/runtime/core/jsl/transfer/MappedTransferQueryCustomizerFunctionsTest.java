@@ -39,7 +39,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Slf4j
 public class MappedTransferQueryCustomizerFunctionsTest {
@@ -293,6 +295,21 @@ public class MappedTransferQueryCustomizerFunctionsTest {
                 .get();
 
         assertEquals(transf2.identifier(), orderBy.identifier());
+
+        orderBy = transferOptionalPrimitivesDao
+                .query()
+                .orderByName("integerAttr", Order.ASC)
+                .orderByName("scaledAttr", Order.ASC)
+                .orderByName("regexAttr", Order.ASC)
+                .orderByName("boolAttr", Order.ASC)
+                .orderByName("dateAttr", Order.ASC)
+                .orderByName("timestampAttr", Order.ASC)
+                .orderByName("timeAttr", Order.ASC)
+                .orderByName("enumAttr", Order.ASC)
+                .selectOne()
+                .get();
+
+        assertEquals(transf2.identifier(), orderBy.identifier());
     }
 
     @Test
@@ -338,6 +355,21 @@ public class MappedTransferQueryCustomizerFunctionsTest {
                 .orderBy(TransferOptionalPrimitivesAttribute.TIMESTAMP_ATTR, Order.DESC)
                 .orderBy(TransferOptionalPrimitivesAttribute.TIME_ATTR, Order.DESC)
                 .orderBy(TransferOptionalPrimitivesAttribute.ENUM_ATTR, Order.DESC)
+                .selectOne()
+                .get();
+
+        assertEquals(transf1.identifier(), orderBy.identifier());
+
+        orderBy = transferOptionalPrimitivesDao
+                .query()
+                .orderByName("integerAttr", Order.DESC)
+                .orderByName("scaledAttr", Order.DESC)
+                .orderByName("regexAttr", Order.DESC)
+                .orderByName("boolAttr", Order.DESC)
+                .orderByName("dateAttr", Order.DESC)
+                .orderByName("timestampAttr", Order.DESC)
+                .orderByName("timeAttr", Order.DESC)
+                .orderByName("enumAttr", Order.DESC)
                 .selectOne()
                 .get();
 
@@ -394,6 +426,21 @@ public class MappedTransferQueryCustomizerFunctionsTest {
 
         assertEquals(transf2.identifier(), orderBy.identifier());
 
+        orderBy = transferOptionalPrimitivesDao
+                .query()
+                .orderByName("derivedIntegerAttr", Order.ASC)
+                .orderByName("derivedScaledAttr", Order.ASC)
+                .orderByName("derivedRegexAttr", Order.ASC)
+                .orderByName("derivedBoolAttr", Order.ASC)
+                .orderByName("derivedDateAttr", Order.ASC)
+                .orderByName("derivedTimestampAttr", Order.ASC)
+                .orderByName("derivedTimeAttr", Order.ASC)
+                .orderByName("derivedEnumAttr", Order.ASC)
+                .selectOne()
+                .get();
+
+        assertEquals(transf2.identifier(), orderBy.identifier());
+
 
     }
 
@@ -441,6 +488,21 @@ public class MappedTransferQueryCustomizerFunctionsTest {
                 .orderBy(TransferOptionalPrimitivesAttribute.DERIVED_TIMESTAMP_ATTR, Order.DESC)
                 .orderBy(TransferOptionalPrimitivesAttribute.DERIVED_TIME_ATTR, Order.DESC)
                 .orderBy(TransferOptionalPrimitivesAttribute.DERIVED_ENUM_ATTR, Order.DESC)
+                .selectOne()
+                .get();
+
+        assertEquals(transf1.identifier(), orderBy.identifier());
+
+        orderBy = transferOptionalPrimitivesDao
+                .query()
+                .orderByName("derivedIntegerAttr", Order.DESC)
+                .orderByName("derivedScaledAttr", Order.DESC)
+                .orderByName("derivedRegexAttr", Order.DESC)
+                .orderByName("derivedBoolAttr", Order.DESC)
+                .orderByName("derivedDateAttr", Order.DESC)
+                .orderByName("derivedTimestampAttr", Order.DESC)
+                .orderByName("derivedTimeAttr", Order.DESC)
+                .orderByName("derivedEnumAttr", Order.DESC)
                 .selectOne()
                 .get();
 
@@ -495,6 +557,21 @@ public class MappedTransferQueryCustomizerFunctionsTest {
                 .get();
 
         assertEquals(transf2.identifier(), orderBy.identifier());
+
+        orderBy = transferOptionalPrimitivesDao
+                .query()
+                .orderByName("integerAttr", Order.ASC)
+                .orderByName("derivedScaledAttr", Order.ASC)
+                .orderByName("regexAttr", Order.ASC)
+                .orderByName("derivedBoolAttr", Order.ASC)
+                .orderByName("dateAttr", Order.ASC)
+                .orderByName("derivedTimestampAttr", Order.ASC)
+                .orderByName("timeAttr", Order.ASC)
+                .orderByName("derivedEnumAttr", Order.ASC)
+                .selectOne()
+                .get();
+
+        assertEquals(transf2.identifier(), orderBy.identifier());
     }
 
     @Test
@@ -545,6 +622,59 @@ public class MappedTransferQueryCustomizerFunctionsTest {
                 .get();
 
         assertEquals(transf1.identifier(), orderBy.identifier());
+
+        orderBy = transferOptionalPrimitivesDao
+                .query()
+                .orderByName("integerAttr", Order.DESC)
+                .orderByName("derivedScaledAttr", Order.DESC)
+                .orderByName("regexAttr", Order.DESC)
+                .orderByName("derivedBoolAttr", Order.DESC)
+                .orderByName("dateAttr", Order.DESC)
+                .orderByName("derivedTimestampAttr", Order.DESC)
+                .orderByName("timeAttr", Order.DESC)
+                .orderByName("derivedEnumAttr", Order.DESC)
+                .selectOne()
+                .get();
+
+        assertEquals(transf1.identifier(), orderBy.identifier());
+
+    }
+
+    @Test
+    @Requirement(reqs = {
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-TYPE-001",
+            "REQ-TYPE-005",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-008",
+            "REQ-SRV-002",
+    })
+    public void testExistOrderByNameWithNonExistName() {
+
+        RuntimeException thrown = assertThrows(
+                RuntimeException.class,
+                () -> transferOptionalPrimitivesDao
+                        .query()
+                        .orderByName("integerAttr", Order.DESC)
+                        .orderByName("derivedScaledAtt", Order.DESC)
+                        .selectOne()
+        );
+        assertTrue(thrown.getMessage().contains("No enum constant for"));
+        assertTrue(thrown.getMessage().contains("TransferOptionalPrimitivesAttribute#derivedScaledAtt"));
+
+        thrown = assertThrows(
+                RuntimeException.class,
+                () -> transferOptionalPrimitivesDao
+                        .query()
+                        .orderByName("integerAtt", Order.DESC)
+                        .orderByName("derivedScaledAtt", Order.DESC)
+                        .selectOne()
+        );
+        assertTrue(thrown.getMessage().contains("No enum constant for"));
+        assertTrue(thrown.getMessage().contains("TransferOptionalPrimitivesAttribute#integerAtt"));
 
     }
 
@@ -614,6 +744,14 @@ public class MappedTransferQueryCustomizerFunctionsTest {
                 .get();
 
         assertEquals(firstTransfer.identifier(), orderBy.identifier());
+
+        orderBy = transferOptionalPrimitivesDao
+                .query()
+                .orderByName(attribute.getName(), Order.ASC)
+                .selectOne()
+                .get();
+
+        assertEquals(firstTransfer.identifier(), orderBy.identifier());
     }
 
     private void assertOrderByDescending(TransferOptionalPrimitivesAttribute attribute, TransferOptionalPrimitives firstEntity) {
@@ -629,6 +767,14 @@ public class MappedTransferQueryCustomizerFunctionsTest {
         orderByDescending = transferOptionalPrimitivesDao
                 .query()
                 .orderBy(attribute, Order.DESC)
+                .selectOne()
+                .get();
+
+        assertEquals(firstEntity.identifier(), orderByDescending.identifier());
+
+        orderByDescending = transferOptionalPrimitivesDao
+                .query()
+                .orderByName(attribute.getName(), Order.DESC)
                 .selectOne()
                 .get();
 

@@ -184,6 +184,16 @@ public class MappedTransferFiltersTest {
                 .selectList();
 
         assertEquals(1, multiFilter.size());
+        assertEquals(transfer1.identifier(), multiFilter.get(0).identifier());
+
+        multiFilter = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("integerAttr", NumberFilter.equalTo(INTEGER_1))
+                .filterByName("scaledAttr", NumberFilter.lessThan(INTEGER_2))
+                .filterByName("stringAttr", StringFilter.equalTo(STRING_1))
+                .selectList();
+
+        assertEquals(1, multiFilter.size());
 
         assertEquals(transfer1.identifier(), multiFilter.get(0).identifier());
     }
@@ -309,12 +319,68 @@ public class MappedTransferFiltersTest {
 
         assertEquals(transfer1.identifier(), less.identifier());
 
-        // Zero element
-
         List<TransferMyEntityWithOptionalFields> zeroResult = transferMyEntityWithOptionalFieldsDao
                 .query()
                 .filterByIntegerAttr(NumberFilter.lessThan(INTEGER_1))
                 .filterByIntegerAttr(NumberFilter.lessThan(INTEGER_2))
+                .selectList();
+
+        assertTrue(zeroResult.isEmpty());
+
+        // filterByName
+
+        equals = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("integerAttr", NumberFilter.equalTo(INTEGER_1))
+                .selectOne()
+                .get();
+
+        assertEquals(transfer1.identifier(), equals.identifier());
+
+        notEquals = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("integerAttr", NumberFilter.notEqualTo(INTEGER_1))
+                .selectOne()
+                .get();
+
+        assertEquals(transfer2.identifier(), notEquals.identifier());
+
+        greaterOrEquals = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("integerAttr", NumberFilter.greaterOrEqualThan(INTEGER_1))
+                .selectList();
+
+        assertEquals(2, greaterOrEquals.size());
+
+        greater = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("integerAttr", NumberFilter.greaterThan(INTEGER_1))
+                .selectOne()
+                .get();
+
+        assertEquals(transfer2.identifier(), greater.identifier());
+
+        lessOrEqual = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("integerAttr", NumberFilter.lessOrEqualThan(INTEGER_2))
+                .selectList();
+
+        assertEquals(2, lessOrEqual.size());
+
+        less = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("integerAttr", NumberFilter.lessThan(INTEGER_2))
+                .selectOne()
+                .get();
+
+        assertEquals(transfer1.identifier(), less.identifier());
+
+        // Zero element
+
+        zeroResult = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("integerAttr", NumberFilter.lessThan(INTEGER_1))
+                .filterByName("integerAttr", NumberFilter.lessThan(INTEGER_2))
                 .selectList();
 
         assertTrue(zeroResult.isEmpty());
@@ -456,6 +522,63 @@ public class MappedTransferFiltersTest {
 
         assertTrue(zeroResultDerived.isEmpty());
 
+        // filterByName
+
+        equalsDerived = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("derivedIntegerAttr", NumberFilter.equalTo(INTEGER_1))
+                .selectOne()
+                .get();
+
+        assertEquals(transfer1.identifier(), equalsDerived.identifier());
+
+        notEqualsDerived = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("derivedIntegerAttr", NumberFilter.notEqualTo(INTEGER_1))
+                .selectOne()
+                .get();
+
+        assertEquals(transfer2.identifier(), notEqualsDerived.identifier());
+
+        greaterOrEqualsDerived = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("derivedIntegerAttr", NumberFilter.greaterOrEqualThan(INTEGER_1))
+                .selectList();
+
+        assertEquals(2, greaterOrEqualsDerived.size());
+
+        greaterDerived = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("derivedIntegerAttr", NumberFilter.greaterThan(INTEGER_1))
+                .selectOne()
+                .get();
+
+        assertEquals(transfer2.identifier(), greaterDerived.identifier());
+
+        lessOrEqualDerived = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("derivedIntegerAttr", NumberFilter.lessOrEqualThan(INTEGER_2))
+                .selectList();
+
+        assertEquals(2, lessOrEqualDerived.size());
+
+
+        lessDerived = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("derivedIntegerAttr", NumberFilter.lessThan(INTEGER_2))
+                .selectOne()
+                .get();
+
+        assertEquals(transfer1.identifier(), lessDerived.identifier());
+
+        zeroResultDerived = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("derivedIntegerAttr", NumberFilter.lessThan(INTEGER_1))
+                .filterByName("derivedIntegerAttr", NumberFilter.lessThan(INTEGER_2))
+                .selectList();
+
+        assertTrue(zeroResultDerived.isEmpty());
+        
     }
 
     @Test
@@ -585,6 +708,54 @@ public class MappedTransferFiltersTest {
 
         assertEquals(transfer1.identifier(), less.identifier());
 
+        // FilterByName
+
+        equals = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("scaledAttr", NumberFilter.equalTo(SCALED_1))
+                .selectOne()
+                .get();
+
+        assertEquals(transfer1.identifier(), equals.identifier());
+
+        notEquals = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("scaledAttr", NumberFilter.notEqualTo(SCALED_1))
+                .selectOne()
+                .get();
+
+        assertEquals(transfer2.identifier(), notEquals.identifier());
+
+        greaterOrEquals = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("scaledAttr", NumberFilter.greaterOrEqualThan(SCALED_1))
+                .selectList();
+
+        assertEquals(2, greaterOrEquals.size());
+
+        greater = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("scaledAttr", NumberFilter.greaterThan(SCALED_1))
+                .selectOne()
+                .get();
+
+        assertEquals(transfer2.identifier(), greater.identifier());
+
+        lessOrEqual = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("scaledAttr", NumberFilter.lessOrEqualThan(SCALED_2))
+                .selectList();
+
+        assertEquals(2, lessOrEqual.size());
+
+        less = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("scaledAttr", NumberFilter.lessThan(SCALED_2))
+                .selectOne()
+                .get();
+
+        assertEquals(transfer1.identifier(), less.identifier());
+        
         // Derived
 
         TransferMyEntityWithOptionalFields filteredByStringDerived = transferMyEntityWithOptionalFieldsDao
@@ -694,7 +865,53 @@ public class MappedTransferFiltersTest {
 
         assertEquals(transfer1.identifier(), lessDerived.identifier());
 
+        // FilterByName
 
+        equalsDerived = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("derivedScaledAttr", NumberFilter.equalTo(SCALED_1))
+                .selectOne()
+                .get();
+
+        assertEquals(transfer1.identifier(), equalsDerived.identifier());
+
+        notEqualsDerived = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("derivedScaledAttr", NumberFilter.notEqualTo(SCALED_1))
+                .selectOne()
+                .get();
+
+        assertEquals(transfer2.identifier(), notEqualsDerived.identifier());
+
+        greaterOrEqualsDerived = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("derivedScaledAttr", NumberFilter.greaterOrEqualThan(SCALED_1))
+                .selectList();
+
+        assertEquals(2, greaterOrEqualsDerived.size());
+
+        greaterDerived = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("derivedScaledAttr", NumberFilter.greaterThan(SCALED_1))
+                .selectOne()
+                .get();
+
+        assertEquals(transfer2.identifier(), greaterDerived.identifier());
+
+        lessOrEqualDerived = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("derivedScaledAttr", NumberFilter.lessOrEqualThan(SCALED_2))
+                .selectList();
+
+        assertEquals(2, lessOrEqualDerived.size());
+
+        lessDerived = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("derivedScaledAttr", NumberFilter.lessThan(SCALED_2))
+                .selectOne()
+                .get();
+
+        assertEquals(transfer1.identifier(), lessDerived.identifier());
     }
 
     @Test
@@ -848,6 +1065,68 @@ public class MappedTransferFiltersTest {
 
         assertEquals(2, lessOrEqualThan.size());
 
+        // FilterByName
+
+        equals = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("stringAttr", StringFilter.equalTo(STRING_1))
+                .selectOne()
+                .get();
+
+        assertEquals(transfer1.identifier(), equals.identifier());
+
+        notEquals = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("stringAttr", StringFilter.notEqualTo(STRING_1))
+                .selectOne()
+                .get();
+
+        assertEquals(transfer2.identifier(), notEquals.identifier());
+
+        iLike = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("stringAttr", StringFilter.ilike(STRING_1.toUpperCase()))
+                .selectList();
+
+        assertEquals(1, iLike.size());
+        assertEquals(transfer1.identifier(), iLike.get(0).identifier());
+
+        like = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("stringAttr", StringFilter.like(STRING_1))
+                .selectList();
+
+        assertEquals(1, like.size());
+        assertEquals(transfer1.identifier(), like.get(0).identifier());
+
+        lessThan = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("stringAttr", StringFilter.lessThan(STRING_1))
+                .selectList();
+
+        assertEquals(transfer2.identifier(), lessThan.get(0).identifier());
+
+        greaterThan = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("stringAttr", StringFilter.greaterThan(STRING_2))
+                .selectList();
+
+        assertEquals(transfer1.identifier(), greaterThan.get(0).identifier());
+
+        greaterOrEqualThan = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("stringAttr", StringFilter.greaterOrEqualThan(STRING_2))
+                .count();
+
+        assertEquals(2, greaterOrEqualThan);
+
+        lessOrEqualThan = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("stringAttr", StringFilter.lessOrEqualThan(STRING_1))
+                .selectList();
+
+        assertEquals(2, lessOrEqualThan.size());
+
         // Derived
 
         TransferMyEntityWithOptionalFields filteredByStringDerived = transferMyEntityWithOptionalFieldsDao
@@ -977,6 +1256,69 @@ public class MappedTransferFiltersTest {
                 .selectList();
 
         assertEquals(2, lessOrEqualThanDerived.size());
+        
+        // FilterByName
+
+        equalsDerived = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("derivedStringAttr", StringFilter.equalTo(STRING_1))
+                .selectOne()
+                .get();
+
+        assertEquals(transfer1.identifier(), equalsDerived.identifier());
+
+        notEqualsDerived = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("derivedStringAttr", StringFilter.notEqualTo(STRING_1))
+                .selectOne()
+                .get();
+
+        assertEquals(transfer2.identifier(), notEqualsDerived.identifier());
+
+        iLikeDerived = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("derivedStringAttr", StringFilter.ilike(STRING_1.toUpperCase()))
+                .selectList();
+
+        assertEquals(1, iLikeDerived.size());
+        assertEquals(transfer1.identifier(), iLikeDerived.get(0).identifier());
+
+        likeDerived = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("derivedStringAttr", StringFilter.like(STRING_1))
+                .selectList();
+
+        assertEquals(1, likeDerived.size());
+        assertEquals(transfer1.identifier(), likeDerived.get(0).identifier());
+
+        lessThanDerived = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("derivedStringAttr", StringFilter.lessThan(STRING_1))
+                .selectList();
+
+        assertEquals(transfer2.identifier(), lessThanDerived.get(0).identifier());
+
+        greaterThanDerived = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("derivedStringAttr", StringFilter.greaterThan(STRING_2))
+                .selectList();
+
+        assertEquals(transfer1.identifier(), greaterThanDerived.get(0).identifier());
+
+        greaterOrEqualThanDerived = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("derivedStringAttr", StringFilter.greaterOrEqualThan(STRING_2))
+                .count();
+
+        assertEquals(2, greaterOrEqualThanDerived);
+
+        lessOrEqualThanDerived = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("derivedStringAttr", StringFilter.lessOrEqualThan(STRING_1))
+                .selectList();
+
+        assertEquals(2, lessOrEqualThanDerived.size());
+
 
     }
 
@@ -1040,7 +1382,25 @@ public class MappedTransferFiltersTest {
                 .get(0);
 
         assertEquals(transfer2.identifier(), isFalse.identifier());
+        
+        // FilterByName
 
+        isTrue = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("boolAttr", BooleanFilter.isTrue())
+                .selectOne()
+                .get();
+
+        assertEquals(transfer1.identifier(), isTrue.identifier());
+
+        isFalse = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("boolAttr", BooleanFilter.isFalse())
+                .selectOne()
+                .get();
+
+        assertEquals(transfer2.identifier(), isFalse.identifier());
+        
         // derived
 
         TransferMyEntityWithOptionalFields filteredByStringDerived = transferMyEntityWithOptionalFieldsDao
@@ -1078,6 +1438,24 @@ public class MappedTransferFiltersTest {
         TransferMyEntityWithOptionalFields isFalseDerived = transferMyEntityWithOptionalFieldsDao
                 .query()
                 .filterByDerivedBoolAttr(BooleanFilter.isFalse())
+                .selectList()
+                .get(0);
+
+        assertEquals(transfer2.identifier(), isFalseDerived.identifier());
+
+        // FilterByName
+
+        isTrueDerived = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("derivedBoolAttr", BooleanFilter.isTrue())
+                .selectList()
+                .get(0);
+
+        assertEquals(transfer1.identifier(), isTrueDerived.identifier());
+
+        isFalseDerived = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("derivedBoolAttr", BooleanFilter.isFalse())
                 .selectList()
                 .get(0);
 
@@ -1193,6 +1571,52 @@ public class MappedTransferFiltersTest {
 
         assertEquals(1, lessThan.size());
 
+        // FilterByName
+
+        equalTo = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("dateAttr", DateFilter.equalTo(DATE_1))
+                .selectList()
+                .get(0);
+
+        assertEquals(transfer1.identifier(), equalTo.identifier());
+
+        notEqualTo = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("dateAttr", DateFilter.notEqualTo(DATE_1))
+                .selectList()
+                .get(0);
+
+        assertEquals(transfer2.identifier(), notEqualTo.identifier());
+
+        greaterOrEqual = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("dateAttr", DateFilter.greaterOrEqualThan(DATE_2))
+                .selectList();
+
+        assertEquals(2, greaterOrEqual.size());
+
+        lessOrEqual = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("dateAttr", DateFilter.lessOrEqualThan(DATE_1))
+                .selectList();
+
+        assertEquals(2, lessOrEqual.size());
+
+        greaterThan = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("dateAttr", DateFilter.greaterThan(DATE_2))
+                .selectList();
+
+        assertEquals(1, greaterThan.size());
+
+        lessThan = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("dateAttr", DateFilter.lessThan(DATE_1))
+                .selectList();
+
+        assertEquals(1, lessThan.size());
+        
         // derived
 
         TransferMyEntityWithOptionalFields equalToByFilterStringDerived = transferMyEntityWithOptionalFieldsDao
@@ -1283,7 +1707,52 @@ public class MappedTransferFiltersTest {
 
         assertEquals(1, lessThanDerived.size());
 
+        // FilterByName
 
+        equalToDerived = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("derivedDateAttr", DateFilter.equalTo(DATE_1))
+                .selectList()
+                .get(0);
+
+        assertEquals(transfer1.identifier(), equalToDerived.identifier());
+
+        notEqualToDerived = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("derivedDateAttr", DateFilter.notEqualTo(DATE_1))
+                .selectList()
+                .get(0);
+
+        assertEquals(transfer2.identifier(), notEqualToDerived.identifier());
+
+        greaterOrEqualDerived = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("derivedDateAttr", DateFilter.greaterOrEqualThan(DATE_2))
+                .selectList();
+
+        assertEquals(2, greaterOrEqualDerived.size());
+
+        lessOrEqualDerived = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("derivedDateAttr", DateFilter.lessOrEqualThan(DATE_1))
+                .selectList();
+
+        assertEquals(2, lessOrEqualDerived.size());
+
+        greaterThanDerived = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("derivedDateAttr", DateFilter.greaterThan(DATE_2))
+                .selectList();
+
+        assertEquals(1, greaterThanDerived.size());
+
+        lessThanDerived = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("derivedDateAttr", DateFilter.lessThan(DATE_1))
+                .selectList();
+
+        assertEquals(1, lessThanDerived.size());
+        
     }
 
     @Test
@@ -1395,6 +1864,52 @@ public class MappedTransferFiltersTest {
 
         assertEquals(1, lessThan.size());
 
+        // FilterByName
+
+        equalTo = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("timestampAttr", TimestampFilter.equalTo(TIMESTAMP_1))
+                .selectList()
+                .get(0);
+
+        assertEquals(transfer1.identifier(), equalTo.identifier());
+
+        notEqualTo = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("timestampAttr", TimestampFilter.notEqualTo(TIMESTAMP_1))
+                .selectList()
+                .get(0);
+
+        assertEquals(transfer2.identifier(), notEqualTo.identifier());
+
+        greaterOrEqual = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("timestampAttr", TimestampFilter.greaterOrEqualThan(TIMESTAMP_2))
+                .selectList();
+
+        assertEquals(2, greaterOrEqual.size());
+
+        lessOrEqual = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("timestampAttr", TimestampFilter.lessOrEqualThan(TIMESTAMP_1))
+                .selectList();
+
+        assertEquals(2, lessOrEqual.size());
+
+        greaterThan = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("timestampAttr", TimestampFilter.greaterThan(TIMESTAMP_2))
+                .selectList();
+
+        assertEquals(1, greaterThan.size());
+
+        lessThan = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("timestampAttr", TimestampFilter.lessThan(TIMESTAMP_1))
+                .selectList();
+
+        assertEquals(1, lessThan.size());
+
         // derived
 
         TransferMyEntityWithOptionalFields equalToByStringFilterDerived = transferMyEntityWithOptionalFieldsDao
@@ -1485,7 +2000,52 @@ public class MappedTransferFiltersTest {
 
         assertEquals(1, lessThanDerived.size());
 
+        // FilterByName
 
+        equalToDerived = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("derivedTimestampAttr", TimestampFilter.equalTo(TIMESTAMP_1))
+                .selectList()
+                .get(0);
+
+        assertEquals(transfer1.identifier(), equalToDerived.identifier());
+
+        notEqualToDerived = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("derivedTimestampAttr", TimestampFilter.notEqualTo(TIMESTAMP_1))
+                .selectList()
+                .get(0);
+
+        assertEquals(transfer2.identifier(), notEqualToDerived.identifier());
+
+        greaterOrEqualDerived = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("derivedTimestampAttr", TimestampFilter.greaterOrEqualThan(TIMESTAMP_2))
+                .selectList();
+
+        assertEquals(2, greaterOrEqualDerived.size());
+
+        lessOrEqualDerived = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("derivedTimestampAttr", TimestampFilter.lessOrEqualThan(TIMESTAMP_1))
+                .selectList();
+
+        assertEquals(2, lessOrEqualDerived.size());
+
+        greaterThanDerived = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("derivedTimestampAttr", TimestampFilter.greaterThan(TIMESTAMP_2))
+                .selectList();
+
+        assertEquals(1, greaterThanDerived.size());
+
+        lessThanDerived = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("derivedTimestampAttr", TimestampFilter.lessThan(TIMESTAMP_1))
+                .selectList();
+
+        assertEquals(1, lessThanDerived.size());
+        
     }
 
     @Test
@@ -1599,6 +2159,54 @@ public class MappedTransferFiltersTest {
 
         assertEquals(1, lessThan.size());
 
+        // FilterByName
+
+        equalTo = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("timeAttr", TimeFilter.equalTo(TIME_1))
+                .selectList()
+                .get(0);
+
+        assertEquals(transfer1.identifier(), equalTo.identifier());
+
+        notEqualTo = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("timeAttr", TimeFilter.notEqualTo(TIME_1))
+                .selectList()
+                .get(0);
+
+        assertEquals(transfer2.identifier(), notEqualTo.identifier());
+
+        greaterOrEqual = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("timeAttr", TimeFilter.greaterOrEqualThan(TIME_2))
+                .selectList();
+
+        assertEquals(2, greaterOrEqual.size());
+
+        lessOrEqual = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("timeAttr", TimeFilter.lessOrEqualThan(TIME_1))
+                .selectList();
+
+        assertEquals(2, lessOrEqual.size());
+
+        greaterThan = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("timeAttr", TimeFilter.greaterThan(TIME_2))
+                .selectList();
+
+        assertEquals(1, greaterThan.size());
+
+        lessThan = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("timeAttr", TimeFilter.lessThan(TIME_1))
+                .selectList();
+
+        assertEquals(1, lessThan.size());
+        
+        // derived
+        
         TransferMyEntityWithOptionalFields equalToByStringFilterDerived = transferMyEntityWithOptionalFieldsDao
                 .query()
                 .filterBy("this.derivedTimeAttr == `23:59:59`")
@@ -1688,6 +2296,52 @@ public class MappedTransferFiltersTest {
                 .selectList();
 
         assertEquals(1, lessThanDerived.size());
+
+        // FilterByName
+
+        equalToDerived = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("derivedTimeAttr", TimeFilter.equalTo(TIME_1))
+                .selectList()
+                .get(0);
+
+        assertEquals(transfer1.identifier(), equalToDerived.identifier());
+
+        notEqualToDerived = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("derivedTimeAttr", TimeFilter.notEqualTo(TIME_1))
+                .selectList()
+                .get(0);
+
+        assertEquals(transfer2.identifier(), notEqualToDerived.identifier());
+
+        greaterOrEqualDerived = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("derivedTimeAttr", TimeFilter.greaterOrEqualThan(TIME_2))
+                .selectList();
+
+        assertEquals(2, greaterOrEqualDerived.size());
+
+        lessOrEqualDerived = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("derivedTimeAttr", TimeFilter.lessOrEqualThan(TIME_1))
+                .selectList();
+
+        assertEquals(2, lessOrEqualDerived.size());
+
+        greaterThanDerived = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("derivedTimeAttr", TimeFilter.greaterThan(TIME_2))
+                .selectList();
+
+        assertEquals(1, greaterThanDerived.size());
+
+        lessThanDerived = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("derivedTimeAttr", TimeFilter.lessThan(TIME_1))
+                .selectList();
+
+        assertEquals(1, lessThanDerived.size());
     }
 
     @Test
@@ -1740,6 +2394,42 @@ public class MappedTransferFiltersTest {
         TransferMyEntityWithOptionalFields notEqualToDerived = transferMyEntityWithOptionalFieldsDao
                 .query()
                 .filterByDerivedEnumAttr(EnumerationFilter.notEqualTo(MyEnum.Bombastic))
+                .selectList()
+                .get(0);
+
+        assertEquals(transfer2.identifier(), notEqualToDerived.identifier());
+
+        // FilterByName
+
+        equalTo = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("enumAttr", EnumerationFilter.equalTo(MyEnum.Bombastic))
+                .selectList()
+                .get(0);
+
+        assertEquals(transfer1.identifier(), equalTo.identifier());
+
+        notEqualTo = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("enumAttr", EnumerationFilter.notEqualTo(MyEnum.Bombastic))
+                .selectList()
+                .get(0);
+
+        assertEquals(transfer2.identifier(), notEqualTo.identifier());
+
+        // Derived
+
+        equalToDerived = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("derivedEnumAttr", EnumerationFilter.equalTo(MyEnum.Bombastic))
+                .selectList()
+                .get(0);
+
+        assertEquals(transfer1.identifier(), equalToDerived.identifier());
+
+        notEqualToDerived = transferMyEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("derivedEnumAttr", EnumerationFilter.notEqualTo(MyEnum.Bombastic))
                 .selectList()
                 .get(0);
 
