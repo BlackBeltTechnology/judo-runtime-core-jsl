@@ -218,20 +218,20 @@ public class FiltersTest {
 
         assertEquals(3, list.size());
 
-        costumFilter(entity1, "this.integerAttr >= 1 and this.integerAttr < 2");
-        costumFilter(entity1, "this.integerAttr == 1");
-        costumFilter(entity2, "this.integerAttr != 1");
-        costumFilterList(2, "this.integerAttr >= 1");
-        costumFilter(entity2, "this.integerAttr > 1");
-        costumFilterList(2, "this.integerAttr <= 2");
-        costumFilter(entity1, "this.integerAttr < 2");
+        assertEntityMatchesFilter(entity1, "this.integerAttr >= 1 and this.integerAttr < 2");
+        assertEntityMatchesFilter(entity1, "this.integerAttr == 1");
+        assertEntityMatchesFilter(entity2, "this.integerAttr != 1");
+        assertFilterMatchesNumberOfResults(2, "this.integerAttr >= 1");
+        assertEntityMatchesFilter(entity2, "this.integerAttr > 1");
+        assertFilterMatchesNumberOfResults(2, "this.integerAttr <= 2");
+        assertEntityMatchesFilter(entity1, "this.integerAttr < 2");
 
-        integerFilter(entity1, NumberFilter.equalTo(INTEGER_1));
-        integerFilter(entity2, NumberFilter.notEqualTo(INTEGER_1));
-        integerFilterList(2, NumberFilter.greaterOrEqualThan(INTEGER_1));
-        integerFilter(entity2, NumberFilter.greaterThan(INTEGER_1));
-        integerFilterList(2, NumberFilter.lessOrEqualThan(INTEGER_2));
-        integerFilter(entity1, NumberFilter.lessThan(INTEGER_2));
+        assertEntityMatchesFilter(entity1, NumberFilter.equalTo(INTEGER_1));
+        assertEntityMatchesFilter(entity2, NumberFilter.notEqualTo(INTEGER_1));
+        assertFilterMatchesNumberOfResults(2, NumberFilter.greaterOrEqualThan(INTEGER_1));
+        assertEntityMatchesFilter(entity2, NumberFilter.greaterThan(INTEGER_1));
+        assertFilterMatchesNumberOfResults(2, NumberFilter.lessOrEqualThan(INTEGER_2));
+        assertEntityMatchesFilter(entity1, NumberFilter.lessThan(INTEGER_2));
 
         // Zero element
         List<MyEntityWithOptionalFields> zeroResult = myEntityWithOptionalFieldsDao
@@ -244,12 +244,12 @@ public class FiltersTest {
 
         // filterByName
 
-        filterByName(entity1, "integerAttr", NumberFilter.equalTo(INTEGER_1));
-        filterByName(entity2, "integerAttr", NumberFilter.notEqualTo(INTEGER_1));
-        filterByNameList(2, "integerAttr", NumberFilter.greaterOrEqualThan(INTEGER_1));
-        filterByName(entity2, "integerAttr", NumberFilter.greaterThan(INTEGER_1));
-        filterByNameList(2, "integerAttr", NumberFilter.lessOrEqualThan(INTEGER_2));
-        filterByName(entity1, "integerAttr", NumberFilter.lessThan(INTEGER_2));
+        assertFilterByNameMatchesEntity(entity1, "integerAttr", NumberFilter.equalTo(INTEGER_1));
+        assertFilterByNameMatchesEntity(entity2, "integerAttr", NumberFilter.notEqualTo(INTEGER_1));
+        assertFilterByNameMatchesNumberOfResults(2, "integerAttr", NumberFilter.greaterOrEqualThan(INTEGER_1));
+        assertFilterByNameMatchesEntity(entity2, "integerAttr", NumberFilter.greaterThan(INTEGER_1));
+        assertFilterByNameMatchesNumberOfResults(2, "integerAttr", NumberFilter.lessOrEqualThan(INTEGER_2));
+        assertFilterByNameMatchesEntity(entity1, "integerAttr", NumberFilter.lessThan(INTEGER_2));
 
         // Zero element
 
@@ -261,7 +261,7 @@ public class FiltersTest {
 
         assertTrue(zeroResult.isEmpty());
 
-        costumFilterList(0, "this.integerAttr > 1 and this.integerAttr < 2");
+        assertFilterMatchesNumberOfResults(0, "this.integerAttr > 1 and this.integerAttr < 2");
 
         // TODO JNG-3980
         // filter for undefined
@@ -277,14 +277,14 @@ public class FiltersTest {
 
         // Derived attributes
 
-        costumFilter(entity1, "this.integerAttr >= 1 and this.integerAttr < 2");
-        costumFilterList(0, "this.derivedIntegerAttr > 1 and this.derivedIntegerAttr < 2");
-        costumFilter(entity1, "this.derivedIntegerAttr == 1");
-        costumFilter(entity2, "this.derivedIntegerAttr != 1");
-        costumFilterList(2, "this.derivedIntegerAttr >= 1");
-        costumFilter(entity2, "this.derivedIntegerAttr > 1");
-        costumFilterList(2, "this.derivedIntegerAttr <= 2");
-        costumFilter(entity1, "this.derivedIntegerAttr < 2");
+        assertEntityMatchesFilter(entity1, "this.integerAttr >= 1 and this.integerAttr < 2");
+        assertFilterMatchesNumberOfResults(0, "this.derivedIntegerAttr > 1 and this.derivedIntegerAttr < 2");
+        assertEntityMatchesFilter(entity1, "this.derivedIntegerAttr == 1");
+        assertEntityMatchesFilter(entity2, "this.derivedIntegerAttr != 1");
+        assertFilterMatchesNumberOfResults(2, "this.derivedIntegerAttr >= 1");
+        assertEntityMatchesFilter(entity2, "this.derivedIntegerAttr > 1");
+        assertFilterMatchesNumberOfResults(2, "this.derivedIntegerAttr <= 2");
+        assertEntityMatchesFilter(entity1, "this.derivedIntegerAttr < 2");
 
         List<MyEntityWithOptionalFields> zeroResultDerived = myEntityWithOptionalFieldsDao
                 .query()
@@ -296,12 +296,12 @@ public class FiltersTest {
 
         // filterByName
 
-        filterByName(entity1, "derivedIntegerAttr", NumberFilter.equalTo(INTEGER_1));
-        filterByName(entity2, "derivedIntegerAttr", NumberFilter.notEqualTo(INTEGER_1));
-        filterByNameList(2, "derivedIntegerAttr", NumberFilter.greaterOrEqualThan(INTEGER_1));
-        filterByName(entity2, "derivedIntegerAttr", NumberFilter.greaterThan(INTEGER_1));
-        filterByNameList(2, "derivedIntegerAttr", NumberFilter.lessOrEqualThan(INTEGER_2));
-        filterByName(entity1, "derivedIntegerAttr", NumberFilter.lessThan(INTEGER_2));
+        assertFilterByNameMatchesEntity(entity1, "derivedIntegerAttr", NumberFilter.equalTo(INTEGER_1));
+        assertFilterByNameMatchesEntity(entity2, "derivedIntegerAttr", NumberFilter.notEqualTo(INTEGER_1));
+        assertFilterByNameMatchesNumberOfResults(2, "derivedIntegerAttr", NumberFilter.greaterOrEqualThan(INTEGER_1));
+        assertFilterByNameMatchesEntity(entity2, "derivedIntegerAttr", NumberFilter.greaterThan(INTEGER_1));
+        assertFilterByNameMatchesNumberOfResults(2, "derivedIntegerAttr", NumberFilter.lessOrEqualThan(INTEGER_2));
+        assertFilterByNameMatchesEntity(entity1, "derivedIntegerAttr", NumberFilter.lessThan(INTEGER_2));
 
         zeroResultDerived = myEntityWithOptionalFieldsDao
                 .query()
@@ -312,7 +312,7 @@ public class FiltersTest {
         assertTrue(zeroResultDerived.isEmpty());
     }
 
-    private void integerFilterList(int expected, NumberFilter filter) {
+    private void assertFilterMatchesNumberOfResults(int expected, NumberFilter filter) {
         List<MyEntityWithOptionalFields> filtered = myEntityWithOptionalFieldsDao
                 .query()
                 .filterByIntegerAttr(filter)
@@ -328,7 +328,7 @@ public class FiltersTest {
         assertEquals(expected, filtered.size());
     }
 
-    private void integerFilter(MyEntityWithOptionalFields entity, NumberFilter filter) {
+    private void assertEntityMatchesFilter(MyEntityWithOptionalFields entity, NumberFilter filter) {
         MyEntityWithOptionalFields filtered = myEntityWithOptionalFieldsDao
                 .query()
                 .filterByIntegerAttr(filter)
@@ -365,54 +365,54 @@ public class FiltersTest {
         List<MyEntityWithOptionalFields> list = myEntityWithOptionalFieldsDao.query().selectList();
         assertEquals(3, list.size());
 
-        costumFilter(entity1, "this.scaledAttr >= 1 and this.scaledAttr <= 2");
-        costumFilter(entity1, "this.scaledAttr == 1.23");
-        costumFilter(entity2, "this.scaledAttr != 1.23");
-        costumFilterList(2, "this.scaledAttr >= 1.23");
-        costumFilter(entity2, "this.scaledAttr > 1.23");
-        costumFilterList(2, "this.scaledAttr <= 2.34");
-        costumFilter(entity1, "this.scaledAttr < 2.34");
-        costumFilterList(0, "this.scaledAttr > 0 and this.scaledAttr < 1");
+        assertEntityMatchesFilter(entity1, "this.scaledAttr >= 1 and this.scaledAttr <= 2");
+        assertEntityMatchesFilter(entity1, "this.scaledAttr == 1.23");
+        assertEntityMatchesFilter(entity2, "this.scaledAttr != 1.23");
+        assertFilterMatchesNumberOfResults(2, "this.scaledAttr >= 1.23");
+        assertEntityMatchesFilter(entity2, "this.scaledAttr > 1.23");
+        assertFilterMatchesNumberOfResults(2, "this.scaledAttr <= 2.34");
+        assertEntityMatchesFilter(entity1, "this.scaledAttr < 2.34");
+        assertFilterMatchesNumberOfResults(0, "this.scaledAttr > 0 and this.scaledAttr < 1");
 
-        scaledFilter(entity1, NumberFilter.equalTo(SCALED_1));
-        scaledFilter(entity2, NumberFilter.notEqualTo(SCALED_1));
-        scaledFilterList(2, NumberFilter.greaterOrEqualThan(SCALED_1));
-        scaledFilter(entity2, NumberFilter.greaterThan(SCALED_1));
-        scaledFilterList(2, NumberFilter.lessOrEqualThan(SCALED_2));
-        scaledFilter(entity1, NumberFilter.lessThan(SCALED_2));
+        assertEntityMatchesFilterForScaledAttr(entity1, NumberFilter.equalTo(SCALED_1));
+        assertEntityMatchesFilterForScaledAttr(entity2, NumberFilter.notEqualTo(SCALED_1));
+        assertFilterMatchesNumberOfResultsForScaledAttr(2, NumberFilter.greaterOrEqualThan(SCALED_1));
+        assertEntityMatchesFilterForScaledAttr(entity2, NumberFilter.greaterThan(SCALED_1));
+        assertFilterMatchesNumberOfResultsForScaledAttr(2, NumberFilter.lessOrEqualThan(SCALED_2));
+        assertEntityMatchesFilterForScaledAttr(entity1, NumberFilter.lessThan(SCALED_2));
 
         // FilterByName
 
-        filterByName(entity1, "scaledAttr", NumberFilter.equalTo(SCALED_1));
-        filterByName(entity2, "scaledAttr", NumberFilter.notEqualTo(SCALED_1));
-        filterByNameList(2, "scaledAttr", NumberFilter.greaterOrEqualThan(SCALED_1));
-        filterByName(entity2, "scaledAttr", NumberFilter.greaterThan(SCALED_1));
-        filterByNameList(2, "scaledAttr", NumberFilter.lessOrEqualThan(SCALED_2));
-        filterByName(entity1, "scaledAttr", NumberFilter.lessThan(SCALED_2));
+        assertFilterByNameMatchesEntity(entity1, "scaledAttr", NumberFilter.equalTo(SCALED_1));
+        assertFilterByNameMatchesEntity(entity2, "scaledAttr", NumberFilter.notEqualTo(SCALED_1));
+        assertFilterByNameMatchesNumberOfResults(2, "scaledAttr", NumberFilter.greaterOrEqualThan(SCALED_1));
+        assertFilterByNameMatchesEntity(entity2, "scaledAttr", NumberFilter.greaterThan(SCALED_1));
+        assertFilterByNameMatchesNumberOfResults(2, "scaledAttr", NumberFilter.lessOrEqualThan(SCALED_2));
+        assertFilterByNameMatchesEntity(entity1, "scaledAttr", NumberFilter.lessThan(SCALED_2));
 
         // Derived
 
-        costumFilter(entity1, "this.derivedScaledAttr >= 1 and this.derivedScaledAttr <= 2");
-        costumFilterList(0, "this.derivedScaledAttr > 0 and this.derivedScaledAttr < 1");
-        costumFilter(entity1, "this.derivedScaledAttr == 1.23");
-        costumFilter(entity2, "this.derivedScaledAttr != 1.23");
-        costumFilterList(2, "this.derivedScaledAttr >= 1.23");
-        costumFilter(entity2, "this.derivedScaledAttr > 1.23");
-        costumFilterList(2, "this.derivedScaledAttr <= 2.34");
-        costumFilter(entity1, "this.derivedScaledAttr < 2.34");
+        assertEntityMatchesFilter(entity1, "this.derivedScaledAttr >= 1 and this.derivedScaledAttr <= 2");
+        assertFilterMatchesNumberOfResults(0, "this.derivedScaledAttr > 0 and this.derivedScaledAttr < 1");
+        assertEntityMatchesFilter(entity1, "this.derivedScaledAttr == 1.23");
+        assertEntityMatchesFilter(entity2, "this.derivedScaledAttr != 1.23");
+        assertFilterMatchesNumberOfResults(2, "this.derivedScaledAttr >= 1.23");
+        assertEntityMatchesFilter(entity2, "this.derivedScaledAttr > 1.23");
+        assertFilterMatchesNumberOfResults(2, "this.derivedScaledAttr <= 2.34");
+        assertEntityMatchesFilter(entity1, "this.derivedScaledAttr < 2.34");
 
         // FilterByName
 
-        filterByName(entity1, "derivedScaledAttr", NumberFilter.equalTo(SCALED_1));
-        filterByName(entity2, "derivedScaledAttr", NumberFilter.notEqualTo(SCALED_1));
-        filterByNameList(2, "derivedScaledAttr", NumberFilter.greaterOrEqualThan(SCALED_1));
-        filterByName(entity2, "derivedScaledAttr", NumberFilter.greaterThan(SCALED_1));
-        filterByNameList(2, "derivedScaledAttr", NumberFilter.lessOrEqualThan(SCALED_2));
-        filterByName(entity1, "derivedScaledAttr", NumberFilter.lessThan(SCALED_2));
+        assertFilterByNameMatchesEntity(entity1, "derivedScaledAttr", NumberFilter.equalTo(SCALED_1));
+        assertFilterByNameMatchesEntity(entity2, "derivedScaledAttr", NumberFilter.notEqualTo(SCALED_1));
+        assertFilterByNameMatchesNumberOfResults(2, "derivedScaledAttr", NumberFilter.greaterOrEqualThan(SCALED_1));
+        assertFilterByNameMatchesEntity(entity2, "derivedScaledAttr", NumberFilter.greaterThan(SCALED_1));
+        assertFilterByNameMatchesNumberOfResults(2, "derivedScaledAttr", NumberFilter.lessOrEqualThan(SCALED_2));
+        assertFilterByNameMatchesEntity(entity1, "derivedScaledAttr", NumberFilter.lessThan(SCALED_2));
 
     }
 
-    private void scaledFilter(MyEntityWithOptionalFields entity, NumberFilter filter) {
+    private void assertEntityMatchesFilterForScaledAttr(MyEntityWithOptionalFields entity, NumberFilter filter) {
         MyEntityWithOptionalFields filtered = myEntityWithOptionalFieldsDao
                 .query()
                 .filterByScaledAttr(filter)
@@ -430,7 +430,7 @@ public class FiltersTest {
         assertEquals(entity.identifier(), filteredDerived.identifier());
     }
 
-    private void scaledFilterList(int expected, NumberFilter filter) {
+    private void assertFilterMatchesNumberOfResultsForScaledAttr(int expected, NumberFilter filter) {
         List<MyEntityWithOptionalFields> filtered = myEntityWithOptionalFieldsDao
                 .query()
                 .filterByScaledAttr(filter)
@@ -468,45 +468,45 @@ public class FiltersTest {
 
         // custom filter
 
-        costumFilter(entity1, "this.stringAttr!matches('te.*')");
-        costumFilter(entity1, "this.stringAttr == 'test'");
-        costumFilter(entity2, "this.stringAttr != 'test'");
-        costumFilter(entity1, "this.stringAttr!ilike('TEST')");
-        costumFilter(entity1, "this.stringAttr!ilike('test')");
-        costumFilter(entity2, "this.stringAttr < 'test'");
-        costumFilter(entity1, "this.stringAttr > 'Another'");
-        costumFilterList(2, "this.stringAttr >= 'Another'");
-        costumFilterList(2, "this.stringAttr <= 'test'");
+        assertEntityMatchesFilter(entity1, "this.stringAttr!matches('te.*')");
+        assertEntityMatchesFilter(entity1, "this.stringAttr == 'test'");
+        assertEntityMatchesFilter(entity2, "this.stringAttr != 'test'");
+        assertEntityMatchesFilter(entity1, "this.stringAttr!ilike('TEST')");
+        assertEntityMatchesFilter(entity1, "this.stringAttr!ilike('test')");
+        assertEntityMatchesFilter(entity2, "this.stringAttr < 'test'");
+        assertEntityMatchesFilter(entity1, "this.stringAttr > 'Another'");
+        assertFilterMatchesNumberOfResults(2, "this.stringAttr >= 'Another'");
+        assertFilterMatchesNumberOfResults(2, "this.stringAttr <= 'test'");
 
-        stringFilter(entity1, StringFilter.equalTo(STRING_1));
-        stringFilter(entity2, StringFilter.notEqualTo(STRING_1));
-        stringFilter(entity1, StringFilter.ilike(STRING_1.toUpperCase()));
-        stringFilter(entity1, StringFilter.like(STRING_1));
-        stringFilter(entity2, StringFilter.lessThan(STRING_1));
-        stringFilter(entity1, StringFilter.greaterThan(STRING_2));
-        stringFilterList(2, StringFilter.greaterOrEqualThan(STRING_2));
-        stringFilterList(2, StringFilter.lessOrEqualThan(STRING_1));
+        assertEntityMatchesFilter(entity1, StringFilter.equalTo(STRING_1));
+        assertEntityMatchesFilter(entity2, StringFilter.notEqualTo(STRING_1));
+        assertEntityMatchesFilter(entity1, StringFilter.ilike(STRING_1.toUpperCase()));
+        assertEntityMatchesFilter(entity1, StringFilter.like(STRING_1));
+        assertEntityMatchesFilter(entity2, StringFilter.lessThan(STRING_1));
+        assertEntityMatchesFilter(entity1, StringFilter.greaterThan(STRING_2));
+        assertFilterMatchesNumberOfResults(2, StringFilter.greaterOrEqualThan(STRING_2));
+        assertFilterMatchesNumberOfResults(2, StringFilter.lessOrEqualThan(STRING_1));
 
         // FilterByName
 
-        filterByName(entity1, "stringAttr", StringFilter.equalTo(STRING_1));
-        filterByName(entity2, "stringAttr", StringFilter.notEqualTo(STRING_1));
-        filterByName(entity1, "stringAttr", StringFilter.ilike(STRING_1.toUpperCase()));
-        filterByName(entity1, "stringAttr", StringFilter.like(STRING_1));
-        filterByName(entity2, "stringAttr", StringFilter.lessThan(STRING_1));
-        filterByName(entity1, "stringAttr", StringFilter.greaterThan(STRING_2));
-        filterByNameList(2, "stringAttr", StringFilter.greaterOrEqualThan(STRING_2));
-        filterByNameList(2, "stringAttr", StringFilter.lessOrEqualThan(STRING_1));
+        assertFilterByNameMatchesEntity(entity1, "stringAttr", StringFilter.equalTo(STRING_1));
+        assertFilterByNameMatchesEntity(entity2, "stringAttr", StringFilter.notEqualTo(STRING_1));
+        assertFilterByNameMatchesEntity(entity1, "stringAttr", StringFilter.ilike(STRING_1.toUpperCase()));
+        assertFilterByNameMatchesEntity(entity1, "stringAttr", StringFilter.like(STRING_1));
+        assertFilterByNameMatchesEntity(entity2, "stringAttr", StringFilter.lessThan(STRING_1));
+        assertFilterByNameMatchesEntity(entity1, "stringAttr", StringFilter.greaterThan(STRING_2));
+        assertFilterByNameMatchesNumberOfResults(2, "stringAttr", StringFilter.greaterOrEqualThan(STRING_2));
+        assertFilterByNameMatchesNumberOfResults(2, "stringAttr", StringFilter.lessOrEqualThan(STRING_1));
 
         // Derived
 
-        costumFilter(entity1, "this.derivedStringAttr!matches('te.*')");
-        costumFilter(entity1, "this.derivedStringAttr == 'test'");
-        costumFilter(entity2, "this.derivedStringAttr != 'test'");
-        costumFilter(entity1, "this.derivedStringAttr!ilike('TEST')");
-        costumFilter(entity1, "this.derivedStringAttr!ilike('test')");
-        costumFilter(entity2, "this.derivedStringAttr < 'test'");
-        costumFilter(entity1, "this.derivedStringAttr > 'Another'");
+        assertEntityMatchesFilter(entity1, "this.derivedStringAttr!matches('te.*')");
+        assertEntityMatchesFilter(entity1, "this.derivedStringAttr == 'test'");
+        assertEntityMatchesFilter(entity2, "this.derivedStringAttr != 'test'");
+        assertEntityMatchesFilter(entity1, "this.derivedStringAttr!ilike('TEST')");
+        assertEntityMatchesFilter(entity1, "this.derivedStringAttr!ilike('test')");
+        assertEntityMatchesFilter(entity2, "this.derivedStringAttr < 'test'");
+        assertEntityMatchesFilter(entity1, "this.derivedStringAttr > 'Another'");
 
         Long greaterOrEqualThanByStringFilterDerived = myEntityWithOptionalFieldsDao
                 .query()
@@ -515,22 +515,22 @@ public class FiltersTest {
 
         assertEquals(2, greaterOrEqualThanByStringFilterDerived);
 
-        costumFilterList(2, "this.derivedStringAttr <= 'test'");
+        assertFilterMatchesNumberOfResults(2, "this.derivedStringAttr <= 'test'");
 
         // FilterByName
 
-        filterByName(entity1, "derivedStringAttr", StringFilter.equalTo(STRING_1));
-        filterByName(entity2, "derivedStringAttr", StringFilter.notEqualTo(STRING_1));
-        filterByName(entity1, "derivedStringAttr", StringFilter.ilike(STRING_1.toUpperCase()));
-        filterByName(entity1, "derivedStringAttr", StringFilter.like(STRING_1));
-        filterByName(entity2, "derivedStringAttr", StringFilter.lessThan(STRING_1));
-        filterByName(entity1, "derivedStringAttr", StringFilter.greaterThan(STRING_2));
-        filterByNameList(2, "derivedStringAttr", StringFilter.greaterOrEqualThan(STRING_2));
-        filterByNameList(2, "derivedStringAttr", StringFilter.lessOrEqualThan(STRING_1));
+        assertFilterByNameMatchesEntity(entity1, "derivedStringAttr", StringFilter.equalTo(STRING_1));
+        assertFilterByNameMatchesEntity(entity2, "derivedStringAttr", StringFilter.notEqualTo(STRING_1));
+        assertFilterByNameMatchesEntity(entity1, "derivedStringAttr", StringFilter.ilike(STRING_1.toUpperCase()));
+        assertFilterByNameMatchesEntity(entity1, "derivedStringAttr", StringFilter.like(STRING_1));
+        assertFilterByNameMatchesEntity(entity2, "derivedStringAttr", StringFilter.lessThan(STRING_1));
+        assertFilterByNameMatchesEntity(entity1, "derivedStringAttr", StringFilter.greaterThan(STRING_2));
+        assertFilterByNameMatchesNumberOfResults(2, "derivedStringAttr", StringFilter.greaterOrEqualThan(STRING_2));
+        assertFilterByNameMatchesNumberOfResults(2, "derivedStringAttr", StringFilter.lessOrEqualThan(STRING_1));
 
     }
 
-    private void stringFilter(MyEntityWithOptionalFields entity, StringFilter filter) {
+    private void assertEntityMatchesFilter(MyEntityWithOptionalFields entity, StringFilter filter) {
         MyEntityWithOptionalFields filtered = myEntityWithOptionalFieldsDao
                 .query()
                 .filterByStringAttr(filter)
@@ -548,7 +548,7 @@ public class FiltersTest {
         assertEquals(entity.identifier(), filteredDerived.identifier());
     }
 
-    private void stringFilterList(int expected, StringFilter filter) {
+    private void assertFilterMatchesNumberOfResults(int expected, StringFilter filter) {
         List<MyEntityWithOptionalFields> filtered = myEntityWithOptionalFieldsDao
                 .query()
                 .filterByStringAttr(filter)
@@ -584,9 +584,9 @@ public class FiltersTest {
 
         assertEquals(3, list.size());
 
-        costumFilter(entity1, "this.boolAttr == true");
-        costumFilter(entity2, "this.boolAttr != true");
-        costumFilter(entity1, "this.boolAttr");
+        assertEntityMatchesFilter(entity1, "this.boolAttr == true");
+        assertEntityMatchesFilter(entity2, "this.boolAttr != true");
+        assertEntityMatchesFilter(entity1, "this.boolAttr");
 
         MyEntityWithOptionalFields isTrue = myEntityWithOptionalFieldsDao
                 .query()
@@ -606,14 +606,14 @@ public class FiltersTest {
 
         // FilterByName
 
-        filterByName(entity1, "boolAttr", BooleanFilter.isTrue());
-        filterByName(entity2, "boolAttr", BooleanFilter.isFalse());
+        assertFilterByNameMatchesEntity(entity1, "boolAttr", BooleanFilter.isTrue());
+        assertFilterByNameMatchesEntity(entity2, "boolAttr", BooleanFilter.isFalse());
 
         // derived
 
-        costumFilter(entity1, "this.derivedBoolAttr == true");
-        costumFilter(entity2, "this.derivedBoolAttr != true");
-        costumFilter(entity1, "this.derivedBoolAttr");
+        assertEntityMatchesFilter(entity1, "this.derivedBoolAttr == true");
+        assertEntityMatchesFilter(entity2, "this.derivedBoolAttr != true");
+        assertEntityMatchesFilter(entity1, "this.derivedBoolAttr");
 
         MyEntityWithOptionalFields isTrueDerived = myEntityWithOptionalFieldsDao
                 .query()
@@ -633,8 +633,8 @@ public class FiltersTest {
 
         // FilterByName
 
-        filterByName(entity1, "derivedBoolAttr", BooleanFilter.isTrue());
-        filterByName(entity2, "derivedBoolAttr", BooleanFilter.isFalse());
+        assertFilterByNameMatchesEntity(entity1, "derivedBoolAttr", BooleanFilter.isTrue());
+        assertFilterByNameMatchesEntity(entity2, "derivedBoolAttr", BooleanFilter.isFalse());
     }
 
     @Test
@@ -657,50 +657,50 @@ public class FiltersTest {
 
         assertEquals(3, list.size());
 
-        costumFilter(entity1, "this.dateAttr == `2022-07-11`");
-        costumFilter(entity2, "this.dateAttr != `2022-07-11`");
-        costumFilterList(2, "this.dateAttr >= `1999-09-19`");
-        costumFilterList(2, "this.dateAttr <= `2022-07-11`");
-        costumFilterList(1, "this.dateAttr > `1999-09-19`");
-        costumFilterList(1, "this.dateAttr < `2022-07-11`");
+        assertEntityMatchesFilter(entity1, "this.dateAttr == `2022-07-11`");
+        assertEntityMatchesFilter(entity2, "this.dateAttr != `2022-07-11`");
+        assertFilterMatchesNumberOfResults(2, "this.dateAttr >= `1999-09-19`");
+        assertFilterMatchesNumberOfResults(2, "this.dateAttr <= `2022-07-11`");
+        assertFilterMatchesNumberOfResults(1, "this.dateAttr > `1999-09-19`");
+        assertFilterMatchesNumberOfResults(1, "this.dateAttr < `2022-07-11`");
 
-        dateFilter(entity1, DateFilter.equalTo(DATE_1));
-        dateFilter(entity2, DateFilter.notEqualTo(DATE_1));
-        dateFilterList(2, DateFilter.greaterOrEqualThan(DATE_2));
-        dateFilterList(2, DateFilter.lessOrEqualThan(DATE_1));
-        dateFilterList(1, DateFilter.greaterThan(DATE_2));
-        dateFilterList(1, DateFilter.lessThan(DATE_1));
+        assertEntityMatchesFilter(entity1, DateFilter.equalTo(DATE_1));
+        assertEntityMatchesFilter(entity2, DateFilter.notEqualTo(DATE_1));
+        assertFilterMatchesNumberOfResults(2, DateFilter.greaterOrEqualThan(DATE_2));
+        assertFilterMatchesNumberOfResults(2, DateFilter.lessOrEqualThan(DATE_1));
+        assertFilterMatchesNumberOfResults(1, DateFilter.greaterThan(DATE_2));
+        assertFilterMatchesNumberOfResults(1, DateFilter.lessThan(DATE_1));
 
         // FilterByName
 
-        filterByName(entity1, "dateAttr", DateFilter.equalTo(DATE_1));
-        filterByName(entity2, "dateAttr", DateFilter.notEqualTo(DATE_1));
-        filterByNameList(2, "dateAttr", DateFilter.greaterOrEqualThan(DATE_2));
-        filterByNameList(2, "dateAttr", DateFilter.lessOrEqualThan(DATE_1));
-        filterByNameList(1, "dateAttr", DateFilter.greaterThan(DATE_2));
-        filterByNameList(1, "dateAttr", DateFilter.lessThan(DATE_1));
+        assertFilterByNameMatchesEntity(entity1, "dateAttr", DateFilter.equalTo(DATE_1));
+        assertFilterByNameMatchesEntity(entity2, "dateAttr", DateFilter.notEqualTo(DATE_1));
+        assertFilterByNameMatchesNumberOfResults(2, "dateAttr", DateFilter.greaterOrEqualThan(DATE_2));
+        assertFilterByNameMatchesNumberOfResults(2, "dateAttr", DateFilter.lessOrEqualThan(DATE_1));
+        assertFilterByNameMatchesNumberOfResults(1, "dateAttr", DateFilter.greaterThan(DATE_2));
+        assertFilterByNameMatchesNumberOfResults(1, "dateAttr", DateFilter.lessThan(DATE_1));
 
         // derived
 
-        costumFilter(entity1, "this.derivedDateAttr == `2022-07-11`");
-        costumFilter(entity2, "this.derivedDateAttr != `2022-07-11`");
-        costumFilterList(2, "this.derivedDateAttr >= `1999-09-19`");
-        costumFilterList(2, "this.derivedDateAttr <= `2022-07-11`");
-        costumFilterList(1, "this.derivedDateAttr > `1999-09-19`");
-        costumFilterList(1, "this.derivedDateAttr < `2022-07-11`");
+        assertEntityMatchesFilter(entity1, "this.derivedDateAttr == `2022-07-11`");
+        assertEntityMatchesFilter(entity2, "this.derivedDateAttr != `2022-07-11`");
+        assertFilterMatchesNumberOfResults(2, "this.derivedDateAttr >= `1999-09-19`");
+        assertFilterMatchesNumberOfResults(2, "this.derivedDateAttr <= `2022-07-11`");
+        assertFilterMatchesNumberOfResults(1, "this.derivedDateAttr > `1999-09-19`");
+        assertFilterMatchesNumberOfResults(1, "this.derivedDateAttr < `2022-07-11`");
 
         // FilterByName
 
-        filterByName(entity1, "derivedDateAttr", DateFilter.equalTo(DATE_1));
-        filterByName(entity2, "derivedDateAttr", DateFilter.notEqualTo(DATE_1));
-        filterByNameList(2, "derivedDateAttr", DateFilter.greaterOrEqualThan(DATE_2));
-        filterByNameList(2, "derivedDateAttr", DateFilter.lessOrEqualThan(DATE_1));
-        filterByNameList(1, "derivedDateAttr", DateFilter.greaterThan(DATE_2));
-        filterByNameList(1, "derivedDateAttr", DateFilter.lessThan(DATE_1));
+        assertFilterByNameMatchesEntity(entity1, "derivedDateAttr", DateFilter.equalTo(DATE_1));
+        assertFilterByNameMatchesEntity(entity2, "derivedDateAttr", DateFilter.notEqualTo(DATE_1));
+        assertFilterByNameMatchesNumberOfResults(2, "derivedDateAttr", DateFilter.greaterOrEqualThan(DATE_2));
+        assertFilterByNameMatchesNumberOfResults(2, "derivedDateAttr", DateFilter.lessOrEqualThan(DATE_1));
+        assertFilterByNameMatchesNumberOfResults(1, "derivedDateAttr", DateFilter.greaterThan(DATE_2));
+        assertFilterByNameMatchesNumberOfResults(1, "derivedDateAttr", DateFilter.lessThan(DATE_1));
 
     }
 
-    private void dateFilter(MyEntityWithOptionalFields entity, DateFilter filter) {
+    private void assertEntityMatchesFilter(MyEntityWithOptionalFields entity, DateFilter filter) {
         MyEntityWithOptionalFields filtered = myEntityWithOptionalFieldsDao
                 .query()
                 .filterByDateAttr(filter)
@@ -718,7 +718,7 @@ public class FiltersTest {
         assertEquals(entity.identifier(), filteredDerived.identifier());
     }
 
-    private void dateFilterList(int expected, DateFilter filter) {
+    private void assertFilterMatchesNumberOfResults(int expected, DateFilter filter) {
         List<MyEntityWithOptionalFields> filtered = myEntityWithOptionalFieldsDao
                 .query()
                 .filterByDateAttr(filter)
@@ -754,50 +754,50 @@ public class FiltersTest {
 
         assertEquals(3, list.size());
 
-        costumFilter(entity1, "this.timestampAttr == `2022-07-11T19:09:33`");
-        costumFilter(entity2, "this.timestampAttr != `2022-07-11T19:09:33`");
-        costumFilterList(2, "this.timestampAttr >= `1999-09-19T09:09:09`");
-        costumFilterList(2, "this.timestampAttr <= `2022-07-11T19:09:33`");
-        costumFilterList(1, "this.timestampAttr > `1999-09-19T09:09:09`");
-        costumFilterList(1, "this.timestampAttr < `2022-07-11T19:09:33`");
+        assertEntityMatchesFilter(entity1, "this.timestampAttr == `2022-07-11T19:09:33`");
+        assertEntityMatchesFilter(entity2, "this.timestampAttr != `2022-07-11T19:09:33`");
+        assertFilterMatchesNumberOfResults(2, "this.timestampAttr >= `1999-09-19T09:09:09`");
+        assertFilterMatchesNumberOfResults(2, "this.timestampAttr <= `2022-07-11T19:09:33`");
+        assertFilterMatchesNumberOfResults(1, "this.timestampAttr > `1999-09-19T09:09:09`");
+        assertFilterMatchesNumberOfResults(1, "this.timestampAttr < `2022-07-11T19:09:33`");
 
-        timeStampFilter(entity1, TimestampFilter.equalTo(TIMESTAMP_1));
-        timeStampFilter(entity2, TimestampFilter.notEqualTo(TIMESTAMP_1));
-        timeStampFilterList(2, TimestampFilter.greaterOrEqualThan(TIMESTAMP_2));
-        timeStampFilterList(2, TimestampFilter.lessOrEqualThan(TIMESTAMP_1));
-        timeStampFilterList(1, TimestampFilter.greaterThan(TIMESTAMP_2));
-        timeStampFilterList(1, TimestampFilter.lessThan(TIMESTAMP_1));
+        assertEntityMatchesFilter(entity1, TimestampFilter.equalTo(TIMESTAMP_1));
+        assertEntityMatchesFilter(entity2, TimestampFilter.notEqualTo(TIMESTAMP_1));
+        assertFilterMatchesNumberOfResults(2, TimestampFilter.greaterOrEqualThan(TIMESTAMP_2));
+        assertFilterMatchesNumberOfResults(2, TimestampFilter.lessOrEqualThan(TIMESTAMP_1));
+        assertFilterMatchesNumberOfResults(1, TimestampFilter.greaterThan(TIMESTAMP_2));
+        assertFilterMatchesNumberOfResults(1, TimestampFilter.lessThan(TIMESTAMP_1));
 
         // FilterByName
 
-        filterByName(entity1, "timestampAttr", TimestampFilter.equalTo(TIMESTAMP_1));
-        filterByName(entity2, "timestampAttr", TimestampFilter.notEqualTo(TIMESTAMP_1));
-        filterByNameList(2, "timestampAttr", TimestampFilter.greaterOrEqualThan(TIMESTAMP_2));
-        filterByNameList(2, "timestampAttr", TimestampFilter.lessOrEqualThan(TIMESTAMP_1));
-        filterByNameList(1, "timestampAttr", TimestampFilter.greaterThan(TIMESTAMP_2));
-        filterByNameList(1, "timestampAttr", TimestampFilter.lessThan(TIMESTAMP_1));
+        assertFilterByNameMatchesEntity(entity1, "timestampAttr", TimestampFilter.equalTo(TIMESTAMP_1));
+        assertFilterByNameMatchesEntity(entity2, "timestampAttr", TimestampFilter.notEqualTo(TIMESTAMP_1));
+        assertFilterByNameMatchesNumberOfResults(2, "timestampAttr", TimestampFilter.greaterOrEqualThan(TIMESTAMP_2));
+        assertFilterByNameMatchesNumberOfResults(2, "timestampAttr", TimestampFilter.lessOrEqualThan(TIMESTAMP_1));
+        assertFilterByNameMatchesNumberOfResults(1, "timestampAttr", TimestampFilter.greaterThan(TIMESTAMP_2));
+        assertFilterByNameMatchesNumberOfResults(1, "timestampAttr", TimestampFilter.lessThan(TIMESTAMP_1));
 
         // derived
 
-        costumFilter(entity1, "this.derivedTimestampAttr == `2022-07-11T19:09:33`");
-        costumFilter(entity2, "this.derivedTimestampAttr != `2022-07-11T19:09:33`");
-        costumFilterList(2, "this.derivedTimestampAttr >= `1999-09-19T09:09:09`");
-        costumFilterList(2, "this.derivedTimestampAttr <= `2022-07-11T19:09:33`");
-        costumFilterList(1, "this.derivedTimestampAttr > `1999-09-19T09:09:09`");
-        costumFilterList(1, "this.derivedTimestampAttr < `2022-07-11T19:09:33`");
+        assertEntityMatchesFilter(entity1, "this.derivedTimestampAttr == `2022-07-11T19:09:33`");
+        assertEntityMatchesFilter(entity2, "this.derivedTimestampAttr != `2022-07-11T19:09:33`");
+        assertFilterMatchesNumberOfResults(2, "this.derivedTimestampAttr >= `1999-09-19T09:09:09`");
+        assertFilterMatchesNumberOfResults(2, "this.derivedTimestampAttr <= `2022-07-11T19:09:33`");
+        assertFilterMatchesNumberOfResults(1, "this.derivedTimestampAttr > `1999-09-19T09:09:09`");
+        assertFilterMatchesNumberOfResults(1, "this.derivedTimestampAttr < `2022-07-11T19:09:33`");
 
         // FilterByName
 
-        filterByName(entity1, "derivedTimestampAttr", TimestampFilter.equalTo(TIMESTAMP_1));
-        filterByName(entity2, "derivedTimestampAttr", TimestampFilter.notEqualTo(TIMESTAMP_1));
-        filterByNameList(2, "derivedTimestampAttr", TimestampFilter.greaterOrEqualThan(TIMESTAMP_2));
-        filterByNameList(2, "derivedTimestampAttr", TimestampFilter.lessOrEqualThan(TIMESTAMP_1));
-        filterByNameList(1, "derivedTimestampAttr", TimestampFilter.greaterThan(TIMESTAMP_2));
-        filterByNameList(1, "derivedTimestampAttr", TimestampFilter.lessThan(TIMESTAMP_1));
+        assertFilterByNameMatchesEntity(entity1, "derivedTimestampAttr", TimestampFilter.equalTo(TIMESTAMP_1));
+        assertFilterByNameMatchesEntity(entity2, "derivedTimestampAttr", TimestampFilter.notEqualTo(TIMESTAMP_1));
+        assertFilterByNameMatchesNumberOfResults(2, "derivedTimestampAttr", TimestampFilter.greaterOrEqualThan(TIMESTAMP_2));
+        assertFilterByNameMatchesNumberOfResults(2, "derivedTimestampAttr", TimestampFilter.lessOrEqualThan(TIMESTAMP_1));
+        assertFilterByNameMatchesNumberOfResults(1, "derivedTimestampAttr", TimestampFilter.greaterThan(TIMESTAMP_2));
+        assertFilterByNameMatchesNumberOfResults(1, "derivedTimestampAttr", TimestampFilter.lessThan(TIMESTAMP_1));
 
     }
 
-    private void timeStampFilter(MyEntityWithOptionalFields entity, TimestampFilter filter) {
+    private void assertEntityMatchesFilter(MyEntityWithOptionalFields entity, TimestampFilter filter) {
         MyEntityWithOptionalFields filtered = myEntityWithOptionalFieldsDao
                 .query()
                 .filterByTimestampAttr(filter)
@@ -815,7 +815,7 @@ public class FiltersTest {
         assertEquals(entity.identifier(), filteredDerived.identifier());
     }
 
-    private void timeStampFilterList(int expected, TimestampFilter filter) {
+    private void assertFilterMatchesNumberOfResults(int expected, TimestampFilter filter) {
         List<MyEntityWithOptionalFields> filtered = myEntityWithOptionalFieldsDao
                 .query()
                 .filterByTimestampAttr(filter)
@@ -850,63 +850,49 @@ public class FiltersTest {
         List<MyEntityWithOptionalFields> list = myEntityWithOptionalFieldsDao.query().selectList();
 
         assertEquals(3, list.size());
-        costumFilter(entity1, "this.timeAttr == `23:59:59`");
-        costumFilter(entity2, "this.timeAttr != `23:59:59`");
-        costumFilterList(2, "this.timeAttr >= `12:34:56`");
-        costumFilterList(2, "this.timeAttr <= `23:59:59`");
+        assertEntityMatchesFilter(entity1, "this.timeAttr == `23:59:59`");
+        assertEntityMatchesFilter(entity2, "this.timeAttr != `23:59:59`");
+        assertFilterMatchesNumberOfResults(2, "this.timeAttr >= `12:34:56`");
+        assertFilterMatchesNumberOfResults(2, "this.timeAttr <= `23:59:59`");
+        assertEntityMatchesFilter(entity1, "this.timeAttr > `12:34:56`");
+        assertEntityMatchesFilter(entity2, "this.timeAttr < `23:59:59`");
 
-        List<MyEntityWithOptionalFields> greaterThanByStringFilter = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.timeAttr > `12:34:56`")
-                .selectList();
-
-        assertEquals(1, greaterThanByStringFilter.size());
-        assertEquals(entity1.identifier(), greaterThanByStringFilter.get(0).identifier());
-
-        List<MyEntityWithOptionalFields> lessThanByStringFilter = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.timeAttr < `23:59:59`")
-                .selectList();
-
-        assertEquals(1, lessThanByStringFilter.size());
-        assertEquals(entity2.identifier(), lessThanByStringFilter.get(0).identifier());
-
-        timeFilter(entity1, TimeFilter.equalTo(TIME_1));
-        timeFilter(entity2, TimeFilter.notEqualTo(TIME_1));
-        timeFilterList(2, TimeFilter.greaterOrEqualThan(TIME_2));
-        timeFilterList(2, TimeFilter.lessOrEqualThan(TIME_1));
-        timeFilterList(1, TimeFilter.greaterThan(TIME_2));
-        timeFilterList(1, TimeFilter.lessThan(TIME_1));
+        assertEntityMatchesFilter(entity1, TimeFilter.equalTo(TIME_1));
+        assertEntityMatchesFilter(entity2, TimeFilter.notEqualTo(TIME_1));
+        assertFilterMatchesNumberOfResults(2, TimeFilter.greaterOrEqualThan(TIME_2));
+        assertFilterMatchesNumberOfResults(2, TimeFilter.lessOrEqualThan(TIME_1));
+        assertFilterMatchesNumberOfResults(1, TimeFilter.greaterThan(TIME_2));
+        assertFilterMatchesNumberOfResults(1, TimeFilter.lessThan(TIME_1));
 
         // FilterByName
 
-        filterByName(entity1, "timeAttr", TimeFilter.equalTo(TIME_1));
-        filterByName(entity2, "timeAttr", TimeFilter.notEqualTo(TIME_1));
-        filterByNameList(2, "timeAttr", TimeFilter.greaterOrEqualThan(TIME_2));
-        filterByNameList(2, "timeAttr", TimeFilter.lessOrEqualThan(TIME_1));
-        filterByNameList(1, "timeAttr", TimeFilter.greaterThan(TIME_2));
-        filterByNameList(1, "timeAttr", TimeFilter.lessThan(TIME_1));
+        assertFilterByNameMatchesEntity(entity1, "timeAttr", TimeFilter.equalTo(TIME_1));
+        assertFilterByNameMatchesEntity(entity2, "timeAttr", TimeFilter.notEqualTo(TIME_1));
+        assertFilterByNameMatchesNumberOfResults(2, "timeAttr", TimeFilter.greaterOrEqualThan(TIME_2));
+        assertFilterByNameMatchesNumberOfResults(2, "timeAttr", TimeFilter.lessOrEqualThan(TIME_1));
+        assertFilterByNameMatchesNumberOfResults(1, "timeAttr", TimeFilter.greaterThan(TIME_2));
+        assertFilterByNameMatchesNumberOfResults(1, "timeAttr", TimeFilter.lessThan(TIME_1));
 
         // derived
 
-        costumFilter(entity1, "this.derivedTimeAttr == `23:59:59`");
-        costumFilter(entity2, "this.derivedTimeAttr != `23:59:59`");
-        costumFilterList(2, "this.derivedTimeAttr >= `12:34:56`");
-        costumFilterList(2, "this.derivedTimeAttr <= `23:59:59`");
-        costumFilter(entity1, "this.derivedTimeAttr > `12:34:56`");
-        costumFilter(entity2, "this.derivedTimeAttr < `23:59:59`");
+        assertEntityMatchesFilter(entity1, "this.derivedTimeAttr == `23:59:59`");
+        assertEntityMatchesFilter(entity2, "this.derivedTimeAttr != `23:59:59`");
+        assertFilterMatchesNumberOfResults(2, "this.derivedTimeAttr >= `12:34:56`");
+        assertFilterMatchesNumberOfResults(2, "this.derivedTimeAttr <= `23:59:59`");
+        assertEntityMatchesFilter(entity1, "this.derivedTimeAttr > `12:34:56`");
+        assertEntityMatchesFilter(entity2, "this.derivedTimeAttr < `23:59:59`");
 
         // FilterByName
 
-        filterByName(entity1, "derivedTimeAttr", TimeFilter.equalTo(TIME_1));
-        filterByName(entity2, "derivedTimeAttr", TimeFilter.notEqualTo(TIME_1));
-        filterByNameList(2, "derivedTimeAttr", TimeFilter.greaterOrEqualThan(TIME_2));
-        filterByNameList(2, "derivedTimeAttr", TimeFilter.lessOrEqualThan(TIME_1));
-        filterByNameList(1, "derivedTimeAttr", TimeFilter.greaterThan(TIME_2));
-        filterByNameList(1, "derivedTimeAttr", TimeFilter.lessThan(TIME_1));
+        assertFilterByNameMatchesEntity(entity1, "derivedTimeAttr", TimeFilter.equalTo(TIME_1));
+        assertFilterByNameMatchesEntity(entity2, "derivedTimeAttr", TimeFilter.notEqualTo(TIME_1));
+        assertFilterByNameMatchesNumberOfResults(2, "derivedTimeAttr", TimeFilter.greaterOrEqualThan(TIME_2));
+        assertFilterByNameMatchesNumberOfResults(2, "derivedTimeAttr", TimeFilter.lessOrEqualThan(TIME_1));
+        assertFilterByNameMatchesNumberOfResults(1, "derivedTimeAttr", TimeFilter.greaterThan(TIME_2));
+        assertFilterByNameMatchesNumberOfResults(1, "derivedTimeAttr", TimeFilter.lessThan(TIME_1));
     }
 
-    private void timeFilter(MyEntityWithOptionalFields entity, TimeFilter filter) {
+    private void assertEntityMatchesFilter(MyEntityWithOptionalFields entity, TimeFilter filter) {
         MyEntityWithOptionalFields filtered = myEntityWithOptionalFieldsDao
                 .query()
                 .filterByTimeAttr(filter)
@@ -924,7 +910,7 @@ public class FiltersTest {
         assertEquals(entity.identifier(), filteredDerived.identifier());
     }
 
-    private void timeFilterList(int expected, TimeFilter filter) {
+    private void assertFilterMatchesNumberOfResults(int expected, TimeFilter filter) {
         List<MyEntityWithOptionalFields> filtered = myEntityWithOptionalFieldsDao
                 .query()
                 .filterByTimeAttr(filter)
@@ -996,13 +982,13 @@ public class FiltersTest {
 
         // FilterByName
 
-        filterByName(entity1, "enumAttr", EnumerationFilter.equalTo(MyEnum.Bombastic));
-        filterByName(entity2, "enumAttr", EnumerationFilter.notEqualTo(MyEnum.Bombastic));
+        assertFilterByNameMatchesEntity(entity1, "enumAttr", EnumerationFilter.equalTo(MyEnum.Bombastic));
+        assertFilterByNameMatchesEntity(entity2, "enumAttr", EnumerationFilter.notEqualTo(MyEnum.Bombastic));
 
         // Derived
 
-        filterByName(entity1, "derivedEnumAttr", EnumerationFilter.equalTo(MyEnum.Bombastic));
-        filterByName(entity2, "derivedEnumAttr", EnumerationFilter.notEqualTo(MyEnum.Bombastic));
+        assertFilterByNameMatchesEntity(entity1, "derivedEnumAttr", EnumerationFilter.equalTo(MyEnum.Bombastic));
+        assertFilterByNameMatchesEntity(entity2, "derivedEnumAttr", EnumerationFilter.notEqualTo(MyEnum.Bombastic));
 
     }
 
@@ -1094,7 +1080,7 @@ public class FiltersTest {
 
     }
 
-    private void filterByName(MyEntityWithOptionalFields entity, String integerAttr, Filter filter) {
+    private void assertFilterByNameMatchesEntity(MyEntityWithOptionalFields entity, String integerAttr, Filter filter) {
         MyEntityWithOptionalFields equalsByName = myEntityWithOptionalFieldsDao
                 .query()
                 .filterByName(integerAttr, filter)
@@ -1104,7 +1090,7 @@ public class FiltersTest {
         assertEquals(entity.identifier(), equalsByName.identifier());
     }
 
-    private void filterByNameList(int expected, String integerAttr, Filter filter1) {
+    private void assertFilterByNameMatchesNumberOfResults(int expected, String integerAttr, Filter filter1) {
         List<MyEntityWithOptionalFields> equalsByName = myEntityWithOptionalFieldsDao
                 .query()
                 .filterByName(integerAttr, filter1)
@@ -1113,7 +1099,7 @@ public class FiltersTest {
         assertEquals(expected, equalsByName.size());
     }
 
-    private void costumFilterList(int expected, String customFilter) {
+    private void assertFilterMatchesNumberOfResults(int expected, String customFilter) {
         List<MyEntityWithOptionalFields> greaterOrEqualsByStringFilter = myEntityWithOptionalFieldsDao
                 .query()
                 .filterBy(customFilter)
@@ -1122,7 +1108,7 @@ public class FiltersTest {
         assertEquals(expected, greaterOrEqualsByStringFilter.size());
     }
 
-    private void costumFilter(MyEntityWithOptionalFields entity, String customFilter) {
+    private void assertEntityMatchesFilter(MyEntityWithOptionalFields entity, String customFilter) {
         MyEntityWithOptionalFields filteredByString = myEntityWithOptionalFieldsDao
                 .query()
                 .filterBy(customFilter)
