@@ -1080,20 +1080,20 @@ public class FiltersTest {
 
     }
 
-    private void assertFilterByNameMatchesEntity(MyEntityWithOptionalFields entity, String integerAttr, Filter filter) {
+    private void assertFilterByNameMatchesEntity(MyEntityWithOptionalFields entity, String attributeName, Filter filter) {
         MyEntityWithOptionalFields equalsByName = myEntityWithOptionalFieldsDao
                 .query()
-                .filterByName(integerAttr, filter)
+                .filterByName(attributeName, filter)
                 .selectOne()
                 .get();
 
         assertEquals(entity.identifier(), equalsByName.identifier());
     }
 
-    private void assertFilterByNameMatchesNumberOfResults(int expected, String integerAttr, Filter filter1) {
+    private void assertFilterByNameMatchesNumberOfResults(int expected, String attributeName, Filter filter1) {
         List<MyEntityWithOptionalFields> equalsByName = myEntityWithOptionalFieldsDao
                 .query()
-                .filterByName(integerAttr, filter1)
+                .filterByName(attributeName, filter1)
                 .selectList();
 
         assertEquals(expected, equalsByName.size());

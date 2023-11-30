@@ -1116,10 +1116,10 @@ public class MappedTransferFiltersTest {
         assertEquals(entity.identifier(), equalsByName.identifier());
     }
 
-    private void assertFilterByNameMatchesNumberOfResults(int expected, String integerAttr, Filter filter1) {
+    private void assertFilterByNameMatchesNumberOfResults(int expected, String attributeName, Filter filter1) {
         List<TransferMyEntityWithOptionalFields> equalsByName = transferMyEntityWithOptionalFieldsDao
                 .query()
-                .filterByName(integerAttr, filter1)
+                .filterByName(attributeName, filter1)
                 .selectList();
 
         assertEquals(expected, equalsByName.size());
