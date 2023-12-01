@@ -38,6 +38,7 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 
 import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -676,6 +677,175 @@ public class MappedTransferQueryCustomizerFunctionsTest {
         assertTrue(thrown.getMessage().contains("No enum constant for"));
         assertTrue(thrown.getMessage().contains("TransferOptionalPrimitivesAttribute#integerAtt"));
 
+    }
+
+    @Test
+    @Requirement(reqs = {
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-005",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-008",
+            "REQ-SRV-002",
+    })
+    public void testMultiOrderExecutionOrder() {
+
+        transferOptionalPrimitivesDao.delete(transf1);
+        transferOptionalPrimitivesDao.delete(transf2);
+
+        TransferOptionalPrimitives a1 = createTransferOptionalPrimitive("A", 1, 1.01);
+        TransferOptionalPrimitives a21 = createTransferOptionalPrimitive("A", 2, 2.01);
+        TransferOptionalPrimitives a22 = createTransferOptionalPrimitive("A", 2, 2.02);
+        TransferOptionalPrimitives a3 = createTransferOptionalPrimitive("A", 3, 1.02);
+        TransferOptionalPrimitives b1 = createTransferOptionalPrimitive("B", 1, 3.01);
+        TransferOptionalPrimitives b2 = createTransferOptionalPrimitive("B", 2, 3.02);
+
+        List<TransferOptionalPrimitives> orderedList = transferOptionalPrimitivesDao.query()
+                .orderBy(TransferOptionalPrimitivesAttribute.STRING_ATTR)
+                .orderByDescending(TransferOptionalPrimitivesAttribute.INTEGER_ATTR)
+                .selectList();
+
+        assertEquals(a3.identifier(), orderedList.get(0).identifier());
+        assertEquals(a1.identifier(), orderedList.get(3).identifier());
+        assertEquals(b2.identifier(), orderedList.get(4).identifier());
+        assertEquals(b1.identifier(), orderedList.get(5).identifier());
+
+        orderedList = transferOptionalPrimitivesDao.query()
+                .orderByDescending(TransferOptionalPrimitivesAttribute.STRING_ATTR)
+                .orderByDescending(TransferOptionalPrimitivesAttribute.INTEGER_ATTR)
+                .selectList();
+
+        assertEquals(b2.identifier(), orderedList.get(0).identifier());
+        assertEquals(b1.identifier(), orderedList.get(1).identifier());
+        assertEquals(a3.identifier(), orderedList.get(2).identifier());
+        assertEquals(a1.identifier(), orderedList.get(5).identifier());
+
+
+        orderedList = transferOptionalPrimitivesDao.query()
+                .orderByDescending(TransferOptionalPrimitivesAttribute.STRING_ATTR)
+                .orderByDescending(TransferOptionalPrimitivesAttribute.INTEGER_ATTR)
+                .selectList();
+
+        assertEquals(b2.identifier(), orderedList.get(0).identifier());
+        assertEquals(b1.identifier(), orderedList.get(1).identifier());
+        assertEquals(a3.identifier(), orderedList.get(2).identifier());
+        assertEquals(a1.identifier(), orderedList.get(5).identifier());
+
+        orderedList = transferOptionalPrimitivesDao.query()
+                .orderBy(TransferOptionalPrimitivesAttribute.STRING_ATTR)
+                .orderBy(TransferOptionalPrimitivesAttribute.INTEGER_ATTR)
+                .selectList();
+
+        assertEquals(a1.identifier(), orderedList.get(0).identifier());
+        assertEquals(a3.identifier(), orderedList.get(3).identifier());
+        assertEquals(b1.identifier(), orderedList.get(4).identifier());
+        assertEquals(b2.identifier(), orderedList.get(5).identifier());
+
+        orderedList = transferOptionalPrimitivesDao.query()
+                .orderBy(TransferOptionalPrimitivesAttribute.STRING_ATTR)
+                .orderBy(TransferOptionalPrimitivesAttribute.INTEGER_ATTR)
+                .orderBy(TransferOptionalPrimitivesAttribute.SCALED_ATTR)
+                .selectList();
+
+        assertEquals(a1.identifier(), orderedList.get(0).identifier());
+        assertEquals(a21.identifier(), orderedList.get(1).identifier());
+        assertEquals(a22.identifier(), orderedList.get(2).identifier());
+        assertEquals(a3.identifier(), orderedList.get(3).identifier());
+        assertEquals(b1.identifier(), orderedList.get(4).identifier());
+        assertEquals(b2.identifier(), orderedList.get(5).identifier());
+
+        orderedList = transferOptionalPrimitivesDao.query()
+                .orderBy(TransferOptionalPrimitivesAttribute.STRING_ATTR)
+                .orderBy(TransferOptionalPrimitivesAttribute.INTEGER_ATTR).
+                orderByDescending(TransferOptionalPrimitivesAttribute.SCALED_ATTR)
+                .selectList();
+
+        assertEquals(a1.identifier(), orderedList.get(0).identifier());
+        assertEquals(a22.identifier(), orderedList.get(1).identifier());
+        assertEquals(a21.identifier(), orderedList.get(2).identifier());
+        assertEquals(a3.identifier(), orderedList.get(3).identifier());
+        assertEquals(b1.identifier(), orderedList.get(4).identifier());
+        assertEquals(b2.identifier(), orderedList.get(5).identifier());
+
+        orderedList = transferOptionalPrimitivesDao.query()
+                .orderBy(TransferOptionalPrimitivesAttribute.DERIVED_STRING_ATTR)
+                .orderByDescending(TransferOptionalPrimitivesAttribute.DERIVED_INTEGER_ATTR)
+                .selectList();
+
+        assertEquals(a3.identifier(), orderedList.get(0).identifier());
+        assertEquals(a1.identifier(), orderedList.get(3).identifier());
+        assertEquals(b2.identifier(), orderedList.get(4).identifier());
+        assertEquals(b1.identifier(), orderedList.get(5).identifier());
+
+        orderedList = transferOptionalPrimitivesDao.query()
+                .orderByDescending(TransferOptionalPrimitivesAttribute.DERIVED_STRING_ATTR)
+                .orderByDescending(TransferOptionalPrimitivesAttribute.DERIVED_INTEGER_ATTR)
+                .selectList();
+
+        assertEquals(b2.identifier(), orderedList.get(0).identifier());
+        assertEquals(b1.identifier(), orderedList.get(1).identifier());
+        assertEquals(a3.identifier(), orderedList.get(2).identifier());
+        assertEquals(a1.identifier(), orderedList.get(5).identifier());
+
+
+        orderedList = transferOptionalPrimitivesDao.query()
+                .orderByDescending(TransferOptionalPrimitivesAttribute.DERIVED_STRING_ATTR)
+                .orderByDescending(TransferOptionalPrimitivesAttribute.DERIVED_INTEGER_ATTR)
+                .selectList();
+
+        assertEquals(b2.identifier(), orderedList.get(0).identifier());
+        assertEquals(b1.identifier(), orderedList.get(1).identifier());
+        assertEquals(a3.identifier(), orderedList.get(2).identifier());
+        assertEquals(a1.identifier(), orderedList.get(5).identifier());
+
+        orderedList = transferOptionalPrimitivesDao.query()
+                .orderBy(TransferOptionalPrimitivesAttribute.DERIVED_STRING_ATTR)
+                .orderBy(TransferOptionalPrimitivesAttribute.DERIVED_INTEGER_ATTR)
+                .selectList();
+
+        assertEquals(a1.identifier(), orderedList.get(0).identifier());
+        assertEquals(a3.identifier(), orderedList.get(3).identifier());
+        assertEquals(b1.identifier(), orderedList.get(4).identifier());
+        assertEquals(b2.identifier(), orderedList.get(5).identifier());
+
+        orderedList = transferOptionalPrimitivesDao.query()
+                .orderBy(TransferOptionalPrimitivesAttribute.DERIVED_STRING_ATTR)
+                .orderBy(TransferOptionalPrimitivesAttribute.DERIVED_INTEGER_ATTR)
+                .orderBy(TransferOptionalPrimitivesAttribute.DERIVED_SCALED_ATTR)
+                .selectList();
+
+        assertEquals(a1.identifier(), orderedList.get(0).identifier());
+        assertEquals(a21.identifier(), orderedList.get(1).identifier());
+        assertEquals(a22.identifier(), orderedList.get(2).identifier());
+        assertEquals(a3.identifier(), orderedList.get(3).identifier());
+        assertEquals(b1.identifier(), orderedList.get(4).identifier());
+        assertEquals(b2.identifier(), orderedList.get(5).identifier());
+
+        orderedList = transferOptionalPrimitivesDao.query()
+                .orderBy(TransferOptionalPrimitivesAttribute.DERIVED_STRING_ATTR)
+                .orderBy(TransferOptionalPrimitivesAttribute.DERIVED_INTEGER_ATTR).
+                orderByDescending(TransferOptionalPrimitivesAttribute.DERIVED_SCALED_ATTR)
+                .selectList();
+
+        assertEquals(a1.identifier(), orderedList.get(0).identifier());
+        assertEquals(a22.identifier(), orderedList.get(1).identifier());
+        assertEquals(a21.identifier(), orderedList.get(2).identifier());
+        assertEquals(a3.identifier(), orderedList.get(3).identifier());
+        assertEquals(b1.identifier(), orderedList.get(4).identifier());
+        assertEquals(b2.identifier(), orderedList.get(5).identifier());
+
+    }
+
+    private TransferOptionalPrimitives createTransferOptionalPrimitive(String a, int integerAttr, double scaledAttr) {
+        return transferOptionalPrimitivesDao.create(TransferOptionalPrimitivesForCreate.builder()
+                .withStringAttr(a)
+                .withIntegerAttr(integerAttr)
+                .withScaledAttr(scaledAttr)
+                .build());
     }
 
     /**
