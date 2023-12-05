@@ -256,7 +256,7 @@ public class TestDefaultAndRequiredFieldsOnMappedTO {
         TransferWithOptionalFieldsMapsEntityWithOptionalFields t1 = transferWithOptionalFieldsMapsEntityWithOptionalFieldsDao.create(TransferWithOptionalFieldsMapsEntityWithOptionalFieldsForCreate.builder().build());
 
         assertEquals(1, transferWithOptionalFieldsMapsEntityWithOptionalFieldsDao.countAll());
-        assertEquals(Optional.empty(), t1.getIntegerAttr());
+        assertEquals(Optional.empty(), t1.getIntAttr());
         assertEquals(Optional.empty(), t1.getScaledAttr());
         assertEquals(Optional.empty(), t1.getStringAttr());
         assertEquals(Optional.empty(), t1.getRegexAttr());
@@ -306,7 +306,7 @@ public class TestDefaultAndRequiredFieldsOnMappedTO {
         TransferWithOptionalFieldsWithDefaultMapsEntityWithOptionalFields t2 = transferWithOptionalFieldsWithDefaultMapsEntityWithOptionalFieldsDao.create(TransferWithOptionalFieldsWithDefaultMapsEntityWithOptionalFieldsForCreate.builder().build());
 
         assertEquals( 1, transferWithOptionalFieldsWithDefaultMapsEntityWithOptionalFieldsDao.countAll());
-        assertEquals(Optional.of(1), t2.getIntegerAttr());
+        assertEquals(Optional.of(1), t2.getIntAttr());
         assertEquals(Optional.of(2.34), t2.getScaledAttr());
         assertEquals(Optional.of("Hello there"), t2.getStringAttr());
         assertEquals(Optional.of("+36 30 123 1234"), t2.getRegexAttr());
@@ -374,7 +374,7 @@ public class TestDefaultAndRequiredFieldsOnMappedTO {
 
 
         TransferWithRequiredFieldsMapsEntityWithOptionalFields t3 = transferWithRequiredFieldsMapsEntityWithOptionalFieldsDao.create(TransferWithRequiredFieldsMapsEntityWithOptionalFieldsForCreate.builder()
-                .withIntegerAttr(1)
+                .withIntAttr(1)
                 .withScaledAttr(2.34)
                 .withStringAttr("Hello there")
                 .withEnumAttr(Enum.EnumA)
@@ -387,7 +387,7 @@ public class TestDefaultAndRequiredFieldsOnMappedTO {
 
 
         assertEquals(1, transferWithRequiredFieldsMapsEntityWithOptionalFieldsDao.countAll());
-        assertEquals(1, t3.getIntegerAttr());
+        assertEquals(1, t3.getIntAttr());
         assertEquals(2.34, t3.getScaledAttr());
         assertEquals("Hello there", t3.getStringAttr());
         assertEquals("+36 30 123 1234", t3.getRegexAttr());
@@ -435,7 +435,7 @@ public class TestDefaultAndRequiredFieldsOnMappedTO {
         TransferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFields t4 = transferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsDao.create(TransferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsForCreate.builder().build());
 
         assertEquals(1, transferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsDao.countAll());
-        assertEquals(1, t4.getIntegerAttr());
+        assertEquals(1, t4.getIntAttr());
         assertEquals(2.34, t4.getScaledAttr());
         assertEquals("Hello there", t4.getStringAttr());
         assertEquals("+36 30 123 1234", t4.getRegexAttr());
@@ -562,7 +562,7 @@ public class TestDefaultAndRequiredFieldsOnMappedTO {
 
 
         TransferWithOptionalFieldsMapsEntityWithRequiredFields t1 = transferWithOptionalFieldsMapsEntityWithRequiredFieldsDao.create(TransferWithOptionalFieldsMapsEntityWithRequiredFieldsForCreate.builder()
-                .withIntegerAttr(1)
+                .withIntAttr(1)
                 .withScaledAttr(2.34)
                 .withStringAttr("Hello there")
                 .withEnumAttr(Enum.EnumA)
@@ -575,7 +575,7 @@ public class TestDefaultAndRequiredFieldsOnMappedTO {
 
 
         assertEquals(1, transferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsDao.countAll());
-        assertEquals(Optional.of(1), t1.getIntegerAttr());
+        assertEquals(Optional.of(1), t1.getIntAttr());
         assertEquals(Optional.of(2.34), t1.getScaledAttr());
         assertEquals(Optional.of("Hello there"), t1.getStringAttr());
         assertEquals(Optional.of("+36 30 123 1234"), t1.getRegexAttr());
@@ -624,7 +624,7 @@ public class TestDefaultAndRequiredFieldsOnMappedTO {
         TransferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFields t2 = transferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsDao.create(TransferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsForCreate.builder().build());
 
         assertEquals(1, transferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsDao.countAll());
-        assertEquals(Optional.of(1), t2.getIntegerAttr());
+        assertEquals(Optional.of(1), t2.getIntAttr());
         assertEquals(Optional.of(2.34), t2.getScaledAttr());
         assertEquals(Optional.of("Hello there"), t2.getStringAttr());
         assertEquals(Optional.of("+36 30 123 1234"), t2.getRegexAttr());
@@ -688,7 +688,7 @@ public class TestDefaultAndRequiredFieldsOnMappedTO {
         assertEquals("MISSING_REQUIRED_ATTRIBUTE", validationResult.getCode());
 
         TransferWithRequiredFieldsMapsEntityWithRequiredFields t3 = transferWithRequiredFieldsMapsEntityWithRequiredFieldsDao.create(TransferWithRequiredFieldsMapsEntityWithRequiredFieldsForCreate.builder()
-                .withIntegerAttr(1)
+                .withIntAttr(1)
                 .withScaledAttr(2.34)
                 .withStringAttr("Hello there")
                 .withEnumAttr(Enum.EnumA)
@@ -701,7 +701,7 @@ public class TestDefaultAndRequiredFieldsOnMappedTO {
 
 
         assertEquals(1, transferWithRequiredFieldsMapsEntityWithRequiredFieldsDao.countAll());
-        assertEquals(1, t3.getIntegerAttr());
+        assertEquals(1, t3.getIntAttr());
         assertEquals(2.34, t3.getScaledAttr());
         assertEquals("Hello there", t3.getStringAttr());
         assertEquals("+36 30 123 1234", t3.getRegexAttr());
@@ -749,7 +749,7 @@ public class TestDefaultAndRequiredFieldsOnMappedTO {
         TransferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFields t4 = transferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsDao.create(TransferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsForCreate.builder().build());
 
         assertEquals(1, transferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsDao.countAll());
-        assertEquals(1, t4.getIntegerAttr());
+        assertEquals(1, t4.getIntAttr());
         assertEquals(2.34, t4.getScaledAttr());
         assertEquals("Hello there", t4.getStringAttr());
         assertEquals("+36 30 123 1234", t4.getRegexAttr());
@@ -882,7 +882,7 @@ public class TestDefaultAndRequiredFieldsOnMappedTO {
         TransferWithOptionalFieldsMapsEntityWithOptionalFieldsWithDefault t1 = transferWithOptionalFieldsMapsEntityWithOptionalFieldsWithDefaultDao.create(TransferWithOptionalFieldsMapsEntityWithOptionalFieldsWithDefaultForCreate.builder().build());
 
         assertEquals(1, transferWithOptionalFieldsMapsEntityWithOptionalFieldsWithDefaultDao.countAll());
-        assertEquals(Optional.of(1), t1.getIntegerAttr());
+        assertEquals(Optional.of(1), t1.getIntAttr());
         assertEquals(Optional.of(2.34), t1.getScaledAttr());
         assertEquals(Optional.of("Hello there"), t1.getStringAttr());
         assertEquals(Optional.of("+36-1-223-123"), t1.getRegexAttr());
@@ -931,7 +931,7 @@ public class TestDefaultAndRequiredFieldsOnMappedTO {
         TransferWithOptionalFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefault t2 = transferWithOptionalFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefaultDao.create(TransferWithOptionalFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefaultForCreate.builder().build());
 
         assertEquals(1, transferWithOptionalFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefaultDao.countAll());
-        assertEquals(Optional.of(2), t2.getIntegerAttr());
+        assertEquals(Optional.of(2), t2.getIntAttr());
         assertEquals(Optional.of(3.34), t2.getScaledAttr());
         assertEquals(Optional.of("Lorem Ipsum"), t2.getStringAttr());
         assertEquals(Optional.of("+36 30 123 5678"), t2.getRegexAttr());
@@ -993,7 +993,7 @@ public class TestDefaultAndRequiredFieldsOnMappedTO {
         TransferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefault t3 = transferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefaultDao.create(TransferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefaultForCreate.builder().build());
 
         assertEquals(1, transferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefaultDao.countAll());
-        assertEquals(1, t3.getIntegerAttr());
+        assertEquals(1, t3.getIntAttr());
         assertEquals(2.34, t3.getScaledAttr());
         assertEquals("Hello there", t3.getStringAttr());
         assertEquals("+36-1-223-123", t3.getRegexAttr());
@@ -1046,7 +1046,7 @@ public class TestDefaultAndRequiredFieldsOnMappedTO {
         TransferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefault t4 = transferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefaultDao.create(TransferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefaultForCreate.builder().build());
 
         assertEquals(1, transferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefaultDao.countAll());
-        assertEquals(2, t4.getIntegerAttr());
+        assertEquals(2, t4.getIntAttr());
         assertEquals(3.34, t4.getScaledAttr());
         assertEquals("Lorem Ipsum", t4.getStringAttr());
         assertEquals("+36 30 123 5678", t4.getRegexAttr());
@@ -1177,7 +1177,7 @@ public class TestDefaultAndRequiredFieldsOnMappedTO {
         TransferWithOptionalFieldsMapsEntityWithRequiredFieldsWithDefault t1 = transferWithOptionalFieldsMapsEntityWithRequiredFieldsWithDefaultDao.create(TransferWithOptionalFieldsMapsEntityWithRequiredFieldsWithDefaultForCreate.builder().build());
 
         assertEquals(1, transferWithOptionalFieldsMapsEntityWithRequiredFieldsWithDefaultDao.countAll());
-        assertEquals(Optional.of(1), t1.getIntegerAttr());
+        assertEquals(Optional.of(1), t1.getIntAttr());
         assertEquals(Optional.of(2.34), t1.getScaledAttr());
         assertEquals(Optional.of("Hello there"), t1.getStringAttr());
         assertEquals(Optional.of("+36-1-223-123"), t1.getRegexAttr());
@@ -1230,7 +1230,7 @@ public class TestDefaultAndRequiredFieldsOnMappedTO {
         TransferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsWithDefault t2 = transferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsWithDefaultDao.create(TransferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsWithDefaultForCreate.builder().build());
 
         assertEquals(1, transferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsWithDefaultDao.countAll());
-        assertEquals(Optional.of(2), t2.getIntegerAttr());
+        assertEquals(Optional.of(2), t2.getIntAttr());
         assertEquals(Optional.of(3.34), t2.getScaledAttr());
         assertEquals(Optional.of("Lorem Ipsum"), t2.getStringAttr());
         assertEquals(Optional.of("+36 30 123 5678"), t2.getRegexAttr());
@@ -1289,7 +1289,7 @@ public class TestDefaultAndRequiredFieldsOnMappedTO {
 
         TransferWithRequiredFieldsMapsEntityWithRequiredFieldsWithDefault t3 = transferWithRequiredFieldsMapsEntityWithRequiredFieldsWithDefaultDao.create(TransferWithRequiredFieldsMapsEntityWithRequiredFieldsWithDefaultForCreate.builder().build());
         assertEquals(1, transferWithRequiredFieldsMapsEntityWithRequiredFieldsWithDefaultDao.countAll());
-        assertEquals(1, t3.getIntegerAttr());
+        assertEquals(1, t3.getIntAttr());
         assertEquals(2.34, t3.getScaledAttr());
         assertEquals("Hello there", t3.getStringAttr());
         assertEquals("+36-1-223-123", t3.getRegexAttr());
@@ -1337,7 +1337,7 @@ public class TestDefaultAndRequiredFieldsOnMappedTO {
         TransferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsWithDefault t4 = transferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsWithDefaultDao.create(TransferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsWithDefaultForCreate.builder().build());
 
         assertEquals(1, transferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsWithDefaultDao.countAll());
-        assertEquals(2, t4.getIntegerAttr());
+        assertEquals(2, t4.getIntAttr());
         assertEquals(3.34, t4.getScaledAttr());
         assertEquals("Lorem Ipsum", t4.getStringAttr());
         assertEquals("+36 30 123 5678", t4.getRegexAttr());
