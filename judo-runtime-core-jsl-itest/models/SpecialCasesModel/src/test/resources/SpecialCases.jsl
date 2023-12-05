@@ -37,10 +37,40 @@ entity C {
 
 entity D {
     field E[] compE;
+    field String stringD;
 }
 
 entity E {
+    field String stringE;
+}
 
+entity EntityF {
+    field required String stringF;
+    field D[] multipleDonF;
+}
+
+entity EntityG {
+    field String stringG;
+    field required E singleRequiredEonG;
+}
+
+transfer TransferD(D d) {
+    relation TransferE[] compE <= d.compE eager:true;
+    field String stringD <= d.stringD input:true;
+}
+
+transfer TransferE(E e) {
+    field String stringE <= e.stringE input:true;
+}
+
+transfer TransferF(EntityF entityf) {
+    field required String stringF <= entityf.stringF input:true;
+    relation TransferD[] multipleDonF <= entityf.multipleDonF eager:true;
+}
+
+transfer TransferG(EntityG entityG) {
+    field String stringG <= entityG.stringG input:true;
+    relation required TransferE singleRequiredEonG <= entityG.singleRequiredEonG eager:true;
 }
 
 // Test UUID methods work well
