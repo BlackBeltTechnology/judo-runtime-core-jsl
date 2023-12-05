@@ -75,6 +75,7 @@ import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
@@ -262,6 +263,85 @@ public class CompositionRelationshipsTest {
         assertNotEquals(singleRequiredConA.identifier(), maskedA.getSingleRequiredConA().identifier());
         assertEquals(null, requiredC.getStringB());
         assertEquals(Optional.of("TEST-C"), requiredC.getStringC());
+    }
+
+    @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-007",
+            "REQ-ENT-012"
+    })
+    void testMaskedByName() {
+        Optional<EntityA> maskedA = entityADao.query()
+                .maskedBy(EntityAMask
+                        .entityAMask()
+                        .addByName("stringA")
+                )
+                .selectOne();
+
+        assertTrue(maskedA.isPresent());
+        assertEquals("TEST-A", maskedA.get().getStringA().get());
+        assertNull(maskedA.get().getSingleConA());
+        assertNull(maskedA.get().getCollectionConA());
+        assertNull(maskedA.get().getSingleRequiredConA());
+
+        maskedA = entityADao.query()
+                .maskedBy(EntityAMask
+                        .entityAMask()
+                        .addByName("stringA")
+                        .addByName("singleRequiredConA", EntityCMask.entityCMask().addByName("stringC"))
+                )
+                .selectOne();
+
+        assertTrue(maskedA.isPresent());
+        assertEquals("TEST-A", maskedA.get().getStringA().get());
+        assertEquals("TEST-C", maskedA.get().getSingleRequiredConA().getStringC().get());
+        assertNull(maskedA.get().getSingleRequiredConA().getMultipleDonB());
+        assertNull(maskedA.get().getSingleRequiredConA().getStringB());
+        assertNull(maskedA.get().getSingleConA());
+        assertNull(maskedA.get().getCollectionConA());
+
+        // check a not existed attribute
+        RuntimeException thrown = assertThrows(
+                RuntimeException.class,
+                () -> entityADao.query()
+                        .maskedBy(EntityAMask
+                                .entityAMask()
+                                .addByName("stringANotExisted")
+                        )
+                        .selectOne()
+        );
+        assertTrue(thrown.getMessage().contains("No enum constant for"));
+        assertTrue(thrown.getMessage().contains("EntityAAttribute#stringANotExisted"));
+
+        // check a not existed reference
+        thrown = assertThrows(
+                RuntimeException.class,
+                () -> entityADao.query()
+                        .maskedBy(EntityAMask
+                                .entityAMask()
+                                .addByName("singleRequiredConANotExisted", EntityCMask.entityCMask().addByName("stringC"))
+                        )
+                        .selectOne()
+        );
+        assertTrue(thrown.getMessage().contains("No enum constant for"));
+        assertTrue(thrown.getMessage().contains("EntityAReference#singleRequiredConANotExisted"));
+
+        // check a not existed nested attribute
+        thrown = assertThrows(
+                RuntimeException.class,
+                () -> entityADao.query()
+                        .maskedBy(EntityAMask
+                                .entityAMask()
+                                .addByName("singleRequiredConANotExisted", EntityCMask.entityCMask().addByName("stringCNotExisted"))
+                        )
+                        .selectOne()
+        );
+        assertTrue(thrown.getMessage().contains("No enum constant for"));
+        assertTrue(thrown.getMessage().contains("EntityCAttribute#stringCNotExisted"));
     }
 
     @Test

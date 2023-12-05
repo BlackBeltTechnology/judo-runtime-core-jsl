@@ -62,6 +62,7 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -184,6 +185,17 @@ public class FiltersTest {
         assertEquals(1, multiFilter.size());
 
         assertEquals(entity1.identifier(), multiFilter.get(0).identifier());
+
+        multiFilter = myEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("integerAttr", NumberFilter.equalTo(INTEGER_1))
+                .filterByName("scaledAttr", NumberFilter.lessThan(INTEGER_2))
+                .filterByName("stringAttr", StringFilter.equalTo(STRING_1))
+                .selectList();
+
+        assertEquals(1, multiFilter.size());
+
+        assertEquals(entity1.identifier(), multiFilter.get(0).identifier());
     }
 
     @Test
@@ -206,108 +218,22 @@ public class FiltersTest {
 
         assertEquals(3, list.size());
 
-        MyEntityWithOptionalFields filteredByString = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.integerAttr >= 1 and this.integerAttr < 2")
-                .selectOne()
-                .get();
+        assertEntityMatchesFilter(entity1, "this.integerAttr >= 1 and this.integerAttr < 2");
+        assertEntityMatchesFilter(entity1, "this.integerAttr == 1");
+        assertEntityMatchesFilter(entity2, "this.integerAttr != 1");
+        assertFilterMatchesNumberOfResults(2, "this.integerAttr >= 1");
+        assertEntityMatchesFilter(entity2, "this.integerAttr > 1");
+        assertFilterMatchesNumberOfResults(2, "this.integerAttr <= 2");
+        assertEntityMatchesFilter(entity1, "this.integerAttr < 2");
 
-        assertEquals(entity1.identifier(), filteredByString.identifier());
-
-        MyEntityWithOptionalFields equalsByStringFilter = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.integerAttr == 1")
-                .selectOne()
-                .get();
-
-        assertEquals(entity1.identifier(), equalsByStringFilter.identifier());
-
-        MyEntityWithOptionalFields notEqualsByStringFilter = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.integerAttr != 1")
-                .selectOne()
-                .get();
-
-        assertEquals(entity2.identifier(), notEqualsByStringFilter.identifier());
-
-        List<MyEntityWithOptionalFields> greaterOrEqualsByStringFilter = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.integerAttr >= 1")
-                .selectList();
-
-        assertEquals(2, greaterOrEqualsByStringFilter.size());
-
-        MyEntityWithOptionalFields greaterByStringFilter = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.integerAttr > 1")
-                .selectOne()
-                .get();
-
-        assertEquals(entity2.identifier(), greaterByStringFilter.identifier());
-
-        List<MyEntityWithOptionalFields> lessOrEqualByStringFilter = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.integerAttr <= 2")
-                .selectList();
-
-        assertEquals(2, lessOrEqualByStringFilter.size());
-
-        MyEntityWithOptionalFields lessByStringFilter = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.integerAttr < 2")
-                .selectOne()
-                .get();
-
-        assertEquals(entity1.identifier(), lessByStringFilter.identifier());
-
-        MyEntityWithOptionalFields equals = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByIntegerAttr(NumberFilter.equalTo(INTEGER_1))
-                .selectOne()
-                .get();
-
-        assertEquals(entity1.identifier(), equals.identifier());
-
-        MyEntityWithOptionalFields notEquals = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByIntegerAttr(NumberFilter.notEqualTo(INTEGER_1))
-                .selectOne()
-                .get();
-
-        assertEquals(entity2.identifier(), notEquals.identifier());
-
-        List<MyEntityWithOptionalFields> greaterOrEquals = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByIntegerAttr(NumberFilter.greaterOrEqualThan(INTEGER_1))
-                .selectList();
-
-        assertEquals(2, greaterOrEquals.size());
-
-        MyEntityWithOptionalFields greater = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByIntegerAttr(NumberFilter.greaterThan(INTEGER_1))
-                .selectOne()
-                .get();
-
-        assertEquals(entity2.identifier(), greater.identifier());
-
-        List<MyEntityWithOptionalFields> lessOrEqual = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByIntegerAttr(NumberFilter.lessOrEqualThan(INTEGER_2))
-                .selectList();
-
-        assertEquals(2, lessOrEqual.size());
-
-        MyEntityWithOptionalFields less = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByIntegerAttr(NumberFilter.lessThan(INTEGER_2))
-                .selectOne()
-                .get();
-
-        assertEquals(entity1.identifier(), less.identifier());
+        assertEntityMatchesFilter(entity1, NumberFilter.equalTo(INTEGER_1));
+        assertEntityMatchesFilter(entity2, NumberFilter.notEqualTo(INTEGER_1));
+        assertFilterMatchesNumberOfResults(2, NumberFilter.greaterOrEqualThan(INTEGER_1));
+        assertEntityMatchesFilter(entity2, NumberFilter.greaterThan(INTEGER_1));
+        assertFilterMatchesNumberOfResults(2, NumberFilter.lessOrEqualThan(INTEGER_2));
+        assertEntityMatchesFilter(entity1, NumberFilter.lessThan(INTEGER_2));
 
         // Zero element
-
         List<MyEntityWithOptionalFields> zeroResult = myEntityWithOptionalFieldsDao
                 .query()
                 .filterByIntegerAttr(NumberFilter.lessThan(INTEGER_1))
@@ -316,12 +242,26 @@ public class FiltersTest {
 
         assertTrue(zeroResult.isEmpty());
 
-        List<MyEntityWithOptionalFields> filteredByZeroResultString = myEntityWithOptionalFieldsDao
+        // filterByName
+
+        assertFilterByNameMatchesEntity(entity1, "integerAttr", NumberFilter.equalTo(INTEGER_1));
+        assertFilterByNameMatchesEntity(entity2, "integerAttr", NumberFilter.notEqualTo(INTEGER_1));
+        assertFilterByNameMatchesNumberOfResults(2, "integerAttr", NumberFilter.greaterOrEqualThan(INTEGER_1));
+        assertFilterByNameMatchesEntity(entity2, "integerAttr", NumberFilter.greaterThan(INTEGER_1));
+        assertFilterByNameMatchesNumberOfResults(2, "integerAttr", NumberFilter.lessOrEqualThan(INTEGER_2));
+        assertFilterByNameMatchesEntity(entity1, "integerAttr", NumberFilter.lessThan(INTEGER_2));
+
+        // Zero element
+
+        zeroResult = myEntityWithOptionalFieldsDao
                 .query()
-                .filterBy("this.integerAttr > 1 and this.integerAttr < 2")
+                .filterByName("integerAttr", NumberFilter.lessThan(INTEGER_1))
+                .filterByName("integerAttr", NumberFilter.lessThan(INTEGER_2))
                 .selectList();
 
-        assertTrue(filteredByZeroResultString.isEmpty());
+        assertTrue(zeroResult.isEmpty());
+
+        assertFilterMatchesNumberOfResults(0, "this.integerAttr > 1 and this.integerAttr < 2");
 
         // TODO JNG-3980
         // filter for undefined
@@ -337,113 +277,14 @@ public class FiltersTest {
 
         // Derived attributes
 
-        MyEntityWithOptionalFields filteredByStringDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.integerAttr >= 1 and this.integerAttr < 2")
-                .selectOne()
-                .get();
-
-        assertEquals(entity1.identifier(), filteredByStringDerived.identifier());
-
-        List<MyEntityWithOptionalFields> filteredByZeroResultStringDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.derivedIntegerAttr > 1 and this.derivedIntegerAttr < 2")
-                .selectList();
-
-        assertTrue(filteredByZeroResultStringDerived.isEmpty());
-
-        MyEntityWithOptionalFields equalsByStringFilterDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.derivedIntegerAttr == 1")
-                .selectOne()
-                .get();
-
-        assertEquals(entity1.identifier(), equalsByStringFilterDerived.identifier());
-
-        MyEntityWithOptionalFields notEqualsByStringFilterDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.derivedIntegerAttr != 1")
-                .selectOne()
-                .get();
-
-        assertEquals(entity2.identifier(), notEqualsByStringFilterDerived.identifier());
-
-        List<MyEntityWithOptionalFields> greaterOrEqualsByStringFilterDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.derivedIntegerAttr >= 1")
-                .selectList();
-
-        assertEquals(2, greaterOrEqualsByStringFilterDerived.size());
-
-        MyEntityWithOptionalFields greaterByStringFilterDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.derivedIntegerAttr > 1")
-                .selectOne()
-                .get();
-
-        assertEquals(entity2.identifier(), greaterByStringFilterDerived.identifier());
-
-        List<MyEntityWithOptionalFields> lessOrEqualByStringFilterDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.derivedIntegerAttr <= 2")
-                .selectList();
-
-        assertEquals(2, lessOrEqualByStringFilterDerived.size());
-
-        MyEntityWithOptionalFields lessByStringFilterDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.derivedIntegerAttr < 2")
-                .selectOne()
-                .get();
-
-        assertEquals(entity1.identifier(), lessByStringFilterDerived.identifier());
-
-        MyEntityWithOptionalFields equalsDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByDerivedIntegerAttr(NumberFilter.equalTo(INTEGER_1))
-                .selectOne()
-                .get();
-
-        assertEquals(entity1.identifier(), equalsDerived.identifier());
-
-        MyEntityWithOptionalFields notEqualsDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByDerivedIntegerAttr(NumberFilter.notEqualTo(INTEGER_1))
-                .selectOne()
-                .get();
-
-        assertEquals(entity2.identifier(), notEqualsDerived.identifier());
-
-        List<MyEntityWithOptionalFields> greaterOrEqualsDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByDerivedIntegerAttr(NumberFilter.greaterOrEqualThan(INTEGER_1))
-                .selectList();
-
-        assertEquals(2, greaterOrEqualsDerived.size());
-
-        MyEntityWithOptionalFields greaterDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByDerivedIntegerAttr(NumberFilter.greaterThan(INTEGER_1))
-                .selectOne()
-                .get();
-
-        assertEquals(entity2.identifier(), greaterDerived.identifier());
-
-        List<MyEntityWithOptionalFields> lessOrEqualDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByDerivedIntegerAttr(NumberFilter.lessOrEqualThan(INTEGER_2))
-                .selectList();
-
-        assertEquals(2, lessOrEqualDerived.size());
-
-
-        MyEntityWithOptionalFields lessDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByDerivedIntegerAttr(NumberFilter.lessThan(INTEGER_2))
-                .selectOne()
-                .get();
-
-        assertEquals(entity1.identifier(), lessDerived.identifier());
+        assertEntityMatchesFilter(entity1, "this.integerAttr >= 1 and this.integerAttr < 2");
+        assertFilterMatchesNumberOfResults(0, "this.derivedIntegerAttr > 1 and this.derivedIntegerAttr < 2");
+        assertEntityMatchesFilter(entity1, "this.derivedIntegerAttr == 1");
+        assertEntityMatchesFilter(entity2, "this.derivedIntegerAttr != 1");
+        assertFilterMatchesNumberOfResults(2, "this.derivedIntegerAttr >= 1");
+        assertEntityMatchesFilter(entity2, "this.derivedIntegerAttr > 1");
+        assertFilterMatchesNumberOfResults(2, "this.derivedIntegerAttr <= 2");
+        assertEntityMatchesFilter(entity1, "this.derivedIntegerAttr < 2");
 
         List<MyEntityWithOptionalFields> zeroResultDerived = myEntityWithOptionalFieldsDao
                 .query()
@@ -453,6 +294,56 @@ public class FiltersTest {
 
         assertTrue(zeroResultDerived.isEmpty());
 
+        // filterByName
+
+        assertFilterByNameMatchesEntity(entity1, "derivedIntegerAttr", NumberFilter.equalTo(INTEGER_1));
+        assertFilterByNameMatchesEntity(entity2, "derivedIntegerAttr", NumberFilter.notEqualTo(INTEGER_1));
+        assertFilterByNameMatchesNumberOfResults(2, "derivedIntegerAttr", NumberFilter.greaterOrEqualThan(INTEGER_1));
+        assertFilterByNameMatchesEntity(entity2, "derivedIntegerAttr", NumberFilter.greaterThan(INTEGER_1));
+        assertFilterByNameMatchesNumberOfResults(2, "derivedIntegerAttr", NumberFilter.lessOrEqualThan(INTEGER_2));
+        assertFilterByNameMatchesEntity(entity1, "derivedIntegerAttr", NumberFilter.lessThan(INTEGER_2));
+
+        zeroResultDerived = myEntityWithOptionalFieldsDao
+                .query()
+                .filterByName("derivedIntegerAttr", NumberFilter.lessThan(INTEGER_1))
+                .filterByName("derivedIntegerAttr", NumberFilter.lessThan(INTEGER_2))
+                .selectList();
+
+        assertTrue(zeroResultDerived.isEmpty());
+    }
+
+    private void assertFilterMatchesNumberOfResults(int expected, NumberFilter filter) {
+        List<MyEntityWithOptionalFields> filtered = myEntityWithOptionalFieldsDao
+                .query()
+                .filterByIntegerAttr(filter)
+                .selectList();
+
+        assertEquals(expected, filtered.size());
+
+        List<MyEntityWithOptionalFields> filteredDerived = myEntityWithOptionalFieldsDao
+                .query()
+                .filterByDerivedIntegerAttr(filter)
+                .selectList();
+
+        assertEquals(expected, filtered.size());
+    }
+
+    private void assertEntityMatchesFilter(MyEntityWithOptionalFields entity, NumberFilter filter) {
+        MyEntityWithOptionalFields filtered = myEntityWithOptionalFieldsDao
+                .query()
+                .filterByIntegerAttr(filter)
+                .selectOne()
+                .get();
+
+        assertEquals(entity.identifier(), filtered.identifier());
+
+        MyEntityWithOptionalFields filteredDerived = myEntityWithOptionalFieldsDao
+                .query()
+                .filterByDerivedIntegerAttr(filter)
+                .selectOne()
+                .get();
+
+        assertEquals(entity.identifier(), filteredDerived.identifier());
     }
 
     @Test
@@ -474,223 +365,85 @@ public class FiltersTest {
         List<MyEntityWithOptionalFields> list = myEntityWithOptionalFieldsDao.query().selectList();
         assertEquals(3, list.size());
 
-        MyEntityWithOptionalFields filteredByString = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.scaledAttr >= 1 and this.scaledAttr <= 2")
-                .selectOne()
-                .get();
+        assertEntityMatchesFilter(entity1, "this.scaledAttr >= 1 and this.scaledAttr <= 2");
+        assertEntityMatchesFilter(entity1, "this.scaledAttr == 1.23");
+        assertEntityMatchesFilter(entity2, "this.scaledAttr != 1.23");
+        assertFilterMatchesNumberOfResults(2, "this.scaledAttr >= 1.23");
+        assertEntityMatchesFilter(entity2, "this.scaledAttr > 1.23");
+        assertFilterMatchesNumberOfResults(2, "this.scaledAttr <= 2.34");
+        assertEntityMatchesFilter(entity1, "this.scaledAttr < 2.34");
+        assertFilterMatchesNumberOfResults(0, "this.scaledAttr > 0 and this.scaledAttr < 1");
 
-        assertEquals(entity1.identifier(), filteredByString.identifier());
+        assertEntityMatchesFilterForScaledAttr(entity1, NumberFilter.equalTo(SCALED_1));
+        assertEntityMatchesFilterForScaledAttr(entity2, NumberFilter.notEqualTo(SCALED_1));
+        assertFilterMatchesNumberOfResultsForScaledAttr(2, NumberFilter.greaterOrEqualThan(SCALED_1));
+        assertEntityMatchesFilterForScaledAttr(entity2, NumberFilter.greaterThan(SCALED_1));
+        assertFilterMatchesNumberOfResultsForScaledAttr(2, NumberFilter.lessOrEqualThan(SCALED_2));
+        assertEntityMatchesFilterForScaledAttr(entity1, NumberFilter.lessThan(SCALED_2));
 
-        MyEntityWithOptionalFields equalsByStringFilter = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.scaledAttr == 1.23")
-                .selectOne()
-                .get();
+        // FilterByName
 
-        assertEquals(entity1.identifier(), equalsByStringFilter.identifier());
-
-        MyEntityWithOptionalFields notEqualsByStringFilter = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.scaledAttr != 1.23")
-                .selectOne()
-                .get();
-
-        assertEquals(entity2.identifier(), notEqualsByStringFilter.identifier());
-
-        List<MyEntityWithOptionalFields> greaterOrEqualsByStringFilter = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.scaledAttr >= 1.23")
-                .selectList();
-
-        assertEquals(2, greaterOrEqualsByStringFilter.size());
-
-        MyEntityWithOptionalFields greaterByStringFilter = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.scaledAttr > 1.23")
-                .selectOne()
-                .get();
-
-        assertEquals(entity2.identifier(), greaterByStringFilter.identifier());
-
-        List<MyEntityWithOptionalFields> lessOrEqualByStringFilter = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.scaledAttr <= 2.34")
-                .selectList();
-
-        assertEquals(2, lessOrEqualByStringFilter.size());
-
-        MyEntityWithOptionalFields lessByStringFilter = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.scaledAttr < 2.34")
-                .selectOne()
-                .get();
-
-        assertEquals(entity1.identifier(), lessByStringFilter.identifier());
-
-        List<MyEntityWithOptionalFields> filteredByZeroResultString = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.scaledAttr > 0 and this.scaledAttr < 1")
-                .selectList();
-
-        assertTrue(filteredByZeroResultString.isEmpty());
-
-        MyEntityWithOptionalFields equals = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByScaledAttr(NumberFilter.equalTo(SCALED_1))
-                .selectOne()
-                .get();
-
-        assertEquals(entity1.identifier(), equals.identifier());
-
-        MyEntityWithOptionalFields notEquals = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByScaledAttr(NumberFilter.notEqualTo(SCALED_1))
-                .selectOne()
-                .get();
-
-        assertEquals(entity2.identifier(), notEquals.identifier());
-
-        List<MyEntityWithOptionalFields> greaterOrEquals = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByScaledAttr(NumberFilter.greaterOrEqualThan(SCALED_1))
-                .selectList();
-
-        assertEquals(2, greaterOrEquals.size());
-
-        MyEntityWithOptionalFields greater = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByScaledAttr(NumberFilter.greaterThan(SCALED_1))
-                .selectOne()
-                .get();
-
-        assertEquals(entity2.identifier(), greater.identifier());
-
-        List<MyEntityWithOptionalFields> lessOrEqual = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByScaledAttr(NumberFilter.lessOrEqualThan(SCALED_2))
-                .selectList();
-
-        assertEquals(2, lessOrEqual.size());
-
-        MyEntityWithOptionalFields less = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByScaledAttr(NumberFilter.lessThan(SCALED_2))
-                .selectOne()
-                .get();
-
-        assertEquals(entity1.identifier(), less.identifier());
+        assertFilterByNameMatchesEntity(entity1, "scaledAttr", NumberFilter.equalTo(SCALED_1));
+        assertFilterByNameMatchesEntity(entity2, "scaledAttr", NumberFilter.notEqualTo(SCALED_1));
+        assertFilterByNameMatchesNumberOfResults(2, "scaledAttr", NumberFilter.greaterOrEqualThan(SCALED_1));
+        assertFilterByNameMatchesEntity(entity2, "scaledAttr", NumberFilter.greaterThan(SCALED_1));
+        assertFilterByNameMatchesNumberOfResults(2, "scaledAttr", NumberFilter.lessOrEqualThan(SCALED_2));
+        assertFilterByNameMatchesEntity(entity1, "scaledAttr", NumberFilter.lessThan(SCALED_2));
 
         // Derived
 
-        MyEntityWithOptionalFields filteredByStringDerived = myEntityWithOptionalFieldsDao
+        assertEntityMatchesFilter(entity1, "this.derivedScaledAttr >= 1 and this.derivedScaledAttr <= 2");
+        assertFilterMatchesNumberOfResults(0, "this.derivedScaledAttr > 0 and this.derivedScaledAttr < 1");
+        assertEntityMatchesFilter(entity1, "this.derivedScaledAttr == 1.23");
+        assertEntityMatchesFilter(entity2, "this.derivedScaledAttr != 1.23");
+        assertFilterMatchesNumberOfResults(2, "this.derivedScaledAttr >= 1.23");
+        assertEntityMatchesFilter(entity2, "this.derivedScaledAttr > 1.23");
+        assertFilterMatchesNumberOfResults(2, "this.derivedScaledAttr <= 2.34");
+        assertEntityMatchesFilter(entity1, "this.derivedScaledAttr < 2.34");
+
+        // FilterByName
+
+        assertFilterByNameMatchesEntity(entity1, "derivedScaledAttr", NumberFilter.equalTo(SCALED_1));
+        assertFilterByNameMatchesEntity(entity2, "derivedScaledAttr", NumberFilter.notEqualTo(SCALED_1));
+        assertFilterByNameMatchesNumberOfResults(2, "derivedScaledAttr", NumberFilter.greaterOrEqualThan(SCALED_1));
+        assertFilterByNameMatchesEntity(entity2, "derivedScaledAttr", NumberFilter.greaterThan(SCALED_1));
+        assertFilterByNameMatchesNumberOfResults(2, "derivedScaledAttr", NumberFilter.lessOrEqualThan(SCALED_2));
+        assertFilterByNameMatchesEntity(entity1, "derivedScaledAttr", NumberFilter.lessThan(SCALED_2));
+
+    }
+
+    private void assertEntityMatchesFilterForScaledAttr(MyEntityWithOptionalFields entity, NumberFilter filter) {
+        MyEntityWithOptionalFields filtered = myEntityWithOptionalFieldsDao
                 .query()
-                .filterBy("this.derivedScaledAttr >= 1 and this.derivedScaledAttr <= 2")
+                .filterByScaledAttr(filter)
                 .selectOne()
                 .get();
 
-        assertEquals(entity1.identifier(), filteredByStringDerived.identifier());
+        assertEquals(entity.identifier(), filtered.identifier());
 
-        List<MyEntityWithOptionalFields> filteredByZeroResultStringDerived = myEntityWithOptionalFieldsDao
+        MyEntityWithOptionalFields filteredDerived = myEntityWithOptionalFieldsDao
                 .query()
-                .filterBy("this.derivedScaledAttr > 0 and this.derivedScaledAttr < 1")
+                .filterByScaledAttr(filter)
+                .selectOne()
+                .get();
+
+        assertEquals(entity.identifier(), filteredDerived.identifier());
+    }
+
+    private void assertFilterMatchesNumberOfResultsForScaledAttr(int expected, NumberFilter filter) {
+        List<MyEntityWithOptionalFields> filtered = myEntityWithOptionalFieldsDao
+                .query()
+                .filterByScaledAttr(filter)
                 .selectList();
 
-        assertTrue(filteredByZeroResultStringDerived.isEmpty());
+        assertEquals(expected, filtered.size());
 
-        MyEntityWithOptionalFields equalsByStringFilterDerived = myEntityWithOptionalFieldsDao
+        List<MyEntityWithOptionalFields> filteredDerived = myEntityWithOptionalFieldsDao
                 .query()
-                .filterBy("this.derivedScaledAttr == 1.23")
-                .selectOne()
-                .get();
-
-        assertEquals(entity1.identifier(), equalsByStringFilterDerived.identifier());
-
-        MyEntityWithOptionalFields notEqualsByStringFilterDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.derivedScaledAttr != 1.23")
-                .selectOne()
-                .get();
-
-        assertEquals(entity2.identifier(), notEqualsByStringFilterDerived.identifier());
-
-        List<MyEntityWithOptionalFields> greaterOrEqualsByStringFilterDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.derivedScaledAttr >= 1.23")
+                .filterByScaledAttr(filter)
                 .selectList();
 
-        assertEquals(2, greaterOrEqualsByStringFilterDerived.size());
-
-        MyEntityWithOptionalFields greaterByStringFilterDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.derivedScaledAttr > 1.23")
-                .selectOne()
-                .get();
-
-        assertEquals(entity2.identifier(), greaterByStringFilterDerived.identifier());
-
-        List<MyEntityWithOptionalFields> lessOrEqualByStringFilterDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.derivedScaledAttr <= 2.34")
-                .selectList();
-
-        assertEquals(2, lessOrEqualByStringFilterDerived.size());
-
-        MyEntityWithOptionalFields lessByStringFilterDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.derivedScaledAttr < 2.34")
-                .selectOne()
-                .get();
-
-        assertEquals(entity1.identifier(), lessByStringFilterDerived.identifier());
-
-        MyEntityWithOptionalFields equalsDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByDerivedScaledAttr(NumberFilter.equalTo(SCALED_1))
-                .selectOne()
-                .get();
-
-        assertEquals(entity1.identifier(), equalsDerived.identifier());
-
-        MyEntityWithOptionalFields notEqualsDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByDerivedScaledAttr(NumberFilter.notEqualTo(SCALED_1))
-                .selectOne()
-                .get();
-
-        assertEquals(entity2.identifier(), notEqualsDerived.identifier());
-
-        List<MyEntityWithOptionalFields> greaterOrEqualsDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByDerivedScaledAttr(NumberFilter.greaterOrEqualThan(SCALED_1))
-                .selectList();
-
-        assertEquals(2, greaterOrEqualsDerived.size());
-
-        MyEntityWithOptionalFields greaterDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByDerivedScaledAttr(NumberFilter.greaterThan(SCALED_1))
-                .selectOne()
-                .get();
-
-        assertEquals(entity2.identifier(), greaterDerived.identifier());
-
-        List<MyEntityWithOptionalFields> lessOrEqualDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByDerivedScaledAttr(NumberFilter.lessOrEqualThan(SCALED_2))
-                .selectList();
-
-        assertEquals(2, lessOrEqualDerived.size());
-
-        MyEntityWithOptionalFields lessDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByDerivedScaledAttr(NumberFilter.lessThan(SCALED_2))
-                .selectOne()
-                .get();
-
-        assertEquals(entity1.identifier(), lessDerived.identifier());
-
-
+        assertEquals(expected, filteredDerived.size());
     }
 
     @Test
@@ -715,189 +468,45 @@ public class FiltersTest {
 
         // custom filter
 
-        MyEntityWithOptionalFields filteredByString = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.stringAttr!matches('te.*')")
-                .selectOne()
-                .get();
+        assertEntityMatchesFilter(entity1, "this.stringAttr!matches('te.*')");
+        assertEntityMatchesFilter(entity1, "this.stringAttr == 'test'");
+        assertEntityMatchesFilter(entity2, "this.stringAttr != 'test'");
+        assertEntityMatchesFilter(entity1, "this.stringAttr!ilike('TEST')");
+        assertEntityMatchesFilter(entity1, "this.stringAttr!ilike('test')");
+        assertEntityMatchesFilter(entity2, "this.stringAttr < 'test'");
+        assertEntityMatchesFilter(entity1, "this.stringAttr > 'Another'");
+        assertFilterMatchesNumberOfResults(2, "this.stringAttr >= 'Another'");
+        assertFilterMatchesNumberOfResults(2, "this.stringAttr <= 'test'");
 
-        assertEquals(entity1.identifier(), filteredByString.identifier());
+        assertEntityMatchesFilter(entity1, StringFilter.equalTo(STRING_1));
+        assertEntityMatchesFilter(entity2, StringFilter.notEqualTo(STRING_1));
+        assertEntityMatchesFilter(entity1, StringFilter.ilike(STRING_1.toUpperCase()));
+        assertEntityMatchesFilter(entity1, StringFilter.like(STRING_1));
+        assertEntityMatchesFilter(entity2, StringFilter.lessThan(STRING_1));
+        assertEntityMatchesFilter(entity1, StringFilter.greaterThan(STRING_2));
+        assertFilterMatchesNumberOfResults(2, StringFilter.greaterOrEqualThan(STRING_2));
+        assertFilterMatchesNumberOfResults(2, StringFilter.lessOrEqualThan(STRING_1));
 
-        MyEntityWithOptionalFields equalsByStringFilter = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.stringAttr == 'test'")
-                .selectOne()
-                .get();
+        // FilterByName
 
-        assertEquals(entity1.identifier(), equalsByStringFilter.identifier());
-
-        MyEntityWithOptionalFields notEqualsByStringFilter = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.stringAttr != 'test'")
-                .selectOne()
-                .get();
-
-        assertEquals(entity2.identifier(), notEqualsByStringFilter.identifier());
-
-        List<MyEntityWithOptionalFields> iLikeByStringFilter = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.stringAttr!ilike('TEST')")
-                .selectList();
-
-        assertEquals(1, iLikeByStringFilter.size());
-        assertEquals(entity1.identifier(), iLikeByStringFilter.get(0).identifier());
-
-        List<MyEntityWithOptionalFields> likeByStringFilter = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.stringAttr!ilike('test')")
-                .selectList();
-
-        assertEquals(1, likeByStringFilter.size());
-        assertEquals(entity1.identifier(), likeByStringFilter.get(0).identifier());
-
-        List<MyEntityWithOptionalFields> lessThanByStringFilter = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.stringAttr < 'test'")
-                .selectList();
-
-        assertEquals(entity2.identifier(), lessThanByStringFilter.get(0).identifier());
-
-        List<MyEntityWithOptionalFields> greaterThanByStringFilter = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.stringAttr > 'Another'")
-                .selectList();
-
-        assertEquals(entity1.identifier(), greaterThanByStringFilter.get(0).identifier());
-
-        Long greaterOrEqualThanByStringFilter = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.stringAttr >= 'Another'")
-                .count();
-
-        assertEquals(2, greaterOrEqualThanByStringFilter);
-
-        List<MyEntityWithOptionalFields> lessOrEqualThanByStringFilter = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.stringAttr <= 'test'")
-                .selectList();
-
-        assertEquals(2, lessOrEqualThanByStringFilter.size());
-
-        MyEntityWithOptionalFields equals = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByStringAttr(StringFilter.equalTo(STRING_1))
-                .selectOne()
-                .get();
-
-        assertEquals(entity1.identifier(), equals.identifier());
-
-        MyEntityWithOptionalFields notEquals = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByStringAttr(StringFilter.notEqualTo(STRING_1))
-                .selectOne()
-                .get();
-
-        assertEquals(entity2.identifier(), notEquals.identifier());
-
-        List<MyEntityWithOptionalFields> iLike = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByStringAttr(StringFilter.ilike(STRING_1.toUpperCase()))
-                .selectList();
-
-        assertEquals(1, iLike.size());
-        assertEquals(entity1.identifier(), iLike.get(0).identifier());
-
-        List<MyEntityWithOptionalFields> like = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByStringAttr(StringFilter.like(STRING_1))
-                .selectList();
-
-        assertEquals(1, like.size());
-        assertEquals(entity1.identifier(), like.get(0).identifier());
-
-        List<MyEntityWithOptionalFields> lessThan = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByStringAttr(StringFilter.lessThan(STRING_1))
-                .selectList();
-
-        assertEquals(entity2.identifier(), lessThan.get(0).identifier());
-
-        List<MyEntityWithOptionalFields> greaterThan = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByStringAttr(StringFilter.greaterThan(STRING_2))
-                .selectList();
-
-        assertEquals(entity1.identifier(), greaterThan.get(0).identifier());
-
-        Long greaterOrEqualThan = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByStringAttr(StringFilter.greaterOrEqualThan(STRING_2))
-                .count();
-
-        assertEquals(2, greaterOrEqualThan);
-
-        List<MyEntityWithOptionalFields> lessOrEqualThan = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByStringAttr(StringFilter.lessOrEqualThan(STRING_1))
-                .selectList();
-
-        assertEquals(2, lessOrEqualThan.size());
+        assertFilterByNameMatchesEntity(entity1, "stringAttr", StringFilter.equalTo(STRING_1));
+        assertFilterByNameMatchesEntity(entity2, "stringAttr", StringFilter.notEqualTo(STRING_1));
+        assertFilterByNameMatchesEntity(entity1, "stringAttr", StringFilter.ilike(STRING_1.toUpperCase()));
+        assertFilterByNameMatchesEntity(entity1, "stringAttr", StringFilter.like(STRING_1));
+        assertFilterByNameMatchesEntity(entity2, "stringAttr", StringFilter.lessThan(STRING_1));
+        assertFilterByNameMatchesEntity(entity1, "stringAttr", StringFilter.greaterThan(STRING_2));
+        assertFilterByNameMatchesNumberOfResults(2, "stringAttr", StringFilter.greaterOrEqualThan(STRING_2));
+        assertFilterByNameMatchesNumberOfResults(2, "stringAttr", StringFilter.lessOrEqualThan(STRING_1));
 
         // Derived
 
-        MyEntityWithOptionalFields filteredByStringDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.derivedStringAttr!matches('te.*')")
-                .selectOne()
-                .get();
-
-        assertEquals(entity1.identifier(), filteredByStringDerived.identifier());
-
-        MyEntityWithOptionalFields equalsByStringFilterDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.derivedStringAttr == 'test'")
-                .selectOne()
-                .get();
-
-        assertEquals(entity1.identifier(), equalsByStringFilterDerived.identifier());
-
-        MyEntityWithOptionalFields notEqualsByStringFilterDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.derivedStringAttr != 'test'")
-                .selectOne()
-                .get();
-
-        assertEquals(entity2.identifier(), notEqualsByStringFilterDerived.identifier());
-
-        List<MyEntityWithOptionalFields> iLikeByStringFilterDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.derivedStringAttr!ilike('TEST')")
-                .selectList();
-
-        assertEquals(1, iLikeByStringFilterDerived.size());
-        assertEquals(entity1.identifier(), iLikeByStringFilterDerived.get(0).identifier());
-
-        List<MyEntityWithOptionalFields> likeByStringFilterDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.derivedStringAttr!ilike('test')")
-                .selectList();
-
-        assertEquals(1, likeByStringFilterDerived.size());
-        assertEquals(entity1.identifier(), likeByStringFilterDerived.get(0).identifier());
-
-        List<MyEntityWithOptionalFields> lessThanByStringFilterDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.derivedStringAttr < 'test'")
-                .selectList();
-
-        assertEquals(entity2.identifier(), lessThanByStringFilterDerived.get(0).identifier());
-
-        List<MyEntityWithOptionalFields> greaterThanByStringFilterDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.derivedStringAttr > 'Another'")
-                .selectList();
-
-        assertEquals(entity1.identifier(), greaterThanByStringFilterDerived.get(0).identifier());
+        assertEntityMatchesFilter(entity1, "this.derivedStringAttr!matches('te.*')");
+        assertEntityMatchesFilter(entity1, "this.derivedStringAttr == 'test'");
+        assertEntityMatchesFilter(entity2, "this.derivedStringAttr != 'test'");
+        assertEntityMatchesFilter(entity1, "this.derivedStringAttr!ilike('TEST')");
+        assertEntityMatchesFilter(entity1, "this.derivedStringAttr!ilike('test')");
+        assertEntityMatchesFilter(entity2, "this.derivedStringAttr < 'test'");
+        assertEntityMatchesFilter(entity1, "this.derivedStringAttr > 'Another'");
 
         Long greaterOrEqualThanByStringFilterDerived = myEntityWithOptionalFieldsDao
                 .query()
@@ -906,73 +515,53 @@ public class FiltersTest {
 
         assertEquals(2, greaterOrEqualThanByStringFilterDerived);
 
-        List<MyEntityWithOptionalFields> lessOrEqualThanByStringFilterDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.derivedStringAttr <= 'test'")
-                .selectList();
+        assertFilterMatchesNumberOfResults(2, "this.derivedStringAttr <= 'test'");
 
-        assertEquals(2, lessOrEqualThanByStringFilterDerived.size());
+        // FilterByName
 
-        MyEntityWithOptionalFields equalsDerived = myEntityWithOptionalFieldsDao
+        assertFilterByNameMatchesEntity(entity1, "derivedStringAttr", StringFilter.equalTo(STRING_1));
+        assertFilterByNameMatchesEntity(entity2, "derivedStringAttr", StringFilter.notEqualTo(STRING_1));
+        assertFilterByNameMatchesEntity(entity1, "derivedStringAttr", StringFilter.ilike(STRING_1.toUpperCase()));
+        assertFilterByNameMatchesEntity(entity1, "derivedStringAttr", StringFilter.like(STRING_1));
+        assertFilterByNameMatchesEntity(entity2, "derivedStringAttr", StringFilter.lessThan(STRING_1));
+        assertFilterByNameMatchesEntity(entity1, "derivedStringAttr", StringFilter.greaterThan(STRING_2));
+        assertFilterByNameMatchesNumberOfResults(2, "derivedStringAttr", StringFilter.greaterOrEqualThan(STRING_2));
+        assertFilterByNameMatchesNumberOfResults(2, "derivedStringAttr", StringFilter.lessOrEqualThan(STRING_1));
+
+    }
+
+    private void assertEntityMatchesFilter(MyEntityWithOptionalFields entity, StringFilter filter) {
+        MyEntityWithOptionalFields filtered = myEntityWithOptionalFieldsDao
                 .query()
-                .filterByDerivedStringAttr(StringFilter.equalTo(STRING_1))
+                .filterByStringAttr(filter)
                 .selectOne()
                 .get();
 
-        assertEquals(entity1.identifier(), equalsDerived.identifier());
+        assertEquals(entity.identifier(), filtered.identifier());
 
-        MyEntityWithOptionalFields notEqualsDerived = myEntityWithOptionalFieldsDao
+        MyEntityWithOptionalFields filteredDerived = myEntityWithOptionalFieldsDao
                 .query()
-                .filterByDerivedStringAttr(StringFilter.notEqualTo(STRING_1))
+                .filterByDerivedStringAttr(filter)
                 .selectOne()
                 .get();
 
-        assertEquals(entity2.identifier(), notEqualsDerived.identifier());
+        assertEquals(entity.identifier(), filteredDerived.identifier());
+    }
 
-        List<MyEntityWithOptionalFields> iLikeDerived = myEntityWithOptionalFieldsDao
+    private void assertFilterMatchesNumberOfResults(int expected, StringFilter filter) {
+        List<MyEntityWithOptionalFields> filtered = myEntityWithOptionalFieldsDao
                 .query()
-                .filterByDerivedStringAttr(StringFilter.ilike(STRING_1.toUpperCase()))
+                .filterByStringAttr(filter)
                 .selectList();
 
-        assertEquals(1, iLikeDerived.size());
-        assertEquals(entity1.identifier(), iLikeDerived.get(0).identifier());
+        assertEquals(expected, filtered.size());
 
-        List<MyEntityWithOptionalFields> likeDerived = myEntityWithOptionalFieldsDao
+        List<MyEntityWithOptionalFields> filteredDerived = myEntityWithOptionalFieldsDao
                 .query()
-                .filterByDerivedStringAttr(StringFilter.like(STRING_1))
+                .filterByDerivedStringAttr(filter)
                 .selectList();
 
-        assertEquals(1, likeDerived.size());
-        assertEquals(entity1.identifier(), likeDerived.get(0).identifier());
-
-        List<MyEntityWithOptionalFields> lessThanDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByDerivedStringAttr(StringFilter.lessThan(STRING_1))
-                .selectList();
-
-        assertEquals(entity2.identifier(), lessThanDerived.get(0).identifier());
-
-        List<MyEntityWithOptionalFields> greaterThanDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByDerivedStringAttr(StringFilter.greaterThan(STRING_2))
-                .selectList();
-
-        assertEquals(entity1.identifier(), greaterThanDerived.get(0).identifier());
-
-        Long greaterOrEqualThanDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByDerivedStringAttr(StringFilter.greaterOrEqualThan(STRING_2))
-                .count();
-
-        assertEquals(2, greaterOrEqualThanDerived);
-
-        List<MyEntityWithOptionalFields> lessOrEqualThanDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByDerivedStringAttr(StringFilter.lessOrEqualThan(STRING_1))
-                .selectList();
-
-        assertEquals(2, lessOrEqualThanDerived.size());
-
+        assertEquals(expected, filteredDerived.size());
     }
 
     @Test
@@ -995,29 +584,9 @@ public class FiltersTest {
 
         assertEquals(3, list.size());
 
-        MyEntityWithOptionalFields filteredByString = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.boolAttr == true")
-                .selectOne()
-                .get();
-
-        assertEquals(entity1.identifier(), filteredByString.identifier());
-
-        MyEntityWithOptionalFields filteredByStringNotEquals = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.boolAttr != true")
-                .selectOne()
-                .get();
-
-        assertEquals(entity2.identifier(), filteredByStringNotEquals.identifier());
-
-        MyEntityWithOptionalFields filteredByStringOnlyAttr = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.boolAttr")
-                .selectOne()
-                .get();
-
-        assertEquals(entity1.identifier(), filteredByStringOnlyAttr.identifier());
+        assertEntityMatchesFilter(entity1, "this.boolAttr == true");
+        assertEntityMatchesFilter(entity2, "this.boolAttr != true");
+        assertEntityMatchesFilter(entity1, "this.boolAttr");
 
         MyEntityWithOptionalFields isTrue = myEntityWithOptionalFieldsDao
                 .query()
@@ -1035,47 +604,37 @@ public class FiltersTest {
 
         assertEquals(entity2.identifier(), isFalse.identifier());
 
+        // FilterByName
+
+        assertFilterByNameMatchesEntity(entity1, "boolAttr", BooleanFilter.isTrue());
+        assertFilterByNameMatchesEntity(entity2, "boolAttr", BooleanFilter.isFalse());
+
         // derived
 
-        MyEntityWithOptionalFields filteredByStringDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.derivedBoolAttr == true")
-                .selectOne()
-                .get();
-
-        assertEquals(entity1.identifier(), filteredByStringDerived.identifier());
-
-        MyEntityWithOptionalFields filteredByStringNotEqualsDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.derivedBoolAttr != true")
-                .selectOne()
-                .get();
-
-        assertEquals(entity2.identifier(), filteredByStringNotEqualsDerived.identifier());
-
-        MyEntityWithOptionalFields filteredByStringOnlyAttrDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.derivedBoolAttr")
-                .selectOne()
-                .get();
-
-        assertEquals(entity1.identifier(), filteredByStringOnlyAttrDerived.identifier());
+        assertEntityMatchesFilter(entity1, "this.derivedBoolAttr == true");
+        assertEntityMatchesFilter(entity2, "this.derivedBoolAttr != true");
+        assertEntityMatchesFilter(entity1, "this.derivedBoolAttr");
 
         MyEntityWithOptionalFields isTrueDerived = myEntityWithOptionalFieldsDao
                 .query()
                 .filterByDerivedBoolAttr(BooleanFilter.isTrue())
-                .selectList()
-                .get(0);
+                .selectOne()
+                .get();
 
         assertEquals(entity1.identifier(), isTrueDerived.identifier());
 
         MyEntityWithOptionalFields isFalseDerived = myEntityWithOptionalFieldsDao
                 .query()
                 .filterByDerivedBoolAttr(BooleanFilter.isFalse())
-                .selectList()
-                .get(0);
+                .selectOne()
+                .get();
 
         assertEquals(entity2.identifier(), isFalseDerived.identifier());
+
+        // FilterByName
+
+        assertFilterByNameMatchesEntity(entity1, "derivedBoolAttr", BooleanFilter.isTrue());
+        assertFilterByNameMatchesEntity(entity2, "derivedBoolAttr", BooleanFilter.isFalse());
     }
 
     @Test
@@ -1098,185 +657,81 @@ public class FiltersTest {
 
         assertEquals(3, list.size());
 
-        MyEntityWithOptionalFields equalToByFilterString = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.dateAttr == `2022-07-11`")
-                .selectList()
-                .get(0);
+        assertEntityMatchesFilter(entity1, "this.dateAttr == `2022-07-11`");
+        assertEntityMatchesFilter(entity2, "this.dateAttr != `2022-07-11`");
+        assertFilterMatchesNumberOfResults(2, "this.dateAttr >= `1999-09-19`");
+        assertFilterMatchesNumberOfResults(2, "this.dateAttr <= `2022-07-11`");
+        assertFilterMatchesNumberOfResults(1, "this.dateAttr > `1999-09-19`");
+        assertFilterMatchesNumberOfResults(1, "this.dateAttr < `2022-07-11`");
 
-        assertEquals(entity1.identifier(), equalToByFilterString.identifier());
+        assertEntityMatchesFilter(entity1, DateFilter.equalTo(DATE_1));
+        assertEntityMatchesFilter(entity2, DateFilter.notEqualTo(DATE_1));
+        assertFilterMatchesNumberOfResults(2, DateFilter.greaterOrEqualThan(DATE_2));
+        assertFilterMatchesNumberOfResults(2, DateFilter.lessOrEqualThan(DATE_1));
+        assertFilterMatchesNumberOfResults(1, DateFilter.greaterThan(DATE_2));
+        assertFilterMatchesNumberOfResults(1, DateFilter.lessThan(DATE_1));
 
-        MyEntityWithOptionalFields notEqualToByFilterString = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.dateAttr != `2022-07-11`")
-                .selectList()
-                .get(0);
+        // FilterByName
 
-        assertEquals(entity2.identifier(), notEqualToByFilterString.identifier());
-
-        List<MyEntityWithOptionalFields> greaterOrEqualByFilterString = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.dateAttr >= `1999-09-19`")
-                .selectList();
-
-        assertEquals(2, greaterOrEqualByFilterString.size());
-
-        List<MyEntityWithOptionalFields> lessOrEqualByFilterString = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.dateAttr <= `2022-07-11`")
-                .selectList();
-
-        assertEquals(2, lessOrEqualByFilterString.size());
-
-        List<MyEntityWithOptionalFields> greaterThanByFilterString = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.dateAttr > `1999-09-19`")
-                .selectList();
-
-        assertEquals(1, greaterThanByFilterString.size());
-
-        List<MyEntityWithOptionalFields> lessThanByFilterString = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.dateAttr < `2022-07-11`")
-                .selectList();
-
-        assertEquals(1, lessThanByFilterString.size());
-
-        MyEntityWithOptionalFields equalTo = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByDateAttr(DateFilter.equalTo(DATE_1))
-                .selectList()
-                .get(0);
-
-        assertEquals(entity1.identifier(), equalTo.identifier());
-
-        MyEntityWithOptionalFields notEqualTo = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByDateAttr(DateFilter.notEqualTo(DATE_1))
-                .selectList()
-                .get(0);
-
-        assertEquals(entity2.identifier(), notEqualTo.identifier());
-
-        List<MyEntityWithOptionalFields> greaterOrEqual = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByDateAttr(DateFilter.greaterOrEqualThan(DATE_2))
-                .selectList();
-
-        assertEquals(2, greaterOrEqual.size());
-
-        List<MyEntityWithOptionalFields> lessOrEqual = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByDateAttr(DateFilter.lessOrEqualThan(DATE_1))
-                .selectList();
-
-        assertEquals(2, lessOrEqual.size());
-
-        List<MyEntityWithOptionalFields> greaterThan = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByDateAttr(DateFilter.greaterThan(DATE_2))
-                .selectList();
-
-        assertEquals(1, greaterThan.size());
-
-        List<MyEntityWithOptionalFields> lessThan = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByDateAttr(DateFilter.lessThan(DATE_1))
-                .selectList();
-
-        assertEquals(1, lessThan.size());
+        assertFilterByNameMatchesEntity(entity1, "dateAttr", DateFilter.equalTo(DATE_1));
+        assertFilterByNameMatchesEntity(entity2, "dateAttr", DateFilter.notEqualTo(DATE_1));
+        assertFilterByNameMatchesNumberOfResults(2, "dateAttr", DateFilter.greaterOrEqualThan(DATE_2));
+        assertFilterByNameMatchesNumberOfResults(2, "dateAttr", DateFilter.lessOrEqualThan(DATE_1));
+        assertFilterByNameMatchesNumberOfResults(1, "dateAttr", DateFilter.greaterThan(DATE_2));
+        assertFilterByNameMatchesNumberOfResults(1, "dateAttr", DateFilter.lessThan(DATE_1));
 
         // derived
 
-        MyEntityWithOptionalFields equalToByFilterStringDerived = myEntityWithOptionalFieldsDao
+        assertEntityMatchesFilter(entity1, "this.derivedDateAttr == `2022-07-11`");
+        assertEntityMatchesFilter(entity2, "this.derivedDateAttr != `2022-07-11`");
+        assertFilterMatchesNumberOfResults(2, "this.derivedDateAttr >= `1999-09-19`");
+        assertFilterMatchesNumberOfResults(2, "this.derivedDateAttr <= `2022-07-11`");
+        assertFilterMatchesNumberOfResults(1, "this.derivedDateAttr > `1999-09-19`");
+        assertFilterMatchesNumberOfResults(1, "this.derivedDateAttr < `2022-07-11`");
+
+        // FilterByName
+
+        assertFilterByNameMatchesEntity(entity1, "derivedDateAttr", DateFilter.equalTo(DATE_1));
+        assertFilterByNameMatchesEntity(entity2, "derivedDateAttr", DateFilter.notEqualTo(DATE_1));
+        assertFilterByNameMatchesNumberOfResults(2, "derivedDateAttr", DateFilter.greaterOrEqualThan(DATE_2));
+        assertFilterByNameMatchesNumberOfResults(2, "derivedDateAttr", DateFilter.lessOrEqualThan(DATE_1));
+        assertFilterByNameMatchesNumberOfResults(1, "derivedDateAttr", DateFilter.greaterThan(DATE_2));
+        assertFilterByNameMatchesNumberOfResults(1, "derivedDateAttr", DateFilter.lessThan(DATE_1));
+
+    }
+
+    private void assertEntityMatchesFilter(MyEntityWithOptionalFields entity, DateFilter filter) {
+        MyEntityWithOptionalFields filtered = myEntityWithOptionalFieldsDao
                 .query()
-                .filterBy("this.derivedDateAttr == `2022-07-11`")
-                .selectList()
-                .get(0);
+                .filterByDateAttr(filter)
+                .selectOne()
+                .get();
 
-        assertEquals(entity1.identifier(), equalToByFilterStringDerived.identifier());
+        assertEquals(entity.identifier(), filtered.identifier());
 
-        MyEntityWithOptionalFields notEqualToByFilterStringDerived = myEntityWithOptionalFieldsDao
+        MyEntityWithOptionalFields filteredDerived = myEntityWithOptionalFieldsDao
                 .query()
-                .filterBy("this.derivedDateAttr != `2022-07-11`")
-                .selectList()
-                .get(0);
+                .filterByDerivedDateAttr(filter)
+                .selectOne()
+                .get();
 
-        assertEquals(entity2.identifier(), notEqualToByFilterStringDerived.identifier());
+        assertEquals(entity.identifier(), filteredDerived.identifier());
+    }
 
-        List<MyEntityWithOptionalFields> greaterOrEqualByFilterStringDerived = myEntityWithOptionalFieldsDao
+    private void assertFilterMatchesNumberOfResults(int expected, DateFilter filter) {
+        List<MyEntityWithOptionalFields> filtered = myEntityWithOptionalFieldsDao
                 .query()
-                .filterBy("this.derivedDateAttr >= `1999-09-19`")
+                .filterByDateAttr(filter)
                 .selectList();
 
-        assertEquals(2, greaterOrEqualByFilterStringDerived.size());
+        assertEquals(expected, filtered.size());
 
-        List<MyEntityWithOptionalFields> lessOrEqualByFilterStringDerived = myEntityWithOptionalFieldsDao
+        List<MyEntityWithOptionalFields> filteredDerived = myEntityWithOptionalFieldsDao
                 .query()
-                .filterBy("this.derivedDateAttr <= `2022-07-11`")
+                .filterByDerivedDateAttr(filter)
                 .selectList();
 
-        assertEquals(2, lessOrEqualByFilterStringDerived.size());
-
-        List<MyEntityWithOptionalFields> greaterThanByFilterStringDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.derivedDateAttr > `1999-09-19`")
-                .selectList();
-
-        assertEquals(1, greaterThanByFilterStringDerived.size());
-
-        List<MyEntityWithOptionalFields> lessThanByFilterStringDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.derivedDateAttr < `2022-07-11`")
-                .selectList();
-
-        assertEquals(1, lessThanByFilterStringDerived.size());
-
-        MyEntityWithOptionalFields equalToDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByDerivedDateAttr(DateFilter.equalTo(DATE_1))
-                .selectList()
-                .get(0);
-
-        assertEquals(entity1.identifier(), equalToDerived.identifier());
-
-        MyEntityWithOptionalFields notEqualToDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByDerivedDateAttr(DateFilter.notEqualTo(DATE_1))
-                .selectList()
-                .get(0);
-
-        assertEquals(entity2.identifier(), notEqualToDerived.identifier());
-
-        List<MyEntityWithOptionalFields> greaterOrEqualDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByDerivedDateAttr(DateFilter.greaterOrEqualThan(DATE_2))
-                .selectList();
-
-        assertEquals(2, greaterOrEqualDerived.size());
-
-        List<MyEntityWithOptionalFields> lessOrEqualDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByDerivedDateAttr(DateFilter.lessOrEqualThan(DATE_1))
-                .selectList();
-
-        assertEquals(2, lessOrEqualDerived.size());
-
-        List<MyEntityWithOptionalFields> greaterThanDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByDerivedDateAttr(DateFilter.greaterThan(DATE_2))
-                .selectList();
-
-        assertEquals(1, greaterThanDerived.size());
-
-        List<MyEntityWithOptionalFields> lessThanDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByDerivedDateAttr(DateFilter.lessThan(DATE_1))
-                .selectList();
-
-        assertEquals(1, lessThanDerived.size());
-
-
+        assertEquals(expected, filteredDerived.size());
     }
 
     @Test
@@ -1299,185 +754,81 @@ public class FiltersTest {
 
         assertEquals(3, list.size());
 
-        MyEntityWithOptionalFields equalToByStringFilter = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.timestampAttr == `2022-07-11T19:09:33`")
-                .selectList()
-                .get(0);
+        assertEntityMatchesFilter(entity1, "this.timestampAttr == `2022-07-11T19:09:33`");
+        assertEntityMatchesFilter(entity2, "this.timestampAttr != `2022-07-11T19:09:33`");
+        assertFilterMatchesNumberOfResults(2, "this.timestampAttr >= `1999-09-19T09:09:09`");
+        assertFilterMatchesNumberOfResults(2, "this.timestampAttr <= `2022-07-11T19:09:33`");
+        assertFilterMatchesNumberOfResults(1, "this.timestampAttr > `1999-09-19T09:09:09`");
+        assertFilterMatchesNumberOfResults(1, "this.timestampAttr < `2022-07-11T19:09:33`");
 
-        assertEquals(entity1.identifier(), equalToByStringFilter.identifier());
+        assertEntityMatchesFilter(entity1, TimestampFilter.equalTo(TIMESTAMP_1));
+        assertEntityMatchesFilter(entity2, TimestampFilter.notEqualTo(TIMESTAMP_1));
+        assertFilterMatchesNumberOfResults(2, TimestampFilter.greaterOrEqualThan(TIMESTAMP_2));
+        assertFilterMatchesNumberOfResults(2, TimestampFilter.lessOrEqualThan(TIMESTAMP_1));
+        assertFilterMatchesNumberOfResults(1, TimestampFilter.greaterThan(TIMESTAMP_2));
+        assertFilterMatchesNumberOfResults(1, TimestampFilter.lessThan(TIMESTAMP_1));
 
-        MyEntityWithOptionalFields notEqualToByStringFilter = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.timestampAttr != `2022-07-11T19:09:33`")
-                .selectList()
-                .get(0);
+        // FilterByName
 
-        assertEquals(entity2.identifier(), notEqualToByStringFilter.identifier());
-
-        List<MyEntityWithOptionalFields> greaterOrEqualByStringFilter = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.timestampAttr >= `1999-09-19T09:09:09`")
-                .selectList();
-
-        assertEquals(2, greaterOrEqualByStringFilter.size());
-
-        List<MyEntityWithOptionalFields> lessOrEqualByStringFilter = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.timestampAttr <= `2022-07-11T19:09:33`")
-                .selectList();
-
-        assertEquals(2, lessOrEqualByStringFilter.size());
-
-        List<MyEntityWithOptionalFields> greaterThanByStringFilter = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.timestampAttr > `1999-09-19T09:09:09`")
-                .selectList();
-
-        assertEquals(1, greaterThanByStringFilter.size());
-
-        List<MyEntityWithOptionalFields> lessThanByStringFilter = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.timestampAttr < `2022-07-11T19:09:33`")
-                .selectList();
-
-        assertEquals(1, lessThanByStringFilter.size());
-
-        MyEntityWithOptionalFields equalTo = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByTimestampAttr(TimestampFilter.equalTo(TIMESTAMP_1))
-                .selectList()
-                .get(0);
-
-        assertEquals(entity1.identifier(), equalTo.identifier());
-
-        MyEntityWithOptionalFields notEqualTo = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByTimestampAttr(TimestampFilter.notEqualTo(TIMESTAMP_1))
-                .selectList()
-                .get(0);
-
-        assertEquals(entity2.identifier(), notEqualTo.identifier());
-
-        List<MyEntityWithOptionalFields> greaterOrEqual = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByTimestampAttr(TimestampFilter.greaterOrEqualThan(TIMESTAMP_2))
-                .selectList();
-
-        assertEquals(2, greaterOrEqual.size());
-
-        List<MyEntityWithOptionalFields> lessOrEqual = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByTimestampAttr(TimestampFilter.lessOrEqualThan(TIMESTAMP_1))
-                .selectList();
-
-        assertEquals(2, lessOrEqual.size());
-
-        List<MyEntityWithOptionalFields> greaterThan = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByTimestampAttr(TimestampFilter.greaterThan(TIMESTAMP_2))
-                .selectList();
-
-        assertEquals(1, greaterThan.size());
-
-        List<MyEntityWithOptionalFields> lessThan = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByTimestampAttr(TimestampFilter.lessThan(TIMESTAMP_1))
-                .selectList();
-
-        assertEquals(1, lessThan.size());
+        assertFilterByNameMatchesEntity(entity1, "timestampAttr", TimestampFilter.equalTo(TIMESTAMP_1));
+        assertFilterByNameMatchesEntity(entity2, "timestampAttr", TimestampFilter.notEqualTo(TIMESTAMP_1));
+        assertFilterByNameMatchesNumberOfResults(2, "timestampAttr", TimestampFilter.greaterOrEqualThan(TIMESTAMP_2));
+        assertFilterByNameMatchesNumberOfResults(2, "timestampAttr", TimestampFilter.lessOrEqualThan(TIMESTAMP_1));
+        assertFilterByNameMatchesNumberOfResults(1, "timestampAttr", TimestampFilter.greaterThan(TIMESTAMP_2));
+        assertFilterByNameMatchesNumberOfResults(1, "timestampAttr", TimestampFilter.lessThan(TIMESTAMP_1));
 
         // derived
 
-        MyEntityWithOptionalFields equalToByStringFilterDerived = myEntityWithOptionalFieldsDao
+        assertEntityMatchesFilter(entity1, "this.derivedTimestampAttr == `2022-07-11T19:09:33`");
+        assertEntityMatchesFilter(entity2, "this.derivedTimestampAttr != `2022-07-11T19:09:33`");
+        assertFilterMatchesNumberOfResults(2, "this.derivedTimestampAttr >= `1999-09-19T09:09:09`");
+        assertFilterMatchesNumberOfResults(2, "this.derivedTimestampAttr <= `2022-07-11T19:09:33`");
+        assertFilterMatchesNumberOfResults(1, "this.derivedTimestampAttr > `1999-09-19T09:09:09`");
+        assertFilterMatchesNumberOfResults(1, "this.derivedTimestampAttr < `2022-07-11T19:09:33`");
+
+        // FilterByName
+
+        assertFilterByNameMatchesEntity(entity1, "derivedTimestampAttr", TimestampFilter.equalTo(TIMESTAMP_1));
+        assertFilterByNameMatchesEntity(entity2, "derivedTimestampAttr", TimestampFilter.notEqualTo(TIMESTAMP_1));
+        assertFilterByNameMatchesNumberOfResults(2, "derivedTimestampAttr", TimestampFilter.greaterOrEqualThan(TIMESTAMP_2));
+        assertFilterByNameMatchesNumberOfResults(2, "derivedTimestampAttr", TimestampFilter.lessOrEqualThan(TIMESTAMP_1));
+        assertFilterByNameMatchesNumberOfResults(1, "derivedTimestampAttr", TimestampFilter.greaterThan(TIMESTAMP_2));
+        assertFilterByNameMatchesNumberOfResults(1, "derivedTimestampAttr", TimestampFilter.lessThan(TIMESTAMP_1));
+
+    }
+
+    private void assertEntityMatchesFilter(MyEntityWithOptionalFields entity, TimestampFilter filter) {
+        MyEntityWithOptionalFields filtered = myEntityWithOptionalFieldsDao
                 .query()
-                .filterBy("this.derivedTimestampAttr == `2022-07-11T19:09:33`")
-                .selectList()
-                .get(0);
+                .filterByTimestampAttr(filter)
+                .selectOne()
+                .get();
 
-        assertEquals(entity1.identifier(), equalToByStringFilterDerived.identifier());
+        assertEquals(entity.identifier(), filtered.identifier());
 
-        MyEntityWithOptionalFields notEqualToByStringFilterDerived = myEntityWithOptionalFieldsDao
+        MyEntityWithOptionalFields filteredDerived = myEntityWithOptionalFieldsDao
                 .query()
-                .filterBy("this.derivedTimestampAttr != `2022-07-11T19:09:33`")
-                .selectList()
-                .get(0);
+                .filterByTimestampAttr(filter)
+                .selectOne()
+                .get();
 
-        assertEquals(entity2.identifier(), notEqualToByStringFilterDerived.identifier());
+        assertEquals(entity.identifier(), filteredDerived.identifier());
+    }
 
-        List<MyEntityWithOptionalFields> greaterOrEqualByStringFilterDerived = myEntityWithOptionalFieldsDao
+    private void assertFilterMatchesNumberOfResults(int expected, TimestampFilter filter) {
+        List<MyEntityWithOptionalFields> filtered = myEntityWithOptionalFieldsDao
                 .query()
-                .filterBy("this.derivedTimestampAttr >= `1999-09-19T09:09:09`")
+                .filterByTimestampAttr(filter)
                 .selectList();
 
-        assertEquals(2, greaterOrEqualByStringFilterDerived.size());
+        assertEquals(expected, filtered.size());
 
-        List<MyEntityWithOptionalFields> lessOrEqualByStringFilterDerived = myEntityWithOptionalFieldsDao
+        List<MyEntityWithOptionalFields> filteredDerived = myEntityWithOptionalFieldsDao
                 .query()
-                .filterBy("this.derivedTimestampAttr <= `2022-07-11T19:09:33`")
+                .filterByTimestampAttr(filter)
                 .selectList();
 
-        assertEquals(2, lessOrEqualByStringFilterDerived.size());
-
-        List<MyEntityWithOptionalFields> greaterThanByStringFilterDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.derivedTimestampAttr > `1999-09-19T09:09:09`")
-                .selectList();
-
-        assertEquals(1, greaterThanByStringFilterDerived.size());
-
-        List<MyEntityWithOptionalFields> lessThanByStringFilterDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.derivedTimestampAttr < `2022-07-11T19:09:33`")
-                .selectList();
-
-        assertEquals(1, lessThanByStringFilterDerived.size());
-
-        MyEntityWithOptionalFields equalToDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByDerivedTimestampAttr(TimestampFilter.equalTo(TIMESTAMP_1))
-                .selectList()
-                .get(0);
-
-        assertEquals(entity1.identifier(), equalToDerived.identifier());
-
-        MyEntityWithOptionalFields notEqualToDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByDerivedTimestampAttr(TimestampFilter.notEqualTo(TIMESTAMP_1))
-                .selectList()
-                .get(0);
-
-        assertEquals(entity2.identifier(), notEqualToDerived.identifier());
-
-        List<MyEntityWithOptionalFields> greaterOrEqualDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByDerivedTimestampAttr(TimestampFilter.greaterOrEqualThan(TIMESTAMP_2))
-                .selectList();
-
-        assertEquals(2, greaterOrEqualDerived.size());
-
-        List<MyEntityWithOptionalFields> lessOrEqualDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByDerivedTimestampAttr(TimestampFilter.lessOrEqualThan(TIMESTAMP_1))
-                .selectList();
-
-        assertEquals(2, lessOrEqualDerived.size());
-
-        List<MyEntityWithOptionalFields> greaterThanDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByDerivedTimestampAttr(TimestampFilter.greaterThan(TIMESTAMP_2))
-                .selectList();
-
-        assertEquals(1, greaterThanDerived.size());
-
-        List<MyEntityWithOptionalFields> lessThanDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByDerivedTimestampAttr(TimestampFilter.lessThan(TIMESTAMP_1))
-                .selectList();
-
-        assertEquals(1, lessThanDerived.size());
-
-
+        assertEquals(expected, filteredDerived.size());
     }
 
     @Test
@@ -1499,186 +850,80 @@ public class FiltersTest {
         List<MyEntityWithOptionalFields> list = myEntityWithOptionalFieldsDao.query().selectList();
 
         assertEquals(3, list.size());
+        assertEntityMatchesFilter(entity1, "this.timeAttr == `23:59:59`");
+        assertEntityMatchesFilter(entity2, "this.timeAttr != `23:59:59`");
+        assertFilterMatchesNumberOfResults(2, "this.timeAttr >= `12:34:56`");
+        assertFilterMatchesNumberOfResults(2, "this.timeAttr <= `23:59:59`");
+        assertEntityMatchesFilter(entity1, "this.timeAttr > `12:34:56`");
+        assertEntityMatchesFilter(entity2, "this.timeAttr < `23:59:59`");
 
-        MyEntityWithOptionalFields equalToByStringFilter = myEntityWithOptionalFieldsDao
+        assertEntityMatchesFilter(entity1, TimeFilter.equalTo(TIME_1));
+        assertEntityMatchesFilter(entity2, TimeFilter.notEqualTo(TIME_1));
+        assertFilterMatchesNumberOfResults(2, TimeFilter.greaterOrEqualThan(TIME_2));
+        assertFilterMatchesNumberOfResults(2, TimeFilter.lessOrEqualThan(TIME_1));
+        assertFilterMatchesNumberOfResults(1, TimeFilter.greaterThan(TIME_2));
+        assertFilterMatchesNumberOfResults(1, TimeFilter.lessThan(TIME_1));
+
+        // FilterByName
+
+        assertFilterByNameMatchesEntity(entity1, "timeAttr", TimeFilter.equalTo(TIME_1));
+        assertFilterByNameMatchesEntity(entity2, "timeAttr", TimeFilter.notEqualTo(TIME_1));
+        assertFilterByNameMatchesNumberOfResults(2, "timeAttr", TimeFilter.greaterOrEqualThan(TIME_2));
+        assertFilterByNameMatchesNumberOfResults(2, "timeAttr", TimeFilter.lessOrEqualThan(TIME_1));
+        assertFilterByNameMatchesNumberOfResults(1, "timeAttr", TimeFilter.greaterThan(TIME_2));
+        assertFilterByNameMatchesNumberOfResults(1, "timeAttr", TimeFilter.lessThan(TIME_1));
+
+        // derived
+
+        assertEntityMatchesFilter(entity1, "this.derivedTimeAttr == `23:59:59`");
+        assertEntityMatchesFilter(entity2, "this.derivedTimeAttr != `23:59:59`");
+        assertFilterMatchesNumberOfResults(2, "this.derivedTimeAttr >= `12:34:56`");
+        assertFilterMatchesNumberOfResults(2, "this.derivedTimeAttr <= `23:59:59`");
+        assertEntityMatchesFilter(entity1, "this.derivedTimeAttr > `12:34:56`");
+        assertEntityMatchesFilter(entity2, "this.derivedTimeAttr < `23:59:59`");
+
+        // FilterByName
+
+        assertFilterByNameMatchesEntity(entity1, "derivedTimeAttr", TimeFilter.equalTo(TIME_1));
+        assertFilterByNameMatchesEntity(entity2, "derivedTimeAttr", TimeFilter.notEqualTo(TIME_1));
+        assertFilterByNameMatchesNumberOfResults(2, "derivedTimeAttr", TimeFilter.greaterOrEqualThan(TIME_2));
+        assertFilterByNameMatchesNumberOfResults(2, "derivedTimeAttr", TimeFilter.lessOrEqualThan(TIME_1));
+        assertFilterByNameMatchesNumberOfResults(1, "derivedTimeAttr", TimeFilter.greaterThan(TIME_2));
+        assertFilterByNameMatchesNumberOfResults(1, "derivedTimeAttr", TimeFilter.lessThan(TIME_1));
+    }
+
+    private void assertEntityMatchesFilter(MyEntityWithOptionalFields entity, TimeFilter filter) {
+        MyEntityWithOptionalFields filtered = myEntityWithOptionalFieldsDao
                 .query()
-                .filterBy("this.timeAttr == `23:59:59`")
-                .selectList()
-                .get(0);
+                .filterByTimeAttr(filter)
+                .selectOne()
+                .get();
 
-        assertEquals(entity1.identifier(), equalToByStringFilter.identifier());
+        assertEquals(entity.identifier(), filtered.identifier());
 
-        MyEntityWithOptionalFields notEqualToByStringFilter = myEntityWithOptionalFieldsDao
+        MyEntityWithOptionalFields filteredDerived = myEntityWithOptionalFieldsDao
                 .query()
-                .filterBy("this.timeAttr != `23:59:59`")
-                .selectList()
-                .get(0);
+                .filterByTimeAttr(filter)
+                .selectOne()
+                .get();
 
-        assertEquals(entity2.identifier(), notEqualToByStringFilter.identifier());
+        assertEquals(entity.identifier(), filteredDerived.identifier());
+    }
 
-        List<MyEntityWithOptionalFields> greaterOrEqualByStringFilter = myEntityWithOptionalFieldsDao
+    private void assertFilterMatchesNumberOfResults(int expected, TimeFilter filter) {
+        List<MyEntityWithOptionalFields> filtered = myEntityWithOptionalFieldsDao
                 .query()
-                .filterBy("this.timeAttr >= `12:34:56`")
+                .filterByTimeAttr(filter)
                 .selectList();
 
-        assertEquals(2, greaterOrEqualByStringFilter.size());
+        assertEquals(expected, filtered.size());
 
-        List<MyEntityWithOptionalFields> lessOrEqualByStringFilter = myEntityWithOptionalFieldsDao
+        List<MyEntityWithOptionalFields> filteredDerived = myEntityWithOptionalFieldsDao
                 .query()
-                .filterBy("this.timeAttr <= `23:59:59`")
+                .filterByTimeAttr(filter)
                 .selectList();
 
-        assertEquals(2, lessOrEqualByStringFilter.size());
-
-        List<MyEntityWithOptionalFields> greaterThanByStringFilter = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.timeAttr > `12:34:56`")
-                .selectList();
-
-        assertEquals(1, greaterThanByStringFilter.size());
-        assertEquals(entity1.identifier(), greaterThanByStringFilter.get(0).identifier());
-
-        List<MyEntityWithOptionalFields> lessThanByStringFilter = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.timeAttr < `23:59:59`")
-                .selectList();
-
-        assertEquals(1, lessThanByStringFilter.size());
-        assertEquals(entity2.identifier(), lessThanByStringFilter.get(0).identifier());
-
-        MyEntityWithOptionalFields equalTo = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByTimeAttr(TimeFilter.equalTo(TIME_1))
-                .selectList()
-                .get(0);
-
-        assertEquals(entity1.identifier(), equalTo.identifier());
-
-        MyEntityWithOptionalFields notEqualTo = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByTimeAttr(TimeFilter.notEqualTo(TIME_1))
-                .selectList()
-                .get(0);
-
-        assertEquals(entity2.identifier(), notEqualTo.identifier());
-
-        List<MyEntityWithOptionalFields> greaterOrEqual = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByTimeAttr(TimeFilter.greaterOrEqualThan(TIME_2))
-                .selectList();
-
-        assertEquals(2, greaterOrEqual.size());
-
-        List<MyEntityWithOptionalFields> lessOrEqual = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByTimeAttr(TimeFilter.lessOrEqualThan(TIME_1))
-                .selectList();
-
-        assertEquals(2, lessOrEqual.size());
-
-        List<MyEntityWithOptionalFields> greaterThan = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByTimeAttr(TimeFilter.greaterThan(TIME_2))
-                .selectList();
-
-        assertEquals(1, greaterThan.size());
-
-        List<MyEntityWithOptionalFields> lessThan = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByTimeAttr(TimeFilter.lessThan(TIME_1))
-                .selectList();
-
-        assertEquals(1, lessThan.size());
-
-        MyEntityWithOptionalFields equalToByStringFilterDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.derivedTimeAttr == `23:59:59`")
-                .selectList()
-                .get(0);
-
-        assertEquals(entity1.identifier(), equalToByStringFilterDerived.identifier());
-
-        MyEntityWithOptionalFields notEqualToByStringFilterDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.derivedTimeAttr != `23:59:59`")
-                .selectList()
-                .get(0);
-
-        assertEquals(entity2.identifier(), notEqualToByStringFilterDerived.identifier());
-
-        List<MyEntityWithOptionalFields> greaterOrEqualByStringFilterDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.derivedTimeAttr >= `12:34:56`")
-                .selectList();
-
-        assertEquals(2, greaterOrEqualByStringFilterDerived.size());
-
-        List<MyEntityWithOptionalFields> lessOrEqualByStringFilterDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.derivedTimeAttr <= `23:59:59`")
-                .selectList();
-
-        assertEquals(2, lessOrEqualByStringFilterDerived.size());
-
-        List<MyEntityWithOptionalFields> greaterThanByStringFilterDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.derivedTimeAttr > `12:34:56`")
-                .selectList();
-
-        assertEquals(1, greaterThanByStringFilterDerived.size());
-        assertEquals(entity1.identifier(), greaterThanByStringFilterDerived.get(0).identifier());
-
-        List<MyEntityWithOptionalFields> lessThanByStringFilterDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterBy("this.derivedTimeAttr < `23:59:59`")
-                .selectList();
-
-        assertEquals(1, lessThanByStringFilterDerived.size());
-        assertEquals(entity2.identifier(), lessThanByStringFilterDerived.get(0).identifier());
-
-        MyEntityWithOptionalFields equalToDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByDerivedTimeAttr(TimeFilter.equalTo(TIME_1))
-                .selectList()
-                .get(0);
-
-        assertEquals(entity1.identifier(), equalToDerived.identifier());
-
-        MyEntityWithOptionalFields notEqualToDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByDerivedTimeAttr(TimeFilter.notEqualTo(TIME_1))
-                .selectList()
-                .get(0);
-
-        assertEquals(entity2.identifier(), notEqualToDerived.identifier());
-
-        List<MyEntityWithOptionalFields> greaterOrEqualDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByDerivedTimeAttr(TimeFilter.greaterOrEqualThan(TIME_2))
-                .selectList();
-
-        assertEquals(2, greaterOrEqualDerived.size());
-
-        List<MyEntityWithOptionalFields> lessOrEqualDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByDerivedTimeAttr(TimeFilter.lessOrEqualThan(TIME_1))
-                .selectList();
-
-        assertEquals(2, lessOrEqualDerived.size());
-
-        List<MyEntityWithOptionalFields> greaterThanDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByDerivedTimeAttr(TimeFilter.greaterThan(TIME_2))
-                .selectList();
-
-        assertEquals(1, greaterThanDerived.size());
-
-        List<MyEntityWithOptionalFields> lessThanDerived = myEntityWithOptionalFieldsDao
-                .query()
-                .filterByDerivedTimeAttr(TimeFilter.lessThan(TIME_1))
-                .selectList();
-
-        assertEquals(1, lessThanDerived.size());
+        assertEquals(expected, filteredDerived.size());
     }
 
     @Test
@@ -1704,16 +949,16 @@ public class FiltersTest {
         MyEntityWithOptionalFields equalTo = myEntityWithOptionalFieldsDao
                 .query()
                 .filterByEnumAttr(EnumerationFilter.equalTo(MyEnum.Bombastic))
-                .selectList()
-                .get(0);
+                .selectOne()
+                .get();
 
         assertEquals(entity1.identifier(), equalTo.identifier());
 
         MyEntityWithOptionalFields notEqualTo = myEntityWithOptionalFieldsDao
                 .query()
                 .filterByEnumAttr(EnumerationFilter.notEqualTo(MyEnum.Bombastic))
-                .selectList()
-                .get(0);
+                .selectOne()
+                .get();
 
         assertEquals(entity2.identifier(), notEqualTo.identifier());
 
@@ -1722,21 +967,50 @@ public class FiltersTest {
         MyEntityWithOptionalFields equalToDerived = myEntityWithOptionalFieldsDao
                 .query()
                 .filterByDerivedEnumAttr(EnumerationFilter.equalTo(MyEnum.Bombastic))
-                .selectList()
-                .get(0);
+                .selectOne()
+                .get();
 
         assertEquals(entity1.identifier(), equalToDerived.identifier());
 
         MyEntityWithOptionalFields notEqualToDerived = myEntityWithOptionalFieldsDao
                 .query()
                 .filterByDerivedEnumAttr(EnumerationFilter.notEqualTo(MyEnum.Bombastic))
-                .selectList()
-                .get(0);
+                .selectOne()
+                .get();
 
         assertEquals(entity2.identifier(), notEqualToDerived.identifier());
 
+        // FilterByName
+
+        assertFilterByNameMatchesEntity(entity1, "enumAttr", EnumerationFilter.equalTo(MyEnum.Bombastic));
+        assertFilterByNameMatchesEntity(entity2, "enumAttr", EnumerationFilter.notEqualTo(MyEnum.Bombastic));
+
+        // Derived
+
+        assertFilterByNameMatchesEntity(entity1, "derivedEnumAttr", EnumerationFilter.equalTo(MyEnum.Bombastic));
+        assertFilterByNameMatchesEntity(entity2, "derivedEnumAttr", EnumerationFilter.notEqualTo(MyEnum.Bombastic));
+
     }
 
+    @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-002",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-008"
+    })
+    void testFilterByNameWithNonExistName() {
+        RuntimeException thrown = assertThrows(
+                RuntimeException.class,
+                () -> myEntityWithOptionalFieldsDao
+                        .query()
+                        .filterByName("enumAtt", EnumerationFilter.notEqualTo(MyEnum.Bombastic))
+                        .selectList()
+                        .get(0)
+        );
+        assertTrue(thrown.getMessage().contains("No enum constant for"));
+        assertTrue(thrown.getMessage().contains("MyEntityWithOptionalFieldsAttribute#enumAtt"));
+    }
 
     @Test
     @Requirement(reqs = {
@@ -1752,7 +1026,7 @@ public class FiltersTest {
 
         assertEquals(2, filterEntityDao.queryHaveTOnTheStringAttr(filterEntity).count());
         assertThat(filterEntityDao.queryHaveTOnTheStringAttr(filterEntity).selectList().stream().map(e -> e.identifier()).toList(),
-                containsInAnyOrder(entity1.identifier(),entity2.identifier()));
+                containsInAnyOrder(entity1.identifier(), entity2.identifier()));
 
         assertEquals(1, filterEntityDao.queryTestIsTheStringAttr(filterEntity).count());
         assertThat(filterEntityDao.queryTestIsTheStringAttr(filterEntity).selectList().stream().map(e -> e.identifier()).toList(),
@@ -1806,7 +1080,42 @@ public class FiltersTest {
 
     }
 
+    private void assertFilterByNameMatchesEntity(MyEntityWithOptionalFields entity, String attributeName, Filter filter) {
+        MyEntityWithOptionalFields equalsByName = myEntityWithOptionalFieldsDao
+                .query()
+                .filterByName(attributeName, filter)
+                .selectOne()
+                .get();
 
+        assertEquals(entity.identifier(), equalsByName.identifier());
+    }
 
+    private void assertFilterByNameMatchesNumberOfResults(int expected, String attributeName, Filter filter1) {
+        List<MyEntityWithOptionalFields> equalsByName = myEntityWithOptionalFieldsDao
+                .query()
+                .filterByName(attributeName, filter1)
+                .selectList();
+
+        assertEquals(expected, equalsByName.size());
+    }
+
+    private void assertFilterMatchesNumberOfResults(int expected, String customFilter) {
+        List<MyEntityWithOptionalFields> greaterOrEqualsByStringFilter = myEntityWithOptionalFieldsDao
+                .query()
+                .filterBy(customFilter)
+                .selectList();
+
+        assertEquals(expected, greaterOrEqualsByStringFilter.size());
+    }
+
+    private void assertEntityMatchesFilter(MyEntityWithOptionalFields entity, String customFilter) {
+        MyEntityWithOptionalFields filteredByString = myEntityWithOptionalFieldsDao
+                .query()
+                .filterBy(customFilter)
+                .selectOne()
+                .get();
+
+        assertEquals(entity.identifier(), filteredByString.identifier());
+    }
 
 }
