@@ -31,7 +31,7 @@ entity EntityWithOptionalFields {
 
 // Mapped Transfer Object with optional fields
 transfer TransferWithOptionalFieldsMapsEntityWithOptionalFields (EntityWithOptionalFields mappedEntity) {
-    field Integer integerAttr <= mappedEntity.integerAttr input:true;
+    field Integer intAttr <= mappedEntity.integerAttr input:true;
     field Scaled scaledAttr <= mappedEntity.scaledAttr input:true;
     field SmallString stringAttr <= mappedEntity.stringAttr input:true;
     field PhoneNumber regexAttr <= mappedEntity.regexAttr input:true;
@@ -45,7 +45,7 @@ transfer TransferWithOptionalFieldsMapsEntityWithOptionalFields (EntityWithOptio
 
 // Mapped Transfer Object with optional fields with default
 transfer TransferWithOptionalFieldsWithDefaultMapsEntityWithOptionalFields (EntityWithOptionalFields mappedEntity) {
-    field Integer integerAttr <= mappedEntity.integerAttr input:true default:1;
+    field Integer intAttr <= mappedEntity.integerAttr input:true default:1;
     field Scaled scaledAttr <= mappedEntity.scaledAttr input:true default:2.34;
     field SmallString stringAttr <= mappedEntity.stringAttr input:true default:"Hello there";
     field PhoneNumber regexAttr <= mappedEntity.regexAttr input:true default:"+36 30 123 1234";
@@ -63,7 +63,7 @@ transfer TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFi
 
 // Mapped Transfer Object with required fields
 transfer TransferWithRequiredFieldsMapsEntityWithOptionalFields (EntityWithOptionalFields mappedEntity) {
-    field required Integer integerAttr <= mappedEntity.integerAttr input:true;
+    field required Integer intAttr <= mappedEntity.integerAttr input:true;
     field required Scaled scaledAttr <= mappedEntity.scaledAttr input:true;
     field required SmallString stringAttr <= mappedEntity.stringAttr input:true;
     field required PhoneNumber regexAttr <= mappedEntity.regexAttr input:true;
@@ -77,7 +77,7 @@ transfer TransferWithRequiredFieldsMapsEntityWithOptionalFields (EntityWithOptio
 
 // Mapped Transfer Object with required fields with default
 transfer TransferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFields (EntityWithOptionalFields mappedEntity) {
-    field required Integer integerAttr <= mappedEntity.integerAttr input:true default:1;
+    field required Integer intAttr <= mappedEntity.integerAttr input:true default:1;
     field required Scaled scaledAttr <= mappedEntity.scaledAttr input:true default:2.34;
     field required SmallString stringAttr <= mappedEntity.stringAttr input:true default:"Hello there";
     field required PhoneNumber regexAttr <= mappedEntity.regexAttr input:true default:"+36 30 123 1234";
@@ -112,7 +112,7 @@ entity EntityWithRequiredFields {
 
 // Mapped Transfer Object with optional fields
 transfer TransferWithOptionalFieldsMapsEntityWithRequiredFields (EntityWithRequiredFields mappedEntity) {
-    field Integer integerAttr <= mappedEntity.integerAttr input:true;
+    field Integer intAttr <= mappedEntity.integerAttr input:true;
     field Scaled scaledAttr <= mappedEntity.scaledAttr input:true;
     field SmallString stringAttr <= mappedEntity.stringAttr input:true;
     field PhoneNumber regexAttr <= mappedEntity.regexAttr input:true;
@@ -125,7 +125,7 @@ transfer TransferWithOptionalFieldsMapsEntityWithRequiredFields (EntityWithRequi
 
 // Mapped Transfer Object with optional fields with default
 transfer TransferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFields (EntityWithRequiredFields mappedEntity) {
-    field Integer integerAttr <= mappedEntity.integerAttr input:true default:1;
+    field Integer intAttr <= mappedEntity.integerAttr input:true default:1;
     field Scaled scaledAttr <= mappedEntity.scaledAttr input:true default:2.34;
     field SmallString stringAttr <= mappedEntity.stringAttr input:true default:"Hello there";
     field PhoneNumber regexAttr <= mappedEntity.regexAttr input:true default:"+36 30 123 1234";
@@ -143,7 +143,7 @@ transfer TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFi
 
 // Mapped Transfer Object with required fields
 transfer TransferWithRequiredFieldsMapsEntityWithRequiredFields (EntityWithRequiredFields mappedEntity) {
-    field required Integer integerAttr <= mappedEntity.integerAttr input:true;
+    field required Integer intAttr <= mappedEntity.integerAttr input:true;
     field required Scaled scaledAttr <= mappedEntity.scaledAttr input:true;
     field required SmallString stringAttr <= mappedEntity.stringAttr input:true;
     field required PhoneNumber regexAttr <= mappedEntity.regexAttr input:true;
@@ -156,7 +156,7 @@ transfer TransferWithRequiredFieldsMapsEntityWithRequiredFields (EntityWithRequi
 
 // Mapped Transfer Object with required fields with default
 transfer TransferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFields (EntityWithRequiredFields mappedEntity) {
-    field required Integer integerAttr <= mappedEntity.integerAttr input:true default:1;
+    field required Integer intAttr <= mappedEntity.integerAttr input:true default:1;
     field required Scaled scaledAttr <= mappedEntity.scaledAttr input:true default:2.34;
     field required SmallString stringAttr <= mappedEntity.stringAttr input:true default:"Hello there";
     field required PhoneNumber regexAttr <= mappedEntity.regexAttr input:true default:"+36 30 123 1234";
@@ -191,7 +191,7 @@ entity EntityWithOptionalFieldsWithDefault {
 
 // Mapped Transfer Object with optional fields
 transfer TransferWithOptionalFieldsMapsEntityWithOptionalFieldsWithDefault (EntityWithOptionalFieldsWithDefault mappedEntity) {
-    field Integer integerAttr <= mappedEntity.integerAttr input:true;
+    field Integer intAttr <= mappedEntity.integerAttr input:true;
     field Scaled scaledAttr <= mappedEntity.scaledAttr input:true;
     field SmallString stringAttr <= mappedEntity.stringAttr input:true;
     field PhoneNumber regexAttr <= mappedEntity.regexAttr input:true;
@@ -204,7 +204,7 @@ transfer TransferWithOptionalFieldsMapsEntityWithOptionalFieldsWithDefault (Enti
 
 // Mapped Transfer Object with optional fields with default
 transfer TransferWithOptionalFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefault (EntityWithOptionalFieldsWithDefault mappedEntity) {
-    field Integer integerAttr <= mappedEntity.integerAttr input:true default:2;
+    field Integer intAttr <= mappedEntity.integerAttr input:true default:2;
     field Scaled scaledAttr <= mappedEntity.scaledAttr input:true default:3.34;
     field SmallString stringAttr <= mappedEntity.stringAttr input:true default:"Lorem Ipsum";
     field PhoneNumber regexAttr <= mappedEntity.regexAttr input:true default:"+36 30 123 5678";
@@ -222,7 +222,7 @@ transfer TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFi
 
 // Mapped Transfer Object with required fields
 transfer TransferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefault (EntityWithOptionalFieldsWithDefault mappedEntity) {
-    field required Integer integerAttr <= mappedEntity.integerAttr input:true;
+    field required Integer intAttr <= mappedEntity.integerAttr input:true;
     field required Scaled scaledAttr <= mappedEntity.scaledAttr input:true;
     field required SmallString stringAttr <= mappedEntity.stringAttr input:true;
     field required PhoneNumber regexAttr <= mappedEntity.regexAttr input:true;
@@ -235,7 +235,7 @@ transfer TransferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefault (Enti
 
 // Mapped Transfer Object with required fields with default
 transfer TransferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefault (EntityWithOptionalFieldsWithDefault mappedEntity) {
-    field required Integer integerAttr <= mappedEntity.integerAttr input:true default:2;
+    field required Integer intAttr <= mappedEntity.integerAttr input:true default:2;
     field required Scaled scaledAttr <= mappedEntity.scaledAttr input:true default:3.34;
     field required SmallString stringAttr <= mappedEntity.stringAttr input:true default:"Lorem Ipsum";
     field required PhoneNumber regexAttr <= mappedEntity.regexAttr input:true default:"+36 30 123 5678";
@@ -270,7 +270,7 @@ entity EntityWithRequiredFieldsWithDefault {
 
 // Mapped Transfer Object with optional fields
 transfer TransferWithOptionalFieldsMapsEntityWithRequiredFieldsWithDefault (EntityWithRequiredFieldsWithDefault mappedEntity) {
-    field Integer integerAttr <= mappedEntity.integerAttr input:true;
+    field Integer intAttr <= mappedEntity.integerAttr input:true;
     field Scaled scaledAttr <= mappedEntity.scaledAttr input:true;
     field SmallString stringAttr <= mappedEntity.stringAttr input:true;
     field PhoneNumber regexAttr <= mappedEntity.regexAttr input:true;
@@ -283,7 +283,7 @@ transfer TransferWithOptionalFieldsMapsEntityWithRequiredFieldsWithDefault (Enti
 
 // Mapped Transfer Object with optional fields with default
 transfer TransferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsWithDefault (EntityWithRequiredFieldsWithDefault mappedEntity) {
-    field Integer integerAttr <= mappedEntity.integerAttr input:true default:2;
+    field Integer intAttr <= mappedEntity.integerAttr input:true default:2;
     field Scaled scaledAttr <= mappedEntity.scaledAttr input:true default:3.34;
     field SmallString stringAttr <= mappedEntity.stringAttr input:true default:"Lorem Ipsum";
     field PhoneNumber regexAttr <= mappedEntity.regexAttr input:true default:"+36 30 123 5678";
@@ -301,7 +301,7 @@ transfer TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFi
 
 // Mapped Transfer Object with required fields
 transfer TransferWithRequiredFieldsMapsEntityWithRequiredFieldsWithDefault (EntityWithRequiredFieldsWithDefault mappedEntity) {
-    field required Integer integerAttr <= mappedEntity.integerAttr input:true;
+    field required Integer intAttr <= mappedEntity.integerAttr input:true;
     field required Scaled scaledAttr <= mappedEntity.scaledAttr input:true;
     field required SmallString stringAttr <= mappedEntity.stringAttr input:true;
     field required PhoneNumber regexAttr <= mappedEntity.regexAttr input:true;
@@ -314,7 +314,7 @@ transfer TransferWithRequiredFieldsMapsEntityWithRequiredFieldsWithDefault (Enti
 
 // Mapped Transfer Object with required fields with default
 transfer TransferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsWithDefault (EntityWithRequiredFieldsWithDefault mappedEntity) {
-    field required Integer integerAttr <= mappedEntity.integerAttr input:true default:2;
+    field required Integer intAttr <= mappedEntity.integerAttr input:true default:2;
     field required Scaled scaledAttr <= mappedEntity.scaledAttr input:true default:3.34;
     field required SmallString stringAttr <= mappedEntity.stringAttr input:true default:"Lorem Ipsum";
     field required PhoneNumber regexAttr <= mappedEntity.regexAttr input:true default:"+36 30 123 5678";
@@ -328,6 +328,11 @@ transfer TransferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsWithDe
 // Mapped Transfer Object with required fields with default expression
 transfer TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefault (EntityWithRequiredFieldsWithDefault mappedEntity) {
     field required SmallString stringAttr <= mappedEntity.stringAttr input:true default:queryStringAttribute();
+}
+
+transfer TransferMapsFieldTwice (EntityWithRequiredFieldsWithDefault mappedEntity) {
+    field Integer intAttr <= mappedEntity.integerAttr input:true;
+    field required Integer integerAttr <= mappedEntity.integerAttr input:true;
 }
 
 query String queryStringAttribute() <= EntityWithOptionalFields.all().any().stringAttr;
