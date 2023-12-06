@@ -16,6 +16,9 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredf
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.entitywithrequiredfieldswithdefault.EntityWithRequiredFieldsWithDefaultIdentifier;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.enum_.Enum;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.querystringattribute.QueryStringAttributeDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.transfermapsfieldtwice.TransferMapsFieldTwice;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.transfermapsfieldtwice.TransferMapsFieldTwiceDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.transfermapsfieldtwice.TransferMapsFieldTwiceForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.transferwithoptionalfieldsmapsentitywithoptionalfields.TransferWithOptionalFieldsMapsEntityWithOptionalFields;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.transferwithoptionalfieldsmapsentitywithoptionalfields.TransferWithOptionalFieldsMapsEntityWithOptionalFieldsDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.transferwithoptionalfieldsmapsentitywithoptionalfields.TransferWithOptionalFieldsMapsEntityWithOptionalFieldsForCreate;
@@ -186,6 +189,9 @@ public class TestDefaultAndRequiredFieldsOnMappedTO {
 
     @Inject
     QueryStringAttributeDao queryStringAttributeDao;
+
+    @Inject
+    TransferMapsFieldTwiceDao transferMapsFieldTwiceDao;
 
     /**
      * This test check the mapped transfer object maps an entity with contains primitive optional field.
@@ -1391,5 +1397,15 @@ public class TestDefaultAndRequiredFieldsOnMappedTO {
         //assertEquals("MISSING_REQUIRED_ATTRIBUTE", validationResult.getCode());
         //assertEquals("stringAttr", validationResult.getLocation());
 
+    }
+
+    @Test
+    void testMapsAFieldTwice() {
+        TransferMapsFieldTwice transferMapsFieldTwice = transferMapsFieldTwiceDao.create(
+                TransferMapsFieldTwiceForCreate.builder().build()
+        );
+
+        assertEquals(Optional.of(1), transferMapsFieldTwice.getIntAttr());
+        assertEquals(1, transferMapsFieldTwice.getIntegerAttr());
     }
 }
