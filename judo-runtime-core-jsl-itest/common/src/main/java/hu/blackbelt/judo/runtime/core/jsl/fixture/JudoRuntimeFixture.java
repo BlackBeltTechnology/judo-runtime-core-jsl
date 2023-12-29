@@ -5,7 +5,7 @@ import com.google.inject.Injector;
 import com.google.inject.Module;
 import hu.blackbelt.judo.meta.expression.builder.jql.JqlExpressionBuilderConfig;
 import hu.blackbelt.judo.meta.expression.builder.jql.asm.AsmJqlExtractor;
-import hu.blackbelt.judo.runtime.core.bootstrap.JudoModelLoader;
+import hu.blackbelt.judo.runtime.core.guice.JudoModelLoader;
 import hu.blackbelt.judo.runtime.core.dao.rdbms.hsqldb.HsqldbDialect;
 import hu.blackbelt.judo.runtime.core.dao.rdbms.hsqldb.HsqldbRdbmsInit;
 import hu.blackbelt.judo.runtime.core.dao.rdbms.liquibase.SimpleLiquibaseExecutor;
