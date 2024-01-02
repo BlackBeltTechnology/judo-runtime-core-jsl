@@ -24,8 +24,8 @@ import com.google.inject.Singleton;
 import com.google.inject.name.Names;
 import com.google.inject.util.Providers;
 import hu.blackbelt.judo.dispatcher.api.Sequence;
-import hu.blackbelt.judo.runtime.core.bootstrap.JudoModule;
-import hu.blackbelt.judo.runtime.core.bootstrap.dao.rdbms.hsqldb.*;
+import hu.blackbelt.judo.runtime.core.guice.JudoModule;
+import hu.blackbelt.judo.runtime.core.guice.dao.rdbms.hsqldb.*;
 import hu.blackbelt.judo.runtime.core.dao.rdbms.Dialect;
 import hu.blackbelt.judo.runtime.core.dao.rdbms.RdbmsInit;
 import hu.blackbelt.judo.runtime.core.dao.rdbms.RdbmsParameterMapper;
@@ -38,7 +38,7 @@ import org.hsqldb.server.Server;
 import javax.sql.DataSource;
 import java.io.File;
 
-import static hu.blackbelt.judo.runtime.core.bootstrap.dao.rdbms.hsqldb.HsqldbServerProvider.*;
+import static hu.blackbelt.judo.runtime.core.guice.dao.rdbms.hsqldb.HsqldbServerProvider.*;
 
 public class JudoHsqldbTestModules extends JudoModule {
 

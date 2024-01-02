@@ -1,4 +1,4 @@
-package hu.blackbelt.judo.runtime.core.bootstrap.jsl;
+package hu.blackbelt.judo.runtime.core.guice.jsl;
 
 /*-
  * #%L
