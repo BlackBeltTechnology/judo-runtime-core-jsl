@@ -24,7 +24,7 @@ entity Simple {
 }
 
 transfer TransferSimple (Simple mapped) {
-	field String stringAttr <= mapped.stringAttr input:true;
+	field String stringAttr <= mapped.stringAttr update:auto;
 	field Integer firstNum <= mapped.firstNum;
 }
 
@@ -39,13 +39,15 @@ entity Entity {
 }
 
 transfer TransferEntity (Entity mapped) {
-    field Integer integerAttr <= mapped.integerAttr input:true;
-    field Scaled scaledAttr <= mapped.scaledAttr input:true;
-    field String stringAttr <= mapped.stringAttr input:true;
-    field Boolean boolAttr <= mapped.boolAttr input:true;
-    field Date dateAttr <= mapped.dateAttr input:true;
-    field Timestamp timestampAttr <= mapped.timestampAttr input:true;
-    field Time timeAttr <= mapped.timeAttr input:true;
+    field Integer integerAttr <= mapped.integerAttr update:auto;
+    field Scaled scaledAttr <= mapped.scaledAttr update:auto;
+    field String stringAttr <= mapped.stringAttr update:auto;
+    field Boolean boolAttr <= mapped.boolAttr update:auto;
+    field Date dateAttr <= mapped.dateAttr update:auto;
+    field Timestamp timestampAttr <= mapped.timestampAttr update:auto;
+    field Time timeAttr <= mapped.timeAttr update:auto;
+    
+    event instead create create;
 }
 
 entity EntityWithPrimitiveDefaults {
@@ -59,13 +61,15 @@ entity EntityWithPrimitiveDefaults {
 }
 
 transfer TransferEntityWithPrimitiveDefaults (EntityWithPrimitiveDefaults mapped) {
-    field Integer integerAttr <= mapped.integerAttr input:true;
-    field Scaled scaledAttr <= mapped.scaledAttr input:true;
-    field String stringAttr <= mapped.stringAttr input:true;
-    field Boolean boolAttr <= mapped.boolAttr input:true;
-    field Date dateAttr <= mapped.dateAttr input:true;
-    field Timestamp timestampAttr <= mapped.timestampAttr input:true;
-    field Time timeAttr <= mapped.timeAttr input:true;
+    field Integer integerAttr <= mapped.integerAttr update:auto;
+    field Scaled scaledAttr <= mapped.scaledAttr update:auto;
+    field String stringAttr <= mapped.stringAttr update:auto;
+    field Boolean boolAttr <= mapped.boolAttr update:auto;
+    field Date dateAttr <= mapped.dateAttr update:auto;
+    field Timestamp timestampAttr <= mapped.timestampAttr update:auto;
+    field Time timeAttr <= mapped.timeAttr update:auto;
+    
+    event instead create create;
 }
 
 entity Functions {
@@ -75,7 +79,7 @@ entity Functions {
 
 transfer TransferFunctions (Functions mapped) {
     relation TransferEntity `entity` <= mapped.`entity` eager:true;
-    relation TransferEntityWithPrimitiveDefaults entityWithPrimitives <= mapped.entityWithPrimitives eager:true;
+    relation TransferEntityWithPrimitiveDefaults entityWithPrimitives <= mapped.entityWithPrimitives eager:true create:true;
 }
 
 entity AnyTypeFunctions extends Functions {
@@ -123,8 +127,8 @@ entity AnyTypeFunctions extends Functions {
 
 transfer TransferAnyTypeFunctions (AnyTypeFunctions mapped) {
 
-    relation TransferEntity `entity` <= mapped.`entity` eager:true;
-    relation TransferEntityWithPrimitiveDefaults entityWithPrimitives <= mapped.entityWithPrimitives eager:true;
+    relation TransferEntity `entity` <= mapped.`entity` eager:true create:true;
+    relation TransferEntityWithPrimitiveDefaults entityWithPrimitives <= mapped.entityWithPrimitives eager:true create:true;
 
     field Boolean integerIsDefinedFalse  <= mapped.integerIsDefinedFalse;
     field Boolean integerIsDefinedTrue  <= mapped.integerIsDefinedTrue;
@@ -307,12 +311,12 @@ entity NumericFunctions {
 }
 
 transfer TransferNumericFunctions (NumericFunctions mapped) {
-    field Integer int <= mapped.int input:true;
-    field Scaled neg <= mapped.neg input:true;
-    field Scaled neg1 <= mapped.neg1 input:true;
-    field Scaled neg2 <= mapped.neg2 input:true;
-    field Scaled neg3 <= mapped.neg3 input:true;
-    field Integer neg4 <= mapped.neg4 input:true;
+    field Integer int <= mapped.int update:auto;
+    field Scaled neg <= mapped.neg update:auto;
+    field Scaled neg1 <= mapped.neg1 update:auto;
+    field Scaled neg2 <= mapped.neg2 update:auto;
+    field Scaled neg3 <= mapped.neg3 update:auto;
+    field Integer neg4 <= mapped.neg4 update:auto;
 
     field Integer roundInt <= mapped.roundInt;
     field Integer roundInt2 <= mapped.roundInt2;
@@ -409,8 +413,8 @@ entity Kleene {
 }
 
 transfer TransferKleene (Kleene mapped) {
-	field Boolean undefined <= mapped.undefined input:true;
-	field Boolean bool <= mapped.bool input:true;
+	field Boolean undefined <= mapped.undefined update:auto;
+	field Boolean bool <= mapped.bool update:auto;
 
 	field Boolean trueOrTrue <= mapped.trueOrTrue;
 	field Boolean trueOrFalse <= mapped.trueOrFalse;
@@ -463,7 +467,7 @@ entity BooleanFunctions {
 }
 
 transfer TransferBooleanFunctions (BooleanFunctions mapped) {
-    field Boolean bool <= mapped.bool input:true;
+    field Boolean bool <= mapped.bool update:auto;
 
     field String ownBoolAsString <= mapped.ownBoolAsString;
     field String trueAsString <= mapped.trueAsString;
@@ -593,17 +597,17 @@ entity TimeFunctions {
 }
 
 transfer TransferTimeFunctions (TimeFunctions mapped) {
-    field Time timeHM <= mapped.timeHM input:true;
-    field Time timeHM1 <= mapped.timeHM1 input:true;
-    field Time timeHMS <= mapped.timeHMS input:true;
-    field Time timeHMS1 <= mapped.timeHMS1 input:true;
-    field Time timeHMSF <= mapped.timeHMSF input:true;
-    field Time timeHMSF1 <= mapped.timeHMSF1 input:true;
-    field Time timeHMSF2 <= mapped.timeHMSF2 input:true;
+    field Time timeHM <= mapped.timeHM update:auto;
+    field Time timeHM1 <= mapped.timeHM1 update:auto;
+    field Time timeHMS <= mapped.timeHMS update:auto;
+    field Time timeHMS1 <= mapped.timeHMS1 update:auto;
+    field Time timeHMSF <= mapped.timeHMSF update:auto;
+    field Time timeHMSF1 <= mapped.timeHMSF1 update:auto;
+    field Time timeHMSF2 <= mapped.timeHMSF2 update:auto;
 
-    field Time undefinedTime <= mapped.undefinedTime input:true;
-    field Integer undefinedNumber <= mapped.undefinedNumber input:true;
-    field Integer number <= mapped.number input:true;
+    field Time undefinedTime <= mapped.undefinedTime update:auto;
+    field Integer undefinedNumber <= mapped.undefinedNumber update:auto;
+    field Integer number <= mapped.number update:auto;
 
     // self
     field String selfTimeHMAsString <= mapped.selfTimeHMAsString;
@@ -701,8 +705,8 @@ entity TimestampFunctions {
 }
 
 transfer TransferTimestampFunctions (TimestampFunctions mapped) {
-    field Timestamp timestamp1 <= mapped.timestamp1 input:true;
-    field Timestamp timestamp2 <= mapped.timestamp2 input:true;
+    field Timestamp timestamp1 <= mapped.timestamp1 update:auto;
+    field Timestamp timestamp2 <= mapped.timestamp2 update:auto;
 
     field Timestamp timestampOfDate <= mapped.timestampOfDate;
     field Timestamp timestampOfDateAndTime <= mapped.timestampOfDateAndTime;
@@ -795,20 +799,20 @@ entity TimestampAsString {
 }
 
 transfer TransferTimestampAsString (TimestampAsString mapped) {
-    field Timestamp timestamp1 <= mapped.timestamp1 input:true;
-    field Timestamp timestamp2 <= mapped.timestamp2 input:true;
-    field Timestamp timestamp3 <= mapped.timestamp3 input:true;
-    field Timestamp timestamp4 <= mapped.timestamp4 input:true;
-    field Timestamp timestamp5 <= mapped.timestamp5 input:true;
-    field Timestamp timestamp6 <= mapped.timestamp6 input:true;
-    field Timestamp timestamp7 <= mapped.timestamp7 input:true;
-    field Timestamp timestamp8 <= mapped.timestamp8 input:true;
-    field Timestamp timestamp9 <= mapped.timestamp9 input:true;
-    field Timestamp timestamp10 <= mapped.timestamp10 input:true;
-    field Timestamp timestamp12 <= mapped.timestamp12 input:true;
-    field Timestamp timestamp13 <= mapped.timestamp13 input:true;
-    field Timestamp timestamp14 <= mapped.timestamp14 input:true;
-    field Timestamp timestamp15 <= mapped.timestamp15 input:true;
+    field Timestamp timestamp1 <= mapped.timestamp1 update:auto;
+    field Timestamp timestamp2 <= mapped.timestamp2 update:auto;
+    field Timestamp timestamp3 <= mapped.timestamp3 update:auto;
+    field Timestamp timestamp4 <= mapped.timestamp4 update:auto;
+    field Timestamp timestamp5 <= mapped.timestamp5 update:auto;
+    field Timestamp timestamp6 <= mapped.timestamp6 update:auto;
+    field Timestamp timestamp7 <= mapped.timestamp7 update:auto;
+    field Timestamp timestamp8 <= mapped.timestamp8 update:auto;
+    field Timestamp timestamp9 <= mapped.timestamp9 update:auto;
+    field Timestamp timestamp10 <= mapped.timestamp10 update:auto;
+    field Timestamp timestamp12 <= mapped.timestamp12 update:auto;
+    field Timestamp timestamp13 <= mapped.timestamp13 update:auto;
+    field Timestamp timestamp14 <= mapped.timestamp14 update:auto;
+    field Timestamp timestamp15 <= mapped.timestamp15 update:auto;
 
     field String timestamp1AsString <= mapped.timestamp1AsString;
     field String timestamp1AsString1 <= mapped.timestamp1AsString1;
@@ -839,15 +843,15 @@ transfer TransferTimestampAsString (TimestampAsString mapped) {
     field String timestamp15AsString <= mapped.timestamp15AsString;
     field String timestamp15AsString1 <= mapped.timestamp15AsString1;
 
-    field Timestamp timestampOfDate <= mapped.timestampOfDate input:true;
+    field Timestamp timestampOfDate <= mapped.timestampOfDate update:auto;
     field String timestampOfDateAsString <= mapped.timestampOfDateAsString;
     field String timestampOfDateAsString1 <= mapped.timestampOfDateAsString1;
 
-    field Timestamp timestampOfDateAndTime <= mapped.timestampOfDateAndTime input:true;
+    field Timestamp timestampOfDateAndTime <= mapped.timestampOfDateAndTime update:auto;
     field String timestampOfDateAndTimeAsString <= mapped.timestampOfDateAndTimeAsString;
     field String timestampOfDateAndTimeAsString1 <= mapped.timestampOfDateAndTimeAsString1;
 
-    field Timestamp fromMilliseconds <= mapped.fromMilliseconds input:true;
+    field Timestamp fromMilliseconds <= mapped.fromMilliseconds update:auto;
     field String fromMillisecondsAsString <= mapped.fromMillisecondsAsString;
     field String fromMillisecondsAsString1 <= mapped.fromMillisecondsAsString1;
 }
@@ -860,7 +864,7 @@ entity EnumFunctions {
 }
 
 transfer TransferEnumFunctions (EnumFunctions mapped) {
-    field MyEnum `enum` <= mapped.`enum` input:true;
+    field MyEnum `enum` <= mapped.`enum` update:auto;
 
     field String ownEnumAsString <= mapped.ownEnumAsString;
     field String enumAsString <= mapped.enumAsString;
@@ -894,11 +898,11 @@ entity InstanceFunctions {
 }
 
 transfer TransferInstanceFunctions (InstanceFunctions mapped){
-    field String instanceField <= mapped.instanceField input:true;
+    field String instanceField <= mapped.instanceField update:auto;
 
     relation FE::TransferExternalEntity external <= mapped.external eager:true;
-    relation TransferParent parent <= mapped.parent eager:true;
-    relation TransferChild child <= mapped.child eager:true;
+    relation TransferParent parent <= mapped.parent eager:true create:true;
+    relation TransferChild child <= mapped.child eager:true create:true;
 
     relation TransferParent[] parents <= mapped.parents choices:Parent.all();
     relation TransferChild[] children <= mapped.children choices:Child.all();
@@ -926,7 +930,7 @@ entity Booler {
 }
 
 transfer TransferBooler (Booler mapped) {
-    field Boolean b <= mapped.b input:true;
+    field Boolean b <= mapped.b update:auto;
 }
 
 entity BoolerTester {
@@ -1011,8 +1015,8 @@ entity CollectionFunctions {
 }
 
 transfer TransferCollectionFunctions (CollectionFunctions mapped) {
-    relation TransferParent[] parentsField <= mapped.parentsField eager:true;
-    relation TransferChild[] childrenField <= mapped.childrenField eager:true;
+    relation TransferParent[] parentsField <= mapped.parentsField eager:true create:true;
+    relation TransferChild[] childrenField <= mapped.childrenField eager:true create:true;
 
     relation TransferParent[] parentsRelation <= mapped.parentsRelation choices:Parent.all();
     relation TransferChild[] childrenRelation <= mapped.childrenRelation choices:Child.all();
@@ -1082,7 +1086,9 @@ entity Parent {
 }
 
 transfer TransferParent (Parent mapped){
-    field String name <= mapped.name input:true;
+    field String name <= mapped.name update:auto;
+    
+    event instead create create;
 }
 
 entity Child extends Parent {
@@ -1091,9 +1097,11 @@ entity Child extends Parent {
 }
 
 transfer TransferChild (Child mapped) {
-    field String name <= mapped.name input:true;
-    field Integer age <= mapped.age input:true;
+    field String name <= mapped.name update:auto;
+    field Integer age <= mapped.age update:auto;
     relation TransferParent mother <= mapped.mother choices:Parent.all();
+    
+    event instead create create;
 }
 
 entity ExternalChild extends FE::ExternalEntity {
@@ -1101,8 +1109,8 @@ entity ExternalChild extends FE::ExternalEntity {
 }
 
 transfer TransferExternalChild (ExternalChild mapped) {
-    field String name <= mapped.name input:true;
-    field Integer age <= mapped.age input:true;
+    field String name <= mapped.name update:auto;
+    field Integer age <= mapped.age update:auto;
 
 }
 
@@ -1111,7 +1119,7 @@ entity Member {
 }
 
 transfer TransferMember (Member mapped){
-    field String name <= mapped.name input:true;
+    field String name <= mapped.name update:auto;
 }
 
 entity Tester {
