@@ -27,15 +27,15 @@ entity ParentB {
 }
 
 entity ParentRequiredC {
-    field required Integer integerAttr;
-    field required Scaled scaledAttr;
-    field required String stringAttr;
-    field required PhoneNumber regexAttr;
-    field required Boolean boolAttr;
-    field required Date dateAttr;
-    field required Timestamp timestampAttr;
-    field required Time timeAttr;
-    field required MyEnum enumAttr;
+    field Integer integerAttr required;
+    field Scaled scaledAttr required;
+    field String stringAttr required;
+    field PhoneNumber regexAttr required;
+    field Boolean boolAttr required;
+    field Date dateAttr required;
+    field Timestamp timestampAttr required;
+    field Time timeAttr required;
+    field MyEnum enumAttr required;
 }
 
 entity ParentDefaultD {
@@ -51,7 +51,7 @@ entity ParentDefaultD {
     field MyEnum enumAttr default:MyEnum#Bombastic;
 }
 
-entity abstract ParentAbstract {
+entity ParentAbstract abstract {
     field String nameAbstract;
 }
 
@@ -90,12 +90,12 @@ transfer ParentATransfer(ParentA parenta) {
 
 transfer RelationTransfer(RelationEntity `entity`) {
 	field String name <= `entity`.name update:auto;
-	event instead create create;
+    event create eventCreate();
 }
 
 transfer CompositionTransfer(CompositionEntity `entity`) {
 	field String name <= `entity`.name update:auto;
-	event instead create create;
+    event create eventCreate();
 }
 
 transfer transferE(E `entity`) {

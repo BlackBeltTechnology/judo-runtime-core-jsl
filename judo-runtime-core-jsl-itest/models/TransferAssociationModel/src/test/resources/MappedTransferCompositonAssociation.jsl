@@ -19,13 +19,13 @@ transfer TransferA (EntityA a) {
 
 transfer TransferB (EntityB b) {
     field String nameB <= b.nameB update:auto;
-    event instead create create;
+    event create eventCreate();
 }
 
 // required single
 
 entity EntityC {
-    field required EntityD singleRequiredEntityD;
+    field EntityD singleRequiredEntityD required;
 }
 
 entity EntityD {
@@ -33,10 +33,10 @@ entity EntityD {
 }
 
 transfer TransferC (EntityC c) {
-    relation required TransferD singleRequiredEntityD <= c.singleRequiredEntityD create:true;
+    relation TransferD singleRequiredEntityD <= c.singleRequiredEntityD create:true required;
 }
 
 transfer TransferD (EntityD d) {
     field String nameD <= d.nameD update:auto;
-    event instead create create;
+    event create eventCreate();
 }

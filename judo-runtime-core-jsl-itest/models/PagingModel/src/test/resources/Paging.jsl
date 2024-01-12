@@ -12,7 +12,7 @@ transfer TransferItem (Item item){
     field Integer number <= item.number update:auto;
     field String topic <= item.topic update:auto;
     field String listName <= item.listName;
-    event instead create create;
+    event create eventCreate();
 }
 
 

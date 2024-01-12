@@ -47,7 +47,7 @@ transfer TransferEntity (Entity mapped) {
     field Timestamp timestampAttr <= mapped.timestampAttr update:auto;
     field Time timeAttr <= mapped.timeAttr update:auto;
     
-    event instead create create;
+    event create eventCreate();
 }
 
 entity EntityWithPrimitiveDefaults {
@@ -69,7 +69,7 @@ transfer TransferEntityWithPrimitiveDefaults (EntityWithPrimitiveDefaults mapped
     field Timestamp timestampAttr <= mapped.timestampAttr update:auto;
     field Time timeAttr <= mapped.timeAttr update:auto;
     
-    event instead create create;
+    event create eventCreate();
 }
 
 entity Functions {
@@ -1088,7 +1088,7 @@ entity Parent {
 transfer TransferParent (Parent mapped){
     field String name <= mapped.name update:auto;
     
-    event instead create create;
+    event create eventCreate();
 }
 
 entity Child extends Parent {
@@ -1101,7 +1101,7 @@ transfer TransferChild (Child mapped) {
     field Integer age <= mapped.age update:auto;
     relation TransferParent mother <= mapped.mother choices:Parent.all();
     
-    event instead create create;
+    event create eventCreate();
 }
 
 entity ExternalChild extends FE::ExternalEntity {

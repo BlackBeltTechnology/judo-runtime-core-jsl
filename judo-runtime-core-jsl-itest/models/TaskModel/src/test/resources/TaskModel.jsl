@@ -25,7 +25,7 @@ entity Person {
 
 entity Workplace {
     relation Person[] persons opposite:workplace;
-    field required String name;
+    field String name required;
     identifier String address;
 
     //ERROR WHEN THIS COMPILED
@@ -33,8 +33,8 @@ entity Workplace {
 }
 
 entity Task {
-    field required String name;
-    field required Integer taskTimeInDay;
+    field String name required;
+    field Integer taskTimeInDay required;
 }
 
 entity SalesPerson{

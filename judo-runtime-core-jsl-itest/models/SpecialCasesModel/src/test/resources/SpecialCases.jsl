@@ -47,10 +47,10 @@ entity E {
 
 entity F {
     field E compE;
-    field required E reqCompE;
+    field E reqCompE required;
     field E[] compECol;
     relation E relE;
-    relation required E reqRelE;
+    relation E reqRelE required;
     relation E[] relECol;
 
     field Integer calculatedPrimitive <= 1;

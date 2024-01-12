@@ -63,34 +63,34 @@ transfer TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFi
 
 // Mapped Transfer Object with required fields
 transfer TransferWithRequiredFieldsMapsEntityWithOptionalFields (EntityWithOptionalFields mappedEntity) {
-    field required Integer intAttr <= mappedEntity.integerAttr update:auto;
-    field required Scaled scaledAttr <= mappedEntity.scaledAttr update:auto;
-    field required SmallString stringAttr <= mappedEntity.stringAttr update:auto;
-    field required PhoneNumber regexAttr <= mappedEntity.regexAttr update:auto;
-    field required Boolean boolAttr <= mappedEntity.boolAttr update:auto;
-    field required Date dateAttr <= mappedEntity.dateAttr update:auto;
-    field required Timestamp timestampAttr <= mappedEntity.timestampAttr update:auto;
-    field required Time timeAttr <= mappedEntity.timeAttr update:auto;
-    field required Enum enumAttr <= mappedEntity.enumAttr update:auto;
+    field Integer intAttr <= mappedEntity.integerAttr update:auto required;
+    field Scaled scaledAttr <= mappedEntity.scaledAttr update:auto required;
+    field SmallString stringAttr <= mappedEntity.stringAttr update:auto required;
+    field PhoneNumber regexAttr <= mappedEntity.regexAttr update:auto required;
+    field Boolean boolAttr <= mappedEntity.boolAttr update:auto required;
+    field Date dateAttr <= mappedEntity.dateAttr update:auto required;
+    field Timestamp timestampAttr <= mappedEntity.timestampAttr update:auto required;
+    field Time timeAttr <= mappedEntity.timeAttr update:auto required;
+    field Enum enumAttr <= mappedEntity.enumAttr update:auto required;
 
 }
 
 // Mapped Transfer Object with required fields with default
 transfer TransferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFields (EntityWithOptionalFields mappedEntity) {
-    field required Integer intAttr <= mappedEntity.integerAttr update:auto default:1;
-    field required Scaled scaledAttr <= mappedEntity.scaledAttr update:auto default:2.34;
-    field required SmallString stringAttr <= mappedEntity.stringAttr update:auto default:"Hello there";
-    field required PhoneNumber regexAttr <= mappedEntity.regexAttr update:auto default:"+36 30 123 1234";
-    field required Boolean boolAttr <= mappedEntity.boolAttr update:auto default:true;
-    field required Date dateAttr <= mappedEntity.dateAttr update:auto default:`2022-07-11`;
-    field required Timestamp timestampAttr <= mappedEntity.timestampAttr update:auto default:`2022-07-11T19:09:33Z`;
-    field required Time timeAttr <= mappedEntity.timeAttr update:auto default:`23:59:59`;
-    field required Enum enumAttr <= mappedEntity.enumAttr update:auto default:Enum#EnumA;
+    field Integer intAttr <= mappedEntity.integerAttr update:auto default:1 required;
+    field Scaled scaledAttr <= mappedEntity.scaledAttr update:auto default:2.34 required;
+    field SmallString stringAttr <= mappedEntity.stringAttr update:auto default:"Hello there" required;
+    field PhoneNumber regexAttr <= mappedEntity.regexAttr update:auto default:"+36 30 123 1234" required;
+    field Boolean boolAttr <= mappedEntity.boolAttr update:auto default:true required;
+    field Date dateAttr <= mappedEntity.dateAttr update:auto default:`2022-07-11` required;
+    field Timestamp timestampAttr <= mappedEntity.timestampAttr update:auto default:`2022-07-11T19:09:33Z` required;
+    field Time timeAttr <= mappedEntity.timeAttr update:auto default:`23:59:59` required;
+    field Enum enumAttr <= mappedEntity.enumAttr update:auto default:Enum#EnumA required;
 }
 
 // Mapped Transfer Object with required fields with default expression
 transfer TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFields (EntityWithOptionalFields mappedEntity) {
-    field required SmallString stringAttr <= mappedEntity.stringAttr update:auto default:queryStringAttribute();
+    field SmallString stringAttr <= mappedEntity.stringAttr required update:auto default:queryStringAttribute();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -98,15 +98,15 @@ transfer TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFi
 ////////////////////////////////////////////////////////////////////////////////////////
 
 entity EntityWithRequiredFields {
-        field required Integer integerAttr;
-        field required Scaled scaledAttr;
-        field required SmallString stringAttr;
-        field required PhoneNumber regexAttr;
-        field required Boolean boolAttr;
-        field required Date dateAttr;
-        field required Timestamp timestampAttr;
-        field required Time timeAttr;
-        field required Enum enumAttr;
+        field Integer integerAttr required;
+        field Scaled scaledAttr required;
+        field SmallString stringAttr required;
+        field PhoneNumber regexAttr required;
+        field Boolean boolAttr required;
+        field Date dateAttr required;
+        field Timestamp timestampAttr required;
+        field Time timeAttr required;
+        field Enum enumAttr required;
 }
 
 
@@ -143,33 +143,33 @@ transfer TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFi
 
 // Mapped Transfer Object with required fields
 transfer TransferWithRequiredFieldsMapsEntityWithRequiredFields (EntityWithRequiredFields mappedEntity) {
-    field required Integer intAttr <= mappedEntity.integerAttr update:auto;
-    field required Scaled scaledAttr <= mappedEntity.scaledAttr update:auto;
-    field required SmallString stringAttr <= mappedEntity.stringAttr update:auto;
-    field required PhoneNumber regexAttr <= mappedEntity.regexAttr update:auto;
-    field required Boolean boolAttr <= mappedEntity.boolAttr update:auto;
-    field required Date dateAttr <= mappedEntity.dateAttr update:auto;
-    field required Timestamp timestampAttr <= mappedEntity.timestampAttr update:auto;
-    field required Time timeAttr <= mappedEntity.timeAttr update:auto;
-    field required Enum enumAttr <= mappedEntity.enumAttr update:auto;
+    field Integer intAttr <= mappedEntity.integerAttr update:auto required;
+    field Scaled scaledAttr <= mappedEntity.scaledAttr update:auto required;
+    field SmallString stringAttr <= mappedEntity.stringAttr update:auto required;
+    field PhoneNumber regexAttr <= mappedEntity.regexAttr update:auto required;
+    field Boolean boolAttr <= mappedEntity.boolAttr update:auto required;
+    field Date dateAttr <= mappedEntity.dateAttr update:auto required;
+    field Timestamp timestampAttr <= mappedEntity.timestampAttr update:auto required;
+    field Time timeAttr <= mappedEntity.timeAttr update:auto required;
+    field Enum enumAttr <= mappedEntity.enumAttr update:auto required;
 }
 
 // Mapped Transfer Object with required fields with default
 transfer TransferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFields (EntityWithRequiredFields mappedEntity) {
-    field required Integer intAttr <= mappedEntity.integerAttr update:auto default:1;
-    field required Scaled scaledAttr <= mappedEntity.scaledAttr update:auto default:2.34;
-    field required SmallString stringAttr <= mappedEntity.stringAttr update:auto default:"Hello there";
-    field required PhoneNumber regexAttr <= mappedEntity.regexAttr update:auto default:"+36 30 123 1234";
-    field required Boolean boolAttr <= mappedEntity.boolAttr update:auto default:true;
-    field required Date dateAttr <= mappedEntity.dateAttr update:auto default:`2022-07-11`;
-    field required Timestamp timestampAttr <= mappedEntity.timestampAttr update:auto default:`2022-07-11T19:09:33Z`;
-    field required Time timeAttr <= mappedEntity.timeAttr update:auto default:`23:59:59`;
-    field required Enum enumAttr <= mappedEntity.enumAttr update:auto default:Enum#EnumA;
+    field Integer intAttr <= mappedEntity.integerAttr update:auto default:1 required;
+    field Scaled scaledAttr <= mappedEntity.scaledAttr update:auto default:2.34 required;
+    field SmallString stringAttr <= mappedEntity.stringAttr update:auto default:"Hello there" required;
+    field PhoneNumber regexAttr <= mappedEntity.regexAttr update:auto default:"+36 30 123 1234" required;
+    field Boolean boolAttr <= mappedEntity.boolAttr update:auto default:true required;
+    field Date dateAttr <= mappedEntity.dateAttr update:auto default:`2022-07-11` required;
+    field Timestamp timestampAttr <= mappedEntity.timestampAttr update:auto default:`2022-07-11T19:09:33Z` required;
+    field Time timeAttr <= mappedEntity.timeAttr update:auto default:`23:59:59` required;
+    field Enum enumAttr <= mappedEntity.enumAttr update:auto default:Enum#EnumA required;
 }
 
 // Mapped Transfer Object with required fields with default expression
 transfer TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFields (EntityWithRequiredFields mappedEntity) {
-    field required SmallString stringAttr <= mappedEntity.stringAttr update:auto default:queryStringAttribute();
+    field SmallString stringAttr <= mappedEntity.stringAttr update:auto default:queryStringAttribute() required;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -222,33 +222,33 @@ transfer TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFi
 
 // Mapped Transfer Object with required fields
 transfer TransferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefault (EntityWithOptionalFieldsWithDefault mappedEntity) {
-    field required Integer intAttr <= mappedEntity.integerAttr update:auto;
-    field required Scaled scaledAttr <= mappedEntity.scaledAttr update:auto;
-    field required SmallString stringAttr <= mappedEntity.stringAttr update:auto;
-    field required PhoneNumber regexAttr <= mappedEntity.regexAttr update:auto;
-    field required Boolean boolAttr <= mappedEntity.boolAttr update:auto;
-    field required Date dateAttr <= mappedEntity.dateAttr update:auto;
-    field required Timestamp timestampAttr <= mappedEntity.timestampAttr update:auto;
-    field required Time timeAttr <= mappedEntity.timeAttr update:auto;
-    field required Enum enumAttr <= mappedEntity.enumAttr update:auto;
+    field Integer intAttr <= mappedEntity.integerAttr update:auto required;
+    field Scaled scaledAttr <= mappedEntity.scaledAttr update:auto required;
+    field SmallString stringAttr <= mappedEntity.stringAttr update:auto required;
+    field PhoneNumber regexAttr <= mappedEntity.regexAttr update:auto required;
+    field Boolean boolAttr <= mappedEntity.boolAttr update:auto required;
+    field Date dateAttr <= mappedEntity.dateAttr update:auto required;
+    field Timestamp timestampAttr <= mappedEntity.timestampAttr update:auto required;
+    field Time timeAttr <= mappedEntity.timeAttr update:auto required;
+    field Enum enumAttr <= mappedEntity.enumAttr update:auto required;
 }
 
 // Mapped Transfer Object with required fields with default
 transfer TransferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefault (EntityWithOptionalFieldsWithDefault mappedEntity) {
-    field required Integer intAttr <= mappedEntity.integerAttr update:auto default:2;
-    field required Scaled scaledAttr <= mappedEntity.scaledAttr update:auto default:3.34;
-    field required SmallString stringAttr <= mappedEntity.stringAttr update:auto default:"Lorem Ipsum";
-    field required PhoneNumber regexAttr <= mappedEntity.regexAttr update:auto default:"+36 30 123 5678";
-    field required Boolean boolAttr <= mappedEntity.boolAttr update:auto default:false;
-    field required Date dateAttr <= mappedEntity.dateAttr update:auto default:`2022-07-12`;
-    field required Timestamp timestampAttr <= mappedEntity.timestampAttr update:auto default:`2022-07-12T19:09:33Z`;
-    field required Time timeAttr <= mappedEntity.timeAttr update:auto default:`23:59:58`;
-    field required Enum enumAttr <= mappedEntity.enumAttr update:auto default:Enum#EnumB;
+    field Integer intAttr <= mappedEntity.integerAttr update:auto default:2 required;
+    field Scaled scaledAttr <= mappedEntity.scaledAttr update:auto default:3.34 required;
+    field SmallString stringAttr <= mappedEntity.stringAttr update:auto default:"Lorem Ipsum" required;
+    field PhoneNumber regexAttr <= mappedEntity.regexAttr update:auto default:"+36 30 123 5678" required;
+    field Boolean boolAttr <= mappedEntity.boolAttr update:auto default:false required;
+    field Date dateAttr <= mappedEntity.dateAttr update:auto default:`2022-07-12` required;
+    field Timestamp timestampAttr <= mappedEntity.timestampAttr update:auto default:`2022-07-12T19:09:33Z` required;
+    field Time timeAttr <= mappedEntity.timeAttr update:auto default:`23:59:58` required;
+    field Enum enumAttr <= mappedEntity.enumAttr update:auto default:Enum#EnumB required;
 }
 
 // Mapped Transfer Object with required fields with default expression
 transfer TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefault (EntityWithOptionalFieldsWithDefault mappedEntity) {
-    field required SmallString stringAttr <= mappedEntity.stringAttr update:auto default:queryStringAttribute();
+    field SmallString stringAttr <= mappedEntity.stringAttr update:auto default:queryStringAttribute() required;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -256,15 +256,15 @@ transfer TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFi
 ////////////////////////////////////////////////////////////////////////////////////////
 
 entity EntityWithRequiredFieldsWithDefault {
-    field required Integer integerAttr default:1;
-    field required Scaled scaledAttr default:2.34;
-    field required String stringAttr default:"Hello there";
-    field required PhoneNumber regexAttr default:"+36-1-223-123";
-    field required Boolean boolAttr default:true;
-    field required Date dateAttr default:`2021-07-11`;
-    field required Timestamp timestampAttr default:`2021-07-11T19:09:33Z`;
-    field required Time timeAttr default:`23:59:59`;
-    field required Enum enumAttr default:Enum#EnumA;
+    field Integer integerAttr default:1 required;
+    field Scaled scaledAttr default:2.34 required;
+    field String stringAttr default:"Hello there" required;
+    field PhoneNumber regexAttr default:"+36-1-223-123" required;
+    field Boolean boolAttr default:true required;
+    field Date dateAttr default:`2021-07-11` required;
+    field Timestamp timestampAttr default:`2021-07-11T19:09:33Z` required;
+    field Time timeAttr default:`23:59:59` required;
+    field Enum enumAttr default:Enum#EnumA required;
 }
 
 
@@ -301,38 +301,38 @@ transfer TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFi
 
 // Mapped Transfer Object with required fields
 transfer TransferWithRequiredFieldsMapsEntityWithRequiredFieldsWithDefault (EntityWithRequiredFieldsWithDefault mappedEntity) {
-    field required Integer intAttr <= mappedEntity.integerAttr update:auto;
-    field required Scaled scaledAttr <= mappedEntity.scaledAttr update:auto;
-    field required SmallString stringAttr <= mappedEntity.stringAttr update:auto;
-    field required PhoneNumber regexAttr <= mappedEntity.regexAttr update:auto;
-    field required Boolean boolAttr <= mappedEntity.boolAttr update:auto;
-    field required Date dateAttr <= mappedEntity.dateAttr update:auto;
-    field required Timestamp timestampAttr <= mappedEntity.timestampAttr update:auto;
-    field required Time timeAttr <= mappedEntity.timeAttr update:auto;
-    field required Enum enumAttr <= mappedEntity.enumAttr update:auto;
+    field Integer intAttr <= mappedEntity.integerAttr update:auto required;
+    field Scaled scaledAttr <= mappedEntity.scaledAttr update:auto required;
+    field SmallString stringAttr <= mappedEntity.stringAttr update:auto required;
+    field PhoneNumber regexAttr <= mappedEntity.regexAttr update:auto required;
+    field Boolean boolAttr <= mappedEntity.boolAttr update:auto required;
+    field Date dateAttr <= mappedEntity.dateAttr update:auto required;
+    field Timestamp timestampAttr <= mappedEntity.timestampAttr update:auto required;
+    field Time timeAttr <= mappedEntity.timeAttr update:auto required;
+    field Enum enumAttr <= mappedEntity.enumAttr update:auto required;
 }
 
 // Mapped Transfer Object with required fields with default
 transfer TransferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsWithDefault (EntityWithRequiredFieldsWithDefault mappedEntity) {
-    field required Integer intAttr <= mappedEntity.integerAttr update:auto default:2;
-    field required Scaled scaledAttr <= mappedEntity.scaledAttr update:auto default:3.34;
-    field required SmallString stringAttr <= mappedEntity.stringAttr update:auto default:"Lorem Ipsum";
-    field required PhoneNumber regexAttr <= mappedEntity.regexAttr update:auto default:"+36 30 123 5678";
-    field required Boolean boolAttr <= mappedEntity.boolAttr update:auto default:false;
-    field required Date dateAttr <= mappedEntity.dateAttr update:auto default:`2022-07-12`;
-    field required Timestamp timestampAttr <= mappedEntity.timestampAttr update:auto default:`2022-07-12T19:09:33Z`;
-    field required Time timeAttr <= mappedEntity.timeAttr update:auto default:`23:59:58`;
-    field required Enum enumAttr <= mappedEntity.enumAttr update:auto default:Enum#EnumB;
+    field Integer intAttr <= mappedEntity.integerAttr update:auto default:2 required;
+    field Scaled scaledAttr <= mappedEntity.scaledAttr update:auto default:3.34 required;
+    field SmallString stringAttr <= mappedEntity.stringAttr update:auto default:"Lorem Ipsum" required;
+    field PhoneNumber regexAttr <= mappedEntity.regexAttr update:auto default:"+36 30 123 5678" required;
+    field Boolean boolAttr <= mappedEntity.boolAttr update:auto default:false required;
+    field Date dateAttr <= mappedEntity.dateAttr update:auto default:`2022-07-12` required;
+    field Timestamp timestampAttr <= mappedEntity.timestampAttr update:auto default:`2022-07-12T19:09:33Z` required;
+    field Time timeAttr <= mappedEntity.timeAttr update:auto default:`23:59:58` required;
+    field Enum enumAttr <= mappedEntity.enumAttr update:auto default:Enum#EnumB required;
 }
 
 // Mapped Transfer Object with required fields with default expression
 transfer TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefault (EntityWithRequiredFieldsWithDefault mappedEntity) {
-    field required SmallString stringAttr <= mappedEntity.stringAttr update:auto default:queryStringAttribute();
+    field SmallString stringAttr <= mappedEntity.stringAttr update:auto default:queryStringAttribute() required;
 }
 
 transfer TransferMapsFieldTwice (EntityWithRequiredFieldsWithDefault mappedEntity) {
     field Integer intAttr <= mappedEntity.integerAttr update:auto;
-    field required Integer integerAttr <= mappedEntity.integerAttr update:auto;
+    field Integer integerAttr <= mappedEntity.integerAttr update:auto required;
 }
 
 query String queryStringAttribute() <= EntityWithOptionalFields.all().any().stringAttr;

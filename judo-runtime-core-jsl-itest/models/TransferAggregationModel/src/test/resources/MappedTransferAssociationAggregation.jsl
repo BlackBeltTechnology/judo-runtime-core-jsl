@@ -25,7 +25,7 @@ transfer TransferB (EntityB b) {
 // Single required relation
 entity EntityC {
     field String nameC;
-    relation required EntityD relationDonC;
+    relation EntityD relationDonC required;
 }
 
 entity EntityD {
@@ -34,7 +34,7 @@ entity EntityD {
 
 transfer TransferC (EntityC c) {
     field String nameC <= c.nameC update:auto;
-    relation required TransferD relationDonC <= c.relationDonC eager:true choices:EntityD.all();
+    relation TransferD relationDonC <= c.relationDonC eager:true choices:EntityD.all() required;
 }
 
 transfer TransferD (EntityD d) {
@@ -86,7 +86,7 @@ collection <-> collection
 entity EntityG {
     field String nameG;
     relation EntityH relationOptionalH opposite-add: relationGForOptionalH;
-    relation required EntityH relationRequiredH opposite-add: relationGForRequiredH;
+    relation EntityH relationRequiredH opposite-add: relationGForRequiredH required;
     relation EntityH[] relationCollectionH opposite-add: relationGForCollectionH;
 }
 
@@ -97,7 +97,7 @@ entity EntityH {
 transfer TransferG (EntityG g) {
     field String nameG <= g.nameG update:auto;
     relation TransferH relationOptionalH <= g.relationOptionalH eager:true choices:EntityH.all();
-    relation required TransferH relationRequiredH <= g.relationRequiredH eager:true choices:EntityH.all();
+    relation TransferH relationRequiredH <= g.relationRequiredH eager:true choices:EntityH.all() required;
     relation TransferH[] relationCollectionH <= g.relationCollectionH eager:true choices:EntityH.all();
 }
 
@@ -116,8 +116,8 @@ entity EntityI {
 
 entity EntityJ {
     field String nameJ;
-    relation required EntityI relationRequiredIForOptionalJ opposite: relationOptionalJ;
-    relation required EntityI relationRequiredIorCollectionJ opposite: relationCollectionJ;
+    relation EntityI relationRequiredIForOptionalJ opposite: relationOptionalJ required;
+    relation EntityI relationRequiredIorCollectionJ opposite: relationCollectionJ required;
 }
 
 transfer TransferI (EntityI i) {
@@ -128,8 +128,8 @@ transfer TransferI (EntityI i) {
 
 transfer TransferJ (EntityJ j) {
     field String nameJ <= j.nameJ update:auto;
-    relation required TransferI relationRequiredIForOptionalJ <= j.relationRequiredIForOptionalJ choices:EntityI.all();
-    relation required TransferI relationRequiredIorCollectionJ <= j.relationRequiredIorCollectionJ choices:EntityI.all();
+    relation TransferI relationRequiredIForOptionalJ <= j.relationRequiredIForOptionalJ choices:EntityI.all() required;
+    relation TransferI relationRequiredIorCollectionJ <= j.relationRequiredIorCollectionJ choices:EntityI.all() required;
 }
 
 entity EntityK {
@@ -183,10 +183,10 @@ entity H {
     field String stringH;
     field J singleJonH;
     field J[] collectionJonH;
-    field required J singleRequiredJonH;
+    field J singleRequiredJonH required;
 }
 
-entity abstract I {
+entity I abstract {
     field String stringI;
     field K[] multipleKonI;
 }
@@ -203,17 +203,17 @@ transfer TH(H entityh) {
     field String stringH <= entityh.stringH update:auto;
     relation TJ singleJonH <= entityh.singleJonH eager:true create:true;
     relation TJ[] collectionJonH <= entityh.collectionJonH eager:true create:true;
-    relation required TJ singleRequiredJonH <= entityh.singleRequiredJonH eager:true create:true;
+    relation TJ singleRequiredJonH <= entityh.singleRequiredJonH eager:true create:true required;
 }
 
 transfer TJ(J entityj) {
     field String stringI <= entityj.stringI update:auto;
     field String stringJ <= entityj.stringJ update:auto;
     relation TK[] multipleKonI <= entityj.multipleKonI eager:true create:true;
-    event instead create create;
+    event create eventCreate();
 }
 
 transfer TK(K entityk) {
     field String stringK <= entityk.stringK update:auto;
-    event instead create create;
+    event create eventCreate();
 }

@@ -25,7 +25,7 @@ transfer TransferB (EntityB b) {
 // Single required relation
 entity EntityC {
     field String nameC;
-    relation required EntityD relationDonC;
+    relation EntityD relationDonC required;
 }
 
 entity EntityD {
@@ -34,7 +34,7 @@ entity EntityD {
 
 transfer TransferC (EntityC c) {
     field String nameC <= c.nameC update:auto;
-    relation required TransferD relationDonC <= c.relationDonC choices:EntityD.all();
+    relation TransferD relationDonC <= c.relationDonC choices:EntityD.all() required;
 }
 
 transfer TransferD (EntityD d) {
@@ -82,7 +82,7 @@ collection <-> collection
 entity EntityG {
     field String nameG;
     relation EntityH relationOptionalH opposite-add: relationGForOptionalH;
-    relation required EntityH relationRequiredH opposite-add: relationGForRequiredH;
+    relation EntityH relationRequiredH opposite-add: relationGForRequiredH required;
     relation EntityH[] relationCollectionH opposite-add: relationGForCollectionH;
 }
 
@@ -93,7 +93,7 @@ entity EntityH {
 transfer TransferG (EntityG g) {
     field String nameG <= g.nameG update:auto;
     relation TransferH relationOptionalH <= g.relationOptionalH choices:EntityH.all();
-    relation required TransferH relationRequiredH <= g.relationRequiredH choices:EntityH.all();
+    relation TransferH relationRequiredH <= g.relationRequiredH choices:EntityH.all() required;
     relation TransferH[] relationCollectionH <= g.relationCollectionH choices:EntityH.all();
 }
 
@@ -112,8 +112,8 @@ entity EntityI {
 
 entity EntityJ {
     field String nameJ;
-    relation required EntityI relationRequiredIForOptionalJ opposite: relationOptionalJ;
-    relation required EntityI relationRequiredIorCollectionJ opposite: relationCollectionJ;
+    relation EntityI relationRequiredIForOptionalJ opposite: relationOptionalJ required;
+    relation EntityI relationRequiredIorCollectionJ opposite: relationCollectionJ required;
 }
 
 transfer TransferI (EntityI i) {
@@ -124,8 +124,8 @@ transfer TransferI (EntityI i) {
 
 transfer TransferJ (EntityJ j) {
     field String nameJ <= j.nameJ update:auto;
-    relation required TransferI relationRequiredIForOptionalJ <= j.relationRequiredIForOptionalJ choices:EntityI.all();
-    relation required TransferI relationRequiredIorCollectionJ <= j.relationRequiredIorCollectionJ choices:EntityI.all();
+    relation TransferI relationRequiredIForOptionalJ <= j.relationRequiredIForOptionalJ choices:EntityI.all() required;
+    relation TransferI relationRequiredIorCollectionJ <= j.relationRequiredIorCollectionJ choices:EntityI.all() required;
 }
 
 entity EntityK {

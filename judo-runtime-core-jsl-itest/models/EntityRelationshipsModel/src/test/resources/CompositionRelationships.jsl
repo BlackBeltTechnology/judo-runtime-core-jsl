@@ -11,10 +11,10 @@ entity EntityA {
     field String stringA;
     field EntityC singleConA;
     field EntityC[] collectionConA;
-    field required EntityC singleRequiredConA;
+    field EntityC singleRequiredConA required;
 }
 
-entity abstract EntityB {
+entity EntityB abstract {
     field String stringB;
     field EntityD[] multipleDonB;
 }
@@ -36,7 +36,7 @@ entity EntityF {
 }
 
 entity EntityG {
-  field required String name default:EntityH.any().alwaysUndefined;
+  field String name default:EntityH.any().alwaysUndefined required;
 }
 
 entity EntityH {
@@ -59,7 +59,7 @@ transfer TransferA(EntityA entitya) {
     field String stringA <= entitya.stringA update:auto;
     relation TransferC singleConA <= entitya.singleConA eager:true;
     relation TransferC[] collectionConA <= entitya.collectionConA eager:true;
-    relation required TransferC singleRequiredConA <= entitya.singleRequiredConA eager:true;
+    relation TransferC singleRequiredConA <= entitya.singleRequiredConA eager:true required;
 }
 
 transfer TransferC(EntityC entityc) {

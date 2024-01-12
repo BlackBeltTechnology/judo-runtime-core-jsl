@@ -180,12 +180,12 @@ transfer TransferDerivedSource (DerivedSource mapped) {
     field String lastName <= mapped.lastName update:auto;
     field Integer age <= mapped.age update:auto;
     field Scaled score <= mapped.score update:auto;
-	event instead create create;
+    event create eventCreate();
 }
 
 
 entity DerivedOperators {
-    field required DerivedSource source;
+    field DerivedSource source required;
     field DerivedSource undefined;
     field String stringConcat <= self.source.firstName + " " + self.source.lastName;
     field Integer firstNameLength <= self.source.firstName.size();
@@ -223,7 +223,7 @@ entity DerivedOperators {
 }
 
 transfer TransferDerivedOperators (DerivedOperators mapped) {
-    relation required TransferDerivedSource source <= mapped.source eager:true create:true;
+    relation TransferDerivedSource source <= mapped.source required eager:true create:true;
     relation TransferDerivedSource undefined <= mapped.undefined eager:true;
     field String stringConcat <= mapped.stringConcat;
     field Integer firstNameLength <= mapped.firstNameLength;

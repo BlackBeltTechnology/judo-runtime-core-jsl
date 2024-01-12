@@ -22,14 +22,14 @@ transfer TransferXTO (EntityX entityX) {
     relation TransferXTO[] xs <= entityX.xs eager:true create:true;
     relation TransferYTO y <= entityX.y eager:true create:true;
     relation TransferYTO[] ys <= entityX.ys eager:true create:true;
-    event instead create create;
+    event create eventCreate();
 }
 
 transfer TransferYTO (EntityY entityY) {
     field String name <= entityY.name update:auto;
     relation TransferXTO yx <= entityY.yx eager:true create:true;
     relation TransferXTO[] yxs <= entityY.yxs eager:true create:true;
-    event instead create create;
+    event create eventCreate();
 }
 
 entity EntityA {
@@ -56,7 +56,7 @@ transfer TransferATO (EntityA entityA) {
     field String childNameThirdLevel <= entityA.a.a.name;
     field String childNameFourthLevel <= entityA.a.a.a.name;
 
-    event instead create create;
+    event create eventCreate();
 }
 
 transfer TransferBTO (EntityB entityB) {
