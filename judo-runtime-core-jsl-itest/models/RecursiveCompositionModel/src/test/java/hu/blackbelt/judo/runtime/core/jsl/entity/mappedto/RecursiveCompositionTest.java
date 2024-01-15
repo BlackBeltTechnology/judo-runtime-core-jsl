@@ -304,10 +304,10 @@ public class RecursiveCompositionTest {
         TransferBTO b1 = transferBTODao.create(TransferBTOForCreate.builder().withName("b1")
                 .withBa(TransferATOForCreate.builder().withName("a1")
                         .withA(TransferATOForCreate.builder().withName("a4").build())
-                        .withAs(List.of(TransferATOForCreate.builder().withName("a5").build(), TransferATOForCreate.builder().withName("a6").build())).build())
+                        .withAlist(List.of(TransferATOForCreate.builder().withName("a5").build(), TransferATOForCreate.builder().withName("a6").build())).build())
                 .withBas(List.of(TransferATOForCreate.builder().withName("a2")
                         .withA(TransferATOForCreate.builder().withName("a5").build()).build(), TransferATOForCreate.builder().withName("a3")
-                        .withAs(List.of(TransferATOForCreate.builder().withName("a5").build(), TransferATOForCreate.builder().withName("a6").build())).build()))
+                        .withAlist(List.of(TransferATOForCreate.builder().withName("a5").build(), TransferATOForCreate.builder().withName("a6").build())).build()))
                 .build());
 
         assertEquals("b1", b1.getName().orElseThrow());
@@ -316,7 +316,7 @@ public class RecursiveCompositionTest {
         assertTrue(b1.getBas().stream().anyMatch(c -> "a2".equals(c.getName().orElseThrow())));
         assertTrue(b1.getBas().stream().anyMatch(c -> "a3".equals(c.getName().orElseThrow())));
         assertFalse(b1.getA().isPresent());
-        assertEquals(0, b1.getAs().size());
+        assertEquals(0, b1.getAlist().size());
 
         EntityB a1TransferBTO = entityBDao.getById(b1.adaptTo(EntityBIdentifier.class)).orElseThrow();
 
@@ -326,21 +326,21 @@ public class RecursiveCompositionTest {
         assertTrue(a1TransferBTO.getBas().stream().anyMatch(c -> "a2".equals(c.getName().orElseThrow())));
         assertTrue(a1TransferBTO.getBas().stream().anyMatch(c -> "a3".equals(c.getName().orElseThrow())));
         assertFalse(a1TransferBTO.getA().isPresent());
-        assertEquals(0, a1TransferBTO.getAs().size());
+        assertEquals(0, a1TransferBTO.getAlist().size());
 
         TransferATO a1Test = b1.getBa().orElseThrow();
 
         assertEquals("a4", a1Test.getA().orElseThrow().getName().orElseThrow());
-        assertEquals(2, a1Test.getAs().size());
-        assertTrue(a1Test.getAs().stream().anyMatch(c -> "a5".equals(c.getName().orElseThrow())));
-        assertTrue(a1Test.getAs().stream().anyMatch(c -> "a6".equals(c.getName().orElseThrow())));
+        assertEquals(2, a1Test.getAlist().size());
+        assertTrue(a1Test.getAlist().stream().anyMatch(c -> "a5".equals(c.getName().orElseThrow())));
+        assertTrue(a1Test.getAlist().stream().anyMatch(c -> "a6".equals(c.getName().orElseThrow())));
 
         EntityA a1TransferATO = entityADao.getById(a1Test.adaptTo(EntityAIdentifier.class)).orElseThrow();
 
         assertEquals("a4", a1TransferATO.getA().orElseThrow().getName().orElseThrow());
-        assertEquals(2, a1TransferATO.getAs().size());
-        assertTrue(a1TransferATO.getAs().stream().anyMatch(c -> "a5".equals(c.getName().orElseThrow())));
-        assertTrue(a1TransferATO.getAs().stream().anyMatch(c -> "a6".equals(c.getName().orElseThrow())));
+        assertEquals(2, a1TransferATO.getAlist().size());
+        assertTrue(a1TransferATO.getAlist().stream().anyMatch(c -> "a5".equals(c.getName().orElseThrow())));
+        assertTrue(a1TransferATO.getAlist().stream().anyMatch(c -> "a6".equals(c.getName().orElseThrow())));
 
         TransferATO a2Test = b1.getBas().stream().filter(c -> "a2".equals(c.getName().orElseThrow())).findFirst().orElseThrow();
 
@@ -352,15 +352,15 @@ public class RecursiveCompositionTest {
 
         TransferATO a3Test = b1.getBas().stream().filter(c -> "a3".equals(c.getName().orElseThrow())).findFirst().orElseThrow();
 
-        assertEquals(2, a3Test.getAs().size());
-        assertTrue(a3Test.getAs().stream().anyMatch(c -> "a5".equals(c.getName().orElseThrow())));
-        assertTrue(a3Test.getAs().stream().anyMatch(c -> "a6".equals(c.getName().orElseThrow())));
+        assertEquals(2, a3Test.getAlist().size());
+        assertTrue(a3Test.getAlist().stream().anyMatch(c -> "a5".equals(c.getName().orElseThrow())));
+        assertTrue(a3Test.getAlist().stream().anyMatch(c -> "a6".equals(c.getName().orElseThrow())));
 
         EntityA a3TransferATO = entityADao.getById(a3Test.adaptTo(EntityAIdentifier.class)).orElseThrow();
 
-        assertEquals(2, a3TransferATO.getAs().size());
-        assertTrue(a3TransferATO.getAs().stream().anyMatch(c -> "a5".equals(c.getName().orElseThrow())));
-        assertTrue(a3TransferATO.getAs().stream().anyMatch(c -> "a6".equals(c.getName().orElseThrow())));
+        assertEquals(2, a3TransferATO.getAlist().size());
+        assertTrue(a3TransferATO.getAlist().stream().anyMatch(c -> "a5".equals(c.getName().orElseThrow())));
+        assertTrue(a3TransferATO.getAlist().stream().anyMatch(c -> "a6".equals(c.getName().orElseThrow())));
     }
 
     @Test

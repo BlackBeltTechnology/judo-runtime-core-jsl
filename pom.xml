@@ -584,7 +584,7 @@
             </activation>
             <modules>
                 <module>judo-runtime-core-jsl</module>
-                <module>judo-runtime-core-bootstrap-jsl</module>
+                <module>judo-runtime-core-jsl-guice</module>
                 <module>judo-runtime-core-jsl-itest</module>
                 <module>judo-runtime-core-jsl-spring-itest</module>
             </modules>

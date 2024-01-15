@@ -25,24 +25,28 @@ entity D {
 // TRANSFER representation
 
 transfer TA maps A as a {
-    relation required TC conA <= a.conA eager:true;
+    relation required TC conA <= a.conA eager:true create:true;
 }
 
 transfer TB maps B as b {
-    relation required TD donB <= b.donB eager:true;
-    relation required TC conA <= b.conA eager:true;
+    relation required TD donB <= b.donB eager:true create:true;
+    relation required TC conA <= b.conA eager:true create:true;
 }
 
 transfer TC maps C as c {
     relation TA containerA <= c.containerA;
     relation TB containerB <= c.containerB;
     relation TB containerB1 <= c.containerB1;
+
+	event instead create create;
 }
 
 transfer TD maps D as d {
     relation TA containerA <= d.containerA;
     relation TA containerA1 <= d.containerA1;
     relation TB containerB <= d.containerB;
+
+	event instead create create;
 }
 
 
@@ -64,17 +68,20 @@ entity AdditionalService {
 }
 
 transfer TPartner (Partner p) {
-    relation TServicePrice[] servicePrices <= p.servicePrices eager:true;
+    relation TServicePrice[] servicePrices <= p.servicePrices eager:true create:true;
 }
 
 transfer TServicePrice (ServicePrice s) {
+  event instead create create;
 }
 
 transfer TStockTransaction (StockTransaction s) {
-  relation TAdditionalService[] additionalServices <= s.additionalServices eager:true;
+  relation TAdditionalService[] additionalServices <= s.additionalServices eager:true create:true;
   relation required TPartner client <= s.client choices:Partner.all();
 }
 
 transfer TAdditionalService (AdditionalService a) {
   relation TServicePrice servicePrice <= a.servicePrice choices : a.servicePriceDerived;
+  
+  event instead create create;
 }

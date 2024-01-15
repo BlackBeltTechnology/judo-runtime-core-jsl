@@ -9,9 +9,10 @@ entity Item {
 }
 
 transfer TransferItem (Item item){
-    field Integer number <= item.number input:true;
-    field String topic <= item.topic input:true;
+    field Integer number <= item.number update:auto;
+    field String topic <= item.topic update:auto;
     field String listName <= item.listName;
+    event instead create create;
 }
 
 
@@ -21,8 +22,8 @@ entity List {
 }
 
 transfer TransferList (List list){
-    field String name <= list.name input:true;
-    relation TransferItem[] items <= list.items eager:true;
+    field String name <= list.name update:auto;
+    relation TransferItem[] items <= list.items eager:true create:true;
 }
 
 entity LogEntry {
@@ -31,6 +32,6 @@ entity LogEntry {
 }
 
 transfer TransferLogEntry (LogEntry logEntry){
-    field Timestamp timestamp <= logEntry.timestamp input:true;
-    field String message <= logEntry.message input:true;
+    field Timestamp timestamp <= logEntry.timestamp update:auto;
+    field String message <= logEntry.message update:auto;
 }
