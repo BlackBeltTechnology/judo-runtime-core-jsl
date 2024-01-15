@@ -55,22 +55,24 @@ entity EntityG {
 }
 
 transfer TransferD(D d) {
-    relation TransferE[] compE <= d.compE eager:true;
-    field String stringD <= d.stringD input:true;
+    relation TransferE[] compE <= d.compE eager:true create:true;
+    field String stringD <= d.stringD update:auto;
+    event instead create create;
 }
 
 transfer TransferE(E e) {
-    field String stringE <= e.stringE input:true;
+    field String stringE <= e.stringE update:auto;
+    event instead create create;
 }
 
 transfer TransferF(EntityF entityf) {
-    field required String stringF <= entityf.stringF input:true;
-    relation TransferD[] multipleDonF <= entityf.multipleDonF eager:true;
+    field required String stringF <= entityf.stringF update:auto;
+    relation TransferD[] multipleDonF <= entityf.multipleDonF eager:true create:true;
 }
 
 transfer TransferG(EntityG entityG) {
-    field String stringG <= entityG.stringG input:true;
-    relation required TransferE singleRequiredEonG <= entityG.singleRequiredEonG eager:true;
+    field String stringG <= entityG.stringG update:auto;
+    relation required TransferE singleRequiredEonG <= entityG.singleRequiredEonG eager:true create:true;
 }
 
 // Test UUID methods work well
