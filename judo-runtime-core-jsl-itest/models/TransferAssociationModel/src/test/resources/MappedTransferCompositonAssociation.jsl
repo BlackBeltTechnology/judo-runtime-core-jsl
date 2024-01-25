@@ -18,7 +18,7 @@ transfer TransferA (EntityA a) {
 }
 
 transfer TransferB (EntityB b) {
-    field String nameB <= b.nameB update:auto;
+    field String nameB <= b.nameB update;
     event create eventCreate();
 }
 
@@ -37,6 +37,6 @@ transfer TransferC (EntityC c) {
 }
 
 transfer TransferD (EntityD d) {
-    field String nameD <= d.nameD update:auto;
+    field String nameD <= d.nameD update;
     event create eventCreate();
 }

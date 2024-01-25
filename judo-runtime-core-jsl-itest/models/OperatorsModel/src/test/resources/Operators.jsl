@@ -93,78 +93,78 @@ entity DefaultOperators {
 }
 
 transfer TransferDefaultOperators (DefaultOperators mapped) {
-    field Integer rounded <= mapped.rounded update:auto;
-    field Integer unary <= mapped.unary update:auto; // -6
-    field Integer abs <= mapped.abs update:auto;
-    field Integer addition <= mapped.addition update:auto;
-    field Integer subtraction <= mapped.subtraction update:auto;
-    field Integer pow <= mapped.pow update:auto;
-    field Integer multiplication <= mapped.multiplication update:auto;
-    field Scaled division <= mapped.division update:auto;
-    field Integer divisionWhole <= mapped.divisionWhole update:auto;
-    field Integer modulo <= mapped.modulo update:auto;
-    field Boolean lt <= mapped.lt update:auto;
-    field Boolean lt2 <= mapped.lt2 update:auto;
-    field Boolean gt <= mapped.gt update:auto;
-    field Boolean gt2 <= mapped.gt2 update:auto;
-    field Boolean lte <= mapped.lte update:auto;
-    field Boolean lte2 <= mapped.lte2 update:auto;
-    field Boolean gte <= mapped.gte update:auto;
-    field Boolean gte2 <= mapped.gte2 update:auto;
-    field Boolean eq <= mapped.eq update:auto;
-    field Boolean neq <= mapped.neq update:auto;
-    field Integer conditional <= mapped.conditional update:auto;
-    field Boolean groupAnd <= mapped.groupAnd update:auto;
-    field Boolean groupOr <= mapped.groupOr update:auto;
+    field Integer rounded <= mapped.rounded update;
+    field Integer unary <= mapped.unary update; // -6
+    field Integer abs <= mapped.abs update;
+    field Integer addition <= mapped.addition update;
+    field Integer subtraction <= mapped.subtraction update;
+    field Integer pow <= mapped.pow update;
+    field Integer multiplication <= mapped.multiplication update;
+    field Scaled division <= mapped.division update;
+    field Integer divisionWhole <= mapped.divisionWhole update;
+    field Integer modulo <= mapped.modulo update;
+    field Boolean lt <= mapped.lt update;
+    field Boolean lt2 <= mapped.lt2 update;
+    field Boolean gt <= mapped.gt update;
+    field Boolean gt2 <= mapped.gt2 update;
+    field Boolean lte <= mapped.lte update;
+    field Boolean lte2 <= mapped.lte2 update;
+    field Boolean gte <= mapped.gte update;
+    field Boolean gte2 <= mapped.gte2 update;
+    field Boolean eq <= mapped.eq update;
+    field Boolean neq <= mapped.neq update;
+    field Integer conditional <= mapped.conditional update;
+    field Boolean groupAnd <= mapped.groupAnd update;
+    field Boolean groupOr <= mapped.groupOr update;
 
-    field Integer oneModOne <= mapped.oneModOne update:auto;
-    field Scaled oneModOnePointNine <= mapped.oneModOnePointNine update:auto;
-    field Scaled onePointNineModOnePointNine <= mapped.onePointNineModOnePointNine update:auto;
-    field Scaled onePointNineModOne <= mapped.onePointNineModOne update:auto;
-    field Integer oneDivOne <= mapped.oneDivOne update:auto;
-    field Scaled oneDivOnePointNine <= mapped.oneDivOnePointNine update:auto;
-    field Scaled onePointNineDivOnePointNine <= mapped.onePointNineDivOnePointNine update:auto;
-    field Scaled onePointNineDivOne <= mapped.onePointNineDivOne update:auto;
+    field Integer oneModOne <= mapped.oneModOne update;
+    field Scaled oneModOnePointNine <= mapped.oneModOnePointNine update;
+    field Scaled onePointNineModOnePointNine <= mapped.onePointNineModOnePointNine update;
+    field Scaled onePointNineModOne <= mapped.onePointNineModOne update;
+    field Integer oneDivOne <= mapped.oneDivOne update;
+    field Scaled oneDivOnePointNine <= mapped.oneDivOnePointNine update;
+    field Scaled onePointNineDivOnePointNine <= mapped.onePointNineDivOnePointNine update;
+    field Scaled onePointNineDivOne <= mapped.onePointNineDivOne update;
 
-    field Boolean dateLt <= mapped.dateLt update:auto;
-    field Boolean dateLte <= mapped.dateLte update:auto;
-    field Boolean dateLte2 <= mapped.dateLte2 update:auto;
-    field Boolean dateGt <= mapped.dateGt update:auto;
-    field Boolean dateGte <= mapped.dateGte update:auto;
-    field Boolean dateGte2 <= mapped.dateGte2 update:auto;
-    field Boolean dateEq <= mapped.dateEq update:auto;
-    field Boolean dateNeq <= mapped.dateNeq update:auto;
+    field Boolean dateLt <= mapped.dateLt update;
+    field Boolean dateLte <= mapped.dateLte update;
+    field Boolean dateLte2 <= mapped.dateLte2 update;
+    field Boolean dateGt <= mapped.dateGt update;
+    field Boolean dateGte <= mapped.dateGte update;
+    field Boolean dateGte2 <= mapped.dateGte2 update;
+    field Boolean dateEq <= mapped.dateEq update;
+    field Boolean dateNeq <= mapped.dateNeq update;
 
-    field Boolean timeLt <= mapped.timeLt update:auto;
-    field Boolean timeLte <= mapped.timeLte update:auto;
-    field Boolean timeLte2 <= mapped.timeLte2 update:auto;
-    field Boolean timeGt <= mapped.timeGt update:auto;
-    field Boolean timeGte <= mapped.timeGte update:auto;
-    field Boolean timeGte2 <= mapped.timeGte2 update:auto;
-    field Boolean timeEq <= mapped.timeEq update:auto;
-    field Boolean timeNeq <= mapped.timeNeq update:auto;
+    field Boolean timeLt <= mapped.timeLt update;
+    field Boolean timeLte <= mapped.timeLte update;
+    field Boolean timeLte2 <= mapped.timeLte2 update;
+    field Boolean timeGt <= mapped.timeGt update;
+    field Boolean timeGte <= mapped.timeGte update;
+    field Boolean timeGte2 <= mapped.timeGte2 update;
+    field Boolean timeEq <= mapped.timeEq update;
+    field Boolean timeNeq <= mapped.timeNeq update;
 
-    field Boolean timestampEq <= mapped.timestampEq update:auto;
-    field Boolean timestampNeq <= mapped.timestampNeq update:auto;
+    field Boolean timestampEq <= mapped.timestampEq update;
+    field Boolean timestampNeq <= mapped.timestampNeq update;
 
-    field Boolean stringLt <= mapped.stringLt update:auto;
-    field Boolean stringLte <= mapped.stringLte update:auto;
-    field Boolean stringLte2 <= mapped.stringLte2 update:auto;
-    field Boolean stringGt <= mapped.stringGt update:auto;
-    field Boolean stringGte <= mapped.stringGte update:auto;
-    field Boolean stringGte2 <= mapped.stringGte2 update:auto;
-    field Boolean stringEq <= mapped.stringEq update:auto;
-    field Boolean stringNeq <= mapped.stringNeq update:auto;
+    field Boolean stringLt <= mapped.stringLt update;
+    field Boolean stringLte <= mapped.stringLte update;
+    field Boolean stringLte2 <= mapped.stringLte2 update;
+    field Boolean stringGt <= mapped.stringGt update;
+    field Boolean stringGte <= mapped.stringGte update;
+    field Boolean stringGte2 <= mapped.stringGte2 update;
+    field Boolean stringEq <= mapped.stringEq update;
+    field Boolean stringNeq <= mapped.stringNeq update;
 
-    field Boolean csStringLt <= mapped.csStringLt update:auto;
-    field Boolean csStringLte <= mapped.csStringLte update:auto;
-    field Boolean csStringLte2 <= mapped.csStringLte2 update:auto;
-    field Boolean csStringGt <= mapped.csStringGt update:auto;
-    field Boolean csStringGte <= mapped.csStringGte update:auto;
-    field Boolean csStringGte2 <= mapped.csStringGte2 update:auto;
-    field Boolean csStringEq <= mapped.csStringEq update:auto;
-    field Boolean csStringEqFalse <= mapped.csStringEqFalse update:auto;
-    field Boolean csStringNeq <= mapped.csStringNeq update:auto;
+    field Boolean csStringLt <= mapped.csStringLt update;
+    field Boolean csStringLte <= mapped.csStringLte update;
+    field Boolean csStringLte2 <= mapped.csStringLte2 update;
+    field Boolean csStringGt <= mapped.csStringGt update;
+    field Boolean csStringGte <= mapped.csStringGte update;
+    field Boolean csStringGte2 <= mapped.csStringGte2 update;
+    field Boolean csStringEq <= mapped.csStringEq update;
+    field Boolean csStringEqFalse <= mapped.csStringEqFalse update;
+    field Boolean csStringNeq <= mapped.csStringNeq update;
 }
 
 
@@ -176,10 +176,10 @@ entity DerivedSource {
 }
 
 transfer TransferDerivedSource (DerivedSource mapped) {
-    field String firstName <= mapped.firstName update:auto;
-    field String lastName <= mapped.lastName update:auto;
-    field Integer age <= mapped.age update:auto;
-    field Scaled score <= mapped.score update:auto;
+    field String firstName <= mapped.firstName update;
+    field String lastName <= mapped.lastName update;
+    field Integer age <= mapped.age update;
+    field Scaled score <= mapped.score update;
     event create eventCreate();
 }
 
@@ -273,8 +273,8 @@ entity E1 {
 }
 
 transfer TE1 (E1 mapped){
-    field TestLiteral f1 <= mapped.f1 update:auto;
-    field TestLiteral f2  <= mapped.f2 update:auto;
+    field TestLiteral f1 <= mapped.f1 update;
+    field TestLiteral f2  <= mapped.f2 update;
     field Boolean f3 <= mapped.f3;
     field Boolean f4 <= mapped.f4;
     field Boolean f5 <= mapped.f5;

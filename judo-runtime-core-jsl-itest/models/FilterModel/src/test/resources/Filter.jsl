@@ -40,16 +40,16 @@ entity MyEntityWithOptionalFields {
 }
 
 transfer TransferMyEntityWithOptionalFields (MyEntityWithOptionalFields mapped) {
-    field Boolean boolAttr <= mapped.boolAttr update:auto;
-    field Binary binaryAttr <= mapped.binaryAttr update:auto;
-    field Integer integerAttr <= mapped.integerAttr update:auto;
-    field SmallString stringAttr <= mapped.stringAttr update:auto;
-    field PhoneNumber regexAttr <= mapped.regexAttr update:auto;
-    field Scaled scaledAttr <= mapped.scaledAttr update:auto;
-    field Date dateAttr <= mapped.dateAttr update:auto;
-    field Time timeAttr <= mapped.timeAttr update:auto;
-    field Timestamp timestampAttr <= mapped.timestampAttr update:auto;
-    field MyEnum enumAttr <= mapped.enumAttr update:auto;
+    field Boolean boolAttr <= mapped.boolAttr update;
+    field Binary binaryAttr <= mapped.binaryAttr update;
+    field Integer integerAttr <= mapped.integerAttr update;
+    field SmallString stringAttr <= mapped.stringAttr update;
+    field PhoneNumber regexAttr <= mapped.regexAttr update;
+    field Scaled scaledAttr <= mapped.scaledAttr update;
+    field Date dateAttr <= mapped.dateAttr update;
+    field Time timeAttr <= mapped.timeAttr update;
+    field Timestamp timestampAttr <= mapped.timestampAttr update;
+    field MyEnum enumAttr <= mapped.enumAttr update;
 
     field Boolean derivedBoolAttr  <= mapped.derivedBoolAttr;
     field Binary derivedBinaryAttr  <= mapped.derivedBinaryAttr;
@@ -96,8 +96,8 @@ entity Country {
 }
 
 transfer TransferCountry (Country mapped) {
-    field String name <= mapped.name  update:auto;
-    field Continent continent <= mapped.continent update:auto;
+    field String name <= mapped.name  update;
+    field Continent continent <= mapped.continent update;
 }
 
 entity City {
@@ -106,7 +106,7 @@ entity City {
 }
 
 transfer TransferCity (City mapped) {
-    field String name <= mapped.name update:auto;
+    field String name <= mapped.name update;
     relation TransferCountry country <= mapped.country choices:Country.all();
 }
 
@@ -116,7 +116,7 @@ entity Person {
 }
 
 transfer TransferPerson (Person mapped) {
-    field String name <= mapped.name update:auto;
+    field String name <= mapped.name update;
     relation TransferCity city <= mapped.city choices:City.all();
 }
 
@@ -126,7 +126,7 @@ entity Car {
 }
 
 transfer TransferCar (Car mapped) {
-    field String licensePlate <= mapped.licensePlate update:auto;
+    field String licensePlate <= mapped.licensePlate update;
     relation TransferPerson owner <= mapped.owner choices:Person.all();
 }
 

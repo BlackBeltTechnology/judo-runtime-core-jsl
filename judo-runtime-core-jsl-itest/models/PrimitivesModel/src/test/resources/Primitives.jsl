@@ -146,5 +146,5 @@ entity EntityWithNotValidRegexDefaultValue {
 }
 
 transfer MyTransferWithOptionalFields(MyEntityWithOptionalFields ent) {
-    field SmallString stringAttr <= ent.stringAttr update:auto;
+    field SmallString stringAttr <= ent.stringAttr update;
 }
