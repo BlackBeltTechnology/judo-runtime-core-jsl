@@ -33,5 +33,5 @@ transfer MappedEntityWithSingleRelation maps EntityWithSingleRelation as e {
 }
 
 transfer MappedEntityWithMultiRelation maps EntityWithMultiRelation as e {
-	field String name <= e.name update;
+	field String name <= e.name set;
 }

@@ -56,18 +56,18 @@ entity EntityF4 {
 }
 
 transfer TransferA(EntityA entitya) {
-    field String stringA <= entitya.stringA update;
+    field String stringA <= entitya.stringA set;
     relation TransferC singleConA <= entitya.singleConA eager:true;
     relation TransferC[] collectionConA <= entitya.collectionConA eager:true;
     relation TransferC singleRequiredConA <= entitya.singleRequiredConA eager:true required;
 }
 
 transfer TransferC(EntityC entityc) {
-    field String stringC <= entityc.stringC update;
-    field String stringB <= entityc.stringB update;
+    field String stringC <= entityc.stringC set;
+    field String stringB <= entityc.stringB set;
     relation TransferD[] multipleDonB <= entityc.multipleDonB eager:true;
 }
 
 transfer TransferD(EntityD entityd) {
-    field String stringD <= entityd.stringD update;
+    field String stringD <= entityd.stringD set;
 }

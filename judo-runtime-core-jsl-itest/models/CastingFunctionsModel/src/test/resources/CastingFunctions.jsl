@@ -59,25 +59,25 @@ entity Tester {
 // TRANSFER REPRESENTATION
 
 transfer TA maps A as a {
-    field String nameA <= a.nameA update;
+    field String nameA <= a.nameA set;
 }
 
 transfer TB maps B as b {
-    field String nameA <= b.nameA update;
-    field String nameB <= b.nameB update;
+    field String nameA <= b.nameA set;
+    field String nameB <= b.nameB set;
 }
 
 transfer TCA maps CA as ca {
-    field String nameA <= ca.nameA update;
-    field String nameCA <= ca.nameCA update;
-    field String nameB <= ca.nameB update;
+    field String nameA <= ca.nameA set;
+    field String nameCA <= ca.nameCA set;
+    field String nameB <= ca.nameB set;
 }
 
 
 transfer TCB maps CB as cb {
-    field String nameA <= cb.nameA update;
-    field String nameCB <= cb.nameCB update;
-    field String nameB <= cb.nameB update;
+    field String nameA <= cb.nameA set;
+    field String nameCB <= cb.nameCB set;
+    field String nameB <= cb.nameB set;
 }
 
 

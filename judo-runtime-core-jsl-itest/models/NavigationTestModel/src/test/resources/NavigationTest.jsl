@@ -60,7 +60,7 @@ entity B {
 }
 
 transfer TB (B mapped){
-    field String name <= mapped.name update;
+    field String name <= mapped.name set;
     relation TC c <= mapped.c choices:C.all();
 }
 
@@ -69,5 +69,5 @@ entity C {
 }
 
 transfer TC (C mapped){
-    field String name <= mapped.name update;
+    field String name <= mapped.name set;
 }

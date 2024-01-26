@@ -17,7 +17,7 @@ entity B {
 
 transfer TransferB (B b) {
     field String attributeTransferB;
-    field String mappedNameB <= b.nameB update;
+    field String mappedNameB <= b.nameB set;
 }
 
 entity C {
