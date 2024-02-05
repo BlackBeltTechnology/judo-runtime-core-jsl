@@ -45,34 +45,34 @@ entity E {
 }
 
 entity EntityF {
-    field required String stringF;
+    field String stringF required;
     field D[] multipleDonF;
 }
 
 entity EntityG {
     field String stringG;
-    field required E singleRequiredEonG;
+    field E singleRequiredEonG required;
 }
 
 transfer TransferD(D d) {
     relation TransferE[] compE <= d.compE eager:true create:true;
-    field String stringD <= d.stringD update:auto;
-    event instead create create;
+    field String stringD <= d.stringD set;
+    event create createEvent;
 }
 
 transfer TransferE(E e) {
-    field String stringE <= e.stringE update:auto;
-    event instead create create;
+    field String stringE <= e.stringE set;
+    event create createEvent;
 }
 
 transfer TransferF(EntityF entityf) {
-    field required String stringF <= entityf.stringF update:auto;
+    field String stringF <= entityf.stringF required set;
     relation TransferD[] multipleDonF <= entityf.multipleDonF eager:true create:true;
 }
 
 transfer TransferG(EntityG entityG) {
-    field String stringG <= entityG.stringG update:auto;
-    relation required TransferE singleRequiredEonG <= entityG.singleRequiredEonG eager:true create:true;
+    field String stringG <= entityG.stringG set;
+    relation TransferE singleRequiredEonG <= entityG.singleRequiredEonG required eager:true create:true;
 }
 
 // Test UUID methods work well
