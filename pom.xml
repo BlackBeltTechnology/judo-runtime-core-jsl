@@ -41,7 +41,7 @@
         </osgi-transaction-import>
 
         <judo-tatami-jsl-version>1.1.4.20240206_041412_62136069_develop</judo-tatami-jsl-version>
-        <judo-runtime-core-version>1.0.6.20240205_164047_9d48e11c_develop</judo-runtime-core-version>
+        <judo-runtime-core-version>1.0.6.20240206_091328_5f920472_feature_JNG_5250_create_excel_export_service</judo-runtime-core-version>
         <judo-psm-generator-sdk-core-version>1.0.0.20240130_041329_a962eb78_develop</judo-psm-generator-sdk-core-version>
 
         <judo-meta-psm-version>1.3.0.20240127_122224_4f1de775_develop</judo-meta-psm-version>
