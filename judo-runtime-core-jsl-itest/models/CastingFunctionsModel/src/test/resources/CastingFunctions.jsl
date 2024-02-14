@@ -54,6 +54,13 @@ entity Tester {
     relation CA[] asCollectionCA1 <= self.caAsBs.asCollection(entityType = CA); // CA-s
     relation CB[] asCollectionCB <= self.bs.asCollection(entityType = CB);      // empty
 
+    // SubTypeExpression
+    relation A[] caAs <= A.all().filter( a | a.nameA.like(pattern = "aca_"));
+    relation B[] caBs <= B.all().filter( a | a.nameA.like(pattern = "aca_"));
+    relation CA[] caCAs <= CA.all().filter( a | a.nameA.like(pattern = "aca_"));
+    relation CB[] caCBs <= CB.all().filter( a | a.nameA.like(pattern = "aca_"));
+    relation B[] caAsCollectionB <= A.all().asCollection(entityType = B).filter( a | a.nameA.like(pattern = "aca_"));
+
 }
 
 // TRANSFER REPRESENTATION
@@ -114,4 +121,11 @@ transfer TransferTester maps Tester as t {
     relation TCA[] asCollectionCA <= t.asCollectionCA;      // empty
     relation TCA[] asCollectionCA1 <= t.asCollectionCA1;    // CA-s
     relation TCB[] asCollectionCB <= t.asCollectionCB;      // empty
+
+    // SubTypeExpression
+    relation TA[] caAs <= t.caAs;
+    relation TB[] caBs <= t.caBs;
+    relation TCA[] caCAs <= t.caCAs;
+    relation TCB[] caCBs <= t.caCBs;
+    relation TB[] caAsCollectionB <= t.caAsCollectionB;
 }

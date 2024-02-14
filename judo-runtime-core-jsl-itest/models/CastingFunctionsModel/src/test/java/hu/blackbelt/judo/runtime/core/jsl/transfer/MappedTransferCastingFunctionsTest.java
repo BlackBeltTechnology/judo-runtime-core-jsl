@@ -26,6 +26,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castin
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.b.BDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.ca.CA;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.ca.CADao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.cb.CB;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.ta.TA;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.tb.TB;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.tb.TBDao;
@@ -34,6 +35,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castin
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.tca.TCA;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.tca.TCADao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.tca.TCAForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.tcb.TCB;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.tester.Tester;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.tester.TesterDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.castingfunctions.castingfunctions.tester.TesterIdentifier;
@@ -336,6 +338,62 @@ public class MappedTransferCastingFunctionsTest {
         assertTrue(asCollectionCA1.stream().anyMatch(lca -> lca.getNameA().orElseThrow().equals("aca3") &&
                 lca.getNameB().orElseThrow().equals("bca3") &&
                 lca.getNameCA().orElseThrow().equals("ca3")));
+    }
+
+    @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-TYPE-006",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-ENT-008",
+            "REQ-EXPR-003",
+            "REQ-EXPR-022",
+            "REQ-SRV-002"
+    })
+    public void testSubTypeExpressionOnTransfer() {
+
+        List<TA> caTAs = transferTesterDao.queryCaAs(transferTester).selectList();
+        assertEquals(3, caTAs.size());
+        assertTrue(caTAs.stream().allMatch(a -> a.getNameA().orElseThrow().contains("aca")));
+
+        List<TB> caTBs = transferTesterDao.queryCaBs(transferTester).selectList();
+        assertEquals(3, caTBs.size());
+        assertTrue(caTBs.stream().allMatch(a -> a.getNameA().orElseThrow().contains("aca")));
+
+        List<TCA> caTCAs = transferTesterDao.queryCaCAs(transferTester).selectList();
+        assertEquals(3, caTCAs.size());
+        assertTrue(caTCAs.stream().allMatch(a -> a.getNameA().orElseThrow().contains("aca")));
+
+        List<TCB> caTCBs = transferTesterDao.queryCaCBs(transferTester).selectList();
+        assertEquals(0, caTCBs.size());
+
+        List<TB> caTAsCollectionTB = transferTesterDao.queryCaAsCollectionB(transferTester).selectList();
+        assertEquals(3, caTAsCollectionTB.size());
+        assertTrue(caTAsCollectionTB.stream().allMatch(a -> a.getNameA().orElseThrow().contains("aca")));
+
+        // representation
+        List<A> caAs = testerDao.queryCaAs(tester).selectList();
+        assertEquals(3, caAs.size());
+        assertTrue(caAs.stream().allMatch(a -> a.getNameA().orElseThrow().contains("aca")));
+
+        List<B> caBs = testerDao.queryCaBs(tester).selectList();
+        assertEquals(3, caBs.size());
+        assertTrue(caBs.stream().allMatch(a -> a.getNameA().orElseThrow().contains("aca")));
+
+        List<CA> caCAs = testerDao.queryCaCAs(tester).selectList();
+        assertEquals(3, caCAs.size());
+        assertTrue(caCAs.stream().allMatch(a -> a.getNameA().orElseThrow().contains("aca")));
+
+        List<CB> caCBs = testerDao.queryCaCBs(tester).selectList();
+        assertEquals(0, caCBs.size());
+
+        List<B> caAsCollectionB = testerDao.queryCaAsCollectionB(tester).selectList();
+        assertEquals(3, caAsCollectionB.size());
+        assertTrue(caAsCollectionB.stream().allMatch(a -> a.getNameA().orElseThrow().contains("aca")));
     }
 
 }
