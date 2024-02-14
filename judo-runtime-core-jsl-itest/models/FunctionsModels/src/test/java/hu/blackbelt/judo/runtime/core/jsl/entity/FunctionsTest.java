@@ -420,13 +420,13 @@ public class FunctionsTest {
         /*
         |=============================================================================================
         |`p`            |`q`            |`p or q`       |`p and q`      |`p xor q`      |`p implies q`
-        |`true`            |`true`            |`true`         |`true`            |`false`        |`true`
-        |`true`            |`false`        |`true`         |`false`        |`true`         |`false`
-        |`true`            |`undefined`    |`true`            |`undefined`    |`undefined`    |`undefined`
-        |`false`        |`true`            |`true`            |`false`        |`true`         |`true`
+        |`true`         |`true`         |`true`         |`true`         |`false`        |`true`
+        |`true`         |`false`        |`true`         |`false`        |`true`         |`false`
+        |`true`         |`undefined`    |`true`         |`undefined`    |`undefined`    |`undefined`
+        |`false`        |`true`         |`true`         |`false`        |`true`         |`true`
         |`false`        |`false`        |`false`        |`false`        |`false`        |`true`
         |`false`        |`undefined`    |`undefined`    |`false`        |`undefined`    |`true`
-        |`undefined`    |`true`            |`true`            |`undefined`    |`undefined`    |`true`
+        |`undefined`    |`true`         |`true`         |`undefined`    |`undefined`    |`true`
         |`undefined`    |`false`        |`undefined`    |`false`        |`undefined`    |`undefined`
         |`undefined`    |`undefined`    |`undefined`    |`undefined`    |`undefined`    |`undefined`
         |=============================================================================================
