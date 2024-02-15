@@ -25,6 +25,9 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencem
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.sequences.Sequences;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.sequences.SequencesDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.sequences.SequencesForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.systemenvironmentvariablewithexpression.SystemEnvironmentVariableWithExpression;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.systemenvironmentvariablewithexpression.SystemEnvironmentVariableWithExpressionDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.systemenvironmentvariablewithexpression.SystemEnvironmentVariableWithExpressionForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.EnvironmentAndSequenceModelDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
@@ -35,6 +38,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
+import java.math.BigDecimal;
 import java.time.*;
 import java.util.Map;
 
@@ -85,6 +89,9 @@ public class EnvironmentAndSequenceTest {
     EnvVarsDao envVarsDao;
     @Inject
     SequencesDao sequencesDao;
+
+    @Inject
+    SystemEnvironmentVariableWithExpressionDao systemEnvironmentVariableWithExpressionDao;
 
     /**
      * With all judo-types primitives test the !getVariables(“ENVIRONMENT“, “key”) that read the key environment variable, and check the returned values.
@@ -436,6 +443,83 @@ end text"
         assertEquals(3L, s2.getF1().orElseThrow());
         assertEquals(4L, s2.getF2().orElseThrow());
         assertEquals(2L, s2.getF3().orElseThrow());
+    }
+
+    @Test
+    @TestCase("EnvironmentVariableWithExpression")
+    @Requirement(reqs = {
+            "REQ-SYNT-001",
+            "REQ-SYNT-002",
+            "REQ-SYNT-003",
+            "REQ-SYNT-004",
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-MDL-001",
+            "REQ-MDL-003",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-EXPR-002",
+            "REQ-EXPR-006",
+            "REQ-EXPR-007",
+            "REQ-EXPR-009",
+            "REQ-EXPR-012",
+            "REQ-EXPR-018"
+    })
+    public void testEnvironmentVariableWithExpression() throws Exception {
+        EnvironmentVariableMocker.initMocked();
+
+        final int JUDO_ENV_INTEGER = 1;
+        final String JUDO_ENV_BOOLEAN1 = "true";
+        final String JUDO_ENV_BOOLEAN2 = "True";
+        final String JUDO_ENV_STRING = "foo";
+        final double JUDO_ENV_DOUBLE = 3.1415926535;
+        final long JUDO_ENV_LONG = 12345678901234L;
+        final LocalDate JUDO_ENV_DATE = LocalDate.parse("2020-11-19");
+        final OffsetDateTime JUDO_ENV_TIMESTAMP = OffsetDateTime.parse("2020-11-19T16:38:00+00:00");
+        final OffsetDateTime JUDO_ENV_TIMESTAMP_WITH_OFFSET = OffsetDateTime.parse("2020-11-19T16:38:00+15:00");
+        final LocalDateTime JUDO_ENV_TIMESTAMP_WITHOUT_OFFSET = LocalDateTime.parse("2020-11-19T16:38:00");
+        final LocalTime JUDO_ENV_TIME = LocalTime.parse("16:38:01");
+
+        EnvironmentVariables environmentVariables = new EnvironmentVariables()
+                .set("integer", JUDO_ENV_INTEGER)
+                .set("boolean1", JUDO_ENV_BOOLEAN1)
+                .set("boolean2", JUDO_ENV_BOOLEAN2)
+                .set("string", JUDO_ENV_STRING)
+                .set("double", JUDO_ENV_DOUBLE)
+                .set("long", JUDO_ENV_LONG)
+                .set("date", JUDO_ENV_DATE)
+                .set("timestamp", JUDO_ENV_TIMESTAMP)
+                .set("timestampWithOffset", JUDO_ENV_TIMESTAMP_WITH_OFFSET)
+                .set("timestampWithoutOffset", JUDO_ENV_TIMESTAMP_WITHOUT_OFFSET)
+                .set("time", JUDO_ENV_TIME);
+
+        try {
+            environmentVariables
+                    .execute(() -> {
+                        SystemEnvironmentVariableWithExpression envExpression = systemEnvironmentVariableWithExpressionDao.create(SystemEnvironmentVariableWithExpressionForCreate.builder().build());
+
+                        assertEquals(2, envExpression.getInteger().orElseThrow());
+                        assertEquals(false, envExpression.getBoolean1().orElseThrow());
+                        assertEquals(false, envExpression.getBoolean2().orElseThrow());
+                        assertEquals("foopostfix", envExpression.getString().orElseThrow());
+                        assertEquals(new BigDecimal("4.1415926535"), envExpression.getDouble().orElseThrow());
+                        assertEquals(12345678901235L, envExpression.getLong().orElseThrow());
+                        assertEquals(OffsetDateTime.parse("2020-11-19T16:38:00+00:00").atZoneSameInstant(ZoneOffset.UTC).toLocalDateTime().plusMinutes(720), envExpression.getTimestamp().orElseThrow());
+                        assertEquals(OffsetDateTime.parse("2020-11-19T16:38:00+15:00").atZoneSameInstant(ZoneOffset.UTC).toLocalDateTime().plusMinutes(720), envExpression.getTimestampWithOffset().orElseThrow());
+                        assertEquals(LocalDateTime.parse("2020-11-19T16:38:00").plusMinutes(720), envExpression.getTimestampWithoutOffset().orElseThrow());
+                        assertEquals(LocalDate.of(2020, 11, 20), envExpression.getDate().orElseThrow());
+                        assertEquals(LocalTime.of(17, 38, 1), envExpression.getTime().orElseThrow());
+
+                    });
+        } finally {
+            environmentVariables.teardown();
+            EnvironmentVariableMocker.deinitMocked();
+        }
     }
 
 }

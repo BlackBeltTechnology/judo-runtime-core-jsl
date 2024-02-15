@@ -2,6 +2,9 @@ model EnvironmentAndSequenceModel;
 
 import judo::types;
 
+type numeric Double precision : 15 scale : 10;
+type numeric Long precision : 15 scale : 0;
+
 // TC010
 entity EnvVars1 {
     field Boolean fbool default:Boolean.getVariable(category = "ENVIRONMENT", key = "JUDO_ENV_BOOLEAN1");
@@ -66,4 +69,19 @@ entity Sequences {
     field Long f1 default:Long.getVariable(category = "SEQUENCE", key = "Order");
     field Long f2 default:Long.getVariable(category = "SEQUENCE", key = "Order");
     field Long f3 default:Long.getVariable(category = "SEQUENCE", key = "Other");
+}
+
+entity SystemEnvironmentVariableWithExpression {
+    field Integer integer default : Integer.getVariable(category = "ENVIRONMENT", key = "integer") + 1;
+    field Boolean boolean1 default : not Boolean.getVariable(category = "ENVIRONMENT", key = "boolean1");
+    field Boolean boolean2 default : not Boolean.getVariable(category = "ENVIRONMENT", key = "boolean2");
+    field String string default : String.getVariable(category = "ENVIRONMENT", key = "string") + "postfix";
+    field String stringUndefined default : String.getVariable(category = "ENVIRONMENT", key = "stringUndefined") + "postfix";
+    field Double double default : Double.getVariable(category = "ENVIRONMENT", key = "double") + 1.0;
+    field Long long default : Long.getVariable(category = "ENVIRONMENT", key = "long") + 1;
+    field Date date default : Timestamp.of(date = Date.getVariable(category = "ENVIRONMENT", key = "date")).plus(days = 1).date();
+    field Timestamp timestamp default : Timestamp.getVariable(category = "ENVIRONMENT", key = "timestamp").plus(minutes = 720);
+    field Timestamp timestampWithOffset default : Timestamp.getVariable(category = "ENVIRONMENT", key = "timestampWithOffset").plus(minutes = 720);
+    field Timestamp timestampWithoutOffset default : Timestamp.getVariable(category = "ENVIRONMENT", key = "timestampWithoutOffset").plus(minutes = 720);
+    field Time time default : Timestamp.of(date = `2022-11-22`,time = Time.getVariable(category = "ENVIRONMENT", key = "time")).plus(minutes = 60).time();
 }
