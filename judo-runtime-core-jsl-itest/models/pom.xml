@@ -44,6 +44,7 @@
         <module>RelationCreateWithAttachmentTestModel</module>
         <module>OptimisticLockModel</module>
         <module>TransferRangeModel</module>
+        <module>ActorTestModel</module>
     </modules>
 
     <build>
@@ -66,11 +67,13 @@
                             <apiPrefix>hu.blackbelt.judo.psm.generator.sdk.core.test.api</apiPrefix>
                             <implPrefix>hu.blackbelt.judo.psm.generator.sdk.core.test.impl</implPrefix>
                             <guicePrefix>hu.blackbelt.judo.psm.generator.sdk.core.test.guice</guicePrefix>
-                            <springPrefix>hu.blackbelt.judo.psm.generator.sdk.core.test.spring</springPrefix>
-
                             <generateOptionalTypes>true</generateOptionalTypes>
                             <generatePayloadValidator>true</generatePayloadValidator>
                         </templateParameters>
+                        <scanPackages>
+                            hu.blackbelt.judo.generator.commons,
+                            hu.blackbelt.judo.psm.generator.sdk.core
+                        </scanPackages>
                     </configuration>
                     <dependencies>
                         <dependency>
@@ -92,6 +95,21 @@
                             <groupId>hu.blackbelt.judo.generator</groupId>
                             <artifactId>judo-psm-generator-sdk-core-guice</artifactId>
                             <version>${judo-psm-generator-sdk-core-version}</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>hu.blackbelt.judo.generator</groupId>
+                            <artifactId>judo-psm-generator-jaxrs-common</artifactId>
+                            <version>${judo-psm-generator-jaxrs-version}</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>hu.blackbelt.judo.generator</groupId>
+                            <artifactId>judo-psm-generator-jaxrs-api</artifactId>
+                            <version>${judo-psm-generator-jaxrs-version}</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>hu.blackbelt.judo.generator</groupId>
+                            <artifactId>judo-psm-generator-jaxrs-impl</artifactId>
+                            <version>${judo-psm-generator-jaxrs-version}</version>
                         </dependency>
                     </dependencies>
                 </plugin>

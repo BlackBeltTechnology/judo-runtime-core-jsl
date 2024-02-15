@@ -1,0 +1,135 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>hu.blackbelt.judo.runtime</groupId>
+        <artifactId>judo-runtime-core-jsl-itest-model</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <artifactId>judo-runtime-core-jsl-itest-model-ActorTestModel</artifactId>
+    <packaging>jar</packaging>
+
+    <name>JUDO Runtime Core :: JUDO Language Specification DSL Integration Tests :: ActorTestModel</name>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>hu.blackbelt.judo.tatami</groupId>
+                <artifactId>judo-tatami-jsl-workflow-maven-plugin</artifactId>
+                <version>${judo-tatami-jsl-version}</version>
+            </plugin>
+
+            <plugin>
+                <groupId>hu.blackbelt.judo.meta</groupId>
+                <artifactId>judo-psm-generator-maven-plugin</artifactId>
+                <version>${judo-meta-psm-version}</version>
+                <configuration>
+                    <psm>
+                        ${basedir}/target/generated-test-sources/model/ActorTestModel-psm.model
+                    </psm>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>generate-psm-sdk-core</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <destination>${basedir}/target/generated-test-sources/ActorTestModel/sdk</destination>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>generate-psm-jaxrs</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <uris>
+                                <uri>mvn:hu.blackbelt.judo.generator:judo-psm-generator-jaxrs-common:${judo-psm-generator-jaxrs-version}</uri>
+                                <uri>mvn:hu.blackbelt.judo.generator:judo-psm-generator-jaxrs-api:${judo-psm-generator-jaxrs-version}</uri>
+                                <uri>mvn:hu.blackbelt.judo.generator:judo-psm-generator-jaxrs-impl:${judo-psm-generator-jaxrs-version}</uri>
+                            </uris>
+                            <type>psm-jaxrs</type>
+                            <templateParameters>
+                                <debugPrint>true</debugPrint>
+                                <apiPrefix>hu.blackbelt.judo.psm.generator.rest.test.api</apiPrefix>
+                                <implPrefix>hu.blackbelt.judo.psm.generator.rest.test.impl</implPrefix>
+                            </templateParameters>
+                            <scanPackages>
+                                hu.blackbelt.judo.generator.commons,
+                                hu.blackbelt.judo.psm.generator.jaxrs
+                            </scanPackages>
+                            <destination>${basedir}/target/generated-test-sources/ActorTestModel/rest</destination>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>add-test-source</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>add-test-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${project.basedir}/target/generated-test-sources/ActorTestModel/sdk</source>
+                                <source>${project.basedir}/target/generated-test-sources/ActorTestModel/rest</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>javax.ws.rs</groupId>
+            <artifactId>javax.ws.rs-api</artifactId>
+            <version>2.1.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-jaxrs2</artifactId>
+            <version>2.2.19</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-frontend-jaxrs</artifactId>
+            <version>3.6.2</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-transports-http-jetty</artifactId>
+            <version>3.6.2</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.cxf/cxf-rt-rs-service-description -->
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-rs-service-description</artifactId>
+            <version>3.5.6</version>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+</project>

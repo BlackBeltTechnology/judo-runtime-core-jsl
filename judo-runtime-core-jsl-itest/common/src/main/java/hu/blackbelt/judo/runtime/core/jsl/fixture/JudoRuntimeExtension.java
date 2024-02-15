@@ -2,6 +2,7 @@ package hu.blackbelt.judo.runtime.core.jsl.fixture;
 
 
 import com.google.inject.Module;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.extension.*;
 import org.springframework.transaction.TransactionDefinition;
@@ -9,6 +10,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 @Slf4j
+@Getter
 public class JudoRuntimeExtension implements BeforeAllCallback, AfterAllCallback, BeforeEachCallback, AfterEachCallback, ParameterResolver {
 
     private JudoDatasourceFixture judoDatasourceFixture;
