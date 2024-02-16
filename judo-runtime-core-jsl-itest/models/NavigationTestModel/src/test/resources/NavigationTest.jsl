@@ -26,6 +26,11 @@ entity A {
     relation C[] bbAllC <= B.all().c;
     relation C bbAllCAny <= B.all().c.any();
     field String bbAllCAnyName <= B.all().c.any().name;
+
+    // selfNavigation
+    relation A `self` <= self;
+    relation B[] blistTroughDerivedSelf <= self.`self`.blist;
+    relation C[] clistTroughDerivedSelf <= self.`self`.blist.c;
 }
 
 transfer TA (A mapped) {
@@ -52,6 +57,11 @@ transfer TA (A mapped) {
     relation TC[] bbAllC  <= mapped.bbAllC;
     relation TC bbAllCAny  <= mapped.bbAllCAny;
     field String bbAllCAnyName  <= mapped.bbAllCAnyName;
+
+    // selfNavigation
+    relation TA `self` <= mapped.`self`;
+    relation TB[] blistTroughDerivedSelf <= mapped.blistTroughDerivedSelf;
+    relation TC[] clistTroughDerivedSelf <= mapped.clistTroughDerivedSelf;
 }
 
 entity B {

@@ -45,6 +45,7 @@ import hu.blackbelt.judo.sdk.Identifiable;
 import lombok.extern.slf4j.Slf4j;
 import org.hamcrest.CoreMatchers;
 import org.hamcrest.Matcher;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
@@ -55,6 +56,7 @@ import java.util.stream.Collectors;
 
 import static org.hamcrest.CoreMatchers.anyOf;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -144,6 +146,38 @@ class MappedTransferNavigationTest {
         TBIdentifier b2Id = tb2.identifier();
 
         assertAttributesAndRelations(taDao.getById(ta.identifier()).orElseThrow(), List.of(tbId, b2Id), List.of(tcId, tc2Id));
+    }
+
+    @Test
+    @Requirement(reqs = {
+            "REQ-ENT-001",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-ENT-008",
+            "REQ-EXPR-001",
+            "REQ-EXPR-003",
+            "REQ-EXPR-004",
+            "REQ-EXPR-006",
+            "REQ-EXPR-007",
+            "REQ-EXPR-008",
+            "REQ-EXPR-022",
+            "REQ-SRV-002"
+    })
+    public void testSelfNavigation() {
+        TC c1 = tcDao.create(TCForCreate.builder().build());
+        TC c2 = tcDao.create(TCForCreate.builder().build());
+        TB b1 = tbDao.create(TBForCreate.builder().withC(c1).build());
+        TB b2 = tbDao.create(TBForCreate.builder().withC(c2).build());
+        TA a = taDao.create(TAForCreate.builder().withBlist(List.of(b1, b2)).build());
+
+        Assertions.assertEquals(a.identifier().getIdentifier(), taDao.querySelf(a).orElseThrow().identifier().getIdentifier());
+
+        assertThat(taDao.queryBlistTroughDerivedSelf(a).selectList().stream().map(e -> e.identifier().getIdentifier()).toList(),
+                containsInAnyOrder(b1.identifier().getIdentifier(), b2.identifier().getIdentifier()));
+
+        assertThat(taDao.queryClistTroughDerivedSelf(a).selectList().stream().map(e -> e.identifier().getIdentifier()).toList(),
+                containsInAnyOrder(c1.identifier().getIdentifier(), c2.identifier().getIdentifier()));
+
     }
 
     private void assertEmptyBAndC(TA ta) {

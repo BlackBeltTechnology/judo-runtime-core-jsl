@@ -49,6 +49,7 @@ import java.util.stream.Collectors;
 
 import static org.hamcrest.CoreMatchers.anyOf;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
@@ -85,6 +86,7 @@ class NavigationTest {
         // Read derived list over DAO call
         List<C> cList = aDao.queryClist(a).selectList();
         assertEquals(1, cList.size());
+
     }
 
     @Test
@@ -119,6 +121,37 @@ class NavigationTest {
         BIdentifier b2Id = b2.identifier();
 
         assertAttributesAndRelations(aDao.getById(a.identifier()).orElseThrow(), List.of(bId, b2Id), List.of(cId, c2Id));
+    }
+
+    @Test
+    @Requirement(reqs = {
+            "REQ-ENT-001",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-ENT-008",
+            "REQ-EXPR-001",
+            "REQ-EXPR-003",
+            "REQ-EXPR-004",
+            "REQ-EXPR-006",
+            "REQ-EXPR-007",
+            "REQ-EXPR-008",
+            "REQ-EXPR-022"
+    })
+    public void testSelfNavigation() {
+        C c1 = cDao.create(CForCreate.builder().build());
+        C c2 = cDao.create(CForCreate.builder().build());
+        B b1 = bDao.create(BForCreate.builder().withC(c1).build());
+        B b2 = bDao.create(BForCreate.builder().withC(c2).build());
+        A a = aDao.create(AForCreate.builder().withBlist(List.of(b1, b2)).build());
+
+        assertEquals(a.identifier().getIdentifier(), aDao.querySelf(a).orElseThrow().identifier().getIdentifier());
+
+        assertThat(aDao.queryBlistTroughDerivedSelf(a).selectList().stream().map(e -> e.identifier().getIdentifier()).toList(),
+                containsInAnyOrder(b1.identifier().getIdentifier(), b2.identifier().getIdentifier()));
+
+        assertThat(aDao.queryClistTroughDerivedSelf(a).selectList().stream().map(e -> e.identifier().getIdentifier()).toList(),
+                containsInAnyOrder(c1.identifier().getIdentifier(), c2.identifier().getIdentifier()));
+
     }
 
     private void assertEmptyBAndC(A a) {
