@@ -67,3 +67,19 @@ entity Sequences {
     field Long f2 default:Long.getVariable(category = "SEQUENCE", key = "Order");
     field Long f3 default:Long.getVariable(category = "SEQUENCE", key = "Other");
 }
+
+entity SequenceNames {
+    field Integer sequence1 <= Integer.getVariable(category = "SEQUENCE", key = "Xárvíztűrő 'tükörfúrógép");
+    field Integer sequence2 <= Integer.getVariable(category = "SEQUENCE", key = "ORDER");
+    field Integer sequence3 <= Integer.getVariable(category = "SEQUENCE", key = "SELECT");
+    field Integer sequence4 <= Integer.getVariable(category = "SEQUENCE", key = "GROUP BY");
+    field Integer sequence5 <= Integer.getVariable(category = "SEQUENCE", key = "@%££$");
+    field Integer sequence6 <= Integer.getVariable(category = "SEQUENCE", key = "+");
+    field Integer sequence7 <= Integer.getVariable(category = "SEQUENCE", key = "a");
+    field Integer sequence8 <= Integer.getVariable(category = "SEQUENCE", key = "+++");
+    field Integer sequence9 <= Integer.getVariable(category = "SEQUENCE", key = "3");
+    field Integer sequence10 <= Integer.getVariable(category = "SEQUENCE", key = " 333 ");
+
+    // TODO https://blackbelt.atlassian.net/browse/JNG-5534
+    //field Integer sequence11 <= Integer.getVariable(category = "SEQUENCE", key = "Something\"");
+}
