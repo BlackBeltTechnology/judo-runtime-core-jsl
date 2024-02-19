@@ -1,4 +1,4 @@
-package hu.blackbelt.judo.runtime.core.jsl.trasfer;
+package hu.blackbelt.judo.runtime.core.jsl.transfer;
 
 /*-
  * #%L
