@@ -22,6 +22,9 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencem
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.envvartime.EnvVarTimeForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.envvartimestamp.EnvVarTimestampDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.envvartimestamp.EnvVarTimestampForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.sequencenames.SequenceNames;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.sequencenames.SequenceNamesDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.sequencenames.SequenceNamesForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.sequences.Sequences;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.sequences.SequencesDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.sequences.SequencesForCreate;
@@ -520,6 +523,63 @@ end text"
             environmentVariables.teardown();
             EnvironmentVariableMocker.deinitMocked();
         }
+	}
+
+    @Inject
+    SequenceNamesDao sequenceNamesDao;
+
+    @Test
+    @TestCase("GetVariableSequenceNames")
+    @Requirement(reqs = {
+            "REQ-SYNT-001",
+            "REQ-SYNT-002",
+            "REQ-SYNT-003",
+            "REQ-SYNT-004",
+            "REQ-TYPE-001",
+            "REQ-TYPE-005",
+            "REQ-MDL-001",
+            "REQ-MDL-003",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-EXPR-001",
+            "REQ-EXPR-002",
+            "REQ-EXPR-006",
+            "REQ-EXPR-007",
+            "REQ-EXPR-009",
+            "REQ-EXPR-012"
+    })
+    void testGetVariableSequenceNames() {
+        SequenceNames seq = sequenceNamesDao.create(SequenceNamesForCreate.builder().build());
+
+        assertEquals(1, seq.getSequence1().orElseThrow());
+        assertEquals(2, sequenceNamesDao.querySequence1(seq).orElseThrow());
+
+        assertEquals(1, seq.getSequence2().orElseThrow());
+        assertEquals(2, sequenceNamesDao.querySequence2(seq).orElseThrow());
+
+        assertEquals(1, seq.getSequence3().orElseThrow());
+        assertEquals(2, sequenceNamesDao.querySequence3(seq).orElseThrow());
+
+        assertEquals(1, seq.getSequence4().orElseThrow());
+        assertEquals(2, sequenceNamesDao.querySequence4(seq).orElseThrow());
+
+        assertEquals(1, seq.getSequence5().orElseThrow());
+        assertEquals(2, sequenceNamesDao.querySequence5(seq).orElseThrow());
+
+        assertEquals(1, seq.getSequence6().orElseThrow());
+        assertEquals(2, sequenceNamesDao.querySequence6(seq).orElseThrow());
+
+        assertEquals(1, seq.getSequence7().orElseThrow());
+        assertEquals(2, sequenceNamesDao.querySequence7(seq).orElseThrow());
+
+        assertEquals(1, seq.getSequence8().orElseThrow());
+        assertEquals(2, sequenceNamesDao.querySequence8(seq).orElseThrow());
+
+        assertEquals(1, seq.getSequence9().orElseThrow());
+        assertEquals(2, sequenceNamesDao.querySequence9(seq).orElseThrow());
+
+        assertEquals(1, seq.getSequence10().orElseThrow());
+        assertEquals(2, sequenceNamesDao.querySequence10(seq).orElseThrow());
     }
 
 }
