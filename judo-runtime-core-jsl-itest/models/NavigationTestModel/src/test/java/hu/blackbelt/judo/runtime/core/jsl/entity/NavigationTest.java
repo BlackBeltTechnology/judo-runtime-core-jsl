@@ -32,8 +32,13 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigati
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.c.CDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.c.CForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.c.CIdentifier;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.person.Person;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.person.PersonDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.person.PersonForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.sextype.SexType;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.NavigationTestDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
+import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import hu.blackbelt.judo.sdk.Identifiable;
 import lombok.extern.slf4j.Slf4j;
@@ -42,12 +47,15 @@ import org.hamcrest.Matcher;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.CoreMatchers.anyOf;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.jupiter.api.Assertions.*;
@@ -222,6 +230,88 @@ class NavigationTest {
     private static void assertEmpty(Collection<?> collection) {
         assertNotNull(collection);
         assertTrue(collection.isEmpty());
+    }
+
+    @Inject
+    PersonDao personDao;
+
+    @Test
+    @TestCase("NavigationPersonWithParents")
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-ENT-006",
+            "REQ-ENT-008",
+            "REQ-EXPR-001",
+            "REQ-EXPR-002",
+            "REQ-EXPR-003",
+            "REQ-EXPR-004",
+            "REQ-EXPR-006",
+            "REQ-EXPR-007",
+            "REQ-EXPR-008",
+            "REQ-EXPR-022"
+    })
+    public void testNavigationPersonWithParents() {
+        Person person1 = personDao.create(PersonForCreate.builder().withName("Person1").withSex(SexType.MALE).withBirthDate(LocalDate.of(1987, 10, 11)).build());
+        Person father1 = personDao.createParents(person1, PersonForCreate.builder().withName("Father1").withSex(SexType.MALE).withBirthDate(LocalDate.of(1957, 1, 2)).build());
+        Person mother1 = personDao.createParents(person1, PersonForCreate.builder().withName("Mother1").withSex(SexType.FEMALE).withBirthDate(LocalDate.of(1960, 8, 17)).build());
+        Person grandMother1 = personDao.createParents(mother1, PersonForCreate.builder().withName("GrandMother1").withSex(SexType.FEMALE).withBirthDate(LocalDate.of(1935, 3, 13)).build());
+        Person greatGrandMother1 = personDao.createParents(grandMother1, PersonForCreate.builder().withName("GreatGrandMother").withSex(SexType.FEMALE).withBirthDate(LocalDate.of(1927, 9, 4)).build());
+
+        Person person2 = personDao.create(PersonForCreate.builder().withName("Person2").withSex(SexType.FEMALE).withBirthDate(LocalDate.of(1992, 4, 21)).build());
+        Person person3 = personDao.create(PersonForCreate.builder().withName("Person3").withSex(SexType.MALE).withBirthDate(LocalDate.of(2009, 8, 13)).build());
+
+        personDao.addParents(person2, List.of(mother1, father1));
+        personDao.addParents(person3, List.of(person1));
+
+        List<Person> people = personDao.findAllById(List.of((UUID) person1.identifier().getIdentifier(), (UUID) person2.identifier().getIdentifier(), (UUID) person3.identifier().getIdentifier()));
+        assertEquals(3, people.size());
+        Optional<Person> person1Loaded = people.stream().filter(p -> p.identifier().getIdentifier().equals(person1.identifier().getIdentifier())).findAny();
+        assertTrue(person1Loaded.isPresent());
+        assertThat(person1Loaded.get().getMotherName(), equalTo(mother1.getName()));
+        assertThat(person1Loaded.get().getFatherName(), equalTo(father1.getName()));
+        assertThat(person1Loaded.get().getGrandMother1Name(), equalTo(grandMother1.getName()));
+        assertThat(person1Loaded.get().getGreatGrandMother1Name(), equalTo(greatGrandMother1.getName()));
+        assertTrue(person1Loaded.get().getMotherYoungerThanFather().orElseThrow());
+
+        assertThat(personDao.queryMother(person1Loaded.get()).orElseThrow().identifier(), equalTo(mother1.identifier()));
+        assertThat(personDao.queryFather(person1Loaded.get()).orElseThrow().identifier(), equalTo(father1.identifier()));
+        assertThat(personDao.queryMother(personDao.queryMother(person1Loaded.get()).orElseThrow()).orElseThrow().identifier(), equalTo(grandMother1.identifier()));
+        assertThat(personDao.queryMother(personDao.queryMother(personDao.queryMother(person1Loaded.get()).orElseThrow()).orElseThrow()).orElseThrow().identifier(), equalTo(greatGrandMother1.identifier()));
+
+        Optional<Person> person2Loaded = people.stream().filter(p -> p.identifier().getIdentifier().equals(person2.identifier().getIdentifier())).findAny();
+        assertTrue(person2Loaded.isPresent());
+        assertThat(person2Loaded.get().getMotherName(), equalTo(mother1.getName()));
+        assertThat(person2Loaded.get().getFatherName(), equalTo(father1.getName()));
+        assertThat(person2Loaded.get().getGrandMother1Name(), equalTo(grandMother1.getName()));
+        assertThat(person2Loaded.get().getGreatGrandMother1Name(), equalTo(greatGrandMother1.getName()));
+        assertTrue(person2Loaded.get().getMotherYoungerThanFather().orElseThrow());
+
+        assertThat(personDao.queryMother(person2Loaded.get()).orElseThrow().identifier(), equalTo(mother1.identifier()));
+        assertThat(personDao.queryFather(person2Loaded.get()).orElseThrow().identifier(), equalTo(father1.identifier()));
+        assertThat(personDao.queryMother(personDao.queryMother(person2Loaded.get()).orElseThrow()).orElseThrow().identifier(), equalTo(grandMother1.identifier()));
+        assertThat(personDao.queryMother(personDao.queryMother(personDao.queryMother(person2Loaded.get()).orElseThrow()).orElseThrow()).orElseThrow().identifier(), equalTo(greatGrandMother1.identifier()));
+
+        Optional<Person> person3Loaded = people.stream().filter(p -> p.identifier().getIdentifier().equals(person3.identifier().getIdentifier())).findAny();
+        assertTrue(person3Loaded.isPresent());
+        assertTrue(person3Loaded.get().getMotherName().isEmpty());
+        assertThat(person3Loaded.get().getFatherName(), equalTo(person1.getName()));
+        assertThat(person3Loaded.get().getGrandMother2Name(), equalTo(mother1.getName()));
+        assertThat(person3Loaded.get().getGrandFather2Name(), equalTo(father1.getName()));
+
+        assertTrue(personDao.queryMother(person3Loaded.get()).isEmpty());
+        assertThat(personDao.queryFather(person3Loaded.get()).orElseThrow().identifier(), equalTo(person1.identifier()));
+        assertThat(personDao.queryMother(personDao.queryFather(person3Loaded.get()).orElseThrow()).orElseThrow().identifier(), equalTo(mother1.identifier()));
+        assertThat(personDao.queryMother(personDao.queryMother(personDao.queryFather(person3Loaded.get()).orElseThrow()).orElseThrow()).orElseThrow().identifier(), equalTo(grandMother1.identifier()));
+        assertThat(personDao.queryMother(personDao.queryMother(personDao.queryMother(personDao.queryFather(person3Loaded.get()).orElseThrow()).orElseThrow()).orElseThrow()).orElseThrow().identifier(), equalTo(greatGrandMother1.identifier()));
+
     }
 
 }
