@@ -31,6 +31,18 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.der
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.e1.E1;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.e1.E1Dao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.e1.E1ForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.equal.EqualDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.equal.EqualParameter;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.great.GreatDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.great.GreatParameter;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.greatequal.GreatEqualDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.greatequal.GreatEqualParameter;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.less.LessDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.less.LessParameter;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.lessequal.LessEqualDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.lessequal.LessEqualParameter;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.notequal.NotEqualDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.notequal.NotEqualParameter;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.operators.operators.testliteral.TestLiteral;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.OperatorsDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
@@ -38,8 +50,13 @@ import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
+import java.text.Collator;
+import java.text.ParseException;
+import java.text.RuleBasedCollator;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -312,5 +329,64 @@ public class OperatorsTest {
         assertTrue(e1.getF8().orElseThrow());
         assertEquals("Ccc03", e1.getF9().orElseThrow());
 
+    }
+
+    @Inject
+    LessDao lessDao;
+
+    @Inject
+    LessEqualDao lessEqualDao;
+
+    @Inject
+    GreatDao greatDao;
+
+    @Inject
+    GreatEqualDao greatEqualsDao;
+
+    @Inject
+    EqualDao equalDao;
+
+    @Inject
+    NotEqualDao notEqualDao;
+
+    @Test
+    @TestCase("HungarianStringComparisonTest")
+    @Requirement(reqs = {
+            "REQ-SYNT-001",
+            "REQ-SYNT-002",
+            "REQ-SYNT-003",
+            "REQ-SYNT-004",
+            "REQ-MDL-001",
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-TYPE-006",
+            "REQ-ENT-009",
+            "REQ-EXPR-002"
+    })
+    @EnabledIfSystemProperty(named = "dialect", matches = "postgresql")
+    void testHungarianStringComparisonTest() throws ParseException {
+        String rules = "< a < A < á < Á < b < B < c < C < cs < cS < Cs < CS < d < D < dz < dZ < Dz < DZ < dzs < dzS < dZs < Dzs " +
+                "< DzS < DZs < DZS < e < E < é < É < f < F < g < G < gy < gY < Gy < GY < h < H < i < I < í < Í < j < J < k " +
+                "< K < l < L < ly < lY < Ly < LY < m < M < n < N < ny < nY < Ny < NY < o < O < ó < Ó < ö < Ö < ő < Ő < p " +
+                "< P < q < Q < r < R < s < S < sz < sZ < Sz < SZ < t < T < ty < tY < Ty < TY < u < U < ú < Ú < ü < Ü < ű " +
+                "< Ű < v < V < w < W < x < X < y < Y < z < Z < zs < zS < Zs < ZS";
+
+        RuleBasedCollator collator = new RuleBasedCollator(rules);
+        collator.setStrength(Collator.PRIMARY);
+        collator.setDecomposition(Collator.CANONICAL_DECOMPOSITION);
+
+        List<String> letters = List.of(rules.replaceAll(" ", "").replaceFirst("<", "").split("<"));
+
+        for (int i = 0; i < letters.size() - 1; i++) {
+            String left = letters.get(i);
+            String right = letters.get(i + 1);
+
+            assertEquals(collator.compare(left, right) < 0, lessDao.selectValue(LessParameter.builder().withA(left).withB(right).build()));
+            assertEquals(collator.compare(left, right) <= 0, lessEqualDao.selectValue(LessEqualParameter.builder().withA(left).withB(right).build()));
+            assertEquals(collator.compare(left, right) > 0, greatDao.selectValue(GreatParameter.builder().withA(left).withB(right).build()));
+            assertEquals(collator.compare(left, right) >= 0, greatEqualsDao.selectValue(GreatEqualParameter.builder().withA(left).withB(right).build()));
+            assertEquals(collator.compare(left, right) == 0, equalDao.selectValue(EqualParameter.builder().withA(left).withB(right).build()));
+            assertEquals(collator.compare(left, right) != 0, notEqualDao.selectValue(NotEqualParameter.builder().withA(left).withB(right).build()));
+        }
     }
 }
