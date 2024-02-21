@@ -92,3 +92,13 @@ entity F {
 
 query Integer queryPrimitive(Integer num) on F <= num;
 query E queryEntity(Integer num) on F <= self.reqRelE;
+
+// HungarianStringQueryCustomizer
+
+entity Tester {
+    relation RelationTarget[] relationTargets;
+}
+
+entity RelationTarget {
+    field String name;
+}
