@@ -1206,6 +1206,7 @@ public class FiltersTest {
         assertThat(result1.isPresent(), is(true));
         assertThat(result1.orElseThrow().getItems(), hasSize(3));
         assertThat(result1.orElseThrow().getProduct1Items(), hasSize(1));
+        // TODO JNG-4376
         //assertThat(result1.orElseThrow().getItemsHeavierThanBucketAvg(), hasSize(2));
         assertThat(result1.orElseThrow().getItemsHeavierThanAvg(), hasSize(1));
 
@@ -1213,6 +1214,7 @@ public class FiltersTest {
         assertThat(result2.isPresent(), is(true));
         assertThat(result2.orElseThrow().getItems(), hasSize(3));
         assertThat(result2.orElseThrow().getProduct1Items(), hasSize(0));
+        // TODO JNG-4376
         //assertThat(result2.orElseThrow().getItemsHeavierThanBucketAvg(), hasSize(1));
         assertThat(result2.orElseThrow().getItemsHeavierThanAvg(), hasSize(2));
 
