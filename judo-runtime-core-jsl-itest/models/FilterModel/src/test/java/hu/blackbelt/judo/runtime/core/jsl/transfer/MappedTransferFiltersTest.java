@@ -24,6 +24,12 @@ import com.google.inject.Inject;
 import hu.blackbelt.judo.dispatcher.api.FileType;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.continent.Continent;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.myenum.MyEnum;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transferbucket.TransferBucket;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transferbucket.TransferBucketDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transferbucket.TransferBucketForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transferbuckettester.TransferBucketTester;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transferbuckettester.TransferBucketTesterDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transferbuckettester.TransferBucketTesterForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transfercar.TransferCar;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transfercar.TransferCarDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transfercar.TransferCarForCreate;
@@ -36,17 +42,22 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transferc
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transferfilterentity.TransferFilterEntity;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transferfilterentity.TransferFilterEntityDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transferfilterentity.TransferFilterEntityForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transferitem.TransferItemForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transfermyentitywithoptionalfields.TransferMyEntityWithOptionalFields;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transfermyentitywithoptionalfields.TransferMyEntityWithOptionalFieldsDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transfermyentitywithoptionalfields.TransferMyEntityWithOptionalFieldsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transferperson.TransferPerson;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transferperson.TransferPersonDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transferperson.TransferPersonForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transferproduct.TransferProduct;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transferproduct.TransferProductDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transferproduct.TransferProductForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transfertester.TransferTester;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transfertester.TransferTesterDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transfertester.TransferTesterForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.FilterDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
+import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import hu.blackbelt.judo.sdk.query.*;
 import lombok.extern.slf4j.Slf4j;
@@ -58,9 +69,12 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -1142,6 +1156,98 @@ public class MappedTransferFiltersTest {
                 .get();
 
         assertEquals(entity.identifier(), filteredByString.identifier());
+    }
+
+    @Inject
+    TransferProductDao transferProductDao;
+
+    @Inject
+    TransferBucketDao transferBucketDao;
+
+    @Inject
+    TransferBucketTesterDao transferBucketTesterDao;
+
+    @Test
+    @TestCase("EmbeddedFilterOnTransfer")
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-ENT-008",
+            "REQ-EXPR-001",
+            "REQ-EXPR-002",
+            "REQ-EXPR-003",
+            "REQ-EXPR-004",
+            "REQ-EXPR-006",
+            "REQ-EXPR-012",
+            "REQ-SRV-002"
+    })
+    void EmbeddedFilterTestOnTransfer() {
+
+        TransferProduct product1 = transferProductDao.create(TransferProductForCreate.builder().withName("Product1").build());
+
+        TransferBucket bucket1 = transferBucketDao.create(TransferBucketForCreate.builder()
+                .withItems(List.of(
+                        TransferItemForCreate.builder()
+                                        .withName("i1")
+                                        .withWeight(22.0)
+                                        .withProduct(TransferProductForCreate.builderFrom(product1).build())
+                                        .build(),
+                        TransferItemForCreate.builder()
+                                        .withName("i2")
+                                        .withWeight(5.0)
+                                        .build(),
+                        TransferItemForCreate.builder()
+                                        .withName("i3")
+                                        .withWeight(15D)
+                                        .build()
+                        )
+                )
+                .build()
+        );
+        TransferBucket bucket2 = transferBucketDao.create(TransferBucketForCreate.builder()
+                .withItems(List.of(
+                                TransferItemForCreate.builder()
+                                        .withName("i1")
+                                        .withWeight(20.0)
+                                        .build(),
+                                TransferItemForCreate.builder()
+                                        .withName("i2")
+                                        .withWeight(15.0)
+                                        .build(),
+                                TransferItemForCreate.builder()
+                                        .withName("i3")
+                                        .withWeight(16.0)
+                                        .build()
+                        )
+                )
+                .build()
+        );
+        assertEquals(1, transferProductDao.countAll());
+
+        Optional<TransferBucket> result1 = transferBucketDao.getById(bucket1.identifier());
+        assertThat(result1.isPresent(), is(true));
+        assertThat(result1.orElseThrow().getItems(), hasSize(3));
+        assertThat(result1.orElseThrow().getProduct1Items(), hasSize(1));
+        // TODO JNG-4376
+        //assertThat(result1.orElseThrow().getItemsHeavierThanBucketAvg(), hasSize(2));
+        assertThat(result1.orElseThrow().getItemsHeavierThanAvg(), hasSize(1));
+
+        Optional<TransferBucket> result2 = transferBucketDao.getById(bucket2.identifier());
+        assertThat(result2.isPresent(), is(true));
+        assertThat(result2.orElseThrow().getItems(), hasSize(3));
+        assertThat(result2.orElseThrow().getProduct1Items(), hasSize(0));
+        // TODO JNG-4376
+        //assertThat(result2.orElseThrow().getItemsHeavierThanBucketAvg(), hasSize(1));
+        assertThat(result2.orElseThrow().getItemsHeavierThanAvg(), hasSize(2));
+
+        TransferBucketTester bucketTester = transferBucketTesterDao.create(TransferBucketTesterForCreate.builder().build());
+        assertThat(bucketTester.getBucketsWithProduct1(), hasSize(1));
+        assertThat(bucketTester.getBucketsWithMainProduct1(), hasSize(1));
     }
 
 }
