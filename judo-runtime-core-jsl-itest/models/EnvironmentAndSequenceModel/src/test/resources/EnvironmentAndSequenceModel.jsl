@@ -101,3 +101,23 @@ entity SequenceNames {
     // TODO https://blackbelt.atlassian.net/browse/JNG-5534
     //field Integer sequence11 <= Integer.getVariable(category = "SEQUENCE", key = "Something\"");
 }
+
+// DoorTest : ENVIRONMENT Variable in filter
+
+entity Employee {
+    relation Position[] positions opposite: employees;
+    field String email;
+    relation Division[] rangeOfDivisions <= Employee.all().filter(e | e.email == String.getVariable(category = "ENVIRONMENT", key = "email")).positions.division;
+
+}
+
+entity Position {
+    field String name;
+    relation Employee[] employees opposite: positions;
+    relation Division division opposite: positions;
+}
+
+entity Division {
+    field String name;
+    relation Position[] positions opposite: division;
+}
