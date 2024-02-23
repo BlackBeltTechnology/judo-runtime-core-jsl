@@ -198,4 +198,36 @@ transfer TransferBucketTester (BucketTester mapped) {
     relation TransferBucket[] bucketsWithMainProduct1 <= mapped.bucketsWithMainProduct1 eager:true;
 }
 
+// AggregationFilterTest
 
+entity OrderDetail {
+        field String product;
+        field Integer quantity;
+}
+
+entity Order {
+    field OrderDetail[] items;
+    relation Customer customer opposite: orders;
+}
+
+entity Customer {
+    relation Order[] orders opposite: customer eager:true;
+    relation Order[] ordersWithMultipleItems <= self.orders.filter(o | o.items.size() > 1);
+}
+
+transfer TransferOrderDetail (OrderDetail mapped) {
+        field String product <= mapped.product update:auto;
+        field Integer quantity <= mapped.quantity update:auto;
+        event instead create create;
+}
+
+transfer TransferOrder (Order mapped) {
+    relation TransferCustomer customer <= mapped.customer;
+    relation TransferOrderDetail[] items <= mapped.items eager:true create:true;
+    event instead create create;
+}
+
+transfer TransferCustomer (Customer mapped) {
+    relation TransferOrder[] orders <= mapped.orders eager:true create:true choices: Order.all();
+    relation TransferOrder[] ordersWithMultipleItems <= mapped.ordersWithMultipleItems;
+}
