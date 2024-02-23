@@ -39,6 +39,9 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transferc
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transfercountry.TransferCountry;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transfercountry.TransferCountryDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transfercountry.TransferCountryForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transfercustomer.TransferCustomer;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transfercustomer.TransferCustomerDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transfercustomer.TransferCustomerForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transferfilterentity.TransferFilterEntity;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transferfilterentity.TransferFilterEntityDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transferfilterentity.TransferFilterEntityForCreate;
@@ -46,6 +49,11 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transferi
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transfermyentitywithoptionalfields.TransferMyEntityWithOptionalFields;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transfermyentitywithoptionalfields.TransferMyEntityWithOptionalFieldsDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transfermyentitywithoptionalfields.TransferMyEntityWithOptionalFieldsForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transferorder.TransferOrder;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transferorder.TransferOrderDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transferorder.TransferOrderForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transferorderdetail.TransferOrderDetailDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transferorderdetail.TransferOrderDetailForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transferperson.TransferPerson;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transferperson.TransferPersonDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.transferperson.TransferPersonForCreate;
@@ -1250,4 +1258,58 @@ public class MappedTransferFiltersTest {
         assertThat(bucketTester.getBucketsWithMainProduct1(), hasSize(1));
     }
 
+
+    @Inject
+    TransferOrderDetailDao transferOrderDetailDao;
+
+    @Inject
+    TransferOrderDao transferOrderDao;
+
+    @Inject
+    TransferCustomerDao transferCustomerDao;
+
+    @Test
+    @TestCase("AggregatedFilterOnTransfer")
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-ENT-006",
+            "REQ-ENT-008",
+            "REQ-EXPR-001",
+            "REQ-EXPR-002",
+            "REQ-EXPR-003",
+            "REQ-EXPR-004",
+            "REQ-EXPR-006",
+            "REQ-EXPR-012",
+            "REQ-SRV-002"
+    })
+    void testAggregatedFilterOnTransfer() {
+
+        TransferCustomer customer = transferCustomerDao.create(TransferCustomerForCreate.builder().build());
+
+        TransferOrder order1 = transferOrderDao.create(TransferOrderForCreate.builder()
+                .withItems(List.of(
+                        TransferOrderDetailForCreate.builder().withProduct("P1").withQuantity(2).build(),
+                        TransferOrderDetailForCreate.builder().withProduct("P2").withQuantity(3).build()
+                        )
+                )
+                .build()
+        );
+
+        TransferOrder order2 = transferOrderDao.create(TransferOrderForCreate.builder()
+                .withItems(List.of(
+                        TransferOrderDetailForCreate.builder().withProduct("P3").withQuantity(5).build()
+                        )
+                )
+                .build()
+        );
+
+        transferCustomerDao.addOrders(customer, List.of(order1, order2));
+        assertEquals(1, transferCustomerDao.countOrdersWithMultipleItems(customer));
+    }
 }

@@ -38,6 +38,9 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.continent
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.country.Country;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.country.CountryDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.country.CountryForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.customer.Customer;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.customer.CustomerDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.customer.CustomerForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.filterentity.FilterEntity;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.filterentity.FilterEntityDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.filterentity.FilterEntityForCreate;
@@ -46,6 +49,11 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.myentityw
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.myentitywithoptionalfields.MyEntityWithOptionalFieldsDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.myentitywithoptionalfields.MyEntityWithOptionalFieldsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.myenum.MyEnum;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.order.Order;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.order.OrderDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.order.OrderForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.orderdetail.OrderDetailDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.orderdetail.OrderDetailForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.person.Person;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.person.PersonDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.person.PersonForCreate;
@@ -1221,6 +1229,59 @@ public class FiltersTest {
         BucketTester bucketTester = bucketTesterDao.create(BucketTesterForCreate.builder().build());
         assertThat(bucketTester.getBucketsWithProduct1(), hasSize(1));
         assertThat(bucketTester.getBucketsWithMainProduct1(), hasSize(1));
+    }
+
+    @Inject
+    OrderDetailDao orderDetailDao;
+
+    @Inject
+    OrderDao orderDao;
+
+    @Inject
+    CustomerDao customerDao;
+
+    @Test
+    @TestCase("AggregatedFilter")
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-ENT-006",
+            "REQ-ENT-008",
+            "REQ-EXPR-001",
+            "REQ-EXPR-002",
+            "REQ-EXPR-003",
+            "REQ-EXPR-004",
+            "REQ-EXPR-006",
+            "REQ-EXPR-012"
+    })
+    void testAggregatedFilter() {
+
+        Customer customer = customerDao.create(CustomerForCreate.builder().build());
+
+        Order order1 = orderDao.create(OrderForCreate.builder()
+                .withItems(List.of(
+                        OrderDetailForCreate.builder().withProduct("P1").withQuantity(2).build(),
+                        OrderDetailForCreate.builder().withProduct("P2").withQuantity(3).build()
+                        )
+                )
+                .build()
+        );
+
+        Order order2 = orderDao.create(OrderForCreate.builder()
+                .withItems(List.of(
+                                OrderDetailForCreate.builder().withProduct("P3").withQuantity(5).build()
+                        )
+                )
+                .build()
+        );
+
+        customerDao.addOrders(customer, List.of(order1, order2));
+        assertEquals(1, customerDao.countOrdersWithMultipleItems(customer));
     }
 
 }
