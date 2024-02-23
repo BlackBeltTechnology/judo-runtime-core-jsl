@@ -24,14 +24,26 @@ import com.google.inject.Inject;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.a.A;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.a.ADao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.a.AForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.a1.A1;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.a1.A1Dao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.a1.A1ForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.b.B;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.b.BDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.b.BForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.b.BIdentifier;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.b1.B1;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.b1.B1Dao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.b1.B1ForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.base1.Base1;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.base1.Base1Dao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.base1.Base1ForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.c.C;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.c.CDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.c.CForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.c.CIdentifier;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.derivedattributecollector.DerivedAttributeCollector;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.derivedattributecollector.DerivedAttributeCollectorDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.derivedattributecollector.DerivedAttributeCollectorForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.person.Person;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.person.PersonDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.person.PersonForCreate;
@@ -44,6 +56,7 @@ import hu.blackbelt.judo.sdk.Identifiable;
 import lombok.extern.slf4j.Slf4j;
 import org.hamcrest.CoreMatchers;
 import org.hamcrest.Matcher;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
@@ -311,7 +324,352 @@ class NavigationTest {
         assertThat(personDao.queryMother(personDao.queryFather(person3Loaded.get()).orElseThrow()).orElseThrow().identifier(), equalTo(mother1.identifier()));
         assertThat(personDao.queryMother(personDao.queryMother(personDao.queryFather(person3Loaded.get()).orElseThrow()).orElseThrow()).orElseThrow().identifier(), equalTo(grandMother1.identifier()));
         assertThat(personDao.queryMother(personDao.queryMother(personDao.queryMother(personDao.queryFather(person3Loaded.get()).orElseThrow()).orElseThrow()).orElseThrow()).orElseThrow().identifier(), equalTo(greatGrandMother1.identifier()));
+    }
+
+
+    @Inject
+    A1Dao a1Dao;
+
+    @Inject
+    B1Dao b1Dao;
+
+    @Inject
+    Base1Dao base1Dao;
+
+    @Inject
+    DerivedAttributeCollectorDao derivedAttributeCollectorDao;
+
+    @Test
+    @TestCase("CollectionToObjectNavigationFromSelf")
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-ENT-006",
+            "REQ-ENT-008",
+            "REQ-EXPR-001",
+            "REQ-EXPR-002",
+            "REQ-EXPR-003",
+            "REQ-EXPR-004",
+            "REQ-EXPR-006",
+            "REQ-EXPR-007",
+            "REQ-EXPR-008",
+            "REQ-EXPR-022",
+            "REQ-SRV-002"
+    })
+    void testCollectionToObjectNavigationFromSelf() {
+
+        A1 a1 = a1Dao.create(A1ForCreate.builder().withNumber(3).build());
+        A1 a2 = a1Dao.create(A1ForCreate.builder().withNumber(4).build());
+
+        B1 b1 = b1Dao.create(B1ForCreate.builder().withNumber(1).withA(a1).build());
+        B1 b2 = b1Dao.create(B1ForCreate.builder().withNumber(2).withA(a2).build());
+
+        Base1 base1 = base1Dao.create(Base1ForCreate.builder()
+                .withNumber(3)
+                .withBs(List.of(b1.adaptTo(B1ForCreate.class), b2.adaptTo(B1ForCreate.class)))
+                .withRelA(a1.adaptTo(A1ForCreate.class))
+                .withCompA(A1ForCreate.builder().withNumber(4).build())
+                .build()
+        );
+
+        Base1 base2 = base1Dao.create(Base1ForCreate.builder()
+                .withNumber(3)
+                .withBs(List.of(b1.adaptTo(B1ForCreate.class), b2.adaptTo(B1ForCreate.class)))
+                .withRelA(a1.adaptTo(A1ForCreate.class))
+                .withCompA(A1ForCreate.builder().withNumber(4).build())
+                .build()
+        );
+
+        assertEquals(7, base1Dao.querySumRelAonBs(base1).orElseThrow());
 
     }
 
+    @Test
+    @Disabled()
+    @TestCase("CollectionToObjectNavigationFromAll")
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-ENT-006",
+            "REQ-ENT-008",
+            "REQ-EXPR-001",
+            "REQ-EXPR-002",
+            "REQ-EXPR-003",
+            "REQ-EXPR-004",
+            "REQ-EXPR-006",
+            "REQ-EXPR-007",
+            "REQ-EXPR-008",
+            "REQ-EXPR-022",
+            "REQ-SRV-002"
+    })
+    void testCollectionToObjectNavigationFromAll() {
+        // TODO
+        DerivedAttributeCollector derivedAttributeCollector = derivedAttributeCollectorDao.create(DerivedAttributeCollectorForCreate.builder().build());
+    }
+
+    @Test
+    @TestCase("CollectionToCollectionNavigationFromAll")
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-ENT-006",
+            "REQ-ENT-008",
+            "REQ-EXPR-001",
+            "REQ-EXPR-002",
+            "REQ-EXPR-003",
+            "REQ-EXPR-004",
+            "REQ-EXPR-006",
+            "REQ-EXPR-007",
+            "REQ-EXPR-008",
+            "REQ-EXPR-022",
+            "REQ-SRV-002"
+    })
+    void testCollectionToCollectionNavigationFromAll() {
+
+    }
+
+    @Test
+    @TestCase("ObjectToContainerNavigationFromSelf")
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-ENT-006",
+            "REQ-ENT-008",
+            "REQ-EXPR-001",
+            "REQ-EXPR-002",
+            "REQ-EXPR-003",
+            "REQ-EXPR-004",
+            "REQ-EXPR-006",
+            "REQ-EXPR-007",
+            "REQ-EXPR-008",
+            "REQ-EXPR-022",
+            "REQ-SRV-002"
+    })
+    void testObjectToContainerNavigationFromSelf() {
+
+    }
+
+    @Test
+    @TestCase("ObjectToObjectAsTypeFromSelf")
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-ENT-006",
+            "REQ-ENT-008",
+            "REQ-EXPR-001",
+            "REQ-EXPR-002",
+            "REQ-EXPR-003",
+            "REQ-EXPR-004",
+            "REQ-EXPR-006",
+            "REQ-EXPR-007",
+            "REQ-EXPR-008",
+            "REQ-EXPR-022",
+            "REQ-SRV-002"
+    })
+    void testObjectToObjectAsTypeFromSelf() {
+
+    }
+
+    @Test
+    @TestCase("ObjectToCollectionAsTypeFromSelf")
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-ENT-006",
+            "REQ-ENT-008",
+            "REQ-EXPR-001",
+            "REQ-EXPR-002",
+            "REQ-EXPR-003",
+            "REQ-EXPR-004",
+            "REQ-EXPR-006",
+            "REQ-EXPR-007",
+            "REQ-EXPR-008",
+            "REQ-EXPR-022",
+            "REQ-SRV-002"
+    })
+    void testObjectToCollectionAsTypeFromSelf() {
+
+    }
+
+    @Test
+    @TestCase("CollectionAsTypeFromAll")
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-ENT-006",
+            "REQ-ENT-008",
+            "REQ-EXPR-001",
+            "REQ-EXPR-002",
+            "REQ-EXPR-003",
+            "REQ-EXPR-004",
+            "REQ-EXPR-006",
+            "REQ-EXPR-007",
+            "REQ-EXPR-008",
+            "REQ-EXPR-022",
+            "REQ-SRV-002"
+    })
+    void testCollectionAsTypeFromAll() {
+
+    }
+
+    @Test
+    @TestCase("ObjectFilterFromSelf")
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-ENT-006",
+            "REQ-ENT-008",
+            "REQ-EXPR-001",
+            "REQ-EXPR-002",
+            "REQ-EXPR-003",
+            "REQ-EXPR-004",
+            "REQ-EXPR-006",
+            "REQ-EXPR-007",
+            "REQ-EXPR-008",
+            "REQ-EXPR-022",
+            "REQ-SRV-002"
+    })
+    void testObjectFilterFromSelf() {
+
+    }
+
+    @Test
+    @TestCase("ObjectToObjectFilterFromSelf")
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-ENT-006",
+            "REQ-ENT-008",
+            "REQ-EXPR-001",
+            "REQ-EXPR-002",
+            "REQ-EXPR-003",
+            "REQ-EXPR-004",
+            "REQ-EXPR-006",
+            "REQ-EXPR-007",
+            "REQ-EXPR-008",
+            "REQ-EXPR-022",
+            "REQ-SRV-002"
+    })
+    void testObjectToObjectFilterFromSelf() {
+
+    }
+
+    @Test
+    @TestCase("NavigatingBetweenTwoWayRelations")
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-ENT-006",
+            "REQ-ENT-008",
+            "REQ-EXPR-001",
+            "REQ-EXPR-002",
+            "REQ-EXPR-003",
+            "REQ-EXPR-004",
+            "REQ-EXPR-006",
+            "REQ-EXPR-007",
+            "REQ-EXPR-008",
+            "REQ-EXPR-022",
+            "REQ-SRV-002"
+    })
+    void testNavigatingBetweenTwoWayRelations() {
+
+    }
+
+    @Test
+    @TestCase("ContainsFunction")
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-ENT-006",
+            "REQ-ENT-008",
+            "REQ-EXPR-001",
+            "REQ-EXPR-002",
+            "REQ-EXPR-003",
+            "REQ-EXPR-004",
+            "REQ-EXPR-006",
+            "REQ-EXPR-007",
+            "REQ-EXPR-008",
+            "REQ-EXPR-022",
+            "REQ-SRV-002"
+    })
+    void testContainsFunction() {
+
+    }
 }
