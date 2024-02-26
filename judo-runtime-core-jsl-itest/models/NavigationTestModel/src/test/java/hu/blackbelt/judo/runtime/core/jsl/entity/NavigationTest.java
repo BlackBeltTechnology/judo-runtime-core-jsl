@@ -24,18 +24,48 @@ import com.google.inject.Inject;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.a.A;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.a.ADao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.a.AForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.a1.A1;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.a1.A1Dao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.a1.A1ForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.a2.A2;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.a2.A2Dao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.a2.A2ForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.a3.A3;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.a3.A3Dao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.a3.A3ForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.b.B;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.b.BDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.b.BForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.b.BIdentifier;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.b1.B1;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.b1.B1Dao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.b1.B1ForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.b2.B2;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.b2.B2Dao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.b2.B2ForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.b3.B3;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.b3.B3Dao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.b3.B3ForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.base1.Base1;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.base1.Base1Dao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.base1.Base1ForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.base2.Base2;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.base2.Base2Dao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.base2.Base2ForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.c.C;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.c.CDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.c.CForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.c.CIdentifier;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.derivedattributecollector.DerivedAttributeCollectorDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.nativea2.NativeA2ForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.nativeb2.NativeB2ForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.person.Person;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.person.PersonDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.person.PersonForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.sextype.SexType;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.twowaycollector.TwoWayCollector;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.twowaycollector.TwoWayCollectorDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.twowaycollector.TwoWayCollectorForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.NavigationTestDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
@@ -44,16 +74,15 @@ import hu.blackbelt.judo.sdk.Identifiable;
 import lombok.extern.slf4j.Slf4j;
 import org.hamcrest.CoreMatchers;
 import org.hamcrest.Matcher;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.google.common.collect.ImmutableSet.of;
 import static org.hamcrest.CoreMatchers.anyOf;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -311,7 +340,475 @@ class NavigationTest {
         assertThat(personDao.queryMother(personDao.queryFather(person3Loaded.get()).orElseThrow()).orElseThrow().identifier(), equalTo(mother1.identifier()));
         assertThat(personDao.queryMother(personDao.queryMother(personDao.queryFather(person3Loaded.get()).orElseThrow()).orElseThrow()).orElseThrow().identifier(), equalTo(grandMother1.identifier()));
         assertThat(personDao.queryMother(personDao.queryMother(personDao.queryMother(personDao.queryFather(person3Loaded.get()).orElseThrow()).orElseThrow()).orElseThrow()).orElseThrow().identifier(), equalTo(greatGrandMother1.identifier()));
+    }
+
+
+    @Inject
+    A1Dao a1Dao;
+
+    @Inject
+    B1Dao b1Dao;
+
+    @Inject
+    Base1Dao base1Dao;
+
+    @Inject
+    DerivedAttributeCollectorDao derivedAttributeCollectorDao;
+
+    @Test
+    @TestCase("CollectionToObjectNavigationFromSelf")
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-005",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-ENT-008",
+            "REQ-EXPR-001",
+            "REQ-EXPR-003",
+            "REQ-EXPR-004",
+            "REQ-EXPR-006",
+            "REQ-EXPR-008",
+    })
+    void testCollectionToObjectNavigationFromSelf() {
+
+        A1 a1 = a1Dao.create(A1ForCreate.builder().withNumber(3).build());
+        A1 a2 = a1Dao.create(A1ForCreate.builder().withNumber(4).build());
+
+        B1 b1 = b1Dao.create(B1ForCreate.builder().withNumber(1).withA(a1).build());
+        B1 b2 = b1Dao.create(B1ForCreate.builder().withNumber(2).withA(a2).build());
+
+        Base1 base1 = base1Dao.create(Base1ForCreate.builder()
+                .withNumber(3)
+                .withBs(List.of(b1.adaptTo(B1ForCreate.class), b2.adaptTo(B1ForCreate.class)))
+                .withRelA(a1.adaptTo(A1ForCreate.class))
+                .withCompA(A1ForCreate.builder().withNumber(4).build())
+                .build()
+        );
+
+        Base1 base2 = base1Dao.create(Base1ForCreate.builder()
+                .withNumber(3)
+                .withBs(List.of(b1.adaptTo(B1ForCreate.class), b2.adaptTo(B1ForCreate.class)))
+                .withRelA(a1.adaptTo(A1ForCreate.class))
+                .withCompA(A1ForCreate.builder().withNumber(4).build())
+                .build()
+        );
+
+        assertEquals(7, base1Dao.querySumRelAonBs(base1).orElseThrow());
 
     }
 
+    @Test
+    @Disabled()
+    @TestCase("CollectionToObjectNavigationFromAll")
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-005",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-ENT-008",
+            "REQ-EXPR-001",
+            "REQ-EXPR-003",
+            "REQ-EXPR-004",
+            "REQ-EXPR-006",
+            "REQ-EXPR-008",
+    })
+    void testCollectionToObjectNavigationFromAll() {
+
+        A1 a1 = a1Dao.create(A1ForCreate.builder().withNumber(1).build());
+        A1 a2 = a1Dao.create(A1ForCreate.builder().withNumber(2).build());
+        A1 a3 = a1Dao.create(A1ForCreate.builder().withNumber(3).build());
+        Base1 base1 = base1Dao.create(Base1ForCreate.builder()
+                .withNumber(3)
+                .withRelA(a1.adaptTo(A1ForCreate.class))
+                .withCompA(A1ForCreate.builder().withNumber(4).build())
+                .build()
+        );
+
+        Base1 base2 = base1Dao.create(Base1ForCreate.builder()
+                .withNumber(3)
+                .withRelA(a2.adaptTo(A1ForCreate.class))
+                .withCompA(A1ForCreate.builder().withNumber(4).build())
+                .build()
+        );
+
+        Base1 base3 = base1Dao.create(Base1ForCreate.builder()
+                .withNumber(3)
+                .withRelA(a3.adaptTo(A1ForCreate.class))
+                .withCompA(A1ForCreate.builder().withNumber(4).build())
+                .build()
+        );
+        assertEquals(6, base1Dao.query().selectList()
+                .stream().map(Base1::getRelA)
+                .map(A1::getNumber)
+                .reduce(0, Integer::sum));
+        // TODO
+        //DerivedAttributeCollector derivedAttributeCollector = derivedAttributeCollectorDao.create(DerivedAttributeCollectorForCreate.builder().build());
+        //assertEquals(6, derivedAttributeCollector.getSumRelAonAllBase1());
+    }
+
+    @Test
+    @Disabled()
+    @TestCase("CollectionToCollectionNavigationFromAll")
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-005",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-ENT-008",
+            "REQ-EXPR-001",
+            "REQ-EXPR-003",
+            "REQ-EXPR-004",
+            "REQ-EXPR-006",
+            "REQ-EXPR-008",
+    })
+    void testCollectionToCollectionNavigationFromAll() {
+
+        A1 a1 = a1Dao.create(A1ForCreate.builder().withNumber(1).build());
+        B1 b1 = b1Dao.create(B1ForCreate.builder().withNumber(1).withA(a1).build());
+        B1 b2 = b1Dao.create(B1ForCreate.builder().withNumber(2).withA(a1).build());
+        B1 b3 = b1Dao.create(B1ForCreate.builder().withNumber(3).withA(a1).build());
+        B1 b4 = b1Dao.create(B1ForCreate.builder().withNumber(4).withA(a1).build());
+        B1 b5 = b1Dao.create(B1ForCreate.builder().withNumber(5).withA(a1).build());
+        B1 b6 = b1Dao.create(B1ForCreate.builder().withNumber(6).withA(a1).build());
+
+        Base1 base1 = base1Dao.create(Base1ForCreate.builder()
+                .withNumber(3)
+                .withBs(List.of(b1.adaptTo(B1ForCreate.class), b2.adaptTo(B1ForCreate.class)))
+                .withRelA(a1.adaptTo(A1ForCreate.class))
+                .withCompA(A1ForCreate.builder().withNumber(4).build())
+                .build()
+        );
+
+        Base1 base2 = base1Dao.create(Base1ForCreate.builder()
+                .withNumber(3)
+                .withBs(List.of(b3.adaptTo(B1ForCreate.class), b4.adaptTo(B1ForCreate.class)))
+                .withRelA(a1.adaptTo(A1ForCreate.class))
+                .withCompA(A1ForCreate.builder().withNumber(4).build())
+                .build()
+        );
+
+        Base1 base3 = base1Dao.create(Base1ForCreate.builder()
+                .withNumber(3)
+                .withBs(List.of(b5.adaptTo(B1ForCreate.class), b6.adaptTo(B1ForCreate.class)))
+                .withRelA(a1.adaptTo(A1ForCreate.class))
+                .withCompA(A1ForCreate.builder().withNumber(4).build())
+                .build()
+        );
+
+        assertEquals(21, base1Dao.query().selectList()
+                .stream().flatMap(b -> b.getBs().stream())
+                .map(B1::getNumber)
+                .reduce(0, Integer::sum));
+        // TODO
+        //DerivedAttributeCollector derivedAttributeCollector = derivedAttributeCollectorDao.create(DerivedAttributeCollectorForCreate.builder().build());
+        //assertEquals(21, derivedAttributeCollector.getSumBsonAllBase1());
+    }
+
+    @Test
+    @TestCase("ObjectToContainerNavigationFromSelf")
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-005",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-007",
+            "REQ-ENT-008",
+            "REQ-EXPR-001",
+            "REQ-EXPR-002",
+            "REQ-EXPR-003",
+            "REQ-EXPR-004",
+            "REQ-EXPR-006",
+    })
+    void testObjectToContainerNavigationFromSelf() {
+        A1 a1 = a1Dao.create(A1ForCreate.builder().withNumber(3).build());
+        Base1 base1 = base1Dao.create(Base1ForCreate.builder()
+                .withNumber(420)
+                .withRelA(a1.adaptTo(A1ForCreate.class))
+                .withCompA(A1ForCreate.builder().withNumber(1).build())
+                .build()
+        );
+        assertEquals(420, base1Dao.queryCompANumber(base1).orElseThrow());
+    }
+
+    @Inject
+    A2Dao a2Dao;
+
+    @Inject
+    B2Dao b2Dao;
+
+    @Inject
+    Base2Dao base2Dao;
+
+    @Test
+    @TestCase("ObjectToObjectAsTypeFromSelf")
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-005",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-ENT-008",
+            "REQ-ENT-012",
+            "REQ-EXPR-001",
+            "REQ-EXPR-002",
+            "REQ-EXPR-003",
+            "REQ-EXPR-004",
+            "REQ-EXPR-006",
+            "REQ-EXPR-008",
+    })
+    void testObjectToObjectAsTypeFromSelf() {
+        A2 a1 = a2Dao.create(A2ForCreate.builder().withNumber(314).build());
+
+        Base2 base1 = base2Dao.create(Base2ForCreate.builder()
+                .withA(a1.adaptTo(NativeA2ForCreate.class))
+                .build()
+        );
+        assertEquals(314, base1.getNumNativeA2().orElseThrow());
+    }
+
+    @Test
+    @Disabled("https://blackbelt.atlassian.net/browse/JNG-5576")
+    @TestCase("ObjectToCollectionAsTypeFromSelf")
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-005",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-ENT-008",
+            "REQ-ENT-012",
+            "REQ-EXPR-001",
+            "REQ-EXPR-002",
+            "REQ-EXPR-003",
+            "REQ-EXPR-004",
+            "REQ-EXPR-006",
+            "REQ-EXPR-008",
+            "REQ-EXPR-022",
+    })
+    void testObjectToCollectionAsTypeFromSelf() {
+        A2 a1 = a2Dao.create(A2ForCreate.builder().withNumber(314).build());
+        B2 b1 = b2Dao.create(B2ForCreate.builder().withNumber(1).build());
+        B2 b2 = b2Dao.create(B2ForCreate.builder().withNumber(2).build());
+        B2 b3 = b2Dao.create(B2ForCreate.builder().withNumber(3).build());
+
+        Base2 base1 = base2Dao.create(Base2ForCreate.builder()
+                .withA(a1.adaptTo(NativeA2ForCreate.class))
+                .withBs(List.of(b1.adaptTo(NativeB2ForCreate.class),
+                                b2.adaptTo(NativeB2ForCreate.class),
+                                b3.adaptTo(NativeB2ForCreate.class)
+                        )
+                )
+                .build()
+        );
+        // TODO JNG-5576
+        //assertEquals(6, base1.getSumNativeBs().orElseThrow());
+
+    }
+
+    @Test
+    @Disabled("https://blackbelt.atlassian.net/browse/JNG-5576")
+    @TestCase("CollectionAsTypeFromAll")
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-005",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-ENT-008",
+            "REQ-ENT-012",
+            "REQ-EXPR-001",
+            "REQ-EXPR-002",
+            "REQ-EXPR-003",
+            "REQ-EXPR-004",
+            "REQ-EXPR-006",
+            "REQ-EXPR-008",
+            "REQ-EXPR-022",
+    })
+    void testCollectionAsTypeFromAll() {
+        A2 a1 = a2Dao.create(A2ForCreate.builder().withNumber(1).build());
+        A2 a2 = a2Dao.create(A2ForCreate.builder().withNumber(2).build());
+        A2 a3 = a2Dao.create(A2ForCreate.builder().withNumber(3).build());
+
+        Base2 base1 = base2Dao.create(Base2ForCreate.builder()
+                .withA(a1.adaptTo(NativeA2ForCreate.class))
+                .build()
+        );
+
+        // TODO JNG-5576
+        //assertEquals(6, base1.getSumAllNativeA().orElseThrow());
+    }
+
+    @Test
+    @Disabled("https://blackbelt.atlassian.net/browse/JNG-5575")
+    @TestCase("ObjectFilterFromSelf")
+    @Requirement(reqs = {
+
+    })
+    void testObjectFilterFromSelf() {
+        A1 a1 = a1Dao.create(A1ForCreate.builder().withNumber(1).build());
+
+        Base1 base1 = base1Dao.create(Base1ForCreate.builder()
+                .withNumber(25)
+                .withRelA(a1.adaptTo(A1ForCreate.class))
+                .withCompA(A1ForCreate.builder().withNumber(4).build())
+                .build()
+        );
+
+        Base1 base2 = base1Dao.create(Base1ForCreate.builder()
+                .withNumber(100)
+                .withRelA(a1.adaptTo(A1ForCreate.class))
+                .withCompA(A1ForCreate.builder().withNumber(4).build())
+                .build()
+        );
+
+        // TODO JNG-5575
+        //assertTrue(base1.getBase1NumberIs100().isEmpty());
+        //assertEquals(100, base2.getBase1NumberIs100().orElseThrow());
+
+    }
+
+    @Test
+    @Disabled("https://blackbelt.atlassian.net/browse/JNG-5575")
+    @TestCase("ObjectToObjectFilterFromSelf")
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-005",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-ENT-008",
+            "REQ-EXPR-001",
+            "REQ-EXPR-002",
+            "REQ-EXPR-003",
+            "REQ-EXPR-004",
+            "REQ-EXPR-006",
+            "REQ-EXPR-008",
+            "REQ-EXPR-022",
+    })
+    void testObjectToObjectFilterFromSelf() {
+        A1 a1 = a1Dao.create(A1ForCreate.builder().withNumber(25).build());
+        A1 a2 = a1Dao.create(A1ForCreate.builder().withNumber(100).build());
+
+        Base1 base1 = base1Dao.create(Base1ForCreate.builder()
+                .withNumber(1)
+                .withRelA(a1.adaptTo(A1ForCreate.class))
+                .withCompA(A1ForCreate.builder().withNumber(4).build())
+                .build()
+        );
+
+        Base1 base2 = base1Dao.create(Base1ForCreate.builder()
+                .withNumber(1)
+                .withRelA(a2.adaptTo(A1ForCreate.class))
+                .withCompA(A1ForCreate.builder().withNumber(4).build())
+                .build()
+        );
+
+        // TODO JNG-5575
+        //assertTrue(base1.getRelANumberIs100().isEmpty());
+        //assertEquals(100, base2.getRelANumberIs100().orElseThrow());
+    }
+
+    @Inject
+    A3Dao a3Dao;
+
+    @Inject
+    B3Dao b3Dao;
+
+    @Inject
+    TwoWayCollectorDao twoWayCollectorDao;
+
+    @Test
+    @TestCase("NavigatingBetweenTwoWayRelations")
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-005",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-ENT-006",
+            "REQ-ENT-008",
+            "REQ-EXPR-001",
+            "REQ-EXPR-002",
+            "REQ-EXPR-003",
+            "REQ-EXPR-004",
+            "REQ-EXPR-006",
+            "REQ-EXPR-008",
+            "REQ-EXPR-022",
+    })
+    void testNavigatingBetweenTwoWayRelations() {
+
+        B3 b1 = b3Dao.create(B3ForCreate.builder().withNumber(1).build());
+        B3 b2 = b3Dao.create(B3ForCreate.builder().withNumber(2).build());
+        B3 b3 = b3Dao.create(B3ForCreate.builder().withNumber(3).build());
+
+        A3 a1 = a3Dao.create(A3ForCreate.builder()
+                .withNumber(10)
+                .withBs(List.of(b1.adaptTo(B3ForCreate.class), b2.adaptTo(B3ForCreate.class), b3.adaptTo(B3ForCreate.class)))
+                .build()
+        );
+
+        assertEquals(10, a1.getSumBsA().orElseThrow());
+        assertEquals(6, a1.getSumBsABs().orElseThrow());
+
+        final Set<Optional<Integer>> setOfSumABsA = b3Dao.query().selectList().stream().map(B3::getSumABsA).collect(Collectors.toSet());
+        final Set<Optional<Integer>> setOfSumABS = b3Dao.query().selectList().stream().map(B3::getSumABs).collect(Collectors.toSet());
+        assertThat(setOfSumABsA, equalTo(of(Optional.of(10))));
+        assertThat(setOfSumABS, equalTo(of(Optional.of(6))));
+
+        TwoWayCollector collector = twoWayCollectorDao
+                .create(TwoWayCollectorForCreate
+                        .builder()
+                        .build());
+        // TODO JNG-5576
+        //assertEquals(10, collector.getSumAllBsFromA().orElseThrow());
+        assertEquals(6, collector.getSumAllBsFromAFiltered().orElseThrow());
+        // TODO JNG-5576
+        //assertEquals(6, collector.getSumAllAFromBs().orElseThrow());
+
+    }
+
+    @Test
+    @TestCase("ContainsFunction")
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-005",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-006",
+            "REQ-ENT-007",
+            "REQ-ENT-008",
+            "REQ-EXPR-001",
+            "REQ-EXPR-002",
+            "REQ-EXPR-003",
+            "REQ-EXPR-004",
+            "REQ-EXPR-006",
+            "REQ-EXPR-008",
+            "REQ-EXPR-022",
+    })
+    void testContainsFunction() {
+        B3 b1 = b3Dao.create(B3ForCreate.builder().withNumber(3).build());
+
+        A3 a1 = a3Dao.create(A3ForCreate.builder()
+                .withNumber(10)
+                .withBs(List.of(b1.adaptTo(B3ForCreate.class)))
+                .withB(b1)
+                .build()
+        );
+
+        assertTrue(a1.getContainsTest().orElseThrow());
+        assertTrue(a1.getContainsTest1().orElseThrow());
+    }
 }
