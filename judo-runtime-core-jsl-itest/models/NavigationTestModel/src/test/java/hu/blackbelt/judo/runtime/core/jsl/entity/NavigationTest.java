@@ -400,7 +400,7 @@ class NavigationTest {
     }
 
     @Test
-    @Disabled()
+    @Disabled("https://blackbelt.atlassian.net/browse/JNG-5576")
     @TestCase("CollectionToObjectNavigationFromAll")
     @Requirement(reqs = {
             "REQ-TYPE-001",
@@ -445,13 +445,13 @@ class NavigationTest {
                 .stream().map(Base1::getRelA)
                 .map(A1::getNumber)
                 .reduce(0, Integer::sum));
-        // TODO
+        // TODO JNG-5576
         //DerivedAttributeCollector derivedAttributeCollector = derivedAttributeCollectorDao.create(DerivedAttributeCollectorForCreate.builder().build());
         //assertEquals(6, derivedAttributeCollector.getSumRelAonAllBase1());
     }
 
     @Test
-    @Disabled()
+    @Disabled("https://blackbelt.atlassian.net/browse/JNG-5576")
     @TestCase("CollectionToCollectionNavigationFromAll")
     @Requirement(reqs = {
             "REQ-TYPE-001",
@@ -505,7 +505,7 @@ class NavigationTest {
                 .stream().flatMap(b -> b.getBs().stream())
                 .map(B1::getNumber)
                 .reduce(0, Integer::sum));
-        // TODO
+        // TODO JNG-5576
         //DerivedAttributeCollector derivedAttributeCollector = derivedAttributeCollectorDao.create(DerivedAttributeCollectorForCreate.builder().build());
         //assertEquals(21, derivedAttributeCollector.getSumBsonAllBase1());
     }
