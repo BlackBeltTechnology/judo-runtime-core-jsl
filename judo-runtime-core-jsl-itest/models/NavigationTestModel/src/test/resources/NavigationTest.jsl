@@ -165,7 +165,7 @@ entity Base1 {
     field Integer compANumber <= self.compA.container(entityType = Base1).number;
 
     // TODO self.filter give back collection and the navigation target not match
-    field Integer base1NumberIs100 <= self.filter(e | e.number == 100).any().number;
+    //field Integer base1NumberIs100 <= self.filter(e | e.number == 100).any().number;
     // TODO self.filter give back collection and the navigation target not match
     //field Integer relANumberIs100 <= self.relA.filter(e | e.number == 100).number;
 
