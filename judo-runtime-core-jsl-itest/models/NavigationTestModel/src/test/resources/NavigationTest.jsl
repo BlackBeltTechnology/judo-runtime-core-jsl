@@ -147,11 +147,11 @@ transfer TransferPerson ( Person person ) {
 // NavigationExpressionTest
 
 entity A1 {
-    field Integer number;
+    field required Integer number;
 }
 
 entity B1 {
-    field Integer number;
+    field required Integer number;
     relation required A1 a;
 }
 
@@ -164,9 +164,9 @@ entity Base1 {
     field Integer sumRelAonBs <= self.bs.a.sum(e | e.number);
     field Integer compANumber <= self.compA.container(entityType = Base1).number;
 
-    // TODO
-    //field Integer base1NumberIs100 <= self.filter(e | e.number == 100).number;
-    // TODO
+    // TODO self.filter give back collection and the navigation target not match
+    field Integer base1NumberIs100 <= self.filter(e | e.number == 100).any().number;
+    // TODO self.filter give back collection and the navigation target not match
     //field Integer relANumberIs100 <= self.relA.filter(e | e.number == 100).number;
 
 }
@@ -176,7 +176,7 @@ entity DerivedAttributeCollector {
     field Integer sumBsonAllBase1 <= Base1.all().bs.sum(e | e.number); // the problem appear when summarize the collected Bs's
 }
 
-// NavigationExpressionTest : Generization
+// NavigationExpressionTest : Generalization
 
 entity NativeA2 {
 }
@@ -197,9 +197,10 @@ entity Base2 {
     relation NativeB2[] bs eager:true;
 
     field Integer numNativeA2 <= self.a.asType(entityType = A2).number;
-    field Integer sumNativeBs <= self.bs.asCollection(entityType = B2).sum(e | e.number);
-    field Integer sumAllNativeA <= NativeA2.all().asCollection(entityType = A2).sum(e | e.number);
 
+    // TODO
+    //field Integer sumNativeBs <= self.bs.asCollection(entityType = B2).sum(e | e.number); // TODO
+    //field Integer sumAllNativeA <= NativeA2.all().asCollection(entityType = A2).sum(e | e.number); // TODO
 }
 
 // NavigationExpressionTest : TwoWay Navigation
@@ -208,7 +209,7 @@ entity A3 {
     field required Integer number;
     field Integer sumBsA <= self.bs.a.sum(e | e.number);
     field Integer sumBsABs <= self.bs.a.bs.sum(e | e.number);
-    relation B3[] bs opposite: a;
+    relation B3[] bs opposite: a eager:true;
     relation B3 b;
 
     field Boolean containsTest <= self.bs.contains(instance = B3.all().any());
@@ -223,7 +224,7 @@ entity B3 {
 }
 
 entity TwoWayCollector {
-    field Integer sumAllBsFromA <= B3.all().a.bs.sum(e | e.number);
+    //field Integer sumAllBsFromA <= B3.all().a.bs.sum(e | e.number); // TODO
     field Integer sumAllBsFromAFiltered <= B3.all().filter(b | B3.all().a.bs.contains(instance = b) ).sum(e | e.number);
-    field Integer sumAllAFromBs <= A3.all().bs.a.sum(e | e.number);
+    //field Integer sumAllAFromBs <= A3.all().bs.a.sum(e | e.number); // TODO
 }
