@@ -575,7 +575,7 @@ class NavigationTest {
     }
 
     @Test
-    @Disabled
+    @Disabled("https://blackbelt.atlassian.net/browse/JNG-5576")
     @TestCase("ObjectToCollectionAsTypeFromSelf")
     @Requirement(reqs = {
             "REQ-TYPE-001",
@@ -609,13 +609,13 @@ class NavigationTest {
                 )
                 .build()
         );
-        // TODO
+        // TODO JNG-5576
         //assertEquals(6, base1.getSumNativeBs().orElseThrow());
 
     }
 
     @Test
-    @Disabled()
+    @Disabled("https://blackbelt.atlassian.net/browse/JNG-5576")
     @TestCase("CollectionAsTypeFromAll")
     @Requirement(reqs = {
             "REQ-TYPE-001",
@@ -644,12 +644,12 @@ class NavigationTest {
                 .build()
         );
 
-        // TODO
+        // TODO JNG-5576
         //assertEquals(6, base1.getSumAllNativeA().orElseThrow());
     }
 
     @Test
-    @Disabled
+    @Disabled("https://blackbelt.atlassian.net/browse/JNG-5575")
     @TestCase("ObjectFilterFromSelf")
     @Requirement(reqs = {
 
@@ -671,14 +671,14 @@ class NavigationTest {
                 .build()
         );
 
-        // TODO
+        // TODO JNG-5575
         //assertTrue(base1.getBase1NumberIs100().isEmpty());
         //assertEquals(100, base2.getBase1NumberIs100().orElseThrow());
 
     }
 
     @Test
-    @Disabled()
+    @Disabled("https://blackbelt.atlassian.net/browse/JNG-5575")
     @TestCase("ObjectToObjectFilterFromSelf")
     @Requirement(reqs = {
             "REQ-TYPE-001",
@@ -714,7 +714,7 @@ class NavigationTest {
                 .build()
         );
 
-        // TODO
+        // TODO JNG-5575
         //assertTrue(base1.getRelANumberIs100().isEmpty());
         //assertEquals(100, base2.getRelANumberIs100().orElseThrow());
     }
@@ -771,10 +771,10 @@ class NavigationTest {
                 .create(TwoWayCollectorForCreate
                         .builder()
                         .build());
-        // TODO
+        // TODO JNG-5576
         //assertEquals(10, collector.getSumAllBsFromA().orElseThrow());
         assertEquals(6, collector.getSumAllBsFromAFiltered().orElseThrow());
-        // TODO
+        // TODO JNG-5576
         //assertEquals(6, collector.getSumAllAFromBs().orElseThrow());
 
     }

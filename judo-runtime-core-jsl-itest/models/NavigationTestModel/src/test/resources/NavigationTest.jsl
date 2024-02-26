@@ -164,16 +164,17 @@ entity Base1 {
     field Integer sumRelAonBs <= self.bs.a.sum(e | e.number);
     field Integer compANumber <= self.compA.container(entityType = Base1).number;
 
-    // TODO self.filter give back collection and the navigation target not match
+    // TODO JNG-5575
     //field Integer base1NumberIs100 <= self.filter(e | e.number == 100).any().number;
-    // TODO self.filter give back collection and the navigation target not match
-    //field Integer relANumberIs100 <= self.relA.filter(e | e.number == 100).number;
+    // TODO JNG-5575
+    //field Integer relANumberIs100 <= self.relA.filter(e | e.number == 100).any().number;
 
 }
 
 entity DerivedAttributeCollector {
-    field Integer sumRelAonAllBase1 <= Base1.all().relA.sum(e | e.number); // the problem appear when summarize the collected A1s
-    field Integer sumBsonAllBase1 <= Base1.all().bs.sum(e | e.number); // the problem appear when summarize the collected Bs's
+    // TODO JNG-5576
+    field Integer sumRelAonAllBase1 <= Base1.all().relA.sum(e | e.number);
+    field Integer sumBsonAllBase1 <= Base1.all().bs.sum(e | e.number);
 }
 
 // NavigationExpressionTest : Generalization
@@ -198,9 +199,10 @@ entity Base2 {
 
     field Integer numNativeA2 <= self.a.asType(entityType = A2).number;
 
-    // TODO
-    //field Integer sumNativeBs <= self.bs.asCollection(entityType = B2).sum(e | e.number); // TODO
-    //field Integer sumAllNativeA <= NativeA2.all().asCollection(entityType = A2).sum(e | e.number); // TODO
+    // TODO JNG-5576
+    //field Integer sumNativeBs <= self.bs.asCollection(entityType = B2).sum(e | e.number);
+    //field Integer sumAllNativeA <= NativeA2.all().asCollection(entityType = A2).sum(e | e.number);
+
 }
 
 // NavigationExpressionTest : TwoWay Navigation
@@ -224,7 +226,7 @@ entity B3 {
 }
 
 entity TwoWayCollector {
-    //field Integer sumAllBsFromA <= B3.all().a.bs.sum(e | e.number); // TODO
+    //field Integer sumAllBsFromA <= B3.all().a.bs.sum(e | e.number); // TODO JNG-5576
     field Integer sumAllBsFromAFiltered <= B3.all().filter(b | B3.all().a.bs.contains(instance = b) ).sum(e | e.number);
-    //field Integer sumAllAFromBs <= A3.all().bs.a.sum(e | e.number); // TODO
+    //field Integer sumAllAFromBs <= A3.all().bs.a.sum(e | e.number); // TODO JNG-5576
 }
