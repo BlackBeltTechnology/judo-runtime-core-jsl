@@ -143,3 +143,90 @@ transfer TransferPerson ( Person person ) {
     relation TransferPerson mother <= person.mother;
     relation TransferPerson father <= person.father;
 }
+
+// NavigationExpressionTest
+
+entity A1 {
+    field required Integer number;
+}
+
+entity B1 {
+    field required Integer number;
+    relation required A1 a;
+}
+
+entity Base1 {
+    field required Integer number;
+    relation B1[] bs eager:true;
+    relation required A1 relA eager:true;
+    field required A1 compA eager:true;
+
+    field Integer sumRelAonBs <= self.bs.a.sum(e | e.number);
+    field Integer compANumber <= self.compA.container(entityType = Base1).number;
+
+    // TODO JNG-5575
+    //field Integer base1NumberIs100 <= self.filter(e | e.number == 100).any().number;
+    // TODO JNG-5575
+    //field Integer relANumberIs100 <= self.relA.filter(e | e.number == 100).any().number;
+
+}
+
+entity DerivedAttributeCollector {
+    // TODO JNG-5576
+    field Integer sumRelAonAllBase1 <= Base1.all().relA.sum(e | e.number);
+    field Integer sumBsonAllBase1 <= Base1.all().bs.sum(e | e.number);
+}
+
+// NavigationExpressionTest : Generalization
+
+entity NativeA2 {
+}
+
+entity A2 extends NativeA2 {
+    field required Integer number;
+}
+
+entity NativeB2 {
+}
+
+entity B2 extends NativeB2 {
+    field required Integer number;
+}
+
+entity Base2 {
+    relation required NativeA2 a eager:true;
+    relation NativeB2[] bs eager:true;
+
+    field Integer numNativeA2 <= self.a.asType(entityType = A2).number;
+
+    // TODO JNG-5576
+    //field Integer sumNativeBs <= self.bs.asCollection(entityType = B2).sum(e | e.number);
+    //field Integer sumAllNativeA <= NativeA2.all().asCollection(entityType = A2).sum(e | e.number);
+
+}
+
+// NavigationExpressionTest : TwoWay Navigation
+
+entity A3 {
+    field required Integer number;
+    field Integer sumBsA <= self.bs.a.sum(e | e.number);
+    field Integer sumBsABs <= self.bs.a.bs.sum(e | e.number);
+    relation B3[] bs opposite: a eager:true;
+    relation B3 b;
+
+    field Boolean containsTest <= self.bs.contains(instance = B3.all().any());
+    field Boolean containsTest1 <= self.bs.contains(instance = self.b);
+}
+
+entity B3 {
+    field required Integer number;
+    field Integer sumABs <= self.a.bs.sum(e | e.number);
+    field Integer sumABsA <= self.a.bs.a.sum(e | e.number);
+    relation A3 a opposite: bs;
+}
+
+entity TwoWayCollector {
+    //field Integer sumAllBsFromA <= B3.all().a.bs.sum(e | e.number); // TODO JNG-5576
+    field Integer sumAllBsFromAFiltered <= B3.all().filter(b | B3.all().a.bs.contains(instance = b) ).sum(e | e.number);
+    //field Integer sumAllAFromBs <= A3.all().bs.a.sum(e | e.number); // TODO JNG-5576
+}
