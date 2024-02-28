@@ -56,7 +56,9 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigati
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.c.CDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.c.CForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.c.CIdentifier;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.derivedattributecollector.DerivedAttributeCollector;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.derivedattributecollector.DerivedAttributeCollectorDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.derivedattributecollector.DerivedAttributeCollectorForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.nativea2.NativeA2ForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.nativeb2.NativeB2ForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.person.Person;
@@ -446,8 +448,8 @@ class NavigationTest {
                 .map(A1::getNumber)
                 .reduce(0, Integer::sum));
         // TODO JNG-5576
-        //DerivedAttributeCollector derivedAttributeCollector = derivedAttributeCollectorDao.create(DerivedAttributeCollectorForCreate.builder().build());
-        //assertEquals(6, derivedAttributeCollector.getSumRelAonAllBase1());
+        DerivedAttributeCollector derivedAttributeCollector = derivedAttributeCollectorDao.create(DerivedAttributeCollectorForCreate.builder().build());
+        assertEquals(6, derivedAttributeCollector.getSumRelAonAllBase1());
     }
 
     @Test
@@ -506,8 +508,8 @@ class NavigationTest {
                 .map(B1::getNumber)
                 .reduce(0, Integer::sum));
         // TODO JNG-5576
-        //DerivedAttributeCollector derivedAttributeCollector = derivedAttributeCollectorDao.create(DerivedAttributeCollectorForCreate.builder().build());
-        //assertEquals(21, derivedAttributeCollector.getSumBsonAllBase1());
+        DerivedAttributeCollector derivedAttributeCollector = derivedAttributeCollectorDao.create(DerivedAttributeCollectorForCreate.builder().build());
+        assertEquals(21, derivedAttributeCollector.getSumBsonAllBase1());
     }
 
     @Test
