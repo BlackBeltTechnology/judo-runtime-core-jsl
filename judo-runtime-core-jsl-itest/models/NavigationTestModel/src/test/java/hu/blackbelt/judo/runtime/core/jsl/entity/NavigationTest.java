@@ -897,14 +897,19 @@ class NavigationTest {
         );
 
         // TODO JNG-5579
-        //assertEquals(2, schoolDao.queryTallestStudentMothers(school1).count());
+        assertEquals(2, schoolDao.queryTallestStudentMothers(school1).count());
         // TODO JNG-5579
-        //assertEquals(3, schoolDao.queryTallestStudentsMothers(school1).count());
+        assertEquals(3, schoolDao.queryTallestStudentsMothers(school1).count());
 
         // TODO JNG-5579
-        //assertEquals(2, apDao.queryTallestStudentInEachClass(ap).count());
+        assertEquals(2, apDao.queryTallestStudentInEachClass(ap).selectList().size());
         // TODO JNG-5579
-        //assertThat(apDao.queryTallestStudentInEachClassMother(ap).selectList(), hasSize(2));
+        assertEquals(2, apDao.queryTallestStudentInEachClassMother(ap).selectList().size());
+
+        // bad sql grammar exception check after JNG-5579 fix
+        //apDao.queryTallestStudentInEachClassMother(ap).count();
+
+
     }
 
 
