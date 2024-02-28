@@ -33,6 +33,9 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigati
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.a3.A3;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.a3.A3Dao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.a3.A3ForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.ap.AP;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.ap.APDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.ap.APForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.b.B;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.b.BDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.b.BForCreate;
@@ -56,6 +59,9 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigati
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.c.CDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.c.CForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.c.CIdentifier;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.class_.ClassDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.class_.Class_;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.class_.Class_ForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.derivedattributecollector.DerivedAttributeCollector;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.derivedattributecollector.DerivedAttributeCollectorDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.derivedattributecollector.DerivedAttributeCollectorForCreate;
@@ -64,7 +70,16 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigati
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.person.Person;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.person.PersonDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.person.PersonForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.person1.Person1;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.person1.Person1ForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.school.School;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.school.SchoolDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.school.SchoolForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.sextype.SexType;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.student.Student;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.student.StudentDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.student.StudentForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.student.StudentIdentifier;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.twowaycollector.TwoWayCollector;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.twowaycollector.TwoWayCollectorDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.twowaycollector.TwoWayCollectorForCreate;
@@ -76,6 +91,7 @@ import hu.blackbelt.judo.sdk.Identifiable;
 import lombok.extern.slf4j.Slf4j;
 import org.hamcrest.CoreMatchers;
 import org.hamcrest.Matcher;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -89,6 +105,7 @@ import static org.hamcrest.CoreMatchers.anyOf;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.hasItem;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
@@ -813,4 +830,82 @@ class NavigationTest {
         assertTrue(a1.getContainsTest().orElseThrow());
         assertTrue(a1.getContainsTest1().orElseThrow());
     }
+
+    @Inject
+    StudentDao studentDao;
+
+    @Inject
+    ClassDao classDao;
+
+    @Inject
+    SchoolDao schoolDao;
+
+    @Inject
+    APDao apDao;
+    @Test
+    @Disabled("https://blackbelt.atlassian.net/browse/JNG-5579")
+    @TestCase("DerivedHead")
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-ENT-008",
+            "REQ-EXPR-001",
+            "REQ-EXPR-002",
+            "REQ-EXPR-003",
+            "REQ-EXPR-004",
+            "REQ-EXPR-006",
+            "REQ-EXPR-007",
+            "REQ-EXPR-008",
+            "REQ-EXPR-022"
+    })
+    void testDerivedHead() {
+
+        School school1 = schoolDao.create(SchoolForCreate.builder().withName("School1").build());
+
+        Class_ class1 = schoolDao.createClasses(school1, Class_ForCreate.builder().withName("Class1/School1").build());
+        Class_ class2 = schoolDao.createClasses(school1, Class_ForCreate.builder().withName("Class2/School1").build());
+
+        Student student_1_1 = classDao.createStudents(class1, StudentForCreate.builder().withName("Student1/Class1").withHeight(180).build());
+        Person1 father_1_1 = studentDao.createParents(student_1_1, Person1ForCreate.builder().withName("Father/Student1").withHeight(190).withSex(SexType.MALE).build());
+        Person1 mother_1_1 = studentDao.createParents(student_1_1, Person1ForCreate.builder().withName("Mother/Student1/Class1").withHeight(180).withSex(SexType.FEMALE).build());
+
+        Student student_2_1 = classDao.createStudents(class1, StudentForCreate.builder().withName("Student2/Class1").withHeight(170).build());
+        Person1 mother_2_1 = studentDao.createParents(student_2_1, Person1ForCreate.builder().withName("Mother/Student2/Class1").withHeight(160).withSex(SexType.FEMALE).build());
+
+        Student student_3_1 = classDao.createStudents(class1, StudentForCreate.builder().withName("Student3/Class1").withHeight(180).build());
+        Person1 mother_3_1 = studentDao.createParents(student_3_1, Person1ForCreate.builder().withName("Mother/Student3/Class1").withHeight(180).withSex(SexType.FEMALE).build());
+
+        Student student_1_2 = classDao.createStudents(class2, StudentForCreate.builder().withName("Student1/Class2").withHeight(160).build());
+        Person1 mother_1_2 = studentDao.createParents(student_1_2, Person1ForCreate.builder().withName("Mother/Student1/Class2").withHeight(150).withSex(SexType.FEMALE).build());
+
+        AP ap = apDao.create(APForCreate.builder().build());
+
+        assertEquals(2, schoolDao.queryClasses(school1).count());
+        assertThat(List.of(classDao.queryTallestStudent(class1).orElseThrow().identifier().getIdentifier())
+                , Matchers.anyOf(hasItem(student_1_1.identifier().getIdentifier()), hasItem(student_3_1.identifier().getIdentifier()))
+        );
+
+        assertThat(classDao.queryTallestStudents(class1).selectList().stream().map(Student::identifier).map(StudentIdentifier::getIdentifier).toList()
+                , Matchers.allOf(hasItem(student_1_1.identifier().getIdentifier()), hasItem(student_3_1.identifier().getIdentifier()))
+        );
+
+        // TODO JNG-5579
+        //assertEquals(2, schoolDao.queryTallestStudentMothers(school1).count());
+        // TODO JNG-5579
+        //assertEquals(3, schoolDao.queryTallestStudentsMothers(school1).count());
+
+        // TODO JNG-5579
+        //assertEquals(2, apDao.queryTallestStudentInEachClass(ap).count());
+        // TODO JNG-5579
+        //assertThat(apDao.queryTallestStudentInEachClassMother(ap).selectList(), hasSize(2));
+    }
+
+
 }
