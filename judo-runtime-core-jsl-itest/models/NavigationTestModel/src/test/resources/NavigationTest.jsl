@@ -1,6 +1,7 @@
 model NavigationTest;
 
 import judo::types;
+type numeric Double precision: 8 scale: 4;
 
 entity A {
     relation B[] blist;
@@ -93,6 +94,7 @@ entity Person {
     field String name;
     field SexType sex;
     field Date birthDate;
+    field Integer height;
     relation Person[] parents opposite-add: children[];
 
     field String motherName <= self.mother.name;
@@ -142,6 +144,46 @@ transfer TransferPerson ( Person person ) {
 
     relation TransferPerson mother <= person.mother;
     relation TransferPerson father <= person.father;
+}
+
+// SchoolTest
+
+entity Person1 {
+    field String name;
+    field SexType sex;
+    field Integer height;
+}
+
+entity Student extends Person1 {
+    relation Person1[] parents;
+    relation Person1 mother <= self.parents.filter(p | p.sex == SexType#FEMALE ).any();
+}
+
+entity Class {
+    field String name;
+    relation Student[] students;
+    relation Student tallestStudent <= self.students.last(s | s.height).any();
+    relation Student[] tallestStudents <= self.students.last(s | s.height);
+}
+
+entity School {
+    field String name;
+    relation Class[] classes;
+    // TODO JNG-5579
+    relation Student[] tallestStudentsByClass <= self.classes.tallestStudents;
+    relation Person1[] tallestStudentMothers <= self.classes.tallestStudent.mother;
+    // TODO JNG-5579
+    relation Person1[] tallestStudentsMothers <= self.classes.tallestStudents.mother;
+}
+
+entity AP {
+    // TODO JNG-5579
+    relation Student[] tallestStudentInEachClass <= School.all().classes.tallestStudent;
+    // TODO JNG-5579
+    relation Person1[] tallestStudentInEachClassMother <= School.all().classes.tallestStudent.mother;
+    // TODO JNG-5576
+    //field Double tallestStudentInEachClassMotherHeightAvg <= School.all().classes.tallestStudent.mother.avg(m | m.height);
+    //field Double tallestStudentsInEachClassMotherHeightAvg <= School.all().classes.tallestStudents.mother.avg(m | m.height);
 }
 
 // NavigationExpressionTest
