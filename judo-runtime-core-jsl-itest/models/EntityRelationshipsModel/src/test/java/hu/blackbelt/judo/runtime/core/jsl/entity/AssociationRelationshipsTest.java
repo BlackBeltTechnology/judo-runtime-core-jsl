@@ -359,7 +359,7 @@ public class AssociationRelationshipsTest {
     CDao cDao;
 
     @Test
-    @Disabled("")
+    @Disabled("https://blackbelt.atlassian.net/browse/JNG-5469")
     @TestCase("MultiLevelMask")
     @Requirement(reqs = {
             "REQ-TYPE-001",
@@ -410,7 +410,7 @@ public class AssociationRelationshipsTest {
 
         Map<String, Object> aWithoutMaskOriginalMap = ((MapHolder) aWithoutMask.get()).$originalMap();
         Map<String, Object> aWithMaskOriginalMap = ((MapHolder) aWithMask.get()).$originalMap();
-        // TODO
+        // TODO JNG-5469
         assertThat(aWithMaskOriginalMap, equalTo(aWithoutMaskOriginalMap));
     }
 }
