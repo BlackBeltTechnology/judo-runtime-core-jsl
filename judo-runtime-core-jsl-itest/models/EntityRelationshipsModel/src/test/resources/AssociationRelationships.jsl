@@ -29,3 +29,21 @@ entity EntityE {
 
 entity EntityF {
 }
+
+// MaskTest
+
+entity A {
+    field String name;
+    relation B b eager:true;
+    relation C[] cs eager:true;
+}
+
+entity B {
+    field String name;
+    relation C c eager:true;
+}
+
+entity C {
+    field String name;
+    relation C[] cs eager:true;
+}
