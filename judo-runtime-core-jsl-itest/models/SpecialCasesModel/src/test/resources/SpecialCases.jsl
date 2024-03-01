@@ -102,3 +102,22 @@ entity Tester {
 entity RelationTarget {
     field String name;
 }
+
+// not safe names
+
+entity Class {
+    field String class;
+    relation If if;
+    relation Case[] case;
+}
+
+entity If {
+    field Case case;
+    field Static[] `static`;
+}
+
+entity Case {
+}
+
+entity Static {
+}

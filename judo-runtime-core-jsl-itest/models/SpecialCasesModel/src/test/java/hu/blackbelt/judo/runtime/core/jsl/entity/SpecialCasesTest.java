@@ -27,6 +27,12 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcas
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.c.CDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.c.CForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.c.CForCreateBuilder;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.case_.Case;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.case_.CaseDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.case_.CaseForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.class_.ClassDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.class_.Class_;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.class_.Class_ForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.d.D;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.d.DDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.d.DForCreate;
@@ -51,9 +57,14 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcas
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.f.FForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.f.queryentity.FQueryEntityParameter;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.f.queryprimitive.FQueryPrimitiveParameter;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.if_.If;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.if_.IfDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.if_.IfForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.referenceentity.ReferenceEntity;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.referenceentity.ReferenceEntityDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.referenceentity.ReferenceEntityForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.static_.StaticDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.static_.StaticForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.testentity.TestEntity;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.testentity.TestEntityDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.testentity.TestEntityForCreate;
@@ -82,7 +93,6 @@ import java.util.UUID;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
@@ -1968,6 +1978,48 @@ public class SpecialCasesTest {
         fDao.delete(uuidF);
 
         assertFalse(fDao.getById(uuidF).isPresent());
+    }
+
+    @Inject
+    ClassDao classDao;
+
+    @Inject
+    IfDao ifDao;
+
+    @Inject
+    CaseDao caseDao;
+
+    @Inject
+    StaticDao staticDao;
+
+    @Test
+    void test() {
+
+        If if_ = ifDao.create(IfForCreate.builder()
+                .withCase_(CaseForCreate.builder().build())
+                .withStatic_(List.of(StaticForCreate.builder().build(), StaticForCreate.builder().build()))
+                .build()
+        );
+
+        Case case_1 = caseDao.create(CaseForCreate.builder().build());
+        Case case_2 = caseDao.create(CaseForCreate.builder().build());
+
+        Class_ForCreate builder = Class_ForCreate.builder()
+                .withClass_("name")
+                .withIf_(if_)
+                .withCase_(List.of(case_1, case_2))
+                .build();
+
+        Class_ class_ = classDao.create(builder);
+
+        assertEquals(2, classDao.queryCase_(class_).selectList().size());
+
+        assertEquals("name", class_.getClass_().orElseThrow());
+        class_.setClass_("de");
+        assertEquals("de", class_.getClass_().orElseThrow());
+        class_ = classDao.update(class_);
+        assertEquals("de", class_.getClass_().orElseThrow());
+
     }
 
 }
