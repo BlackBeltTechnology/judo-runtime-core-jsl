@@ -21,6 +21,18 @@ package hu.blackbelt.judo.runtime.core.jsl.entity;
  */
 
 import com.google.inject.Inject;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.a.A;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.a.ADao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.a.AForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.a.AMask;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.b.B;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.b.BDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.b.BForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.b.BMask;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.c.C;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.c.CDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.c.CForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.c.CMask;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entitya.EntityA;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entitya.EntityADao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entitya.EntityAForCreate;
@@ -42,13 +54,16 @@ import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
+import hu.blackbelt.structured.map.proxy.MapHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -332,5 +347,70 @@ public class AssociationRelationshipsTest {
                 .withMultipleDonA(entityDs)
                 .withSingleRequiredConA(entityC)
                 .build());
+    }
+
+    @Inject
+    ADao aDao;
+
+    @Inject
+    BDao bDao;
+
+    @Inject
+    CDao cDao;
+
+    @Test
+    @Disabled("https://blackbelt.atlassian.net/browse/JNG-5469")
+    @TestCase("MultiLevelMask")
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+    })
+    void testMultiLevelMask() {
+        A a = aDao.create(AForCreate.builder().withName("a").build());
+
+        B b = aDao.createB(a, BForCreate.builder().withName("b").build());
+        C c1 = aDao.createCs(a, CForCreate.builder().withName("c_1").build());
+        C c11 = cDao.createCs(c1, CForCreate.builder().withName("c_1_1").build());
+        C c2 = bDao.createC(b, CForCreate.builder().withName("c_2").build());
+        C c21 = cDao.createCs(c2, CForCreate.builder().withName("c_2_1").build());
+        C c22 = cDao.createCs(c2, CForCreate.builder().withName("c_2_2").build());
+        C c23 = cDao.createCs(c2, CForCreate.builder().withName("c_2_3").build());
+        C c211 = cDao.createCs(c21, CForCreate.builder().withName("c_2_1_1").build());
+        C c221 = cDao.createCs(c22, CForCreate.builder().withName("c_2_2_1").build());
+        C c231 = cDao.createCs(c23, CForCreate.builder().withName("c_2_3_1").build());
+
+        AMask aMask = AMask.aMask().addByName("name")
+                .addByName("b",
+                        BMask.bMask()
+                                .addByName("name")
+                                .addByName("c", CMask.cMask()
+                                        .addByName("name")
+                                        .addByName("cs", CMask.cMask()
+                                                .addByName("name")
+                                                .addByName("cs", CMask.cMask()
+                                                        .addByName("name"))))
+                )
+                .addByName("cs", CMask.cMask()
+                        .addByName("name")
+                        .addByName("cs", CMask.cMask()
+                                .addByName("name")
+                                .addByName("cs", CMask.cMask()
+                                        .addByName("name"))));
+
+        assertEquals(1, aDao.query().count());
+        Optional<A> aWithoutMask = aDao.query().selectOne();
+        Optional<A> aWithMask = aDao.query().maskedBy(aMask).selectOne();
+
+        assertTrue(aWithoutMask.isPresent());
+        assertTrue(aWithMask.isPresent());
+
+        Map<String, Object> aWithoutMaskOriginalMap = ((MapHolder) aWithoutMask.get()).$originalMap();
+        Map<String, Object> aWithMaskOriginalMap = ((MapHolder) aWithMask.get()).$originalMap();
+        // TODO JNG-5469
+        assertThat(aWithMaskOriginalMap, equalTo(aWithoutMaskOriginalMap));
     }
 }
