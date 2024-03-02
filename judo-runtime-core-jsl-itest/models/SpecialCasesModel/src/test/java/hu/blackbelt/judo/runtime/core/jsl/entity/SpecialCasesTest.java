@@ -1997,14 +1997,15 @@ public class SpecialCasesTest {
     @TestCase("SafeFieldNames")
     @Requirement(reqs = {
             "REQ-TYPE-001",
+            "REQ-TYPE-004",
             "REQ-ENT-001",
             "REQ-ENT-002",
             "REQ-ENT-004",
+            "REQ-ENT-005",
             "REQ-ENT-007",
             "REQ-MDL-001",
             "REQ-MDL-002",
             "REQ-MDL-003",
-            "REQ-SRV-002",
     })
     void testSafeFieldNames() {
 
