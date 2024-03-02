@@ -63,6 +63,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcas
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.referenceentity.ReferenceEntity;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.referenceentity.ReferenceEntityDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.referenceentity.ReferenceEntityForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.static_.Static;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.static_.StaticDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.static_.StaticForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.testentity.TestEntity;
@@ -1993,11 +1994,27 @@ public class SpecialCasesTest {
     StaticDao staticDao;
 
     @Test
-    void test() {
+    @TestCase("SafeFieldNames")
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-007",
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-SRV-002",
+    })
+    void testSafeFieldNames() {
+
+        Class_ForCreate.builder()
+                .withClass_("name").build();
 
         If if_ = ifDao.create(IfForCreate.builder()
                 .withCase_(CaseForCreate.builder().build())
-                .withStatic_(List.of(StaticForCreate.builder().build(), StaticForCreate.builder().build()))
+                .withStatic_(List.of(StaticForCreate.builder().build()))
+                .addToStatic_(StaticForCreate.builder().build())
                 .build()
         );
 
@@ -2006,19 +2023,62 @@ public class SpecialCasesTest {
 
         Class_ForCreate builder = Class_ForCreate.builder()
                 .withClass_("name")
+                .withSafeName("name")
                 .withIf_(if_)
+                .withSafeRel(if_)
                 .withCase_(List.of(case_1, case_2))
                 .build();
 
         Class_ class_ = classDao.create(builder);
 
+        // Test relation fields
         assertEquals(2, classDao.queryCase_(class_).selectList().size());
+        classDao.removeCase_(class_ ,case_1);
+        assertEquals(1, classDao.queryCase_(class_).selectList().size());
+        classDao.removeCase_(class_ ,case_2);
+        assertEquals(0, classDao.queryCase_(class_).selectList().size());
+        classDao.addCase_(class_ ,List.of(case_1, case_2));
+        assertEquals(2, classDao.queryCase_(class_).selectList().size());
+        classDao.createCase_(class_, CaseForCreate.builder().build());
+        assertEquals(3, classDao.queryCase_(class_).selectList().size());
+
+        assertEquals(if_.identifier().getIdentifier(), classDao.queryIf_(class_).orElseThrow().identifier().getIdentifier());
+        assertEquals(if_.identifier().getIdentifier(), classDao.querySafeRel(class_).orElseThrow().identifier().getIdentifier());
+        classDao.unsetIf_(class_);
+        assertTrue(classDao.queryIf_(class_).isEmpty());
+        classDao.setIf_(class_, if_);
+        assertTrue(classDao.queryIf_(class_).isPresent());
 
         assertEquals("name", class_.getClass_().orElseThrow());
-        class_.setClass_("de");
-        assertEquals("de", class_.getClass_().orElseThrow());
+        class_.setClass_("name1");
+        assertEquals("name1", class_.getClass_().orElseThrow());
         class_ = classDao.update(class_);
-        assertEquals("de", class_.getClass_().orElseThrow());
+        assertEquals("name1", class_.getClass_().orElseThrow());
+
+        // Test navigation
+
+        assertFalse(classDao.querySafeRel(class_).orElseThrow().getStatic_().isEmpty());
+        assertTrue(classDao.querySafeRel(class_).orElseThrow().getCase_().isPresent());
+
+        // Test Composition fields
+        assertTrue(if_.getCase_().isPresent());
+        assertEquals(2, if_.getStatic_().size());
+
+        if_.setCase_(null);
+        if_.setStatic_(List.of());
+
+        if_ = ifDao.update(if_);
+
+        assertFalse(if_.getCase_().isPresent());
+        assertTrue(if_.getStatic_().isEmpty());
+
+        if_.addToStatic_(StaticForCreate.builder().build().adaptTo(Static.class));
+        assertEquals(1, if_.getStatic_().size());
+
+        if_ = ifDao.update(if_);
+        if_.removeFromStatic_(if_.getStatic_().get(0));
+
+        assertEquals(0, if_.getStatic_().size());
 
     }
 

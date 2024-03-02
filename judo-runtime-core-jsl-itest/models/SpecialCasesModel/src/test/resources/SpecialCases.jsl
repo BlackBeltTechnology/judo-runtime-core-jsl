@@ -106,9 +106,11 @@ entity RelationTarget {
 // not safe names
 
 entity Class {
+    field String safeName;
     field String class;
     relation If if;
     relation Case[] case;
+    relation If safeRel;
 }
 
 entity If {
