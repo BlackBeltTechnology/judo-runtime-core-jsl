@@ -58,7 +58,6 @@ import hu.blackbelt.structured.map.proxy.MapHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
@@ -359,7 +358,6 @@ public class AssociationRelationshipsTest {
     CDao cDao;
 
     @Test
-    @Disabled("https://blackbelt.atlassian.net/browse/JNG-5469")
     @TestCase("MultiLevelMask")
     @Requirement(reqs = {
             "REQ-TYPE-001",
@@ -410,7 +408,6 @@ public class AssociationRelationshipsTest {
 
         Map<String, Object> aWithoutMaskOriginalMap = ((MapHolder) aWithoutMask.get()).$originalMap();
         Map<String, Object> aWithMaskOriginalMap = ((MapHolder) aWithMask.get()).$originalMap();
-        // TODO JNG-5469
         assertThat(aWithMaskOriginalMap, equalTo(aWithoutMaskOriginalMap));
     }
 }
