@@ -524,8 +524,8 @@ end text"
                         assertEquals(false, envExpression.getBoolean1().orElseThrow());
                         assertEquals(false, envExpression.getBoolean2().orElseThrow());
                         assertEquals("foopostfix", envExpression.getString().orElseThrow());
-                        assertEquals(new BigDecimal("4.1415926535"), envExpression.getDouble().orElseThrow());
-                        assertEquals(12345678901235L, envExpression.getLong().orElseThrow());
+                        assertEquals(new BigDecimal("4.1415926535"), envExpression.getDouble_().orElseThrow());
+                        assertEquals(12345678901235L, envExpression.getLong_().orElseThrow());
                         assertEquals(OffsetDateTime.parse("2020-11-19T16:38:00+00:00").atZoneSameInstant(ZoneOffset.UTC).toLocalDateTime().plusMinutes(720), envExpression.getTimestamp().orElseThrow());
                         assertEquals(OffsetDateTime.parse("2020-11-19T16:38:00+15:00").atZoneSameInstant(ZoneOffset.UTC).toLocalDateTime().plusMinutes(720), envExpression.getTimestampWithOffset().orElseThrow());
                         assertEquals(LocalDateTime.parse("2020-11-19T16:38:00").plusMinutes(720), envExpression.getTimestampWithoutOffset().orElseThrow());

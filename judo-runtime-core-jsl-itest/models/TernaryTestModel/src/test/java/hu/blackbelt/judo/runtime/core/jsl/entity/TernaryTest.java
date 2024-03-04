@@ -88,8 +88,8 @@ public class TernaryTest {
         assertThat(a.getConstantString().orElseThrow(), equalTo("X"));
         assertThat(a.getString().orElseThrow(), equalTo(stringValue));
         assertThat(a.getInteger().orElseThrow(), equalTo(integerValue));
-        assertThat(a.getDouble().orElseThrow(), equalTo(BigDecimal.valueOf(doubleValue)));
-        assertThat(a.getBoolean().orElseThrow(), equalTo(true));
+        assertThat(a.getDouble_().orElseThrow(), equalTo(BigDecimal.valueOf(doubleValue)));
+        assertThat(a.getBoolean_().orElseThrow(), equalTo(true));
         assertThat(a.getDate().orElseThrow(), equalTo(dateValue));
         assertThat(a.getTimestamp().orElseThrow(), equalTo(timestampValue));
         assertThat(a.getUnknownCondition().orElseThrow(), equalTo(stringValue));
@@ -125,8 +125,8 @@ public class TernaryTest {
         assertThat(a1.getConstantString1().orElseThrow(), equalTo("Y"));
         assertTrue(a1.getString().isEmpty());
         assertTrue(a1.getInteger().isEmpty());
-        assertTrue(a1.getDouble().isEmpty());
-        assertTrue(a1.getBoolean().isEmpty());
+        assertTrue(a1.getDouble_().isEmpty());
+        assertTrue(a1.getBoolean_().isEmpty());
         assertTrue(a1.getBooleanO().isEmpty());
         assertTrue(a1.getDate().isEmpty());
         assertTrue(a1.getTimestamp().isEmpty());
