@@ -1,6 +1,0 @@
-model DaoFunctionsWithMask;
-
-import judo::types;
-
-entity A {
-}

@@ -47,3 +47,4 @@ entity C {
     field String name;
     relation C[] cs eager:true;
 }
+

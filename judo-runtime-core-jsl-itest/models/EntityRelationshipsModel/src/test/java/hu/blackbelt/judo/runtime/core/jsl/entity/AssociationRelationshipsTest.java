@@ -64,6 +64,7 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -409,5 +410,50 @@ public class AssociationRelationshipsTest {
         Map<String, Object> aWithoutMaskOriginalMap = ((MapHolder) aWithoutMask.get()).$originalMap();
         Map<String, Object> aWithMaskOriginalMap = ((MapHolder) aWithMask.get()).$originalMap();
         assertThat(aWithMaskOriginalMap, equalTo(aWithoutMaskOriginalMap));
+
+        AMask maskForGetByID = AMask.aMask().addByName("name")
+                .addByName("b",
+                        BMask.bMask()
+                                .addByName("name")
+                                .addByName("c", CMask.cMask()
+                                        .addByName("name")));
+
+        checkAMask(aDao.getById(a.identifier(), maskForGetByID).orElseThrow());
+        checkAMask(aDao.getById((UUID) a.identifier().getIdentifier(), maskForGetByID).orElseThrow());
+        assertEquals(1, aDao.findAllById(List.of((UUID) a.identifier().getIdentifier()), maskForGetByID).size());
+        checkAMask(aDao.findAllById(List.of((UUID) a.identifier().getIdentifier()), maskForGetByID).get(0));
+
+        //Check recursive association mask
+        maskForGetByID = AMask.aMask()
+                .addByName("cs", CMask.cMask()
+                        .addByName("name")
+                        .addByName("cs", CMask.cMask()
+                                .addByName("cs", CMask.cMask()
+                                        .addByName("name"))));;
+
+        checkRecursiveAMask(aDao.getById(a.identifier(), maskForGetByID).orElseThrow());
+        checkRecursiveAMask(aDao.getById((UUID) a.identifier().getIdentifier(), maskForGetByID).orElseThrow());
+        assertEquals(1, aDao.findAllById(List.of((UUID) a.identifier().getIdentifier()), maskForGetByID).size());
+        checkRecursiveAMask(aDao.findAllById(List.of((UUID) a.identifier().getIdentifier()), maskForGetByID).get(0));
+
+    }
+
+    void checkAMask(A a) {
+        assertTrue(a.getName().isPresent());
+        assertTrue(a.getB().isPresent());
+        assertTrue(a.getB().orElseThrow().getName().isPresent());
+        assertTrue(a.getB().orElseThrow().getC().isPresent());
+        assertTrue(a.getB().orElseThrow().getC().orElseThrow().getName().isPresent());
+        assertNull(a.getB().orElseThrow().getC().orElseThrow().getCs());
+        assertNull(a.getCs());
+    }
+    void checkRecursiveAMask(A a) {
+        assertNull(a.getName());
+        assertNull(a.getB());
+        assertEquals(1, a.getCs().size());
+        assertTrue(a.getCs().get(0).getName().isPresent());
+        assertEquals(1, a.getCs().get(0).getCs().size());
+        assertNull(a.getCs().get(0).getCs().get(0).getName());
+        assertEquals(0, a.getCs().get(0).getCs().get(0).getCs().size());
     }
 }

@@ -43,7 +43,6 @@
         <module>RecursiveCompositionModel</module>
         <module>RelationCreateWithAttachmentTestModel</module>
         <module>OptimisticLockModel</module>
-        <module>DaoFunctionsWithMaskModel</module>
     </modules>
 
     <build>
