@@ -429,7 +429,8 @@ public class AssociationRelationshipsTest {
                         .addByName("name")
                         .addByName("cs", CMask.cMask()
                                 .addByName("cs", CMask.cMask()
-                                        .addByName("name"))));;
+                                        .addByName("name"))));
+        ;
 
         checkRecursiveAMask(aDao.getById(a.identifier(), maskForGetByID).orElseThrow());
         checkRecursiveAMask(aDao.getById((UUID) a.identifier().getIdentifier(), maskForGetByID).orElseThrow());
@@ -447,6 +448,7 @@ public class AssociationRelationshipsTest {
         assertNull(a.getB().orElseThrow().getC().orElseThrow().getCs());
         assertNull(a.getCs());
     }
+
     void checkRecursiveAMask(A a) {
         assertNull(a.getName());
         assertNull(a.getB());

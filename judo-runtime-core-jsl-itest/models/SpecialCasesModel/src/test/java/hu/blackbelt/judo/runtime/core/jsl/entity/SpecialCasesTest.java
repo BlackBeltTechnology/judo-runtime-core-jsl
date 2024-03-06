@@ -439,7 +439,7 @@ public class SpecialCasesTest {
                         .addByName("multipleDonF", EntityDMask.entityDMask().withStringD())
         );
 
-        assertThat(entityFs.stream().map(EntityF::getStringF).toList(), hasItems("F1","F2","F3"));
+        assertThat(entityFs.stream().map(EntityF::getStringF).toList(), hasItems("F1", "F2", "F3"));
         assertThat(entityFs.stream().flatMap(f -> f.getMultipleDonF().stream()).map(D::getStringD).map(Optional::orElseThrow).toList(),
                 hasItems("D1", "D2", "D3", "D4", "D5")
         );
@@ -645,7 +645,7 @@ public class SpecialCasesTest {
 
         entityFs = entityFDao.updateAll(List.of(entityF1, entityF2, entityF3), EntityFMask.entityFMask().withStringF());
 
-        assertThat(entityFs.stream().map(EntityF::getStringF).toList(), hasItems("F1UpdatedMask","F2UpdatedMask","F3UpdatedMask"));
+        assertThat(entityFs.stream().map(EntityF::getStringF).toList(), hasItems("F1UpdatedMask", "F2UpdatedMask", "F3UpdatedMask"));
         assertTrue(entityFs.stream().map(EntityF::getMultipleDonF).allMatch(Objects::isNull));
         assertThat(dDao.query().selectList().stream().map(D::getStringD).map(Optional::orElseThrow).toList(),
                 hasItems("D1UpdatedMask", "D2UpdatedMask", "D3UpdatedMask", "D4UpdatedMask", "D5UpdatedMask")
@@ -1160,7 +1160,7 @@ public class SpecialCasesTest {
                         .addByName("multipleDonF", EntityDMask.entityDMask().withStringD())
         );
 
-        assertThat(transferFss.stream().map(TransferF::getStringF).toList(), hasItems("F1","F2","F3"));
+        assertThat(transferFss.stream().map(TransferF::getStringF).toList(), hasItems("F1", "F2", "F3"));
         assertThat(transferFss.stream().flatMap(f -> f.getMultipleDonF().stream()).map(TransferD::getStringD).map(Optional::orElseThrow).toList(),
                 hasItems("D1", "D2", "D3", "D4", "D5")
         );
@@ -1441,7 +1441,7 @@ public class SpecialCasesTest {
 
         transferFs = transferFDao.updateAll(List.of(transferF1, transferF2, transferF3), TransferFMask.transferFMask().withStringF());
 
-        assertThat(transferFs.stream().map(TransferF::getStringF).toList(), hasItems("F1UpdatedMask","F2UpdatedMask","F3UpdatedMask"));
+        assertThat(transferFs.stream().map(TransferF::getStringF).toList(), hasItems("F1UpdatedMask", "F2UpdatedMask", "F3UpdatedMask"));
         assertTrue(transferFs.stream().map(TransferF::getMultipleDonF).allMatch(Objects::isNull));
         assertThat(dDao.query().selectList().stream().map(D::getStringD).map(Optional::orElseThrow).toList(),
                 hasItems("D1UpdatedMask", "D2UpdatedMask", "D3UpdatedMask", "D4UpdatedMask", "D5UpdatedMask")
