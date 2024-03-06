@@ -41,6 +41,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigati
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.transferperson.TransferPerson;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.transferperson.TransferPersonDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.transferperson.TransferPersonForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.transferperson.TransferPersonMask;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.NavigationTestDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
@@ -65,6 +66,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -259,7 +261,7 @@ class MappedTransferNavigationTest {
     
     @Inject
     TransferPersonDao transferPersonDao;
-    
+
     @Test
     @TestCase("NavigationTransferPersonWithParentsOnTransfer")
     @Requirement(reqs = {
@@ -286,7 +288,19 @@ class MappedTransferNavigationTest {
     })
     public void testNavigationTransferPersonWithParentsOnTransfer() {
         TransferPerson person1 = transferPersonDao.create(TransferPersonForCreate.builder().withName("TransferPerson1").withSex(SexType.MALE).withBirthDate(LocalDate.of(1987, 10, 11)).build());
-        TransferPerson father1 = transferPersonDao.createParents(person1, TransferPersonForCreate.builder().withName("Father1").withSex(SexType.MALE).withBirthDate(LocalDate.of(1957, 1, 2)).build());
+        TransferPerson father1 = transferPersonDao.createParents(
+                person1,
+                TransferPersonForCreate.builder().withName("Father1").withSex(SexType.MALE).withBirthDate(LocalDate.of(1957, 1, 2)).build(),
+                TransferPersonMask.transferPersonMask().withName().withSex()
+        );
+        assertNotNull(father1.getName());
+        assertNotNull(father1.getSex());
+        assertNull(father1.getFatherName());
+        assertNull(father1.getFatherName());
+        assertNull(father1.getBirthDate());
+        assertNull(father1.getGrandFather2Name());
+        assertNull(father1.getGrandMother1Name());
+
         TransferPerson mother1 = transferPersonDao.createParents(person1, TransferPersonForCreate.builder().withName("Mother1").withSex(SexType.FEMALE).withBirthDate(LocalDate.of(1960, 8, 17)).build());
         TransferPerson grandMother1 = transferPersonDao.createParents(mother1, TransferPersonForCreate.builder().withName("GrandMother1").withSex(SexType.FEMALE).withBirthDate(LocalDate.of(1935, 3, 13)).build());
         TransferPerson greatGrandMother1 = transferPersonDao.createParents(grandMother1, TransferPersonForCreate.builder().withName("GreatGrandMother").withSex(SexType.FEMALE).withBirthDate(LocalDate.of(1927, 9, 4)).build());

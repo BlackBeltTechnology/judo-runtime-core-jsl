@@ -70,6 +70,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigati
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.person.Person;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.person.PersonDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.person.PersonForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.person.PersonMask;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.person1.Person1;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.person1.Person1ForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.school.School;
@@ -106,6 +107,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.hasItem;
+import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
@@ -308,7 +310,19 @@ class NavigationTest {
     })
     public void testNavigationPersonWithParents() {
         Person person1 = personDao.create(PersonForCreate.builder().withName("Person1").withSex(SexType.MALE).withBirthDate(LocalDate.of(1987, 10, 11)).build());
-        Person father1 = personDao.createParents(person1, PersonForCreate.builder().withName("Father1").withSex(SexType.MALE).withBirthDate(LocalDate.of(1957, 1, 2)).build());
+        Person father1 = personDao.createParents(
+                person1,
+                PersonForCreate.builder().withName("Father1").withSex(SexType.MALE).withBirthDate(LocalDate.of(1957, 1, 2)).build(),
+                PersonMask.personMask().withName().withSex()
+        );
+        assertNotNull(father1.getName());
+        assertNotNull(father1.getSex());
+        assertNull(father1.getFatherName());
+        assertNull(father1.getFatherName());
+        assertNull(father1.getBirthDate());
+        assertNull(father1.getGrandFather2Name());
+        assertNull(father1.getGrandMother1Name());
+
         Person mother1 = personDao.createParents(person1, PersonForCreate.builder().withName("Mother1").withSex(SexType.FEMALE).withBirthDate(LocalDate.of(1960, 8, 17)).build());
         Person grandMother1 = personDao.createParents(mother1, PersonForCreate.builder().withName("GrandMother1").withSex(SexType.FEMALE).withBirthDate(LocalDate.of(1935, 3, 13)).build());
         Person greatGrandMother1 = personDao.createParents(grandMother1, PersonForCreate.builder().withName("GreatGrandMother").withSex(SexType.FEMALE).withBirthDate(LocalDate.of(1927, 9, 4)).build());
