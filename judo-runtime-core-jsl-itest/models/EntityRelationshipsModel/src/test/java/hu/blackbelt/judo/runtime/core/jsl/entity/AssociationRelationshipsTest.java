@@ -297,7 +297,7 @@ public class AssociationRelationshipsTest {
     public void testDeletingRelatedElementUnsetsRelationship() {
         entityDDao.delete(entityD);
 
-        List<EntityD> ds = entityADao.queryMultipleDonA(entityA.identifier()).selectList();
+        List<EntityD> ds = entityADao.queryMultipleDonA(entityA).selectList();
 
         assertEquals(0, ds.size());
     }
