@@ -70,7 +70,10 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -197,7 +200,11 @@ public class CompositionRelationshipsTest {
             "REQ-ENT-012"
     })
     void testDeleteRequiredRelationThrowsException() {
-        EntityC c = entityADao.querySingleRequiredConA(entityA.identifier());
+        EntityC c = entityADao.querySingleRequiredConA((UUID) entityA.identifier().getIdentifier(), EntityCMask.entityCMask().withStringC());
+        assertNull(c.getStringB());
+        assertNull(c.getMultipleDonB());
+        assertNotNull(c.getStringC());
+        assertEquals("TEST-C", c.getStringC().orElseThrow());
         assertNotNull(c);
         assertNotNull(c.identifier());
         IllegalStateException exception = assertThrows(
