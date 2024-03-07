@@ -21,6 +21,7 @@ package hu.blackbelt.judo.runtime.core.jsl.entity;
  */
 
 import com.google.inject.Inject;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityd.EntityDMask;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.abstract_.Abstract;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.abstract_.AbstractDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.abstract_.AbstractForCreate;
@@ -39,22 +40,21 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcas
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.e.E;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.e.EDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.e.EForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.e.EMask;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.entitya.EntityA;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.entitya.EntityADao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.entitya.EntityAForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.entityb.EntityB;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.entityb.EntityBDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.entityb.EntityBForCreate;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.entityf.EntityF;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.entityf.EntityFDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.entityf.EntityFForCreate;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.entityf.EntityFIdentifier;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.entityf.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.entityg.EntityG;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.entityg.EntityGDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.entityg.EntityGForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.f.F;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.f.FDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.f.FForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.f.FMask;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.f.queryentity.FQueryEntityParameter;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.f.queryprimitive.FQueryPrimitiveParameter;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.if_.If;
@@ -75,6 +75,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcas
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.transferf.TransferF;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.transferf.TransferFDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.transferf.TransferFForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.transferf.TransferFMask;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.transferg.TransferG;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.transferg.TransferGDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.transferg.TransferGForCreate;
@@ -88,9 +89,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -314,10 +313,14 @@ public class SpecialCasesTest {
 
         assertEquals(0, entityFss.size());
 
-        entityFss = entityFDao.createAll(List.of(EntityFForCreate.builder().withStringF("II").build()));
+        entityFss = entityFDao.createAll(
+                List.of(EntityFForCreate.builder().withStringF("II").build()),
+                EntityFMask.entityFMask().withStringF()
+        );
 
         assertEquals(1, entityFss.size());
         assertEquals("II", entityFss.get(0).getStringF());
+        assertNull(entityFss.get(0).getMultipleDonF());
 
         EntityFForCreate entityFForCreate1 = EntityFForCreate.builder()
                 .withStringF("F1")
@@ -428,6 +431,19 @@ public class SpecialCasesTest {
                 hasProperty("location", equalTo("stringF")))));
 
         assertEquals(9, entityFDao.countAll());
+
+        entityFs = entityFDao.createAll(
+                List.of(entityFForCreate1, entityFForCreate2, entityFForCreate3),
+                EntityFMask.entityFMask()
+                        .withStringF()
+                        .addByName("multipleDonF", EntityDMask.entityDMask().withStringD())
+        );
+
+        assertThat(entityFs.stream().map(EntityF::getStringF).toList(), hasItems("F1", "F2", "F3"));
+        assertThat(entityFs.stream().flatMap(f -> f.getMultipleDonF().stream()).map(D::getStringD).map(Optional::orElseThrow).toList(),
+                hasItems("D1", "D2", "D3", "D4", "D5")
+        );
+        assertTrue(entityFs.stream().flatMap(f -> f.getMultipleDonF().stream()).map(D::getCompE).allMatch(Objects::isNull));
     }
 
     @Test
@@ -618,6 +634,22 @@ public class SpecialCasesTest {
                 hasProperty("location", equalTo("singleRequiredEonG")))));
 
         assertEquals(3, entityGDao.countAll());
+
+        entityF1.setStringF("F1UpdatedMask");
+        entityF1.setMultipleDonF(List.of(D.builder().withStringD("D1UpdatedMask").build()));
+        entityF2.setStringF("F2UpdatedMask");
+        entityF2.setMultipleDonF(List.of(D.builder().withStringD("D2UpdatedMask").build(), D.builder().withStringD("D3UpdatedMask").build()));
+        entityF3.setStringF("F3UpdatedMask");
+        entityF3.setMultipleDonF(List.of(D.builder().withStringD("D4UpdatedMask").build(), D.builder().withStringD("D5UpdatedMask").build()));
+        entityF3.addToMultipleDonF(D.builder().withStringD("D6UpdatedMask").build());
+
+        entityFs = entityFDao.updateAll(List.of(entityF1, entityF2, entityF3), EntityFMask.entityFMask().withStringF());
+
+        assertThat(entityFs.stream().map(EntityF::getStringF).toList(), hasItems("F1UpdatedMask", "F2UpdatedMask", "F3UpdatedMask"));
+        assertTrue(entityFs.stream().map(EntityF::getMultipleDonF).allMatch(Objects::isNull));
+        assertThat(dDao.query().selectList().stream().map(D::getStringD).map(Optional::orElseThrow).toList(),
+                hasItems("D1UpdatedMask", "D2UpdatedMask", "D3UpdatedMask", "D4UpdatedMask", "D5UpdatedMask")
+        );
     }
 
     @Test
@@ -1120,6 +1152,19 @@ public class SpecialCasesTest {
                 hasProperty("location", equalTo("stringF")))));
 
         Assertions.assertEquals(9, transferFDao.countAll());
+
+        transferFss = transferFDao.createAll(
+                List.of(TransferFForCreate1, TransferFForCreate2, TransferFForCreate3),
+                TransferFMask.transferFMask()
+                        .withStringF()
+                        .addByName("multipleDonF", EntityDMask.entityDMask().withStringD())
+        );
+
+        assertThat(transferFss.stream().map(TransferF::getStringF).toList(), hasItems("F1", "F2", "F3"));
+        assertThat(transferFss.stream().flatMap(f -> f.getMultipleDonF().stream()).map(TransferD::getStringD).map(Optional::orElseThrow).toList(),
+                hasItems("D1", "D2", "D3", "D4", "D5")
+        );
+        assertTrue(transferFss.stream().flatMap(f -> f.getMultipleDonF().stream()).map(TransferD::getCompE).allMatch(Objects::isNull));
     }
 
     @Test
@@ -1383,6 +1428,25 @@ public class SpecialCasesTest {
                 hasProperty("location", equalTo("singleRequiredEonG")))));
 
         Assertions.assertEquals(3, transferGDao.countAll());
+
+        assertEquals(3, entityGDao.countAll());
+
+        transferF1.setStringF("F1UpdatedMask");
+        transferF1.setMultipleDonF(List.of(TransferD.builder().withStringD("D1UpdatedMask").build()));
+        transferF2.setStringF("F2UpdatedMask");
+        transferF2.setMultipleDonF(List.of(TransferD.builder().withStringD("D2UpdatedMask").build(), TransferD.builder().withStringD("D3UpdatedMask").build()));
+        transferF3.setStringF("F3UpdatedMask");
+        transferF3.setMultipleDonF(List.of(TransferD.builder().withStringD("D4UpdatedMask").build(), TransferD.builder().withStringD("D5UpdatedMask").build()));
+        transferF3.addToMultipleDonF(TransferD.builder().withStringD("D6UpdatedMask").build());
+
+        transferFs = transferFDao.updateAll(List.of(transferF1, transferF2, transferF3), TransferFMask.transferFMask().withStringF());
+
+        assertThat(transferFs.stream().map(TransferF::getStringF).toList(), hasItems("F1UpdatedMask", "F2UpdatedMask", "F3UpdatedMask"));
+        assertTrue(transferFs.stream().map(TransferF::getMultipleDonF).allMatch(Objects::isNull));
+        assertThat(dDao.query().selectList().stream().map(D::getStringD).map(Optional::orElseThrow).toList(),
+                hasItems("D1UpdatedMask", "D2UpdatedMask", "D3UpdatedMask", "D4UpdatedMask", "D5UpdatedMask")
+        );
+
     }
 
     @Test
@@ -1913,10 +1977,11 @@ public class SpecialCasesTest {
     })
     public void TestUUIDMethods() {
 
-        E eOpRel = eDao.create(EForCreate.builder().build());
-        E eReqRel = eDao.create(EForCreate.builder().build());
-        E eColRel1 = eDao.create(EForCreate.builder().build());
-        E eColRel2 = eDao.create(EForCreate.builder().build());
+        E eOpRel = eDao.create(EForCreate.builder().build(), EMask.eMask());
+        E eReqRel = eDao.create(EForCreate.builder().build(), EMask.eMask());
+        E eColRel1 = eDao.create(EForCreate.builder().build(), EMask.eMask());
+        E eColRel2 = eDao.create(EForCreate.builder().build(), EMask.eMask());
+        assertNull(eOpRel.getStringE());
 
         F f = fDao.create(FForCreate.builder()
                 .withRelE(eOpRel)
@@ -1925,7 +1990,8 @@ public class SpecialCasesTest {
                 .withCompE(EForCreate.builder().build())
                 .withReqCompE(EForCreate.builder().build())
                 .withCompECol(List.of(EForCreate.builder().build(), EForCreate.builder().build()))
-                .build()
+                .build(),
+                FMask.fMask().withCompE(EMask.eMask()).withCompECol(EMask.eMask()).withReqCompE(EMask.eMask())
         );
 
         E eOpComp = f.getCompE().get();
@@ -1960,8 +2026,8 @@ public class SpecialCasesTest {
 
         // Not related identifier added
         UUID uuidEOpRel = (UUID) eOpRel.identifier().getIdentifier();
-        assertFalse(fDao.getById(uuidEOpRel).isPresent());
-        assertFalse(eDao.getById(uuidF).isPresent());
+        assertFalse(fDao.getById(uuidEOpRel, FMask.fMask()).isPresent());
+        assertFalse(eDao.getById(uuidF, EMask.eMask()).isPresent());
 
         assertFalse(fDao.queryCompE(uuidEOpRel).isPresent());
 
@@ -1974,11 +2040,11 @@ public class SpecialCasesTest {
         ));
 
         // delete and getById
-        assertTrue(fDao.getById(uuidF).isPresent());
+        assertTrue(fDao.getById(uuidF, FMask.fMask()).isPresent());
 
         fDao.delete(uuidF);
 
-        assertFalse(fDao.getById(uuidF).isPresent());
+        assertFalse(fDao.getById(uuidF, FMask.fMask()).isPresent());
     }
 
     @Inject
