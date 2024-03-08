@@ -29,7 +29,7 @@ entity Basket {
 
 transfer TransferBasket (Basket basket) {
     relation TransferFruit breakfast <= basket.breakfast choices: Apple.all() eager:true;
-    relation TransferFruit fruits choices: Pear.all(); // eager:true not allowed on transient field
+    relation TransferFruit fruits choices: Pear.all();
     relation TransferFruit galaFruit <= basket.galaFruit choices: Apple.all().filter(a | a.variety == "GALA").asCollection(entityType = Fruit) eager:true;
 }
 
@@ -63,7 +63,7 @@ entity Planet {
     field required String name;
     field String planetNameOverCreature <= self.creatures.any().planet.name;
     relation Creature[] creatures opposite: planet;
-    relation Creature[] visitors ;//<= Creature.all().filter(c | c.planet.isUndefined())
+    relation Creature[] visitors ;
     relation Creature[] availableVisitors <= Creature.all().filter(c |  c.planet.name == "Venus");
 }
 
