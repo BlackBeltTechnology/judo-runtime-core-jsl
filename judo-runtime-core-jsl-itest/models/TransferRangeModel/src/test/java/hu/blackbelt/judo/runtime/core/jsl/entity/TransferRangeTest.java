@@ -32,16 +32,31 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferr
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.transferbasket.TransferBasket;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.transferbasket.TransferBasketDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.transferbasket.TransferBasketForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.transfercar.TransferCar;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.transfercar.TransferCarDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.transfercar.TransferCarForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.transfercreature.TransferCreature;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.transfercreature.TransferCreatureDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.transfercreature.TransferCreatureForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.transferfruit.TransferFruit;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.transferfruit.TransferFruitForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.transferplanet.TransferPlanet;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.transferplanet.TransferPlanetDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.transferplanet.TransferPlanetForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.transferwheel.TransferWheel;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.transferwheel.TransferWheelDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.TransferRangeDaoModules;
+import hu.blackbelt.judo.requirement.report.annotation.Requirement;
+import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import lombok.extern.slf4j.Slf4j;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
+import org.testcontainers.shaded.com.google.common.collect.ImmutableSet;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -75,6 +90,25 @@ public class TransferRangeTest {
     TransferBasketDao transferBasketDao;
 
     @Test
+    @TestCase("Range")
+    @Requirement(reqs = {
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-ENT-012",
+            "REQ-EXPR-001",
+            "REQ-EXPR-002",
+            "REQ-EXPR-003",
+            "REQ-EXPR-004",
+            "REQ-EXPR-012",
+            "REQ-SRV-002"
+    })
     public void testRange() {
         Apple galaApple =  appleDao.create(AppleForCreate.builder().withVariety("GALA").build());
         Apple pinkLadyApple =  appleDao.create(AppleForCreate.builder().withVariety("PINK_LADY").build());
@@ -106,13 +140,6 @@ public class TransferRangeTest {
         transferBasket = transferBasketDao.update(transferBasket);
         assertEquals(pinkLadyApple.identifier().getIdentifier(), transferBasket.getBreakfast().orElseThrow().identifier().getIdentifier());
 
-        // out of the range
-        // TODO not validate the range call in reference set
-        transferBasketDao.setBreakfast(transferBasket, williamsPear.adaptTo(TransferFruit.class));
-        transferBasket = transferBasketDao.getById(transferBasket.identifier()).orElseThrow();
-        // Should be false
-        assertEquals(williamsPear.identifier().getIdentifier(), transferBasket.getBreakfast().orElseThrow().identifier().getIdentifier());
-
         transferBasket.setBreakfast(williamsPear.adaptTo(TransferFruit.class));
         TransferBasket referenceBasket = transferBasket;
         ValidationException thrown = assertThrows(
@@ -140,5 +167,106 @@ public class TransferRangeTest {
                 hasProperty("location", Matchers.equalTo("breakfast")))
         ));
     }
+
+    @Inject
+    TransferCarDao transferCarDao;
+
+    @Inject
+    TransferWheelDao transferWheelDao;
+
+    @Test
+    @TestCase("RangeOfContainment")
+    @Requirement(reqs = {
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-ENT-007",
+            "REQ-EXPR-001",
+            "REQ-EXPR-002",
+            "REQ-EXPR-003",
+            "REQ-EXPR-004",
+            "REQ-SRV-002"
+    })
+    void testRangeOfContainment() {
+
+        TransferCar car1 = transferCarDao.create(TransferCarForCreate.builder()
+                .withLicensePlate("ABC123")
+                .withColor("red")
+                .withWheels(List.of(
+                                TransferWheel.builder().withProduced(2018).build(),
+                                TransferWheel.builder().withProduced(2019).build(),
+                                TransferWheel.builder().withProduced(2020).build(),
+                                TransferWheel.builder().withProduced(2021).build(),
+                                TransferWheel.builder().withProduced(2015).build()
+                        )
+                )
+                .build()
+        );
+
+        assertThat(transferCarDao.getRangeOfSpareWheel(car1).stream().map(TransferWheel::getProduced).collect(Collectors.toSet()), equalTo(ImmutableSet.of(2018, 2019, 2020, 2021, 2015)));
+
+        TransferCarForCreate car2 = TransferCarForCreate.builder()
+                .withColor("black")
+                .withWheels(List.of(
+                                TransferWheel.builder().withProduced(2005).build(),
+                                TransferWheel.builder().withProduced(2006).build(),
+                                TransferWheel.builder().withProduced(2007).build(),
+                                TransferWheel.builder().withProduced(2008).build(),
+                                TransferWheel.builder().withProduced(1995).build()
+                        )
+                )
+                .build();
+
+        // TODO JNG-5603 getRangeOfSpareWheel with TransferCarForCreate parameter and stateful is true
+        //assertThat(transferCarDao.getRangeOfSpareWheel(TransferCarForCreate).stream().map(TransferWheel::getProduced).collect(Collectors.toSet()), equalTo(ImmutableSet.of(2005, 2006, 2007, 2008, 1995)));
+
+    }
+
+    @Inject
+    TransferPlanetDao transferPlanetDao;
+
+    @Inject
+    TransferCreatureDao transferCreatureDao;
+
+    @Test
+    @TestCase("RangeOfContainment")
+    @Requirement(reqs = {
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-EXPR-001",
+            "REQ-EXPR-002",
+            "REQ-EXPR-003",
+            "REQ-EXPR-004",
+            "REQ-SRV-002"
+    })
+    void testRangeOnTwoWayRelationExpression() {
+
+        TransferPlanet venus = transferPlanetDao.create(TransferPlanetForCreate.builder().withName("Venus").build());
+        TransferCreature creature = transferCreatureDao.create(TransferCreatureForCreate.builder().withName("Alien").withPlanet(venus).build());
+        TransferCreature creatureWithOutPlanet = transferCreatureDao.create(TransferCreatureForCreate.builder().withName("Visitor").build());
+
+        List<TransferCreature> availableCreatures = transferPlanetDao.queryAvailableVisitors(venus).selectList();
+        List<TransferCreature> selectableCreatures = transferPlanetDao.getRangeOfVisitors(venus);
+
+        assertThat(availableCreatures.stream().map(TransferCreature::getName).collect(Collectors.toSet()), equalTo(ImmutableSet.of("Alien")));
+        assertThat(selectableCreatures.stream().map(TransferCreature::getName).collect(Collectors.toSet()), equalTo(ImmutableSet.of("Visitor")));
+
+    }
+
 
 }
