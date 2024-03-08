@@ -39,6 +39,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationship
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entityc.EntityC;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entityc.EntityCDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entityc.EntityCForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entityc.EntityCMask;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entityd.EntityD;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entityd.EntityDDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entityd.EntityDForCreate;
@@ -117,7 +118,7 @@ public class AssociationRelationshipsTest {
 
         entityADao.setSingleConA(entityA, entityC);
 
-        assertEquals(entityC.identifier().getIdentifier(), entityADao.querySingleConA(entityA).orElseThrow().identifier().getIdentifier());
+        assertEquals(entityC.identifier().getIdentifier(), entityADao.querySingleConA((UUID) entityA.identifier().getIdentifier(), EntityCMask.entityCMask()).orElseThrow().identifier().getIdentifier());
 
         entityADao.unsetSingleConA(entityA);
 
@@ -436,6 +437,13 @@ public class AssociationRelationshipsTest {
         checkRecursiveAMask(aDao.getById((UUID) a.identifier().getIdentifier(), maskForGetByID).orElseThrow());
         assertEquals(1, aDao.findAllById(List.of((UUID) a.identifier().getIdentifier()), maskForGetByID).size());
         checkRecursiveAMask(aDao.findAllById(List.of((UUID) a.identifier().getIdentifier()), maskForGetByID).get(0));
+
+        B maskedB = aDao.queryB((UUID) a.identifier().getIdentifier(), BMask.bMask().addByName("c", CMask.cMask().addByName("name"))).orElseThrow();
+
+        assertNull(maskedB.getName());
+        assertNotNull(maskedB.getC());
+        assertNotNull(maskedB.getC().orElseThrow().getName());
+        assertNull(maskedB.getC().orElseThrow().getCs());
 
     }
 
