@@ -123,3 +123,43 @@ entity Case {
 
 entity Static {
 }
+
+entity PrimUpper {
+    field String Abc;
+    field String ABd;
+    field String ABE;
+    field String AbF;
+}
+
+entity RelUpper {
+    relation Ref Abc;
+    relation Ref ABd;
+    relation Ref ABE;
+    relation Ref AbF;
+}
+
+entity RelMultiUpper {
+    relation Ref[] Abc;
+    relation Ref[] ABd;
+    relation Ref[] ABE;
+    relation Ref[] AbF;
+}
+
+entity CompUpper {
+    field Ref Abc;
+    field Ref ABd;
+    field Ref ABE;
+    field Ref AbF;
+}
+
+entity CompMultiUpper {
+    field Ref[] Abc;
+    field Ref[] ABd;
+    field Ref[] ABE;
+    field Ref[] AbF;
+}
+
+entity Ref {
+    field String Name;
+}
+
