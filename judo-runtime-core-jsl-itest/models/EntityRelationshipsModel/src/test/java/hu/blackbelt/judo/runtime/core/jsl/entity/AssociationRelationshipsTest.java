@@ -33,6 +33,9 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationship
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.c.CDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.c.CForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.c.CMask;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.collector.Collector;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.collector.CollectorDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.collector.CollectorForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entitya.EntityA;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entitya.EntityADao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entitya.EntityAForCreate;
@@ -59,13 +62,12 @@ import hu.blackbelt.structured.map.proxy.MapHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -444,6 +446,135 @@ public class AssociationRelationshipsTest {
         assertNotNull(maskedB.getC());
         assertNotNull(maskedB.getC().orElseThrow().getName());
         assertNull(maskedB.getC().orElseThrow().getCs());
+
+    }
+
+    @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+    })
+    public void testSetUnsetEagerRelation() {
+
+        B b1 = bDao.create(BForCreate.builder().withName("b1").build());
+        B b2 = bDao.create(BForCreate.builder().withName("b2").build());
+
+        C c1 = cDao.create(CForCreate.builder().withName("c1").build());
+        C c2 = cDao.create(CForCreate.builder().withName("c2").build());
+
+        A a = aDao.create(AForCreate.builder().withName("a").build());
+
+        assertTrue(a.getB().isEmpty());
+
+        a.setB(b1);
+        a = aDao.update(a);
+
+        assertTrue(a.getB().isPresent());
+        assertEquals("b1", a.getB().orElseThrow().getName().orElseThrow());
+
+        a.setB(b2);
+        a = aDao.update(a);
+
+        assertTrue(a.getB().isPresent());
+        assertEquals("b2", a.getB().orElseThrow().getName().orElseThrow());
+
+        a.setB(null);
+        a = aDao.update(a);
+
+        assertTrue(a.getB().isEmpty());
+
+        // multi
+
+        assertTrue(a.getCs().isEmpty());
+
+        a.addToCs(c1);
+        a = aDao.update(a);
+
+        assertEquals(1, a.getCs().size());
+        assertThat(a.getCs().stream().map(C::getName).map(Optional::orElseThrow).collect(Collectors.toSet()), equalTo(Set.of("c1")));
+
+        a.addToCs(c2);
+        a = aDao.update(a);
+
+        assertEquals(2, a.getCs().size());
+        assertThat(a.getCs().stream().map(C::getName).map(Optional::orElseThrow).collect(Collectors.toSet()), equalTo(Set.of("c1", "c2")));
+
+        a.removeFromCs(c1);
+        a = aDao.update(a);
+
+        assertEquals(1, a.getCs().size());
+        assertThat(a.getCs().stream().map(C::getName).map(Optional::orElseThrow).collect(Collectors.toSet()), equalTo(Set.of("c2")));
+
+        a.setCs(List.of());
+        a = aDao.update(a);
+
+        assertTrue(a.getCs().isEmpty());
+
+    }
+
+    @Inject
+    CollectorDao collectorDao;
+
+    @Test
+    @Disabled("")
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-ENT-008",
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+    })
+    public void testUpdateThroughEagerRelation() {
+
+        B b1 = bDao.create(BForCreate.builder().withName("b1").build());
+
+        C c1 = cDao.create(CForCreate.builder().withName("c1").build());
+        C c2 = cDao.create(CForCreate.builder().withName("c2").build());
+
+        A a = aDao.create(AForCreate.builder().withName("a").build());
+
+        a.setB(b1);
+        a.addToCs(c1);
+        a.addToCs(c2);
+
+        a = aDao.update(a);
+
+        a.setB(b1);
+        a = aDao.update(a);
+
+        // TODO not supported yet
+        Collector collector = collectorDao.create(CollectorForCreate.builder().build());
+
+        collectorDao.queryA(collector);
+
+//        assertEquals(a.identifier().getIdentifier(), collector.identifier().getIdentifier());
+
+//        assertTrue(collector.getBonA().isPresent());
+//        assertEquals("b1", collector.getBonA().orElseThrow().getName().orElseThrow());
+//
+//        assertEquals(2, collector.getCsOnA().size());
+//        assertThat(a.getCs().stream().map(C::getName).map(Optional::orElseThrow).collect(Collectors.toSet()), equalTo(Set.of("c1", "c2")));
+//
+//        a.setB(null);
+//        a.setCs(List.of());
+//        a = aDao.update(a);
+//
+//        collector = collectorDao.update(collector);
+//
+//        assertTrue(collector.getBonA().isEmpty());
+//        assertTrue(collector.getCsOnA().isEmpty());
 
     }
 

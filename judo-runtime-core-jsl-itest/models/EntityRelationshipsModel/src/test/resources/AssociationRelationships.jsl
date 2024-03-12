@@ -48,3 +48,8 @@ entity C {
     relation C[] cs eager:true;
 }
 
+entity Collector {
+    relation A a <= A.all().any();
+    //relation B bonA <= A.all().any().b eager:true;
+    //relation C[] csOnA <= A.all().any().cs.asCollection(entityType = C) eager:true;
+}
