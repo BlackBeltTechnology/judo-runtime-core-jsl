@@ -2204,14 +2204,14 @@ public class SpecialCasesTest {
 
         PrimUpper primUpper = primUpperDao.create(PrimUpperForCreate.builder()
                 .withAbc("Abc")
-                .withABd("ABc")
+                .withABd("ABd")
                 .withABE("ABE")
                 .withAbF("AbF")
                 .build()
         );
 
         assertEquals("Abc", primUpper.getAbc().orElseThrow());
-        assertEquals("ABc", primUpper.getABd().orElseThrow());
+        assertEquals("ABd", primUpper.getABd().orElseThrow());
         assertEquals("ABE", primUpper.getABE().orElseThrow());
         assertEquals("AbF", primUpper.getAbF().orElseThrow());
 
