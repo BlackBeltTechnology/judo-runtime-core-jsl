@@ -36,6 +36,13 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationship
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.collector.Collector;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.collector.CollectorDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.collector.CollectorForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.collectorfornotsupported.CollectorForNotSupportedDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.d.D;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.d.DDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.d.DForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.e.E;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.e.EDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.e.EForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entitya.EntityA;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entitya.EntityADao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entitya.EntityAForCreate;
@@ -53,6 +60,9 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationship
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entityf.EntityFDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entityf.EntityFForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entityf.EntityFIdentifier;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.f.F;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.f.FDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.f.FForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.AssociationRelationshipsDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
@@ -62,7 +72,6 @@ import hu.blackbelt.structured.map.proxy.MapHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
@@ -520,10 +529,22 @@ public class AssociationRelationshipsTest {
     }
 
     @Inject
+    DDao dDao;
+
+    @Inject
+    EDao eDao;
+
+    @Inject
+    FDao fDao;
+
+
+    @Inject
     CollectorDao collectorDao;
 
+    @Inject
+    CollectorForNotSupportedDao collectorForNotSupportedDao;
+
     @Test
-    @Disabled("")
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-TYPE-004",
@@ -536,45 +557,39 @@ public class AssociationRelationshipsTest {
             "REQ-MDL-002",
             "REQ-MDL-003",
     })
-    public void testUpdateThroughEagerRelation() {
+    public void testEagerCalculatedMembers() {
 
-        B b1 = bDao.create(BForCreate.builder().withName("b1").build());
+        F f1 = fDao.create(FForCreate.builder().withName("f1").build());
 
-        C c1 = cDao.create(CForCreate.builder().withName("c1").build());
-        C c2 = cDao.create(CForCreate.builder().withName("c2").build());
+        E e1 = eDao.create(EForCreate.builder().withName("e1").withF(f1.adaptTo(FForCreate.class)).build());
 
-        A a = aDao.create(AForCreate.builder().withName("a").build());
+        D d = dDao.create(DForCreate.builder().withName("d").build());
 
-        a.setB(b1);
-        a.addToCs(c1);
-        a.addToCs(c2);
+        d.setE(e1);
 
-        a = aDao.update(a);
+        d = dDao.update(d);
 
-        a.setB(b1);
-        a = aDao.update(a);
-
-        // TODO not supported yet
         Collector collector = collectorDao.create(CollectorForCreate.builder().build());
 
-        collectorDao.queryA(collector);
+        assertEquals(d.identifier().getIdentifier(), collector.getD().orElseThrow().identifier().getIdentifier());
+        assertEquals(e1.identifier().getIdentifier(), collector.getD().orElseThrow().getE().orElseThrow().identifier().getIdentifier());
+        assertEquals(f1.identifier().getIdentifier(), collector.getD().orElseThrow().getE().orElseThrow().getF().orElseThrow().identifier().getIdentifier());
 
-//        assertEquals(a.identifier().getIdentifier(), collector.identifier().getIdentifier());
+        fDao.delete(f1);
+        collector = collectorDao.getById(collector.identifier()).orElseThrow();
 
-//        assertTrue(collector.getBonA().isPresent());
-//        assertEquals("b1", collector.getBonA().orElseThrow().getName().orElseThrow());
-//
-//        assertEquals(2, collector.getCsOnA().size());
-//        assertThat(a.getCs().stream().map(C::getName).map(Optional::orElseThrow).collect(Collectors.toSet()), equalTo(Set.of("c1", "c2")));
-//
-//        a.setB(null);
-//        a.setCs(List.of());
-//        a = aDao.update(a);
-//
-//        collector = collectorDao.update(collector);
-//
-//        assertTrue(collector.getBonA().isEmpty());
-//        assertTrue(collector.getCsOnA().isEmpty());
+        assertEquals(d.identifier().getIdentifier(), collector.getD().orElseThrow().identifier().getIdentifier());
+        assertEquals(e1.identifier().getIdentifier(), collector.getD().orElseThrow().getE().orElseThrow().identifier().getIdentifier());
+        assertTrue(collector.getD().orElseThrow().getE().orElseThrow().getF().isEmpty());
+
+        eDao.delete(e1);
+        collector = collectorDao.getById(collector.identifier()).orElseThrow();
+
+        assertEquals(d.identifier().getIdentifier(), collector.getD().orElseThrow().identifier().getIdentifier());
+        assertTrue(collector.getD().orElseThrow().getE().isEmpty());
+
+        // TODO JNG-5620
+        //CollectorForNotSupported collectorForNotSupported = collectorForNotSupportedDao.create(CollectorForNotSupportedForCreate.builder().build());
 
     }
 
