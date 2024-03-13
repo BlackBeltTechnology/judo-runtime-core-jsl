@@ -42,7 +42,7 @@
 
         <judo-tatami-jsl-version>1.1.4.20240313_122101_24a96f23_feature_JNG_5266_Test_the_eager_modifier_SDK_functionality</judo-tatami-jsl-version>
         <judo-runtime-core-version>1.0.6.20240313_121638_1ccd703e_feature_JNG_5266_Test_the_eager_modifier_SDK_functionality</judo-runtime-core-version>
-        <judo-psm-generator-sdk-core-version>1.0.0.20240313_133252_d25fb564_feature_JNG_5611_Mask_parameter_is_missing_from_single_relation_query_functions_on_dao_interfaces</judo-psm-generator-sdk-core-version>
+        <judo-psm-generator-sdk-core-version>1.0.0.20240313_135928_764ef9ec_feature_JNG_5611_Mask_parameter_is_missing_from_single_relation_query_functions_on_dao_interfaces</judo-psm-generator-sdk-core-version>
 
         <judo-meta-psm-version>1.3.0.20240127_122224_4f1de775_develop</judo-meta-psm-version>
 

@@ -33,6 +33,16 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationship
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.c.CDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.c.CForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.c.CMask;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.collector.Collector;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.collector.CollectorDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.collector.CollectorForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.collectorfornotsupported.CollectorForNotSupportedDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.d.D;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.d.DDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.d.DForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.e.E;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.e.EDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.e.EForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entitya.EntityA;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entitya.EntityADao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entitya.EntityAForCreate;
@@ -50,6 +60,9 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationship
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entityf.EntityFDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entityf.EntityFForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entityf.EntityFIdentifier;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.f.F;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.f.FDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.f.FForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.AssociationRelationshipsDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
@@ -62,10 +75,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -458,6 +469,141 @@ public class AssociationRelationshipsTest {
         assertNotNull(maskedB.getC());
         assertNotNull(maskedB.getC().orElseThrow().getName());
         assertNull(maskedB.getC().orElseThrow().getCs());
+
+    }
+
+    @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+    })
+    public void testSetUnsetEagerRelation() {
+
+        B b1 = bDao.create(BForCreate.builder().withName("b1").build());
+        B b2 = bDao.create(BForCreate.builder().withName("b2").build());
+
+        C c1 = cDao.create(CForCreate.builder().withName("c1").build());
+        C c2 = cDao.create(CForCreate.builder().withName("c2").build());
+
+        A a = aDao.create(AForCreate.builder().withName("a").build());
+
+        assertTrue(a.getB().isEmpty());
+
+        a.setB(b1);
+        a = aDao.update(a);
+
+        assertTrue(a.getB().isPresent());
+        assertEquals("b1", a.getB().orElseThrow().getName().orElseThrow());
+
+        a.setB(b2);
+        a = aDao.update(a);
+
+        assertTrue(a.getB().isPresent());
+        assertEquals("b2", a.getB().orElseThrow().getName().orElseThrow());
+
+        a.setB(null);
+        a = aDao.update(a);
+
+        assertTrue(a.getB().isEmpty());
+
+        // multi
+
+        assertTrue(a.getCs().isEmpty());
+
+        a.addToCs(c1);
+        a = aDao.update(a);
+
+        assertEquals(1, a.getCs().size());
+        assertThat(a.getCs().stream().map(C::getName).map(Optional::orElseThrow).collect(Collectors.toSet()), equalTo(Set.of("c1")));
+
+        a.addToCs(c2);
+        a = aDao.update(a);
+
+        assertEquals(2, a.getCs().size());
+        assertThat(a.getCs().stream().map(C::getName).map(Optional::orElseThrow).collect(Collectors.toSet()), equalTo(Set.of("c1", "c2")));
+
+        a.removeFromCs(c1);
+        a = aDao.update(a);
+
+        assertEquals(1, a.getCs().size());
+        assertThat(a.getCs().stream().map(C::getName).map(Optional::orElseThrow).collect(Collectors.toSet()), equalTo(Set.of("c2")));
+
+        a.setCs(List.of());
+        a = aDao.update(a);
+
+        assertTrue(a.getCs().isEmpty());
+
+    }
+
+    @Inject
+    DDao dDao;
+
+    @Inject
+    EDao eDao;
+
+    @Inject
+    FDao fDao;
+
+
+    @Inject
+    CollectorDao collectorDao;
+
+    @Inject
+    CollectorForNotSupportedDao collectorForNotSupportedDao;
+
+    @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-ENT-008",
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+    })
+    public void testEagerCalculatedMembers() {
+
+        F f1 = fDao.create(FForCreate.builder().withName("f1").build());
+
+        E e1 = eDao.create(EForCreate.builder().withName("e1").withF(f1.adaptTo(FForCreate.class)).build());
+
+        D d = dDao.create(DForCreate.builder().withName("d").build());
+
+        d.setE(e1);
+
+        d = dDao.update(d);
+
+        Collector collector = collectorDao.create(CollectorForCreate.builder().build());
+
+        assertEquals(d.identifier().getIdentifier(), collector.getD().orElseThrow().identifier().getIdentifier());
+        assertEquals(e1.identifier().getIdentifier(), collector.getD().orElseThrow().getE().orElseThrow().identifier().getIdentifier());
+        assertEquals(f1.identifier().getIdentifier(), collector.getD().orElseThrow().getE().orElseThrow().getF().orElseThrow().identifier().getIdentifier());
+
+        fDao.delete(f1);
+        collector = collectorDao.getById(collector.identifier()).orElseThrow();
+
+        assertEquals(d.identifier().getIdentifier(), collector.getD().orElseThrow().identifier().getIdentifier());
+        assertEquals(e1.identifier().getIdentifier(), collector.getD().orElseThrow().getE().orElseThrow().identifier().getIdentifier());
+        assertTrue(collector.getD().orElseThrow().getE().orElseThrow().getF().isEmpty());
+
+        eDao.delete(e1);
+        collector = collectorDao.getById(collector.identifier()).orElseThrow();
+
+        assertEquals(d.identifier().getIdentifier(), collector.getD().orElseThrow().identifier().getIdentifier());
+        assertTrue(collector.getD().orElseThrow().getE().isEmpty());
+
+        // TODO JNG-5620
+        //CollectorForNotSupported collectorForNotSupported = collectorForNotSupportedDao.create(CollectorForNotSupportedForCreate.builder().build());
 
     }
 
