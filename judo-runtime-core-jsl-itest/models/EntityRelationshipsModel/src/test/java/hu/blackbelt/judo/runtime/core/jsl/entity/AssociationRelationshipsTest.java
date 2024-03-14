@@ -456,6 +456,20 @@ public class AssociationRelationshipsTest {
         assertNotNull(maskedB.getC().orElseThrow().getName());
         assertNull(maskedB.getC().orElseThrow().getCs());
 
+        maskedB = aDao.queryB(a, BMask.bMask().addByName("c", CMask.cMask().addByName("name"))).orElseThrow();
+
+        assertNull(maskedB.getName());
+        assertNotNull(maskedB.getC());
+        assertNotNull(maskedB.getC().orElseThrow().getName());
+        assertNull(maskedB.getC().orElseThrow().getCs());
+
+        maskedB = aDao.queryB(a.identifier(), BMask.bMask().addByName("c", CMask.cMask().addByName("name"))).orElseThrow();
+
+        assertNull(maskedB.getName());
+        assertNotNull(maskedB.getC());
+        assertNotNull(maskedB.getC().orElseThrow().getName());
+        assertNull(maskedB.getC().orElseThrow().getCs());
+
     }
 
     @Test

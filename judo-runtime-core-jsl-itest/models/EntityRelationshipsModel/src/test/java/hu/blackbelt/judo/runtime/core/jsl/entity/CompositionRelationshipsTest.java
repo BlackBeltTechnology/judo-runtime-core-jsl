@@ -207,9 +207,27 @@ public class CompositionRelationshipsTest {
         assertEquals("TEST-C", c.getStringC().orElseThrow());
         assertNotNull(c);
         assertNotNull(c.identifier());
+
+        c = entityADao.querySingleRequiredConA(entityA, EntityCMask.entityCMask().withStringC());
+        assertNull(c.getStringB());
+        assertNull(c.getMultipleDonB());
+        assertNotNull(c.getStringC());
+        assertEquals("TEST-C", c.getStringC().orElseThrow());
+        assertNotNull(c);
+        assertNotNull(c.identifier());
+
+        c = entityADao.querySingleRequiredConA(entityA.identifier(), EntityCMask.entityCMask().withStringC());
+        assertNull(c.getStringB());
+        assertNull(c.getMultipleDonB());
+        assertNotNull(c.getStringC());
+        assertEquals("TEST-C", c.getStringC().orElseThrow());
+        assertNotNull(c);
+        assertNotNull(c.identifier());
+
+        EntityC finalC = c;
         IllegalStateException exception = assertThrows(
                 IllegalStateException.class,
-                () -> entityCDao.delete(c.identifier())
+                () -> entityCDao.delete(finalC.identifier())
         );
 
         assertThat(exception.getMessage(), CoreMatchers.startsWith("There are mandatory references that cannot be removed"));
