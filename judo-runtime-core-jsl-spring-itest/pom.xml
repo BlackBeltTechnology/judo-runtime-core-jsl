@@ -23,17 +23,14 @@
                     <execution>
                         <id>generate-models</id>
                         <goals>
-                            <goal>parser-workflow</goal>
+                            <goal>default-model-workflow</goal>
                         </goals>
                         <phase>generate-sources</phase>
                     </execution>
                 </executions>
                 <configuration>
                     <sources>${basedir}/src/main/resources/model</sources>
-                    <sdkPackagePrefix>${project.groupId}</sdkPackagePrefix>
                     <dialects>hsqldb,postgresql</dialects>
-                    <ignoreAsm2sdk>true</ignoreAsm2sdk>
-                    <sdkPackagePrefix>hu.blackbelt.judo.runtime.core.jsl.spring.test</sdkPackagePrefix>
                     <destination>${basedir}/target/generated-sources/model</destination>
                 </configuration>
             </plugin>
