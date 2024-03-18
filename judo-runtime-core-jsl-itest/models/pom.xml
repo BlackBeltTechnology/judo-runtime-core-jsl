@@ -104,6 +104,7 @@
                     <configuration>
                         <saveModels>true</saveModels>
                         <destination>${basedir}/target/generated-test-sources/model</destination>
+                        <dialects>hsqldb,postgresql</dialects>
                     </configuration>
 
                     <executions>
