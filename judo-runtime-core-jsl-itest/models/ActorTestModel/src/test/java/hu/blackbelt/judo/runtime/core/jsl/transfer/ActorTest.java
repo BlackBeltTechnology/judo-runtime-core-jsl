@@ -2,30 +2,21 @@ package hu.blackbelt.judo.runtime.core.jsl.transfer;
 
 
 import hu.blackbelt.judo.dispatcher.api.Dispatcher;
-import hu.blackbelt.judo.psm.generator.rest.test.api.actortestmodel.actortestmodel.UserTransfer;
 import hu.blackbelt.judo.psm.generator.rest.test.impl.actortestmodel.actortestmodel.ActorApplicationConfigImpl;
 import hu.blackbelt.judo.psm.generator.rest.test.impl.rest.actortestmodel.actortestmodel.ActorImpl;
 import hu.blackbelt.judo.psm.generator.rest.test.impl.rest.actortestmodel.actortestmodel.UserTransferImpl;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.ActorTestModelDaoModules;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.cxf.binding.BindingFactoryManager;
-import org.apache.cxf.bus.blueprint.BundleDelegatingClassLoader;
 import org.apache.cxf.endpoint.Server;
-import org.apache.cxf.jaxrs.JAXRSBindingFactory;
 import org.apache.cxf.jaxrs.JAXRSServerFactoryBean;
-import org.apache.cxf.jaxrs.lifecycle.SingletonResourceProvider;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import javax.inject.Inject;
-import javax.ws.rs.ApplicationPath;
-import javax.ws.rs.core.Application;
 import javax.ws.rs.ext.RuntimeDelegate;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 
