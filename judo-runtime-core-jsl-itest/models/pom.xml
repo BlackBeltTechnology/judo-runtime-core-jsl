@@ -104,13 +104,14 @@
                     <configuration>
                         <saveModels>true</saveModels>
                         <destination>${basedir}/target/generated-test-sources/model</destination>
+                        <dialects>hsqldb,postgresql</dialects>
                     </configuration>
 
                     <executions>
                         <execution>
                             <id>generate-psm-test-model-from-artifact</id>
                             <goals>
-                                <goal>parser-workflow</goal>
+                                <goal>default-model-workflow</goal>
                             </goals>
                             <phase>generate-test-sources</phase>
                             <configuration>
