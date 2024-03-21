@@ -40,9 +40,9 @@
             javax.resource;version="[1.6,2)"
         </osgi-transaction-import>
 
-        <judo-tatami-jsl-version>1.1.4.20240321_041141_ac1401f2_develop</judo-tatami-jsl-version>
-        <judo-runtime-core-version>1.0.6.20240321_040716_4b34618b_develop</judo-runtime-core-version>
-        <judo-psm-generator-sdk-core-version>1.0.0.20240320_040632_df7ddc60_develop</judo-psm-generator-sdk-core-version>
+        <judo-tatami-jsl-version>1.1.4.20240321_195522_e2913028_feature_JNG_5638_ModelNameRemovedFromType</judo-tatami-jsl-version>
+        <judo-runtime-core-version>1.0.6.20240321_195114_c6cfe6ee_feature_JNG_5638_ModelNameRemovedFromType</judo-runtime-core-version>
+        <judo-psm-generator-sdk-core-version>1.0.0.20240321_194715_d99c586c_feature_JNG_5638_ModelNameRemovedFromType</judo-psm-generator-sdk-core-version>
 
         <judo-meta-psm-version>1.3.0.20240127_122224_4f1de775_develop</judo-meta-psm-version>
 
