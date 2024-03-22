@@ -4,12 +4,12 @@ import judo::types;
 
 entity EntityA {
     relation EntityC singleConA;
-    relation required EntityC singleRequiredConA opposite:twoWayMultipleAonC;
+    relation EntityC singleRequiredConA opposite:twoWayMultipleAonC required;
     relation EntityD[] multipleDonA opposite:multipleAonD;
     field Integer countD <= self.multipleDonA.size();
 }
 
-entity abstract EntityB {
+entity EntityB abstract {
     relation EntityA[] multipleAonB;
 }
 

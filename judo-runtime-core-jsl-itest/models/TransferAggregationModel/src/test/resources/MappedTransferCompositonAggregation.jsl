@@ -26,19 +26,19 @@ entity EntityB {
 transfer TransferA (EntityA a) {
     relation TransferB singleEntityB <= a.singleEntityB eager:true create:true;
     relation TransferB[] multiEntityB <= a.multiEntityB eager:true create:true;
-    field String stringA <= a.stringA update:auto;
-    event instead create create;
+    field String stringA <= a.stringA set;
+    event create eventCreate();
 }
 
 transfer TransferB (EntityB b) {
-    field String nameB <= b.nameB update:auto;
-    event instead create create;
+    field String nameB <= b.nameB set;
+    event create eventCreate();
 }
 
 // required single
 
 entity EntityC {
-    field required EntityD singleRequiredEntityD;
+    field EntityD singleRequiredEntityD required;
 }
 
 entity EntityD {
@@ -46,12 +46,12 @@ entity EntityD {
 }
 
 transfer TransferC (EntityC c) {
-    relation required TransferD singleRequiredEntityD <= c.singleRequiredEntityD eager:true create:true;
+    relation TransferD singleRequiredEntityD <= c.singleRequiredEntityD eager:true create:true required;
 }
 
 transfer TransferD (EntityD d) {
-    field String nameD <= d.nameD update:auto;
-    event instead create create;
+    field String nameD <= d.nameD set;
+    event create eventCreate();
 }
 
 // Navigation trough transfers
@@ -74,22 +74,22 @@ transfer TransferE (EntityE e) {
 
 transfer TransferF (EntityF f) {
     relation TransferG[] multiEntityG <= f.multiEntityG eager:true create:true;
-    event instead create create;
+    event create eventCreate();
 }
 
 transfer TransferG (EntityG g) {
-    field String nameG <= g.nameG update:auto;
-    event instead create create;
+    field String nameG <= g.nameG set;
+    event create eventCreate();
 }
 
 entity EntityH {
     field String stringH;
     field EntityJ singleJonH;
     field EntityJ[] collectionJonH;
-    field required EntityJ singleRequiredJonH;
+    field EntityJ singleRequiredJonH required;
 }
 
-entity abstract EntityI {
+entity EntityI abstract {
     field String stringI;
     field EntityK[] multipleKonI;
 }
@@ -103,20 +103,20 @@ entity EntityK {
 }
 
 transfer TransferH(EntityH entityh) {
-    field String stringH <= entityh.stringH update:auto;
+    field String stringH <= entityh.stringH set;
     relation TransferJ singleJonH <= entityh.singleJonH eager:true create:true;
     relation TransferJ[] collectionJonH <= entityh.collectionJonH eager:true create:true;
-    relation required TransferJ singleRequiredJonH <= entityh.singleRequiredJonH eager:true create:true;
+    relation TransferJ singleRequiredJonH <= entityh.singleRequiredJonH eager:true create:true required;
 }
 
 transfer TransferJ(EntityJ entityj) {
-    field String stringI <= entityj.stringI update:auto;
-    field String stringJ <= entityj.stringJ update:auto;
+    field String stringI <= entityj.stringI set;
+    field String stringJ <= entityj.stringJ set;
     relation TransferK[] multipleKonI <= entityj.multipleKonI eager:true create:true;
-    event instead create create;
+    event create eventCreate();
 }
 
 transfer TransferK(EntityK entityk) {
-    field String stringK <= entityk.stringK update:auto;
-    event instead create create;
+    field String stringK <= entityk.stringK set;
+    event create eventCreate();
 }

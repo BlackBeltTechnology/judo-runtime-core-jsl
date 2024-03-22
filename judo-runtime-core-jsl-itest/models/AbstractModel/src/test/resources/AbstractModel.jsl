@@ -2,40 +2,40 @@ model AbstractModel;
 
 type string String min-size:0 max-size:128;
 
-entity abstract A {
+entity A abstract {
 }
 
-entity abstract B {
+entity B abstract {
     field String nameB;
 }
 
 entity C extends B {
 }
 
-entity abstract D {
+entity D abstract {
 }
 
-entity abstract E extends D {
+entity E extends D abstract {
 }
 
 
 entity F {
     relation G relationGOnFSingle;
-    relation required G relationGOnFSingleRequired;
+    relation G relationGOnFSingleRequired required;
     relation G[] relationGOnFMulti;
 }
 
-entity abstract G {
+entity G abstract {
     field String nameG;
 }
 
 entity H {
     relation I relationIOnHSingle;
-    relation required I relationIOnHSingleRequired;
+    relation I relationIOnHSingleRequired required;
     relation I[] relationIOnHMulti;
 }
 
-entity abstract I {
+entity I abstract {
     field String nameI;
 }
 
@@ -43,13 +43,13 @@ entity J extends I {
 
 }
 
-entity abstract K {
+entity K abstract {
     relation M relationMOnKSingle;
-    relation required M relationMOnKSingleRequired;
+    relation M relationMOnKSingleRequired required;
     relation M[] relationMOnKMulti;
 }
 
-entity abstract M {
+entity M abstract {
     field String nameM;
 }
 
@@ -61,11 +61,11 @@ entity L extends K {
 
 }
 
-entity abstract O {
+entity O abstract {
     relation O Oany <= O.all().any();
 }
 
-entity abstract P {
+entity P abstract {
     relation P Pany <= P.all().any();
     relation P PQany <= Q.all().any();
     relation Q Qany <= Q.all().any();

@@ -1,6 +1,6 @@
 model test2::SalesModel2;
 
 import test1::SalesModel  as SalesModel1;
-entity abstract Person {
+entity Person abstract {
 	field SalesModel1::String firstName;
 }

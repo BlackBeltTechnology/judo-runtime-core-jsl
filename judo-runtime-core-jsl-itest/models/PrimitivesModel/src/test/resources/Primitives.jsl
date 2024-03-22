@@ -13,7 +13,7 @@ enum MyEnum {
     Crazy = 2;
 }
 
-entity abstract AbstractEntityOptionalFields {
+entity AbstractEntityOptionalFields abstract {
     field Boolean boolAttr;
     field Binary binaryAttr;
     field Integer integerAttr;
@@ -41,16 +41,16 @@ entity MyEntityWithOptionalFields extends AbstractEntityOptionalFields {
 }
 
 entity EntityRequiredFields {
-    field required Integer integerAttr;
-    field required Scaled scaledAttr;
-    field required String stringAttr;
-    field required PhoneNumber regexAttr;
-    field required Boolean boolAttr;
-    field required Date dateAttr;
-    field required Timestamp timestampAttr;
-    field required Time timeAttr;
-    field required Binary binaryAttr;
-    field required MyEnum enumAttr;
+    field Integer integerAttr required;
+    field Scaled scaledAttr required;
+    field String stringAttr required;
+    field PhoneNumber regexAttr required;
+    field Boolean boolAttr required;
+    field Date dateAttr required;
+    field Timestamp timestampAttr required;
+    field Time timeAttr required;
+    field Binary binaryAttr required;
+    field MyEnum enumAttr required;
 }
 
 entity EntityWithIdentifiers {
@@ -85,16 +85,16 @@ entity EntityWithPrimitiveDefaults {
 }
 
 entity EntityRequiredWithPrimitiveDefaults {
-    field required Integer integerAttr default:1;
-    field required Scaled scaledAttr default:2.34;
-    field required String stringAttr default:"test";
-    field required PhoneNumber regexAttr default:"+36 (30) 123 1234";
-    field required Boolean boolAttr default:true;
-    field required Date dateAttr default:`2022-07-11`;
-    field required Timestamp timestampAttr default:`2022-07-11T19:09:33Z`;
-    field required Time timeAttr default:`23:59:59`;
-    // field required Binary binaryAttr; // There is no syntax for define default value for binary
-    field required MyEnum enumAttr default:MyEnum#Bombastic;
+    field Integer integerAttr default:1 required;
+    field Scaled scaledAttr default:2.34 required;
+    field String stringAttr default:"test" required;
+    field PhoneNumber regexAttr default:"+36 (30) 123 1234" required;
+    field Boolean boolAttr default:true required;
+    field Date dateAttr default:`2022-07-11` required;
+    field Timestamp timestampAttr default:`2022-07-11T19:09:33Z` required;
+    field Time timeAttr default:`23:59:59` required;
+    // field Binary binaryAttr required; // There is no syntax for define default value for binary
+    field MyEnum enumAttr default:MyEnum#Bombastic required;
 }
 
 entity EntityWithPrimitiveDefaultExpressions {
@@ -117,8 +117,8 @@ entity DefaultRequiredEntity {
     //TODO JNG-4242
     //TODO JNG-3721
 
-    identifier required Date createDate default:Date.of(year = 2022, month = 11, day = 4);
-    field required Integer sumEntitiesIntegerValue default:ReferenceEntity.all().sum(e | e.intAtt);
+    identifier Date createDate default:Date.of(year = 2022, month = 11, day = 4) required;
+    field Integer sumEntitiesIntegerValue default:ReferenceEntity.all().sum(e | e.intAtt) required;
 
 }
 
@@ -146,7 +146,7 @@ entity EntityWithNotValidRegexDefaultValue {
 }
 
 transfer MyTransferWithOptionalFields(MyEntityWithOptionalFields ent) {
-    field SmallString stringAttr <= ent.stringAttr update:auto;
+    field SmallString stringAttr <= ent.stringAttr set;
 }
 
 entity TimestampFromConstant {
