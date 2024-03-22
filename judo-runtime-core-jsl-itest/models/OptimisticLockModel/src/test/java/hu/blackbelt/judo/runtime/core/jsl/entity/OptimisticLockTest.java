@@ -21,7 +21,6 @@ package hu.blackbelt.judo.runtime.core.jsl.entity;
  */
 
 import com.google.inject.Inject;
-import hu.blackbelt.judo.dao.api.Payload;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.optimisticlock.optimisticlock.person.Person;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.optimisticlock.optimisticlock.person.PersonDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.optimisticlock.optimisticlock.person.PersonForCreate;
@@ -32,14 +31,13 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.OptimisticLockDaoModu
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
-import hu.blackbelt.structured.map.proxy.MapHolder;
-import hu.blackbelt.structured.map.proxy.MapProxy;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Map;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -92,13 +90,11 @@ public class OptimisticLockTest {
         assertTrue((ts3.isBefore(updatedTs3) || ts3.isEqual(updatedTs3)) && (ts4.isAfter(updatedTs3) || ts4.isEqual(updatedTs3)));
 
         // invalid version
-        Person p4 = MapProxy.builder(Person.class).withEnumMappingMethod("getOrdinal")
-                .withMap(Payload.map(
+        Person p4 = Person.from(Map.of(
                         "__identifier", p3.identifier().getIdentifier(),
                         "__entityType", p3.identifier().getEntityType(),
                         "__version", 2)
-                )
-                .newInstance();
+                );
         IllegalArgumentException thrown = assertThrows(
                 IllegalArgumentException.class,
                 () -> personDao.update(p4)
@@ -160,23 +156,23 @@ public class OptimisticLockTest {
     }
 
     public Integer getVersion(Person person) {
-        return (Integer) ((MapHolder) person).$internalMap().get("__version");
+        return (Integer) Person.toMap(person).get("__version");
     }
 
     public LocalDateTime getCreatedTimestamp(Person person) {
-        return (LocalDateTime)((MapHolder) person).$originalMap().get("__createTimestamp");
+        return (LocalDateTime)Person.toMap(person).get("__createTimestamp");
     }
 
     public LocalDateTime getUpdateTimestamp(Person person) {
-        return (LocalDateTime)((MapHolder) person).$originalMap().get("__updateTimestamp");
+        return (LocalDateTime)Person.toMap(person).get("__updateTimestamp");
     }
 
     public Integer getVersion(Student student) {
-        return (Integer) ((MapHolder) student).$internalMap().get("__version");
+        return (Integer) Student.toMap(student).get("__version");
     }
 
     public LocalDateTime getUpdateTimestamp(Student student) {
-        return (LocalDateTime)((MapHolder) student).$originalMap().get("__updateTimestamp");
+        return (LocalDateTime)Student.toMap(student).get("__updateTimestamp");
     }
 
 }

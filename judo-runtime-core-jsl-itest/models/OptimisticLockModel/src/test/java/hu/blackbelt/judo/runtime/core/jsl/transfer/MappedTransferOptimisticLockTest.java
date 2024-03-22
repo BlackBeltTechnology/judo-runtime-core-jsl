@@ -21,7 +21,6 @@ package hu.blackbelt.judo.runtime.core.jsl.transfer;
  */
 
 import com.google.inject.Inject;
-import hu.blackbelt.judo.dao.api.Payload;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.optimisticlock.optimisticlock.transferperson.TransferPerson;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.optimisticlock.optimisticlock.transferperson.TransferPersonDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.optimisticlock.optimisticlock.transferperson.TransferPersonForCreate;
@@ -32,14 +31,13 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.OptimisticLockDaoModu
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
-import hu.blackbelt.structured.map.proxy.MapHolder;
-import hu.blackbelt.structured.map.proxy.MapProxy;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Map;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -94,13 +92,11 @@ public class MappedTransferOptimisticLockTest {
         assertTrue((ts3.isBefore(updatedTs3) || ts3.isEqual(updatedTs3)) && (ts4.isAfter(updatedTs3) || ts4.isEqual(updatedTs3)));
 
         // invalid version
-        TransferPerson p4 = MapProxy.builder(TransferPerson.class).withEnumMappingMethod("getOrdinal")
-                .withMap(Payload.map(
-                        "__identifier", p3.identifier().getIdentifier(),
-                        "__entityType", p3.identifier().getEntityType(),
-                        "__version", 2)
-                )
-                .newInstance();
+        TransferPerson p4 = TransferPerson.from(Map.of(
+                "__identifier", p3.identifier().getIdentifier(),
+                "__entityType", p3.identifier().getEntityType(),
+                "__version", 2)
+        );
         IllegalArgumentException thrown = assertThrows(
                 IllegalArgumentException.class,
                 () -> transferTransferPersonDao.update(p4)
@@ -164,23 +160,23 @@ public class MappedTransferOptimisticLockTest {
     }
 
     public Integer getVersion(TransferPerson person) {
-        return (Integer) ((MapHolder) person).$internalMap().get("__version");
+        return (Integer) TransferPerson.toMap(person).get("__version");
     }
 
     public LocalDateTime getCreatedTimestamp(TransferPerson person) {
-        return (LocalDateTime)((MapHolder) person).$originalMap().get("__createTimestamp");
+        return (LocalDateTime)TransferPerson.toMap(person).get("__createTimestamp");
     }
 
     public LocalDateTime getUpdateTimestamp(TransferPerson person) {
-        return (LocalDateTime)((MapHolder) person).$originalMap().get("__updateTimestamp");
+        return (LocalDateTime)TransferPerson.toMap(person).get("__updateTimestamp");
     }
 
     public Integer getVersion(TransferStudent student) {
-        return (Integer) ((MapHolder) student).$internalMap().get("__version");
+        return (Integer) TransferStudent.toMap(student).get("__version");
     }
-    
+
     public LocalDateTime getUpdateTimestamp(TransferStudent student) {
-        return (LocalDateTime)((MapHolder) student).$originalMap().get("__updateTimestamp");
+        return (LocalDateTime)TransferStudent.toMap(student).get("__updateTimestamp");
     }
 
 }
