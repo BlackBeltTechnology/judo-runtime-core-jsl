@@ -41,8 +41,10 @@ import hu.blackbelt.judo.runtime.core.guice.JudoModelLoader;
 import hu.blackbelt.judo.runtime.core.guice.accessmanager.DefaultAccessManagerProvider;
 import hu.blackbelt.judo.runtime.core.guice.core.DataTypeManagerProvider;
 import hu.blackbelt.judo.runtime.core.guice.core.UUIDIdentifierProviderProvider;
+import hu.blackbelt.judo.runtime.core.dispatcher.Export;
 import hu.blackbelt.judo.runtime.core.guice.dao.rdbms.*;
 import hu.blackbelt.judo.runtime.core.guice.dispatcher.*;
+import hu.blackbelt.judo.runtime.core.dispatcher.UnsupportedExportImpl;
 import hu.blackbelt.judo.runtime.core.dao.core.collectors.InstanceCollector;
 import hu.blackbelt.judo.runtime.core.dao.rdbms.RdbmsResolver;
 import hu.blackbelt.judo.runtime.core.dao.rdbms.executors.ModifyStatementExecutor;
@@ -201,6 +203,7 @@ public class JudoDefaultTestModule extends AbstractModule {
         bind(ValidatorProvider.class).toProvider(ValidatorProviderProvider.class).asEagerSingleton();
         bind(PayloadValidator.class).toProvider(DefaultPayloadValidatorProvider.class).asEagerSingleton();
         bind(String.class).annotatedWith(Names.named(PAYLOAD_VALIDATOR_REQUIRED_STRING_VALIDATOR_OPTION)).toInstance("ACCEPT_NON_EMPTY");
+        bind(Export.class).to(UnsupportedExportImpl.class);
 
     }
 }

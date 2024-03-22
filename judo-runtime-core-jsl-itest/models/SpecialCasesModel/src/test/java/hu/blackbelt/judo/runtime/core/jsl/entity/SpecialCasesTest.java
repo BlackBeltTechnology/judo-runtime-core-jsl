@@ -21,39 +21,69 @@ package hu.blackbelt.judo.runtime.core.jsl.entity;
  */
 
 import com.google.inject.Inject;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityd.EntityDMask;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.abstract_.Abstract;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.abstract_.AbstractDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.abstract_.AbstractForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.c.CDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.c.CForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.c.CForCreateBuilder;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.case_.Case;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.case_.CaseDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.case_.CaseForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.class_.ClassDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.class_.Class_;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.class_.Class_ForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.compmultiupper.CompMultiUpper;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.compmultiupper.CompMultiUpperDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.compmultiupper.CompMultiUpperForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.compupper.CompUpper;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.compupper.CompUpperDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.compupper.CompUpperForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.d.D;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.d.DDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.d.DForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.e.E;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.e.EDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.e.EForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.e.EMask;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.entitya.EntityA;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.entitya.EntityADao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.entitya.EntityAForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.entityb.EntityB;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.entityb.EntityBDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.entityb.EntityBForCreate;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.entityf.EntityF;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.entityf.EntityFDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.entityf.EntityFForCreate;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.entityf.EntityFIdentifier;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.entityf.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.entityg.EntityG;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.entityg.EntityGDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.entityg.EntityGForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.f.F;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.f.FDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.f.FForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.f.FMask;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.f.queryentity.FQueryEntityParameter;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.f.queryprimitive.FQueryPrimitiveParameter;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.if_.If;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.if_.IfDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.if_.IfForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.primupper.PrimUpper;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.primupper.PrimUpperDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.primupper.PrimUpperForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.ref.Ref;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.ref.RefDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.ref.RefForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.referenceentity.ReferenceEntity;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.referenceentity.ReferenceEntityDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.referenceentity.ReferenceEntityForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.relmultiupper.RelMultiUpper;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.relmultiupper.RelMultiUpperDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.relmultiupper.RelMultiUpperForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.relupper.RelUpper;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.relupper.RelUpperDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.relupper.RelUpperForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.static_.Static;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.static_.StaticDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.static_.StaticForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.testentity.TestEntity;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.testentity.TestEntityDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.testentity.TestEntityForCreate;
@@ -63,6 +93,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcas
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.transferf.TransferF;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.transferf.TransferFDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.transferf.TransferFForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.transferf.TransferFMask;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.transferg.TransferG;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.transferg.TransferGDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.transferg.TransferGForCreate;
@@ -71,18 +102,16 @@ import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
+import hu.blackbelt.judo.sdk.Identifiable;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
@@ -303,10 +332,14 @@ public class SpecialCasesTest {
 
         assertEquals(0, entityFss.size());
 
-        entityFss = entityFDao.createAll(List.of(EntityFForCreate.builder().withStringF("II").build()));
+        entityFss = entityFDao.createAll(
+                List.of(EntityFForCreate.builder().withStringF("II").build()),
+                EntityFMask.entityFMask().withStringF()
+        );
 
         assertEquals(1, entityFss.size());
         assertEquals("II", entityFss.get(0).getStringF());
+        assertNull(entityFss.get(0).getMultipleDonF());
 
         EntityFForCreate entityFForCreate1 = EntityFForCreate.builder()
                 .withStringF("F1")
@@ -417,6 +450,19 @@ public class SpecialCasesTest {
                 hasProperty("location", equalTo("stringF")))));
 
         assertEquals(9, entityFDao.countAll());
+
+        entityFs = entityFDao.createAll(
+                List.of(entityFForCreate1, entityFForCreate2, entityFForCreate3),
+                EntityFMask.entityFMask()
+                        .withStringF()
+                        .addByName("multipleDonF", EntityDMask.entityDMask().withStringD())
+        );
+
+        assertThat(entityFs.stream().map(EntityF::getStringF).toList(), hasItems("F1", "F2", "F3"));
+        assertThat(entityFs.stream().flatMap(f -> f.getMultipleDonF().stream()).map(D::getStringD).map(Optional::orElseThrow).toList(),
+                hasItems("D1", "D2", "D3", "D4", "D5")
+        );
+        assertTrue(entityFs.stream().flatMap(f -> f.getMultipleDonF().stream()).map(D::getCompE).allMatch(Objects::isNull));
     }
 
     @Test
@@ -607,6 +653,22 @@ public class SpecialCasesTest {
                 hasProperty("location", equalTo("singleRequiredEonG")))));
 
         assertEquals(3, entityGDao.countAll());
+
+        entityF1.setStringF("F1UpdatedMask");
+        entityF1.setMultipleDonF(List.of(D.builder().withStringD("D1UpdatedMask").build()));
+        entityF2.setStringF("F2UpdatedMask");
+        entityF2.setMultipleDonF(List.of(D.builder().withStringD("D2UpdatedMask").build(), D.builder().withStringD("D3UpdatedMask").build()));
+        entityF3.setStringF("F3UpdatedMask");
+        entityF3.setMultipleDonF(List.of(D.builder().withStringD("D4UpdatedMask").build(), D.builder().withStringD("D5UpdatedMask").build()));
+        entityF3.addToMultipleDonF(D.builder().withStringD("D6UpdatedMask").build());
+
+        entityFs = entityFDao.updateAll(List.of(entityF1, entityF2, entityF3), EntityFMask.entityFMask().withStringF());
+
+        assertThat(entityFs.stream().map(EntityF::getStringF).toList(), hasItems("F1UpdatedMask", "F2UpdatedMask", "F3UpdatedMask"));
+        assertTrue(entityFs.stream().map(EntityF::getMultipleDonF).allMatch(Objects::isNull));
+        assertThat(dDao.query().selectList().stream().map(D::getStringD).map(Optional::orElseThrow).toList(),
+                hasItems("D1UpdatedMask", "D2UpdatedMask", "D3UpdatedMask", "D4UpdatedMask", "D5UpdatedMask")
+        );
     }
 
     @Test
@@ -1109,6 +1171,19 @@ public class SpecialCasesTest {
                 hasProperty("location", equalTo("stringF")))));
 
         Assertions.assertEquals(9, transferFDao.countAll());
+
+        transferFss = transferFDao.createAll(
+                List.of(TransferFForCreate1, TransferFForCreate2, TransferFForCreate3),
+                TransferFMask.transferFMask()
+                        .withStringF()
+                        .addByName("multipleDonF", EntityDMask.entityDMask().withStringD())
+        );
+
+        assertThat(transferFss.stream().map(TransferF::getStringF).toList(), hasItems("F1", "F2", "F3"));
+        assertThat(transferFss.stream().flatMap(f -> f.getMultipleDonF().stream()).map(TransferD::getStringD).map(Optional::orElseThrow).toList(),
+                hasItems("D1", "D2", "D3", "D4", "D5")
+        );
+        assertTrue(transferFss.stream().flatMap(f -> f.getMultipleDonF().stream()).map(TransferD::getCompE).allMatch(Objects::isNull));
     }
 
     @Test
@@ -1372,6 +1447,25 @@ public class SpecialCasesTest {
                 hasProperty("location", equalTo("singleRequiredEonG")))));
 
         Assertions.assertEquals(3, transferGDao.countAll());
+
+        assertEquals(3, entityGDao.countAll());
+
+        transferF1.setStringF("F1UpdatedMask");
+        transferF1.setMultipleDonF(List.of(TransferD.builder().withStringD("D1UpdatedMask").build()));
+        transferF2.setStringF("F2UpdatedMask");
+        transferF2.setMultipleDonF(List.of(TransferD.builder().withStringD("D2UpdatedMask").build(), TransferD.builder().withStringD("D3UpdatedMask").build()));
+        transferF3.setStringF("F3UpdatedMask");
+        transferF3.setMultipleDonF(List.of(TransferD.builder().withStringD("D4UpdatedMask").build(), TransferD.builder().withStringD("D5UpdatedMask").build()));
+        transferF3.addToMultipleDonF(TransferD.builder().withStringD("D6UpdatedMask").build());
+
+        transferFs = transferFDao.updateAll(List.of(transferF1, transferF2, transferF3), TransferFMask.transferFMask().withStringF());
+
+        assertThat(transferFs.stream().map(TransferF::getStringF).toList(), hasItems("F1UpdatedMask", "F2UpdatedMask", "F3UpdatedMask"));
+        assertTrue(transferFs.stream().map(TransferF::getMultipleDonF).allMatch(Objects::isNull));
+        assertThat(dDao.query().selectList().stream().map(D::getStringD).map(Optional::orElseThrow).toList(),
+                hasItems("D1UpdatedMask", "D2UpdatedMask", "D3UpdatedMask", "D4UpdatedMask", "D5UpdatedMask")
+        );
+
     }
 
     @Test
@@ -1902,10 +1996,11 @@ public class SpecialCasesTest {
     })
     public void TestUUIDMethods() {
 
-        E eOpRel = eDao.create(EForCreate.builder().build());
-        E eReqRel = eDao.create(EForCreate.builder().build());
-        E eColRel1 = eDao.create(EForCreate.builder().build());
-        E eColRel2 = eDao.create(EForCreate.builder().build());
+        E eOpRel = eDao.create(EForCreate.builder().build(), EMask.eMask());
+        E eReqRel = eDao.create(EForCreate.builder().build(), EMask.eMask());
+        E eColRel1 = eDao.create(EForCreate.builder().build(), EMask.eMask());
+        E eColRel2 = eDao.create(EForCreate.builder().build(), EMask.eMask());
+        assertNull(eOpRel.getStringE());
 
         F f = fDao.create(FForCreate.builder()
                 .withRelE(eOpRel)
@@ -1914,7 +2009,8 @@ public class SpecialCasesTest {
                 .withCompE(EForCreate.builder().build())
                 .withReqCompE(EForCreate.builder().build())
                 .withCompECol(List.of(EForCreate.builder().build(), EForCreate.builder().build()))
-                .build()
+                .build(),
+                FMask.fMask().withCompE(EMask.eMask()).withCompECol(EMask.eMask()).withReqCompE(EMask.eMask())
         );
 
         E eOpComp = f.getCompE().get();
@@ -1949,8 +2045,8 @@ public class SpecialCasesTest {
 
         // Not related identifier added
         UUID uuidEOpRel = (UUID) eOpRel.identifier().getIdentifier();
-        assertFalse(fDao.getById(uuidEOpRel).isPresent());
-        assertFalse(eDao.getById(uuidF).isPresent());
+        assertFalse(fDao.getById(uuidEOpRel, FMask.fMask()).isPresent());
+        assertFalse(eDao.getById(uuidF, EMask.eMask()).isPresent());
 
         assertFalse(fDao.queryCompE(uuidEOpRel).isPresent());
 
@@ -1963,11 +2059,318 @@ public class SpecialCasesTest {
         ));
 
         // delete and getById
-        assertTrue(fDao.getById(uuidF).isPresent());
+        assertTrue(fDao.getById(uuidF, FMask.fMask()).isPresent());
 
         fDao.delete(uuidF);
 
-        assertFalse(fDao.getById(uuidF).isPresent());
+        assertFalse(fDao.getById(uuidF, FMask.fMask()).isPresent());
+    }
+
+    @Inject
+    ClassDao classDao;
+
+    @Inject
+    IfDao ifDao;
+
+    @Inject
+    CaseDao caseDao;
+
+    @Inject
+    StaticDao staticDao;
+
+    @Test
+    @TestCase("SafeFieldNames")
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-ENT-007",
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+    })
+    void testSafeFieldNames() {
+
+        Class_ForCreate.builder()
+                .withClass_("name").build();
+
+        If if_ = ifDao.create(IfForCreate.builder()
+                .withCase_(CaseForCreate.builder().build())
+                .withStatic_(List.of(StaticForCreate.builder().build()))
+                .addToStatic_(StaticForCreate.builder().build())
+                .build()
+        );
+
+        Case case_1 = caseDao.create(CaseForCreate.builder().build());
+        Case case_2 = caseDao.create(CaseForCreate.builder().build());
+
+        Class_ForCreate builder = Class_ForCreate.builder()
+                .withClass_("name")
+                .withSafeName("name")
+                .withIf_(if_)
+                .withSafeRel(if_)
+                .withCase_(List.of(case_1, case_2))
+                .build();
+
+        Class_ class_ = classDao.create(builder);
+
+        // Test relation fields
+        assertEquals(2, classDao.queryCase_(class_).selectList().size());
+        classDao.removeCase_(class_ ,case_1);
+        assertEquals(1, classDao.queryCase_(class_).selectList().size());
+        classDao.removeCase_(class_ ,case_2);
+        assertEquals(0, classDao.queryCase_(class_).selectList().size());
+        classDao.addCase_(class_ ,List.of(case_1, case_2));
+        assertEquals(2, classDao.queryCase_(class_).selectList().size());
+        classDao.createCase_(class_, CaseForCreate.builder().build());
+        assertEquals(3, classDao.queryCase_(class_).selectList().size());
+
+        assertEquals(if_.identifier().getIdentifier(), classDao.queryIf_(class_).orElseThrow().identifier().getIdentifier());
+        assertEquals(if_.identifier().getIdentifier(), classDao.querySafeRel(class_).orElseThrow().identifier().getIdentifier());
+        classDao.unsetIf_(class_);
+        assertTrue(classDao.queryIf_(class_).isEmpty());
+        classDao.setIf_(class_, if_);
+        assertTrue(classDao.queryIf_(class_).isPresent());
+
+        assertEquals("name", class_.getClass_().orElseThrow());
+        class_.setClass_("name1");
+        assertEquals("name1", class_.getClass_().orElseThrow());
+        class_ = classDao.update(class_);
+        assertEquals("name1", class_.getClass_().orElseThrow());
+
+        // Test navigation
+
+        assertFalse(classDao.querySafeRel(class_).orElseThrow().getStatic_().isEmpty());
+        assertTrue(classDao.querySafeRel(class_).orElseThrow().getCase_().isPresent());
+
+        // Test Composition fields
+        assertTrue(if_.getCase_().isPresent());
+        assertEquals(2, if_.getStatic_().size());
+
+        if_.setCase_(null);
+        if_.setStatic_(List.of());
+
+        if_ = ifDao.update(if_);
+
+        assertFalse(if_.getCase_().isPresent());
+        assertTrue(if_.getStatic_().isEmpty());
+
+        if_.addToStatic_(StaticForCreate.builder().build().adaptTo(Static.class));
+        assertEquals(1, if_.getStatic_().size());
+
+        if_ = ifDao.update(if_);
+        if_.removeFromStatic_(if_.getStatic_().get(0));
+
+        assertEquals(0, if_.getStatic_().size());
+
+    }
+
+    @Inject
+    RefDao refDao;
+
+    @Inject
+    PrimUpperDao primUpperDao;
+
+    @Inject
+    RelUpperDao relUpperDao;
+
+    @Inject
+    RelMultiUpperDao relMultiUpperDao;
+
+    @Inject
+    CompUpperDao compUpperDao;
+
+    @Inject
+    CompMultiUpperDao compMultiUpperDao;
+
+    @Test
+    @TestCase("UpperFieldNames")
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-ENT-007",
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+    })
+    void testUpperFieldNames() {
+
+        PrimUpper primUpper = primUpperDao.create(PrimUpperForCreate.builder()
+                .withAbc("Abc")
+                .withABd("ABd")
+                .withABE("ABE")
+                .withAbF("AbF")
+                .build()
+        );
+
+        assertEquals("Abc", primUpper.getAbc().orElseThrow());
+        assertEquals("ABd", primUpper.getABd().orElseThrow());
+        assertEquals("ABE", primUpper.getABE().orElseThrow());
+        assertEquals("AbF", primUpper.getAbF().orElseThrow());
+
+        primUpper.setAbc(null);
+        primUpper.setABd(null);
+        primUpper.setABE(null);
+        primUpper.setAbF(null);
+
+        primUpper = primUpperDao.update(primUpper);
+
+        assertTrue(primUpper.getAbc().isEmpty());
+        assertTrue(primUpper.getABd().isEmpty());
+        assertTrue(primUpper.getABE().isEmpty());
+        assertTrue(primUpper.getAbF().isEmpty());
+
+        Ref ref = refDao.create(RefForCreate.builder().withName("Name").build());
+
+        RelUpper relUpper = relUpperDao.create(RelUpperForCreate.builder()
+                .withAbc(ref)
+                .withABd(ref)
+                .withABE(ref)
+                .withAbF(ref)
+                .build()
+        );
+
+        assertEquals(ref.identifier().getIdentifier(), relUpperDao.queryAbc(relUpper).orElseThrow().identifier().getIdentifier());
+        assertEquals(ref.identifier().getIdentifier(), relUpperDao.queryABd(relUpper).orElseThrow().identifier().getIdentifier());
+        assertEquals(ref.identifier().getIdentifier(), relUpperDao.queryABE(relUpper).orElseThrow().identifier().getIdentifier());
+        assertEquals(ref.identifier().getIdentifier(), relUpperDao.queryAbF(relUpper).orElseThrow().identifier().getIdentifier());
+
+        assertEquals("Name", relUpperDao.queryAbc(relUpper).orElseThrow().getName().orElseThrow());
+        assertEquals("Name", relUpperDao.queryABd(relUpper).orElseThrow().getName().orElseThrow());
+        assertEquals("Name", relUpperDao.queryABE(relUpper).orElseThrow().getName().orElseThrow());
+        assertEquals("Name", relUpperDao.queryAbF(relUpper).orElseThrow().getName().orElseThrow());
+
+        ref.setName("Name1");
+        ref = refDao.update(ref);
+
+        assertEquals("Name1", relUpperDao.queryAbc(relUpper).orElseThrow().getName().orElseThrow());
+        assertEquals("Name1", relUpperDao.queryABd(relUpper).orElseThrow().getName().orElseThrow());
+        assertEquals("Name1", relUpperDao.queryABE(relUpper).orElseThrow().getName().orElseThrow());
+        assertEquals("Name1", relUpperDao.queryAbF(relUpper).orElseThrow().getName().orElseThrow());
+
+        refDao.delete(ref);
+
+        assertTrue(relUpperDao.queryAbc(relUpper).isEmpty());
+        assertTrue(relUpperDao.queryABd(relUpper).isEmpty());
+        assertTrue(relUpperDao.queryABE(relUpper).isEmpty());
+        assertTrue(relUpperDao.queryAbF(relUpper).isEmpty());
+
+        // multi relation
+
+        Ref ref1 = refDao.create(RefForCreate.builder().withName("Ref1").build());
+        Ref ref2 = refDao.create(RefForCreate.builder().withName("Ref2").build());
+
+        RelMultiUpper relMultiUpper = relMultiUpperDao.create(RelMultiUpperForCreate.builder()
+                .withAbc(List.of(ref1, ref2))
+                .withABd(List.of(ref1, ref2))
+                .withABE(List.of(ref1, ref2))
+                .withAbF(List.of(ref1, ref2))
+                .build()
+        );
+
+        assertThat(relMultiUpperDao.queryAbc(relMultiUpper).selectList().stream().map(Ref::identifier).map(Identifiable::getIdentifier).toList(),
+                hasItems(ref1.identifier().getIdentifier(), ref2.identifier().getIdentifier()));
+        assertThat(relMultiUpperDao.queryABd(relMultiUpper).selectList().stream().map(Ref::identifier).map(Identifiable::getIdentifier).toList(),
+                hasItems(ref1.identifier().getIdentifier(), ref2.identifier().getIdentifier()));
+        assertThat(relMultiUpperDao.queryABE(relMultiUpper).selectList().stream().map(Ref::identifier).map(Identifiable::getIdentifier).toList(),
+                hasItems(ref1.identifier().getIdentifier(), ref2.identifier().getIdentifier()));
+        assertThat(relMultiUpperDao.queryAbF(relMultiUpper).selectList().stream().map(Ref::identifier).map(Identifiable::getIdentifier).toList(),
+                hasItems(ref1.identifier().getIdentifier(), ref2.identifier().getIdentifier()));
+
+        relMultiUpperDao.removeAbc(relMultiUpper, ref2);
+        relMultiUpperDao.removeABd(relMultiUpper, ref2);
+        relMultiUpperDao.removeABE(relMultiUpper, ref2);
+        relMultiUpperDao.removeAbF(relMultiUpper, ref2);
+
+        assertThat(relMultiUpperDao.queryAbc(relMultiUpper).selectList().stream().map(Ref::identifier).map(Identifiable::getIdentifier).toList(),
+                hasItems(ref1.identifier().getIdentifier()));
+        assertThat(relMultiUpperDao.queryABd(relMultiUpper).selectList().stream().map(Ref::identifier).map(Identifiable::getIdentifier).toList(),
+                hasItems(ref1.identifier().getIdentifier()));
+        assertThat(relMultiUpperDao.queryABE(relMultiUpper).selectList().stream().map(Ref::identifier).map(Identifiable::getIdentifier).toList(),
+                hasItems(ref1.identifier().getIdentifier()));
+        assertThat(relMultiUpperDao.queryAbF(relMultiUpper).selectList().stream().map(Ref::identifier).map(Identifiable::getIdentifier).toList(),
+                hasItems(ref1.identifier().getIdentifier()));
+
+        refDao.delete(ref1);
+        refDao.delete(ref2);
+
+        assertEquals(0, refDao.countAll());
+
+        // comp
+
+        CompUpper compUpper = compUpperDao.create(CompUpperForCreate.builder()
+                .withAbc(RefForCreate.builder().withName("Ref1").build())
+                .withABd(RefForCreate.builder().withName("Ref2").build())
+                .withABE(RefForCreate.builder().withName("Ref3").build())
+                .withAbF(RefForCreate.builder().withName("Ref4").build())
+                .build()
+        );
+
+        assertEquals(4, refDao.countAll());
+
+        assertTrue(compUpper.getAbc().isPresent());
+        assertTrue(compUpper.getABd().isPresent());
+        assertTrue(compUpper.getABE().isPresent());
+        assertTrue(compUpper.getAbF().isPresent());
+
+        assertEquals("Ref1", compUpper.getAbc().orElseThrow().getName().orElseThrow());
+        assertEquals("Ref2", compUpper.getABd().orElseThrow().getName().orElseThrow());
+        assertEquals("Ref3", compUpper.getABE().orElseThrow().getName().orElseThrow());
+        assertEquals("Ref4", compUpper.getAbF().orElseThrow().getName().orElseThrow());
+
+        compUpper.setAbc(null);
+        compUpper.setABd(null);
+        compUpper.setABE(null);
+        compUpper.setAbF(null);
+
+        compUpper = compUpperDao.update(compUpper);
+
+        assertTrue(compUpper.getAbc().isEmpty());
+        assertTrue(compUpper.getABd().isEmpty());
+        assertTrue(compUpper.getABE().isEmpty());
+        assertTrue(compUpper.getAbF().isEmpty());
+
+        compUpperDao.delete(compUpper);
+        assertEquals(0, refDao.countAll());
+
+        CompMultiUpper compMultiUpper = compMultiUpperDao.create(CompMultiUpperForCreate.builder()
+                .withAbc(List.of(RefForCreate.builder().withName("Ref11").build(), RefForCreate.builder().withName("Ref12").build()))
+                .withABd(List.of(RefForCreate.builder().withName("Ref21").build(), RefForCreate.builder().withName("Ref22").build()))
+                .withABE(List.of(RefForCreate.builder().withName("Ref31").build(), RefForCreate.builder().withName("Ref32").build()))
+                .withAbF(List.of(RefForCreate.builder().withName("Ref41").build(), RefForCreate.builder().withName("Ref42").build()))
+                .build()
+        );
+
+        assertEquals(8, refDao.countAll());
+
+        assertThat(compMultiUpperDao.queryAbc(compMultiUpper).selectList().stream().map(Ref::getName).map(Optional::orElseThrow).toList(),
+                hasItems("Ref11", "Ref12"));
+        assertThat(compMultiUpperDao.queryABd(compMultiUpper).selectList().stream().map(Ref::getName).map(Optional::orElseThrow).toList(),
+                hasItems("Ref21", "Ref22"));
+        assertThat(compMultiUpperDao.queryABE(compMultiUpper).selectList().stream().map(Ref::getName).map(Optional::orElseThrow).toList(),
+                hasItems("Ref31", "Ref32"));
+        assertThat(compMultiUpperDao.queryAbF(compMultiUpper).selectList().stream().map(Ref::getName).map(Optional::orElseThrow).toList(),
+                hasItems("Ref41", "Ref42"));
+
+        refDao.delete(compMultiUpper.getAbc().get(0));
+        compMultiUpper = compMultiUpperDao.getById(compMultiUpper.identifier()).orElseThrow();
+        compMultiUpper.setABE(List.of());
+        compMultiUpper = compMultiUpperDao.update(compMultiUpper);
+
+        assertEquals(5, refDao.countAll());
+
+        assertEquals(1, compMultiUpper.getAbc().size());
+        assertEquals(2, compMultiUpper.getABd().size());
+        assertEquals(0, compMultiUpper.getABE().size());
+        assertEquals(2, compMultiUpper.getAbF().size());
+
     }
 
 }

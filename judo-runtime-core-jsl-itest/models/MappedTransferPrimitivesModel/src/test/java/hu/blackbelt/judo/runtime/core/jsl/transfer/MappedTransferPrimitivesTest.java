@@ -16,6 +16,9 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitive
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferrequiredprimitives.TransferRequiredPrimitives;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferrequiredprimitives.TransferRequiredPrimitivesDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferrequiredprimitives.TransferRequiredPrimitivesForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transfertimestampfromconstant.TransferTimestampFromConstant;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transfertimestampfromconstant.TransferTimestampFromConstantDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transfertimestampfromconstant.TransferTimestampFromConstantForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferwithidentifiers.TransferWithIdentifiers;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferwithidentifiers.TransferWithIdentifiersDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferprimitives.mappedtransferprimitives.transferwithidentifiers.TransferWithIdentifiersForCreate;
@@ -35,6 +38,7 @@ import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
+import hu.blackbelt.mapper.impl.DefaultCoercer;
 import lombok.extern.slf4j.Slf4j;
 import org.hamcrest.Matcher;
 import org.junit.jupiter.api.Disabled;
@@ -1190,6 +1194,44 @@ public class MappedTransferPrimitivesTest {
         assertThat(thrown.getValidationResults(), containsInAnyOrder(
                 matchScaleValidationForAttribute("scaledAttr")
         ));
+    }
+
+    @Inject
+    TransferTimestampFromConstantDao transferTimestampFromConstantDao;
+
+    @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-009",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-008",
+            "REQ-EXPR-001",
+            "REQ-SRV-002"
+    })
+    public void testTimestampConstructionWithConstant() {
+        TransferTimestampFromConstant timestamp = transferTimestampFromConstantDao.create(TransferTimestampFromConstantForCreate.builder().build());
+
+        DefaultCoercer coercer = new DefaultCoercer();
+
+        assertEquals(coercer.coerce("2023-03-20T11:11", LocalDateTime.class), timestamp.getTimestampFromConstantHM().orElseThrow());
+        assertEquals(coercer.coerce("2023-03-20T11:11Z", LocalDateTime.class), timestamp.getTimestampFromConstantHMZ().orElseThrow());
+        assertEquals(coercer.coerce("2023-03-20T11:11+05", LocalDateTime.class), timestamp.getTimestampFromConstantHMP5().orElseThrow());
+        assertEquals(coercer.coerce("2023-03-20T11:11-05", LocalDateTime.class), timestamp.getTimestampFromConstantHMM5().orElseThrow());
+        assertEquals(coercer.coerce("2023-03-20T11:11+05:05", LocalDateTime.class), timestamp.getTimestampFromConstantHMP55().orElseThrow());
+        assertEquals(coercer.coerce("2023-03-20T11:11-05:05", LocalDateTime.class), timestamp.getTimestampFromConstantHMM55().orElseThrow());
+        assertEquals(coercer.coerce("2023-03-20T11:11:11", LocalDateTime.class), timestamp.getTimestampFromConstantHMS().orElseThrow());
+        assertEquals(coercer.coerce("2023-03-20T11:11:11Z", LocalDateTime.class), timestamp.getTimestampFromConstantHMSZ().orElseThrow());
+        assertEquals(coercer.coerce("2023-03-20T11:11:11+05", LocalDateTime.class), timestamp.getTimestampFromConstantHMSP5().orElseThrow());
+        assertEquals(coercer.coerce("2023-03-20T11:11:11-05", LocalDateTime.class), timestamp.getTimestampFromConstantHMSM5().orElseThrow());
+        assertEquals(coercer.coerce("2023-03-20T11:11:11+05:05", LocalDateTime.class), timestamp.getTimestampFromConstantHMSP55().orElseThrow());
+        assertEquals(coercer.coerce("2023-03-20T11:11:11-05:05", LocalDateTime.class), timestamp.getTimestampFromConstantHMSM55().orElseThrow());
+        assertEquals(coercer.coerce("2023-03-20T11:11:11.111", LocalDateTime.class), timestamp.getTimestampFromConstantHMSF().orElseThrow());
+        assertEquals(coercer.coerce("2023-03-20T11:11:11.111Z", LocalDateTime.class), timestamp.getTimestampFromConstantHMSFZ().orElseThrow());
+        assertEquals(coercer.coerce("2023-03-20T11:11:11.111+05", LocalDateTime.class), timestamp.getTimestampFromConstantHMSFP5().orElseThrow());
+        assertEquals(coercer.coerce("2023-03-20T11:11:11.111-05", LocalDateTime.class), timestamp.getTimestampFromConstantHMSFM5().orElseThrow());
+        assertEquals(coercer.coerce("2023-03-20T11:11:11.111+05:05", LocalDateTime.class), timestamp.getTimestampFromConstantHMSFP55().orElseThrow());
+        assertEquals(coercer.coerce("2023-03-20T11:11:11.111-05:05", LocalDateTime.class), timestamp.getTimestampFromConstantHMSFM55().orElseThrow());
     }
 
 }

@@ -44,8 +44,8 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.e
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.entitywithprimitivedefaults.EntityWithPrimitiveDefaultsDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.entitywithprimitivedefaults.EntityWithPrimitiveDefaultsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.myentitywithoptionalfields.MyEntityWithOptionalFields;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.myentitywithoptionalfields.MyEntityWithOptionalFieldsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.myentitywithoptionalfields.MyEntityWithOptionalFieldsDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.myentitywithoptionalfields.MyEntityWithOptionalFieldsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.myentitywithoptionalfields.MyEntityWithOptionalFieldsIdentifier;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.myenum.MyEnum;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.mytransferwithoptionalfields.MyTransferWithOptionalFields;
@@ -53,10 +53,14 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.m
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.mytransferwithoptionalfields.MyTransferWithOptionalFieldsForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.referenceentity.ReferenceEntityDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.referenceentity.ReferenceEntityForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.timestampfromconstant.TimestampFromConstant;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.timestampfromconstant.TimestampFromConstantDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.timestampfromconstant.TimestampFromConstantForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.PrimitivesDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
+import hu.blackbelt.mapper.impl.DefaultCoercer;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -799,4 +803,43 @@ public class PrimitivesTest {
 
         assertEquals("name 2.34 1", entity.getStringAttr().orElseThrow());
     }
+
+    @Inject
+    TimestampFromConstantDao timestampFromConstantDao;
+
+    @Test
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-009",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-008",
+            "REQ-EXPR-001",
+            "REQ-SRV-002"
+    })
+    public void testTimestampConstructionWithConstant() {
+        TimestampFromConstant timestamp = timestampFromConstantDao.create(TimestampFromConstantForCreate.builder().build());
+
+        DefaultCoercer coercer = new DefaultCoercer();
+
+        assertEquals(coercer.coerce("2023-03-20T11:11", LocalDateTime.class), timestamp.getTimestampFromConstantHM().orElseThrow());
+        assertEquals(coercer.coerce("2023-03-20T11:11Z", LocalDateTime.class), timestamp.getTimestampFromConstantHMZ().orElseThrow());
+        assertEquals(coercer.coerce("2023-03-20T11:11+05", LocalDateTime.class), timestamp.getTimestampFromConstantHMP5().orElseThrow());
+        assertEquals(coercer.coerce("2023-03-20T11:11-05", LocalDateTime.class), timestamp.getTimestampFromConstantHMM5().orElseThrow());
+        assertEquals(coercer.coerce("2023-03-20T11:11+05:05", LocalDateTime.class), timestamp.getTimestampFromConstantHMP55().orElseThrow());
+        assertEquals(coercer.coerce("2023-03-20T11:11-05:05", LocalDateTime.class), timestamp.getTimestampFromConstantHMM55().orElseThrow());
+        assertEquals(coercer.coerce("2023-03-20T11:11:11", LocalDateTime.class), timestamp.getTimestampFromConstantHMS().orElseThrow());
+        assertEquals(coercer.coerce("2023-03-20T11:11:11Z", LocalDateTime.class), timestamp.getTimestampFromConstantHMSZ().orElseThrow());
+        assertEquals(coercer.coerce("2023-03-20T11:11:11+05", LocalDateTime.class), timestamp.getTimestampFromConstantHMSP5().orElseThrow());
+        assertEquals(coercer.coerce("2023-03-20T11:11:11-05", LocalDateTime.class), timestamp.getTimestampFromConstantHMSM5().orElseThrow());
+        assertEquals(coercer.coerce("2023-03-20T11:11:11+05:05", LocalDateTime.class), timestamp.getTimestampFromConstantHMSP55().orElseThrow());
+        assertEquals(coercer.coerce("2023-03-20T11:11:11-05:05", LocalDateTime.class), timestamp.getTimestampFromConstantHMSM55().orElseThrow());
+        assertEquals(coercer.coerce("2023-03-20T11:11:11.111", LocalDateTime.class), timestamp.getTimestampFromConstantHMSF().orElseThrow());
+        assertEquals(coercer.coerce("2023-03-20T11:11:11.111Z", LocalDateTime.class), timestamp.getTimestampFromConstantHMSFZ().orElseThrow());
+        assertEquals(coercer.coerce("2023-03-20T11:11:11.111+05", LocalDateTime.class), timestamp.getTimestampFromConstantHMSFP5().orElseThrow());
+        assertEquals(coercer.coerce("2023-03-20T11:11:11.111-05", LocalDateTime.class), timestamp.getTimestampFromConstantHMSFM5().orElseThrow());
+        assertEquals(coercer.coerce("2023-03-20T11:11:11.111+05:05", LocalDateTime.class), timestamp.getTimestampFromConstantHMSFP55().orElseThrow());
+        assertEquals(coercer.coerce("2023-03-20T11:11:11.111-05:05", LocalDateTime.class), timestamp.getTimestampFromConstantHMSFM55().orElseThrow());
+    }
+
 }

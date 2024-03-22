@@ -75,6 +75,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociati
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationassociation.mappedtransferassociationassociation.transferf.TransferF;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationassociation.mappedtransferassociationassociation.transferf.TransferFDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationassociation.mappedtransferassociationassociation.transferf.TransferFForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationassociation.mappedtransferassociationassociation.transferf.TransferFMask;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationassociation.mappedtransferassociationassociation.transferg.TransferG;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationassociation.mappedtransferassociationassociation.transferg.TransferGDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationassociation.mappedtransferassociationassociation.transferg.TransferGForCreate;
@@ -423,7 +424,8 @@ public class MappedTransferAssociationAssociationTest {
         TransferFForCreate tf1ForCreate = TransferFForCreate.builder().withNameF("tf1").build();
         TransferFForCreate tf2ForCreate = TransferFForCreate.builder().withNameF("tf2").build();
         TransferFForCreate tf3ForCreate = TransferFForCreate.builder().withNameF("tf3").build();
-        transferEDao.createRelationFonE(transferE, List.of(tf1ForCreate, tf2ForCreate, tf3ForCreate));
+        List<TransferF> maskedFs = transferEDao.createRelationFonE(transferE, List.of(tf1ForCreate, tf2ForCreate, tf3ForCreate), TransferFMask.transferFMask().withNameF());
+        assertThat(maskedFs.stream().map(TransferF::getNameF).map(Optional::orElseThrow).toList(), hasItems("tf1", "tf2", "tf3"));
         transferE = transferEDao.getById(transferE.identifier()).orElseThrow();
 
         List<String> relationFonEs = transferEDao.queryRelationFonE(transferE).selectList().stream().map(ee -> ee.getNameF()).filter(Optional::isPresent).map(Optional::get).toList();

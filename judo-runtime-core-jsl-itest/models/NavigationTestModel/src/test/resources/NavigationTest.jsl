@@ -1,6 +1,7 @@
 model NavigationTest;
 
-type string String min-size:0 max-size:255;
+import judo::types;
+type numeric Double precision: 8 scale: 4;
 
 entity A {
     relation B[] blist;
@@ -26,6 +27,11 @@ entity A {
     relation C[] bbAllC <= B.all().c;
     relation C bbAllCAny <= B.all().c.any();
     field String bbAllCAnyName <= B.all().c.any().name;
+
+    // selfNavigation
+    relation A `self` <= self;
+    relation B[] blistTroughDerivedSelf <= self.`self`.blist;
+    relation C[] clistTroughDerivedSelf <= self.`self`.blist.c;
 }
 
 transfer TA (A mapped) {
@@ -52,6 +58,11 @@ transfer TA (A mapped) {
     relation TC[] bbAllC  <= mapped.bbAllC;
     relation TC bbAllCAny  <= mapped.bbAllCAny;
     field String bbAllCAnyName  <= mapped.bbAllCAnyName;
+
+    // selfNavigation
+    relation TA `self` <= mapped.`self`;
+    relation TB[] blistTroughDerivedSelf <= mapped.blistTroughDerivedSelf;
+    relation TC[] clistTroughDerivedSelf <= mapped.clistTroughDerivedSelf;
 }
 
 entity B {
@@ -70,4 +81,194 @@ entity C {
 
 transfer TC (C mapped){
     field String name <= mapped.name set;
+}
+
+// PersonWithParents NavigationTest
+
+enum SexType {
+    MALE = 0;
+    FEMALE = 1;
+}
+
+entity Person {
+    field String name;
+    field SexType sex;
+    field Date birthDate;
+    field Integer height;
+    relation Person[] parents opposite-add: children[];
+
+    field String motherName <= self.mother.name;
+    field String fatherName <= self.father.name;
+    field String grandMother1Name <= self.mother.motherName;
+    field String greatGrandMother1Name <= self.mother.mother.motherName;
+    field String grandMother2Name <= self.father.motherName;
+    field String grandFather1Name <= self.mother.fatherName;
+    field String grandFather2Name <= self.father.fatherName;
+    field Boolean motherYoungerThanFather <= self.mother.birthDate > self.father.birthDate;
+
+    relation Person mother <= self.parents.filter(p | p.sex == SexType#FEMALE ).any();
+    relation Person father <= self.parents.filter(p | p.sex == SexType#MALE ).any();
+}
+
+
+entity AccessForThePrincipal {
+    relation Person[] women <= Person.all().filter( p | p.sex == SexType#FEMALE );
+    relation Person[] mothers <= Person.all().filter( p | p.sex == SexType#FEMALE ).filter( m | m.children.size() != 0 );
+    relation Person[] fathers <= Person.all().filter( p | p.sex == SexType#MALE ).filter( m | m.children.size() != 0 );
+    relation Person[] peopleWithYoungerMotherThanFather <= Person.all().filter( p | p.motherYoungerThanFather );
+}
+
+
+transfer TransferAccessForThePrincipal ( AccessForThePrincipal access ) {
+    relation TransferPerson[] women <= access.women;
+    relation TransferPerson[] mothers <= access.mothers;
+    relation TransferPerson[] fathers <= access.fathers;
+    relation TransferPerson[] peopleWithYoungerMotherThanFather <= access.peopleWithYoungerMotherThanFather;
+}
+
+transfer TransferPerson ( Person person ) {
+    field String name <= person.name update:auto;
+    field SexType sex <= person.sex  update:auto;
+    field Date birthDate <= person.birthDate update:auto;
+    relation TransferPerson[] parents <= person.parents choices:Person.all();
+    relation TransferPerson[] children <= person.children choices:Person.all();
+
+    field String motherName <= person.motherName;
+    field String fatherName <= person.fatherName;
+    field String grandMother1Name <= person.grandMother1Name;
+    field String greatGrandMother1Name <= person.greatGrandMother1Name;
+    field String grandMother2Name <= person.grandMother2Name;
+    field String grandFather1Name <= person.grandFather1Name;
+    field String grandFather2Name <= person.grandFather2Name;
+    field Boolean motherYoungerThanFather <= person.motherYoungerThanFather;
+
+    relation TransferPerson mother <= person.mother;
+    relation TransferPerson father <= person.father;
+}
+
+// SchoolTest
+
+entity Person1 {
+    field String name;
+    field SexType sex;
+    field Integer height;
+}
+
+entity Student extends Person1 {
+    relation Person1[] parents;
+    relation Person1 mother <= self.parents.filter(p | p.sex == SexType#FEMALE ).any();
+}
+
+entity Class {
+    field String name;
+    relation Student[] students;
+    relation Student tallestStudent <= self.students.last(s | s.height).any();
+    relation Student[] tallestStudents <= self.students.last(s | s.height);
+}
+
+entity School {
+    field String name;
+    relation Class[] classes;
+    // TODO JNG-5579
+    relation Student[] tallestStudentsByClass <= self.classes.tallestStudents;
+    relation Person1[] tallestStudentMothers <= self.classes.tallestStudent.mother;
+    // TODO JNG-5579
+    relation Person1[] tallestStudentsMothers <= self.classes.tallestStudents.mother;
+}
+
+entity AP {
+    // TODO JNG-5579
+    relation Student[] tallestStudentInEachClass <= School.all().classes.tallestStudent;
+    // TODO JNG-5579
+    relation Person1[] tallestStudentInEachClassMother <= School.all().classes.tallestStudent.mother;
+    // TODO JNG-5576
+    //field Double tallestStudentInEachClassMotherHeightAvg <= School.all().classes.tallestStudent.mother.avg(m | m.height);
+    //field Double tallestStudentsInEachClassMotherHeightAvg <= School.all().classes.tallestStudents.mother.avg(m | m.height);
+}
+
+// NavigationExpressionTest
+
+entity A1 {
+    field required Integer number;
+}
+
+entity B1 {
+    field required Integer number;
+    relation required A1 a;
+}
+
+entity Base1 {
+    field required Integer number;
+    relation B1[] bs eager:true;
+    relation required A1 relA eager:true;
+    field required A1 compA eager:true;
+
+    field Integer sumRelAonBs <= self.bs.a.sum(e | e.number);
+    field Integer compANumber <= self.compA.container(entityType = Base1).number;
+
+    // TODO JNG-5575
+    //field Integer base1NumberIs100 <= self.filter(e | e.number == 100).any().number;
+    // TODO JNG-5575
+    //field Integer relANumberIs100 <= self.relA.filter(e | e.number == 100).any().number;
+
+}
+
+entity DerivedAttributeCollector {
+    // TODO JNG-5576
+    field Integer sumRelAonAllBase1 <= Base1.all().relA.sum(e | e.number);
+    field Integer sumBsonAllBase1 <= Base1.all().bs.sum(e | e.number);
+}
+
+// NavigationExpressionTest : Generalization
+
+entity NativeA2 {
+}
+
+entity A2 extends NativeA2 {
+    field required Integer number;
+}
+
+entity NativeB2 {
+}
+
+entity B2 extends NativeB2 {
+    field required Integer number;
+}
+
+entity Base2 {
+    relation required NativeA2 a eager:true;
+    relation NativeB2[] bs eager:true;
+
+    field Integer numNativeA2 <= self.a.asType(entityType = A2).number;
+
+    // TODO JNG-5576
+    //field Integer sumNativeBs <= self.bs.asCollection(entityType = B2).sum(e | e.number);
+    //field Integer sumAllNativeA <= NativeA2.all().asCollection(entityType = A2).sum(e | e.number);
+
+}
+
+// NavigationExpressionTest : TwoWay Navigation
+
+entity A3 {
+    field required Integer number;
+    field Integer sumBsA <= self.bs.a.sum(e | e.number);
+    field Integer sumBsABs <= self.bs.a.bs.sum(e | e.number);
+    relation B3[] bs opposite: a eager:true;
+    relation B3 b;
+
+    field Boolean containsTest <= self.bs.contains(instance = B3.all().any());
+    field Boolean containsTest1 <= self.bs.contains(instance = self.b);
+}
+
+entity B3 {
+    field required Integer number;
+    field Integer sumABs <= self.a.bs.sum(e | e.number);
+    field Integer sumABsA <= self.a.bs.a.sum(e | e.number);
+    relation A3 a opposite: bs;
+}
+
+entity TwoWayCollector {
+    //field Integer sumAllBsFromA <= B3.all().a.bs.sum(e | e.number); // TODO JNG-5576
+    field Integer sumAllBsFromAFiltered <= B3.all().filter(b | B3.all().a.bs.contains(instance = b) ).sum(e | e.number);
+    //field Integer sumAllAFromBs <= A3.all().bs.a.sum(e | e.number); // TODO JNG-5576
 }

@@ -420,13 +420,13 @@ public class FunctionsTest {
         /*
         |=============================================================================================
         |`p`            |`q`            |`p or q`       |`p and q`      |`p xor q`      |`p implies q`
-        |`true`            |`true`            |`true`         |`true`            |`false`        |`true`
-        |`true`            |`false`        |`true`         |`false`        |`true`         |`false`
-        |`true`            |`undefined`    |`true`            |`undefined`    |`undefined`    |`undefined`
-        |`false`        |`true`            |`true`            |`false`        |`true`         |`true`
+        |`true`         |`true`         |`true`         |`true`         |`false`        |`true`
+        |`true`         |`false`        |`true`         |`false`        |`true`         |`false`
+        |`true`         |`undefined`    |`true`         |`undefined`    |`undefined`    |`undefined`
+        |`false`        |`true`         |`true`         |`false`        |`true`         |`true`
         |`false`        |`false`        |`false`        |`false`        |`false`        |`true`
         |`false`        |`undefined`    |`undefined`    |`false`        |`undefined`    |`true`
-        |`undefined`    |`true`            |`true`            |`undefined`    |`undefined`    |`true`
+        |`undefined`    |`true`         |`true`         |`undefined`    |`undefined`    |`true`
         |`undefined`    |`false`        |`undefined`    |`false`        |`undefined`    |`undefined`
         |`undefined`    |`undefined`    |`undefined`    |`undefined`    |`undefined`    |`undefined`
         |=============================================================================================
@@ -585,6 +585,7 @@ public class FunctionsTest {
     @TestCase("TC023")
     @Requirement(reqs = {
             "REQ-TYPE-001",
+            "REQ-TYPE-005",
             "REQ-TYPE-007",
             "REQ-TYPE-008",
             "REQ-TYPE-009",
@@ -602,7 +603,50 @@ public class FunctionsTest {
         assertEquals(LocalDate.of(2019, 7, 18), timestampFunctions.getDateOfTimestampSelf().orElseThrow());
         assertEquals(LocalTime.of(0, 0, 0), timestampFunctions.getTimeOfTimestampWithDate().orElseThrow());
         assertEquals(LocalTime.of(11, 11, 11), timestampFunctions.getTimeOfTimestampWithDateAndTime().orElseThrow());
+        assertEquals(LocalTime.of(11, 11, 11, 111000000), timestampFunctions.getTimeOfTimestampWithDateAndTimeWithMillisecond().orElseThrow());
+
         assertEquals(LocalTime.of(1, 11, 12), timestampFunctions.getTimeOfTimestampSelf().orElseThrow());
+
+        assertTrue(timestampFunctions.getTimestampFromDateWithUndefined().isEmpty());
+        assertEquals(LocalDateTime.of(2023,3,20,0,0,0), timestampFunctions.getTimestampFromDateWithSelf().orElseThrow());
+        assertEquals(LocalDateTime.of(2022,9,29,0,0,0), timestampFunctions.getTimestampFromDateWithConstructor().orElseThrow());
+
+        assertEquals(2019, timestampFunctions.getYearOfTimestampSelf().orElseThrow());
+        assertEquals(7, timestampFunctions.getMonthOfTimestampSelf().orElseThrow());
+        assertEquals(18, timestampFunctions.getDayOfTimestampSelf().orElseThrow());
+        assertEquals(4, timestampFunctions.getWeekOfTimestampSelf().orElseThrow());
+
+        assertEquals(1, timestampFunctions.getHourOfTimestampSelf().orElseThrow());
+        assertEquals(11, timestampFunctions.getMinuteOfTimestampSelf().orElseThrow());
+        assertEquals(12, timestampFunctions.getSecondOfTimestampSelf().orElseThrow());
+        assertEquals(0, timestampFunctions.getMillisecondOfTimestampSelf().orElseThrow());
+
+        assertEquals(2022, timestampFunctions.getYearOfTimestamp().orElseThrow());
+        assertEquals(9, timestampFunctions.getMonthOfTimestamp().orElseThrow());
+        assertEquals(29, timestampFunctions.getDayOfTimestamp().orElseThrow());
+        assertEquals(4, timestampFunctions.getWeekOfTimestamp().orElseThrow());
+
+        assertEquals(11, timestampFunctions.getHourOfTimestamp().orElseThrow());
+        assertEquals(11, timestampFunctions.getMinuteOfTimestamp().orElseThrow());
+        assertEquals(11, timestampFunctions.getSecondOfTimestamp().orElseThrow());
+        assertEquals(200, timestampFunctions.getMillisecondOfTimestamp().orElseThrow());
+
+        assertTrue(timestampFunctions.getTimestampFromDateAndTimeWithDateUndefinedTimeUndefined().isEmpty());
+        assertTrue(timestampFunctions.getTimestampFromDateAndTimeWithDateUndefinedTimeSelf().isEmpty());
+        assertTrue(timestampFunctions.getTimestampFromDateAndTimeWithDateUndefinedTimeConstant().isEmpty());
+        assertTrue(timestampFunctions.getTimestampFromDateAndTimeWithDateSelfTimeUndefined().isEmpty());
+        assertTrue(timestampFunctions.getTimestampFromDateAndTimeWithDateConstantTimeUndefined().isEmpty());
+
+        LocalDateTime expectedTimestamp = LocalDateTime.parse("2023-03-20T11:11:11.111");
+        assertEquals(expectedTimestamp,timestampFunctions.getTimestampFromDateAndTimeWithDateSelfTimeSelf().orElseThrow());
+        assertEquals(expectedTimestamp,timestampFunctions.getTimestampFromDateAndTimeWithDateSelfTimeConstant().orElseThrow());
+        assertEquals(expectedTimestamp,timestampFunctions.getTimestampFromDateAndTimeWithDateSelfTimeConstructor().orElseThrow());
+        assertEquals(expectedTimestamp,timestampFunctions.getTimestampFromDateAndTimeWithDateConstantTimeSelf().orElseThrow());
+        assertEquals(expectedTimestamp,timestampFunctions.getTimestampFromDateAndTimeWithDateConstantTimeConstant().orElseThrow());
+        assertEquals(expectedTimestamp,timestampFunctions.getTimestampFromDateAndTimeWithDateConstantTimeConstructor().orElseThrow());
+        assertEquals(expectedTimestamp,timestampFunctions.getTimestampFromDateAndTimeWithDateConstructorTimeSelf().orElseThrow());
+        assertEquals(expectedTimestamp,timestampFunctions.getTimestampFromDateAndTimeWithDateConstructorTimeConstant().orElseThrow());
+        assertEquals(expectedTimestamp,timestampFunctions.getTimestampFromDateAndTimeWithDateConstructorTimeConstructor().orElseThrow());
 
         assertEquals(1664409600000L, timestampFunctions.getAsMilliseconds().orElseThrow());
         assertEquals(1664449871000L, timestampFunctions.getAsMilliseconds2().orElseThrow());
@@ -624,6 +668,8 @@ public class FunctionsTest {
         assertEquals(LocalDateTime.of(2021, 8, 28, 11, 11, 11, 0), timestampFunctions.getMinusDateReversed().orElseThrow());
 
         assertEquals(LocalDateTime.of(2022, 9, 29, 11, 11, 10, 999000000), timestampFunctions.getMinusMilliseconds().orElseThrow());
+
+
     }
 
     @Test

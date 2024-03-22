@@ -7,6 +7,7 @@ type string PhoneNumber min-size:0 max-size:32 regex:"^(\\+\\d{1,2}\\s)?\\(?\\d{
 type binary Binary mime-type:["text/plain"] max-file-size:1 GB ;
 type string SmallString min-size:0 max-size:128;
 type string CarId min-size:0 max-size:32 regex:"^\\w{4}-\\d{3}$";
+type numeric Double precision:15 scale:4;
 
 enum MyEnum {
     Atomic = 0;
@@ -144,3 +145,89 @@ transfer TransferTester (Tester mapped) {
     relation TransferCar[] carsOfKnownContinents <= mapped.carsOfKnownContinents;
 }
 
+// EmbeddedFilterTest
+
+entity Product {
+    field String name;
+}
+
+entity Item {
+    field String name;
+    field Double weight;
+    relation Product product eager:true;
+    // TODO JNG-4376
+    //relation Item[] otherItems <= self.container( entityType = Bucket).items.filter( i | i != self );
+}
+
+entity Bucket {
+    field Item[] items;
+    relation Item mainItem <= self.items.first(i | i.name).any() eager:true;
+    relation Item[] product1Items <= self.items.filter(i | i.product.name == "Product1") eager:true;
+    // TODO JNG-4376
+    //relation Item[] itemsHeavierThanBucketAvg <= self.items!filter(i | i.weight > self.items!avg(x | x.weight));
+    relation Item[] itemsHeavierThanAvg <= self.items.filter(i | i.weight > Item.all().avg(x | x.weight)) eager:true;
+}
+
+entity BucketTester {
+    relation Bucket[] bucketsWithProduct1 <= Bucket.all().filter(b | b.product1Items.size() !=  0) eager:true;
+    relation Bucket[] bucketsWithMainProduct1 <=  Bucket.all().filter(b | b.mainItem.product.name == "Product1") eager:true;
+}
+
+transfer TransferProduct (Product mapped) {
+    field String name <= mapped.name update:auto;
+    event instead create create;
+}
+
+transfer TransferItem (Item mapped) {
+    field String name <= mapped.name update:auto;
+    field Double weight <= mapped.weight update:auto;
+    relation TransferProduct product <= mapped.product eager:true  choices:Product.all();
+    event instead create create;
+}
+
+transfer TransferBucket (Bucket mapped) {
+    relation TransferItem[] items <= mapped.items eager:true create:true;
+    relation TransferItem mainItem <= mapped.mainItem eager:true;
+    relation TransferItem[] product1Items <= mapped.product1Items eager:true;
+    relation TransferItem[] itemsHeavierThanAvg <= mapped.itemsHeavierThanAvg eager:true;
+    event instead create create;
+}
+
+transfer TransferBucketTester (BucketTester mapped) {
+    relation TransferBucket[] bucketsWithProduct1 <= mapped.bucketsWithProduct1 eager:true;
+    relation TransferBucket[] bucketsWithMainProduct1 <= mapped.bucketsWithMainProduct1 eager:true;
+}
+
+// AggregationFilterTest
+
+entity OrderDetail {
+        field String product;
+        field Integer quantity;
+}
+
+entity Order {
+    field OrderDetail[] items;
+    relation Customer customer opposite: orders;
+}
+
+entity Customer {
+    relation Order[] orders opposite: customer eager:true;
+    relation Order[] ordersWithMultipleItems <= self.orders.filter(o | o.items.size() > 1);
+}
+
+transfer TransferOrderDetail (OrderDetail mapped) {
+        field String product <= mapped.product update:auto;
+        field Integer quantity <= mapped.quantity update:auto;
+        event instead create create;
+}
+
+transfer TransferOrder (Order mapped) {
+    relation TransferCustomer customer <= mapped.customer;
+    relation TransferOrderDetail[] items <= mapped.items eager:true create:true;
+    event instead create create;
+}
+
+transfer TransferCustomer (Customer mapped) {
+    relation TransferOrder[] orders <= mapped.orders eager:true create:true choices: Order.all();
+    relation TransferOrder[] ordersWithMultipleItems <= mapped.ordersWithMultipleItems;
+}

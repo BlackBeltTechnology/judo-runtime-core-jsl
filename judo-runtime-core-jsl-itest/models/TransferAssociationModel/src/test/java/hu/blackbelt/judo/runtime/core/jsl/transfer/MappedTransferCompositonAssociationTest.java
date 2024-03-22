@@ -21,20 +21,25 @@ package hu.blackbelt.judo.runtime.core.jsl.transfer;
  */
 
 import com.google.inject.Inject;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonassociation.mappedtransfercompositonassociation.bankaccount.BankAccountDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonassociation.mappedtransfercompositonassociation.company.CompanyDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonassociation.mappedtransfercompositonassociation.entitya.EntityADao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonassociation.mappedtransfercompositonassociation.entitya.EntityAIdentifier;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonassociation.mappedtransfercompositonassociation.entityb.EntityB;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonassociation.mappedtransfercompositonassociation.entityb.EntityBDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonassociation.mappedtransfercompositonassociation.entityb.EntityBIdentifier;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonassociation.mappedtransfercompositonassociation.entityc.EntityCDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonassociation.mappedtransfercompositonassociation.entityd.EntityDDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonassociation.mappedtransfercompositonassociation.mappedbankaccount.MappedBankAccount;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonassociation.mappedtransfercompositonassociation.mappedbankaccount.MappedBankAccountDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonassociation.mappedtransfercompositonassociation.mappedbankaccount.MappedBankAccountForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonassociation.mappedtransfercompositonassociation.mappedbankaccount.MappedBankAccountMask;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonassociation.mappedtransfercompositonassociation.mappedcompany.MappedCompany;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonassociation.mappedtransfercompositonassociation.mappedcompany.MappedCompanyDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonassociation.mappedtransfercompositonassociation.mappedcompany.MappedCompanyForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonassociation.mappedtransfercompositonassociation.transfera.TransferA;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonassociation.mappedtransfercompositonassociation.transfera.TransferADao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonassociation.mappedtransfercompositonassociation.transfera.TransferAForCreate;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonassociation.mappedtransfercompositonassociation.transferb.TransferB;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonassociation.mappedtransfercompositonassociation.transferb.TransferBDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonassociation.mappedtransfercompositonassociation.transferb.TransferBForCreate;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonassociation.mappedtransfercompositonassociation.transferb.TransferBIdentifier;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonassociation.mappedtransfercompositonassociation.transferb.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonassociation.mappedtransfercompositonassociation.transferc.TransferC;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonassociation.mappedtransfercompositonassociation.transferc.TransferCDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonassociation.mappedtransfercompositonassociation.transferc.TransferCForCreate;
@@ -137,7 +142,7 @@ public class MappedTransferCompositonAssociationTest {
         TransferA referenceForLambda = transferA;
         IllegalArgumentException thrown = assertThrows(
                 IllegalArgumentException.class,
-                () -> transferADao.createSingleEntityB(referenceForLambda, TransferBForCreate.builder().withNameB("B2").build())
+                () -> transferADao.createSingleEntityB(referenceForLambda, TransferBForCreate.builder().withNameB("B2").build(), TransferBMask.transferBMask())
         );
         assertTrue(thrown.getMessage().contains("Upper cardinality violated"));
 
@@ -292,6 +297,81 @@ public class MappedTransferCompositonAssociationTest {
         transferADao.createMultiEntityB(transferA, List.of(TransferBForCreate.builder().build()));
         assertEquals(4, transferADao.countMultiEntityB(transferA));
 
+
+    }
+
+    @Inject
+    BankAccountDao bankAccountDao;
+
+    @Inject
+    CompanyDao companyDao;
+
+    @Inject
+    MappedBankAccountDao mappedBankAccountDao;
+
+    @Inject
+    MappedCompanyDao mappedCompanyDao;
+
+    @Test
+    @TestCase("TwoWayAssociationAlongWithCompositionTest")
+    @Requirement(reqs = {
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-008",
+            "REQ-SRV-002"
+    })
+    void testTwoWayAssociationAlongWithCompositionTest() {
+
+        MappedBankAccount accountOutOfRange = mappedBankAccountDao.create(MappedBankAccountForCreate.builder().withAccountNumber("12345").build());
+
+        MappedCompany company = mappedCompanyDao.create(MappedCompanyForCreate.builder().withName("MyCompany").build());
+        MappedBankAccount bankAccount1 = mappedCompanyDao.createBankAccounts(company, MappedBankAccountForCreate.builder().withAccountNumber("99999999").build());
+        MappedBankAccount bankAccount2= mappedCompanyDao.createBankAccounts(company, MappedBankAccountForCreate.builder().withAccountNumber("00000000").build());
+        mappedCompanyDao.unsetMainBankAccounts(company);
+
+        company = mappedCompanyDao.getById(company.identifier()).orElseThrow();
+
+        assertTrue(mappedBankAccountDao.queryCompany(bankAccount1).isEmpty());
+        assertTrue(mappedBankAccountDao.queryCompany(bankAccount2).isEmpty());
+
+        company.setMainBankAccounts(bankAccount1);
+        company = mappedCompanyDao.update(company);
+
+        assertEquals(company.identifier().getIdentifier(), mappedBankAccountDao.queryCompany(bankAccount1).orElseThrow().identifier().getIdentifier());
+        assertTrue(mappedBankAccountDao.queryCompany(bankAccount2).isEmpty());
+
+        assertEquals(bankAccount1.identifier().getIdentifier(), mappedCompanyDao.queryMainBankAccounts(company).orElseThrow().identifier().getIdentifier());
+
+        company.setMainBankAccounts(bankAccount2);
+        company = mappedCompanyDao.update(company);
+
+        assertEquals(company.identifier().getIdentifier(), mappedBankAccountDao.queryCompany(bankAccount2).orElseThrow().identifier().getIdentifier());
+        assertTrue(mappedBankAccountDao.queryCompany(bankAccount1).isEmpty());
+
+        assertEquals(bankAccount2.identifier().getIdentifier(), mappedCompanyDao.queryMainBankAccounts(company).orElseThrow().identifier().getIdentifier());
+
+        //Give back the range elements
+        List<MappedBankAccount> rangeOfMainBankAccounts = mappedCompanyDao.getRangeOfMainBankAccounts(company, MappedBankAccountMask.mappedBankAccountMask());
+        assertEquals(2, rangeOfMainBankAccounts.size());
+
+        // Check range validation
+        company.setMainBankAccounts(accountOutOfRange);
+        MappedCompany companyRef = company;
+        ValidationException thrown = assertThrows(
+                ValidationException.class,
+                () -> mappedCompanyDao.update(companyRef)
+        );
+
+        assertThat(thrown.getValidationResults(), containsInAnyOrder(allOf(
+                hasProperty("code", equalTo("NOT_ACCEPTED_BY_RANGE")),
+                hasProperty("location", equalTo("mainBankAccounts")))
+        ));
 
     }
 }

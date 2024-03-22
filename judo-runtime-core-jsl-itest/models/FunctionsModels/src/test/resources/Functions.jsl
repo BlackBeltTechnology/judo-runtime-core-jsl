@@ -680,7 +680,54 @@ entity TimestampFunctions {
     field Date dateOfTimestampSelf <= self.timestamp2.date();
     field Time timeOfTimestampWithDate <= Timestamp.of(date = `2022-09-29`).time();
     field Time timeOfTimestampWithDateAndTime <= Timestamp.of(date = `2022-09-29`, time =`11:11:11`).time();
+    field Time timeOfTimestampWithDateAndTimeWithMillisecond <= Timestamp.of(date = `2022-09-29`, time =`11:11:11.111`).time();
     field Time timeOfTimestampSelf <= self.timestamp2.time();
+
+    field Date undefinedDate;
+    field Date date default: `2023-03-20`;
+    field Time undefinedTime;
+    field Time time default: `11:11:11.111`;
+
+    field Timestamp timestampFromDateWithUndefined <= Timestamp.of(date = self.undefinedDate);
+    field Timestamp timestampFromDateWithSelf <= Timestamp.of(date = self.date);
+    field Timestamp timestampFromDateWithConstructor <= Timestamp.of(date = Date.of(year = 2022, month = 9, day = 29));
+
+    field Integer yearOfTimestampSelf <= self.timestamp2.date().year();
+    field Integer monthOfTimestampSelf <= self.timestamp2.date().month();
+    field Integer dayOfTimestampSelf <= self.timestamp2.date().day();
+    field Integer weekOfTimestampSelf <= self.timestamp2.date().dayOfWeek();
+
+    field Integer hourOfTimestampSelf <= self.timestamp2.time().hour();
+    field Integer minuteOfTimestampSelf <= self.timestamp2.time().minute();
+    field Integer secondOfTimestampSelf <= self.timestamp2.time().second();
+    field Integer millisecondOfTimestampSelf <= self.timestamp2.time().millisecond();
+
+    field Integer yearOfTimestamp <= Timestamp.of(date = `2022-09-29`, time =`11:11:11`).date().year();
+    field Integer monthOfTimestamp <= Timestamp.of(date = `2022-09-29`, time =`11:11:11`).date().month();
+    field Integer dayOfTimestamp <= Timestamp.of(date = `2022-09-29`, time =`11:11:11`).date().day();
+    field Integer weekOfTimestamp <= Timestamp.of(date = `2022-09-29`, time =`11:11:11`).date().dayOfWeek();
+
+    field Integer hourOfTimestamp <= Timestamp.of(date = `2022-09-29`, time =`11:11:11`).time().hour();
+    field Integer minuteOfTimestamp <= Timestamp.of(date = `2022-09-29`, time =`11:11:11`).time().minute();
+    field Integer secondOfTimestamp <= Timestamp.of(date = `2022-09-29`, time =`11:11:11`).time().second();
+    field Integer millisecondOfTimestamp <= Timestamp.of(date = `2022-09-29`, time =`11:11:11.2`).time().millisecond();
+
+    field Timestamp timestampFromDateAndTimeWithDateUndefinedTimeUndefined <= Timestamp.of(date = self.undefinedDate, time = self.undefinedTime);
+    field Timestamp timestampFromDateAndTimeWithDateUndefinedTimeSelf <= Timestamp.of(date = self.undefinedDate, time = self.time);
+    field Timestamp timestampFromDateAndTimeWithDateUndefinedTimeConstant <= Timestamp.of(date = self.undefinedDate, time = `11:11`);
+    field Timestamp timestampFromDateAndTimeWithDateSelfTimeUndefined <= Timestamp.of(date = self.date, time = self.undefinedTime);
+    field Timestamp timestampFromDateAndTimeWithDateConstantTimeUndefined <= Timestamp.of(date = `2023-03-20`, time = self.undefinedTime);
+
+    // defined
+    field Timestamp timestampFromDateAndTimeWithDateSelfTimeSelf <= Timestamp.of(date = self.date, time = self.time);
+    field Timestamp timestampFromDateAndTimeWithDateSelfTimeConstant <= Timestamp.of(date = self.date, time = `11:11:11.111`);
+    field Timestamp timestampFromDateAndTimeWithDateSelfTimeConstructor <= Timestamp.of(date = self.date, time = Time.of(hour = 11, minute = 11, second = 11, millisecond = 111));
+    field Timestamp timestampFromDateAndTimeWithDateConstantTimeSelf <= Timestamp.of(date = `2023-03-20`, time = self.time);
+    field Timestamp timestampFromDateAndTimeWithDateConstantTimeConstant <= Timestamp.of(date = `2023-03-20`, time = `11:11:11.111`);
+    field Timestamp timestampFromDateAndTimeWithDateConstantTimeConstructor <= Timestamp.of(date = `2023-03-20`, time = Time.of(hour = 11, minute = 11, second = 11, millisecond = 111));
+    field Timestamp timestampFromDateAndTimeWithDateConstructorTimeSelf <= Timestamp.of(date = Date.of(year = 2023, month = 3, day = 20), time = self.time);
+    field Timestamp timestampFromDateAndTimeWithDateConstructorTimeConstant <= Timestamp.of(date = Date.of(year = 2023, month = 3, day = 20), time = `11:11:11.111`);
+    field Timestamp timestampFromDateAndTimeWithDateConstructorTimeConstructor <= Timestamp.of(date = Date.of(year = 2023, month = 3, day = 20), time = Time.of(hour = 11, minute = 11, second = 11, millisecond = 111));
 
     field Integer asMilliseconds <= Timestamp.of(date = `2022-09-29`).asMilliseconds();
     field Integer asMilliseconds2 <= Timestamp.of(date = `2022-09-29`, time = `11:11:11`).asMilliseconds();
@@ -716,7 +763,53 @@ transfer TransferTimestampFunctions (TimestampFunctions mapped) {
     field Date dateOfTimestampSelf <= mapped.dateOfTimestampSelf;
     field Time timeOfTimestampWithDate <= mapped.timeOfTimestampWithDate;
     field Time timeOfTimestampWithDateAndTime <= mapped.timeOfTimestampWithDateAndTime;
+    field Time timeOfTimestampWithDateAndTimeWithMillisecond <= mapped.timeOfTimestampWithDateAndTimeWithMillisecond;
     field Time timeOfTimestampSelf <= mapped.timeOfTimestampSelf;
+
+    field Date undefinedDate;
+    field Date date default: `2023-03-20`;
+    field Time undefinedTime;
+    field Time time default: `11:11:11.111`;
+
+    field Timestamp timestampFromDateWithUndefined <= mapped.timestampFromDateWithUndefined;
+    field Timestamp timestampFromDateWithSelf <= mapped.timestampFromDateWithSelf;
+    field Timestamp timestampFromDateWithConstructor <= mapped.timestampFromDateWithConstructor;
+
+    field Integer yearOfTimestampSelf <= mapped.yearOfTimestampSelf;
+    field Integer monthOfTimestampSelf <= mapped.monthOfTimestampSelf;
+    field Integer dayOfTimestampSelf <= mapped.dayOfTimestampSelf;
+    field Integer weekOfTimestampSelf <= mapped.weekOfTimestampSelf;
+
+    field Integer hourOfTimestampSelf <= mapped.hourOfTimestampSelf;
+    field Integer minuteOfTimestampSelf <= mapped.minuteOfTimestampSelf;
+    field Integer secondOfTimestampSelf <= mapped.secondOfTimestampSelf;
+    field Integer millisecondOfTimestampSelf <= mapped.millisecondOfTimestampSelf;
+
+    field Integer yearOfTimestamp <= mapped.yearOfTimestamp;
+    field Integer monthOfTimestamp <= mapped.monthOfTimestamp;
+    field Integer dayOfTimestamp <= mapped.dayOfTimestamp;
+    field Integer weekOfTimestamp <= mapped.weekOfTimestamp;
+
+    field Integer hourOfTimestamp <= mapped.hourOfTimestamp;
+    field Integer minuteOfTimestamp <= mapped.minuteOfTimestamp;
+    field Integer secondOfTimestamp <= mapped.secondOfTimestamp;
+    field Integer millisecondOfTimestamp <= mapped.millisecondOfTimestamp;
+
+    field Timestamp timestampFromDateAndTimeWithDateUndefinedTimeUndefined <= mapped.timestampFromDateAndTimeWithDateUndefinedTimeUndefined;
+    field Timestamp timestampFromDateAndTimeWithDateUndefinedTimeSelf <= mapped.timestampFromDateAndTimeWithDateUndefinedTimeSelf;
+    field Timestamp timestampFromDateAndTimeWithDateUndefinedTimeConstant <= mapped.timestampFromDateAndTimeWithDateUndefinedTimeConstant;
+    field Timestamp timestampFromDateAndTimeWithDateSelfTimeUndefined <= mapped.timestampFromDateAndTimeWithDateSelfTimeUndefined;
+    field Timestamp timestampFromDateAndTimeWithDateConstantTimeUndefined <= mapped.timestampFromDateAndTimeWithDateConstantTimeUndefined;
+
+    field Timestamp timestampFromDateAndTimeWithDateSelfTimeSelf <= mapped.timestampFromDateAndTimeWithDateSelfTimeSelf;
+    field Timestamp timestampFromDateAndTimeWithDateSelfTimeConstant <= mapped.timestampFromDateAndTimeWithDateSelfTimeConstant;
+    field Timestamp timestampFromDateAndTimeWithDateSelfTimeConstructor <= mapped.timestampFromDateAndTimeWithDateSelfTimeConstructor;
+    field Timestamp timestampFromDateAndTimeWithDateConstantTimeSelf <= mapped.timestampFromDateAndTimeWithDateConstantTimeSelf;
+    field Timestamp timestampFromDateAndTimeWithDateConstantTimeConstant <= mapped.timestampFromDateAndTimeWithDateConstantTimeConstant;
+    field Timestamp timestampFromDateAndTimeWithDateConstantTimeConstructor <= mapped.timestampFromDateAndTimeWithDateConstantTimeConstructor;
+    field Timestamp timestampFromDateAndTimeWithDateConstructorTimeSelf <= mapped.timestampFromDateAndTimeWithDateConstructorTimeSelf;
+    field Timestamp timestampFromDateAndTimeWithDateConstructorTimeConstant <= mapped.timestampFromDateAndTimeWithDateConstructorTimeConstant;
+    field Timestamp timestampFromDateAndTimeWithDateConstructorTimeConstructor <= mapped.timestampFromDateAndTimeWithDateConstructorTimeConstructor;
 
     field Integer asMilliseconds <= mapped.asMilliseconds;
     field Integer asMilliseconds2 <= mapped.asMilliseconds2;

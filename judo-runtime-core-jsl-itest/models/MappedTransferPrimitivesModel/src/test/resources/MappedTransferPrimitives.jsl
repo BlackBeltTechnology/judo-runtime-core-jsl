@@ -226,3 +226,45 @@ transfer TransferWithIdentifiers (EntityWithIdentifiers mappedEntity) {
     field Enum enumAttr <= mappedEntity.enumAttr set;
     field Binary binaryAttr <= mappedEntity.binaryAttr set;
 }
+
+entity TimestampFromConstant {
+     field Timestamp timestampFromConstantHM <= `2023-03-20T11:11`;
+     field Timestamp timestampFromConstantHMZ <= `2023-03-20T11:11Z`;
+     field Timestamp timestampFromConstantHMP5 <= `2023-03-20T11:11+05`;
+     field Timestamp timestampFromConstantHMM5 <= `2023-03-20T11:11-05`;
+     field Timestamp timestampFromConstantHMP55 <= `2023-03-20T11:11+05:05`;
+     field Timestamp timestampFromConstantHMM55 <= `2023-03-20T11:11-05:05`;
+     field Timestamp timestampFromConstantHMS <= `2023-03-20T11:11:11`;
+     field Timestamp timestampFromConstantHMSZ <= `2023-03-20T11:11:11Z`;
+     field Timestamp timestampFromConstantHMSP5 <= `2023-03-20T11:11:11+05`;
+     field Timestamp timestampFromConstantHMSM5 <= `2023-03-20T11:11:11-05`;
+     field Timestamp timestampFromConstantHMSP55 <= `2023-03-20T11:11:11+05:05`;
+     field Timestamp timestampFromConstantHMSM55 <= `2023-03-20T11:11:11-05:05`;
+     field Timestamp timestampFromConstantHMSF <= `2023-03-20T11:11:11.111`;
+     field Timestamp timestampFromConstantHMSFZ <= `2023-03-20T11:11:11.111Z`;
+     field Timestamp timestampFromConstantHMSFP5 <= `2023-03-20T11:11:11.111+05`;
+     field Timestamp timestampFromConstantHMSFM5 <= `2023-03-20T11:11:11.111-05`;
+     field Timestamp timestampFromConstantHMSFP55 <= `2023-03-20T11:11:11.111+05:05`;
+     field Timestamp timestampFromConstantHMSFM55 <= `2023-03-20T11:11:11.111-05:05`;
+}
+
+transfer TransferTimestampFromConstant (TimestampFromConstant mapped) {
+     field Timestamp timestampFromConstantHM <= mapped.timestampFromConstantHM;
+     field Timestamp timestampFromConstantHMZ <= mapped.timestampFromConstantHMZ;
+     field Timestamp timestampFromConstantHMP5 <= mapped.timestampFromConstantHMP5;
+     field Timestamp timestampFromConstantHMM5 <= mapped.timestampFromConstantHMM5;
+     field Timestamp timestampFromConstantHMP55 <= mapped.timestampFromConstantHMP55;
+     field Timestamp timestampFromConstantHMM55 <= mapped.timestampFromConstantHMM55;
+     field Timestamp timestampFromConstantHMS <= mapped.timestampFromConstantHMS;
+     field Timestamp timestampFromConstantHMSZ <= mapped.timestampFromConstantHMSZ;
+     field Timestamp timestampFromConstantHMSP5 <= mapped.timestampFromConstantHMSP5;
+     field Timestamp timestampFromConstantHMSM5 <= mapped.timestampFromConstantHMSM5;
+     field Timestamp timestampFromConstantHMSP55 <= mapped.timestampFromConstantHMSP55;
+     field Timestamp timestampFromConstantHMSM55 <= mapped.timestampFromConstantHMSM55;
+     field Timestamp timestampFromConstantHMSF <= mapped.timestampFromConstantHMSF;
+     field Timestamp timestampFromConstantHMSFZ <= mapped.timestampFromConstantHMSFZ;
+     field Timestamp timestampFromConstantHMSFP5 <= mapped.timestampFromConstantHMSFP5;
+     field Timestamp timestampFromConstantHMSFM5 <= mapped.timestampFromConstantHMSFM5;
+     field Timestamp timestampFromConstantHMSFP55 <= mapped.timestampFromConstantHMSFP55;
+     field Timestamp timestampFromConstantHMSFM55 <= mapped.timestampFromConstantHMSFM55;
+}

@@ -40,3 +40,28 @@ transfer TransferD (EntityD d) {
     field String nameD <= d.nameD set;
     event create eventCreate();
 }
+
+// TwoWayAssociationAlongWithComposition
+
+entity BankAccount {
+    identifier required String accountNumber;
+    relation Company company opposite: mainBankAccounts;
+}
+
+entity Company {
+    field required String name;
+    relation BankAccount mainBankAccounts opposite:company;
+    field BankAccount[] bankAccounts;
+}
+
+transfer MappedBankAccount ( BankAccount acc ) {
+    field required String accountNumber <= acc.accountNumber update:auto;
+    relation MappedCompany company <= acc.company;
+    event instead create create;
+}
+
+transfer MappedCompany ( Company comp ) {
+    field required String name <= comp.name update:auto;
+    relation MappedBankAccount mainBankAccounts <= comp.mainBankAccounts choices: comp.bankAccounts eager:true create:true;
+    relation MappedBankAccount[] bankAccounts <= comp.bankAccounts eager:true create:true;
+}

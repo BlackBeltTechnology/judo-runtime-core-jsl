@@ -283,3 +283,10 @@ transfer TE1 (E1 mapped){
     field Boolean f8 <= mapped.f8;
     field String f9 <= mapped.f9;
 }
+
+query Boolean less( String a, String b ) <= a < b;
+query Boolean lessEqual( String a, String b ) <= a <= b;
+query Boolean great( String a, String b ) <= a > b;
+query Boolean greatEqual( String a, String b ) <= a >= b;
+query Boolean equal( String a, String b ) <= a == b;
+query Boolean notEqual( String a, String b ) <= a != b;
