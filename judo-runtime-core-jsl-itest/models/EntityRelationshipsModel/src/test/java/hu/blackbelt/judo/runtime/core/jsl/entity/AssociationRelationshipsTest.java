@@ -68,7 +68,6 @@ import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
-import hu.blackbelt.structured.map.proxy.MapHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -419,9 +418,9 @@ public class AssociationRelationshipsTest {
         assertTrue(aWithoutMask.isPresent());
         assertTrue(aWithMask.isPresent());
 
-        Map<String, Object> aWithoutMaskOriginalMap = ((MapHolder) aWithoutMask.get()).$originalMap();
-        Map<String, Object> aWithMaskOriginalMap = ((MapHolder) aWithMask.get()).$originalMap();
-        assertThat(aWithMaskOriginalMap, equalTo(aWithoutMaskOriginalMap));
+        Map<String, Object> aWithoutMaskMap = A.toMap(aWithoutMask.get());
+        Map<String, Object> aWithMaskMap = A.toMap(aWithMask.get());
+        assertThat(aWithMaskMap, equalTo(aWithoutMaskMap));
 
         AMask maskForGetByID = AMask.aMask().addByName("name")
                 .addByName("b",
