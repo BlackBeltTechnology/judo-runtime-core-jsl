@@ -160,23 +160,23 @@ public class MappedTransferOptimisticLockTest {
     }
 
     public Integer getVersion(TransferPerson person) {
-        return (Integer) TransferPerson.toMap(person).get("__version");
+        return (Integer) person.toMap().get("__version");
     }
 
     public LocalDateTime getCreatedTimestamp(TransferPerson person) {
-        return (LocalDateTime)TransferPerson.toMap(person).get("__createTimestamp");
+        return (LocalDateTime)person.toMap().get("__createTimestamp");
     }
 
     public LocalDateTime getUpdateTimestamp(TransferPerson person) {
-        return (LocalDateTime)TransferPerson.toMap(person).get("__updateTimestamp");
+        return (LocalDateTime)person.toMap().get("__updateTimestamp");
     }
 
     public Integer getVersion(TransferStudent student) {
-        return (Integer) TransferStudent.toMap(student).get("__version");
+        return (Integer) student.toMap().get("__version");
     }
 
     public LocalDateTime getUpdateTimestamp(TransferStudent student) {
-        return (LocalDateTime)TransferStudent.toMap(student).get("__updateTimestamp");
+        return (LocalDateTime)student.toMap().get("__updateTimestamp");
     }
 
 }

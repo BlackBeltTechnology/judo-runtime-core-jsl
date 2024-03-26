@@ -156,23 +156,23 @@ public class OptimisticLockTest {
     }
 
     public Integer getVersion(Person person) {
-        return (Integer) Person.toMap(person).get("__version");
+        return (Integer) person.toMap().get("__version");
     }
 
     public LocalDateTime getCreatedTimestamp(Person person) {
-        return (LocalDateTime)Person.toMap(person).get("__createTimestamp");
+        return (LocalDateTime)person.toMap().get("__createTimestamp");
     }
 
     public LocalDateTime getUpdateTimestamp(Person person) {
-        return (LocalDateTime)Person.toMap(person).get("__updateTimestamp");
+        return (LocalDateTime)person.toMap().get("__updateTimestamp");
     }
 
     public Integer getVersion(Student student) {
-        return (Integer) Student.toMap(student).get("__version");
+        return (Integer) student.toMap().get("__version");
     }
 
     public LocalDateTime getUpdateTimestamp(Student student) {
-        return (LocalDateTime)Student.toMap(student).get("__updateTimestamp");
+        return (LocalDateTime)student.toMap().get("__updateTimestamp");
     }
 
 }

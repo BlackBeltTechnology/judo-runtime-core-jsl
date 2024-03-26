@@ -418,8 +418,8 @@ public class AssociationRelationshipsTest {
         assertTrue(aWithoutMask.isPresent());
         assertTrue(aWithMask.isPresent());
 
-        Map<String, Object> aWithoutMaskMap = A.toMap(aWithoutMask.get());
-        Map<String, Object> aWithMaskMap = A.toMap(aWithMask.get());
+        Map<String, Object> aWithoutMaskMap = aWithoutMask.get().toMap();
+        Map<String, Object> aWithMaskMap = aWithoutMask.get().toMap();
         assertThat(aWithMaskMap, equalTo(aWithoutMaskMap));
 
         AMask maskForGetByID = AMask.aMask().addByName("name")
