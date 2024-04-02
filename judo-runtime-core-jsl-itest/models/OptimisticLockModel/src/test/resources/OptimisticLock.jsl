@@ -11,10 +11,10 @@ entity Student extends Person {
 }
 
 transfer TransferPerson ( Person person ) {
-    field String name <= person.name update:auto;
+    field String name <= person.name set:true;
 }
 
 transfer TransferStudent ( Student student ) {
-    field String name <= student.name update:auto;
-    field String section <= student.section update:auto;
+    field String name <= student.name set:true;
+    field String section <= student.section set:true;
 }

@@ -2,20 +2,20 @@ model TransferRange;
 
 import judo::types;
 
-entity abstract Fruit {
-    field required String variety;
+entity Fruit abstract {
+    field String variety required;
 }
 
 transfer TransferFruit (Fruit fruit) {
-    field required String variety <= fruit.variety update:auto;
+    field String variety <= fruit.variety set:true required;
 }
 
 transfer TransferApple (Apple fruit) {
-    field required String variety <= fruit.variety update:auto;
+    field String variety <= fruit.variety set:true required;
 }
 
 transfer TransferPear (Pear fruit) {
-    field required String variety <= fruit.variety update:auto;
+    field String variety <= fruit.variety set:true required;
 }
 
 entity Apple extends Fruit {}
@@ -36,23 +36,24 @@ transfer TransferBasket (Basket basket) {
 // cars
 
 entity Car {
-    field required String licensePlate;
+    field String licensePlate required;
     field String color;
     field Wheel[] wheels;
     relation Wheel spareWheel;
 }
 
 entity Wheel {
-    field required Integer produced;
+    field Integer produced required;
 }
+
 transfer TransferWheel (Wheel wheel) {
-    field required Integer produced <= wheel.produced update:auto;
-    event instead create create;
+    field Integer produced <= wheel.produced set:true required;
+    event create onCreate;
 }
 
 transfer TransferCar (Car car) {
-    field required String licensePlate <= car.licensePlate update:auto;
-    field String color <= car.licensePlate update:auto;
+    field String licensePlate <= car.licensePlate set:true required;
+    field String color <= car.color set:true;
     relation TransferWheel[] wheels <= car.wheels create:true;
     relation TransferWheel spareWheel <= car.spareWheel choices:car.wheels;
 }
@@ -60,7 +61,7 @@ transfer TransferCar (Car car) {
 // TwoWay Relation
 
 entity Planet {
-    field required String name;
+    field String name required;
     field String planetNameOverCreature <= self.creatures.any().planet.name;
     relation Creature[] creatures opposite: planet;
     relation Creature[] visitors ;
@@ -68,13 +69,13 @@ entity Planet {
 }
 
 entity Creature {
-    field required String name;
+    field String name required;
     field String planetName <= self.planet.name;
     relation Planet planet opposite: creatures;
 }
 
 transfer TransferPlanet(Planet planet) {
-    field required String name <= planet.name update:auto;
+    field String name <= planet.name set:true required;
     field String planetNameOverCreature  <= planet.planetNameOverCreature;
     relation TransferCreature[] creatures  <= planet.creatures choices: Creature.all();
     relation TransferCreature[] visitors  <= planet.visitors choices: Creature.all().filter(c | c.planet.isUndefined());
@@ -82,7 +83,7 @@ transfer TransferPlanet(Planet planet) {
 }
 
 transfer TransferCreature(Creature creature) {
-    field required String name <= creature.name update:auto;
+    field String name <= creature.name set:true required;
     field String planetName <= creature.planetName;
     relation TransferPlanet planet  <= creature.planet choices:Planet.all();
 }

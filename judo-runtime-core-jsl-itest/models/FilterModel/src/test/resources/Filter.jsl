@@ -41,16 +41,16 @@ entity MyEntityWithOptionalFields {
 }
 
 transfer TransferMyEntityWithOptionalFields (MyEntityWithOptionalFields mapped) {
-    field Boolean boolAttr <= mapped.boolAttr update:auto;
-    field Binary binaryAttr <= mapped.binaryAttr update:auto;
-    field Integer integerAttr <= mapped.integerAttr update:auto;
-    field SmallString stringAttr <= mapped.stringAttr update:auto;
-    field PhoneNumber regexAttr <= mapped.regexAttr update:auto;
-    field Scaled scaledAttr <= mapped.scaledAttr update:auto;
-    field Date dateAttr <= mapped.dateAttr update:auto;
-    field Time timeAttr <= mapped.timeAttr update:auto;
-    field Timestamp timestampAttr <= mapped.timestampAttr update:auto;
-    field MyEnum enumAttr <= mapped.enumAttr update:auto;
+    field Boolean boolAttr <= mapped.boolAttr set;
+    field Binary binaryAttr <= mapped.binaryAttr set;
+    field Integer integerAttr <= mapped.integerAttr set;
+    field SmallString stringAttr <= mapped.stringAttr set;
+    field PhoneNumber regexAttr <= mapped.regexAttr set;
+    field Scaled scaledAttr <= mapped.scaledAttr set;
+    field Date dateAttr <= mapped.dateAttr set;
+    field Time timeAttr <= mapped.timeAttr set;
+    field Timestamp timestampAttr <= mapped.timestampAttr set;
+    field MyEnum enumAttr <= mapped.enumAttr set;
 
     field Boolean derivedBoolAttr  <= mapped.derivedBoolAttr;
     field Binary derivedBinaryAttr  <= mapped.derivedBinaryAttr;
@@ -97,8 +97,8 @@ entity Country {
 }
 
 transfer TransferCountry (Country mapped) {
-    field String name <= mapped.name  update:auto;
-    field Continent continent <= mapped.continent update:auto;
+    field String name <= mapped.name  set;
+    field Continent continent <= mapped.continent set;
 }
 
 entity City {
@@ -107,7 +107,7 @@ entity City {
 }
 
 transfer TransferCity (City mapped) {
-    field String name <= mapped.name update:auto;
+    field String name <= mapped.name set;
     relation TransferCountry country <= mapped.country choices:Country.all();
 }
 
@@ -117,7 +117,7 @@ entity Person {
 }
 
 transfer TransferPerson (Person mapped) {
-    field String name <= mapped.name update:auto;
+    field String name <= mapped.name set;
     relation TransferCity city <= mapped.city choices:City.all();
 }
 
@@ -127,7 +127,7 @@ entity Car {
 }
 
 transfer TransferCar (Car mapped) {
-    field String licensePlate <= mapped.licensePlate update:auto;
+    field String licensePlate <= mapped.licensePlate set;
     relation TransferPerson owner <= mapped.owner choices:Person.all();
 }
 
@@ -174,15 +174,15 @@ entity BucketTester {
 }
 
 transfer TransferProduct (Product mapped) {
-    field String name <= mapped.name update:auto;
-    event instead create create;
+    field String name <= mapped.name set:true;
+    event create onCreate;
 }
 
 transfer TransferItem (Item mapped) {
-    field String name <= mapped.name update:auto;
-    field Double weight <= mapped.weight update:auto;
+    field String name <= mapped.name set:true;
+    field Double weight <= mapped.weight set:true;
     relation TransferProduct product <= mapped.product eager:true  choices:Product.all();
-    event instead create create;
+    event create onCreate;
 }
 
 transfer TransferBucket (Bucket mapped) {
@@ -190,7 +190,7 @@ transfer TransferBucket (Bucket mapped) {
     relation TransferItem mainItem <= mapped.mainItem eager:true;
     relation TransferItem[] product1Items <= mapped.product1Items eager:true;
     relation TransferItem[] itemsHeavierThanAvg <= mapped.itemsHeavierThanAvg eager:true;
-    event instead create create;
+    event create onCreate;
 }
 
 transfer TransferBucketTester (BucketTester mapped) {
@@ -216,15 +216,15 @@ entity Customer {
 }
 
 transfer TransferOrderDetail (OrderDetail mapped) {
-        field String product <= mapped.product update:auto;
-        field Integer quantity <= mapped.quantity update:auto;
-        event instead create create;
+    field String product <= mapped.product set:true;
+    field Integer quantity <= mapped.quantity set:true;
+    event create onCreate;
 }
 
 transfer TransferOrder (Order mapped) {
     relation TransferCustomer customer <= mapped.customer;
     relation TransferOrderDetail[] items <= mapped.items eager:true create:true;
-    event instead create create;
+    event create onCreate;
 }
 
 transfer TransferCustomer (Customer mapped) {
