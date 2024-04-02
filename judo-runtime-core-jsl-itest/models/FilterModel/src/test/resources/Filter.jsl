@@ -174,15 +174,15 @@ entity BucketTester {
 }
 
 transfer TransferProduct (Product mapped) {
-    field String name <= mapped.name update:auto;
-    event instead create create;
+    field String name <= mapped.name set:true;
+    event create onCreate;
 }
 
 transfer TransferItem (Item mapped) {
-    field String name <= mapped.name update:auto;
-    field Double weight <= mapped.weight update:auto;
+    field String name <= mapped.name set:true;
+    field Double weight <= mapped.weight set:true;
     relation TransferProduct product <= mapped.product eager:true  choices:Product.all();
-    event instead create create;
+    event create onCreate;
 }
 
 transfer TransferBucket (Bucket mapped) {
@@ -190,7 +190,7 @@ transfer TransferBucket (Bucket mapped) {
     relation TransferItem mainItem <= mapped.mainItem eager:true;
     relation TransferItem[] product1Items <= mapped.product1Items eager:true;
     relation TransferItem[] itemsHeavierThanAvg <= mapped.itemsHeavierThanAvg eager:true;
-    event instead create create;
+    event create onCreate;
 }
 
 transfer TransferBucketTester (BucketTester mapped) {
@@ -216,15 +216,15 @@ entity Customer {
 }
 
 transfer TransferOrderDetail (OrderDetail mapped) {
-        field String product <= mapped.product update:auto;
-        field Integer quantity <= mapped.quantity update:auto;
-        event instead create create;
+    field String product <= mapped.product set:true;
+    field Integer quantity <= mapped.quantity set:true;
+    event create onCreate;
 }
 
 transfer TransferOrder (Order mapped) {
     relation TransferCustomer customer <= mapped.customer;
     relation TransferOrderDetail[] items <= mapped.items eager:true create:true;
-    event instead create create;
+    event create onCreate;
 }
 
 transfer TransferCustomer (Customer mapped) {
