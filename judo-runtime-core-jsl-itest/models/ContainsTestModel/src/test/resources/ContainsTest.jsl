@@ -22,5 +22,5 @@ transfer TA maps A as a {
 }
 
 transfer TB maps B as b {
-    field String name <= b.name update:auto;
+    field String name <= b.name set;
 }

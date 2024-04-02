@@ -71,7 +71,7 @@ entity B {
 }
 
 transfer TB (B mapped){
-    field String name <= mapped.name update:auto;
+    field String name <= mapped.name set;
     relation TC c <= mapped.c choices:C.all();
 }
 
@@ -80,7 +80,7 @@ entity C {
 }
 
 transfer TC (C mapped){
-    field String name <= mapped.name update:auto;
+    field String name <= mapped.name set;
 }
 
 // PersonWithParents NavigationTest
@@ -119,17 +119,17 @@ entity AccessForThePrincipal {
 }
 
 
-transfer TransferAccessForThePrincipal ( AccessForThePrincipal access ) {
-    relation TransferPerson[] women <= access.women;
-    relation TransferPerson[] mothers <= access.mothers;
-    relation TransferPerson[] fathers <= access.fathers;
-    relation TransferPerson[] peopleWithYoungerMotherThanFather <= access.peopleWithYoungerMotherThanFather;
+transfer TransferAccessForThePrincipal ( AccessForThePrincipal acc ) {
+    relation TransferPerson[] women <= acc.women;
+    relation TransferPerson[] mothers <= acc.mothers;
+    relation TransferPerson[] fathers <= acc.fathers;
+    relation TransferPerson[] peopleWithYoungerMotherThanFather <= acc.peopleWithYoungerMotherThanFather;
 }
 
 transfer TransferPerson ( Person person ) {
-    field String name <= person.name update:auto;
-    field SexType sex <= person.sex  update:auto;
-    field Date birthDate <= person.birthDate update:auto;
+    field String name <= person.name set:true;
+    field SexType sex <= person.sex  set:true;
+    field Date birthDate <= person.birthDate set:true;
     relation TransferPerson[] parents <= person.parents choices:Person.all();
     relation TransferPerson[] children <= person.children choices:Person.all();
 
@@ -189,19 +189,19 @@ entity AP {
 // NavigationExpressionTest
 
 entity A1 {
-    field required Integer number;
+    field Integer number required;
 }
 
 entity B1 {
-    field required Integer number;
-    relation required A1 a;
+    field Integer number required;
+    relation A1 a required;
 }
 
 entity Base1 {
-    field required Integer number;
+    field Integer number required;
     relation B1[] bs eager:true;
-    relation required A1 relA eager:true;
-    field required A1 compA eager:true;
+    relation A1 relA eager:true required;
+    field A1 compA eager:true required;
 
     field Integer sumRelAonBs <= self.bs.a.sum(e | e.number);
     field Integer compANumber <= self.compA.container(entityType = Base1).number;
@@ -225,18 +225,18 @@ entity NativeA2 {
 }
 
 entity A2 extends NativeA2 {
-    field required Integer number;
+    field Integer number required;
 }
 
 entity NativeB2 {
 }
 
 entity B2 extends NativeB2 {
-    field required Integer number;
+    field Integer number required;
 }
 
 entity Base2 {
-    relation required NativeA2 a eager:true;
+    relation NativeA2 a eager:true required;
     relation NativeB2[] bs eager:true;
 
     field Integer numNativeA2 <= self.a.asType(entityType = A2).number;
@@ -250,7 +250,7 @@ entity Base2 {
 // NavigationExpressionTest : TwoWay Navigation
 
 entity A3 {
-    field required Integer number;
+    field Integer number required;
     field Integer sumBsA <= self.bs.a.sum(e | e.number);
     field Integer sumBsABs <= self.bs.a.bs.sum(e | e.number);
     relation B3[] bs opposite: a eager:true;
@@ -261,7 +261,7 @@ entity A3 {
 }
 
 entity B3 {
-    field required Integer number;
+    field Integer number required;
     field Integer sumABs <= self.a.bs.sum(e | e.number);
     field Integer sumABsA <= self.a.bs.a.sum(e | e.number);
     relation A3 a opposite: bs;

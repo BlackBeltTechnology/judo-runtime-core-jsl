@@ -3,5 +3,5 @@ model TransactionManagementModel;
 type string String min-size:0 max-size:128;
 
 entity Tester {
-    field required String name;
+    field String name required;
 }
