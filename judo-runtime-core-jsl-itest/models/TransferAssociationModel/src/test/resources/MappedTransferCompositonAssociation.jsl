@@ -18,14 +18,14 @@ transfer TransferA (EntityA a) {
 }
 
 transfer TransferB (EntityB b) {
-    field String nameB <= b.nameB update:auto;
-    event instead create create;
+    field String nameB <= b.nameB set;
+    event create eventCreate();
 }
 
 // required single
 
 entity EntityC {
-    field required EntityD singleRequiredEntityD;
+    field EntityD singleRequiredEntityD required;
 }
 
 entity EntityD {
@@ -33,35 +33,35 @@ entity EntityD {
 }
 
 transfer TransferC (EntityC c) {
-    relation required TransferD singleRequiredEntityD <= c.singleRequiredEntityD create:true;
+    relation TransferD singleRequiredEntityD <= c.singleRequiredEntityD create:true required;
 }
 
 transfer TransferD (EntityD d) {
-    field String nameD <= d.nameD update:auto;
-    event instead create create;
+    field String nameD <= d.nameD set;
+    event create eventCreate();
 }
 
 // TwoWayAssociationAlongWithComposition
 
 entity BankAccount {
-    identifier required String accountNumber;
+    identifier String accountNumber required;
     relation Company company opposite: mainBankAccounts;
 }
 
 entity Company {
-    field required String name;
+    field String name required;
     relation BankAccount mainBankAccounts opposite:company;
     field BankAccount[] bankAccounts;
 }
 
 transfer MappedBankAccount ( BankAccount acc ) {
-    field required String accountNumber <= acc.accountNumber update:auto;
+    field String accountNumber <= acc.accountNumber required set:true;
     relation MappedCompany company <= acc.company;
-    event instead create create;
+    event create onCreate;
 }
 
 transfer MappedCompany ( Company comp ) {
-    field required String name <= comp.name update:auto;
+    field String name <= comp.name required set:true;
     relation MappedBankAccount mainBankAccounts <= comp.mainBankAccounts choices: comp.bankAccounts eager:true create:true;
     relation MappedBankAccount[] bankAccounts <= comp.bankAccounts eager:true create:true;
 }
