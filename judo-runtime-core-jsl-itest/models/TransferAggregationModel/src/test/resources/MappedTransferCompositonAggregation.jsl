@@ -26,12 +26,12 @@ entity EntityB {
 transfer TransferA (EntityA a) {
     relation TransferB singleEntityB <= a.singleEntityB eager:true create:true;
     relation TransferB[] multiEntityB <= a.multiEntityB eager:true create:true;
-    field String stringA <= a.stringA set;
+    field String stringA <= a.stringA bind;
     event create eventCreate();
 }
 
 transfer TransferB (EntityB b) {
-    field String nameB <= b.nameB set;
+    field String nameB <= b.nameB bind;
     event create eventCreate();
 }
 
@@ -50,7 +50,7 @@ transfer TransferC (EntityC c) {
 }
 
 transfer TransferD (EntityD d) {
-    field String nameD <= d.nameD set;
+    field String nameD <= d.nameD bind;
     event create eventCreate();
 }
 
@@ -78,7 +78,7 @@ transfer TransferF (EntityF f) {
 }
 
 transfer TransferG (EntityG g) {
-    field String nameG <= g.nameG set;
+    field String nameG <= g.nameG bind;
     event create eventCreate();
 }
 
@@ -103,20 +103,20 @@ entity EntityK {
 }
 
 transfer TransferH(EntityH entityh) {
-    field String stringH <= entityh.stringH set;
+    field String stringH <= entityh.stringH bind;
     relation TransferJ singleJonH <= entityh.singleJonH eager:true create:true;
     relation TransferJ[] collectionJonH <= entityh.collectionJonH eager:true create:true;
     relation TransferJ singleRequiredJonH <= entityh.singleRequiredJonH eager:true create:true required;
 }
 
 transfer TransferJ(EntityJ entityj) {
-    field String stringI <= entityj.stringI set;
-    field String stringJ <= entityj.stringJ set;
+    field String stringI <= entityj.stringI bind;
+    field String stringJ <= entityj.stringJ bind;
     relation TransferK[] multipleKonI <= entityj.multipleKonI eager:true create:true;
     event create eventCreate();
 }
 
 transfer TransferK(EntityK entityk) {
-    field String stringK <= entityk.stringK set;
+    field String stringK <= entityk.stringK bind;
     event create eventCreate();
 }

@@ -71,7 +71,7 @@ entity B {
 }
 
 transfer TB (B mapped){
-    field String name <= mapped.name set;
+    field String name <= mapped.name bind;
     relation TC c <= mapped.c choices:C.all();
 }
 
@@ -80,7 +80,7 @@ entity C {
 }
 
 transfer TC (C mapped){
-    field String name <= mapped.name set;
+    field String name <= mapped.name bind;
 }
 
 // PersonWithParents NavigationTest
@@ -127,9 +127,9 @@ transfer TransferAccessForThePrincipal ( AccessForThePrincipal acc ) {
 }
 
 transfer TransferPerson ( Person person ) {
-    field String name <= person.name set:true;
-    field SexType sex <= person.sex  set:true;
-    field Date birthDate <= person.birthDate set:true;
+    field String name <= person.name bind:true;
+    field SexType sex <= person.sex  bind:true;
+    field Date birthDate <= person.birthDate bind:true;
     relation TransferPerson[] parents <= person.parents choices:Person.all();
     relation TransferPerson[] children <= person.children choices:Person.all();
 
@@ -204,7 +204,7 @@ entity Base1 {
     field A1 compA eager:true required;
 
     field Integer sumRelAonBs <= self.bs.a.sum(e | e.number);
-    field Integer compANumber <= self.compA.container(entityType = Base1).number;
+    field Integer compANumber <= self.compA.container(type = Base1).number;
 
     // TODO JNG-5575
     //field Integer base1NumberIs100 <= self.filter(e | e.number == 100).any().number;
@@ -239,11 +239,11 @@ entity Base2 {
     relation NativeA2 a eager:true required;
     relation NativeB2[] bs eager:true;
 
-    field Integer numNativeA2 <= self.a.asType(entityType = A2).number;
+    field Integer numNativeA2 <= self.a.asType(type = A2).number;
 
     // TODO JNG-5576
-    //field Integer sumNativeBs <= self.bs.asCollection(entityType = B2).sum(e | e.number);
-    //field Integer sumAllNativeA <= NativeA2.all().asCollection(entityType = A2).sum(e | e.number);
+    //field Integer sumNativeBs <= self.bs.asCollection(type = B2).sum(e | e.number);
+    //field Integer sumAllNativeA <= NativeA2.all().asCollection(type = A2).sum(e | e.number);
 
 }
 
