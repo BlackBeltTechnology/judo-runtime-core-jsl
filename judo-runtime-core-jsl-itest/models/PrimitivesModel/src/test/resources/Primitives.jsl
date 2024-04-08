@@ -146,7 +146,7 @@ entity EntityWithNotValidRegexDefaultValue {
 }
 
 transfer MyTransferWithOptionalFields(MyEntityWithOptionalFields ent) {
-    field SmallString stringAttr <= ent.stringAttr set;
+    field SmallString stringAttr <= ent.stringAttr bind;
 }
 
 entity TimestampFromConstant {
