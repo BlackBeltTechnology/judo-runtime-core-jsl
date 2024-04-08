@@ -24,7 +24,7 @@ entity Simple {
 }
 
 transfer TransferSimple (Simple mapped) {
-	field String stringAttr <= mapped.stringAttr set;
+	field String stringAttr <= mapped.stringAttr bind;
 	field Integer firstNum <= mapped.firstNum;
 }
 
@@ -39,13 +39,13 @@ entity Entity {
 }
 
 transfer TransferEntity (Entity mapped) {
-    field Integer integerAttr <= mapped.integerAttr set;
-    field Scaled scaledAttr <= mapped.scaledAttr set;
-    field String stringAttr <= mapped.stringAttr set;
-    field Boolean boolAttr <= mapped.boolAttr set;
-    field Date dateAttr <= mapped.dateAttr set;
-    field Timestamp timestampAttr <= mapped.timestampAttr set;
-    field Time timeAttr <= mapped.timeAttr set;
+    field Integer integerAttr <= mapped.integerAttr bind;
+    field Scaled scaledAttr <= mapped.scaledAttr bind;
+    field String stringAttr <= mapped.stringAttr bind;
+    field Boolean boolAttr <= mapped.boolAttr bind;
+    field Date dateAttr <= mapped.dateAttr bind;
+    field Timestamp timestampAttr <= mapped.timestampAttr bind;
+    field Time timeAttr <= mapped.timeAttr bind;
     
     event create eventCreate();
 }
@@ -61,13 +61,13 @@ entity EntityWithPrimitiveDefaults {
 }
 
 transfer TransferEntityWithPrimitiveDefaults (EntityWithPrimitiveDefaults mapped) {
-    field Integer integerAttr <= mapped.integerAttr set;
-    field Scaled scaledAttr <= mapped.scaledAttr set;
-    field String stringAttr <= mapped.stringAttr set;
-    field Boolean boolAttr <= mapped.boolAttr set;
-    field Date dateAttr <= mapped.dateAttr set;
-    field Timestamp timestampAttr <= mapped.timestampAttr set;
-    field Time timeAttr <= mapped.timeAttr set;
+    field Integer integerAttr <= mapped.integerAttr bind;
+    field Scaled scaledAttr <= mapped.scaledAttr bind;
+    field String stringAttr <= mapped.stringAttr bind;
+    field Boolean boolAttr <= mapped.boolAttr bind;
+    field Date dateAttr <= mapped.dateAttr bind;
+    field Timestamp timestampAttr <= mapped.timestampAttr bind;
+    field Time timeAttr <= mapped.timeAttr bind;
     
     event create eventCreate();
 }
@@ -311,12 +311,12 @@ entity NumericFunctions {
 }
 
 transfer TransferNumericFunctions (NumericFunctions mapped) {
-    field Integer int <= mapped.int set;
-    field Scaled neg <= mapped.neg set;
-    field Scaled neg1 <= mapped.neg1 set;
-    field Scaled neg2 <= mapped.neg2 set;
-    field Scaled neg3 <= mapped.neg3 set;
-    field Integer neg4 <= mapped.neg4 set;
+    field Integer int <= mapped.int bind;
+    field Scaled neg <= mapped.neg bind;
+    field Scaled neg1 <= mapped.neg1 bind;
+    field Scaled neg2 <= mapped.neg2 bind;
+    field Scaled neg3 <= mapped.neg3 bind;
+    field Integer neg4 <= mapped.neg4 bind;
 
     field Integer roundInt <= mapped.roundInt;
     field Integer roundInt2 <= mapped.roundInt2;
@@ -413,8 +413,8 @@ entity Kleene {
 }
 
 transfer TransferKleene (Kleene mapped) {
-	field Boolean undefined <= mapped.undefined set;
-	field Boolean bool <= mapped.bool set;
+	field Boolean undefined <= mapped.undefined bind;
+	field Boolean bool <= mapped.bool bind;
 
 	field Boolean trueOrTrue <= mapped.trueOrTrue;
 	field Boolean trueOrFalse <= mapped.trueOrFalse;
@@ -467,7 +467,7 @@ entity BooleanFunctions {
 }
 
 transfer TransferBooleanFunctions (BooleanFunctions mapped) {
-    field Boolean bool <= mapped.bool set;
+    field Boolean bool <= mapped.bool bind;
 
     field String ownBoolAsString <= mapped.ownBoolAsString;
     field String trueAsString <= mapped.trueAsString;
@@ -597,17 +597,17 @@ entity TimeFunctions {
 }
 
 transfer TransferTimeFunctions (TimeFunctions mapped) {
-    field Time timeHM <= mapped.timeHM set;
-    field Time timeHM1 <= mapped.timeHM1 set;
-    field Time timeHMS <= mapped.timeHMS set;
-    field Time timeHMS1 <= mapped.timeHMS1 set;
-    field Time timeHMSF <= mapped.timeHMSF set;
-    field Time timeHMSF1 <= mapped.timeHMSF1 set;
-    field Time timeHMSF2 <= mapped.timeHMSF2 set;
+    field Time timeHM <= mapped.timeHM bind;
+    field Time timeHM1 <= mapped.timeHM1 bind;
+    field Time timeHMS <= mapped.timeHMS bind;
+    field Time timeHMS1 <= mapped.timeHMS1 bind;
+    field Time timeHMSF <= mapped.timeHMSF bind;
+    field Time timeHMSF1 <= mapped.timeHMSF1 bind;
+    field Time timeHMSF2 <= mapped.timeHMSF2 bind;
 
-    field Time undefinedTime <= mapped.undefinedTime set;
-    field Integer undefinedNumber <= mapped.undefinedNumber set;
-    field Integer number <= mapped.number set;
+    field Time undefinedTime <= mapped.undefinedTime bind;
+    field Integer undefinedNumber <= mapped.undefinedNumber bind;
+    field Integer number <= mapped.number bind;
 
     // self
     field String selfTimeHMAsString <= mapped.selfTimeHMAsString;
@@ -752,8 +752,8 @@ entity TimestampFunctions {
 }
 
 transfer TransferTimestampFunctions (TimestampFunctions mapped) {
-    field Timestamp timestamp1 <= mapped.timestamp1 set;
-    field Timestamp timestamp2 <= mapped.timestamp2 set;
+    field Timestamp timestamp1 <= mapped.timestamp1 bind;
+    field Timestamp timestamp2 <= mapped.timestamp2 bind;
 
     field Timestamp timestampOfDate <= mapped.timestampOfDate;
     field Timestamp timestampOfDateAndTime <= mapped.timestampOfDateAndTime;
@@ -892,20 +892,20 @@ entity TimestampAsString {
 }
 
 transfer TransferTimestampAsString (TimestampAsString mapped) {
-    field Timestamp timestamp1 <= mapped.timestamp1 set;
-    field Timestamp timestamp2 <= mapped.timestamp2 set;
-    field Timestamp timestamp3 <= mapped.timestamp3 set;
-    field Timestamp timestamp4 <= mapped.timestamp4 set;
-    field Timestamp timestamp5 <= mapped.timestamp5 set;
-    field Timestamp timestamp6 <= mapped.timestamp6 set;
-    field Timestamp timestamp7 <= mapped.timestamp7 set;
-    field Timestamp timestamp8 <= mapped.timestamp8 set;
-    field Timestamp timestamp9 <= mapped.timestamp9 set;
-    field Timestamp timestamp10 <= mapped.timestamp10 set;
-    field Timestamp timestamp12 <= mapped.timestamp12 set;
-    field Timestamp timestamp13 <= mapped.timestamp13 set;
-    field Timestamp timestamp14 <= mapped.timestamp14 set;
-    field Timestamp timestamp15 <= mapped.timestamp15 set;
+    field Timestamp timestamp1 <= mapped.timestamp1 bind;
+    field Timestamp timestamp2 <= mapped.timestamp2 bind;
+    field Timestamp timestamp3 <= mapped.timestamp3 bind;
+    field Timestamp timestamp4 <= mapped.timestamp4 bind;
+    field Timestamp timestamp5 <= mapped.timestamp5 bind;
+    field Timestamp timestamp6 <= mapped.timestamp6 bind;
+    field Timestamp timestamp7 <= mapped.timestamp7 bind;
+    field Timestamp timestamp8 <= mapped.timestamp8 bind;
+    field Timestamp timestamp9 <= mapped.timestamp9 bind;
+    field Timestamp timestamp10 <= mapped.timestamp10 bind;
+    field Timestamp timestamp12 <= mapped.timestamp12 bind;
+    field Timestamp timestamp13 <= mapped.timestamp13 bind;
+    field Timestamp timestamp14 <= mapped.timestamp14 bind;
+    field Timestamp timestamp15 <= mapped.timestamp15 bind;
 
     field String timestamp1AsString <= mapped.timestamp1AsString;
     field String timestamp1AsString1 <= mapped.timestamp1AsString1;
@@ -936,15 +936,15 @@ transfer TransferTimestampAsString (TimestampAsString mapped) {
     field String timestamp15AsString <= mapped.timestamp15AsString;
     field String timestamp15AsString1 <= mapped.timestamp15AsString1;
 
-    field Timestamp timestampOfDate <= mapped.timestampOfDate set;
+    field Timestamp timestampOfDate <= mapped.timestampOfDate bind;
     field String timestampOfDateAsString <= mapped.timestampOfDateAsString;
     field String timestampOfDateAsString1 <= mapped.timestampOfDateAsString1;
 
-    field Timestamp timestampOfDateAndTime <= mapped.timestampOfDateAndTime set;
+    field Timestamp timestampOfDateAndTime <= mapped.timestampOfDateAndTime bind;
     field String timestampOfDateAndTimeAsString <= mapped.timestampOfDateAndTimeAsString;
     field String timestampOfDateAndTimeAsString1 <= mapped.timestampOfDateAndTimeAsString1;
 
-    field Timestamp fromMilliseconds <= mapped.fromMilliseconds set;
+    field Timestamp fromMilliseconds <= mapped.fromMilliseconds bind;
     field String fromMillisecondsAsString <= mapped.fromMillisecondsAsString;
     field String fromMillisecondsAsString1 <= mapped.fromMillisecondsAsString1;
 }
@@ -957,7 +957,7 @@ entity EnumFunctions {
 }
 
 transfer TransferEnumFunctions (EnumFunctions mapped) {
-    field MyEnum `enum` <= mapped.`enum` set;
+    field MyEnum `enum` <= mapped.`enum` bind;
 
     field String ownEnumAsString <= mapped.ownEnumAsString;
     field String enumAsString <= mapped.enumAsString;
@@ -972,14 +972,14 @@ entity InstanceFunctions {
     relation Parent[] parents;
     relation Child[] children;
 
-    field Boolean typeOfParent <= self.parent.typeOf(entityType = Parent);
-    field Boolean notTypeOfChild <= self.parent.typeOf(entityType = Child);
+    field Boolean typeOfParent <= self.parent.typeOf(type = Parent);
+    field Boolean notTypeOfChild <= self.parent.typeOf(type = Child);
 
-    field Boolean kindOfParent <= self.parent.kindOf(entityType = Parent);
-    field Boolean kindOfChild <= self.parent.kindOf(entityType = Child);
+    field Boolean kindOfParent <= self.parent.kindOf(type = Parent);
+    field Boolean kindOfChild <= self.parent.kindOf(type = Child);
 
     relation Parent asParentType <= self.child;
-    relation Child asChildType <= self.parent.asType(entityType = Child);
+    relation Child asChildType <= self.parent.asType(type = Child);
 
     field Boolean parentMemberOfParents <= self.parent.memberOf(instances = self.parents);
     field Boolean parentMemberOfParentsExtra <= self.parent.memberOf(instances = self.parents.filter(p | p.memberOf(instances = Parent.all())));
@@ -991,7 +991,7 @@ entity InstanceFunctions {
 }
 
 transfer TransferInstanceFunctions (InstanceFunctions mapped){
-    field String instanceField <= mapped.instanceField set;
+    field String instanceField <= mapped.instanceField bind;
 
     relation FE::TransferExternalEntity external <= mapped.external eager:true;
     relation TransferParent parent <= mapped.parent eager:true create:true;
@@ -1023,7 +1023,7 @@ entity Booler {
 }
 
 transfer TransferBooler (Booler mapped) {
-    field Boolean b <= mapped.b set;
+    field Boolean b <= mapped.b bind;
 }
 
 entity BoolerTester {
@@ -1053,10 +1053,10 @@ entity CollectionFunctions {
     field Integer sizeParentsField <= self.parentsField.size();
     field Integer sizeParentsRelation <= self.parentsRelation.size();
 
-    relation Parent[] asCollectionChildrenParentField <= self.parentsField.asCollection(entityType = Parent);
-    relation Parent[] asCollectionChildrenParentRelation <= self.parentsRelation.asCollection(entityType = Parent);
-    relation Child[] asCollectionChildrenChildField <= self.parentsField.asCollection(entityType = Child);
-    relation Child[] asCollectionChildrenChildRelation <= self.parentsRelation.asCollection(entityType = Child);
+    relation Parent[] asCollectionChildrenParentField <= self.parentsField.asCollection(type = Parent);
+    relation Parent[] asCollectionChildrenParentRelation <= self.parentsRelation.asCollection(type = Parent);
+    relation Child[] asCollectionChildrenChildField <= self.parentsField.asCollection(type = Child);
+    relation Child[] asCollectionChildrenChildRelation <= self.parentsRelation.asCollection(type = Child);
 
     field Boolean containsParent <= self.parentsField.contains(instance = Parent.all().filter(p | p.name == "John").any());
 
@@ -1179,7 +1179,7 @@ entity Parent {
 }
 
 transfer TransferParent (Parent mapped){
-    field String name <= mapped.name set;
+    field String name <= mapped.name bind;
     
     event create eventCreate();
 }
@@ -1190,8 +1190,8 @@ entity Child extends Parent {
 }
 
 transfer TransferChild (Child mapped) {
-    field String name <= mapped.name set;
-    field Integer age <= mapped.age set;
+    field String name <= mapped.name bind;
+    field Integer age <= mapped.age bind;
     relation TransferParent mother <= mapped.mother choices:Parent.all();
     
     event create eventCreate();
@@ -1202,8 +1202,8 @@ entity ExternalChild extends FE::ExternalEntity {
 }
 
 transfer TransferExternalChild (ExternalChild mapped) {
-    field String name <= mapped.name set;
-    field Integer age <= mapped.age set;
+    field String name <= mapped.name bind;
+    field Integer age <= mapped.age bind;
 
 }
 
@@ -1212,7 +1212,7 @@ entity Member {
 }
 
 transfer TransferMember (Member mapped){
-    field String name <= mapped.name set;
+    field String name <= mapped.name bind;
 }
 
 entity Tester {
