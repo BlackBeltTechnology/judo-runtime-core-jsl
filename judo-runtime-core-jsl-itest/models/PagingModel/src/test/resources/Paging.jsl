@@ -5,12 +5,12 @@ import judo::types;
 entity Item {
     field Integer number;
     field String topic;
-    field String listName <= self.container(entityType = List).name;
+    field String listName <= self.container(type = List).name;
 }
 
 transfer TransferItem (Item item){
-    field Integer number <= item.number set;
-    field String topic <= item.topic set;
+    field Integer number <= item.number bind;
+    field String topic <= item.topic bind;
     field String listName <= item.listName;
     event create eventCreate();
 }
@@ -22,7 +22,7 @@ entity List {
 }
 
 transfer TransferList (List list){
-    field String name <= list.name set;
+    field String name <= list.name bind;
     relation TransferItem[] items <= list.items eager:true create:true;
 }
 
@@ -32,6 +32,6 @@ entity LogEntry {
 }
 
 transfer TransferLogEntry (LogEntry logEntry){
-    field Timestamp timestamp <= logEntry.timestamp set;
-    field String message <= logEntry.message set;
+    field Timestamp timestamp <= logEntry.timestamp bind;
+    field String message <= logEntry.message bind;
 }

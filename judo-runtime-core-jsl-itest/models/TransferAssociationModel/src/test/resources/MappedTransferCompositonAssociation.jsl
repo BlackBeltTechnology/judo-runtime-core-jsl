@@ -18,7 +18,7 @@ transfer TransferA (EntityA a) {
 }
 
 transfer TransferB (EntityB b) {
-    field String nameB <= b.nameB set;
+    field String nameB <= b.nameB bind;
     event create eventCreate();
 }
 
@@ -37,7 +37,7 @@ transfer TransferC (EntityC c) {
 }
 
 transfer TransferD (EntityD d) {
-    field String nameD <= d.nameD set;
+    field String nameD <= d.nameD bind;
     event create eventCreate();
 }
 
@@ -55,13 +55,13 @@ entity Company {
 }
 
 transfer MappedBankAccount ( BankAccount acc ) {
-    field String accountNumber <= acc.accountNumber required set:true;
+    field String accountNumber <= acc.accountNumber required bind:true;
     relation MappedCompany company <= acc.company;
     event create onCreate;
 }
 
 transfer MappedCompany ( Company comp ) {
-    field String name <= comp.name required set:true;
+    field String name <= comp.name required bind:true;
     relation MappedBankAccount mainBankAccounts <= comp.mainBankAccounts choices: comp.bankAccounts eager:true create:true;
     relation MappedBankAccount[] bankAccounts <= comp.bankAccounts eager:true create:true;
 }

@@ -56,22 +56,22 @@ entity EntityG {
 
 transfer TransferD(D d) {
     relation TransferE[] compE <= d.compE eager:true create:true;
-    field String stringD <= d.stringD set;
+    field String stringD <= d.stringD bind;
     event create createEvent;
 }
 
 transfer TransferE(E e) {
-    field String stringE <= e.stringE set;
+    field String stringE <= e.stringE bind;
     event create createEvent;
 }
 
 transfer TransferF(EntityF entityf) {
-    field String stringF <= entityf.stringF required set;
+    field String stringF <= entityf.stringF required bind;
     relation TransferD[] multipleDonF <= entityf.multipleDonF eager:true create:true;
 }
 
 transfer TransferG(EntityG entityG) {
-    field String stringG <= entityG.stringG set;
+    field String stringG <= entityG.stringG bind;
     relation TransferE singleRequiredEonG <= entityG.singleRequiredEonG required eager:true create:true;
 }
 

@@ -17,7 +17,7 @@ entity EntityY {
 }
 
 transfer TransferXTO (EntityX entityX) {
-    field String name <= entityX.name set;
+    field String name <= entityX.name bind;
     relation TransferXTO x <= entityX.x eager:true create:true;
     relation TransferXTO[] xs <= entityX.xs eager:true create:true;
     relation TransferYTO y <= entityX.y eager:true create:true;
@@ -26,7 +26,7 @@ transfer TransferXTO (EntityX entityX) {
 }
 
 transfer TransferYTO (EntityY entityY) {
-    field String name <= entityY.name set;
+    field String name <= entityY.name bind;
     relation TransferXTO yx <= entityY.yx eager:true create:true;
     relation TransferXTO[] yxs <= entityY.yxs eager:true create:true;
     event create eventCreate();
@@ -48,7 +48,7 @@ entity EntityB extends EntityA {
 }
 
 transfer TransferATO (EntityA entityA) {
-    field String name <= entityA.name set;
+    field String name <= entityA.name bind;
     relation TransferATO a <= entityA.a eager:true create:true;
     relation TransferATO[] alist <= entityA.alist eager:true create:true;
 
@@ -60,7 +60,7 @@ transfer TransferATO (EntityA entityA) {
 }
 
 transfer TransferBTO (EntityB entityB) {
-    field String name <= entityB.name set;
+    field String name <= entityB.name bind;
     relation TransferATO a <= entityB.a eager:true create:true;
     relation TransferATO[] alist <= entityB.alist eager:true create:true;
     relation TransferATO ba <= entityB.ba eager:true create:true;
