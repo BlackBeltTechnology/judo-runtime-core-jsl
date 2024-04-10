@@ -71,3 +71,18 @@ transfer TransferC(EntityC entityc) {
 transfer TransferD(EntityD entityd) {
     field String stringD <= entityd.stringD set;
 }
+
+//
+
+entity Container {
+    field Containment1[] compCont1;
+    field Containment2[] compCont2;
+
+}
+
+entity Containment1 {
+    relation Containment2[] containment2 opposite-add: containment1[];
+}
+
+entity Containment2 {
+}
