@@ -32,6 +32,8 @@ entity A {
     relation A `self` <= self;
     relation B[] blistTroughDerivedSelf <= self.`self`.blist;
     relation C[] clistTroughDerivedSelf <= self.`self`.blist.c;
+
+    relation B oneBOnFilteredA <= A.all().filter( a | a.blist.size() > 0).any().blist.filter( b | b.name == "sameName").any();
 }
 
 transfer TA (A mapped) {
@@ -63,6 +65,8 @@ transfer TA (A mapped) {
     relation TA `self` <= mapped.`self`;
     relation TB[] blistTroughDerivedSelf <= mapped.blistTroughDerivedSelf;
     relation TC[] clistTroughDerivedSelf <= mapped.clistTroughDerivedSelf;
+
+     relation TB oneBOnFilteredA <= mapped.oneBOnFilteredA;
 }
 
 entity B {

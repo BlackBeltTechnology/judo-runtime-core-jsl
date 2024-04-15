@@ -23,6 +23,7 @@ package hu.blackbelt.judo.runtime.core.jsl.transfer;
 import com.google.inject.Inject;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.a.A;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.a.ADao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.a.AForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.a.AIdentifier;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.b.BDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.c.CDao;
@@ -65,6 +66,7 @@ import static org.hamcrest.CoreMatchers.anyOf;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.hasItem;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -187,6 +189,39 @@ class MappedTransferNavigationTest {
         assertThat(taDao.queryClistTroughDerivedSelf(a).selectList().stream().map(e -> e.identifier().getIdentifier()).toList(),
                 containsInAnyOrder(c1.identifier().getIdentifier(), c2.identifier().getIdentifier()));
 
+    }
+
+    @Test
+    @TestCase("DoubleAnyInNavigationOnTransfer")
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-ENT-008",
+            "REQ-EXPR-001",
+            "REQ-EXPR-002",
+            "REQ-EXPR-003",
+            "REQ-EXPR-004",
+            "REQ-EXPR-006",
+            "REQ-EXPR-008",
+            "REQ-EXPR-022",
+            "REQ-SRV-003"
+    })
+    public void testDoubleAnyInNavigationOnTransfer() {
+        TB b1 = tbDao.create(TBForCreate.builder().withName("sameName").build());
+        TB b2 = tbDao.create(TBForCreate.builder().withName("sameName").build());
+        TA a = taDao.create(TAForCreate.builder().withBlist(List.of(b1, b2)).build());
+
+        Optional<TB> oneBOnFilteredA = taDao.queryOneBOnFilteredA(a);
+        assertTrue(oneBOnFilteredA.isPresent());
+        assertThat(List.of(b1.identifier(), b2.identifier()), hasItem(oneBOnFilteredA.get().identifier()));
+
+        taDao.delete(a);
+
+        A a1 = aDao.create(AForCreate.builder().build());
+        assertTrue( aDao.queryOneBOnFilteredA(a1).isEmpty());
     }
 
     private void assertEmptyBAndC(TA ta) {
