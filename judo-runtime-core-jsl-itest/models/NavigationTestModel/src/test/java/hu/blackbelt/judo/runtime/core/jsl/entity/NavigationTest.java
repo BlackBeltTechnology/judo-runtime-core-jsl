@@ -105,8 +105,7 @@ import static com.google.common.collect.ImmutableSet.of;
 import static org.hamcrest.CoreMatchers.anyOf;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -210,6 +209,8 @@ class NavigationTest {
         assertThat(aDao.queryClistTroughDerivedSelf(a).selectList().stream().map(e -> e.identifier().getIdentifier()).toList(),
                 containsInAnyOrder(c1.identifier().getIdentifier(), c2.identifier().getIdentifier()));
 
+        Optional<B> b = aDao.queryOneBOnFilteredA(a);
+
     }
 
     private void assertEmptyBAndC(A a) {
@@ -236,7 +237,39 @@ class NavigationTest {
         assertEmpty(a.getBbAllCAnyName());
     }
 
-    @SuppressWarnings("unchecked")
+    @Test
+    @TestCase("DoubleAnyInNavigation")
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-ENT-008",
+            "REQ-EXPR-001",
+            "REQ-EXPR-002",
+            "REQ-EXPR-003",
+            "REQ-EXPR-004",
+            "REQ-EXPR-006",
+            "REQ-EXPR-008",
+            "REQ-EXPR-022"
+    })
+    public void testDoubleAnyInNavigation() {
+        B b1 = bDao.create(BForCreate.builder().withName("sameName").build());
+        B b2 = bDao.create(BForCreate.builder().withName("sameName").build());
+        A a = aDao.create(AForCreate.builder().withBlist(List.of(b1, b2)).build());
+
+        Optional<B> oneBOnFilteredA = aDao.queryOneBOnFilteredA(a);
+        assertTrue(oneBOnFilteredA.isPresent());
+        assertThat(List.of(b1.identifier(), b2.identifier()), hasItem(oneBOnFilteredA.get().identifier()));
+
+        aDao.delete(a);
+
+        A a1 = aDao.create(AForCreate.builder().build());
+        assertTrue( aDao.queryOneBOnFilteredA(a1).isEmpty());
+    }
+
+        @SuppressWarnings("unchecked")
     private void assertAttributesAndRelations(A a, Collection<Identifiable> bIds, Collection<Identifiable> cIds) {
         assertThat(aDao.queryBbAll(a).selectList().stream().map(B::identifier).collect(Collectors.toList()), anyOf(toHasItems(bIds)));
         assertThat(aDao.queryBbAny(a).orElseThrow().identifier(), anyOf(toIss(bIds)));
