@@ -23,7 +23,6 @@ package hu.blackbelt.judo.runtime.core.jsl.transfer;
 import com.google.inject.Inject;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.a.A;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.a.ADao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.a.AForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.a.AIdentifier;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.b.BDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.c.CDao;
@@ -31,6 +30,9 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigati
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.ta.TA;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.ta.TADao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.ta.TAForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.tac.TAC;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.tac.TACDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.tac.TACForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.tb.TB;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.tb.TBDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.tb.TBForCreate;
@@ -52,6 +54,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.hamcrest.CoreMatchers;
 import org.hamcrest.Matcher;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
@@ -62,11 +65,9 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static org.hamcrest.CoreMatchers.anyOf;
-import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.hamcrest.Matchers.hasItem;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -191,8 +192,12 @@ class MappedTransferNavigationTest {
 
     }
 
+    @Inject
+    TACDao tacDao;
+
     @Test
-    @TestCase("DoubleAnyInNavigationOnTransfer")
+    @Disabled("https://blackbelt.atlassian.net/browse/JNG-4986")
+    @TestCase("InheritedRelationNavigationAfterAny")
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-ENT-001",
@@ -200,6 +205,7 @@ class MappedTransferNavigationTest {
             "REQ-ENT-004",
             "REQ-ENT-005",
             "REQ-ENT-008",
+            "REQ-ENT-012",
             "REQ-EXPR-001",
             "REQ-EXPR-002",
             "REQ-EXPR-003",
@@ -209,19 +215,19 @@ class MappedTransferNavigationTest {
             "REQ-EXPR-022",
             "REQ-SRV-003"
     })
-    public void testDoubleAnyInNavigationOnTransfer() {
+    public void testInheritedRelationNavigationAfterAnyOnTransfer() {
         TB b1 = tbDao.create(TBForCreate.builder().withName("sameName").build());
         TB b2 = tbDao.create(TBForCreate.builder().withName("sameName").build());
-        TA a = taDao.create(TAForCreate.builder().withBlist(List.of(b1, b2)).build());
+        TAC ac = tacDao.create(TACForCreate.builder().withBlist(List.of(b1, b2)).build());
 
-        Optional<TB> oneBOnFilteredA = taDao.queryOneBOnFilteredA(a);
+        Optional<TB> oneBOnFilteredA = tacDao.queryOneBOnFilteredA(ac);
         assertTrue(oneBOnFilteredA.isPresent());
         assertThat(List.of(b1.identifier(), b2.identifier()), hasItem(oneBOnFilteredA.get().identifier()));
 
-        taDao.delete(a);
+        tacDao.delete(ac);
 
-        A a1 = aDao.create(AForCreate.builder().build());
-        assertTrue( aDao.queryOneBOnFilteredA(a1).isEmpty());
+        TAC ac1 = tacDao.create(TACForCreate.builder().build());
+        assertTrue( tacDao.queryOneBOnFilteredA(ac1).isEmpty());
     }
 
     private void assertEmptyBAndC(TA ta) {

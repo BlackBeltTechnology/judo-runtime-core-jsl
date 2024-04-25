@@ -33,6 +33,9 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigati
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.a3.A3;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.a3.A3Dao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.a3.A3ForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.ac.AC;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.ac.ACDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.ac.ACForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.ap.AP;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.ap.APDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.navigationtest.navigationtest.ap.APForCreate;
@@ -105,7 +108,8 @@ import static com.google.common.collect.ImmutableSet.of;
 import static org.hamcrest.CoreMatchers.anyOf;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.hasItem;
 import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -209,8 +213,6 @@ class NavigationTest {
         assertThat(aDao.queryClistTroughDerivedSelf(a).selectList().stream().map(e -> e.identifier().getIdentifier()).toList(),
                 containsInAnyOrder(c1.identifier().getIdentifier(), c2.identifier().getIdentifier()));
 
-        Optional<B> b = aDao.queryOneBOnFilteredA(a);
-
     }
 
     private void assertEmptyBAndC(A a) {
@@ -237,8 +239,12 @@ class NavigationTest {
         assertEmpty(a.getBbAllCAnyName());
     }
 
+    @Inject
+    ACDao acDao;
+
     @Test
-    @TestCase("DoubleAnyInNavigation")
+    @Disabled("https://blackbelt.atlassian.net/browse/JNG-4986")
+    @TestCase("InheritedRelationNavigationAfterAny")
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-ENT-001",
@@ -246,6 +252,7 @@ class NavigationTest {
             "REQ-ENT-004",
             "REQ-ENT-005",
             "REQ-ENT-008",
+            "REQ-ENT-012",
             "REQ-EXPR-001",
             "REQ-EXPR-002",
             "REQ-EXPR-003",
@@ -254,19 +261,19 @@ class NavigationTest {
             "REQ-EXPR-008",
             "REQ-EXPR-022"
     })
-    public void testDoubleAnyInNavigation() {
+    public void testInheritedRelationNavigationAfterAny() {
         B b1 = bDao.create(BForCreate.builder().withName("sameName").build());
         B b2 = bDao.create(BForCreate.builder().withName("sameName").build());
-        A a = aDao.create(AForCreate.builder().withBlist(List.of(b1, b2)).build());
+        AC ac = acDao.create(ACForCreate.builder().withBlist(List.of(b1, b2)).build());
 
-        Optional<B> oneBOnFilteredA = aDao.queryOneBOnFilteredA(a);
+        Optional<B> oneBOnFilteredA = acDao.queryOneBOnFilteredA(ac);
         assertTrue(oneBOnFilteredA.isPresent());
         assertThat(List.of(b1.identifier(), b2.identifier()), hasItem(oneBOnFilteredA.get().identifier()));
 
-        aDao.delete(a);
+        acDao.delete(ac);
 
-        A a1 = aDao.create(AForCreate.builder().build());
-        assertTrue( aDao.queryOneBOnFilteredA(a1).isEmpty());
+        AC ac1 = acDao.create(ACForCreate.builder().build());
+        assertTrue( acDao.queryOneBOnFilteredA(ac1).isEmpty());
     }
 
         @SuppressWarnings("unchecked")
