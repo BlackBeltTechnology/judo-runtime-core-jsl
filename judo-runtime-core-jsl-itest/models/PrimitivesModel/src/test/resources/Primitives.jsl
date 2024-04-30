@@ -55,7 +55,6 @@ entity EntityRequiredFields {
 
 entity EntityWithIdentifiers {
     identifier Integer integerAttr;
-    identifier Scaled scaledAttr;
     identifier String stringAttr;
     identifier PhoneNumber regexAttr;
     identifier Boolean boolAttr;
