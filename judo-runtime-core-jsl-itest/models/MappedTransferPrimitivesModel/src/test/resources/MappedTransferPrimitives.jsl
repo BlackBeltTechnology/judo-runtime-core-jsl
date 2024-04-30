@@ -203,7 +203,6 @@ transfer TransferWithRequiredEntityPrimitives (RequiredForNotRequiredTransfer ma
 
 entity EntityWithIdentifiers {
     identifier Integer integerAttr;
-    identifier Scaled scaledAttr;
     identifier String stringAttr;
     identifier PhoneNumber regexAttr;
     identifier Boolean boolAttr;
@@ -216,7 +215,6 @@ entity EntityWithIdentifiers {
 
 transfer TransferWithIdentifiers (EntityWithIdentifiers mappedEntity) {
     field Integer integerAttr <= mappedEntity.integerAttr bind;
-    field Scaled scaledAttr <= mappedEntity.scaledAttr bind;
     field String stringAttr <= mappedEntity.stringAttr bind;
     field PhoneNumber regexAttr <= mappedEntity.regexAttr bind;
     field Boolean boolAttr <= mappedEntity.boolAttr bind;
