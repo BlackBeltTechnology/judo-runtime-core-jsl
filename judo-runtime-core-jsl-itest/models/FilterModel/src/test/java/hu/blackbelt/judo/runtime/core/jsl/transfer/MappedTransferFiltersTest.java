@@ -287,17 +287,18 @@ public class MappedTransferFiltersTest {
 
         assertFilterMatchesNumberOfResults(0, "this.integerAttr > 1 and this.integerAttr < 2");
 
-        // TODO JNG-3980
         // filter for undefined
 
-//        TransferMyEntityWithOptionalFields undefinedResult = transferMyEntityWithOptionalFieldsDao
-//                .query()
-//                .filterBy("this.integerAttr!isDefined()")
-//                .selectOne()
-//                .get();
-//
-//        assertEquals(entity3.identifier(),
-//                undefinedResult.identifier());
+        // TODO JNG-3980
+        //assertFilterByNameMatchesEntity(entity1, "integerAttr", NumberFilter.equalTo(null));
+        //assertFilterByNameMatchesNumberOfResults(2, "integerAttr", NumberFilter.notEqualTo(null));
+        //assertFilterByNameMatchesEntity(entity1, "derivedIntegerAttr", NumberFilter.equalTo(null));
+        //assertFilterByNameMatchesNumberOfResults(2, "derivedIntegerAttr", NumberFilter.notEqualTo(null));
+
+        assertEntityMatchesFilter(transfer3, "this.integerAttr!isUndefined()");
+        assertFilterMatchesNumberOfResults(2, "this.integerAttr!isDefined()");
+        assertEntityMatchesFilter(transfer3, "this.derivedIntegerAttr!isUndefined()");
+        assertFilterMatchesNumberOfResults(2, "this.derivedIntegerAttr!isDefined()");
 
         // Derived attributes
 
@@ -435,6 +436,19 @@ public class MappedTransferFiltersTest {
         assertFilterByNameMatchesNumberOfResults(2, "derivedScaledAttr", NumberFilter.lessOrEqualThan(SCALED_2));
         assertFilterByNameMatchesEntity(transfer1, "derivedScaledAttr", NumberFilter.lessThan(SCALED_2));
 
+        // filter for undefined
+
+        // TODO JNG-3980
+//        assertFilterByNameMatchesEntity(transfer3, "scaledAttr", NumberFilter.equalTo(null));
+//        assertFilterByNameMatchesNumberOfResults(2, "scaledAttr", NumberFilter.notEqualTo(null));
+//        assertFilterByNameMatchesEntity(transfer3, "derivedScaledAttr", NumberFilter.equalTo(null));
+//        assertFilterByNameMatchesNumberOfResults(2, "derivedScaledAttr", NumberFilter.notEqualTo(null));
+
+        assertEntityMatchesFilter(transfer3, "this.scaledAttr!isUndefined()");
+        assertFilterMatchesNumberOfResults(2, "this.scaledAttr!isDefined()");
+        assertEntityMatchesFilter(transfer3, "this.derivedIntegerAttr!isUndefined()");
+        assertFilterMatchesNumberOfResults(2, "this.derivedIntegerAttr!isDefined()");
+
     }
 
     private void assertEntityMatchesFilterForScaledAttr(TransferMyEntityWithOptionalFields entity, NumberFilter filter) {
@@ -554,6 +568,18 @@ public class MappedTransferFiltersTest {
         assertFilterByNameMatchesNumberOfResults(2, "derivedStringAttr", StringFilter.greaterOrEqualThan(STRING_2));
         assertFilterByNameMatchesNumberOfResults(2, "derivedStringAttr", StringFilter.lessOrEqualThan(STRING_1));
 
+        // filter for undefined
+
+        // TODO JNG-3980
+//        assertFilterByNameMatchesEntity(transfer3, "stringAttr", StringFilter.equalTo(null));
+//        assertFilterByNameMatchesNumberOfResults(2, "stringAttr", StringFilter.notEqualTo(null));
+//        assertFilterByNameMatchesEntity(transfer3, "derivedStringAttr", StringFilter.equalTo(null));
+//        assertFilterByNameMatchesNumberOfResults(2, "derivedStringAttr", StringFilter.notEqualTo(null));
+
+        assertEntityMatchesFilter(transfer3, "this.stringAttr!isUndefined()");
+        assertFilterMatchesNumberOfResults(2, "this.stringAttr!isDefined()");
+        assertEntityMatchesFilter(transfer3, "this.derivedStringAttr!isUndefined()");
+        assertFilterMatchesNumberOfResults(2, "this.derivedStringAttr!isDefined()");
     }
 
     private void assertEntityMatchesFilter(TransferMyEntityWithOptionalFields entity, StringFilter filter) {
@@ -662,6 +688,19 @@ public class MappedTransferFiltersTest {
 
         assertFilterByNameMatchesEntity(transfer1, "derivedBoolAttr", BooleanFilter.isTrue());
         assertFilterByNameMatchesEntity(transfer2, "derivedBoolAttr", BooleanFilter.isFalse());
+
+        // filter for undefined
+
+        // TODO JNG-3980
+//        assertFilterByNameMatchesEntity(transfer3, "boolAttr", BooleanFilter.equalTo(null));
+//        assertFilterByNameMatchesNumberOfResults(2, "boolAttr", BooleanFilter.notEqualTo(null));
+//        assertFilterByNameMatchesEntity(transfer3, "derivedBoolAttr", BooleanFilter.equalTo(null));
+//        assertFilterByNameMatchesNumberOfResults(2, "derivedBoolAttr", BooleanFilter.notEqualTo(null));
+
+        assertEntityMatchesFilter(transfer3, "this.boolAttr!isUndefined()");
+        assertFilterMatchesNumberOfResults(2, "this.boolAttr!isDefined()");
+        assertEntityMatchesFilter(transfer3, "this.derivedBoolAttr!isUndefined()");
+        assertFilterMatchesNumberOfResults(2, "this.derivedBoolAttr!isDefined()");
     }
 
     @Test
@@ -726,6 +765,18 @@ public class MappedTransferFiltersTest {
         assertFilterByNameMatchesNumberOfResults(1, "derivedDateAttr", DateFilter.greaterThan(DATE_2));
         assertFilterByNameMatchesNumberOfResults(1, "derivedDateAttr", DateFilter.lessThan(DATE_1));
 
+        // filter for undefined
+
+        // TODO JNG-3980
+//        assertFilterByNameMatchesEntity(transfer3, "dateAttr", DateFilter.equalTo(null));
+//        assertFilterByNameMatchesNumberOfResults(2, "dateAttr", DateFilter.notEqualTo(null));
+//        assertFilterByNameMatchesEntity(transfer3, "derivedDateAttr", DateFilter.equalTo(null));
+//        assertFilterByNameMatchesNumberOfResults(2, "derivedDateAttr", DateFilter.notEqualTo(null));
+
+        assertEntityMatchesFilter(transfer3, "this.dateAttr!isUndefined()");
+        assertFilterMatchesNumberOfResults(2, "this.dateAttr!isDefined()");
+        assertEntityMatchesFilter(transfer3, "this.dateAttr!isUndefined()");
+        assertFilterMatchesNumberOfResults(2, "this.derivedDateAttr!isDefined()");
     }
 
     private void assertEntityMatchesFilter(TransferMyEntityWithOptionalFields entity, DateFilter filter) {
@@ -824,6 +875,18 @@ public class MappedTransferFiltersTest {
         assertFilterByNameMatchesNumberOfResults(1, "derivedTimestampAttr", TimestampFilter.greaterThan(TIMESTAMP_2));
         assertFilterByNameMatchesNumberOfResults(1, "derivedTimestampAttr", TimestampFilter.lessThan(TIMESTAMP_1));
 
+        // filter for undefined
+
+        // TODO JNG-3980
+//        assertFilterByNameMatchesEntity(transfer3, "timestampAttr", TimestampFilter.equalTo(null));
+//        assertFilterByNameMatchesNumberOfResults(2, "timestampAttr", TimestampFilter.notEqualTo(null));
+//        assertFilterByNameMatchesEntity(transfer3, "derivedTimestampAttr", TimestampFilter.equalTo(null));
+//        assertFilterByNameMatchesNumberOfResults(2, "derivedTimestampAttr", TimestampFilter.notEqualTo(null));
+
+        assertEntityMatchesFilter(transfer3, "this.timestampAttr!isUndefined()");
+        assertFilterMatchesNumberOfResults(2, "this.timestampAttr!isDefined()");
+        assertEntityMatchesFilter(transfer3, "this.derivedTimestampAttr!isUndefined()");
+        assertFilterMatchesNumberOfResults(2, "this.derivedTimestampAttr!isDefined()");
     }
 
     private void assertEntityMatchesFilter(TransferMyEntityWithOptionalFields entity, TimestampFilter filter) {
@@ -934,6 +997,19 @@ public class MappedTransferFiltersTest {
         assertFilterByNameMatchesNumberOfResults(2, "derivedTimeAttr", TimeFilter.lessOrEqualThan(TIME_1));
         assertFilterByNameMatchesNumberOfResults(1, "derivedTimeAttr", TimeFilter.greaterThan(TIME_2));
         assertFilterByNameMatchesNumberOfResults(1, "derivedTimeAttr", TimeFilter.lessThan(TIME_1));
+
+        // filter for undefined
+
+        // TODO JNG-3980
+//        assertFilterByNameMatchesEntity(transfer3, "timeAttr", TimeFilter.equalTo(null));
+//        assertFilterByNameMatchesNumberOfResults(2, "timeAttr", TimeFilter.notEqualTo(null));
+//        assertFilterByNameMatchesEntity(transfer3, "derivedTimeAttr", TimeFilter.equalTo(null));
+//        assertFilterByNameMatchesNumberOfResults(2, "derivedTimeAttr", TimeFilter.notEqualTo(null));
+
+        assertEntityMatchesFilter(transfer3, "this.timeAttr!isUndefined()");
+        assertFilterMatchesNumberOfResults(2, "this.timeAttr!isDefined()");
+        assertEntityMatchesFilter(transfer3, "this.derivedTimeAttr!isUndefined()");
+        assertFilterMatchesNumberOfResults(2, "this.derivedTimeAttr!isDefined()");
     }
 
     private void assertEntityMatchesFilter(TransferMyEntityWithOptionalFields entity, TimeFilter filter) {
@@ -1035,6 +1111,18 @@ public class MappedTransferFiltersTest {
         assertFilterByNameMatchesEntity(transfer1, "derivedEnumAttr", EnumerationFilter.equalTo(MyEnum.Bombastic));
         assertFilterByNameMatchesEntity(transfer2, "derivedEnumAttr", EnumerationFilter.notEqualTo(MyEnum.Bombastic));
 
+        // filter for undefined
+
+        // TODO JNG-3980
+//        assertFilterByNameMatchesEntity(transfer3, "enumAttr", EnumerationFilter.equalTo(null));
+//        assertFilterByNameMatchesNumberOfResults(2, "enumAttr", EnumerationFilter.notEqualTo(null));
+//        assertFilterByNameMatchesEntity(transfer3, "derivedEnumAttr", EnumerationFilter.equalTo(null));
+//        assertFilterByNameMatchesNumberOfResults(2, "derivedEnumAttr", EnumerationFilter.notEqualTo(null));
+
+        assertEntityMatchesFilter(transfer3, "this.enumAttr!isUndefined()");
+        assertFilterMatchesNumberOfResults(2, "this.enumAttr!isDefined()");
+        assertEntityMatchesFilter(transfer3, "this.derivedEnumAttr!isUndefined()");
+        assertFilterMatchesNumberOfResults(2, "this.derivedEnumAttr!isDefined()");
     }
 
     @Test
