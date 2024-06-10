@@ -35,13 +35,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -97,7 +95,7 @@ public class MappedTransferPagingTest {
     })
     public void testWindowingOnTransfer() {
 
-        Map<Character, TransferListIdentifier> listIds = new TreeMap<>();
+        Map<Character, Serializable> listIds = new TreeMap<>();
         for (char ch = 'A'; ch <= 'Z'; ch++) {
             final List<TransferItemForCreate> items = new ArrayList<>();
             for (int i = 0; i < 'Z' - ch + 1; i++) {
@@ -111,33 +109,34 @@ public class MappedTransferPagingTest {
             }
             TransferList list = transferListDao.create(TransferListForCreate.builder().withName("List_" + ch).withItems(items).build());
 
-            listIds.put(ch, list.identifier());
+            listIds.put(ch, list.identifier().getIdentifier());
         }
 
         // List 1 to 4
 
-        List<TransferListIdentifier> list1to4Ids = transferListDao.query().orderBy(TransferListAttribute.NAME).selectList(4).stream().map(TransferList::identifier).toList();
-        List<TransferListIdentifier> expectedList1to4Ids = listIds.values().stream().limit(4).toList();
+        List<Serializable> list1to4Ids = transferListDao.query().orderBy(TransferListAttribute.NAME).selectList(4).stream().map(TransferList::identifier).map(TransferListIdentifier::getIdentifier).toList();
+        List<Serializable> expectedList1to4Ids = listIds.values().stream().limit(4).toList();
         assertThat(list1to4Ids, equalTo(expectedList1to4Ids));
         assertThat(list1to4Ids, equalTo(List.of(listIds.get('A'), listIds.get('B'), listIds.get('C'), listIds.get('D'))));
 
         // List 5 to 8
 
-        List<TransferListIdentifier> list5to8Ids = transferListDao.query().orderBy(TransferListAttribute.NAME).selectList(4, 4).stream().map(TransferList::identifier).toList();
-        List<TransferListIdentifier> expectedList5to8Ids = listIds.values().stream().skip(4).limit(4).toList();
+        List<Serializable> list5to8Ids = transferListDao.query().orderBy(TransferListAttribute.NAME).selectList(4, 4).stream().map(TransferList::identifier).map(TransferListIdentifier::getIdentifier).toList();
+        List<Serializable> expectedList5to8Ids = listIds.values().stream().skip(4).limit(4).toList();
         assertThat(list5to8Ids, equalTo(expectedList5to8Ids));
         assertThat(list5to8Ids, equalTo(List.of(listIds.get('E'), listIds.get('F'), listIds.get('G'), listIds.get('H'))));
 
         // Lists 1 to 4 ['A', 'B']
 
-        List<TransferListIdentifier> lists2Of4Ids = transferListDao
+        List<Serializable> lists2Of4Ids = transferListDao
                 .query()
                 .orderBy(TransferListAttribute.NAME)
                 .filterBy("this.name == 'List_A' or this.name == 'List_B'")
                 .selectList(4)
                 .stream().map(TransferList::identifier)
+                .map(TransferListIdentifier::getIdentifier)
                 .toList();
-        List<TransferListIdentifier> expectedLists2Of4Ids = listIds.entrySet().stream()
+        List<Serializable> expectedLists2Of4Ids = listIds.entrySet().stream()
                 .filter(e -> e.getKey() == 'A' || e.getKey() == 'B')
                 .limit(4)
                 .map(Map.Entry::getValue)
@@ -147,22 +146,24 @@ public class MappedTransferPagingTest {
 
         // List 1 to 4 reversed
 
-        List<TransferListIdentifier> reversedList1to4Ids = transferListDao
+        List<Serializable> reversedList1to4Ids = transferListDao
                 .query()
                 .orderByDescending(TransferListAttribute.NAME)
                 .selectList(4)
                 .stream().map(TransferList::identifier)
+                .map(TransferListIdentifier::getIdentifier)
                 .toList();
         assertThat(reversedList1to4Ids, equalTo(List.of(listIds.get('Z'), listIds.get('Y'), listIds.get('X'), listIds.get('W'))));
 
         // List 5 to 8 reversed
 
-        List<TransferListIdentifier> reversedList5to8Ids = transferListDao
+        List<Serializable> reversedList5to8Ids = transferListDao
                 .query()
                 .orderByDescending(TransferListAttribute.NAME)
                 .selectList(4, 4)
                 .stream()
                 .map(TransferList::identifier)
+                .map(TransferListIdentifier::getIdentifier)
                 .toList();
         assertThat(reversedList5to8Ids, equalTo(List.of(listIds.get('V'), listIds.get('U'), listIds.get('T'), listIds.get('S'))));
 
@@ -227,7 +228,7 @@ public class MappedTransferPagingTest {
         final List<Integer> integersFrom1To26 = IntStream.rangeClosed(1, 26).boxed().collect(Collectors.toList());
         final List<Integer> integersFrom26To1 = IntStream.rangeClosed(1, 26).boxed().sorted((i, j) -> j - i).collect(Collectors.toList());
 
-        TransferList a = transferListDao.getById(listIds.get('A')).orElseThrow();
+        TransferList a = transferListDao.getById((UUID)listIds.get('A')).orElseThrow();
 
         List<Integer> customSortedItemsOfListA = transferListDao.queryItems(a).orderBy(TransferItemAttribute.NUMBER).selectList().stream().map(i -> i.getNumber().get()).toList();
         assertThat(customSortedItemsOfListA, equalTo(integersFrom1To26));
@@ -272,7 +273,7 @@ public class MappedTransferPagingTest {
                 .selectList(1);
 
         assertEquals(1, list.size());
-        assertEquals(ent2.identifier(), list.get(0).identifier());
+        assertEquals(ent2.identifier().getIdentifier(), list.get(0).identifier().getIdentifier());
 
         list = transferItemDao
                 .query()
@@ -280,8 +281,8 @@ public class MappedTransferPagingTest {
                 .selectList(null);
 
         assertEquals(2, list.size());
-        assertEquals(ent2.identifier(), list.get(0).identifier());
-        assertEquals(ent1.identifier(), list.get(1).identifier());
+        assertEquals(ent2.identifier().getIdentifier(), list.get(0).identifier().getIdentifier());
+        assertEquals(ent1.identifier().getIdentifier(), list.get(1).identifier().getIdentifier());
 
         list = transferItemDao
                 .query()
@@ -289,8 +290,8 @@ public class MappedTransferPagingTest {
                 .selectList(0);
 
         assertEquals(2, list.size());
-        assertEquals(ent2.identifier(), list.get(0).identifier());
-        assertEquals(ent1.identifier(), list.get(1).identifier());
+        assertEquals(ent2.identifier().getIdentifier(), list.get(0).identifier().getIdentifier());
+        assertEquals(ent1.identifier().getIdentifier(), list.get(1).identifier().getIdentifier());
 
         list = transferItemDao
                 .query()
@@ -298,8 +299,8 @@ public class MappedTransferPagingTest {
                 .selectList(3);
 
         assertEquals(2, list.size());
-        assertEquals(ent2.identifier(), list.get(0).identifier());
-        assertEquals(ent1.identifier(), list.get(1).identifier());
+        assertEquals(ent2.identifier().getIdentifier(), list.get(0).identifier().getIdentifier());
+        assertEquals(ent1.identifier().getIdentifier(), list.get(1).identifier().getIdentifier());
 
         list = transferItemDao
                 .query()
@@ -307,7 +308,7 @@ public class MappedTransferPagingTest {
                 .selectList(1, null);
 
         assertEquals(1, list.size());
-        assertEquals(ent2.identifier(), list.get(0).identifier());
+        assertEquals(ent2.identifier().getIdentifier(), list.get(0).identifier().getIdentifier());
 
         list = transferItemDao
                 .query()
@@ -315,8 +316,8 @@ public class MappedTransferPagingTest {
                 .selectList(null, null);
 
         assertEquals(2, list.size());
-        assertEquals(ent2.identifier(), list.get(0).identifier());
-        assertEquals(ent1.identifier(), list.get(1).identifier());
+        assertEquals(ent2.identifier().getIdentifier(), list.get(0).identifier().getIdentifier());
+        assertEquals(ent1.identifier().getIdentifier(), list.get(1).identifier().getIdentifier());
 
         list = transferItemDao
                 .query()
@@ -324,8 +325,8 @@ public class MappedTransferPagingTest {
                 .selectList(0, null);
 
         assertEquals(2, list.size());
-        assertEquals(ent2.identifier(), list.get(0).identifier());
-        assertEquals(ent1.identifier(), list.get(1).identifier());
+        assertEquals(ent2.identifier().getIdentifier(), list.get(0).identifier().getIdentifier());
+        assertEquals(ent1.identifier().getIdentifier(), list.get(1).identifier().getIdentifier());
 
         list = transferItemDao
                 .query()
@@ -333,8 +334,8 @@ public class MappedTransferPagingTest {
                 .selectList(3, null);
 
         assertEquals(2, list.size());
-        assertEquals(ent2.identifier(), list.get(0).identifier());
-        assertEquals(ent1.identifier(), list.get(1).identifier());
+        assertEquals(ent2.identifier().getIdentifier(), list.get(0).identifier().getIdentifier());
+        assertEquals(ent1.identifier().getIdentifier(), list.get(1).identifier().getIdentifier());
 
         list = transferItemDao
                 .query()
@@ -342,8 +343,8 @@ public class MappedTransferPagingTest {
                 .selectList(2, 0);
 
         assertEquals(2, list.size());
-        assertEquals(ent2.identifier(), list.get(0).identifier());
-        assertEquals(ent1.identifier(), list.get(1).identifier());
+        assertEquals(ent2.identifier().getIdentifier(), list.get(0).identifier().getIdentifier());
+        assertEquals(ent1.identifier().getIdentifier(), list.get(1).identifier().getIdentifier());
 
         list = transferItemDao
                 .query()
@@ -351,7 +352,7 @@ public class MappedTransferPagingTest {
                 .selectList(2, 1);
 
         assertEquals(1, list.size());
-        assertEquals(ent1.identifier(), list.get(0).identifier());
+        assertEquals(ent1.identifier().getIdentifier(), list.get(0).identifier().getIdentifier());
 
         list = transferItemDao
                 .query()
@@ -397,21 +398,21 @@ public class MappedTransferPagingTest {
         TransferLogEntry entry7 = transferLogEntryDao.create(TransferLogEntryForCreate.builder().withTimestamp(LocalDateTime.of(LocalDate.of( 2021, 7, 29), LocalTime.of(15, 7, 1, 100_000_000))).withMessage("Message7").build());
         TransferLogEntry entry8 = transferLogEntryDao.create(TransferLogEntryForCreate.builder().withTimestamp(LocalDateTime.of(LocalDate.of( 2021, 7, 29), LocalTime.of(15, 7, 1, 0))).withMessage("Message8").build());
 
-        List<TransferLogEntryIdentifier> logEntries48 = transferLogEntryDao.query().orderBy(TransferLogEntryAttribute.TIMESTAMP).selectList(2).stream().map(TransferLogEntry::identifier).toList();
+        List<Serializable> logEntries48 = transferLogEntryDao.query().orderBy(TransferLogEntryAttribute.TIMESTAMP).selectList(2).stream().map(TransferLogEntry::identifier).map(TransferLogEntryIdentifier::getIdentifier).toList();
 
-        assertThat(logEntries48, containsInAnyOrder(entry4.identifier(), entry8.identifier()));
+        assertThat(logEntries48, containsInAnyOrder(entry4.identifier().getIdentifier(), entry8.identifier().getIdentifier()));
 
-        List<TransferLogEntryIdentifier> logEntries37 = transferLogEntryDao.query().orderBy(TransferLogEntryAttribute.TIMESTAMP).selectList(2,2).stream().map(TransferLogEntry::identifier).toList();
+        List<Serializable> logEntries37 = transferLogEntryDao.query().orderBy(TransferLogEntryAttribute.TIMESTAMP).selectList(2,2).stream().map(TransferLogEntry::identifier).map(TransferLogEntryIdentifier::getIdentifier).toList();
 
-        assertThat(logEntries37, containsInAnyOrder(entry3.identifier(), entry7.identifier()));
+        assertThat(logEntries37, containsInAnyOrder(entry3.identifier().getIdentifier(), entry7.identifier().getIdentifier()));
 
-        List<TransferLogEntryIdentifier> logEntries26 = transferLogEntryDao.query().orderBy(TransferLogEntryAttribute.TIMESTAMP).selectList(2,4).stream().map(TransferLogEntry::identifier).toList();
+        List<Serializable> logEntries26 = transferLogEntryDao.query().orderBy(TransferLogEntryAttribute.TIMESTAMP).selectList(2,4).stream().map(TransferLogEntry::identifier).map(TransferLogEntryIdentifier::getIdentifier).toList();
 
-        assertThat(logEntries26, containsInAnyOrder(entry2.identifier(), entry6.identifier()));
+        assertThat(logEntries26, containsInAnyOrder(entry2.identifier().getIdentifier(), entry6.identifier().getIdentifier()));
 
-        List<TransferLogEntryIdentifier> logEntries15 = transferLogEntryDao.query().orderBy(TransferLogEntryAttribute.TIMESTAMP).selectList(2,6).stream().map(TransferLogEntry::identifier).toList();
+        List<Serializable> logEntries15 = transferLogEntryDao.query().orderBy(TransferLogEntryAttribute.TIMESTAMP).selectList(2,6).stream().map(TransferLogEntry::identifier).map(TransferLogEntryIdentifier::getIdentifier).toList();
 
-        assertThat(logEntries15, containsInAnyOrder(entry1.identifier(), entry5.identifier()));
+        assertThat(logEntries15, containsInAnyOrder(entry1.identifier().getIdentifier(), entry5.identifier().getIdentifier()));
     }
 
 }

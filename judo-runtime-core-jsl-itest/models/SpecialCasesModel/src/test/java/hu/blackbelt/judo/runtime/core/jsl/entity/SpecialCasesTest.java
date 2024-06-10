@@ -195,8 +195,8 @@ public class SpecialCasesTest {
         EntityA entA = entityADao.create(EntityAForCreate.builder().build());
         EntityB entB = entityBDao.create(EntityBForCreate.builder().build());
 
-        assertEquals(ref.identifier(), entityADao.queryQuerySameName(entA).get().identifier());
-        assertEquals(ref.identifier(), entityBDao.queryQuerySameName(entB).get().identifier());
+        assertEquals(ref.identifier().getIdentifier(), entityADao.queryQuerySameName(entA).get().identifier().getIdentifier());
+        assertEquals(ref.identifier().getIdentifier(), entityBDao.queryQuerySameName(entB).get().identifier().getIdentifier());
     }
 
 
@@ -797,14 +797,14 @@ public class SpecialCasesTest {
         assertEquals(1, entityFDao.getAll().stream().filter(entityF -> entityF.getStringF().equals("F2")).count());
         assertEquals(1, entityFDao.getAll().stream().filter(entityF -> entityF.getStringF().equals("F3")).count());
 
-        entityFDao.deleteAll(List.of(entityF2.identifier()));
+        entityFDao.deleteAll(List.of(entityF2.identifier().getIdentifier()));
 
         assertEquals(2, entityFDao.countAll());
         assertEquals(1, entityFDao.getAll().stream().filter(entityF -> entityF.getStringF().equals("F1")).count());
         assertEquals(0, entityFDao.getAll().stream().filter(entityF -> entityF.getStringF().equals("F2")).count());
         assertEquals(1, entityFDao.getAll().stream().filter(entityF -> entityF.getStringF().equals("F3")).count());
 
-        entityFDao.deleteAll(List.of(entityF1.identifier(), entityF3.identifier()));
+        entityFDao.deleteAll(List.of(entityF1.identifier().getIdentifier(), entityF3.identifier().getIdentifier()));
 
         assertEquals(0, entityFDao.countAll());
         assertEquals(0, entityFDao.getAll().stream().filter(entityF -> entityF.getStringF().equals("F1")).count());
@@ -884,9 +884,9 @@ public class SpecialCasesTest {
 
         thrown = assertThrows(
                 ValidationException.class,
-                () -> entityFDao.deleteAll(List.of(entityF1final.identifier(),
-                        entityF2final.identifier(),
-                        entityF3final.identifier())));
+                () -> entityFDao.deleteAll(List.of(entityF1final.identifier().getIdentifier(),
+                        entityF2final.identifier().getIdentifier(),
+                        entityF3final.identifier().getIdentifier())));
 
         assertThat(thrown.getValidationResults(), containsInAnyOrder(allOf(
                 hasProperty("code", equalTo("ENTITY_NOT_FOUND")))));
@@ -1665,7 +1665,7 @@ public class SpecialCasesTest {
         Assertions.assertEquals(1, entityFDao.getAll().stream().filter(entityE -> entityE.getStringF().equals("F2")).count());
         Assertions.assertEquals(1, entityFDao.getAll().stream().filter(entityE -> entityE.getStringF().equals("F3")).count());
 
-        transferFDao.deleteAll(List.of(transferF2.identifier()));
+        transferFDao.deleteAll(List.of(transferF2.identifier().getIdentifier()));
 
         Assertions.assertEquals(2, transferFDao.countAll());
         Assertions.assertEquals(1, transferFDao.getAll().stream().filter(transferF -> transferF.getStringF().equals("F1")).count());
@@ -1677,7 +1677,7 @@ public class SpecialCasesTest {
         Assertions.assertEquals(0, entityFDao.getAll().stream().filter(entityE -> entityE.getStringF().equals("F2")).count());
         Assertions.assertEquals(1, entityFDao.getAll().stream().filter(entityE -> entityE.getStringF().equals("F3")).count());
 
-        transferFDao.deleteAll(List.of(transferF1.identifier(), transferF3.identifier()));
+        transferFDao.deleteAll(List.of(transferF1.identifier().getIdentifier(), transferF3.identifier().getIdentifier()));
 
         Assertions.assertEquals(0, transferFDao.countAll());
         Assertions.assertEquals(0, transferFDao.getAll().stream().filter(transferF -> transferF.getStringF().equals("F1")).count());
@@ -1796,9 +1796,9 @@ public class SpecialCasesTest {
 
         thrown = assertThrows(
                 ValidationException.class,
-                () -> transferFDao.deleteAll(List.of(transferF1final.identifier(),
-                        transferF2final.identifier(),
-                        transferF3final.identifier())));
+                () -> transferFDao.deleteAll(List.of(transferF1final.identifier().getIdentifier(),
+                        transferF2final.identifier().getIdentifier(),
+                        transferF3final.identifier().getIdentifier())));
 
         assertThat(thrown.getValidationResults(), containsInAnyOrder(allOf(
                 hasProperty("code", equalTo("ENTITY_NOT_FOUND")))));
@@ -2022,25 +2022,25 @@ public class SpecialCasesTest {
 
         UUID uuidF = (UUID) f.identifier().getIdentifier();
 
-        assertEquals(eOpRel.identifier(), fDao.queryRelE(uuidF).get().identifier());
-        assertEquals(eReqRel.identifier(), fDao.queryReqRelE(uuidF).identifier());
+        assertEquals(eOpRel.identifier().getIdentifier(), fDao.queryRelE(uuidF).get().identifier().getIdentifier());
+        assertEquals(eReqRel.identifier().getIdentifier(), fDao.queryReqRelE(uuidF).identifier().getIdentifier());
         assertThat(
-                List.of(eColRel1.identifier(), eColRel2.identifier()),
-                containsInAnyOrder(fDao.queryRelECol(uuidF).selectList().stream().map(e -> e.identifier()).toArray())
+                List.of(eColRel1.identifier().getIdentifier(), eColRel2.identifier().getIdentifier()),
+                containsInAnyOrder(fDao.queryRelECol(uuidF).selectList().stream().map(e -> e.identifier().getIdentifier()).toArray())
         );
 
-        assertEquals(eOpComp.identifier(), fDao.queryCompE(uuidF).get().identifier());
-        assertEquals(eReqComp.identifier(), fDao.queryReqCompE(uuidF).identifier());
+        assertEquals(eOpComp.identifier().getIdentifier(), fDao.queryCompE(uuidF).get().identifier().getIdentifier());
+        assertEquals(eReqComp.identifier().getIdentifier(), fDao.queryReqCompE(uuidF).identifier().getIdentifier());
         assertThat(
-                List.of(eColComp1.identifier(), eColComp2.identifier()),
-                containsInAnyOrder(fDao.queryCompECol(uuidF).selectList().stream().map(e -> e.identifier()).toArray())
+                List.of(eColComp1.identifier().getIdentifier(), eColComp2.identifier().getIdentifier()),
+                containsInAnyOrder(fDao.queryCompECol(uuidF).selectList().stream().map(e -> e.identifier().getIdentifier()).toArray())
         );
 
         assertEquals(1, fDao.queryCalculatedPrimitive(uuidF).get());
-        assertEquals(eReqRel.identifier(), fDao.queryCalculatedEntity(uuidF).get().identifier());
+        assertEquals(eReqRel.identifier().getIdentifier(), fDao.queryCalculatedEntity(uuidF).get().identifier().getIdentifier());
 
         assertEquals(3, fDao.queryQueryPrimitive(uuidF, FQueryPrimitiveParameter.builder().withNum(3).build()).get());
-        assertEquals(eReqRel.identifier(), fDao.queryQueryEntity(uuidF, FQueryEntityParameter.builder().withNum(3).build()).get().identifier());
+        assertEquals(eReqRel.identifier().getIdentifier(), fDao.queryQueryEntity(uuidF, FQueryEntityParameter.builder().withNum(3).build()).get().identifier().getIdentifier());
 
 
         // Not related identifier added

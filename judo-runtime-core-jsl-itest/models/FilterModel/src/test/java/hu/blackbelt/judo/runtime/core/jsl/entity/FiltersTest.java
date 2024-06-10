@@ -206,7 +206,7 @@ public class FiltersTest {
 
         assertEquals(1, multiFilter.size());
 
-        assertEquals(entity1.identifier(), multiFilter.get(0).identifier());
+        assertEquals(entity1.identifier().getIdentifier(), multiFilter.get(0).identifier().getIdentifier());
 
         multiFilter = myEntityWithOptionalFieldsDao
                 .query()
@@ -217,7 +217,7 @@ public class FiltersTest {
 
         assertEquals(1, multiFilter.size());
 
-        assertEquals(entity1.identifier(), multiFilter.get(0).identifier());
+        assertEquals(entity1.identifier().getIdentifier(), multiFilter.get(0).identifier().getIdentifier());
     }
 
     @Test
@@ -358,7 +358,7 @@ public class FiltersTest {
                 .selectOne()
                 .get();
 
-        assertEquals(entity.identifier(), filtered.identifier());
+        assertEquals(entity.identifier().getIdentifier(), filtered.identifier().getIdentifier());
 
         MyEntityWithOptionalFields filteredDerived = myEntityWithOptionalFieldsDao
                 .query()
@@ -366,7 +366,7 @@ public class FiltersTest {
                 .selectOne()
                 .get();
 
-        assertEquals(entity.identifier(), filteredDerived.identifier());
+        assertEquals(entity.identifier().getIdentifier(), filteredDerived.identifier().getIdentifier());
     }
 
     @Test
@@ -456,7 +456,7 @@ public class FiltersTest {
                 .selectOne()
                 .get();
 
-        assertEquals(entity.identifier(), filtered.identifier());
+        assertEquals(entity.identifier().getIdentifier(), filtered.identifier().getIdentifier());
 
         MyEntityWithOptionalFields filteredDerived = myEntityWithOptionalFieldsDao
                 .query()
@@ -464,7 +464,7 @@ public class FiltersTest {
                 .selectOne()
                 .get();
 
-        assertEquals(entity.identifier(), filteredDerived.identifier());
+        assertEquals(entity.identifier().getIdentifier(), filteredDerived.identifier().getIdentifier());
     }
 
     private void assertFilterMatchesNumberOfResultsForScaledAttr(int expected, NumberFilter filter) {
@@ -588,7 +588,7 @@ public class FiltersTest {
                 .selectOne()
                 .get();
 
-        assertEquals(entity.identifier(), filtered.identifier());
+        assertEquals(entity.identifier().getIdentifier(), filtered.identifier().getIdentifier());
 
         MyEntityWithOptionalFields filteredDerived = myEntityWithOptionalFieldsDao
                 .query()
@@ -596,7 +596,7 @@ public class FiltersTest {
                 .selectOne()
                 .get();
 
-        assertEquals(entity.identifier(), filteredDerived.identifier());
+        assertEquals(entity.identifier().getIdentifier(), filteredDerived.identifier().getIdentifier());
     }
 
     private void assertFilterMatchesNumberOfResults(int expected, StringFilter filter) {
@@ -645,7 +645,7 @@ public class FiltersTest {
                 .selectOne()
                 .get();
 
-        assertEquals(entity1.identifier(), isTrue.identifier());
+        assertEquals(entity1.identifier().getIdentifier(), isTrue.identifier().getIdentifier());
 
         MyEntityWithOptionalFields isFalse = myEntityWithOptionalFieldsDao
                 .query()
@@ -653,7 +653,7 @@ public class FiltersTest {
                 .selectOne()
                 .get();
 
-        assertEquals(entity2.identifier(), isFalse.identifier());
+        assertEquals(entity2.identifier().getIdentifier(), isFalse.identifier().getIdentifier());
 
         // FilterByName
 
@@ -672,7 +672,7 @@ public class FiltersTest {
                 .selectOne()
                 .get();
 
-        assertEquals(entity1.identifier(), isTrueDerived.identifier());
+        assertEquals(entity1.identifier().getIdentifier(), isTrueDerived.identifier().getIdentifier());
 
         MyEntityWithOptionalFields isFalseDerived = myEntityWithOptionalFieldsDao
                 .query()
@@ -680,7 +680,7 @@ public class FiltersTest {
                 .selectOne()
                 .get();
 
-        assertEquals(entity2.identifier(), isFalseDerived.identifier());
+        assertEquals(entity2.identifier().getIdentifier(), isFalseDerived.identifier().getIdentifier());
 
         // FilterByName
 
@@ -784,7 +784,7 @@ public class FiltersTest {
                 .selectOne()
                 .get();
 
-        assertEquals(entity.identifier(), filtered.identifier());
+        assertEquals(entity.identifier().getIdentifier(), filtered.identifier().getIdentifier());
 
         MyEntityWithOptionalFields filteredDerived = myEntityWithOptionalFieldsDao
                 .query()
@@ -792,7 +792,7 @@ public class FiltersTest {
                 .selectOne()
                 .get();
 
-        assertEquals(entity.identifier(), filteredDerived.identifier());
+        assertEquals(entity.identifier().getIdentifier(), filteredDerived.identifier().getIdentifier());
     }
 
     private void assertFilterMatchesNumberOfResults(int expected, DateFilter filter) {
@@ -894,7 +894,7 @@ public class FiltersTest {
                 .selectOne()
                 .get();
 
-        assertEquals(entity.identifier(), filtered.identifier());
+        assertEquals(entity.identifier().getIdentifier(), filtered.identifier().getIdentifier());
 
         MyEntityWithOptionalFields filteredDerived = myEntityWithOptionalFieldsDao
                 .query()
@@ -902,7 +902,7 @@ public class FiltersTest {
                 .selectOne()
                 .get();
 
-        assertEquals(entity.identifier(), filteredDerived.identifier());
+        assertEquals(entity.identifier().getIdentifier(), filteredDerived.identifier().getIdentifier());
     }
 
     private void assertFilterMatchesNumberOfResults(int expected, TimestampFilter filter) {
@@ -1002,7 +1002,7 @@ public class FiltersTest {
                 .selectOne()
                 .get();
 
-        assertEquals(entity.identifier(), filtered.identifier());
+        assertEquals(entity.identifier().getIdentifier(), filtered.identifier().getIdentifier());
 
         MyEntityWithOptionalFields filteredDerived = myEntityWithOptionalFieldsDao
                 .query()
@@ -1010,7 +1010,7 @@ public class FiltersTest {
                 .selectOne()
                 .get();
 
-        assertEquals(entity.identifier(), filteredDerived.identifier());
+        assertEquals(entity.identifier().getIdentifier(), filteredDerived.identifier().getIdentifier());
     }
 
     private void assertFilterMatchesNumberOfResults(int expected, TimeFilter filter) {
@@ -1055,7 +1055,7 @@ public class FiltersTest {
                 .selectOne()
                 .get();
 
-        assertEquals(entity1.identifier(), equalTo.identifier());
+        assertEquals(entity1.identifier().getIdentifier(), equalTo.identifier().getIdentifier());
 
         MyEntityWithOptionalFields notEqualTo = myEntityWithOptionalFieldsDao
                 .query()
@@ -1063,7 +1063,7 @@ public class FiltersTest {
                 .selectOne()
                 .get();
 
-        assertEquals(entity2.identifier(), notEqualTo.identifier());
+        assertEquals(entity2.identifier().getIdentifier(), notEqualTo.identifier().getIdentifier());
 
         // Derived
 
@@ -1073,7 +1073,7 @@ public class FiltersTest {
                 .selectOne()
                 .get();
 
-        assertEquals(entity1.identifier(), equalToDerived.identifier());
+        assertEquals(entity1.identifier().getIdentifier(), equalToDerived.identifier().getIdentifier());
 
         MyEntityWithOptionalFields notEqualToDerived = myEntityWithOptionalFieldsDao
                 .query()
@@ -1081,7 +1081,7 @@ public class FiltersTest {
                 .selectOne()
                 .get();
 
-        assertEquals(entity2.identifier(), notEqualToDerived.identifier());
+        assertEquals(entity2.identifier().getIdentifier(), notEqualToDerived.identifier().getIdentifier());
 
         // FilterByName
 
@@ -1141,22 +1141,22 @@ public class FiltersTest {
         assertEquals(3, myEntityWithOptionalFieldsDao.query().count());
 
         assertEquals(2, filterEntityDao.queryHaveTOnTheStringAttr(filterEntity).count());
-        assertThat(filterEntityDao.queryHaveTOnTheStringAttr(filterEntity).selectList().stream().map(e -> e.identifier()).toList(),
-                containsInAnyOrder(entity1.identifier(), entity2.identifier()));
+        assertThat(filterEntityDao.queryHaveTOnTheStringAttr(filterEntity).selectList().stream().map(e -> e.identifier().getIdentifier()).toList(),
+                containsInAnyOrder(entity1.identifier().getIdentifier(), entity2.identifier().getIdentifier()));
 
         assertEquals(1, filterEntityDao.queryTestIsTheStringAttr(filterEntity).count());
-        assertThat(filterEntityDao.queryTestIsTheStringAttr(filterEntity).selectList().stream().map(e -> e.identifier()).toList(),
-                containsInAnyOrder(entity1.identifier()));
+        assertThat(filterEntityDao.queryTestIsTheStringAttr(filterEntity).selectList().stream().map(e -> e.identifier().getIdentifier()).toList(),
+                containsInAnyOrder(entity1.identifier().getIdentifier()));
 
         assertEquals(0, filterEntityDao.queryHaveNoMatchOnTheStringAttr(filterEntity).count());
 
         assertEquals(1, filterEntityDao.queryHaveUndefinedOnTheStringAttr(filterEntity).count());
-        assertThat(filterEntityDao.queryHaveUndefinedOnTheStringAttr(filterEntity).selectList().stream().map(e -> e.identifier()).toList(),
-                containsInAnyOrder(entity3.identifier()));
+        assertThat(filterEntityDao.queryHaveUndefinedOnTheStringAttr(filterEntity).selectList().stream().map(e -> e.identifier().getIdentifier()).toList(),
+                containsInAnyOrder(entity3.identifier().getIdentifier()));
 
         assertEquals(2, filterEntityDao.queryHaveDefinedOnTheStringAttr(filterEntity).count());
-        assertThat(filterEntityDao.queryHaveDefinedOnTheStringAttr(filterEntity).selectList().stream().map(e -> e.identifier()).toList(),
-                containsInAnyOrder(entity1.identifier(), entity2.identifier()));
+        assertThat(filterEntityDao.queryHaveDefinedOnTheStringAttr(filterEntity).selectList().stream().map(e -> e.identifier().getIdentifier()).toList(),
+                containsInAnyOrder(entity1.identifier().getIdentifier(), entity2.identifier().getIdentifier()));
 
     }
 
@@ -1203,7 +1203,7 @@ public class FiltersTest {
                 .selectOne()
                 .get();
 
-        assertEquals(entity.identifier(), equalsByName.identifier());
+        assertEquals(entity.identifier().getIdentifier(), equalsByName.identifier().getIdentifier());
     }
 
     private void assertFilterByNameMatchesNumberOfResults(int expected, String attributeName, Filter filter1) {
@@ -1231,7 +1231,7 @@ public class FiltersTest {
                 .selectOne()
                 .get();
 
-        assertEquals(entity.identifier(), filteredByString.identifier());
+        assertEquals(entity.identifier().getIdentifier(), filteredByString.identifier().getIdentifier());
     }
 
     @Inject
