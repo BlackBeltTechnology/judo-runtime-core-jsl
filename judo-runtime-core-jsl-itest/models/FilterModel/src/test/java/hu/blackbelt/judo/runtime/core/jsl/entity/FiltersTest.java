@@ -285,17 +285,18 @@ public class FiltersTest {
 
         assertFilterMatchesNumberOfResults(0, "this.integerAttr > 1 and this.integerAttr < 2");
 
-        // TODO JNG-3980
         // filter for undefined
 
-//        MyEntityWithOptionalFields undefinedResult = myEntityWithOptionalFieldsDao
-//                .query()
-//                .filterBy("this.integerAttr!isDefined()")
-//                .selectOne()
-//                .get();
-//
-//        assertEquals(entity3.identifier(),
-//                undefinedResult.identifier());
+        // TODO JNG-3980
+        //assertFilterByNameMatchesEntity(entity3, "integerAttr", NumberFilter.equalTo(null));
+        //assertFilterByNameMatchesNumberOfResults(2, "integerAttr", NumberFilter.notEqualTo(null));
+        //assertFilterByNameMatchesEntity(entity3, "derivedIntegerAttr", NumberFilter.equalTo(null));
+        //assertFilterByNameMatchesNumberOfResults(2, "derivedIntegerAttr", NumberFilter.notEqualTo(null));
+
+        assertEntityMatchesFilter(entity3, "this.integerAttr!isUndefined()");
+        assertFilterMatchesNumberOfResults(2, "this.integerAttr!isDefined()");
+        assertEntityMatchesFilter(entity3, "this.derivedIntegerAttr!isUndefined()");
+        assertFilterMatchesNumberOfResults(2, "this.derivedIntegerAttr!isDefined()");
 
         // Derived attributes
 
@@ -432,6 +433,20 @@ public class FiltersTest {
         assertFilterByNameMatchesNumberOfResults(2, "derivedScaledAttr", NumberFilter.lessOrEqualThan(SCALED_2));
         assertFilterByNameMatchesEntity(entity1, "derivedScaledAttr", NumberFilter.lessThan(SCALED_2));
 
+        // filter for undefined
+
+        // TODO JNG-3980
+//        assertFilterByNameMatchesEntity(entity3, "scaledAttr", NumberFilter.equalTo(null));
+//        assertFilterByNameMatchesNumberOfResults(2, "scaledAttr", NumberFilter.notEqualTo(null));
+//        assertFilterByNameMatchesEntity(entity3, "derivedScaledAttr", NumberFilter.equalTo(null));
+//        assertFilterByNameMatchesNumberOfResults(2, "derivedScaledAttr", NumberFilter.notEqualTo(null));
+
+        assertEntityMatchesFilter(entity3, "this.scaledAttr!isUndefined()");
+        assertFilterMatchesNumberOfResults(2, "this.scaledAttr!isDefined()");
+        assertEntityMatchesFilter(entity3, "this.derivedIntegerAttr!isUndefined()");
+        assertFilterMatchesNumberOfResults(2, "this.derivedIntegerAttr!isDefined()");
+
+
     }
 
     private void assertEntityMatchesFilterForScaledAttr(MyEntityWithOptionalFields entity, NumberFilter filter) {
@@ -550,6 +565,20 @@ public class FiltersTest {
         assertFilterByNameMatchesNumberOfResults(2, "derivedStringAttr", StringFilter.greaterOrEqualThan(STRING_2));
         assertFilterByNameMatchesNumberOfResults(2, "derivedStringAttr", StringFilter.lessOrEqualThan(STRING_1));
 
+        // filter for undefined
+
+        // TODO JNG-3980
+//        assertFilterByNameMatchesEntity(entity3, "stringAttr", StringFilter.equalTo(null));
+//        assertFilterByNameMatchesNumberOfResults(2, "stringAttr", StringFilter.notEqualTo(null));
+//        assertFilterByNameMatchesEntity(entity3, "derivedStringAttr", StringFilter.equalTo(null));
+//        assertFilterByNameMatchesNumberOfResults(2, "derivedStringAttr", StringFilter.notEqualTo(null));
+
+        assertEntityMatchesFilter(entity3, "this.stringAttr!isUndefined()");
+        assertFilterMatchesNumberOfResults(2, "this.stringAttr!isDefined()");
+        assertEntityMatchesFilter(entity3, "this.derivedStringAttr!isUndefined()");
+        assertFilterMatchesNumberOfResults(2, "this.derivedStringAttr!isDefined()");
+
+
     }
 
     private void assertEntityMatchesFilter(MyEntityWithOptionalFields entity, StringFilter filter) {
@@ -657,6 +686,19 @@ public class FiltersTest {
 
         assertFilterByNameMatchesEntity(entity1, "derivedBoolAttr", BooleanFilter.isTrue());
         assertFilterByNameMatchesEntity(entity2, "derivedBoolAttr", BooleanFilter.isFalse());
+
+        // filter for undefined
+
+        // TODO JNG-3980
+//        assertFilterByNameMatchesEntity(entity3, "boolAttr", BooleanFilter.equalTo(null));
+//        assertFilterByNameMatchesNumberOfResults(2, "boolAttr", BooleanFilter.notEqualTo(null));
+//        assertFilterByNameMatchesEntity(entity3, "derivedBoolAttr", BooleanFilter.equalTo(null));
+//        assertFilterByNameMatchesNumberOfResults(2, "derivedBoolAttr", BooleanFilter.notEqualTo(null));
+
+        assertEntityMatchesFilter(entity3, "this.boolAttr!isUndefined()");
+        assertFilterMatchesNumberOfResults(2, "this.boolAttr!isDefined()");
+        assertEntityMatchesFilter(entity3, "this.derivedBoolAttr!isUndefined()");
+        assertFilterMatchesNumberOfResults(2, "this.derivedBoolAttr!isDefined()");
     }
 
     @Test
@@ -719,6 +761,19 @@ public class FiltersTest {
         assertFilterByNameMatchesNumberOfResults(2, "derivedDateAttr", DateFilter.lessOrEqualThan(DATE_1));
         assertFilterByNameMatchesNumberOfResults(1, "derivedDateAttr", DateFilter.greaterThan(DATE_2));
         assertFilterByNameMatchesNumberOfResults(1, "derivedDateAttr", DateFilter.lessThan(DATE_1));
+
+        // filter for undefined
+
+        // TODO JNG-3980
+//        assertFilterByNameMatchesEntity(entity3, "dateAttr", DateFilter.equalTo(null));
+//        assertFilterByNameMatchesNumberOfResults(2, "dateAttr", DateFilter.notEqualTo(null));
+//        assertFilterByNameMatchesEntity(entity3, "derivedDateAttr", DateFilter.equalTo(null));
+//        assertFilterByNameMatchesNumberOfResults(2, "derivedDateAttr", DateFilter.notEqualTo(null));
+
+        assertEntityMatchesFilter(entity3, "this.dateAttr!isUndefined()");
+        assertFilterMatchesNumberOfResults(2, "this.dateAttr!isDefined()");
+        assertEntityMatchesFilter(entity3, "this.dateAttr!isUndefined()");
+        assertFilterMatchesNumberOfResults(2, "this.derivedDateAttr!isDefined()");
 
     }
 
@@ -817,6 +872,19 @@ public class FiltersTest {
         assertFilterByNameMatchesNumberOfResults(1, "derivedTimestampAttr", TimestampFilter.greaterThan(TIMESTAMP_2));
         assertFilterByNameMatchesNumberOfResults(1, "derivedTimestampAttr", TimestampFilter.lessThan(TIMESTAMP_1));
 
+        // filter for undefined
+
+        // TODO JNG-3980
+//        assertFilterByNameMatchesEntity(entity3, "timestampAttr", TimestampFilter.equalTo(null));
+//        assertFilterByNameMatchesNumberOfResults(2, "timestampAttr", TimestampFilter.notEqualTo(null));
+//        assertFilterByNameMatchesEntity(entity3, "derivedTimestampAttr", TimestampFilter.equalTo(null));
+//        assertFilterByNameMatchesNumberOfResults(2, "derivedTimestampAttr", TimestampFilter.notEqualTo(null));
+
+        assertEntityMatchesFilter(entity3, "this.timestampAttr!isUndefined()");
+        assertFilterMatchesNumberOfResults(2, "this.timestampAttr!isDefined()");
+        assertEntityMatchesFilter(entity3, "this.derivedTimestampAttr!isUndefined()");
+        assertFilterMatchesNumberOfResults(2, "this.derivedTimestampAttr!isDefined()");
+
     }
 
     private void assertEntityMatchesFilter(MyEntityWithOptionalFields entity, TimestampFilter filter) {
@@ -912,6 +980,19 @@ public class FiltersTest {
         assertFilterByNameMatchesNumberOfResults(2, "derivedTimeAttr", TimeFilter.lessOrEqualThan(TIME_1));
         assertFilterByNameMatchesNumberOfResults(1, "derivedTimeAttr", TimeFilter.greaterThan(TIME_2));
         assertFilterByNameMatchesNumberOfResults(1, "derivedTimeAttr", TimeFilter.lessThan(TIME_1));
+
+        // filter for undefined
+
+        // TODO JNG-3980
+//        assertFilterByNameMatchesEntity(entity3, "timeAttr", TimeFilter.equalTo(null));
+//        assertFilterByNameMatchesNumberOfResults(2, "timeAttr", TimeFilter.notEqualTo(null));
+//        assertFilterByNameMatchesEntity(entity3, "derivedTimeAttr", TimeFilter.equalTo(null));
+//        assertFilterByNameMatchesNumberOfResults(2, "derivedTimeAttr", TimeFilter.notEqualTo(null));
+
+        assertEntityMatchesFilter(entity3, "this.timeAttr!isUndefined()");
+        assertFilterMatchesNumberOfResults(2, "this.timeAttr!isDefined()");
+        assertEntityMatchesFilter(entity3, "this.derivedTimeAttr!isUndefined()");
+        assertFilterMatchesNumberOfResults(2, "this.derivedTimeAttr!isDefined()");
     }
 
     private void assertEntityMatchesFilter(MyEntityWithOptionalFields entity, TimeFilter filter) {
@@ -1011,6 +1092,19 @@ public class FiltersTest {
 
         assertFilterByNameMatchesEntity(entity1, "derivedEnumAttr", EnumerationFilter.equalTo(MyEnum.Bombastic));
         assertFilterByNameMatchesEntity(entity2, "derivedEnumAttr", EnumerationFilter.notEqualTo(MyEnum.Bombastic));
+
+        // filter for undefined
+
+        // TODO JNG-3980
+//        assertFilterByNameMatchesEntity(entity3, "enumAttr", EnumerationFilter.equalTo(null));
+//        assertFilterByNameMatchesNumberOfResults(2, "enumAttr", EnumerationFilter.notEqualTo(null));
+//        assertFilterByNameMatchesEntity(entity3, "derivedEnumAttr", EnumerationFilter.equalTo(null));
+//        assertFilterByNameMatchesNumberOfResults(2, "derivedEnumAttr", EnumerationFilter.notEqualTo(null));
+
+        assertEntityMatchesFilter(entity3, "this.enumAttr!isUndefined()");
+        assertFilterMatchesNumberOfResults(2, "this.enumAttr!isDefined()");
+        assertEntityMatchesFilter(entity3, "this.derivedEnumAttr!isUndefined()");
+        assertFilterMatchesNumberOfResults(2, "this.derivedEnumAttr!isDefined()");
 
     }
 
