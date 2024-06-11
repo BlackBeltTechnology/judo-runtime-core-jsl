@@ -21,10 +21,10 @@ package hu.blackbelt.judo.runtime.core.jsl.transfer;
  */
 
 import com.google.inject.Inject;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.entitya.EntityA;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.composition.Composition;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.composition.CompositionDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.composition.CompositionIdentifier;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.entitya.EntityA;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.entitya.EntityADao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.entitya.EntityAIdentifier;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.entityb.EntityB;
@@ -54,7 +54,6 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercomposito
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.transferf.TransferFForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.transferg.TransferGDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.transferg.TransferGForCreate;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.transferg.TransferGIdentifier;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.transferh.TransferH;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.transferh.TransferHDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.transferh.TransferHForCreate;
@@ -73,6 +72,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 
@@ -172,8 +172,8 @@ public class MappedTransferCompositonAggregationTest {
         // Check transferA contains transferB
         assertNotEquals(transferB.identifier().getIdentifier(),transferA.getSingleEntityB().orElseThrow().identifier().getIdentifier());
         assertNotEquals(
-                entityBDao.getById(transferB.adaptTo(EntityBIdentifier.class)).orElseThrow().identifier(),
-                entityADao.getById(transferA.adaptTo(EntityAIdentifier.class)).orElseThrow().getSingleEntityB().orElseThrow().identifier()
+                entityBDao.getById(transferB.adaptTo(EntityBIdentifier.class)).orElseThrow().identifier().getIdentifier(),
+                entityADao.getById(transferA.adaptTo(EntityAIdentifier.class)).orElseThrow().getSingleEntityB().orElseThrow().identifier().getIdentifier()
         );
 
         // Check transferA cannot bind a different B element
@@ -321,21 +321,21 @@ public class MappedTransferCompositonAggregationTest {
         assertEquals(6, transferBDao.query().selectList().size());
         assertEquals(6, entityBDao.query().selectList().size());
 
-        assertFalse(transferA.getMultiEntityB().stream().map(t -> t.identifier()).toList().contains(transferB1.identifier()));
-        assertFalse(transferA.getMultiEntityB().stream().map(t -> t.identifier()).toList().contains(transferB2.identifier()));
-        assertFalse(transferA.getMultiEntityB().stream().map(t -> t.identifier()).toList().contains(transferB3.identifier()));
+        assertFalse(transferA.getMultiEntityB().stream().map(t -> t.identifier().getIdentifier()).toList().contains(transferB1.identifier().getIdentifier()));
+        assertFalse(transferA.getMultiEntityB().stream().map(t -> t.identifier().getIdentifier()).toList().contains(transferB2.identifier().getIdentifier()));
+        assertFalse(transferA.getMultiEntityB().stream().map(t -> t.identifier().getIdentifier()).toList().contains(transferB3.identifier().getIdentifier()));
 
         // Check the entity level
         EntityB entityB1 = entityBDao.getById(transferB1.adaptTo(EntityBIdentifier.class)).orElseThrow();
         EntityB entityB2 = entityBDao.getById(transferB2.adaptTo(EntityBIdentifier.class)).orElseThrow();
         EntityB entityB3 = entityBDao.getById(transferB3.adaptTo(EntityBIdentifier.class)).orElseThrow();
 
-        assertFalse(entityADao.getById(transferA.adaptTo(EntityAIdentifier.class)).orElseThrow().getMultiEntityB().stream().map(t -> t.identifier()).toList()
-                .contains(entityB1.identifier()));
-        assertFalse(entityADao.getById(transferA.adaptTo(EntityAIdentifier.class)).orElseThrow().getMultiEntityB().stream().map(t -> t.identifier()).toList()
-                .contains(entityB2.identifier()));
-        assertFalse(entityADao.getById(transferA.adaptTo(EntityAIdentifier.class)).orElseThrow().getMultiEntityB().stream().map(t -> t.identifier()).toList()
-                .contains(entityB3.identifier()));
+        assertFalse(entityADao.getById(transferA.adaptTo(EntityAIdentifier.class)).orElseThrow().getMultiEntityB().stream().map(t -> t.identifier().getIdentifier()).toList()
+                .contains(entityB1.identifier().getIdentifier()));
+        assertFalse(entityADao.getById(transferA.adaptTo(EntityAIdentifier.class)).orElseThrow().getMultiEntityB().stream().map(t -> t.identifier().getIdentifier()).toList()
+                .contains(entityB2.identifier().getIdentifier()));
+        assertFalse(entityADao.getById(transferA.adaptTo(EntityAIdentifier.class)).orElseThrow().getMultiEntityB().stream().map(t -> t.identifier().getIdentifier()).toList()
+                .contains(entityB3.identifier().getIdentifier()));
 
         //Delete one element
 
@@ -401,10 +401,10 @@ public class MappedTransferCompositonAggregationTest {
                 .build());
 
         TransferF transferF = transferE.getSingleEntityF().get();
-        List<TransferGIdentifier> listOfG = transferE.getSingleEntityF().get().getMultiEntityG().stream().map(t -> t.identifier()).toList();
+        List<Serializable> listOfG = transferE.getSingleEntityF().get().getMultiEntityG().stream().map(t -> t.identifier().getIdentifier()).toList();
 
         assertThat(
-                transferF.getMultiEntityG().stream().map(t -> t.identifier()).toList(),
+                transferF.getMultiEntityG().stream().map(t -> t.identifier().getIdentifier()).toList(),
                 containsInAnyOrder(listOfG.toArray())
         );
     }

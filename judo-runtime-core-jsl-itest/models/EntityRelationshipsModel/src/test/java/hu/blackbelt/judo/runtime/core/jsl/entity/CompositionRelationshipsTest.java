@@ -47,7 +47,6 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationship
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityd.EntityD;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityd.EntityDDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityd.EntityDForCreate;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityd.EntityDIdentifier;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entitye.EntityE;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entitye.EntityEDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entitye.EntityEForCreate;
@@ -80,6 +79,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -216,7 +216,7 @@ public class CompositionRelationshipsTest {
         assertNotNull(c.getStringC());
         assertEquals("TEST-C", c.getStringC().orElseThrow());
         assertNotNull(c);
-        assertNotNull(c.identifier());
+        assertNotNull(c.identifier().getIdentifier());
 
         c = entityADao.querySingleRequiredConA(entityA, EntityCMask.entityCMask().withStringC());
         assertNull(c.getStringB());
@@ -224,7 +224,7 @@ public class CompositionRelationshipsTest {
         assertNotNull(c.getStringC());
         assertEquals("TEST-C", c.getStringC().orElseThrow());
         assertNotNull(c);
-        assertNotNull(c.identifier());
+        assertNotNull(c.identifier().getIdentifier());
 
         c = entityADao.querySingleRequiredConA(entityA.identifier(), EntityCMask.entityCMask().withStringC());
         assertNull(c.getStringB());
@@ -232,7 +232,7 @@ public class CompositionRelationshipsTest {
         assertNotNull(c.getStringC());
         assertEquals("TEST-C", c.getStringC().orElseThrow());
         assertNotNull(c);
-        assertNotNull(c.identifier());
+        assertNotNull(c.identifier().getIdentifier());
 
         EntityC finalC = c;
         IllegalStateException exception = assertThrows(
@@ -272,8 +272,8 @@ public class CompositionRelationshipsTest {
         assertNotEquals(null, maskedA.getSingleRequiredConA());
         assertEquals(Optional.of("TEST-C"), singleRequiredConA.getStringC());
         assertEquals(2, singleRequiredConA.getMultipleDonB().size());
-        assertNotEquals(Optional.of(entityD1), singleRequiredConA.getMultipleDonB().stream().filter(d -> d.identifier().equals(entityD1.identifier())).findFirst());
-        assertNotEquals(Optional.of(entityD2), singleRequiredConA.getMultipleDonB().stream().filter(d -> d.identifier().equals(entityD2.identifier())).findFirst());
+        assertNotEquals(Optional.of(entityD1), singleRequiredConA.getMultipleDonB().stream().filter(d -> d.identifier().getIdentifier().equals(entityD1.identifier().getIdentifier())).findFirst());
+        assertNotEquals(Optional.of(entityD2), singleRequiredConA.getMultipleDonB().stream().filter(d -> d.identifier().getIdentifier().equals(entityD2.identifier().getIdentifier())).findFirst());
     }
 
     @Test
@@ -295,7 +295,7 @@ public class CompositionRelationshipsTest {
         assertEquals(1, maskedAs.size());
         assertEquals(null, maskedA.getSingleConA());
         assertEquals(null, maskedA.getStringA());
-        assertNotEquals(singleRequiredConA.identifier(), maskedA.getSingleRequiredConA().identifier());
+        assertNotEquals(singleRequiredConA.identifier().getIdentifier(), maskedA.getSingleRequiredConA().identifier().getIdentifier());
         assertEquals(null, requiredC.getStringB());
         assertEquals(Optional.of("TEST-C"), requiredC.getStringC());
     }
@@ -498,10 +498,10 @@ public class CompositionRelationshipsTest {
                 .withSingleRequiredConA(singleRequiredConA.adaptTo(EntityCForCreate.class))
                 .build());
 
-        assertNotEquals(entityA.getSingleRequiredConA().identifier(), singleRequiredConA.identifier());
-        List<EntityDIdentifier> collect = singleRequiredConA.getMultipleDonB().stream().map(c -> c.identifier()).collect(Collectors.toList());
-        assertFalse(collect.contains(entityD1.identifier()));
-        assertFalse(collect.contains(entityD2.identifier()));
+        assertNotEquals(entityA.getSingleRequiredConA().identifier().getIdentifier(), singleRequiredConA.identifier().getIdentifier());
+        List<Serializable> collect = singleRequiredConA.getMultipleDonB().stream().map(c -> c.identifier().getIdentifier()).collect(Collectors.toList());
+        assertFalse(collect.contains(entityD1.identifier().getIdentifier()));
+        assertFalse(collect.contains(entityD2.identifier().getIdentifier()));
 
     }
 

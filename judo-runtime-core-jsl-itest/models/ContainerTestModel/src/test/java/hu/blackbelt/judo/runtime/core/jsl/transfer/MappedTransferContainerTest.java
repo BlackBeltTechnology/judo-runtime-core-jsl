@@ -240,12 +240,12 @@ public class MappedTransferContainerTest {
 
         assertTrue(tadditionalServiceDao.queryServicePrice(tadditionalService).isPresent());
 
-        Assertions.assertEquals(partner.getServicePrices().get(0).identifier(), tadditionalServiceDao.queryServicePrice(tadditionalService).get().identifier());
+        Assertions.assertEquals(partner.getServicePrices().get(0).identifier().getIdentifier(), tadditionalServiceDao.queryServicePrice(tadditionalService).get().identifier().getIdentifier());
 
         // Should throw error because the Price instance is out of range
         tadditionalServiceDao.setServicePrice(tadditionalService, outOfPrice);
 
-        Assertions.assertEquals(outOfPrice.identifier(), tadditionalServiceDao.queryServicePrice(tadditionalService).get().identifier());
+        Assertions.assertEquals(outOfPrice.identifier().getIdentifier(), tadditionalServiceDao.queryServicePrice(tadditionalService).get().identifier().getIdentifier());
 
 
     }

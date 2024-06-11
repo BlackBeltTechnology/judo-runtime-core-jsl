@@ -74,6 +74,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
+import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -192,13 +193,13 @@ public class AssociationRelationshipsTest {
         EntityF f3 = entityEDao.createMultipleFOnE(entityE, EntityFForCreate.builder().build());
 
         assertEquals(1, entityEDao.queryMultipleFOnE(entityE).count());
-        assertThat(ListOfMultipleFOnEIds(entityE), hasItems(f3.identifier()));
+        assertThat(ListOfMultipleFOnEIds(entityE), hasItems(f3.identifier().getIdentifier()));
 
         EntityF f4 = entityEDao.createMultipleFOnE(entityE,  EntityFForCreate.builderFrom(f1).build());
 
-        assertNotEquals(f4.identifier(), f1.identifier());
+        assertNotEquals(f4.identifier().getIdentifier(), f1.identifier().getIdentifier());
         assertEquals(2, entityEDao.queryMultipleFOnE(entityE).count());
-        assertThat(ListOfMultipleFOnEIds(entityE), hasItems(f3.identifier(), f4.identifier()));
+        assertThat(ListOfMultipleFOnEIds(entityE), hasItems(f3.identifier().getIdentifier(), f4.identifier().getIdentifier()));
 
         // add method's with one instance
 
@@ -206,29 +207,29 @@ public class AssociationRelationshipsTest {
         entityEDao.addMultipleFOnE(entityE, f1); // try to add twice
 
         assertEquals(3, entityEDao.queryMultipleFOnE(entityE).count());
-        assertThat(ListOfMultipleFOnEIds(entityE), hasItems(f1.identifier(), f3.identifier(), f4.identifier()));
+        assertThat(ListOfMultipleFOnEIds(entityE), hasItems(f1.identifier().getIdentifier(), f3.identifier().getIdentifier(), f4.identifier().getIdentifier()));
 
         // remove method's with one instance
 
         entityEDao.removeMultipleFOnE(entityE, f2); // remove one that not part of the relation
 
         assertEquals(3, entityEDao.queryMultipleFOnE(entityE).count());
-        assertThat(ListOfMultipleFOnEIds(entityE), hasItems(f1.identifier(), f3.identifier(), f4.identifier()));
+        assertThat(ListOfMultipleFOnEIds(entityE), hasItems(f1.identifier().getIdentifier(), f3.identifier().getIdentifier(), f4.identifier().getIdentifier()));
 
         entityEDao.removeMultipleFOnE(entityE, f3);
 
         assertEquals(2, entityEDao.queryMultipleFOnE(entityE).count());
-        assertThat(ListOfMultipleFOnEIds(entityE), hasItems(f1.identifier(), f4.identifier()));
+        assertThat(ListOfMultipleFOnEIds(entityE), hasItems(f1.identifier().getIdentifier(), f4.identifier().getIdentifier()));
 
         entityEDao.removeMultipleFOnE(entityE, f4);
 
         assertEquals(1, entityEDao.queryMultipleFOnE(entityE).count());
-        assertThat(ListOfMultipleFOnEIds(entityE), hasItems(f1.identifier()));
+        assertThat(ListOfMultipleFOnEIds(entityE), hasItems(f1.identifier().getIdentifier()));
 
     }
 
-    private  List<EntityFIdentifier> ListOfMultipleFOnEIds(EntityE e){
-        return entityEDao.queryMultipleFOnE(e).selectList().stream().map(EntityF::identifier).toList();
+    private  List<Serializable> ListOfMultipleFOnEIds(EntityE e){
+        return entityEDao.queryMultipleFOnE(e).selectList().stream().map(EntityF::identifier).map(EntityFIdentifier::getIdentifier).toList();
     }
 
     @Test
