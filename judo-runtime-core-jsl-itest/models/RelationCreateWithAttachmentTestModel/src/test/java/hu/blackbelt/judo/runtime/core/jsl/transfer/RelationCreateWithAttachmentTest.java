@@ -81,12 +81,12 @@ public class RelationCreateWithAttachmentTest {
         B b1 = aDao.queryRelBColl(a).filterByName(StringFilter.equalTo("B1")).selectOne().get();
         B b2 = aDao.queryRelBColl(a).filterByName(StringFilter.equalTo("B2")).selectOne().get();
 
-        assertEquals(c.identifier(), bDao.queryRelC(b1).get().identifier());
-        assertEquals(c1.identifier(), bDao.queryRelC(b2).get().identifier());
+        assertEquals(c.identifier().getIdentifier(), bDao.queryRelC(b1).get().identifier().getIdentifier());
+        assertEquals(c1.identifier().getIdentifier(), bDao.queryRelC(b2).get().identifier().getIdentifier());
 
         B b3 = aDao.createCompB(a, BForCreate.builder().withRelC(c).build());
 
-        assertEquals(c.identifier(), bDao.queryRelC(b3).get().identifier());
+        assertEquals(c.identifier().getIdentifier(), bDao.queryRelC(b3).get().identifier().getIdentifier());
 
     }
 

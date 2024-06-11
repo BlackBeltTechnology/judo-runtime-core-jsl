@@ -231,7 +231,7 @@ public class QueryCustomizerFunctionsTest {
                 .selectOne()
                 .get();
 
-        assertEquals(entity2.identifier(), orderBy.identifier());
+        assertEquals(entity2.identifier().getIdentifier(), orderBy.identifier().getIdentifier());
     }
 
     @Test
@@ -265,7 +265,7 @@ public class QueryCustomizerFunctionsTest {
                 .selectOne()
                 .get();
 
-        assertEquals(entity1.identifier(), orderBy.identifier());
+        assertEquals(entity1.identifier().getIdentifier(), orderBy.identifier().getIdentifier());
     }
 
     @Test
@@ -300,7 +300,7 @@ public class QueryCustomizerFunctionsTest {
                 .selectOne()
                 .get();
 
-        assertEquals(entity2.identifier(), orderBy.identifier());
+        assertEquals(entity2.identifier().getIdentifier(), orderBy.identifier().getIdentifier());
     }
 
     @Test
@@ -335,7 +335,7 @@ public class QueryCustomizerFunctionsTest {
                 .selectOne()
                 .get();
 
-        assertEquals(entity1.identifier(), orderBy.identifier());
+        assertEquals(entity1.identifier().getIdentifier(), orderBy.identifier().getIdentifier());
     }
 
     @Test
@@ -370,7 +370,7 @@ public class QueryCustomizerFunctionsTest {
                 .selectOne()
                 .get();
 
-        assertEquals(entity2.identifier(), orderBy.identifier());
+        assertEquals(entity2.identifier().getIdentifier(), orderBy.identifier().getIdentifier());
     }
 
     @Test
@@ -405,7 +405,7 @@ public class QueryCustomizerFunctionsTest {
                 .selectOne()
                 .get();
 
-        assertEquals(entity1.identifier(), orderBy.identifier());
+        assertEquals(entity1.identifier().getIdentifier(), orderBy.identifier().getIdentifier());
     }
 
     @Test
@@ -419,7 +419,7 @@ public class QueryCustomizerFunctionsTest {
                 .selectOne()
                 .get();
 
-        assertEquals(entity1.identifier(), maskedResult.identifier());
+        assertEquals(entity1.identifier().getIdentifier(), maskedResult.identifier().getIdentifier());
         assertEquals(entity1.getIntegerAttr(), maskedResult.getIntegerAttr());
         assertEquals(null, maskedResult.getScaledAttr());
         assertEquals(entity1.getStringAttr(), maskedResult.getStringAttr());
@@ -433,7 +433,7 @@ public class QueryCustomizerFunctionsTest {
                 .selectOne()
                 .get();
 
-        assertEquals(firstEntity.identifier(), orderBy.identifier());
+        assertEquals(firstEntity.identifier().getIdentifier(), orderBy.identifier().getIdentifier());
     }
 
     private void assertOrderByDescending(MyEntityWithOptionalFieldsAttribute attribute, MyEntityWithOptionalFields firstEntity) {
@@ -443,6 +443,6 @@ public class QueryCustomizerFunctionsTest {
                 .selectOne()
                 .get();
 
-        assertEquals(firstEntity.identifier(), orderByDescending.identifier());
+        assertEquals(firstEntity.identifier().getIdentifier(), orderByDescending.identifier().getIdentifier());
     }
 }

@@ -207,7 +207,7 @@ public class MappedTransferFiltersTest {
                 .selectList();
 
         assertEquals(1, multiFilter.size());
-        assertEquals(transfer1.identifier(), multiFilter.get(0).identifier());
+        assertEquals(transfer1.identifier().getIdentifier(), multiFilter.get(0).identifier().getIdentifier());
 
         multiFilter = transferMyEntityWithOptionalFieldsDao
                 .query()
@@ -218,7 +218,7 @@ public class MappedTransferFiltersTest {
 
         assertEquals(1, multiFilter.size());
 
-        assertEquals(transfer1.identifier(), multiFilter.get(0).identifier());
+        assertEquals(transfer1.identifier().getIdentifier(), multiFilter.get(0).identifier().getIdentifier());
     }
 
     @Test
@@ -360,7 +360,7 @@ public class MappedTransferFiltersTest {
                 .selectOne()
                 .get();
 
-        assertEquals(entity.identifier(), filtered.identifier());
+        assertEquals(entity.identifier().getIdentifier(), filtered.identifier().getIdentifier());
 
         TransferMyEntityWithOptionalFields filteredDerived = transferMyEntityWithOptionalFieldsDao
                 .query()
@@ -368,7 +368,7 @@ public class MappedTransferFiltersTest {
                 .selectOne()
                 .get();
 
-        assertEquals(entity.identifier(), filteredDerived.identifier());
+        assertEquals(entity.identifier().getIdentifier(), filteredDerived.identifier().getIdentifier());
     }
 
     @Test
@@ -458,7 +458,7 @@ public class MappedTransferFiltersTest {
                 .selectOne()
                 .get();
 
-        assertEquals(entity.identifier(), filtered.identifier());
+        assertEquals(entity.identifier().getIdentifier(), filtered.identifier().getIdentifier());
 
         TransferMyEntityWithOptionalFields filteredDerived = transferMyEntityWithOptionalFieldsDao
                 .query()
@@ -466,7 +466,7 @@ public class MappedTransferFiltersTest {
                 .selectOne()
                 .get();
 
-        assertEquals(entity.identifier(), filteredDerived.identifier());
+        assertEquals(entity.identifier().getIdentifier(), filteredDerived.identifier().getIdentifier());
     }
 
     private void assertFilterMatchesNumberOfResultsForScaledAttr(int expected, NumberFilter filter) {
@@ -589,7 +589,7 @@ public class MappedTransferFiltersTest {
                 .selectOne()
                 .get();
 
-        assertEquals(entity.identifier(), filtered.identifier());
+        assertEquals(entity.identifier().getIdentifier(), filtered.identifier().getIdentifier());
 
         TransferMyEntityWithOptionalFields filteredDerived = transferMyEntityWithOptionalFieldsDao
                 .query()
@@ -597,7 +597,7 @@ public class MappedTransferFiltersTest {
                 .selectOne()
                 .get();
 
-        assertEquals(entity.identifier(), filteredDerived.identifier());
+        assertEquals(entity.identifier().getIdentifier(), filteredDerived.identifier().getIdentifier());
     }
 
     private void assertFilterMatchesNumberOfResults(int expected, StringFilter filter) {
@@ -647,7 +647,7 @@ public class MappedTransferFiltersTest {
                 .selectOne()
                 .get();
 
-        assertEquals(transfer1.identifier(), isTrue.identifier());
+        assertEquals(transfer1.identifier().getIdentifier(), isTrue.identifier().getIdentifier());
 
         TransferMyEntityWithOptionalFields isFalse = transferMyEntityWithOptionalFieldsDao
                 .query()
@@ -655,7 +655,7 @@ public class MappedTransferFiltersTest {
                 .selectOne()
                 .get();
 
-        assertEquals(transfer2.identifier(), isFalse.identifier());
+        assertEquals(transfer2.identifier().getIdentifier(), isFalse.identifier().getIdentifier());
 
         // FilterByName
 
@@ -674,7 +674,7 @@ public class MappedTransferFiltersTest {
                 .selectOne()
                 .get();
 
-        assertEquals(transfer1.identifier(), isTrueDerived.identifier());
+        assertEquals(transfer1.identifier().getIdentifier(), isTrueDerived.identifier().getIdentifier());
 
         TransferMyEntityWithOptionalFields isFalseDerived = transferMyEntityWithOptionalFieldsDao
                 .query()
@@ -682,7 +682,7 @@ public class MappedTransferFiltersTest {
                 .selectOne()
                 .get();
 
-        assertEquals(transfer2.identifier(), isFalseDerived.identifier());
+        assertEquals(transfer2.identifier().getIdentifier(), isFalseDerived.identifier().getIdentifier());
 
         // FilterByName
 
@@ -786,7 +786,7 @@ public class MappedTransferFiltersTest {
                 .selectOne()
                 .get();
 
-        assertEquals(entity.identifier(), filtered.identifier());
+        assertEquals(entity.identifier().getIdentifier(), filtered.identifier().getIdentifier());
 
         TransferMyEntityWithOptionalFields filteredDerived = transferMyEntityWithOptionalFieldsDao
                 .query()
@@ -794,7 +794,7 @@ public class MappedTransferFiltersTest {
                 .selectOne()
                 .get();
 
-        assertEquals(entity.identifier(), filteredDerived.identifier());
+        assertEquals(entity.identifier().getIdentifier(), filteredDerived.identifier().getIdentifier());
     }
 
     private void assertFilterMatchesNumberOfResults(int expected, DateFilter filter) {
@@ -896,7 +896,7 @@ public class MappedTransferFiltersTest {
                 .selectOne()
                 .get();
 
-        assertEquals(entity.identifier(), filtered.identifier());
+        assertEquals(entity.identifier().getIdentifier(), filtered.identifier().getIdentifier());
 
         TransferMyEntityWithOptionalFields filteredDerived = transferMyEntityWithOptionalFieldsDao
                 .query()
@@ -904,7 +904,7 @@ public class MappedTransferFiltersTest {
                 .selectOne()
                 .get();
 
-        assertEquals(entity.identifier(), filteredDerived.identifier());
+        assertEquals(entity.identifier().getIdentifier(), filteredDerived.identifier().getIdentifier());
     }
 
     private void assertFilterMatchesNumberOfResults(int expected, TimestampFilter filter) {
@@ -954,7 +954,7 @@ public class MappedTransferFiltersTest {
                 .selectList();
 
         assertEquals(1, greaterThanByStringFilter.size());
-        assertEquals(transfer1.identifier(), greaterThanByStringFilter.get(0).identifier());
+        assertEquals(transfer1.identifier().getIdentifier(), greaterThanByStringFilter.get(0).identifier().getIdentifier());
 
         List<TransferMyEntityWithOptionalFields> lessThanByStringFilter = transferMyEntityWithOptionalFieldsDao
                 .query()
@@ -962,7 +962,7 @@ public class MappedTransferFiltersTest {
                 .selectList();
 
         assertEquals(1, lessThanByStringFilter.size());
-        assertEquals(transfer2.identifier(), lessThanByStringFilter.get(0).identifier());
+        assertEquals(transfer2.identifier().getIdentifier(), lessThanByStringFilter.get(0).identifier().getIdentifier());
 
         assertEntityMatchesFilter(transfer1, TimeFilter.equalTo(TIME_1));
         assertEntityMatchesFilter(transfer2, TimeFilter.notEqualTo(TIME_1));
@@ -1019,7 +1019,7 @@ public class MappedTransferFiltersTest {
                 .selectOne()
                 .get();
 
-        assertEquals(entity.identifier(), filtered.identifier());
+        assertEquals(entity.identifier().getIdentifier(), filtered.identifier().getIdentifier());
 
         TransferMyEntityWithOptionalFields filteredDerived = transferMyEntityWithOptionalFieldsDao
                 .query()
@@ -1027,7 +1027,7 @@ public class MappedTransferFiltersTest {
                 .selectOne()
                 .get();
 
-        assertEquals(entity.identifier(), filteredDerived.identifier());
+        assertEquals(entity.identifier().getIdentifier(), filteredDerived.identifier().getIdentifier());
     }
 
     private void assertFilterMatchesNumberOfResults(int expected, TimeFilter filter) {
@@ -1073,7 +1073,7 @@ public class MappedTransferFiltersTest {
                 .selectOne()
                 .get();
 
-        assertEquals(transfer1.identifier(), equalTo.identifier());
+        assertEquals(transfer1.identifier().getIdentifier(), equalTo.identifier().getIdentifier());
 
         TransferMyEntityWithOptionalFields notEqualTo = transferMyEntityWithOptionalFieldsDao
                 .query()
@@ -1081,7 +1081,7 @@ public class MappedTransferFiltersTest {
                 .selectOne()
                 .get();
 
-        assertEquals(transfer2.identifier(), notEqualTo.identifier());
+        assertEquals(transfer2.identifier().getIdentifier(), notEqualTo.identifier().getIdentifier());
 
         // Derived
 
@@ -1091,7 +1091,7 @@ public class MappedTransferFiltersTest {
                 .selectOne()
                 .get();
 
-        assertEquals(transfer1.identifier(), equalToDerived.identifier());
+        assertEquals(transfer1.identifier().getIdentifier(), equalToDerived.identifier().getIdentifier());
 
         TransferMyEntityWithOptionalFields notEqualToDerived = transferMyEntityWithOptionalFieldsDao
                 .query()
@@ -1099,7 +1099,7 @@ public class MappedTransferFiltersTest {
                 .selectOne()
                 .get();
 
-        assertEquals(transfer2.identifier(), notEqualToDerived.identifier());
+        assertEquals(transfer2.identifier().getIdentifier(), notEqualToDerived.identifier().getIdentifier());
 
         // FilterByName
 
@@ -1160,22 +1160,22 @@ public class MappedTransferFiltersTest {
         assertEquals(3, transferMyEntityWithOptionalFieldsDao.query().count());
 
         assertEquals(2, transferFilterEntityDao.queryHaveTOnTheStringAttr(transferFilterEntity).count());
-        assertThat(transferFilterEntityDao.queryHaveTOnTheStringAttr(transferFilterEntity).selectList().stream().map(e -> e.identifier()).toList(),
-                containsInAnyOrder(transfer1.identifier(), transfer2.identifier()));
+        assertThat(transferFilterEntityDao.queryHaveTOnTheStringAttr(transferFilterEntity).selectList().stream().map(e -> e.identifier().getIdentifier()).toList(),
+                containsInAnyOrder(transfer1.identifier().getIdentifier(), transfer2.identifier().getIdentifier()));
 
         assertEquals(1, transferFilterEntityDao.queryTestIsTheStringAttr(transferFilterEntity).count());
-        assertThat(transferFilterEntityDao.queryTestIsTheStringAttr(transferFilterEntity).selectList().stream().map(e -> e.identifier()).toList(),
-                containsInAnyOrder(transfer1.identifier()));
+        assertThat(transferFilterEntityDao.queryTestIsTheStringAttr(transferFilterEntity).selectList().stream().map(e -> e.identifier().getIdentifier()).toList(),
+                containsInAnyOrder(transfer1.identifier().getIdentifier()));
 
         assertEquals(0, transferFilterEntityDao.queryHaveNoMatchOnTheStringAttr(transferFilterEntity).count());
 
         assertEquals(1, transferFilterEntityDao.queryHaveUndefinedOnTheStringAttr(transferFilterEntity).count());
-        assertThat(transferFilterEntityDao.queryHaveUndefinedOnTheStringAttr(transferFilterEntity).selectList().stream().map(e -> e.identifier()).toList(),
-                containsInAnyOrder(transfer3.identifier()));
+        assertThat(transferFilterEntityDao.queryHaveUndefinedOnTheStringAttr(transferFilterEntity).selectList().stream().map(e -> e.identifier().getIdentifier()).toList(),
+                containsInAnyOrder(transfer3.identifier().getIdentifier()));
 
         assertEquals(2, transferFilterEntityDao.queryHaveDefinedOnTheStringAttr(transferFilterEntity).count());
-        assertThat(transferFilterEntityDao.queryHaveDefinedOnTheStringAttr(transferFilterEntity).selectList().stream().map(e -> e.identifier()).toList(),
-                containsInAnyOrder(transfer1.identifier(), transfer2.identifier()));
+        assertThat(transferFilterEntityDao.queryHaveDefinedOnTheStringAttr(transferFilterEntity).selectList().stream().map(e -> e.identifier().getIdentifier()).toList(),
+                containsInAnyOrder(transfer1.identifier().getIdentifier(), transfer2.identifier().getIdentifier()));
 
     }
 
@@ -1223,7 +1223,7 @@ public class MappedTransferFiltersTest {
                 .selectOne()
                 .get();
 
-        assertEquals(entity.identifier(), equalsByName.identifier());
+        assertEquals(entity.identifier().getIdentifier(), equalsByName.identifier().getIdentifier());
     }
 
     private void assertFilterByNameMatchesNumberOfResults(int expected, String attributeName, Filter filter1) {
@@ -1251,7 +1251,7 @@ public class MappedTransferFiltersTest {
                 .selectOne()
                 .get();
 
-        assertEquals(entity.identifier(), filteredByString.identifier());
+        assertEquals(entity.identifier().getIdentifier(), filteredByString.identifier().getIdentifier());
     }
 
     @Inject

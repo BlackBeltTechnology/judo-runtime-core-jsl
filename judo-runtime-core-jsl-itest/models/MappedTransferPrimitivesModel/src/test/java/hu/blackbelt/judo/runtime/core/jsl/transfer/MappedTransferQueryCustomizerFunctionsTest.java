@@ -280,7 +280,7 @@ public class MappedTransferQueryCustomizerFunctionsTest {
                 .selectOne()
                 .get();
 
-        assertEquals(transf2.identifier(), orderBy.identifier());
+        assertEquals(transf2.identifier().getIdentifier(), orderBy.identifier().getIdentifier());
 
         orderBy = transferOptionalPrimitivesDao
                 .query()
@@ -295,7 +295,7 @@ public class MappedTransferQueryCustomizerFunctionsTest {
                 .selectOne()
                 .get();
 
-        assertEquals(transf2.identifier(), orderBy.identifier());
+        assertEquals(transf2.identifier().getIdentifier(), orderBy.identifier().getIdentifier());
 
         orderBy = transferOptionalPrimitivesDao
                 .query()
@@ -310,7 +310,7 @@ public class MappedTransferQueryCustomizerFunctionsTest {
                 .selectOne()
                 .get();
 
-        assertEquals(transf2.identifier(), orderBy.identifier());
+        assertEquals(transf2.identifier().getIdentifier(), orderBy.identifier().getIdentifier());
     }
 
     @Test
@@ -344,7 +344,7 @@ public class MappedTransferQueryCustomizerFunctionsTest {
                 .selectOne()
                 .get();
 
-        assertEquals(transf1.identifier(), orderBy.identifier());
+        assertEquals(transf1.identifier().getIdentifier(), orderBy.identifier().getIdentifier());
 
         orderBy = transferOptionalPrimitivesDao
                 .query()
@@ -359,7 +359,7 @@ public class MappedTransferQueryCustomizerFunctionsTest {
                 .selectOne()
                 .get();
 
-        assertEquals(transf1.identifier(), orderBy.identifier());
+        assertEquals(transf1.identifier().getIdentifier(), orderBy.identifier().getIdentifier());
 
         orderBy = transferOptionalPrimitivesDao
                 .query()
@@ -374,7 +374,7 @@ public class MappedTransferQueryCustomizerFunctionsTest {
                 .selectOne()
                 .get();
 
-        assertEquals(transf1.identifier(), orderBy.identifier());
+        assertEquals(transf1.identifier().getIdentifier(), orderBy.identifier().getIdentifier());
 
     }
 
@@ -410,7 +410,7 @@ public class MappedTransferQueryCustomizerFunctionsTest {
                 .selectOne()
                 .get();
 
-        assertEquals(transf2.identifier(), orderBy.identifier());
+        assertEquals(transf2.identifier().getIdentifier(), orderBy.identifier().getIdentifier());
 
         orderBy = transferOptionalPrimitivesDao
                 .query()
@@ -425,7 +425,7 @@ public class MappedTransferQueryCustomizerFunctionsTest {
                 .selectOne()
                 .get();
 
-        assertEquals(transf2.identifier(), orderBy.identifier());
+        assertEquals(transf2.identifier().getIdentifier(), orderBy.identifier().getIdentifier());
 
         orderBy = transferOptionalPrimitivesDao
                 .query()
@@ -440,7 +440,7 @@ public class MappedTransferQueryCustomizerFunctionsTest {
                 .selectOne()
                 .get();
 
-        assertEquals(transf2.identifier(), orderBy.identifier());
+        assertEquals(transf2.identifier().getIdentifier(), orderBy.identifier().getIdentifier());
 
 
     }
@@ -477,7 +477,7 @@ public class MappedTransferQueryCustomizerFunctionsTest {
                 .selectOne()
                 .get();
 
-        assertEquals(transf1.identifier(), orderBy.identifier());
+        assertEquals(transf1.identifier().getIdentifier(), orderBy.identifier().getIdentifier());
 
         orderBy = transferOptionalPrimitivesDao
                 .query()
@@ -492,7 +492,7 @@ public class MappedTransferQueryCustomizerFunctionsTest {
                 .selectOne()
                 .get();
 
-        assertEquals(transf1.identifier(), orderBy.identifier());
+        assertEquals(transf1.identifier().getIdentifier(), orderBy.identifier().getIdentifier());
 
         orderBy = transferOptionalPrimitivesDao
                 .query()
@@ -507,7 +507,7 @@ public class MappedTransferQueryCustomizerFunctionsTest {
                 .selectOne()
                 .get();
 
-        assertEquals(transf1.identifier(), orderBy.identifier());
+        assertEquals(transf1.identifier().getIdentifier(), orderBy.identifier().getIdentifier());
     }
 
     @Test
@@ -542,7 +542,7 @@ public class MappedTransferQueryCustomizerFunctionsTest {
                 .selectOne()
                 .get();
 
-        assertEquals(transf2.identifier(), orderBy.identifier());
+        assertEquals(transf2.identifier().getIdentifier(), orderBy.identifier().getIdentifier());
 
         orderBy = transferOptionalPrimitivesDao
                 .query()
@@ -557,7 +557,7 @@ public class MappedTransferQueryCustomizerFunctionsTest {
                 .selectOne()
                 .get();
 
-        assertEquals(transf2.identifier(), orderBy.identifier());
+        assertEquals(transf2.identifier().getIdentifier(), orderBy.identifier().getIdentifier());
 
         orderBy = transferOptionalPrimitivesDao
                 .query()
@@ -572,7 +572,7 @@ public class MappedTransferQueryCustomizerFunctionsTest {
                 .selectOne()
                 .get();
 
-        assertEquals(transf2.identifier(), orderBy.identifier());
+        assertEquals(transf2.identifier().getIdentifier(), orderBy.identifier().getIdentifier());
     }
 
     @Test
@@ -607,7 +607,7 @@ public class MappedTransferQueryCustomizerFunctionsTest {
                 .selectOne()
                 .get();
 
-        assertEquals(transf1.identifier(), orderBy.identifier());
+        assertEquals(transf1.identifier().getIdentifier(), orderBy.identifier().getIdentifier());
 
         orderBy = transferOptionalPrimitivesDao
                 .query()
@@ -622,7 +622,7 @@ public class MappedTransferQueryCustomizerFunctionsTest {
                 .selectOne()
                 .get();
 
-        assertEquals(transf1.identifier(), orderBy.identifier());
+        assertEquals(transf1.identifier().getIdentifier(), orderBy.identifier().getIdentifier());
 
         orderBy = transferOptionalPrimitivesDao
                 .query()
@@ -637,7 +637,7 @@ public class MappedTransferQueryCustomizerFunctionsTest {
                 .selectOne()
                 .get();
 
-        assertEquals(transf1.identifier(), orderBy.identifier());
+        assertEquals(transf1.identifier().getIdentifier(), orderBy.identifier().getIdentifier());
 
     }
 
@@ -709,20 +709,20 @@ public class MappedTransferQueryCustomizerFunctionsTest {
                 .orderByDescending(TransferOptionalPrimitivesAttribute.INTEGER_ATTR)
                 .selectList();
 
-        assertEquals(a3.identifier(), orderedList.get(0).identifier());
-        assertEquals(a1.identifier(), orderedList.get(3).identifier());
-        assertEquals(b2.identifier(), orderedList.get(4).identifier());
-        assertEquals(b1.identifier(), orderedList.get(5).identifier());
+        assertEquals(a3.identifier().getIdentifier(), orderedList.get(0).identifier().getIdentifier());
+        assertEquals(a1.identifier().getIdentifier(), orderedList.get(3).identifier().getIdentifier());
+        assertEquals(b2.identifier().getIdentifier(), orderedList.get(4).identifier().getIdentifier());
+        assertEquals(b1.identifier().getIdentifier(), orderedList.get(5).identifier().getIdentifier());
 
         orderedList = transferOptionalPrimitivesDao.query()
                 .orderByDescending(TransferOptionalPrimitivesAttribute.STRING_ATTR)
                 .orderByDescending(TransferOptionalPrimitivesAttribute.INTEGER_ATTR)
                 .selectList();
 
-        assertEquals(b2.identifier(), orderedList.get(0).identifier());
-        assertEquals(b1.identifier(), orderedList.get(1).identifier());
-        assertEquals(a3.identifier(), orderedList.get(2).identifier());
-        assertEquals(a1.identifier(), orderedList.get(5).identifier());
+        assertEquals(b2.identifier().getIdentifier(), orderedList.get(0).identifier().getIdentifier());
+        assertEquals(b1.identifier().getIdentifier(), orderedList.get(1).identifier().getIdentifier());
+        assertEquals(a3.identifier().getIdentifier(), orderedList.get(2).identifier().getIdentifier());
+        assertEquals(a1.identifier().getIdentifier(), orderedList.get(5).identifier().getIdentifier());
 
 
         orderedList = transferOptionalPrimitivesDao.query()
@@ -730,20 +730,20 @@ public class MappedTransferQueryCustomizerFunctionsTest {
                 .orderByDescending(TransferOptionalPrimitivesAttribute.INTEGER_ATTR)
                 .selectList();
 
-        assertEquals(b2.identifier(), orderedList.get(0).identifier());
-        assertEquals(b1.identifier(), orderedList.get(1).identifier());
-        assertEquals(a3.identifier(), orderedList.get(2).identifier());
-        assertEquals(a1.identifier(), orderedList.get(5).identifier());
+        assertEquals(b2.identifier().getIdentifier(), orderedList.get(0).identifier().getIdentifier());
+        assertEquals(b1.identifier().getIdentifier(), orderedList.get(1).identifier().getIdentifier());
+        assertEquals(a3.identifier().getIdentifier(), orderedList.get(2).identifier().getIdentifier());
+        assertEquals(a1.identifier().getIdentifier(), orderedList.get(5).identifier().getIdentifier());
 
         orderedList = transferOptionalPrimitivesDao.query()
                 .orderBy(TransferOptionalPrimitivesAttribute.STRING_ATTR)
                 .orderBy(TransferOptionalPrimitivesAttribute.INTEGER_ATTR)
                 .selectList();
 
-        assertEquals(a1.identifier(), orderedList.get(0).identifier());
-        assertEquals(a3.identifier(), orderedList.get(3).identifier());
-        assertEquals(b1.identifier(), orderedList.get(4).identifier());
-        assertEquals(b2.identifier(), orderedList.get(5).identifier());
+        assertEquals(a1.identifier().getIdentifier(), orderedList.get(0).identifier().getIdentifier());
+        assertEquals(a3.identifier().getIdentifier(), orderedList.get(3).identifier().getIdentifier());
+        assertEquals(b1.identifier().getIdentifier(), orderedList.get(4).identifier().getIdentifier());
+        assertEquals(b2.identifier().getIdentifier(), orderedList.get(5).identifier().getIdentifier());
 
         orderedList = transferOptionalPrimitivesDao.query()
                 .orderBy(TransferOptionalPrimitivesAttribute.STRING_ATTR)
@@ -751,12 +751,12 @@ public class MappedTransferQueryCustomizerFunctionsTest {
                 .orderBy(TransferOptionalPrimitivesAttribute.SCALED_ATTR)
                 .selectList();
 
-        assertEquals(a1.identifier(), orderedList.get(0).identifier());
-        assertEquals(a21.identifier(), orderedList.get(1).identifier());
-        assertEquals(a22.identifier(), orderedList.get(2).identifier());
-        assertEquals(a3.identifier(), orderedList.get(3).identifier());
-        assertEquals(b1.identifier(), orderedList.get(4).identifier());
-        assertEquals(b2.identifier(), orderedList.get(5).identifier());
+        assertEquals(a1.identifier().getIdentifier(), orderedList.get(0).identifier().getIdentifier());
+        assertEquals(a21.identifier().getIdentifier(), orderedList.get(1).identifier().getIdentifier());
+        assertEquals(a22.identifier().getIdentifier(), orderedList.get(2).identifier().getIdentifier());
+        assertEquals(a3.identifier().getIdentifier(), orderedList.get(3).identifier().getIdentifier());
+        assertEquals(b1.identifier().getIdentifier(), orderedList.get(4).identifier().getIdentifier());
+        assertEquals(b2.identifier().getIdentifier(), orderedList.get(5).identifier().getIdentifier());
 
         orderedList = transferOptionalPrimitivesDao.query()
                 .orderBy(TransferOptionalPrimitivesAttribute.STRING_ATTR)
@@ -764,32 +764,32 @@ public class MappedTransferQueryCustomizerFunctionsTest {
                 orderByDescending(TransferOptionalPrimitivesAttribute.SCALED_ATTR)
                 .selectList();
 
-        assertEquals(a1.identifier(), orderedList.get(0).identifier());
-        assertEquals(a22.identifier(), orderedList.get(1).identifier());
-        assertEquals(a21.identifier(), orderedList.get(2).identifier());
-        assertEquals(a3.identifier(), orderedList.get(3).identifier());
-        assertEquals(b1.identifier(), orderedList.get(4).identifier());
-        assertEquals(b2.identifier(), orderedList.get(5).identifier());
+        assertEquals(a1.identifier().getIdentifier(), orderedList.get(0).identifier().getIdentifier());
+        assertEquals(a22.identifier().getIdentifier(), orderedList.get(1).identifier().getIdentifier());
+        assertEquals(a21.identifier().getIdentifier(), orderedList.get(2).identifier().getIdentifier());
+        assertEquals(a3.identifier().getIdentifier(), orderedList.get(3).identifier().getIdentifier());
+        assertEquals(b1.identifier().getIdentifier(), orderedList.get(4).identifier().getIdentifier());
+        assertEquals(b2.identifier().getIdentifier(), orderedList.get(5).identifier().getIdentifier());
 
         orderedList = transferOptionalPrimitivesDao.query()
                 .orderBy(TransferOptionalPrimitivesAttribute.DERIVED_STRING_ATTR)
                 .orderByDescending(TransferOptionalPrimitivesAttribute.DERIVED_INTEGER_ATTR)
                 .selectList();
 
-        assertEquals(a3.identifier(), orderedList.get(0).identifier());
-        assertEquals(a1.identifier(), orderedList.get(3).identifier());
-        assertEquals(b2.identifier(), orderedList.get(4).identifier());
-        assertEquals(b1.identifier(), orderedList.get(5).identifier());
+        assertEquals(a3.identifier().getIdentifier(), orderedList.get(0).identifier().getIdentifier());
+        assertEquals(a1.identifier().getIdentifier(), orderedList.get(3).identifier().getIdentifier());
+        assertEquals(b2.identifier().getIdentifier(), orderedList.get(4).identifier().getIdentifier());
+        assertEquals(b1.identifier().getIdentifier(), orderedList.get(5).identifier().getIdentifier());
 
         orderedList = transferOptionalPrimitivesDao.query()
                 .orderByDescending(TransferOptionalPrimitivesAttribute.DERIVED_STRING_ATTR)
                 .orderByDescending(TransferOptionalPrimitivesAttribute.DERIVED_INTEGER_ATTR)
                 .selectList();
 
-        assertEquals(b2.identifier(), orderedList.get(0).identifier());
-        assertEquals(b1.identifier(), orderedList.get(1).identifier());
-        assertEquals(a3.identifier(), orderedList.get(2).identifier());
-        assertEquals(a1.identifier(), orderedList.get(5).identifier());
+        assertEquals(b2.identifier().getIdentifier(), orderedList.get(0).identifier().getIdentifier());
+        assertEquals(b1.identifier().getIdentifier(), orderedList.get(1).identifier().getIdentifier());
+        assertEquals(a3.identifier().getIdentifier(), orderedList.get(2).identifier().getIdentifier());
+        assertEquals(a1.identifier().getIdentifier(), orderedList.get(5).identifier().getIdentifier());
 
 
         orderedList = transferOptionalPrimitivesDao.query()
@@ -797,20 +797,20 @@ public class MappedTransferQueryCustomizerFunctionsTest {
                 .orderByDescending(TransferOptionalPrimitivesAttribute.DERIVED_INTEGER_ATTR)
                 .selectList();
 
-        assertEquals(b2.identifier(), orderedList.get(0).identifier());
-        assertEquals(b1.identifier(), orderedList.get(1).identifier());
-        assertEquals(a3.identifier(), orderedList.get(2).identifier());
-        assertEquals(a1.identifier(), orderedList.get(5).identifier());
+        assertEquals(b2.identifier().getIdentifier(), orderedList.get(0).identifier().getIdentifier());
+        assertEquals(b1.identifier().getIdentifier(), orderedList.get(1).identifier().getIdentifier());
+        assertEquals(a3.identifier().getIdentifier(), orderedList.get(2).identifier().getIdentifier());
+        assertEquals(a1.identifier().getIdentifier(), orderedList.get(5).identifier().getIdentifier());
 
         orderedList = transferOptionalPrimitivesDao.query()
                 .orderBy(TransferOptionalPrimitivesAttribute.DERIVED_STRING_ATTR)
                 .orderBy(TransferOptionalPrimitivesAttribute.DERIVED_INTEGER_ATTR)
                 .selectList();
 
-        assertEquals(a1.identifier(), orderedList.get(0).identifier());
-        assertEquals(a3.identifier(), orderedList.get(3).identifier());
-        assertEquals(b1.identifier(), orderedList.get(4).identifier());
-        assertEquals(b2.identifier(), orderedList.get(5).identifier());
+        assertEquals(a1.identifier().getIdentifier(), orderedList.get(0).identifier().getIdentifier());
+        assertEquals(a3.identifier().getIdentifier(), orderedList.get(3).identifier().getIdentifier());
+        assertEquals(b1.identifier().getIdentifier(), orderedList.get(4).identifier().getIdentifier());
+        assertEquals(b2.identifier().getIdentifier(), orderedList.get(5).identifier().getIdentifier());
 
         orderedList = transferOptionalPrimitivesDao.query()
                 .orderBy(TransferOptionalPrimitivesAttribute.DERIVED_STRING_ATTR)
@@ -818,12 +818,12 @@ public class MappedTransferQueryCustomizerFunctionsTest {
                 .orderBy(TransferOptionalPrimitivesAttribute.DERIVED_SCALED_ATTR)
                 .selectList();
 
-        assertEquals(a1.identifier(), orderedList.get(0).identifier());
-        assertEquals(a21.identifier(), orderedList.get(1).identifier());
-        assertEquals(a22.identifier(), orderedList.get(2).identifier());
-        assertEquals(a3.identifier(), orderedList.get(3).identifier());
-        assertEquals(b1.identifier(), orderedList.get(4).identifier());
-        assertEquals(b2.identifier(), orderedList.get(5).identifier());
+        assertEquals(a1.identifier().getIdentifier(), orderedList.get(0).identifier().getIdentifier());
+        assertEquals(a21.identifier().getIdentifier(), orderedList.get(1).identifier().getIdentifier());
+        assertEquals(a22.identifier().getIdentifier(), orderedList.get(2).identifier().getIdentifier());
+        assertEquals(a3.identifier().getIdentifier(), orderedList.get(3).identifier().getIdentifier());
+        assertEquals(b1.identifier().getIdentifier(), orderedList.get(4).identifier().getIdentifier());
+        assertEquals(b2.identifier().getIdentifier(), orderedList.get(5).identifier().getIdentifier());
 
         orderedList = transferOptionalPrimitivesDao.query()
                 .orderBy(TransferOptionalPrimitivesAttribute.DERIVED_STRING_ATTR)
@@ -831,12 +831,12 @@ public class MappedTransferQueryCustomizerFunctionsTest {
                 orderByDescending(TransferOptionalPrimitivesAttribute.DERIVED_SCALED_ATTR)
                 .selectList();
 
-        assertEquals(a1.identifier(), orderedList.get(0).identifier());
-        assertEquals(a22.identifier(), orderedList.get(1).identifier());
-        assertEquals(a21.identifier(), orderedList.get(2).identifier());
-        assertEquals(a3.identifier(), orderedList.get(3).identifier());
-        assertEquals(b1.identifier(), orderedList.get(4).identifier());
-        assertEquals(b2.identifier(), orderedList.get(5).identifier());
+        assertEquals(a1.identifier().getIdentifier(), orderedList.get(0).identifier().getIdentifier());
+        assertEquals(a22.identifier().getIdentifier(), orderedList.get(1).identifier().getIdentifier());
+        assertEquals(a21.identifier().getIdentifier(), orderedList.get(2).identifier().getIdentifier());
+        assertEquals(a3.identifier().getIdentifier(), orderedList.get(3).identifier().getIdentifier());
+        assertEquals(b1.identifier().getIdentifier(), orderedList.get(4).identifier().getIdentifier());
+        assertEquals(b2.identifier().getIdentifier(), orderedList.get(5).identifier().getIdentifier());
 
     }
 
@@ -891,7 +891,7 @@ public class MappedTransferQueryCustomizerFunctionsTest {
                 .selectOne()
                 .get();
 
-        assertEquals(transf1.identifier(), maskedResult.identifier());
+        assertEquals(transf1.identifier().getIdentifier(), maskedResult.identifier().getIdentifier());
         assertEquals(transf1.getIntegerAttr(), maskedResult.getIntegerAttr());
         assertEquals(null, maskedResult.getScaledAttr());
         assertEquals(transf1.getStringAttr(), maskedResult.getStringAttr());
@@ -905,7 +905,7 @@ public class MappedTransferQueryCustomizerFunctionsTest {
                 .selectOne()
                 .get();
 
-        assertEquals(firstTransfer.identifier(), orderBy.identifier());
+        assertEquals(firstTransfer.identifier().getIdentifier(), orderBy.identifier().getIdentifier());
 
         orderBy = transferOptionalPrimitivesDao
                 .query()
@@ -913,7 +913,7 @@ public class MappedTransferQueryCustomizerFunctionsTest {
                 .selectOne()
                 .get();
 
-        assertEquals(firstTransfer.identifier(), orderBy.identifier());
+        assertEquals(firstTransfer.identifier().getIdentifier(), orderBy.identifier().getIdentifier());
 
         orderBy = transferOptionalPrimitivesDao
                 .query()
@@ -921,7 +921,7 @@ public class MappedTransferQueryCustomizerFunctionsTest {
                 .selectOne()
                 .get();
 
-        assertEquals(firstTransfer.identifier(), orderBy.identifier());
+        assertEquals(firstTransfer.identifier().getIdentifier(), orderBy.identifier().getIdentifier());
     }
 
     private void assertOrderByDescending(TransferOptionalPrimitivesAttribute attribute, TransferOptionalPrimitives firstEntity) {
@@ -932,7 +932,7 @@ public class MappedTransferQueryCustomizerFunctionsTest {
                 .get();
 
 
-        assertEquals(firstEntity.identifier(), orderByDescending.identifier());
+        assertEquals(firstEntity.identifier().getIdentifier(), orderByDescending.identifier().getIdentifier());
 
         orderByDescending = transferOptionalPrimitivesDao
                 .query()
@@ -940,7 +940,7 @@ public class MappedTransferQueryCustomizerFunctionsTest {
                 .selectOne()
                 .get();
 
-        assertEquals(firstEntity.identifier(), orderByDescending.identifier());
+        assertEquals(firstEntity.identifier().getIdentifier(), orderByDescending.identifier().getIdentifier());
 
         orderByDescending = transferOptionalPrimitivesDao
                 .query()
@@ -948,6 +948,6 @@ public class MappedTransferQueryCustomizerFunctionsTest {
                 .selectOne()
                 .get();
 
-        assertEquals(firstEntity.identifier(), orderByDescending.identifier());
+        assertEquals(firstEntity.identifier().getIdentifier(), orderByDescending.identifier().getIdentifier());
     }
 }

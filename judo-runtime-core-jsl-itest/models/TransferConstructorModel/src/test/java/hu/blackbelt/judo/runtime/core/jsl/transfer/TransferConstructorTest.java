@@ -75,12 +75,12 @@ public class TransferConstructorTest {
 
         MappedEntityWithSingleRelation mappedEntityWithSingleRelation = mappedEntityWithSingleRelationDao.create(MappedEntityWithSingleRelationForCreate.builder().build());
 
-        assertEquals(mappedEntityWithSingleRelationDao.queryMappedAssociation(mappedEntityWithSingleRelation).orElseThrow().identifier(),mappedEntityWithMultiRelation.identifier());
+        assertEquals(mappedEntityWithSingleRelationDao.queryMappedAssociation(mappedEntityWithSingleRelation).orElseThrow().identifier().getIdentifier(),mappedEntityWithMultiRelation.identifier().getIdentifier());
         assertEquals(mappedEntityWithSingleRelationDao.queryMappedAssociationCollection(mappedEntityWithSingleRelation).count(),1);
-        assertEquals(mappedEntityWithSingleRelationDao.queryMappedAssociationCollection(mappedEntityWithSingleRelation).selectOne().orElseThrow().identifier(),mappedEntityWithMultiRelation.identifier());
-        assertEquals(mappedEntityWithSingleRelationDao.queryMappedAssociationOpposite(mappedEntityWithSingleRelation).orElseThrow().identifier(),mappedEntityWithMultiRelation.identifier());
+        assertEquals(mappedEntityWithSingleRelationDao.queryMappedAssociationCollection(mappedEntityWithSingleRelation).selectOne().orElseThrow().identifier().getIdentifier(),mappedEntityWithMultiRelation.identifier().getIdentifier());
+        assertEquals(mappedEntityWithSingleRelationDao.queryMappedAssociationOpposite(mappedEntityWithSingleRelation).orElseThrow().identifier().getIdentifier(),mappedEntityWithMultiRelation.identifier().getIdentifier());
         assertEquals(mappedEntityWithSingleRelationDao.queryMappedAssociationOppositeCollection(mappedEntityWithSingleRelation).count(),1);
-        assertEquals(mappedEntityWithSingleRelationDao.queryMappedAssociationOppositeCollection(mappedEntityWithSingleRelation).selectOne().orElseThrow().identifier(),mappedEntityWithMultiRelation.identifier());
+        assertEquals(mappedEntityWithSingleRelationDao.queryMappedAssociationOppositeCollection(mappedEntityWithSingleRelation).selectOne().orElseThrow().identifier().getIdentifier(),mappedEntityWithMultiRelation.identifier().getIdentifier());
 
         Optional<EntityWithSingleRelation> entityWithSingleRelationOptional = entityWithSingleRelationDao.getById(mappedEntityWithSingleRelation.adaptTo(EntityWithSingleRelationIdentifier.class));
 
@@ -90,18 +90,18 @@ public class TransferConstructorTest {
 
         EntityWithMultiRelation entityWithMultiRelation = entityWithMultiRelationDao.getById(mappedEntityWithMultiRelation.adaptTo(EntityWithMultiRelationIdentifier.class)).orElseThrow();
 
-        assertEquals(entityWithSingleRelationDao.queryAssociation(entityWithSingleRelation).orElseThrow().identifier(),entityWithMultiRelation.identifier());
+        assertEquals(entityWithSingleRelationDao.queryAssociation(entityWithSingleRelation).orElseThrow().identifier().getIdentifier(),entityWithMultiRelation.identifier().getIdentifier());
         assertEquals(entityWithSingleRelationDao.queryAssociationCollection(entityWithSingleRelation).count(),1);
-        assertEquals(entityWithSingleRelationDao.queryAssociationCollection(entityWithSingleRelation).selectOne().orElseThrow().identifier(),entityWithMultiRelation.identifier());
-        assertEquals(entityWithSingleRelationDao.queryEntityWithTwoWayOpposite(entityWithSingleRelation).orElseThrow().identifier(),entityWithMultiRelation.identifier());
+        assertEquals(entityWithSingleRelationDao.queryAssociationCollection(entityWithSingleRelation).selectOne().orElseThrow().identifier().getIdentifier(),entityWithMultiRelation.identifier().getIdentifier());
+        assertEquals(entityWithSingleRelationDao.queryEntityWithTwoWayOpposite(entityWithSingleRelation).orElseThrow().identifier().getIdentifier(),entityWithMultiRelation.identifier().getIdentifier());
         assertEquals(entityWithSingleRelationDao.queryEntityWithTwoWayOppositeCollection(entityWithSingleRelation).count(),1);
-        assertEquals(entityWithSingleRelationDao.queryEntityWithTwoWayOppositeCollection(entityWithSingleRelation).selectOne().orElseThrow().identifier(),entityWithMultiRelation.identifier());
+        assertEquals(entityWithSingleRelationDao.queryEntityWithTwoWayOppositeCollection(entityWithSingleRelation).selectOne().orElseThrow().identifier().getIdentifier(),entityWithMultiRelation.identifier().getIdentifier());
 
 
         //transient relations
-//        assertEquals(mappedEntityWithSingleRelationDao.queryTransientRelation(mappedEntityWithSingleRelation).orElseThrow().identifier(),mappedEntityWithMultiRelation.identifier());
+//        assertEquals(mappedEntityWithSingleRelationDao.queryTransientRelation(mappedEntityWithSingleRelation).orElseThrow().identifier().getIdentifier(),mappedEntityWithMultiRelation.identifier().getIdentifier());
 //        assertEquals(mappedEntityWithSingleRelationDao.queryTransientRelationCollection(mappedEntityWithSingleRelation).count(),1);
-//        assertEquals(mappedEntityWithSingleRelationDao.queryTransientRelationCollection(mappedEntityWithSingleRelation).selectOne().orElseThrow().identifier(),mappedEntityWithMultiRelation.identifier());
+//        assertEquals(mappedEntityWithSingleRelationDao.queryTransientRelationCollection(mappedEntityWithSingleRelation).selectOne().orElseThrow().identifier().getIdentifier(),mappedEntityWithMultiRelation.identifier().getIdentifier());
 
     }
 

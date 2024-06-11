@@ -91,7 +91,6 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.NavigationTestDaoModu
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
-import hu.blackbelt.judo.sdk.Identifiable;
 import lombok.extern.slf4j.Slf4j;
 import org.hamcrest.CoreMatchers;
 import org.hamcrest.Matcher;
@@ -100,6 +99,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -174,14 +174,14 @@ class NavigationTest {
         B b = bDao.create(BForCreate.builder().withName("b").withC(c).build());
         BIdentifier bId = b.identifier();
 
-        assertAttributesAndRelations(aDao.getById(a.identifier()).orElseThrow(), List.of(bId), List.of(cId));
+        assertAttributesAndRelations(aDao.getById(a.identifier()).orElseThrow(), List.of(bId.getIdentifier()), List.of(cId.getIdentifier()));
 
         C c2 = cDao.create(CForCreate.builder().withName("c").build());
         CIdentifier c2Id = c2.identifier();
         B b2 = bDao.create(BForCreate.builder().withName("b").withC(c).build());
         BIdentifier b2Id = b2.identifier();
 
-        assertAttributesAndRelations(aDao.getById(a.identifier()).orElseThrow(), List.of(bId, b2Id), List.of(cId, c2Id));
+        assertAttributesAndRelations(aDao.getById(a.identifier()).orElseThrow(), List.of(bId.getIdentifier(), b2Id.getIdentifier()), List.of(cId.getIdentifier(), c2Id.getIdentifier()));
     }
 
     @Test
@@ -268,7 +268,7 @@ class NavigationTest {
 
         Optional<B> oneBOnFilteredA = acDao.queryOneBOnFilteredA(ac);
         assertTrue(oneBOnFilteredA.isPresent());
-        assertThat(List.of(b1.identifier(), b2.identifier()), hasItem(oneBOnFilteredA.get().identifier()));
+        assertThat(List.of(b1.identifier().getIdentifier(), b2.identifier().getIdentifier()), hasItem(oneBOnFilteredA.get().identifier().getIdentifier()));
 
         acDao.delete(ac);
 
@@ -277,37 +277,37 @@ class NavigationTest {
     }
 
         @SuppressWarnings("unchecked")
-    private void assertAttributesAndRelations(A a, Collection<Identifiable> bIds, Collection<Identifiable> cIds) {
-        assertThat(aDao.queryBbAll(a).selectList().stream().map(B::identifier).collect(Collectors.toList()), anyOf(toHasItems(bIds)));
-        assertThat(aDao.queryBbAny(a).orElseThrow().identifier(), anyOf(toIss(bIds)));
+    private void assertAttributesAndRelations(A a, Collection<Serializable> bIds, Collection<Serializable> cIds) {
+        assertThat(aDao.queryBbAll(a).selectList().stream().map(B::identifier).map(BIdentifier::getIdentifier).collect(Collectors.toList()), anyOf(toHasItems(bIds)));
+        assertThat(aDao.queryBbAny(a).orElseThrow().identifier().getIdentifier(), anyOf(toIss(bIds)));
 
         assertEquals("b", a.getBbAnyName().orElseThrow());
         assertEquals("b", a.getSelfBName().orElseThrow());
 
-        assertThat(aDao.queryBbAllFilter(a).selectList().stream().map(B::identifier).collect(Collectors.toList()), anyOf(toHasItems(bIds)));
-        assertThat(aDao.queryBbAllFilterAny(a).orElseThrow().identifier(), anyOf(toIss(bIds)));
-        assertThat(aDao.queryBbAllFilterAny1(a).orElseThrow().identifier(), anyOf(toIss(bIds)));
+        assertThat(aDao.queryBbAllFilter(a).selectList().stream().map(B::identifier).map(BIdentifier::getIdentifier).collect(Collectors.toList()), anyOf(toHasItems(bIds)));
+        assertThat(aDao.queryBbAllFilterAny(a).orElseThrow().identifier().getIdentifier(), anyOf(toIss(bIds)));
+        assertThat(aDao.queryBbAllFilterAny1(a).orElseThrow().identifier().getIdentifier(), anyOf(toIss(bIds)));
 
         assertEquals("b", a.getBbAllFilterAnyName().orElseThrow());
         assertEquals("b", a.getBbAllFilterAnyName1().orElseThrow());
         assertEquals("b", a.getBbAllFilterAnyName2().orElseThrow());
 
-        assertThat(aDao.querySelfbAllC(a).selectList().stream().map(C::identifier).collect(Collectors.toList()), anyOf(toHasItems(cIds)));
-        assertThat(aDao.querySelfbAllCAny(a).orElseThrow().identifier(), anyOf(toIss(cIds)));
+        assertThat(aDao.querySelfbAllC(a).selectList().stream().map(C::identifier).map(CIdentifier::getIdentifier).collect(Collectors.toList()), anyOf(toHasItems(cIds)));
+        assertThat(aDao.querySelfbAllCAny(a).orElseThrow().identifier().getIdentifier(), anyOf(toIss(cIds)));
         assertEquals("c", a.getSelfbAllCAnyName().orElseThrow());
 
-        assertThat(aDao.queryBbAllC(a).selectList().stream().map(C::identifier).collect(Collectors.toList()), anyOf(toHasItems(cIds)));
-        assertThat(aDao.queryBbAllCAny(a).orElseThrow().identifier(), anyOf(toIss(cIds)));
+        assertThat(aDao.queryBbAllC(a).selectList().stream().map(C::identifier).map(CIdentifier::getIdentifier).collect(Collectors.toList()), anyOf(toHasItems(cIds)));
+        assertThat(aDao.queryBbAllCAny(a).orElseThrow().identifier().getIdentifier(), anyOf(toIss(cIds)));
         assertEquals("c", a.getBbAllCAnyName().orElseThrow());
     }
 
     @SuppressWarnings("rawtypes")
-    private static Matcher[] toHasItems(Collection<Identifiable> ids) {
+    private static Matcher[] toHasItems(Collection<Serializable> ids) {
         return ids.stream().map(CoreMatchers::hasItem).collect(Collectors.toList()).toArray(Matcher[]::new);
     }
 
     @SuppressWarnings("rawtypes")
-    private static Matcher[] toIss(Collection<Identifiable> ids) {
+    private static Matcher[] toIss(Collection<Serializable> ids) {
         return ids.stream().map(CoreMatchers::is).collect(Collectors.toList()).toArray(Matcher[]::new);
     }
 
@@ -383,10 +383,10 @@ class NavigationTest {
         assertThat(person1Loaded.get().getGreatGrandMother1Name(), equalTo(greatGrandMother1.getName()));
         assertTrue(person1Loaded.get().getMotherYoungerThanFather().orElseThrow());
 
-        assertThat(personDao.queryMother(person1Loaded.get()).orElseThrow().identifier(), equalTo(mother1.identifier()));
-        assertThat(personDao.queryFather(person1Loaded.get()).orElseThrow().identifier(), equalTo(father1.identifier()));
-        assertThat(personDao.queryMother(personDao.queryMother(person1Loaded.get()).orElseThrow()).orElseThrow().identifier(), equalTo(grandMother1.identifier()));
-        assertThat(personDao.queryMother(personDao.queryMother(personDao.queryMother(person1Loaded.get()).orElseThrow()).orElseThrow()).orElseThrow().identifier(), equalTo(greatGrandMother1.identifier()));
+        assertThat(personDao.queryMother(person1Loaded.get()).orElseThrow().identifier().getIdentifier(), equalTo(mother1.identifier().getIdentifier()));
+        assertThat(personDao.queryFather(person1Loaded.get()).orElseThrow().identifier().getIdentifier(), equalTo(father1.identifier().getIdentifier()));
+        assertThat(personDao.queryMother(personDao.queryMother(person1Loaded.get()).orElseThrow()).orElseThrow().identifier().getIdentifier(), equalTo(grandMother1.identifier().getIdentifier()));
+        assertThat(personDao.queryMother(personDao.queryMother(personDao.queryMother(person1Loaded.get()).orElseThrow()).orElseThrow()).orElseThrow().identifier().getIdentifier(), equalTo(greatGrandMother1.identifier().getIdentifier()));
 
         Optional<Person> person2Loaded = people.stream().filter(p -> p.identifier().getIdentifier().equals(person2.identifier().getIdentifier())).findAny();
         assertTrue(person2Loaded.isPresent());
@@ -396,10 +396,10 @@ class NavigationTest {
         assertThat(person2Loaded.get().getGreatGrandMother1Name(), equalTo(greatGrandMother1.getName()));
         assertTrue(person2Loaded.get().getMotherYoungerThanFather().orElseThrow());
 
-        assertThat(personDao.queryMother(person2Loaded.get()).orElseThrow().identifier(), equalTo(mother1.identifier()));
-        assertThat(personDao.queryFather(person2Loaded.get()).orElseThrow().identifier(), equalTo(father1.identifier()));
-        assertThat(personDao.queryMother(personDao.queryMother(person2Loaded.get()).orElseThrow()).orElseThrow().identifier(), equalTo(grandMother1.identifier()));
-        assertThat(personDao.queryMother(personDao.queryMother(personDao.queryMother(person2Loaded.get()).orElseThrow()).orElseThrow()).orElseThrow().identifier(), equalTo(greatGrandMother1.identifier()));
+        assertThat(personDao.queryMother(person2Loaded.get()).orElseThrow().identifier().getIdentifier(), equalTo(mother1.identifier().getIdentifier()));
+        assertThat(personDao.queryFather(person2Loaded.get()).orElseThrow().identifier().getIdentifier(), equalTo(father1.identifier().getIdentifier()));
+        assertThat(personDao.queryMother(personDao.queryMother(person2Loaded.get()).orElseThrow()).orElseThrow().identifier().getIdentifier(), equalTo(grandMother1.identifier().getIdentifier()));
+        assertThat(personDao.queryMother(personDao.queryMother(personDao.queryMother(person2Loaded.get()).orElseThrow()).orElseThrow()).orElseThrow().identifier().getIdentifier(), equalTo(greatGrandMother1.identifier().getIdentifier()));
 
         Optional<Person> person3Loaded = people.stream().filter(p -> p.identifier().getIdentifier().equals(person3.identifier().getIdentifier())).findAny();
         assertTrue(person3Loaded.isPresent());
@@ -409,10 +409,10 @@ class NavigationTest {
         assertThat(person3Loaded.get().getGrandFather2Name(), equalTo(father1.getName()));
 
         assertTrue(personDao.queryMother(person3Loaded.get()).isEmpty());
-        assertThat(personDao.queryFather(person3Loaded.get()).orElseThrow().identifier(), equalTo(person1.identifier()));
-        assertThat(personDao.queryMother(personDao.queryFather(person3Loaded.get()).orElseThrow()).orElseThrow().identifier(), equalTo(mother1.identifier()));
-        assertThat(personDao.queryMother(personDao.queryMother(personDao.queryFather(person3Loaded.get()).orElseThrow()).orElseThrow()).orElseThrow().identifier(), equalTo(grandMother1.identifier()));
-        assertThat(personDao.queryMother(personDao.queryMother(personDao.queryMother(personDao.queryFather(person3Loaded.get()).orElseThrow()).orElseThrow()).orElseThrow()).orElseThrow().identifier(), equalTo(greatGrandMother1.identifier()));
+        assertThat(personDao.queryFather(person3Loaded.get()).orElseThrow().identifier().getIdentifier(), equalTo(person1.identifier().getIdentifier()));
+        assertThat(personDao.queryMother(personDao.queryFather(person3Loaded.get()).orElseThrow()).orElseThrow().identifier().getIdentifier(), equalTo(mother1.identifier().getIdentifier()));
+        assertThat(personDao.queryMother(personDao.queryMother(personDao.queryFather(person3Loaded.get()).orElseThrow()).orElseThrow()).orElseThrow().identifier().getIdentifier(), equalTo(grandMother1.identifier().getIdentifier()));
+        assertThat(personDao.queryMother(personDao.queryMother(personDao.queryMother(personDao.queryFather(person3Loaded.get()).orElseThrow()).orElseThrow()).orElseThrow()).orElseThrow().identifier().getIdentifier(), equalTo(greatGrandMother1.identifier().getIdentifier()));
     }
 
 
