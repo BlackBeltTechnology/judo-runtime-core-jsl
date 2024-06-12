@@ -86,3 +86,20 @@ entity Containment1 {
 
 entity Containment2 {
 }
+
+//
+
+entity EntityJ {
+    field String name;
+    field EntityK compK;
+    field EntityL compL;
+}
+
+entity EntityK {
+    field String name;
+}
+
+entity EntityL {
+    field String name;
+    relation EntityK relK required;
+}

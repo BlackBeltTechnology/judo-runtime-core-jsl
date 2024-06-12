@@ -67,6 +67,13 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationship
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityh.EntityH;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityh.EntityHDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityh.EntityHForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityj.EntityJ;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityj.EntityJDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityj.EntityJForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityk.EntityKDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityk.EntityKForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityl.EntityLDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityl.EntityLForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.CompositionRelationshipsDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
@@ -931,6 +938,38 @@ public class CompositionRelationshipsTest {
         assertEquals(0, containerDao.query().count());
         assertEquals(0, containment1Dao.query().count());
         assertEquals(0, containment2Dao.query().count());
+
+    }
+
+    @Inject
+    EntityJDao entityJDao;
+
+    @Inject
+    EntityKDao entityKDao;
+
+    @Inject
+    EntityLDao entityLDao;
+
+    @Test
+    @Disabled("https://blackbelt.atlassian.net/browse/JNG-5759,https://blackbelt.atlassian.net/browse/JNG-5736")
+    @Requirement(reqs = {
+            "REQ-ENT-001",
+            "REQ-ENT-004",
+            "REQ-ENT-006",
+            "REQ-ENT-007"
+    })
+    @TestCase("DeleteParentWithRequiredRelationBetweenCompositions")
+    void testDeleteParentWithRequiredRelationBetweenCompositions() {
+
+        EntityJ j = entityJDao.create(EntityJForCreate.builder().withName("J").withCompK(EntityKForCreate.builder().withName("K").build()).build());
+
+        entityJDao.createCompL(j, EntityLForCreate.builder().withName("L").withRelK(j.getCompK().get()).build());
+
+        entityJDao.delete(j);
+
+        assertEquals(0, entityJDao.query().count());
+        assertEquals(0, entityKDao.query().count());
+        assertEquals(0, entityLDao.query().count());
 
     }
 
