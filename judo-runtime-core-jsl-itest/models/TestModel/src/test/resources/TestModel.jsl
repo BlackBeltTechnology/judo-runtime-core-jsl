@@ -1,0 +1,33 @@
+model TestModel;
+
+import judo::types;
+
+entity A {
+    field String name;
+    relation B b;
+}
+
+entity B {
+    field String name;
+    relation C c;
+}
+
+entity C {
+    field String name;
+}
+
+transfer TA (A a) {
+    field String name <= a.name bind;
+    relation TB b <= a.b eager:true create:true;
+}
+
+transfer TB (B b) {
+    field String name <= b.name bind;
+    relation TC c <= b.c eager:true create:true;
+    event create eventCreate();
+}
+
+transfer TC (C c) {
+    field String name <= c.name bind;
+    event create eventCreate();
+}
