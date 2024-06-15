@@ -40,8 +40,8 @@
             javax.resource;version="[1.6,2)"
         </osgi-transaction-import>
 
-        <judo-tatami-jsl-version>1.1.4.20240615_041707_6b9dc95f_develop</judo-tatami-jsl-version>
-        <judo-runtime-core-version>1.0.6.20240615_041317_7e5feee1_develop</judo-runtime-core-version>
+        <judo-tatami-jsl-version>1.1.4.20240615_075209_8fdc66a6_feature_JNG_5765_Validation_error_when_create_a_single_association_aggregation_element</judo-tatami-jsl-version>
+        <judo-runtime-core-version>1.0.6.20240615_074709_da8ad9f3_feature_JNG_5765_Validation_error_when_create_a_single_association_aggregation_element</judo-runtime-core-version>
         <judo-psm-generator-sdk-core-version>1.0.0.20240612_040614_2d7ad343_develop</judo-psm-generator-sdk-core-version>
 
         <judo-meta-psm-version>1.3.0.20240414_042435_c6b0a651_develop</judo-meta-psm-version>
