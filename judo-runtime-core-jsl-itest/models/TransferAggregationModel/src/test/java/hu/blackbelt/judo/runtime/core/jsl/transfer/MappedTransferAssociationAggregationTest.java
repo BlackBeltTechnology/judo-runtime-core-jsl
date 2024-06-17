@@ -21,6 +21,7 @@ package hu.blackbelt.judo.runtime.core.jsl.transfer;
  */
 
 import com.google.inject.Inject;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entitya.EntityAForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationaggregation.mappedtransferassociationaggregation.entitya.EntityA;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationaggregation.mappedtransferassociationaggregation.entitya.EntityADao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationaggregation.mappedtransferassociationaggregation.entitya.EntityAIdentifier;
@@ -73,6 +74,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociati
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationaggregation.mappedtransferassociationaggregation.transferb.TransferBDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationaggregation.mappedtransferassociationaggregation.transferb.TransferBForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationaggregation.mappedtransferassociationaggregation.transferc.TransferC;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationaggregation.mappedtransferassociationaggregation.transferc.TransferCBuilder;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationaggregation.mappedtransferassociationaggregation.transferc.TransferCDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationaggregation.mappedtransferassociationaggregation.transferc.TransferCForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationaggregation.mappedtransferassociationaggregation.transferd.TransferD;
@@ -119,13 +121,11 @@ import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -1333,5 +1333,113 @@ public class MappedTransferAssociationAggregationTest {
         );
 
     }
+
+    @Test
+    void testImplicitSingleOptionalAssociationAggregationCreate() {
+
+        TransferA a = transferADao.create(TransferAForCreate.builder().build());
+
+        assertTrue(transferADao.getById(a.identifier()).isPresent());
+
+        a.setRelationBonA(TransferB.from(TransferBForCreate.builder().withNameB("b").build().toMap()));
+
+        a = transferADao.update(a);
+
+        assertTrue(transferADao.getById(a.identifier()).isPresent());
+        assertTrue(a.getRelationBonA().isPresent());
+        assertTrue(transferBDao.getById(a.getRelationBonA().get().identifier()).isPresent());
+
+        TransferB b = a.getRelationBonA().orElseThrow();
+        a.setRelationBonA(null);
+
+        a = transferADao.update(a);
+
+        assertTrue(a.getRelationBonA().isEmpty());
+        assertTrue(transferBDao.getById(b.identifier()).isPresent());
+
+    }
+
+    @Test
+    void testImplicitSingleRequiredAssociationAggregationCreate() {
+
+        ValidationException thrown = assertThrows(
+                ValidationException.class,
+                () -> transferCDao.create(TransferCForCreate.builder().build())
+        );
+
+        Assertions.assertEquals(1, thrown.getValidationResults().size());
+        assertThat(thrown.getValidationResults(), containsInAnyOrder(allOf(
+                hasProperty("code", equalTo("MISSING_REQUIRED_RELATION")),
+                hasProperty("location", equalTo("relationDonC")))
+        ));
+
+        TransferC c = transferCDao.create(TransferCForCreate.builder().withRelationDonC(TransferDForCreate.builder().withNameD("D").build()).build());
+
+        assertTrue(transferCDao.getById(c.identifier()).isPresent());
+        assertNotNull(c.getRelationDonC());
+        assertTrue(transferDDao.getById(c.getRelationDonC().identifier()).isPresent());
+
+        c.setRelationDonC(null);
+
+        ValidationException thrown1 = assertThrows(
+                ValidationException.class,
+                () -> transferCDao.update(c)
+        );
+
+        Assertions.assertEquals(1, thrown1.getValidationResults().size());
+        assertThat(thrown1.getValidationResults(), containsInAnyOrder(allOf(
+                hasProperty("code", equalTo("MISSING_REQUIRED_RELATION")),
+                hasProperty("location", equalTo("relationDonC")))
+        ));
+
+    }
+
+    @Test
+    void testImplicitCollectionAssociationAggregationCreate() {
+
+        TransferE e = transferEDao.create(TransferEForCreate.builder().build());
+
+        assertTrue(transferEDao.getById(e.identifier()).isPresent());
+
+        e.addToRelationFonE(TransferF.from(TransferFForCreate.builder().withNameF("F1").build().toMap()));
+        e.addToRelationFonE(TransferF.from(TransferFForCreate.builder().withNameF("F2").build().toMap()));
+
+        e = transferEDao.update(e);
+
+        assertTrue(transferEDao.getById(e.identifier()).isPresent());
+        assertEquals(2, e.getRelationFonE().size());
+        assertTrue(e.getRelationFonE().stream().allMatch(f -> transferFDao.getById(f.identifier()).isPresent()));
+        assertThat(e.getRelationFonE().stream().map(TransferF::getNameF).map(Optional::orElseThrow).toList(), containsInAnyOrder("F1", "F2"));
+
+
+        TransferF removeF1 = e.getRelationFonE().stream().filter(f -> "F1".equals(f.getNameF().orElseThrow())).findAny().orElseThrow();
+        e.removeFromRelationFonE(removeF1);
+
+        e = transferEDao.update(e);
+
+        assertEquals(1, e.getRelationFonE().size());
+        assertTrue(transferFDao.getById(removeF1.identifier()).isPresent());
+        assertTrue(e.getRelationFonE().stream().allMatch(f -> transferFDao.getById(f.identifier()).isPresent()));
+        assertThat(e.getRelationFonE().stream().map(TransferF::getNameF).map(Optional::orElseThrow).toList(), containsInAnyOrder("F2"));
+
+        e.addToRelationFonE(TransferF.from(TransferFForCreate.builder().withNameF("F3").build().toMap()));
+
+        e = transferEDao.update(e);
+
+        assertEquals(2, e.getRelationFonE().size());
+        assertTrue(e.getRelationFonE().stream().allMatch(f -> transferFDao.getById(f.identifier()).isPresent()));
+        assertThat(e.getRelationFonE().stream().map(TransferF::getNameF).map(Optional::orElseThrow).toList(), containsInAnyOrder("F2", "F3"));
+
+        List<TransferF> fs = new ArrayList<>(e.getRelationFonE());
+        e.setRelationFonE(List.of());
+
+        e = transferEDao.update(e);
+
+        assertEquals(0, e.getRelationFonE().size());
+        assertTrue(fs.stream().allMatch(f -> transferFDao.getById(f.identifier()).isPresent()));
+
+    }
+
+
 
 }
