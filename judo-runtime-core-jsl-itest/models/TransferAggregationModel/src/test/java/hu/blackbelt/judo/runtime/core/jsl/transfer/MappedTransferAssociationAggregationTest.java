@@ -1440,6 +1440,67 @@ public class MappedTransferAssociationAggregationTest {
 
     }
 
+    @Test
+    void testImplicitBidirectionalAssociationAggregationCreate() {
+
+        TransferG g = transferGDao.create(TransferGForCreate.builder()
+                .withNameG("G")
+                .withRelationRequiredH(TransferHForCreate.builder().withNameH("H1Req").build())
+                .build()
+        );
+
+        TransferH requiredH = g.getRelationRequiredH();
+
+        assertEquals(g.identifier().getIdentifier(), transferHDao.queryRelationGForRequiredH(requiredH).orElseThrow().identifier().getIdentifier());
+
+        g.setRelationRequiredH(null);
+
+
+        TransferG finalG = g;
+        ValidationException thrown = assertThrows(
+                ValidationException.class,
+                () -> transferGDao.update(finalG)
+        );
+
+        Assertions.assertEquals(1, thrown.getValidationResults().size());
+        assertThat(thrown.getValidationResults(), containsInAnyOrder(allOf(
+                hasProperty("code", equalTo("MISSING_REQUIRED_RELATION")),
+                hasProperty("location", equalTo("relationRequiredH")))
+        ));
+
+        g.setRelationRequiredH(requiredH);
+
+        g.setRelationOptionalH(TransferH.from(TransferHForCreate.builder().withNameH("H2Op").build().toMap()));
+
+        g = transferGDao.update(g);
+
+        TransferH optionalH = g.getRelationOptionalH().orElseThrow();
+
+        assertEquals(g.identifier().getIdentifier(), transferHDao.queryRelationGForOptionalH(optionalH).orElseThrow().identifier().getIdentifier());
+
+        g.setRelationOptionalH(null);
+
+        g = transferGDao.update(g);
+
+        assertFalse(transferHDao.queryRelationGForOptionalH(optionalH).isPresent());
+
+        g.addToRelationCollectionH(TransferH.from(TransferHForCreate.builder().withNameH("H1Col").build().toMap()),TransferH.from(TransferHForCreate.builder().withNameH("H2Col").build().toMap()));
+
+        g = transferGDao.update(g);
+
+        assertEquals(2, g.getRelationCollectionH().size());
+        assertTrue(g.getRelationCollectionH().stream().allMatch(h -> transferHDao.getById(h.identifier()).isPresent()));
+        assertThat(g.getRelationCollectionH().stream().map(TransferH::getNameH).map(Optional::orElseThrow).toList(), containsInAnyOrder("H1Col", "H2Col"));
+        assertEquals(transferHDao.queryRelationGForCollectionH(g.getRelationCollectionH().get(0)).orElseThrow().identifier().getIdentifier(),g.identifier().getIdentifier());
+        assertEquals(transferHDao.queryRelationGForCollectionH(g.getRelationCollectionH().get(1)).orElseThrow().identifier().getIdentifier(),g.identifier().getIdentifier());
+
+        transferHDao.unsetRelationGForCollectionH(g.getRelationCollectionH().get(1));
+
+        g = transferGDao.getById(g.identifier()).orElseThrow();
+
+        assertEquals(1, g.getRelationCollectionH().size());
+
+    }
 
 
 }
