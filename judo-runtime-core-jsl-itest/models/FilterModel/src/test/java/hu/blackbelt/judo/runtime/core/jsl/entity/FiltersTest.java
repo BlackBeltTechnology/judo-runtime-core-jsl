@@ -22,6 +22,12 @@ package hu.blackbelt.judo.runtime.core.jsl.entity;
 
 import com.google.inject.Inject;
 import hu.blackbelt.judo.dispatcher.api.FileType;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.a.A;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.a.ADao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.a.AForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.b.B;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.b.BDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.b.BForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.bucket.Bucket;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.bucket.BucketDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filter.filter.bucket.BucketForCreate;
@@ -71,6 +77,7 @@ import hu.blackbelt.judo.sdk.query.*;
 import lombok.extern.slf4j.Slf4j;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
@@ -1377,5 +1384,33 @@ public class FiltersTest {
         customerDao.addOrders(customer, List.of(order1, order2));
         assertEquals(1, customerDao.countOrdersWithMultipleItems(customer));
     }
+
+    @Inject
+    ADao aDao;
+
+    @Inject
+    BDao bDao;
+
+    @Test
+    @Disabled("https://blackbelt.atlassian.net/browse/JNG-5778")
+    void testAncestorFilterCount() {
+        // Filter on the entity attributes inherited from the ancestor and count the matched ones.
+
+        B b = bDao.create(BForCreate.builder().withName("B").build());
+
+        A a = aDao.create(AForCreate.builder().withName("A").withAncestorName("PA").withAncestorB(b).build());
+
+        assertEquals("A", a.getName().orElseThrow());
+        assertEquals("PA", a.getAncestorName().orElseThrow());
+        assertEquals("B", a.getAncestorBName().orElseThrow());
+        assertEquals("B", a.getBname().orElseThrow());
+
+        assertEquals(1, aDao.query().filterBy("this.ancestorBName!like('B')").count());
+        assertEquals(1, aDao.query().filterBy("this.ancestorName!like('PA')").count());
+        assertEquals(1, aDao.query().filterBy("this.bname!like('B')").count());
+        assertEquals(1, aDao.query().filterBy("this.name!like('A')").count());
+
+    }
+
 
 }
