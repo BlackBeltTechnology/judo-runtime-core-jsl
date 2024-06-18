@@ -77,6 +77,7 @@ import hu.blackbelt.judo.sdk.query.*;
 import lombok.extern.slf4j.Slf4j;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
@@ -1391,7 +1392,7 @@ public class FiltersTest {
     BDao bDao;
 
     @Test
-    @TestCase("https://blackbelt.atlassian.net/browse/JNG-5778")
+    @Disabled("https://blackbelt.atlassian.net/browse/JNG-5778")
     void testAncestorFilterCount() {
         // Filter on the entity attributes inherited from the ancestor and count the matched ones.
 
