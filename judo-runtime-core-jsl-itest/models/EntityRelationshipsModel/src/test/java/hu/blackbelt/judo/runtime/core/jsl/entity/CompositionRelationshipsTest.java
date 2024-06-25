@@ -951,7 +951,6 @@ public class CompositionRelationshipsTest {
     EntityLDao entityLDao;
 
     @Test
-    @Disabled("https://blackbelt.atlassian.net/browse/JNG-5759,https://blackbelt.atlassian.net/browse/JNG-5736")
     @Requirement(reqs = {
             "REQ-ENT-001",
             "REQ-ENT-004",
