@@ -81,6 +81,7 @@ import hu.blackbelt.judo.runtime.core.exception.ValidationException;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import lombok.extern.slf4j.Slf4j;
 import org.hamcrest.CoreMatchers;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -951,11 +952,10 @@ public class CompositionRelationshipsTest {
     EntityLDao entityLDao;
 
     @Test
-    @Disabled("https://blackbelt.atlassian.net/browse/JNG-5759,https://blackbelt.atlassian.net/browse/JNG-5736")
     @Requirement(reqs = {
             "REQ-ENT-001",
             "REQ-ENT-004",
-            "REQ-ENT-006",
+            "REQ-ENT-005",
             "REQ-ENT-007"
     })
     @TestCase("DeleteParentWithRequiredRelationBetweenCompositions")
@@ -965,12 +965,42 @@ public class CompositionRelationshipsTest {
 
         entityJDao.createCompL(j, EntityLForCreate.builder().withName("L").withRelK(j.getCompK().get()).build());
 
+        j = entityJDao.getById(j.identifier()).orElseThrow();
+
         entityJDao.delete(j);
 
-        assertEquals(0, entityJDao.query().count());
-        assertEquals(0, entityKDao.query().count());
-        assertEquals(0, entityLDao.query().count());
+        assertTrue(entityJDao.getById(j.identifier()).isEmpty());
+        assertTrue(entityLDao.getById(j.getCompL().orElseThrow().identifier()).isEmpty());
+        assertTrue(entityKDao.getById(j.getCompK().orElseThrow().identifier()).isEmpty());
+
+        //Have mandatory reference that won't be deleted
+        j = entityJDao.create(EntityJForCreate.builder().withName("J").withCompK(EntityKForCreate.builder().withName("K").build()).build());
+
+        entityJDao.createCompL(j, EntityLForCreate.builder().withName("L").withRelK(j.getCompK().get()).build());
+
+        j = entityJDao.getById(j.identifier()).orElseThrow();
+
+        EntityJ j1 = entityJDao.create(EntityJForCreate.builder().withName("J1").withCompK(EntityKForCreate.builder().withName("K1").build()).build());
+
+        entityJDao.createCompL(j1, EntityLForCreate.builder().withName("L1").withRelK(j.getCompK().get()).build());
+
+        j1 = entityJDao.getById(j1.identifier()).orElseThrow();
+
+        EntityJ finalJ = j;
+        IllegalStateException thrown = Assertions.assertThrows(
+                IllegalStateException.class,
+                () -> entityJDao.delete(finalJ)
+        );
+        assertTrue(thrown.getMessage().contains("There are mandatory references that cannot be removed"));
+        assertTrue(thrown.getMessage().contains("#relK"));
+
+        assertTrue(entityJDao.getById(j.identifier()).isPresent());
+        assertTrue(entityLDao.getById(j.getCompL().orElseThrow().identifier()).isPresent());
+        assertTrue(entityKDao.getById(j.getCompK().orElseThrow().identifier()).isPresent());
+
+        assertTrue(entityJDao.getById(j1.identifier()).isPresent());
+        assertTrue(entityLDao.getById(j1.getCompL().orElseThrow().identifier()).isPresent());
+        assertTrue(entityKDao.getById(j1.getCompK().orElseThrow().identifier()).isPresent());
 
     }
-
 }
