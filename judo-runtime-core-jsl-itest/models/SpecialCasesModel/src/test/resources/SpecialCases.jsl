@@ -163,7 +163,7 @@ entity Ref {
     field String Name;
 }
 
-// validate the derived aggregation accidentally
+// Check that derived relations are not validated.
 
 entity Container {
     field String name required;
