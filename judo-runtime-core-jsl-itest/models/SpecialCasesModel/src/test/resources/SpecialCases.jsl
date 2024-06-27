@@ -159,7 +159,40 @@ entity CompMultiUpper {
     field Ref[] AbF;
 }
 
-entity Ref {
+    entity Ref {
     field String Name;
 }
 
+// validate the derived aggregation accidentally
+
+entity Container {
+    field String name required;
+    relation Containment1 derivedContainment1 <= Containment1.all().any();
+}
+
+entity Containment1 {
+    field String name required;
+    relation Containment2 containmet2 required;
+}
+
+
+entity Containment2 {
+    field String name required;
+}
+
+transfer ContainerTransfer (Container c) {
+    field String name <= c.name bind required;
+    relation Containment1Transfer derivedContainment1 <= c.derivedContainment1 eager:true;
+    relation Containment1Transfer transientRel;
+}
+
+transfer Containment1Transfer (Containment1 c) {
+    field String name <= c.name bind required;
+    relation Containment2Transfer containmet2 <= c.containmet2 eager:true create:true required;
+    event create eventCreate();
+}
+
+transfer Containment2Transfer (Containment2 c) {
+    field String name <= c.name bind required;
+    event create eventCreate();
+}

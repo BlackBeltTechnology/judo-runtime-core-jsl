@@ -40,6 +40,17 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcas
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.compupper.CompUpper;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.compupper.CompUpperDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.compupper.CompUpperForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.containertransfer.ContainerTransfer;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.containertransfer.ContainerTransferDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.containertransfer.ContainerTransferForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.containertransfer.ContainerTransferMask;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.containment1transfer.Containment1Transfer;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.containment1transfer.Containment1TransferDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.containment1transfer.Containment1TransferForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.containment1transfer.Containment1TransferMask;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.containment2transfer.Containment2Transfer;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.containment2transfer.Containment2TransferDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.containment2transfer.Containment2TransferForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.d.D;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.d.DDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.d.DForCreate;
@@ -2373,4 +2384,60 @@ public class SpecialCasesTest {
 
     }
 
+    @Inject
+    ContainerTransferDao containerTransferDao;
+
+    @Inject
+    Containment1TransferDao containment1TransferDao;
+
+    @Inject
+    Containment2TransferDao containment2TransferDao;
+
+    @Test
+    @TestCase("DerivedAndTransientRelationAreNotValidated")
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-EXPR-022",
+            "REQ-SRV-002",
+            "REQ-SRV-003",
+            "REQ-SRV-005",
+
+    })
+    void testDerivedAndTransientRelationAreNotValidated() {
+
+        Containment2Transfer c2 = containment2TransferDao.create(Containment2TransferForCreate.builder().withName("C2").build());
+
+        Containment1Transfer c1 = containment1TransferDao.create(Containment1TransferForCreate.builder().withName("C1").withContainmet2(Containment2TransferForCreate.builderFrom(c2).build()).build());
+
+        containerTransferDao.create(ContainerTransferForCreate.builder().withName("Container").build());
+
+        ContainerTransfer container = containerTransferDao.query().filterBy("this.name == 'Container'").maskedBy(ContainerTransferMask.containerTransferMask().withName().withDerivedContainment1(Containment1TransferMask.containment1TransferMask())).selectOne().orElseThrow();
+
+        container = ContainerTransfer.from(identifierRemove(container.toMap(),"derivedContainment1"));
+
+        // Derived doesn't have identifier
+        container = containerTransferDao.update(container);
+
+        container.setTransientRel(Containment1Transfer.builder().build());
+
+        // Transient relation doesn't have any required field
+        container = containerTransferDao.update(container);
+
+    }
+
+    Map<String, Object> identifierRemove(Map<String, Object> map, String relationName) {
+        Map<String, Object> relationMap = (Map<String, Object>) map.get(relationName);
+        relationMap.remove("__identifier");
+        relationMap.remove("__entityType");
+        relationMap.remove("__version");
+        return map;
+    }
 }
