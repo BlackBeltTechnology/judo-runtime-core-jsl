@@ -159,7 +159,7 @@ entity CompMultiUpper {
     field Ref[] AbF;
 }
 
-    entity Ref {
+entity Ref {
     field String Name;
 }
 
