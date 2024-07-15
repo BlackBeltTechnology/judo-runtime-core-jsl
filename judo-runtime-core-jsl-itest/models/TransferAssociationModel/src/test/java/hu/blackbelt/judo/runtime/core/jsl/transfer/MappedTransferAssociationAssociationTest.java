@@ -103,10 +103,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -270,6 +267,38 @@ public class MappedTransferAssociationAssociationTest {
 
     }
 
+    @Test
+    @TestCase("testCreateOptionalSingleRelationsWhenTheRelationAlreadySetOnTransfer")
+    @Requirement(reqs = {
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-SRV-001"
+    })
+    public void testCreateOptionalSingleRelationsWhenTheRelationAlreadySetOnTransfer() {
+        TransferB tb1 = transferBDao.create(TransferBForCreate.builder().build());
+
+        TransferA transferA = transferADao.create(TransferAForCreate
+                .builder()
+                .withRelationBonA(tb1)
+                .build()
+        );
+
+        TransferB tb2 = transferADao.createRelationBonA(transferA, TransferBForCreate.builder().build());
+
+        transferA = transferADao.getById(transferA.identifier()).orElseThrow();
+
+        assertEquals(tb2.identifier().getIdentifier(), transferADao.queryRelationBonA(transferA).orElseThrow().identifier().getIdentifier());
+        assertTrue(transferBDao.existsById((UUID) tb1.identifier().getIdentifier()));
+
+    }
+
     /**
      * The test checks the association mapped single-required relation work well on a transfer object.
      *
@@ -348,6 +377,39 @@ public class MappedTransferAssociationAssociationTest {
 
         assertEquals(td1.identifier().getIdentifier(), transferCDao.queryRelationDonC(transferC).identifier().getIdentifier());
         assertEquals(d1.identifier().getIdentifier(), entityCDao.queryRelationDonC(c).identifier().getIdentifier());
+
+    }
+
+    @Test
+    @TestCase("testCreateRequiredSingleRelationsWhenTheRelationAlreadySetOnTransfer")
+    @Requirement(reqs = {
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-SRV-001"
+    })
+    public void testCreateRequiredSingleRelationsWhenTheRelationAlreadySetOnTransfer() {
+
+        TransferD td1 = transferDDao.create(TransferDForCreate.builder().build());
+
+        TransferC transferC = transferCDao.create(TransferCForCreate
+                .builder()
+                .withRelationDonC(td1)
+                .build()
+        );
+
+        TransferD td2 = transferCDao.createRelationDonC(transferC, TransferDForCreate.builder().build());
+
+        transferC = transferCDao.getById(transferC.identifier()).orElseThrow();
+
+        assertEquals(td2.identifier().getIdentifier(), transferCDao.queryRelationDonC(transferC).identifier().getIdentifier());
+        assertTrue(transferDDao.existsById((UUID) td1.identifier().getIdentifier()));
 
     }
 
