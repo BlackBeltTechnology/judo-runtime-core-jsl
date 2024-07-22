@@ -233,6 +233,51 @@ public class AssociationRelationshipsTest {
     }
 
     @Test
+    @TestCase("testCreateOptionalSingleRelationsWhenTheRelationAlreadySet")
+    @Requirement(reqs = {
+            "REQ-ENT-001",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-ENT-012"
+    })
+    public void testCreateOptionalSingleRelationsWhenTheRelationAlreadySet() {
+
+        EntityC c1 = entityCDao.create(EntityCForCreate.builder().build());
+
+        entityADao.setSingleConA(entityA, c1);
+
+        EntityC c2 = entityADao.createSingleConA(entityA, EntityCForCreate.builder().build());
+
+        entityA = entityADao.getById(entityA.identifier()).orElseThrow();
+
+        assertEquals(c2.identifier().getIdentifier(), entityADao.querySingleConA(entityA).orElseThrow().identifier().getIdentifier());
+        assertTrue(entityCDao.existsById((UUID) c1.identifier().getIdentifier()));
+
+    }
+
+
+    @Test
+    @TestCase("testCreateRequiredSingleRelationsWhenTheRelationAlreadySet")
+    @Requirement(reqs = {
+            "REQ-ENT-001",
+            "REQ-ENT-004",
+            "REQ-ENT-006",
+            "REQ-ENT-012"
+    })
+    public void testCreateRequiredSingleRelationsWhenTheRelationAlreadySet() {
+
+        EntityC c2 = entityADao.createSingleRequiredConA(entityA, EntityCForCreate.builder().build());
+
+        entityA = entityADao.getById(entityA.identifier()).orElseThrow();
+
+        assertEquals(c2.identifier().getIdentifier(), entityADao.querySingleRequiredConA(entityA).identifier().getIdentifier());
+        assertTrue(entityCDao.existsById((UUID) entityC.identifier().getIdentifier()));
+        assertEquals(1, entityCDao.queryTwoWayMultipleAonC(c2).count());
+        assertEquals(entityA.identifier().getIdentifier(), entityCDao.queryTwoWayMultipleAonC(c2).selectOne().orElseThrow().identifier().getIdentifier());
+
+    }
+
+    @Test
     @Requirement(reqs = {
             "REQ-ENT-001",
             "REQ-ENT-004",

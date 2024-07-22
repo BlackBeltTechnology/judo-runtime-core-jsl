@@ -148,7 +148,7 @@ public class MappedTransferCompositonAssociationTest {
                 IllegalArgumentException.class,
                 () -> transferADao.createSingleEntityB(referenceForLambda, TransferBForCreate.builder().withNameB("B2").build(), TransferBMask.transferBMask())
         );
-        assertTrue(thrown.getMessage().contains("Upper cardinality violated"));
+        assertTrue(thrown.getMessage().contains("Containment already set"));
 
         // Check transferA can set to null
         transferBDao.delete(transferB);
@@ -220,7 +220,7 @@ public class MappedTransferCompositonAssociationTest {
                 IllegalArgumentException.class,
                 () -> transferCDao.createSingleRequiredEntityD(transferC, TransferDForCreate.builder().build())
         );
-        assertTrue(thrown2.getMessage().contains("Upper cardinality violated"));
+        assertTrue(thrown2.getMessage().contains("Containment already set"));
 
     }
 
