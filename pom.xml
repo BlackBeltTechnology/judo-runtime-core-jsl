@@ -40,8 +40,8 @@
             javax.resource;version="[1.6,2)"
         </osgi-transaction-import>
 
-        <judo-tatami-jsl-version>1.1.4.20240719_124500_29703322_feature_JNG_5844_Allow_overwrite_with_create_on_Single_Association_Relation</judo-tatami-jsl-version>
-        <judo-runtime-core-version>1.0.6.20240715_162708_d5437788_feature_JNG_5844_Allow_overwrite_with_create_on_Single_Association_Relation</judo-runtime-core-version>
+        <judo-tatami-jsl-version>1.1.4.20240723_071921_362ac305_develop</judo-tatami-jsl-version>
+        <judo-runtime-core-version>1.0.6.20240722_081549_edd51fc9_develop</judo-runtime-core-version>
         <judo-psm-generator-sdk-core-version>1.0.0.20240713_040948_2c60c63c_develop</judo-psm-generator-sdk-core-version>
 
         <judo-meta-psm-version>1.3.0.20240713_040609_6f9ce2de_develop</judo-meta-psm-version>
