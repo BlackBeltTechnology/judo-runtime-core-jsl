@@ -305,7 +305,7 @@ public class MappedTransferPagingTest {
         list = transferItemDao
                 .query()
                 .orderBy(TransferItemAttribute.NUMBER)
-                .selectList(1, null);
+                .selectList(1, (Integer) null);
 
         assertEquals(1, list.size());
         assertEquals(ent2.identifier().getIdentifier(), list.get(0).identifier().getIdentifier());
@@ -313,7 +313,7 @@ public class MappedTransferPagingTest {
         list = transferItemDao
                 .query()
                 .orderBy(TransferItemAttribute.NUMBER)
-                .selectList(null, null);
+                .selectList(null, (Integer) null);
 
         assertEquals(2, list.size());
         assertEquals(ent2.identifier().getIdentifier(), list.get(0).identifier().getIdentifier());
@@ -322,7 +322,7 @@ public class MappedTransferPagingTest {
         list = transferItemDao
                 .query()
                 .orderBy(TransferItemAttribute.NUMBER)
-                .selectList(0, null);
+                .selectList(0, (Integer) null);
 
         assertEquals(2, list.size());
         assertEquals(ent2.identifier().getIdentifier(), list.get(0).identifier().getIdentifier());
@@ -331,7 +331,7 @@ public class MappedTransferPagingTest {
         list = transferItemDao
                 .query()
                 .orderBy(TransferItemAttribute.NUMBER)
-                .selectList(3, null);
+                .selectList(3, (Integer) null);
 
         assertEquals(2, list.size());
         assertEquals(ent2.identifier().getIdentifier(), list.get(0).identifier().getIdentifier());
