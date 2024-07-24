@@ -31,6 +31,8 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.PagingDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
+import hu.blackbelt.judo.sdk.query.NumberFilter;
+import hu.blackbelt.judo.sdk.query.StringFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -67,7 +69,7 @@ public class PagingTest {
     LogEntryDao logEntryDao;
 
     /**
-     * Testing the limit and offset in bigger data and combine other query customizer methods (filter, order).
+     * Testing the limit and offset/lastItem in bigger data and combine other query customizer methods (filter, order).
      *
      * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
@@ -128,6 +130,11 @@ public class PagingTest {
         assertThat(list5to8Ids, equalTo(expectedList5to8Ids));
         assertThat(list5to8Ids, equalTo(java.util.List.of(listIds.get('E'), listIds.get('F'), listIds.get('G'), listIds.get('H'))));
 
+        //lastItem
+        List d = listDao.getById((UUID) listIds.get('D')).orElseThrow();
+        list5to8Ids = listDao.query().orderBy(ListAttribute.NAME).selectList(4, d).stream().map(List::identifier).map(ListIdentifier::getIdentifier).toList();
+        assertThat(list5to8Ids, equalTo(java.util.List.of(listIds.get('E'), listIds.get('F'), listIds.get('G'), listIds.get('H'))));
+
         // Lists 1 to 4 ['A', 'B']
 
         java.util.List<Serializable> lists2Of4Ids = listDao
@@ -169,6 +176,18 @@ public class PagingTest {
                 .toList();
         assertThat(reversedList5to8Ids, equalTo(java.util.List.of(listIds.get('V'), listIds.get('U'), listIds.get('T'), listIds.get('S'))));
 
+        //lastItem
+        List w = listDao.getById((UUID) listIds.get('W')).orElseThrow();
+        reversedList5to8Ids = listDao
+                .query()
+                .orderByDescending(ListAttribute.NAME)
+                .selectList(4, w)
+                .stream()
+                .map(List::identifier)
+                .map(ListIdentifier::getIdentifier)
+                .toList();
+        assertThat(reversedList5to8Ids, equalTo(java.util.List.of(listIds.get('V'), listIds.get('U'), listIds.get('T'), listIds.get('S'))));
+
         // List items 1 to 10
 
         java.util.List<String> itemsList1To10FqNames = itemDao
@@ -189,6 +208,18 @@ public class PagingTest {
                 .stream()
                 .map(l -> l.getListName().get() + "." + l.getNumber().get())
                 .toList();
+        assertThat(itemsList11To20FqNames, equalTo(java.util.List.of("List_A.22", "List_B.22", "List_C.22", "List_D.22", "List_E.22", "List_A.21", "List_B.21", "List_C.21", "List_D.21", "List_E.21")));
+
+        //lastItem
+        Item listD23 = itemDao.query().filterByListName(StringFilter.equalTo("List_D")).filterByNumber(NumberFilter.equalTo(23)).selectOne().orElseThrow();
+        itemsList11To20FqNames = itemDao
+                .query().orderByDescending(ItemAttribute.NUMBER)
+                .orderBy(ItemAttribute.LIST_NAME)
+                .selectList(10, listD23)
+                .stream()
+                .map(l -> l.getListName().get() + "." + l.getNumber().get())
+                .toList();
+        assertEquals(10, itemsList11To20FqNames.size());
         assertThat(itemsList11To20FqNames, equalTo(java.util.List.of("List_A.22", "List_B.22", "List_C.22", "List_D.22", "List_E.22", "List_A.21", "List_B.21", "List_C.21", "List_D.21", "List_E.21")));
 
         // List items by Topic 1 to 10
@@ -215,6 +246,19 @@ public class PagingTest {
                 .toList();
         assertThat(itemsByTopic11To20FqNames, equalTo(java.util.List.of("List_D.2#TopicE", "List_D.3#TopicF", "List_A.26#null", "List_A.25#null", "List_B.25#null", "List_A.24#null", "List_B.24#null", "List_C.24#null", "List_A.23#null", "List_B.23#null")));
 
+        //lastItem
+        Item listC3Topic = itemDao.query().filterByListName(StringFilter.equalTo("List_C")).filterByNumber(NumberFilter.equalTo(3)).selectOne().orElseThrow();
+
+        itemsByTopic11To20FqNames = itemDao
+                .query().orderBy(ItemAttribute.TOPIC)
+                .orderByDescending(ItemAttribute.NUMBER)
+                .orderBy(ItemAttribute.LIST_NAME)
+                .selectList(10,listC3Topic)
+                .stream()
+                .map(l -> l.getListName().get() + "." + l.getNumber().get() + "#" + l.getTopic().orElse(null))
+                .toList();
+        assertThat(itemsByTopic11To20FqNames, equalTo(java.util.List.of("List_D.2#TopicE", "List_D.3#TopicF", "List_A.26#null", "List_A.25#null", "List_B.25#null", "List_A.24#null", "List_B.24#null", "List_C.24#null", "List_A.23#null", "List_B.23#null")));
+
         // List items by Topic 21 to 30
 
         java.util.List<String> itemsByTopic21To30FqNames= itemDao
@@ -222,6 +266,19 @@ public class PagingTest {
                 .orderByDescending(ItemAttribute.NUMBER)
                 .orderBy(ItemAttribute.LIST_NAME)
                 .selectList(10,20)
+                .stream()
+                .map(l -> l.getListName().get() + "." + l.getNumber().get() + "#" + l.getTopic().orElse(null))
+                .toList();
+        assertThat(itemsByTopic21To30FqNames, equalTo(java.util.List.of("List_C.23#null", "List_D.23#null", "List_A.22#null", "List_B.22#null", "List_C.22#null", "List_D.22#null", "List_E.22#null", "List_A.21#null", "List_B.21#null", "List_C.21#null")));
+
+        //lastItem
+        Item listB23 = itemDao.query().filterByListName(StringFilter.equalTo("List_B")).filterByNumber(NumberFilter.equalTo(23)).selectOne().orElseThrow();
+
+        itemsByTopic21To30FqNames= itemDao
+                .query().orderBy(ItemAttribute.TOPIC)
+                .orderByDescending(ItemAttribute.NUMBER)
+                .orderBy(ItemAttribute.LIST_NAME)
+                .selectList(10,listB23)
                 .stream()
                 .map(l -> l.getListName().get() + "." + l.getNumber().get() + "#" + l.getTopic().orElse(null))
                 .toList();
@@ -242,7 +299,7 @@ public class PagingTest {
 
 
     /**
-     * Testing the query customizer selectList method with limit and offset parameter variants.
+     * Testing the query customizer selectList method with limit and offset/lastItem parameter variants.
      *
      * @prerequisites The model runtime is empty. It means that the database of the application has to be empty before this test starts running.
      *
@@ -362,6 +419,40 @@ public class PagingTest {
                 .selectList(2, 2);
 
         assertEquals(0, list.size());
+
+        // lastItem
+        list = itemDao
+                .query()
+                .orderBy(ItemAttribute.NUMBER)
+                .selectList(null, (Item) null);
+
+        assertEquals(2, list.size());
+        assertEquals(ent2.identifier().getIdentifier(), list.get(0).identifier().getIdentifier());
+        assertEquals(ent1.identifier().getIdentifier(), list.get(1).identifier().getIdentifier());
+
+        list = itemDao
+                .query()
+                .orderBy(ItemAttribute.NUMBER)
+                .selectList(2, (Item) null);
+
+        assertEquals(2, list.size());
+        assertEquals(ent2.identifier().getIdentifier(), list.get(0).identifier().getIdentifier());
+        assertEquals(ent1.identifier().getIdentifier(), list.get(1).identifier().getIdentifier());
+
+        list = itemDao
+                .query()
+                .orderBy(ItemAttribute.NUMBER)
+                .selectList(2, ent1);
+
+        assertEquals(0, list.size());
+
+        list = itemDao
+                .query()
+                .orderBy(ItemAttribute.NUMBER)
+                .selectList(2, ent2);
+
+        assertEquals(1, list.size());
+        assertEquals(ent1.identifier().getIdentifier(), list.get(0).identifier().getIdentifier());
     }
 
     /**
