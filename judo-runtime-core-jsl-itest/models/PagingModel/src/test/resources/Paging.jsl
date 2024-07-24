@@ -15,7 +15,6 @@ transfer TransferItem (Item item){
     event create eventCreate();
 }
 
-
 entity List {
     field String name;
     field Item[] items;

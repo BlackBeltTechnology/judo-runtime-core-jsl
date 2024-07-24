@@ -474,7 +474,7 @@ public class TestStaticQueryDao {
                                 .withValue(4)
                                 .build())
                         .orderByDescending(EntityQueryElementAttribute.NAME)
-                        .selectList(1, null);
+                        .selectList(1, (Integer)null);
 
         assertEquals(1, list.size());
         assertEquals(e.identifier(), list.get(0).identifier());
@@ -485,7 +485,7 @@ public class TestStaticQueryDao {
                         .withValue(4)
                         .build())
                 .orderByDescending(EntityQueryElementAttribute.NAME)
-                .selectList(null, null);
+                .selectList(null, (Integer)null);
 
         assertEquals(2, list.size());
         assertEquals(e.identifier(), list.get(0).identifier());
@@ -497,7 +497,7 @@ public class TestStaticQueryDao {
                         .withValue(4)
                         .build())
                 .orderByDescending(EntityQueryElementAttribute.NAME)
-                .selectList(0, null);
+                .selectList(0, (Integer) null);
 
         assertEquals(2, list.size());
         assertEquals(e.identifier(), list.get(0).identifier());
@@ -509,7 +509,7 @@ public class TestStaticQueryDao {
                         .withValue(4)
                         .build())
                 .orderByDescending(EntityQueryElementAttribute.NAME)
-                .selectList(2, null);
+                .selectList(2, (Integer) null);
 
         assertEquals(2, list.size());
         assertEquals(e.identifier(), list.get(0).identifier());
