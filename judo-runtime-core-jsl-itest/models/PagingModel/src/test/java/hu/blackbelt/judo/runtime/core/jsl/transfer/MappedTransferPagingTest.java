@@ -31,6 +31,8 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.PagingDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
+import hu.blackbelt.judo.sdk.query.NumberFilter;
+import hu.blackbelt.judo.sdk.query.StringFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -126,6 +128,11 @@ public class MappedTransferPagingTest {
         assertThat(list5to8Ids, equalTo(expectedList5to8Ids));
         assertThat(list5to8Ids, equalTo(List.of(listIds.get('E'), listIds.get('F'), listIds.get('G'), listIds.get('H'))));
 
+        //lastItem
+        TransferList d = transferListDao.getById((UUID) listIds.get('D')).orElseThrow();
+        list5to8Ids = transferListDao.query().orderBy(TransferListAttribute.NAME).selectList(4, d).stream().map(TransferList::identifier).map(TransferListIdentifier::getIdentifier).toList();
+        assertThat(list5to8Ids, equalTo(java.util.List.of(listIds.get('E'), listIds.get('F'), listIds.get('G'), listIds.get('H'))));
+
         // Lists 1 to 4 ['A', 'B']
 
         List<Serializable> lists2Of4Ids = transferListDao
@@ -167,6 +174,18 @@ public class MappedTransferPagingTest {
                 .toList();
         assertThat(reversedList5to8Ids, equalTo(List.of(listIds.get('V'), listIds.get('U'), listIds.get('T'), listIds.get('S'))));
 
+        //lastItem
+        TransferList w = transferListDao.getById((UUID) listIds.get('W')).orElseThrow();
+        reversedList5to8Ids = transferListDao
+                .query()
+                .orderByDescending(TransferListAttribute.NAME)
+                .selectList(4, w)
+                .stream()
+                .map(TransferList::identifier)
+                .map(TransferListIdentifier::getIdentifier)
+                .toList();
+        assertThat(reversedList5to8Ids, equalTo(java.util.List.of(listIds.get('V'), listIds.get('U'), listIds.get('T'), listIds.get('S'))));
+
         // List items 1 to 10
 
         List<String> itemsList1To10FqNames = transferItemDao
@@ -188,6 +207,18 @@ public class MappedTransferPagingTest {
                 .map(l -> l.getListName().get() + "." + l.getNumber().get())
                 .toList();
         assertThat(itemsList11To20FqNames, equalTo(List.of("List_A.22", "List_B.22", "List_C.22", "List_D.22", "List_E.22", "List_A.21", "List_B.21", "List_C.21", "List_D.21", "List_E.21")));
+
+        //lastItem
+        TransferItem listD23 = transferItemDao.query().filterByListName(StringFilter.equalTo("List_D")).filterByNumber(NumberFilter.equalTo(23)).selectOne().orElseThrow();
+        itemsList11To20FqNames = transferItemDao
+                .query().orderByDescending(TransferItemAttribute.NUMBER)
+                .orderBy(TransferItemAttribute.LIST_NAME)
+                .selectList(10, listD23)
+                .stream()
+                .map(l -> l.getListName().get() + "." + l.getNumber().get())
+                .toList();
+        assertEquals(10, itemsList11To20FqNames.size());
+        assertThat(itemsList11To20FqNames, equalTo(java.util.List.of("List_A.22", "List_B.22", "List_C.22", "List_D.22", "List_E.22", "List_A.21", "List_B.21", "List_C.21", "List_D.21", "List_E.21")));
 
         // List items by Topic 1 to 10
 
@@ -213,6 +244,19 @@ public class MappedTransferPagingTest {
                 .toList();
         assertThat(itemsByTopic11To20FqNames, equalTo(List.of("List_D.2#TopicE", "List_D.3#TopicF", "List_A.26#null", "List_A.25#null", "List_B.25#null", "List_A.24#null", "List_B.24#null", "List_C.24#null", "List_A.23#null", "List_B.23#null")));
 
+        //lastItem
+        TransferItem listC3Topic = transferItemDao.query().filterByListName(StringFilter.equalTo("List_C")).filterByNumber(NumberFilter.equalTo(3)).selectOne().orElseThrow();
+
+        itemsByTopic11To20FqNames = transferItemDao
+                .query().orderBy(TransferItemAttribute.TOPIC)
+                .orderByDescending(TransferItemAttribute.NUMBER)
+                .orderBy(TransferItemAttribute.LIST_NAME)
+                .selectList(10,listC3Topic)
+                .stream()
+                .map(l -> l.getListName().get() + "." + l.getNumber().get() + "#" + l.getTopic().orElse(null))
+                .toList();
+        assertThat(itemsByTopic11To20FqNames, equalTo(java.util.List.of("List_D.2#TopicE", "List_D.3#TopicF", "List_A.26#null", "List_A.25#null", "List_B.25#null", "List_A.24#null", "List_B.24#null", "List_C.24#null", "List_A.23#null", "List_B.23#null")));
+
         // List items by Topic 21 to 30
 
         List<String> itemsByTopic21To30FqNames= transferItemDao
@@ -224,6 +268,19 @@ public class MappedTransferPagingTest {
                 .map(l -> l.getListName().get() + "." + l.getNumber().get() + "#" + l.getTopic().orElse(null))
                 .toList();
         assertThat(itemsByTopic21To30FqNames, equalTo(List.of("List_C.23#null", "List_D.23#null", "List_A.22#null", "List_B.22#null", "List_C.22#null", "List_D.22#null", "List_E.22#null", "List_A.21#null", "List_B.21#null", "List_C.21#null")));
+
+        //lastItem
+        TransferItem listB23 = transferItemDao.query().filterByListName(StringFilter.equalTo("List_B")).filterByNumber(NumberFilter.equalTo(23)).selectOne().orElseThrow();
+
+        itemsByTopic21To30FqNames= transferItemDao
+                .query().orderBy(TransferItemAttribute.TOPIC)
+                .orderByDescending(TransferItemAttribute.NUMBER)
+                .orderBy(TransferItemAttribute.LIST_NAME)
+                .selectList(10,listB23)
+                .stream()
+                .map(l -> l.getListName().get() + "." + l.getNumber().get() + "#" + l.getTopic().orElse(null))
+                .toList();
+        assertThat(itemsByTopic21To30FqNames, equalTo(java.util.List.of("List_C.23#null", "List_D.23#null", "List_A.22#null", "List_B.22#null", "List_C.22#null", "List_D.22#null", "List_E.22#null", "List_A.21#null", "List_B.21#null", "List_C.21#null")));
 
         final List<Integer> integersFrom1To26 = IntStream.rangeClosed(1, 26).boxed().collect(Collectors.toList());
         final List<Integer> integersFrom26To1 = IntStream.rangeClosed(1, 26).boxed().sorted((i, j) -> j - i).collect(Collectors.toList());
@@ -305,7 +362,7 @@ public class MappedTransferPagingTest {
         list = transferItemDao
                 .query()
                 .orderBy(TransferItemAttribute.NUMBER)
-                .selectList(1, null);
+                .selectList(1, (Integer) null);
 
         assertEquals(1, list.size());
         assertEquals(ent2.identifier().getIdentifier(), list.get(0).identifier().getIdentifier());
@@ -313,7 +370,7 @@ public class MappedTransferPagingTest {
         list = transferItemDao
                 .query()
                 .orderBy(TransferItemAttribute.NUMBER)
-                .selectList(null, null);
+                .selectList(null, (Integer) null);
 
         assertEquals(2, list.size());
         assertEquals(ent2.identifier().getIdentifier(), list.get(0).identifier().getIdentifier());
@@ -322,7 +379,7 @@ public class MappedTransferPagingTest {
         list = transferItemDao
                 .query()
                 .orderBy(TransferItemAttribute.NUMBER)
-                .selectList(0, null);
+                .selectList(0, (Integer) null);
 
         assertEquals(2, list.size());
         assertEquals(ent2.identifier().getIdentifier(), list.get(0).identifier().getIdentifier());
@@ -331,7 +388,7 @@ public class MappedTransferPagingTest {
         list = transferItemDao
                 .query()
                 .orderBy(TransferItemAttribute.NUMBER)
-                .selectList(3, null);
+                .selectList(3, (Integer) null);
 
         assertEquals(2, list.size());
         assertEquals(ent2.identifier().getIdentifier(), list.get(0).identifier().getIdentifier());
@@ -360,6 +417,41 @@ public class MappedTransferPagingTest {
                 .selectList(2, 2);
 
         assertEquals(0, list.size());
+
+
+        // lastItem
+        list = transferItemDao
+                .query()
+                .orderBy(TransferItemAttribute.NUMBER)
+                .selectList(null, (TransferItem) null);
+
+        assertEquals(2, list.size());
+        assertEquals(ent2.identifier().getIdentifier(), list.get(0).identifier().getIdentifier());
+        assertEquals(ent1.identifier().getIdentifier(), list.get(1).identifier().getIdentifier());
+
+        list = transferItemDao
+                .query()
+                .orderBy(TransferItemAttribute.NUMBER)
+                .selectList(2, (TransferItem) null);
+
+        assertEquals(2, list.size());
+        assertEquals(ent2.identifier().getIdentifier(), list.get(0).identifier().getIdentifier());
+        assertEquals(ent1.identifier().getIdentifier(), list.get(1).identifier().getIdentifier());
+
+        list = transferItemDao
+                .query()
+                .orderBy(TransferItemAttribute.NUMBER)
+                .selectList(2, ent1);
+
+        assertEquals(0, list.size());
+
+        list = transferItemDao
+                .query()
+                .orderBy(TransferItemAttribute.NUMBER)
+                .selectList(2, ent2);
+
+        assertEquals(1, list.size());
+        assertEquals(ent1.identifier().getIdentifier(), list.get(0).identifier().getIdentifier());
     }
 
     /**
