@@ -37,9 +37,11 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcas
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.compmultiupper.CompMultiUpper;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.compmultiupper.CompMultiUpperDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.compmultiupper.CompMultiUpperForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.compmultiupper.CompMultiUpperReference;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.compupper.CompUpper;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.compupper.CompUpperDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.compupper.CompUpperForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.compupper.CompUpperReference;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.containertransfer.ContainerTransfer;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.containertransfer.ContainerTransferDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.containertransfer.ContainerTransferForCreate;
@@ -51,6 +53,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcas
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.containment2transfer.Containment2Transfer;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.containment2transfer.Containment2TransferDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.containment2transfer.Containment2TransferForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.continent.Continent;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.d.D;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.d.DDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.d.DForCreate;
@@ -78,6 +81,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcas
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.if_.IfDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.if_.IfForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.primupper.PrimUpper;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.primupper.PrimUpperAttribute;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.primupper.PrimUpperDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.primupper.PrimUpperForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.ref.Ref;
@@ -89,9 +93,11 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcas
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.relmultiupper.RelMultiUpper;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.relmultiupper.RelMultiUpperDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.relmultiupper.RelMultiUpperForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.relmultiupper.RelMultiUpperReference;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.relupper.RelUpper;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.relupper.RelUpperDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.relupper.RelUpperForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.relupper.RelUpperReference;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.static_.Static;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.static_.StaticDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.specialcases.specialcases.static_.StaticForCreate;
@@ -2440,4 +2446,75 @@ public class SpecialCasesTest {
         relationMap.remove("__version");
         return map;
     }
+
+    @Test
+    @TestCase("EnumGetByFunctions")
+    @Requirement(reqs = {
+            "REQ-TYPE-002",
+    })
+    void testEnumGetByFunctions() {
+        assertEquals(Continent.Africa, Continent.getByName("Africa"));
+        assertEquals(Continent.Asia, Continent.getByName("Asia"));
+        assertEquals(Continent.Europe, Continent.getByName("Europe"));
+        assertEquals(Continent.America, Continent.getByName("America"));
+        assertEquals(Continent.Antarctica, Continent.getByName("Antarctica"));
+        assertEquals(Continent.Australia, Continent.getByName("Australia"));
+
+        Throwable thrown = assertThrows(IllegalArgumentException.class, () -> Continent.getByName("Arctics"));
+        assertEquals("Invalid name: Arctics", thrown.getMessage());
+
+
+        assertEquals(Continent.Africa, Continent.getByOrdinal(1));
+        assertEquals(Continent.Asia, Continent.getByOrdinal(2));
+        assertEquals(Continent.Europe, Continent.getByOrdinal(3));
+        assertEquals(Continent.America, Continent.getByOrdinal(4));
+        assertEquals(Continent.Antarctica, Continent.getByOrdinal(5));
+        assertEquals(Continent.Australia, Continent.getByOrdinal(6));
+
+        thrown = assertThrows(IllegalArgumentException.class, () -> Continent.getByOrdinal(69));
+        assertEquals("Invalid ordinal: 69", thrown.getMessage());
+    }
+
+    @Test
+    @TestCase("AttributesAndReferenceGetByNameFunction")
+    @Requirement(reqs = {
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-ENT-007",
+    })
+    void testAttributesAndReferenceGetByNameFunction() {
+        assertEquals(PrimUpperAttribute.ABC, PrimUpperAttribute.getByName("Abc"));
+        assertEquals(PrimUpperAttribute.A_BD, PrimUpperAttribute.getByName("ABd"));
+        assertEquals(PrimUpperAttribute.A_B_E, PrimUpperAttribute.getByName("ABE"));
+        assertEquals(PrimUpperAttribute.AB_F, PrimUpperAttribute.getByName("AbF"));
+
+        Throwable thrown = assertThrows(IllegalArgumentException.class, () -> PrimUpperAttribute.getByName("abc"));
+        assertEquals("Invalid name: abc", thrown.getMessage());
+
+        assertEquals(RelUpperReference.ABC, RelUpperReference.getByName("Abc"));
+        assertEquals(RelUpperReference.A_BD, RelUpperReference.getByName("ABd"));
+        assertEquals(RelUpperReference.A_B_E, RelUpperReference.getByName("ABE"));
+        assertEquals(RelUpperReference.AB_F, RelUpperReference.getByName("AbF"));
+
+        thrown = assertThrows(IllegalArgumentException.class, () -> RelUpperReference.getByName("abc"));
+        assertEquals("Invalid name: abc", thrown.getMessage());
+
+        assertEquals(RelMultiUpperReference.ABC, RelMultiUpperReference.getByName("Abc"));
+        assertEquals(RelMultiUpperReference.A_BD, RelMultiUpperReference.getByName("ABd"));
+        assertEquals(RelMultiUpperReference.A_B_E, RelMultiUpperReference.getByName("ABE"));
+        assertEquals(RelMultiUpperReference.AB_F, RelMultiUpperReference.getByName("AbF"));
+
+        assertEquals(CompUpperReference.ABC, CompUpperReference.getByName("Abc"));
+        assertEquals(CompUpperReference.A_BD, CompUpperReference.getByName("ABd"));
+        assertEquals(CompUpperReference.A_B_E, CompUpperReference.getByName("ABE"));
+        assertEquals(CompUpperReference.AB_F, CompUpperReference.getByName("AbF"));
+
+        assertEquals(CompMultiUpperReference.ABC, CompMultiUpperReference.getByName("Abc"));
+        assertEquals(CompMultiUpperReference.A_BD, CompMultiUpperReference.getByName("ABd"));
+        assertEquals(CompMultiUpperReference.A_B_E, CompMultiUpperReference.getByName("ABE"));
+        assertEquals(CompMultiUpperReference.AB_F, CompMultiUpperReference.getByName("AbF"));
+    }
+
+
 }
