@@ -43,6 +43,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
@@ -506,7 +509,7 @@ public class QueryCustomizerFunctionsTest {
         assertEquals(entity2.identifier().getIdentifier(), orderByResult.identifier().getIdentifier());
 
         orderByResult = queryCustomizer
-                .clearOrder()
+                .clearOrderBy()
                 .orderByDescending(MyEntityWithOptionalFieldsAttribute.STRING_ATTR)
                 .orderByDescending(MyEntityWithOptionalFieldsAttribute.DERIVED_SCALED_ATTR)
                 .selectOne()
@@ -543,7 +546,7 @@ public class QueryCustomizerFunctionsTest {
         assertEquals(entity1.getStringAttr(), orderByResult.getStringAttr());
         assertNull(orderByResult.getScaledAttr());
 
-        queryCustomizer.copy().clearOrder().clearMask().clearFilter();
+        queryCustomizer.copy().clearOrderBy().clearMask().clearFilter();
 
         orderByResult = queryCustomizer
                 .selectOne()
@@ -567,7 +570,8 @@ public class QueryCustomizerFunctionsTest {
 
         MyEntityWithOptionalFields result = myEntityWithOptionalFieldsDao
                 .query()
-                .appendBy(queryCustomizer)
+                .append(queryCustomizer)
+                .filterBy("this.stringAttr!like('%test%')")
                 .selectOne()
                 .orElseThrow();
 
@@ -582,7 +586,7 @@ public class QueryCustomizerFunctionsTest {
 
         result = myEntityWithOptionalFieldsDao
                 .query()
-                .appendBy(queryCustomizer)
+                .append(queryCustomizer)
                 .selectOne()
                 .orElseThrow();
 
@@ -596,13 +600,46 @@ public class QueryCustomizerFunctionsTest {
 
         result = myEntityWithOptionalFieldsDao
                 .query()
-                .appendBy(queryCustomizer)
+                .append(queryCustomizer)
                 .selectOne()
                 .orElseThrow();
 
         assertEquals(entity2.identifier().getIdentifier(), result.identifier().getIdentifier());
         assertEquals(entity2.getStringAttr(), result.getStringAttr());
         assertNotNull(result.getScaledAttr());
+
+    }
+
+    @Test
+    public void testQueryCustomizerAppendWithOrFilter(JudoRuntimeFixture runtimeFixture) {
+        AsmUtils asmUtils = new AsmUtils(runtimeFixture.modelHolder.getAsmModel().getResourceSet());
+
+        DAO.QueryCustomizer<java.util.UUID> queryCustomizer = DAO.QueryCustomizer.<java.util.UUID>builder()
+                .orderBy(DAO.OrderBy.builder().descending(false).attribute(asmUtils.resolveAttribute("Primitives.Primitives.MyEntityWithOptionalFields#stringAttr").orElseThrow()).build())
+                .filter("this.stringAttr == 'test' or this.stringAttr == 'Another'")
+                .mask(Map.of("stringAttr", true))
+                .build();
+
+        List<MyEntityWithOptionalFields> result = myEntityWithOptionalFieldsDao
+                .query()
+                .append(queryCustomizer)
+                .selectList();
+
+        assertEquals(2, result.size());
+        assertThat(result.stream().map(e -> e.identifier().getIdentifier()).toList(), containsInAnyOrder(entity1.identifier().getIdentifier(), entity2.identifier().getIdentifier()));
+        assertNull(result.get(0).getScaledAttr());
+        assertNull(result.get(1).getScaledAttr());
+
+        result = myEntityWithOptionalFieldsDao
+                .query()
+                .append(queryCustomizer)
+                .filterBy("this.stringAttr!like('%test%')")
+                .selectList();
+
+        assertEquals(1, result.size());
+        assertEquals(entity1.identifier().getIdentifier(), result.get(0).identifier().getIdentifier());
+        assertNull(result.get(0).getScaledAttr());
+
 
     }
     
