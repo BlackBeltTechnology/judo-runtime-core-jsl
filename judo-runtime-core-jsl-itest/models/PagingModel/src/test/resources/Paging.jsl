@@ -9,10 +9,10 @@ entity Item {
 }
 
 transfer TransferItem (Item item){
-    field Integer number <= item.number bind;
-    field String topic <= item.topic bind;
+    field Integer number <=> item.number;
+    field String topic <=> item.topic;
     field String listName <= item.listName;
-    event create eventCreate();
+    event create eventCreate;
 }
 
 entity List {
@@ -21,7 +21,7 @@ entity List {
 }
 
 transfer TransferList (List list){
-    field String name <= list.name bind;
+    field String name <=> list.name;
     relation TransferItem[] items <= list.items eager:true create:true;
 }
 
@@ -31,6 +31,6 @@ entity LogEntry {
 }
 
 transfer TransferLogEntry (LogEntry logEntry){
-    field Timestamp timestamp <= logEntry.timestamp bind;
-    field String message <= logEntry.message bind;
+    field Timestamp timestamp <=> logEntry.timestamp;
+    field String message <=> logEntry.message;
 }
