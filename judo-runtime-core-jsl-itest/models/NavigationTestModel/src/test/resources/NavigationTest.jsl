@@ -84,7 +84,7 @@ entity B {
 }
 
 transfer TB (B mapped){
-    field String name <= mapped.name bind;
+    field String name <=> mapped.name;
     relation TC c <= mapped.c choices:C.all();
 }
 
@@ -93,7 +93,7 @@ entity C {
 }
 
 transfer TC (C mapped){
-    field String name <= mapped.name bind;
+    field String name <=> mapped.name;
 }
 
 // PersonWithParents NavigationTest
@@ -140,9 +140,9 @@ transfer TransferAccessForThePrincipal ( AccessForThePrincipal acc ) {
 }
 
 transfer TransferPerson ( Person person ) {
-    field String name <= person.name bind:true;
-    field SexType sex <= person.sex  bind:true;
-    field Date birthDate <= person.birthDate bind:true;
+    field String name <=> person.name;
+    field SexType sex <=> person.sex ;
+    field Date birthDate <=> person.birthDate;
     relation TransferPerson[] parents <= person.parents choices:Person.all();
     relation TransferPerson[] children <= person.children choices:Person.all();
 

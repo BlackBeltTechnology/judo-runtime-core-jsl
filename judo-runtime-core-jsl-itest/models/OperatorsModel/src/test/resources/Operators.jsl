@@ -93,78 +93,78 @@ entity DefaultOperators {
 }
 
 transfer TransferDefaultOperators (DefaultOperators mapped) {
-    field Integer rounded <= mapped.rounded bind;
-    field Integer unary <= mapped.unary bind; // -6
-    field Integer abs <= mapped.abs bind;
-    field Integer addition <= mapped.addition bind;
-    field Integer subtraction <= mapped.subtraction bind;
-    field Integer pow <= mapped.pow bind;
-    field Integer multiplication <= mapped.multiplication bind;
-    field Scaled division <= mapped.division bind;
-    field Integer divisionWhole <= mapped.divisionWhole bind;
-    field Integer modulo <= mapped.modulo bind;
-    field Boolean lt <= mapped.lt bind;
-    field Boolean lt2 <= mapped.lt2 bind;
-    field Boolean gt <= mapped.gt bind;
-    field Boolean gt2 <= mapped.gt2 bind;
-    field Boolean lte <= mapped.lte bind;
-    field Boolean lte2 <= mapped.lte2 bind;
-    field Boolean gte <= mapped.gte bind;
-    field Boolean gte2 <= mapped.gte2 bind;
-    field Boolean eq <= mapped.eq bind;
-    field Boolean neq <= mapped.neq bind;
-    field Integer conditional <= mapped.conditional bind;
-    field Boolean groupAnd <= mapped.groupAnd bind;
-    field Boolean groupOr <= mapped.groupOr bind;
+    field Integer rounded <=> mapped.rounded;
+    field Integer unary <=> mapped.unary; // -6
+    field Integer abs <=> mapped.abs;
+    field Integer addition <=> mapped.addition;
+    field Integer subtraction <=> mapped.subtraction;
+    field Integer pow <=> mapped.pow;
+    field Integer multiplication <=> mapped.multiplication;
+    field Scaled division <=> mapped.division;
+    field Integer divisionWhole <=> mapped.divisionWhole;
+    field Integer modulo <=> mapped.modulo;
+    field Boolean lt <=> mapped.lt;
+    field Boolean lt2 <=> mapped.lt2;
+    field Boolean gt <=> mapped.gt;
+    field Boolean gt2 <=> mapped.gt2;
+    field Boolean lte <=> mapped.lte;
+    field Boolean lte2 <=> mapped.lte2;
+    field Boolean gte <=> mapped.gte;
+    field Boolean gte2 <=> mapped.gte2;
+    field Boolean eq <=> mapped.eq;
+    field Boolean neq <=> mapped.neq;
+    field Integer conditional <=> mapped.conditional;
+    field Boolean groupAnd <=> mapped.groupAnd;
+    field Boolean groupOr <=> mapped.groupOr;
 
-    field Integer oneModOne <= mapped.oneModOne bind;
-    field Scaled oneModOnePointNine <= mapped.oneModOnePointNine bind;
-    field Scaled onePointNineModOnePointNine <= mapped.onePointNineModOnePointNine bind;
-    field Scaled onePointNineModOne <= mapped.onePointNineModOne bind;
-    field Integer oneDivOne <= mapped.oneDivOne bind;
-    field Scaled oneDivOnePointNine <= mapped.oneDivOnePointNine bind;
-    field Scaled onePointNineDivOnePointNine <= mapped.onePointNineDivOnePointNine bind;
-    field Scaled onePointNineDivOne <= mapped.onePointNineDivOne bind;
+    field Integer oneModOne <=> mapped.oneModOne;
+    field Scaled oneModOnePointNine <=> mapped.oneModOnePointNine;
+    field Scaled onePointNineModOnePointNine <=> mapped.onePointNineModOnePointNine;
+    field Scaled onePointNineModOne <=> mapped.onePointNineModOne;
+    field Integer oneDivOne <=> mapped.oneDivOne;
+    field Scaled oneDivOnePointNine <=> mapped.oneDivOnePointNine;
+    field Scaled onePointNineDivOnePointNine <=> mapped.onePointNineDivOnePointNine;
+    field Scaled onePointNineDivOne <=> mapped.onePointNineDivOne;
 
-    field Boolean dateLt <= mapped.dateLt bind;
-    field Boolean dateLte <= mapped.dateLte bind;
-    field Boolean dateLte2 <= mapped.dateLte2 bind;
-    field Boolean dateGt <= mapped.dateGt bind;
-    field Boolean dateGte <= mapped.dateGte bind;
-    field Boolean dateGte2 <= mapped.dateGte2 bind;
-    field Boolean dateEq <= mapped.dateEq bind;
-    field Boolean dateNeq <= mapped.dateNeq bind;
+    field Boolean dateLt <=> mapped.dateLt;
+    field Boolean dateLte <=> mapped.dateLte;
+    field Boolean dateLte2 <=> mapped.dateLte2;
+    field Boolean dateGt <=> mapped.dateGt;
+    field Boolean dateGte <=> mapped.dateGte;
+    field Boolean dateGte2 <=> mapped.dateGte2;
+    field Boolean dateEq <=> mapped.dateEq;
+    field Boolean dateNeq <=> mapped.dateNeq;
 
-    field Boolean timeLt <= mapped.timeLt bind;
-    field Boolean timeLte <= mapped.timeLte bind;
-    field Boolean timeLte2 <= mapped.timeLte2 bind;
-    field Boolean timeGt <= mapped.timeGt bind;
-    field Boolean timeGte <= mapped.timeGte bind;
-    field Boolean timeGte2 <= mapped.timeGte2 bind;
-    field Boolean timeEq <= mapped.timeEq bind;
-    field Boolean timeNeq <= mapped.timeNeq bind;
+    field Boolean timeLt <=> mapped.timeLt;
+    field Boolean timeLte <=> mapped.timeLte;
+    field Boolean timeLte2 <=> mapped.timeLte2;
+    field Boolean timeGt <=> mapped.timeGt;
+    field Boolean timeGte <=> mapped.timeGte;
+    field Boolean timeGte2 <=> mapped.timeGte2;
+    field Boolean timeEq <=> mapped.timeEq;
+    field Boolean timeNeq <=> mapped.timeNeq;
 
-    field Boolean timestampEq <= mapped.timestampEq bind;
-    field Boolean timestampNeq <= mapped.timestampNeq bind;
+    field Boolean timestampEq <=> mapped.timestampEq;
+    field Boolean timestampNeq <=> mapped.timestampNeq;
 
-    field Boolean stringLt <= mapped.stringLt bind;
-    field Boolean stringLte <= mapped.stringLte bind;
-    field Boolean stringLte2 <= mapped.stringLte2 bind;
-    field Boolean stringGt <= mapped.stringGt bind;
-    field Boolean stringGte <= mapped.stringGte bind;
-    field Boolean stringGte2 <= mapped.stringGte2 bind;
-    field Boolean stringEq <= mapped.stringEq bind;
-    field Boolean stringNeq <= mapped.stringNeq bind;
+    field Boolean stringLt <=> mapped.stringLt;
+    field Boolean stringLte <=> mapped.stringLte;
+    field Boolean stringLte2 <=> mapped.stringLte2;
+    field Boolean stringGt <=> mapped.stringGt;
+    field Boolean stringGte <=> mapped.stringGte;
+    field Boolean stringGte2 <=> mapped.stringGte2;
+    field Boolean stringEq <=> mapped.stringEq;
+    field Boolean stringNeq <=> mapped.stringNeq;
 
-    field Boolean csStringLt <= mapped.csStringLt bind;
-    field Boolean csStringLte <= mapped.csStringLte bind;
-    field Boolean csStringLte2 <= mapped.csStringLte2 bind;
-    field Boolean csStringGt <= mapped.csStringGt bind;
-    field Boolean csStringGte <= mapped.csStringGte bind;
-    field Boolean csStringGte2 <= mapped.csStringGte2 bind;
-    field Boolean csStringEq <= mapped.csStringEq bind;
-    field Boolean csStringEqFalse <= mapped.csStringEqFalse bind;
-    field Boolean csStringNeq <= mapped.csStringNeq bind;
+    field Boolean csStringLt <=> mapped.csStringLt;
+    field Boolean csStringLte <=> mapped.csStringLte;
+    field Boolean csStringLte2 <=> mapped.csStringLte2;
+    field Boolean csStringGt <=> mapped.csStringGt;
+    field Boolean csStringGte <=> mapped.csStringGte;
+    field Boolean csStringGte2 <=> mapped.csStringGte2;
+    field Boolean csStringEq <=> mapped.csStringEq;
+    field Boolean csStringEqFalse <=> mapped.csStringEqFalse;
+    field Boolean csStringNeq <=> mapped.csStringNeq;
 }
 
 
@@ -176,11 +176,11 @@ entity DerivedSource {
 }
 
 transfer TransferDerivedSource (DerivedSource mapped) {
-    field String firstName <= mapped.firstName bind;
-    field String lastName <= mapped.lastName bind;
-    field Integer age <= mapped.age bind;
-    field Scaled score <= mapped.score bind;
-    event create eventCreate();
+    field String firstName <=> mapped.firstName;
+    field String lastName <=> mapped.lastName;
+    field Integer age <=> mapped.age;
+    field Scaled score <=> mapped.score;
+    event create eventCreate;
 }
 
 
@@ -273,8 +273,8 @@ entity E1 {
 }
 
 transfer TE1 (E1 mapped){
-    field TestLiteral f1 <= mapped.f1 bind;
-    field TestLiteral f2  <= mapped.f2 bind;
+    field TestLiteral f1 <=> mapped.f1;
+    field TestLiteral f2  <=> mapped.f2;
     field Boolean f3 <= mapped.f3;
     field Boolean f4 <= mapped.f4;
     field Boolean f5 <= mapped.f5;
