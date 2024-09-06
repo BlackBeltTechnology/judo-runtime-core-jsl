@@ -7,15 +7,15 @@ entity Fruit abstract {
 }
 
 transfer TransferFruit (Fruit fruit) {
-    field String variety <= fruit.variety bind:true required;
+    field String variety <=> fruit.variety  required;
 }
 
 transfer TransferApple (Apple fruit) {
-    field String variety <= fruit.variety bind:true required;
+    field String variety <=> fruit.variety  required;
 }
 
 transfer TransferPear (Pear fruit) {
-    field String variety <= fruit.variety bind:true required;
+    field String variety <=> fruit.variety  required;
 }
 
 entity Apple extends Fruit {}
@@ -47,13 +47,13 @@ entity Wheel {
 }
 
 transfer TransferWheel (Wheel wheel) {
-    field Integer produced <= wheel.produced bind:true required;
+    field Integer produced <=> wheel.produced  required;
     event create onCreate;
 }
 
 transfer TransferCar (Car car) {
-    field String licensePlate <= car.licensePlate bind:true required;
-    field String color <= car.color bind:true;
+    field String licensePlate <=> car.licensePlate  required;
+    field String color <=> car.color;
     relation TransferWheel[] wheels <= car.wheels create:true;
     relation TransferWheel spareWheel <= car.spareWheel choices:car.wheels;
 }
@@ -75,7 +75,7 @@ entity Creature {
 }
 
 transfer TransferPlanet(Planet planet) {
-    field String name <= planet.name bind:true required;
+    field String name <=> planet.name  required;
     field String planetNameOverCreature  <= planet.planetNameOverCreature;
     relation TransferCreature[] creatures  <= planet.creatures choices: Creature.all();
     relation TransferCreature[] visitors  <= planet.visitors choices: Creature.all().filter(c | c.planet.isUndefined());
@@ -83,7 +83,7 @@ transfer TransferPlanet(Planet planet) {
 }
 
 transfer TransferCreature(Creature creature) {
-    field String name <= creature.name bind:true required;
+    field String name <=> creature.name  required;
     field String planetName <= creature.planetName;
     relation TransferPlanet planet  <= creature.planet choices:Planet.all();
 }

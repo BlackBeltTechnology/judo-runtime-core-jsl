@@ -7,5 +7,5 @@ entity ExternalEntity {
 }
 
 transfer TransferExternalEntity (ExternalEntity mapped) {
-    field String name <= mapped.name bind;
+    field String name <=> mapped.name;
 }

@@ -41,16 +41,16 @@ entity MyEntityWithOptionalFields {
 }
 
 transfer TransferMyEntityWithOptionalFields (MyEntityWithOptionalFields mapped) {
-    field Boolean boolAttr <= mapped.boolAttr bind;
-    field Binary binaryAttr <= mapped.binaryAttr bind;
-    field Integer integerAttr <= mapped.integerAttr bind;
-    field SmallString stringAttr <= mapped.stringAttr bind;
-    field PhoneNumber regexAttr <= mapped.regexAttr bind;
-    field Scaled scaledAttr <= mapped.scaledAttr bind;
-    field Date dateAttr <= mapped.dateAttr bind;
-    field Time timeAttr <= mapped.timeAttr bind;
-    field Timestamp timestampAttr <= mapped.timestampAttr bind;
-    field MyEnum enumAttr <= mapped.enumAttr bind;
+    field Boolean boolAttr <=> mapped.boolAttr;
+    field Binary binaryAttr <=> mapped.binaryAttr;
+    field Integer integerAttr <=> mapped.integerAttr;
+    field SmallString stringAttr <=> mapped.stringAttr;
+    field PhoneNumber regexAttr <=> mapped.regexAttr;
+    field Scaled scaledAttr <=> mapped.scaledAttr;
+    field Date dateAttr <=> mapped.dateAttr;
+    field Time timeAttr <=> mapped.timeAttr;
+    field Timestamp timestampAttr <=> mapped.timestampAttr;
+    field MyEnum enumAttr <=> mapped.enumAttr;
 
     field Boolean derivedBoolAttr  <= mapped.derivedBoolAttr;
     field Binary derivedBinaryAttr  <= mapped.derivedBinaryAttr;
@@ -97,8 +97,8 @@ entity Country {
 }
 
 transfer TransferCountry (Country mapped) {
-    field String name <= mapped.name  bind;
-    field Continent continent <= mapped.continent bind;
+    field String name <=> mapped.name ;
+    field Continent continent <=> mapped.continent;
 }
 
 entity City {
@@ -107,7 +107,7 @@ entity City {
 }
 
 transfer TransferCity (City mapped) {
-    field String name <= mapped.name bind;
+    field String name <=> mapped.name;
     relation TransferCountry country <= mapped.country choices:Country.all();
 }
 
@@ -117,7 +117,7 @@ entity Person {
 }
 
 transfer TransferPerson (Person mapped) {
-    field String name <= mapped.name bind;
+    field String name <=> mapped.name;
     relation TransferCity city <= mapped.city choices:City.all();
 }
 
@@ -127,7 +127,7 @@ entity Car {
 }
 
 transfer TransferCar (Car mapped) {
-    field String licensePlate <= mapped.licensePlate bind;
+    field String licensePlate <=> mapped.licensePlate;
     relation TransferPerson owner <= mapped.owner choices:Person.all();
 }
 
@@ -174,13 +174,13 @@ entity BucketTester {
 }
 
 transfer TransferProduct (Product mapped) {
-    field String name <= mapped.name bind:true;
+    field String name <=> mapped.name;
     event create onCreate;
 }
 
 transfer TransferItem (Item mapped) {
-    field String name <= mapped.name bind:true;
-    field Double weight <= mapped.weight bind:true;
+    field String name <=> mapped.name;
+    field Double weight <=> mapped.weight;
     relation TransferProduct product <= mapped.product eager:true  choices:Product.all();
     event create onCreate;
 }
@@ -216,8 +216,8 @@ entity Customer {
 }
 
 transfer TransferOrderDetail (OrderDetail mapped) {
-    field String product <= mapped.product bind:true;
-    field Integer quantity <= mapped.quantity bind:true;
+    field String product <=> mapped.product;
+    field Integer quantity <=> mapped.quantity;
     event create onCreate;
 }
 
