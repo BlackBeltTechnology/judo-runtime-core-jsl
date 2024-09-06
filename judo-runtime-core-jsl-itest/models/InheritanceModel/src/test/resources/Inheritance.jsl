@@ -83,26 +83,26 @@ entity I extends ParentDefaultD {
 }
 
 transfer ParentATransfer(ParentA parenta) {
-    field String nameA <= parenta.nameA bind;
+    field String nameA <=> parenta.nameA;
     relation RelationTransfer[] relationTransfers <= parenta.relationEntities eager:true create:true;
     relation CompositionTransfer `entity` <= parenta.`entity` eager:true create:true;
 }
 
 transfer RelationTransfer(RelationEntity `entity`) {
-	field String name <= `entity`.name bind;
-    event create eventCreate();
+	field String name <=> `entity`.name;
+    event create eventCreate;
 }
 
 transfer CompositionTransfer(CompositionEntity `entity`) {
-	field String name <= `entity`.name bind;
-    event create eventCreate();
+	field String name <=> `entity`.name;
+    event create eventCreate;
 }
 
 transfer transferE(E `entity`) {
-    field String nameA <= `entity`.nameA bind;
-    field String nameE <= `entity`.nameE bind;
+    field String nameA <=> `entity`.nameA;
+    field String nameE <=> `entity`.nameE;
 }
 
 transfer ParentBTransfer(ParentB `entity`) {
-    field String nameB <= `entity`.nameB bind;
+    field String nameB <=> `entity`.nameB;
 }

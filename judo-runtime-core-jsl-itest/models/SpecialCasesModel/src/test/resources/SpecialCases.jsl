@@ -56,22 +56,22 @@ entity EntityG {
 
 transfer TransferD(D d) {
     relation TransferE[] compE <= d.compE eager:true create:true;
-    field String stringD <= d.stringD bind;
+    field String stringD <=> d.stringD;
     event create createEvent;
 }
 
 transfer TransferE(E e) {
-    field String stringE <= e.stringE bind;
+    field String stringE <=> e.stringE;
     event create createEvent;
 }
 
 transfer TransferF(EntityF entityf) {
-    field String stringF <= entityf.stringF required bind;
+    field String stringF <=> entityf.stringF required;
     relation TransferD[] multipleDonF <= entityf.multipleDonF eager:true create:true;
 }
 
 transfer TransferG(EntityG entityG) {
-    field String stringG <= entityG.stringG bind;
+    field String stringG <=> entityG.stringG;
     relation TransferE singleRequiredEonG <= entityG.singleRequiredEonG required eager:true create:true;
 }
 
@@ -181,20 +181,20 @@ entity Containment2 {
 }
 
 transfer ContainerTransfer (Container c) {
-    field String name <= c.name bind required;
+    field String name <=> c.name  required;
     relation Containment1Transfer derivedContainment1 <= c.derivedContainment1 eager:true;
     relation Containment1Transfer transientRel;
 }
 
 transfer Containment1Transfer (Containment1 c) {
-    field String name <= c.name bind required;
+    field String name <=> c.name  required;
     relation Containment2Transfer containmet2 <= c.containmet2 eager:true create:true required;
-    event create eventCreate();
+    event create eventCreate;
 }
 
 transfer Containment2Transfer (Containment2 c) {
-    field String name <= c.name bind required;
-    event create eventCreate();
+    field String name <=> c.name  required;
+    event create eventCreate;
 }
 
 enum Continent {
