@@ -231,20 +231,3 @@ transfer TransferCustomer (Customer mapped) {
     relation TransferOrder[] orders <= mapped.orders eager:true create:true choices: Order.all();
     relation TransferOrder[] ordersWithMultipleItems <= mapped.ordersWithMultipleItems;
 }
-
-// Filter Count Test
-
-entity ParentA {
-    field String ancestorName;
-    relation B ancestorB;
-    field String ancestorBName <= self.ancestorB.name;
-}
-
-entity A extends ParentA {
-    field String name;
-    field String bname <= self.ancestorB.name;
-}
-
-entity B {
-    field String name;
-}

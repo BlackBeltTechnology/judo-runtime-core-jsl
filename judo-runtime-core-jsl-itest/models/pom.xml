@@ -44,6 +44,7 @@
         <module>RelationCreateWithAttachmentTestModel</module>
         <module>OptimisticLockModel</module>
         <module>TransferRangeModel</module>
+        <module>FilterCountModel</module>
     </modules>
 
     <build>
