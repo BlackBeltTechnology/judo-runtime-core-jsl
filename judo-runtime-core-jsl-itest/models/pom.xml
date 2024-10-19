@@ -43,7 +43,9 @@
         <module>RecursiveCompositionModel</module>
         <module>RelationCreateWithAttachmentTestModel</module>
         <module>ForTestingModel</module>
-
+        <module>OptimisticLockModel</module>
+        <module>TransferRangeModel</module>
+        <module>FilterCountModel</module>
     </modules>
 
     <build>
@@ -104,13 +106,14 @@
                     <configuration>
                         <saveModels>true</saveModels>
                         <destination>${basedir}/target/generated-test-sources/model</destination>
+                        <dialects>hsqldb,postgresql</dialects>
                     </configuration>
 
                     <executions>
                         <execution>
                             <id>generate-psm-test-model-from-artifact</id>
                             <goals>
-                                <goal>parser-workflow</goal>
+                                <goal>default-model-workflow</goal>
                             </goals>
                             <phase>generate-test-sources</phase>
                             <configuration>
@@ -142,12 +145,12 @@
 
         <dependency>
             <groupId>hu.blackbelt.judo.runtime</groupId>
-            <artifactId>judo-runtime-core-bootstrap-hsqldb</artifactId>
+            <artifactId>judo-runtime-core-guice-hsqldb</artifactId>
         </dependency>
 
         <dependency>
             <groupId>hu.blackbelt.judo.runtime</groupId>
-            <artifactId>judo-runtime-core-bootstrap-postgresql</artifactId>
+            <artifactId>judo-runtime-core-guice-postgresql</artifactId>
         </dependency>
 
         <dependency>

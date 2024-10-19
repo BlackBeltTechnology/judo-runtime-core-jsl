@@ -4,12 +4,12 @@ import judo::types;
 
 entity EntityA {
     relation EntityC singleConA;
-    relation required EntityC singleRequiredConA opposite:twoWayMultipleAonC;
+    relation EntityC singleRequiredConA opposite:twoWayMultipleAonC required;
     relation EntityD[] multipleDonA opposite:multipleAonD;
     field Integer countD <= self.multipleDonA.size();
 }
 
-entity abstract EntityB {
+entity EntityB abstract {
     relation EntityA[] multipleAonB;
 }
 
@@ -28,4 +28,58 @@ entity EntityE {
 }
 
 entity EntityF {
+}
+
+// MaskTest
+
+entity A {
+    field String name;
+    relation B b eager:true;
+    relation C[] cs eager:true;
+}
+
+entity B {
+    field String name;
+    relation C c eager:true;
+}
+
+entity C {
+    field String name;
+    relation C[] cs eager:true;
+}
+
+entity Collector {
+    relation D d <= D.all().any() eager:true;
+    relation E eonD <= D.all().any().e eager:true;
+    // JNG-5620
+    //relation E[] esOnD <= D.all().any().es eager:true;
+    // JNG-5620 not supported yet
+    //relation C c <= C.all().any() eager:true;
+}
+
+entity D {
+    field String name;
+    relation E e eager:true;
+    // JNG-5620 not supported yet
+    //relation E[] es eager:true;
+}
+
+entity E {
+    field String name;
+    relation F f eager:true;
+    // JNG-5620 not supported yet
+    //relation F[] fs eager:true;
+}
+
+entity F {
+    field String name;
+}
+
+
+entity CollectorForNotSupported {
+     relation G g <= G.all().any() eager:true;
+}
+
+entity G {
+     relation F[] f eager:true;
 }

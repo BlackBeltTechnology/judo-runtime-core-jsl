@@ -21,6 +21,7 @@ package hu.blackbelt.judo.runtime.core.jsl.transfer;
  */
 
 import com.google.inject.Inject;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.associationrelationships.associationrelationships.entitya.EntityAForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationaggregation.mappedtransferassociationaggregation.entitya.EntityA;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationaggregation.mappedtransferassociationaggregation.entitya.EntityADao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationaggregation.mappedtransferassociationaggregation.entitya.EntityAIdentifier;
@@ -73,6 +74,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociati
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationaggregation.mappedtransferassociationaggregation.transferb.TransferBDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationaggregation.mappedtransferassociationaggregation.transferb.TransferBForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationaggregation.mappedtransferassociationaggregation.transferc.TransferC;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationaggregation.mappedtransferassociationaggregation.transferc.TransferCBuilder;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationaggregation.mappedtransferassociationaggregation.transferc.TransferCDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationaggregation.mappedtransferassociationaggregation.transferc.TransferCForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationaggregation.mappedtransferassociationaggregation.transferd.TransferD;
@@ -99,9 +101,11 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociati
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationaggregation.mappedtransferassociationaggregation.transferk.TransferK;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationaggregation.mappedtransferassociationaggregation.transferk.TransferKDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationaggregation.mappedtransferassociationaggregation.transferk.TransferKForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationaggregation.mappedtransferassociationaggregation.transferk.TransferKIdentifier;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationaggregation.mappedtransferassociationaggregation.transferl.TransferL;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationaggregation.mappedtransferassociationaggregation.transferl.TransferLDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationaggregation.mappedtransferassociationaggregation.transferl.TransferLForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationaggregation.mappedtransferassociationaggregation.transferl.TransferLIdentifier;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationaggregation.mappedtransferassociationaggregation.transferm.TransferM;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationaggregation.mappedtransferassociationaggregation.transferm.TransferMDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransferassociationaggregation.mappedtransferassociationaggregation.transferm.TransferMForCreate;
@@ -117,13 +121,11 @@ import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -264,21 +266,21 @@ public class MappedTransferAssociationAggregationTest {
                 .withRelationBonA(TransferBForCreate.builderFrom(tb1).build())
                 .build());
 
-        assertEquals(tb1.identifier(), transferA.getRelationBonA().orElseThrow().identifier());
+        assertEquals(tb1.identifier().getIdentifier(), transferA.getRelationBonA().orElseThrow().identifier().getIdentifier());
 
         EntityA a = entityADao.getById(transferA.identifier().adaptTo(EntityAIdentifier.class)).orElseThrow();
         EntityB b1 = entityBDao.getById(tb1.identifier().adaptTo(EntityBIdentifier.class)).orElseThrow();
 
-        assertEquals(b1.identifier(), entityADao.queryRelationBonA(a).orElseThrow().identifier());
+        assertEquals(b1.identifier().getIdentifier(), entityADao.queryRelationBonA(a).orElseThrow().identifier().getIdentifier());
 
         transferA.setRelationBonA(tb2);
         transferA = transferADao.update(transferA);
 
-        assertEquals(tb2.identifier(), transferA.getRelationBonA().orElseThrow().identifier());
+        assertEquals(tb2.identifier().getIdentifier(), transferA.getRelationBonA().orElseThrow().identifier().getIdentifier());
 
         EntityB b2 = entityBDao.getById(tb2.identifier().adaptTo(EntityBIdentifier.class)).orElseThrow();
 
-        assertEquals(b2.identifier(), entityADao.queryRelationBonA(a).orElseThrow().identifier());
+        assertEquals(b2.identifier().getIdentifier(), entityADao.queryRelationBonA(a).orElseThrow().identifier().getIdentifier());
 
         transferA.setRelationBonA(null);
         transferA = transferADao.update(transferA);
@@ -290,8 +292,8 @@ public class MappedTransferAssociationAggregationTest {
 
         transferADao.setRelationBonA(transferA, tb2);
 
-        assertEquals(tb2.identifier(), transferADao.queryRelationBonA(transferA).orElseThrow().identifier());
-        assertEquals(b2.identifier(), entityADao.queryRelationBonA(a).orElseThrow().identifier());
+        assertEquals(tb2.identifier().getIdentifier(), transferADao.queryRelationBonA(transferA).orElseThrow().identifier().getIdentifier());
+        assertEquals(b2.identifier().getIdentifier(), entityADao.queryRelationBonA(a).orElseThrow().identifier().getIdentifier());
 
         transferADao.unsetRelationBonA(transferA);
 
@@ -336,21 +338,21 @@ public class MappedTransferAssociationAggregationTest {
                 .withRelationDonC(TransferDForCreate.builderFrom(td1).build())
                 .build());
 
-        assertEquals(td1.identifier(), transferC.getRelationDonC().identifier());
+        assertEquals(td1.identifier().getIdentifier(), transferC.getRelationDonC().identifier().getIdentifier());
 
         EntityC c = entityCDao.getById(transferC.identifier().adaptTo(EntityCIdentifier.class)).orElseThrow();
         EntityD d1 = entityDDao.getById(td1.identifier().adaptTo(EntityDIdentifier.class)).orElseThrow();
 
-        assertEquals(d1.identifier(), entityCDao.queryRelationDonC(c).identifier());
+        assertEquals(d1.identifier().getIdentifier(), entityCDao.queryRelationDonC(c).identifier().getIdentifier());
 
         transferC.setRelationDonC(td2);
         transferC = transferCDao.update(transferC);
 
-        assertEquals(td2.identifier(), transferC.getRelationDonC().identifier());
+        assertEquals(td2.identifier().getIdentifier(), transferC.getRelationDonC().identifier().getIdentifier());
 
         EntityD d2 = entityDDao.getById(td2.identifier().adaptTo(EntityDIdentifier.class)).orElseThrow();
 
-        assertEquals(d2.identifier(), entityCDao.queryRelationDonC(c).identifier());
+        assertEquals(d2.identifier().getIdentifier(), entityCDao.queryRelationDonC(c).identifier().getIdentifier());
 
         IllegalStateException thrown = assertThrows(
                 IllegalStateException.class,
@@ -377,8 +379,8 @@ public class MappedTransferAssociationAggregationTest {
         transferCDao.setRelationDonC(transferC, td1);
         transferC = transferCDao.getById(transferC.identifier()).orElseThrow();
 
-        assertEquals(td1.identifier(), transferC.getRelationDonC().identifier());
-        assertEquals(d1.identifier(), entityCDao.queryRelationDonC(c).identifier());
+        assertEquals(td1.identifier().getIdentifier(), transferC.getRelationDonC().identifier().getIdentifier());
+        assertEquals(d1.identifier().getIdentifier(), entityCDao.queryRelationDonC(c).identifier().getIdentifier());
 
     }
 
@@ -543,15 +545,15 @@ public class MappedTransferAssociationAggregationTest {
 
         // check the relation is good in both sides
         // tg side
-        assertEquals(th1.identifier(), tg.getRelationOptionalH().orElseThrow().identifier());
-        assertEquals(th2.identifier(), tg.getRelationRequiredH().identifier());
+        assertEquals(th1.identifier().getIdentifier(), tg.getRelationOptionalH().orElseThrow().identifier().getIdentifier());
+        assertEquals(th2.identifier().getIdentifier(), tg.getRelationRequiredH().identifier().getIdentifier());
         assertThat(tg.getRelationCollectionH(), containsInAnyOrder(th3, th4, th5));
         // th side
-        assertEquals(tg.identifier(), transferHDao.queryRelationGForOptionalH(th1).orElseThrow().identifier());
-        assertEquals(tg.identifier(), transferHDao.queryRelationGForRequiredH(th2).orElseThrow().identifier());
-        assertEquals(tg.identifier(), transferHDao.queryRelationGForCollectionH(th3).orElseThrow().identifier());
-        assertEquals(tg.identifier(), transferHDao.queryRelationGForCollectionH(th4).orElseThrow().identifier());
-        assertEquals(tg.identifier(), transferHDao.queryRelationGForCollectionH(th5).orElseThrow().identifier());
+        assertEquals(tg.identifier().getIdentifier(), transferHDao.queryRelationGForOptionalH(th1).orElseThrow().identifier().getIdentifier());
+        assertEquals(tg.identifier().getIdentifier(), transferHDao.queryRelationGForRequiredH(th2).orElseThrow().identifier().getIdentifier());
+        assertEquals(tg.identifier().getIdentifier(), transferHDao.queryRelationGForCollectionH(th3).orElseThrow().identifier().getIdentifier());
+        assertEquals(tg.identifier().getIdentifier(), transferHDao.queryRelationGForCollectionH(th4).orElseThrow().identifier().getIdentifier());
+        assertEquals(tg.identifier().getIdentifier(), transferHDao.queryRelationGForCollectionH(th5).orElseThrow().identifier().getIdentifier());
 
         // entity representation
         // g side
@@ -563,15 +565,15 @@ public class MappedTransferAssociationAggregationTest {
 
         EntityG g = entityGDao.getById(tg.adaptTo(EntityGIdentifier.class)).orElseThrow();
 
-        assertEquals(h1.identifier(), entityGDao.queryRelationOptionalH(g).orElseThrow().identifier());
-        assertEquals(h2.identifier(), entityGDao.queryRelationRequiredH(g).identifier());
+        assertEquals(h1.identifier().getIdentifier(), entityGDao.queryRelationOptionalH(g).orElseThrow().identifier().getIdentifier());
+        assertEquals(h2.identifier().getIdentifier(), entityGDao.queryRelationRequiredH(g).identifier().getIdentifier());
         assertThat(entityGDao.queryRelationCollectionH(g).selectList(), containsInAnyOrder(h3, h4, h5));
         // h side
-        assertEquals(g.identifier(), entityHDao.queryRelationGForOptionalH(h1).orElseThrow().identifier());
-        assertEquals(g.identifier(), entityHDao.queryRelationGForRequiredH(h2).orElseThrow().identifier());
-        assertEquals(g.identifier(), entityHDao.queryRelationGForCollectionH(h3).orElseThrow().identifier());
-        assertEquals(g.identifier(), entityHDao.queryRelationGForCollectionH(h4).orElseThrow().identifier());
-        assertEquals(g.identifier(), entityHDao.queryRelationGForCollectionH(h5).orElseThrow().identifier());
+        assertEquals(g.identifier().getIdentifier(), entityHDao.queryRelationGForOptionalH(h1).orElseThrow().identifier().getIdentifier());
+        assertEquals(g.identifier().getIdentifier(), entityHDao.queryRelationGForRequiredH(h2).orElseThrow().identifier().getIdentifier());
+        assertEquals(g.identifier().getIdentifier(), entityHDao.queryRelationGForCollectionH(h3).orElseThrow().identifier().getIdentifier());
+        assertEquals(g.identifier().getIdentifier(), entityHDao.queryRelationGForCollectionH(h4).orElseThrow().identifier().getIdentifier());
+        assertEquals(g.identifier().getIdentifier(), entityHDao.queryRelationGForCollectionH(h5).orElseThrow().identifier().getIdentifier());
 
     }
 
@@ -688,35 +690,35 @@ public class MappedTransferAssociationAggregationTest {
         EntityG g2 = entityGDao.getById(tg2.adaptTo(EntityGIdentifier.class)).orElseThrow();
 
         transferGDao.setRelationOptionalH(tg2, th1);
-        assertEquals(th1.identifier(), transferGDao.queryRelationOptionalH(tg2).orElseThrow().identifier());
-        assertEquals(tg2.identifier(), transferHDao.queryRelationGForOptionalH(th1).orElseThrow().identifier());
-        assertEquals(h1.identifier(), entityGDao.queryRelationOptionalH(g2).orElseThrow().identifier());
-        assertEquals(g2.identifier(), entityHDao.queryRelationGForOptionalH(h1).orElseThrow().identifier());
+        assertEquals(th1.identifier().getIdentifier(), transferGDao.queryRelationOptionalH(tg2).orElseThrow().identifier().getIdentifier());
+        assertEquals(tg2.identifier().getIdentifier(), transferHDao.queryRelationGForOptionalH(th1).orElseThrow().identifier().getIdentifier());
+        assertEquals(h1.identifier().getIdentifier(), entityGDao.queryRelationOptionalH(g2).orElseThrow().identifier().getIdentifier());
+        assertEquals(g2.identifier().getIdentifier(), entityHDao.queryRelationGForOptionalH(h1).orElseThrow().identifier().getIdentifier());
 
         TransferH th7 = transferHDao.create(TransferHForCreate.builder().withNameH("TH7").build());
         EntityH h7 = entityHDao.getById(th7.adaptTo(EntityHIdentifier.class)).orElseThrow();
 
         transferGDao.setRelationOptionalH(tg2, th7);
-        assertEquals(th7.identifier(), transferGDao.queryRelationOptionalH(tg2).orElseThrow().identifier());
-        assertEquals(tg2.identifier(), transferHDao.queryRelationGForOptionalH(th7).orElseThrow().identifier());
-        assertEquals(h7.identifier(), entityGDao.queryRelationOptionalH(g2).orElseThrow().identifier());
-        assertEquals(g2.identifier(), entityHDao.queryRelationGForOptionalH(h7).orElseThrow().identifier());
+        assertEquals(th7.identifier().getIdentifier(), transferGDao.queryRelationOptionalH(tg2).orElseThrow().identifier().getIdentifier());
+        assertEquals(tg2.identifier().getIdentifier(), transferHDao.queryRelationGForOptionalH(th7).orElseThrow().identifier().getIdentifier());
+        assertEquals(h7.identifier().getIdentifier(), entityGDao.queryRelationOptionalH(g2).orElseThrow().identifier().getIdentifier());
+        assertEquals(g2.identifier().getIdentifier(), entityHDao.queryRelationGForOptionalH(h7).orElseThrow().identifier().getIdentifier());
 
         transferHDao.setRelationGForOptionalH(th7, tg1);
         tg1 = transferGDao.getById(tg1.identifier()).orElseThrow();
-        assertEquals(th7.identifier(), tg1.getRelationOptionalH().orElseThrow().identifier());
-        assertEquals(tg1.identifier(), transferHDao.queryRelationGForOptionalH(th7).orElseThrow().identifier());
-        assertEquals(h7.identifier(), entityGDao.queryRelationOptionalH(g1).orElseThrow().identifier());
-        assertEquals(g1.identifier(), entityHDao.queryRelationGForOptionalH(h7).orElseThrow().identifier());
+        assertEquals(th7.identifier().getIdentifier(), tg1.getRelationOptionalH().orElseThrow().identifier().getIdentifier());
+        assertEquals(tg1.identifier().getIdentifier(), transferHDao.queryRelationGForOptionalH(th7).orElseThrow().identifier().getIdentifier());
+        assertEquals(h7.identifier().getIdentifier(), entityGDao.queryRelationOptionalH(g1).orElseThrow().identifier().getIdentifier());
+        assertEquals(g1.identifier().getIdentifier(), entityHDao.queryRelationGForOptionalH(h7).orElseThrow().identifier().getIdentifier());
 
         TransferH th8 = transferHDao.create(TransferHForCreate.builder().withNameH("TH8").build());
         EntityH h8 = entityHDao.getById(th8.adaptTo(EntityHIdentifier.class)).orElseThrow();
 
         transferGDao.setRelationRequiredH(tg2, th8);
-        assertEquals(th8.identifier(), transferGDao.queryRelationRequiredH(tg2).identifier());
-        assertEquals(tg2.identifier(), transferHDao.queryRelationGForRequiredH(th8).orElseThrow().identifier());
-        assertEquals(h8.identifier(), entityGDao.queryRelationRequiredH(g2).identifier());
-        assertEquals(g2.identifier(), entityHDao.queryRelationGForRequiredH(h8).orElseThrow().identifier());
+        assertEquals(th8.identifier().getIdentifier(), transferGDao.queryRelationRequiredH(tg2).identifier().getIdentifier());
+        assertEquals(tg2.identifier().getIdentifier(), transferHDao.queryRelationGForRequiredH(th8).orElseThrow().identifier().getIdentifier());
+        assertEquals(h8.identifier().getIdentifier(), entityGDao.queryRelationRequiredH(g2).identifier().getIdentifier());
+        assertEquals(g2.identifier().getIdentifier(), entityHDao.queryRelationGForRequiredH(h8).orElseThrow().identifier().getIdentifier());
 
         //set the required relation from the h side
         IllegalStateException thrown1 = assertThrows(IllegalStateException.class, () -> transferHDao.setRelationGForRequiredH(th6, tg2));
@@ -738,8 +740,8 @@ public class MappedTransferAssociationAggregationTest {
         assertEquals(2, entityGDao.queryRelationCollectionH(g2).count());
         assertThat(entityGDao.queryRelationCollectionH(g2).selectList(), containsInAnyOrder(h4, h9));
 
-        assertEquals(tg2.identifier(), transferHDao.queryRelationGForCollectionH(th9).orElseThrow().identifier());
-        assertEquals(g2.identifier(), entityHDao.queryRelationGForCollectionH(h9).orElseThrow().identifier());
+        assertEquals(tg2.identifier().getIdentifier(), transferHDao.queryRelationGForCollectionH(th9).orElseThrow().identifier().getIdentifier());
+        assertEquals(g2.identifier().getIdentifier(), entityHDao.queryRelationGForCollectionH(h9).orElseThrow().identifier().getIdentifier());
 
         // collection remove
         transferGDao.removeRelationCollectionH(tg2, List.of(th9));
@@ -828,15 +830,15 @@ public class MappedTransferAssociationAggregationTest {
 
         // check the relation is good in both sides
         // ti side
-        assertEquals(tj1.identifier(), ti1.getRelationOptionalJ().orElseThrow().identifier());
-        assertEquals(tj2.identifier(), ti2.getRelationOptionalJ().orElseThrow().identifier());
+        assertEquals(tj1.identifier().getIdentifier(), ti1.getRelationOptionalJ().orElseThrow().identifier().getIdentifier());
+        assertEquals(tj2.identifier().getIdentifier(), ti2.getRelationOptionalJ().orElseThrow().identifier().getIdentifier());
         assertThat(tiCollect.getRelationCollectionJ(), containsInAnyOrder(tj1, tj2));
 
         // tj side
-        assertEquals(ti1.identifier(), transferJDao.queryRelationRequiredIForOptionalJ(tj1).identifier());
-        assertEquals(ti2.identifier(), transferJDao.queryRelationRequiredIForOptionalJ(tj2).identifier());
-        assertEquals(tiCollect.identifier(), transferJDao.queryRelationRequiredIorCollectionJ(tj1).identifier());
-        assertEquals(tiCollect.identifier(), transferJDao.queryRelationRequiredIorCollectionJ(tj2).identifier());
+        assertEquals(ti1.identifier().getIdentifier(), transferJDao.queryRelationRequiredIForOptionalJ(tj1).identifier().getIdentifier());
+        assertEquals(ti2.identifier().getIdentifier(), transferJDao.queryRelationRequiredIForOptionalJ(tj2).identifier().getIdentifier());
+        assertEquals(tiCollect.identifier().getIdentifier(), transferJDao.queryRelationRequiredIorCollectionJ(tj1).identifier().getIdentifier());
+        assertEquals(tiCollect.identifier().getIdentifier(), transferJDao.queryRelationRequiredIorCollectionJ(tj2).identifier().getIdentifier());
 
         // entity representation
         // t side
@@ -848,15 +850,15 @@ public class MappedTransferAssociationAggregationTest {
         EntityJ j2 = entityJDao.getById(tj2.adaptTo(EntityJIdentifier.class)).orElseThrow();
 
         // ti side
-        assertEquals(j1.identifier(), entityIDao.queryRelationOptionalJ(i1).orElseThrow().identifier());
-        assertEquals(j2.identifier(), entityIDao.queryRelationOptionalJ(i2).orElseThrow().identifier());
+        assertEquals(j1.identifier().getIdentifier(), entityIDao.queryRelationOptionalJ(i1).orElseThrow().identifier().getIdentifier());
+        assertEquals(j2.identifier().getIdentifier(), entityIDao.queryRelationOptionalJ(i2).orElseThrow().identifier().getIdentifier());
         assertThat(entityIDao.queryRelationCollectionJ(iCollect).selectList(), containsInAnyOrder(j1, j2));
 
         // tj side
-        assertEquals(i1.identifier(), entityJDao.queryRelationRequiredIForOptionalJ(j1).identifier());
-        assertEquals(i2.identifier(), entityJDao.queryRelationRequiredIForOptionalJ(j2).identifier());
-        assertEquals(iCollect.identifier(), entityJDao.queryRelationRequiredIorCollectionJ(j1).identifier());
-        assertEquals(iCollect.identifier(), entityJDao.queryRelationRequiredIorCollectionJ(j2).identifier());
+        assertEquals(i1.identifier().getIdentifier(), entityJDao.queryRelationRequiredIForOptionalJ(j1).identifier().getIdentifier());
+        assertEquals(i2.identifier().getIdentifier(), entityJDao.queryRelationRequiredIForOptionalJ(j2).identifier().getIdentifier());
+        assertEquals(iCollect.identifier().getIdentifier(), entityJDao.queryRelationRequiredIorCollectionJ(j1).identifier().getIdentifier());
+        assertEquals(iCollect.identifier().getIdentifier(), entityJDao.queryRelationRequiredIorCollectionJ(j2).identifier().getIdentifier());
 
     }
 
@@ -950,9 +952,9 @@ public class MappedTransferAssociationAggregationTest {
         ti3 = transferIDao.getById(ti3.identifier()).orElseThrow();
         ti1 = transferIDao.getById(ti1.identifier()).orElseThrow();
 
-        assertEquals(ti3.identifier(), transferJDao.queryRelationRequiredIForOptionalJ(tj1).identifier());
+        assertEquals(ti3.identifier().getIdentifier(), transferJDao.queryRelationRequiredIForOptionalJ(tj1).identifier().getIdentifier());
         assertTrue(ti1.getRelationOptionalJ().isEmpty());
-        assertEquals(i3.identifier(), entityJDao.queryRelationRequiredIForOptionalJ(j1).identifier());
+        assertEquals(i3.identifier().getIdentifier(), entityJDao.queryRelationRequiredIForOptionalJ(j1).identifier().getIdentifier());
         assertTrue(entityIDao.queryRelationOptionalJ(i1).isEmpty());
 
         // set with the other side error
@@ -972,9 +974,9 @@ public class MappedTransferAssociationAggregationTest {
         EntityI i4 = entityIDao.getById(ti4.adaptTo(EntityIIdentifier.class)).orElseThrow();
 
         transferJDao.setRelationRequiredIorCollectionJ(tj1, ti4);
-        assertEquals(ti4.identifier(), transferJDao.queryRelationRequiredIorCollectionJ(tj1).identifier());
+        assertEquals(ti4.identifier().getIdentifier(), transferJDao.queryRelationRequiredIorCollectionJ(tj1).identifier().getIdentifier());
         assertEquals(1, transferIDao.queryRelationCollectionJ(tiCollect).count());
-        assertEquals(i4.identifier(), entityJDao.queryRelationRequiredIorCollectionJ(j1).identifier());
+        assertEquals(i4.identifier().getIdentifier(), entityJDao.queryRelationRequiredIorCollectionJ(j1).identifier().getIdentifier());
         assertEquals(1, entityIDao.queryRelationCollectionJ(iCollect).count());
 
         // remove throw error
@@ -1053,17 +1055,17 @@ public class MappedTransferAssociationAggregationTest {
         assertEquals(3, transferKDao.countAll());
         assertEquals(3, transferLDao.countAll());
 
-        assertThat(transferLDao.queryRelationCollectionKForCollectionL(tl1).selectList().stream().map(TransferK::identifier).toList(), containsInAnyOrder(tk1.identifier(), tk2.identifier()));
-        assertThat(transferLDao.queryRelationCollectionKForCollectionL(tl2).selectList().stream().map(TransferK::identifier).toList(), containsInAnyOrder(tk2.identifier(), tk3.identifier()));
-        assertThat(transferLDao.queryRelationCollectionKForCollectionL(tl3).selectList().stream().map(TransferK::identifier).toList(), containsInAnyOrder(tk3.identifier()));
+        assertThat(transferLDao.queryRelationCollectionKForCollectionL(tl1).selectList().stream().map(TransferK::identifier).map(TransferKIdentifier::getIdentifier).toList(), containsInAnyOrder(tk1.identifier().getIdentifier(), tk2.identifier().getIdentifier()));
+        assertThat(transferLDao.queryRelationCollectionKForCollectionL(tl2).selectList().stream().map(TransferK::identifier).map(TransferKIdentifier::getIdentifier).toList(), containsInAnyOrder(tk2.identifier().getIdentifier(), tk3.identifier().getIdentifier()));
+        assertThat(transferLDao.queryRelationCollectionKForCollectionL(tl3).selectList().stream().map(TransferK::identifier).map(TransferKIdentifier::getIdentifier).toList(), containsInAnyOrder(tk3.identifier().getIdentifier()));
 
         tk1 = transferKDao.getById(tk1.identifier()).orElseThrow();
         tk2 = transferKDao.getById(tk2.identifier()).orElseThrow();
         tk3 = transferKDao.getById(tk3.identifier()).orElseThrow();
 
-        assertThat(tk1.getRelationCollectionL().stream().map(TransferL::identifier).toList(), containsInAnyOrder(tl1.identifier()));
-        assertThat(tk2.getRelationCollectionL().stream().map(TransferL::identifier).toList(), containsInAnyOrder(tl1.identifier(), tl2.identifier()));
-        assertThat(tk3.getRelationCollectionL().stream().map(TransferL::identifier).toList(), containsInAnyOrder(tl2.identifier(), tl3.identifier()));
+        assertThat(tk1.getRelationCollectionL().stream().map(TransferL::identifier).map(TransferLIdentifier::getIdentifier).toList(), containsInAnyOrder(tl1.identifier().getIdentifier()));
+        assertThat(tk2.getRelationCollectionL().stream().map(TransferL::identifier).map(TransferLIdentifier::getIdentifier).toList(), containsInAnyOrder(tl1.identifier().getIdentifier(), tl2.identifier().getIdentifier()));
+        assertThat(tk3.getRelationCollectionL().stream().map(TransferL::identifier).map(TransferLIdentifier::getIdentifier).toList(), containsInAnyOrder(tl2.identifier().getIdentifier(), tl3.identifier().getIdentifier()));
 
 
         EntityL l1 = entityLDao.getById(tl1.adaptTo(EntityLIdentifier.class)).orElseThrow();
@@ -1234,7 +1236,7 @@ public class MappedTransferAssociationAggregationTest {
 
         TransferM transferG = transferMDao.create(TransferMForCreate.builder().withRelationNonM(TransferNForCreate.builderFrom(transfeN).build()).build());
 
-        assertEquals(transfeN.identifier(), transferG.getRelationNonM().orElseThrow().identifier());
+        assertEquals(transfeN.identifier().getIdentifier(), transferG.getRelationNonM().orElseThrow().identifier().getIdentifier());
         assertThat(transferG.getRelationNonM().orElseThrow().getRelationOonN(), containsInAnyOrder(to1, to2, to3));
 
     }
@@ -1331,5 +1333,174 @@ public class MappedTransferAssociationAggregationTest {
         );
 
     }
+
+    @Test
+    void testImplicitSingleOptionalAssociationAggregationCreate() {
+
+        TransferA a = transferADao.create(TransferAForCreate.builder().build());
+
+        assertTrue(transferADao.getById(a.identifier()).isPresent());
+
+        a.setRelationBonA(TransferB.from(TransferBForCreate.builder().withNameB("b").build().toMap()));
+
+        a = transferADao.update(a);
+
+        assertTrue(transferADao.getById(a.identifier()).isPresent());
+        assertTrue(a.getRelationBonA().isPresent());
+        assertTrue(transferBDao.getById(a.getRelationBonA().get().identifier()).isPresent());
+
+        TransferB b = a.getRelationBonA().orElseThrow();
+        a.setRelationBonA(null);
+
+        a = transferADao.update(a);
+
+        assertTrue(a.getRelationBonA().isEmpty());
+        assertTrue(transferBDao.getById(b.identifier()).isPresent());
+
+    }
+
+    @Test
+    void testImplicitSingleRequiredAssociationAggregationCreate() {
+
+        ValidationException thrown = assertThrows(
+                ValidationException.class,
+                () -> transferCDao.create(TransferCForCreate.builder().build())
+        );
+
+        Assertions.assertEquals(1, thrown.getValidationResults().size());
+        assertThat(thrown.getValidationResults(), containsInAnyOrder(allOf(
+                hasProperty("code", equalTo("MISSING_REQUIRED_RELATION")),
+                hasProperty("location", equalTo("relationDonC")))
+        ));
+
+        TransferC c = transferCDao.create(TransferCForCreate.builder().withRelationDonC(TransferDForCreate.builder().withNameD("D").build()).build());
+
+        assertTrue(transferCDao.getById(c.identifier()).isPresent());
+        assertNotNull(c.getRelationDonC());
+        assertTrue(transferDDao.getById(c.getRelationDonC().identifier()).isPresent());
+
+        c.setRelationDonC(null);
+
+        ValidationException thrown1 = assertThrows(
+                ValidationException.class,
+                () -> transferCDao.update(c)
+        );
+
+        Assertions.assertEquals(1, thrown1.getValidationResults().size());
+        assertThat(thrown1.getValidationResults(), containsInAnyOrder(allOf(
+                hasProperty("code", equalTo("MISSING_REQUIRED_RELATION")),
+                hasProperty("location", equalTo("relationDonC")))
+        ));
+
+    }
+
+    @Test
+    void testImplicitCollectionAssociationAggregationCreate() {
+
+        TransferE e = transferEDao.create(TransferEForCreate.builder().build());
+
+        assertTrue(transferEDao.getById(e.identifier()).isPresent());
+
+        e.addToRelationFonE(TransferF.from(TransferFForCreate.builder().withNameF("F1").build().toMap()));
+        e.addToRelationFonE(TransferF.from(TransferFForCreate.builder().withNameF("F2").build().toMap()));
+
+        e = transferEDao.update(e);
+
+        assertTrue(transferEDao.getById(e.identifier()).isPresent());
+        assertEquals(2, e.getRelationFonE().size());
+        assertTrue(e.getRelationFonE().stream().allMatch(f -> transferFDao.getById(f.identifier()).isPresent()));
+        assertThat(e.getRelationFonE().stream().map(TransferF::getNameF).map(Optional::orElseThrow).toList(), containsInAnyOrder("F1", "F2"));
+
+
+        TransferF removeF1 = e.getRelationFonE().stream().filter(f -> "F1".equals(f.getNameF().orElseThrow())).findAny().orElseThrow();
+        e.removeFromRelationFonE(removeF1);
+
+        e = transferEDao.update(e);
+
+        assertEquals(1, e.getRelationFonE().size());
+        assertTrue(transferFDao.getById(removeF1.identifier()).isPresent());
+        assertTrue(e.getRelationFonE().stream().allMatch(f -> transferFDao.getById(f.identifier()).isPresent()));
+        assertThat(e.getRelationFonE().stream().map(TransferF::getNameF).map(Optional::orElseThrow).toList(), containsInAnyOrder("F2"));
+
+        e.addToRelationFonE(TransferF.from(TransferFForCreate.builder().withNameF("F3").build().toMap()));
+
+        e = transferEDao.update(e);
+
+        assertEquals(2, e.getRelationFonE().size());
+        assertTrue(e.getRelationFonE().stream().allMatch(f -> transferFDao.getById(f.identifier()).isPresent()));
+        assertThat(e.getRelationFonE().stream().map(TransferF::getNameF).map(Optional::orElseThrow).toList(), containsInAnyOrder("F2", "F3"));
+
+        List<TransferF> fs = new ArrayList<>(e.getRelationFonE());
+        e.setRelationFonE(List.of());
+
+        e = transferEDao.update(e);
+
+        assertEquals(0, e.getRelationFonE().size());
+        assertTrue(fs.stream().allMatch(f -> transferFDao.getById(f.identifier()).isPresent()));
+
+    }
+
+    @Test
+    void testImplicitBidirectionalAssociationAggregationCreate() {
+
+        TransferG g = transferGDao.create(TransferGForCreate.builder()
+                .withNameG("G")
+                .withRelationRequiredH(TransferHForCreate.builder().withNameH("H1Req").build())
+                .build()
+        );
+
+        TransferH requiredH = g.getRelationRequiredH();
+
+        assertEquals(g.identifier().getIdentifier(), transferHDao.queryRelationGForRequiredH(requiredH).orElseThrow().identifier().getIdentifier());
+
+        g.setRelationRequiredH(null);
+
+
+        TransferG finalG = g;
+        ValidationException thrown = assertThrows(
+                ValidationException.class,
+                () -> transferGDao.update(finalG)
+        );
+
+        Assertions.assertEquals(1, thrown.getValidationResults().size());
+        assertThat(thrown.getValidationResults(), containsInAnyOrder(allOf(
+                hasProperty("code", equalTo("MISSING_REQUIRED_RELATION")),
+                hasProperty("location", equalTo("relationRequiredH")))
+        ));
+
+        g.setRelationRequiredH(requiredH);
+
+        g.setRelationOptionalH(TransferH.from(TransferHForCreate.builder().withNameH("H2Op").build().toMap()));
+
+        g = transferGDao.update(g);
+
+        TransferH optionalH = g.getRelationOptionalH().orElseThrow();
+
+        assertEquals(g.identifier().getIdentifier(), transferHDao.queryRelationGForOptionalH(optionalH).orElseThrow().identifier().getIdentifier());
+
+        g.setRelationOptionalH(null);
+
+        g = transferGDao.update(g);
+
+        assertFalse(transferHDao.queryRelationGForOptionalH(optionalH).isPresent());
+
+        g.addToRelationCollectionH(TransferH.from(TransferHForCreate.builder().withNameH("H1Col").build().toMap()),TransferH.from(TransferHForCreate.builder().withNameH("H2Col").build().toMap()));
+
+        g = transferGDao.update(g);
+
+        assertEquals(2, g.getRelationCollectionH().size());
+        assertTrue(g.getRelationCollectionH().stream().allMatch(h -> transferHDao.getById(h.identifier()).isPresent()));
+        assertThat(g.getRelationCollectionH().stream().map(TransferH::getNameH).map(Optional::orElseThrow).toList(), containsInAnyOrder("H1Col", "H2Col"));
+        assertEquals(transferHDao.queryRelationGForCollectionH(g.getRelationCollectionH().get(0)).orElseThrow().identifier().getIdentifier(),g.identifier().getIdentifier());
+        assertEquals(transferHDao.queryRelationGForCollectionH(g.getRelationCollectionH().get(1)).orElseThrow().identifier().getIdentifier(),g.identifier().getIdentifier());
+
+        transferHDao.unsetRelationGForCollectionH(g.getRelationCollectionH().get(1));
+
+        g = transferGDao.getById(g.identifier()).orElseThrow();
+
+        assertEquals(1, g.getRelationCollectionH().size());
+
+    }
+
 
 }

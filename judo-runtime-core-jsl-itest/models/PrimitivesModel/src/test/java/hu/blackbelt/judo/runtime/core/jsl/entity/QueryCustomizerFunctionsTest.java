@@ -21,12 +21,15 @@ package hu.blackbelt.judo.runtime.core.jsl.entity;
  */
 
 import com.google.inject.Inject;
+import hu.blackbelt.judo.dao.api.DAO;
 import hu.blackbelt.judo.dispatcher.api.FileType;
+import hu.blackbelt.judo.meta.asm.runtime.AsmUtils;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.myentitywithoptionalfields.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.myenum.MyEnum;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.PrimitivesDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeFixture;
 import hu.blackbelt.judo.sdk.query.StringFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,8 +39,14 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.equalTo;
+import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
 public class QueryCustomizerFunctionsTest {
@@ -231,7 +240,7 @@ public class QueryCustomizerFunctionsTest {
                 .selectOne()
                 .get();
 
-        assertEquals(entity2.identifier(), orderBy.identifier());
+        assertEquals(entity2.identifier().getIdentifier(), orderBy.identifier().getIdentifier());
     }
 
     @Test
@@ -265,7 +274,7 @@ public class QueryCustomizerFunctionsTest {
                 .selectOne()
                 .get();
 
-        assertEquals(entity1.identifier(), orderBy.identifier());
+        assertEquals(entity1.identifier().getIdentifier(), orderBy.identifier().getIdentifier());
     }
 
     @Test
@@ -300,7 +309,7 @@ public class QueryCustomizerFunctionsTest {
                 .selectOne()
                 .get();
 
-        assertEquals(entity2.identifier(), orderBy.identifier());
+        assertEquals(entity2.identifier().getIdentifier(), orderBy.identifier().getIdentifier());
     }
 
     @Test
@@ -335,7 +344,7 @@ public class QueryCustomizerFunctionsTest {
                 .selectOne()
                 .get();
 
-        assertEquals(entity1.identifier(), orderBy.identifier());
+        assertEquals(entity1.identifier().getIdentifier(), orderBy.identifier().getIdentifier());
     }
 
     @Test
@@ -370,7 +379,7 @@ public class QueryCustomizerFunctionsTest {
                 .selectOne()
                 .get();
 
-        assertEquals(entity2.identifier(), orderBy.identifier());
+        assertEquals(entity2.identifier().getIdentifier(), orderBy.identifier().getIdentifier());
     }
 
     @Test
@@ -405,7 +414,7 @@ public class QueryCustomizerFunctionsTest {
                 .selectOne()
                 .get();
 
-        assertEquals(entity1.identifier(), orderBy.identifier());
+        assertEquals(entity1.identifier().getIdentifier(), orderBy.identifier().getIdentifier());
     }
 
     @Test
@@ -419,13 +428,221 @@ public class QueryCustomizerFunctionsTest {
                 .selectOne()
                 .get();
 
-        assertEquals(entity1.identifier(), maskedResult.identifier());
+        assertEquals(entity1.identifier().getIdentifier(), maskedResult.identifier().getIdentifier());
         assertEquals(entity1.getIntegerAttr(), maskedResult.getIntegerAttr());
-        assertEquals(null, maskedResult.getScaledAttr());
+        assertNull(maskedResult.getScaledAttr());
         assertEquals(entity1.getStringAttr(), maskedResult.getStringAttr());
-        assertEquals(null, maskedResult.getRegexAttr());
+        assertNull(maskedResult.getRegexAttr());
     }
 
+    @Test
+    public void testQueryCustomizerClearMask() {
+        MyEntityWithOptionalFieldsQueryCustomizer queryCustomizer = myEntityWithOptionalFieldsDao
+                .query()
+                .maskedBy(MyEntityWithOptionalFieldsMask.myEntityWithOptionalFieldsMask()
+                        .withStringAttr()
+                        .withIntegerAttr())
+                .filterByStringAttr(StringFilter.equalTo("test"));
+
+        MyEntityWithOptionalFields maskedResult = queryCustomizer
+                .selectOne()
+                .orElseThrow();
+
+        assertEquals(entity1.identifier().getIdentifier(), maskedResult.identifier().getIdentifier());
+        assertEquals(entity1.getIntegerAttr(), maskedResult.getIntegerAttr());
+        assertNull(maskedResult.getScaledAttr());
+        assertEquals(entity1.getStringAttr(), maskedResult.getStringAttr());
+        assertNull(maskedResult.getRegexAttr());
+
+        MyEntityWithOptionalFields nonMaskedResult = queryCustomizer
+                .clearMask()
+                .selectOne()
+                .orElseThrow();
+
+        assertEquals(entity1.identifier().getIdentifier(), nonMaskedResult.identifier().getIdentifier());
+        assertEquals(entity1.getIntegerAttr(), nonMaskedResult.getIntegerAttr());
+        assertEquals(entity1.getScaledAttr(), nonMaskedResult.getScaledAttr());
+        assertEquals(entity1.getStringAttr(), nonMaskedResult.getStringAttr());
+        assertEquals(entity1.getRegexAttr(), nonMaskedResult.getRegexAttr());
+    }
+
+    @Test
+    public void testQueryCustomizerClearFilter() {
+        MyEntityWithOptionalFieldsQueryCustomizer queryCustomizer = myEntityWithOptionalFieldsDao
+                .query()
+                .filterByStringAttr(StringFilter.equalTo("test"));
+
+        List<MyEntityWithOptionalFields> filteredResult = queryCustomizer
+                .selectList();
+
+        assertEquals(1, filteredResult.size());
+        assertEquals(entity1.identifier().getIdentifier(), filteredResult.get(0).identifier().getIdentifier());
+        assertEquals(entity1.getIntegerAttr(), filteredResult.get(0).getIntegerAttr());
+        assertEquals(entity1.getStringAttr(), filteredResult.get(0).getStringAttr());
+
+
+        List<MyEntityWithOptionalFields> nonFilteredResult = queryCustomizer
+                .clearFilter()
+                .selectList();
+
+        assertEquals(2, nonFilteredResult.size());
+
+    }
+
+    @Test
+    public void testQueryCustomizerClearOrderBy() {
+        MyEntityWithOptionalFieldsQueryCustomizer queryCustomizer = myEntityWithOptionalFieldsDao
+                .query()
+                .orderBy(MyEntityWithOptionalFieldsAttribute.STRING_ATTR);
+
+        MyEntityWithOptionalFields orderByResult = queryCustomizer
+                .selectOne()
+                .orElseThrow();
+
+        assertEquals(entity2.identifier().getIdentifier(), orderByResult.identifier().getIdentifier());
+
+        orderByResult = queryCustomizer
+                .orderBy(MyEntityWithOptionalFieldsAttribute.DERIVED_SCALED_ATTR)
+                .selectOne()
+                .orElseThrow();
+
+        assertEquals(entity2.identifier().getIdentifier(), orderByResult.identifier().getIdentifier());
+
+        orderByResult = queryCustomizer
+                .clearOrderBy()
+                .orderByDescending(MyEntityWithOptionalFieldsAttribute.STRING_ATTR)
+                .orderByDescending(MyEntityWithOptionalFieldsAttribute.DERIVED_SCALED_ATTR)
+                .selectOne()
+                .orElseThrow();
+
+        assertEquals(entity1.identifier().getIdentifier(), orderByResult.identifier().getIdentifier());
+
+    }
+
+    @Test
+    public void testQueryCustomizerCopy() {
+        MyEntityWithOptionalFieldsQueryCustomizer queryCustomizer = myEntityWithOptionalFieldsDao
+                .query()
+                .orderBy(MyEntityWithOptionalFieldsAttribute.STRING_ATTR)
+                .filterByStringAttr(StringFilter.equalTo("test"))
+                .maskedBy(MyEntityWithOptionalFieldsMask.myEntityWithOptionalFieldsMask()
+                        .withStringAttr())
+                ;
+
+        MyEntityWithOptionalFields orderByResult = queryCustomizer
+                .selectOne()
+                .orElseThrow();
+
+        assertEquals(entity1.identifier().getIdentifier(), orderByResult.identifier().getIdentifier());
+        assertEquals(entity1.getStringAttr(), orderByResult.getStringAttr());
+        assertNull(orderByResult.getScaledAttr());
+
+        orderByResult = queryCustomizer
+                .copy()
+                .selectOne()
+                .orElseThrow();
+
+        assertEquals(entity1.identifier().getIdentifier(), orderByResult.identifier().getIdentifier());
+        assertEquals(entity1.getStringAttr(), orderByResult.getStringAttr());
+        assertNull(orderByResult.getScaledAttr());
+
+        queryCustomizer.copy().clearOrderBy().clearMask().clearFilter();
+
+        orderByResult = queryCustomizer
+                .selectOne()
+                .orElseThrow();
+
+        assertEquals(entity1.identifier().getIdentifier(), orderByResult.identifier().getIdentifier());
+        assertEquals(entity1.getStringAttr(), orderByResult.getStringAttr());
+        assertNull(orderByResult.getScaledAttr());
+
+    }
+
+    @Test
+    public void testQueryCustomizerAppend(JudoRuntimeFixture runtimeFixture) {
+        AsmUtils asmUtils = new AsmUtils(runtimeFixture.modelHolder.getAsmModel().getResourceSet());
+
+        DAO.QueryCustomizer<java.util.UUID> queryCustomizer = DAO.QueryCustomizer.<java.util.UUID>builder()
+                .orderBy(DAO.OrderBy.builder().descending(false).attribute(asmUtils.resolveAttribute("Primitives.Primitives.MyEntityWithOptionalFields#stringAttr").orElseThrow()).build())
+                .filter("this.stringAttr!like('tes%') and this.stringAttr!like('%t')")
+                .mask(Map.of("stringAttr", true))
+                .build();
+
+        MyEntityWithOptionalFields result = myEntityWithOptionalFieldsDao
+                .query()
+                .append(queryCustomizer)
+                .filterBy("this.stringAttr!like('%test%')")
+                .selectOne()
+                .orElseThrow();
+
+        assertEquals(entity1.identifier().getIdentifier(), result.identifier().getIdentifier());
+        assertEquals(entity1.getStringAttr(), result.getStringAttr());
+        assertNull(result.getScaledAttr());
+
+        queryCustomizer = DAO.QueryCustomizer.<java.util.UUID>builder()
+                .orderBy(DAO.OrderBy.builder().descending(false).attribute(asmUtils.resolveAttribute("Primitives.Primitives.MyEntityWithOptionalFields#stringAttr").orElseThrow()).build())
+                .filter("this.stringAttr!like('tes%') and this.stringAttr!like('%t')")
+                .build();
+
+        result = myEntityWithOptionalFieldsDao
+                .query()
+                .append(queryCustomizer)
+                .selectOne()
+                .orElseThrow();
+
+        assertEquals(entity1.identifier().getIdentifier(), result.identifier().getIdentifier());
+        assertEquals(entity1.getStringAttr(), result.getStringAttr());
+        assertNotNull(result.getScaledAttr());
+
+        queryCustomizer = DAO.QueryCustomizer.<java.util.UUID>builder()
+                .orderBy(DAO.OrderBy.builder().descending(false).attribute(asmUtils.resolveAttribute("Primitives.Primitives.MyEntityWithOptionalFields#stringAttr").orElseThrow()).build())
+                .build();
+
+        result = myEntityWithOptionalFieldsDao
+                .query()
+                .append(queryCustomizer)
+                .selectOne()
+                .orElseThrow();
+
+        assertEquals(entity2.identifier().getIdentifier(), result.identifier().getIdentifier());
+        assertEquals(entity2.getStringAttr(), result.getStringAttr());
+        assertNotNull(result.getScaledAttr());
+
+    }
+
+    @Test
+    public void testQueryCustomizerAppendWithOrFilter(JudoRuntimeFixture runtimeFixture) {
+        AsmUtils asmUtils = new AsmUtils(runtimeFixture.modelHolder.getAsmModel().getResourceSet());
+
+        DAO.QueryCustomizer<java.util.UUID> queryCustomizer = DAO.QueryCustomizer.<java.util.UUID>builder()
+                .orderBy(DAO.OrderBy.builder().descending(false).attribute(asmUtils.resolveAttribute("Primitives.Primitives.MyEntityWithOptionalFields#stringAttr").orElseThrow()).build())
+                .filter("this.stringAttr == 'test' or this.stringAttr == 'Another'")
+                .mask(Map.of("stringAttr", true))
+                .build();
+
+        List<MyEntityWithOptionalFields> result = myEntityWithOptionalFieldsDao
+                .query()
+                .append(queryCustomizer)
+                .selectList();
+
+        assertEquals(2, result.size());
+        assertThat(result.stream().map(e -> e.identifier().getIdentifier()).toList(), containsInAnyOrder(entity1.identifier().getIdentifier(), entity2.identifier().getIdentifier()));
+        assertNull(result.get(0).getScaledAttr());
+        assertNull(result.get(1).getScaledAttr());
+
+        result = myEntityWithOptionalFieldsDao
+                .query()
+                .append(queryCustomizer)
+                .filterBy("this.stringAttr!like('%test%')")
+                .selectList();
+
+        assertEquals(1, result.size());
+        assertEquals(entity1.identifier().getIdentifier(), result.get(0).identifier().getIdentifier());
+        assertNull(result.get(0).getScaledAttr());
+
+
+    }
+    
     private void assertOrderBy(MyEntityWithOptionalFieldsAttribute attribute, MyEntityWithOptionalFields firstEntity) {
         MyEntityWithOptionalFields orderBy = myEntityWithOptionalFieldsDao
                 .query()
@@ -433,7 +650,7 @@ public class QueryCustomizerFunctionsTest {
                 .selectOne()
                 .get();
 
-        assertEquals(firstEntity.identifier(), orderBy.identifier());
+        assertEquals(firstEntity.identifier().getIdentifier(), orderBy.identifier().getIdentifier());
     }
 
     private void assertOrderByDescending(MyEntityWithOptionalFieldsAttribute attribute, MyEntityWithOptionalFields firstEntity) {
@@ -443,6 +660,6 @@ public class QueryCustomizerFunctionsTest {
                 .selectOne()
                 .get();
 
-        assertEquals(firstEntity.identifier(), orderByDescending.identifier());
+        assertEquals(firstEntity.identifier().getIdentifier(), orderByDescending.identifier().getIdentifier());
     }
 }

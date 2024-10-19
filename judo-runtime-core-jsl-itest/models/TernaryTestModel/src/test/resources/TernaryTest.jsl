@@ -1,7 +1,15 @@
 model TernaryTest;
 
-type string String min-size:0 max-size:255;
-type boolean Boolean;
+import judo::types;
+
+type numeric Double precision:10 scale:8;
+
+
+enum Enum {
+    Literal1 = 1;
+    Literal2 = 2;
+}
+
 
 entity AAA {
     field String name default:"aaa";
@@ -17,6 +25,36 @@ entity AAA {
     field String ts7 <= false ? self.name : self.name1;
     // derived BBB tb <= TernaryTest::CCC.size() == 1 ? TernaryTest::CCC.any() : TernaryTest::DDD.any(); // TODO: JNG-3839
     // derived BBB[] tb1 <= TernaryTest::BBB.size() == 1 ? TernaryTest::CCC : TernaryTest::DDD; // TODO: JNG-3839
+
+    field Boolean booleanR;
+    field Boolean booleanO;
+    field Boolean  boolean <= self.booleanR ? self.booleanR : self.booleanO;
+    field String stringR;
+    field String stringO;
+    field String string <= self.booleanR ? self.stringR : self.stringO;
+    field String constantString <= self.booleanR ? "X" : "Y";
+    field String constantString1 <= self.booleanR ? "X" : "Y";
+    field Integer integerR;
+    field Integer integerO;
+    field Integer integer <= self.booleanR ? self.integerR : self.integerO;
+    field Double doubleR;
+    field Double doubleO;
+    field Double double <= self.booleanR ? self.doubleR : self.doubleO;
+    field String unknownCondition <= self.booleanO ? "INVALID" : self.stringR;
+    field Date dateR;
+    field Date dateO;
+    field Date date <= self.booleanR ? self.dateR : self.dateO;
+    field Timestamp timestampR;
+    field Timestamp timestampO;
+    field Timestamp timestamp <= self.booleanR ? self.timestampR : self.timestampO;
+    field Enum enumR;
+    field Enum enumO;
+
+    //field Enum enum1 <= self.booleanR ? self.enumR : self.enumO; // TODO JNG-5544 error in runtime
+
+    field String FirstLetterIsUpper;
+    field String FirstLetterIsUpperWithDefault default: "Hello";
+
 }
 
 entity BBB {

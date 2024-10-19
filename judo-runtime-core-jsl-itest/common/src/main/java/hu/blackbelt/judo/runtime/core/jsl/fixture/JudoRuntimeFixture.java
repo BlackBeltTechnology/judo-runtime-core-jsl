@@ -5,7 +5,7 @@ import com.google.inject.Injector;
 import com.google.inject.Module;
 import hu.blackbelt.judo.meta.expression.builder.jql.JqlExpressionBuilderConfig;
 import hu.blackbelt.judo.meta.expression.builder.jql.asm.AsmJqlExtractor;
-import hu.blackbelt.judo.runtime.core.bootstrap.JudoModelLoader;
+import hu.blackbelt.judo.runtime.core.guice.JudoModelLoader;
 import hu.blackbelt.judo.runtime.core.dao.rdbms.hsqldb.HsqldbDialect;
 import hu.blackbelt.judo.runtime.core.dao.rdbms.hsqldb.HsqldbRdbmsInit;
 import hu.blackbelt.judo.runtime.core.dao.rdbms.liquibase.SimpleLiquibaseExecutor;
@@ -18,7 +18,6 @@ import hu.blackbelt.judo.runtime.core.query.QueryFactory;
 import hu.blackbelt.mapper.api.ExtendableCoercer;
 import hu.blackbelt.mapper.impl.DefaultCoercer;
 import lombok.extern.slf4j.Slf4j;
-import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.URI;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -83,7 +82,7 @@ public class JudoRuntimeFixture {
                 modelHolder.getMeasureModel().getResourceSet(),
                 asmJqlExtractor.extractExpressions(),
                 coercer,
-                requireNonNullElse(null, ECollections.asEMap(new ConcurrentHashMap<>())));
+                requireNonNullElse(null, new ConcurrentHashMap<>()));
 
     }
 

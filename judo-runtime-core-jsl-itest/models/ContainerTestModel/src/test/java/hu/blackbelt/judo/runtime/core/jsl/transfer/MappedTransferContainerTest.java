@@ -250,12 +250,12 @@ public class MappedTransferContainerTest {
 
         assertTrue(tadditionalServiceDao.queryServicePrice(tadditionalService).isPresent());
 
-        Assertions.assertEquals(partner.getServicePrices().get(0).identifier(), tadditionalServiceDao.queryServicePrice(tadditionalService).get().identifier());
+        Assertions.assertEquals(partner.getServicePrices().get(0).identifier().getIdentifier(), tadditionalServiceDao.queryServicePrice(tadditionalService).get().identifier().getIdentifier());
 
         // Should throw error because the Price instance is out of range
         tadditionalServiceDao.setServicePrice(tadditionalService, outOfPrice);
 
-        Assertions.assertEquals(outOfPrice.identifier(), tadditionalServiceDao.queryServicePrice(tadditionalService).get().identifier());
+        Assertions.assertEquals(outOfPrice.identifier().getIdentifier(), tadditionalServiceDao.queryServicePrice(tadditionalService).get().identifier().getIdentifier());
 
 
     }
@@ -295,17 +295,17 @@ public class MappedTransferContainerTest {
 
         Assertions.assertEquals(te.identifier(), tcDao.queryContainerAasBrelEonB(tc).get().identifier());
         // TODO JNG-5103 No value present
-        //assertEquals(te.identifier(), tcDao.queryContainerBrelEonB(tc).get().identifier());
+        // assertEquals(te.identifier(), tcDao.queryContainerBrelEonB(tc).get().identifier());
 
         // Recursive C relation
         assertFalse(tcDao.queryContainerAasBrelConB(tc).isPresent());
         // TODO JNG-5103 When no relConB relation is attached, the recursive relation contains the c instance.
-        //assertFalse(tcDao.queryContainerBrelConB(tc).isPresent()); // not work
+        // assertFalse(tcDao.queryContainerBrelConB(tc).isPresent()); // not work
 
         TC tc1 = tbDao.createRelConB(tb, TCForCreate.builder().build());
         Assertions.assertEquals(tc1.identifier(), tcDao.queryContainerAasBrelConB(tc).get().identifier());
         // TODO JNG-5103 Recursive relation contains the c instance always, not the c.container.relConB if it is present
-        //assertEquals(tc1.identifier(), tcDao.queryContainerBrelConB(tc).get().identifier()); // not work
+        // assertEquals(tc1.identifier(), tcDao.queryContainerBrelConB(tc).get().identifier()); // not work
 
         // the container and the relation are in the same entity
         TD td = tb.getDonB();

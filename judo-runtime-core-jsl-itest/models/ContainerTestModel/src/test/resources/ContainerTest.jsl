@@ -3,11 +3,11 @@ model ContainerTest;
 type string String min-size:0 max-size:255;
 
 entity A {
-    field required C conA;
+    field C conA required;
 }
 
 entity B extends A {
-    field required D donB;
+    field D donB required;
 
     relation E relEonB;
     relation C relConB;
@@ -15,27 +15,31 @@ entity B extends A {
 }
 
 entity C {
-    relation A containerA <= self.container(entityType = A);
-    relation B containerB <= self.container(entityType = A).asType(entityType = B);
-    relation B containerB1 <= self.container(entityType = B);
+    relation A containerA <= self.container(type = A);
+    relation B containerB <= self.container(type = A).asType(type = B);
+    relation B containerB1 <= self.container(type = B);
 
-    relation E containerAasBrelEonB <= self.container(entityType = A).asType(entityType = B).relEonB;
-    relation E containerBrelEonB <= self.container(entityType = B).relEonB; // JNG-5103 cause problem - no value presented
+    relation E containerAasBrelEonB <= self.container(type = A).asType(type = B).relEonB;
+    relation E containerBrelEonB <= self.container(type = B).relEonB; // JNG-5103 cause problem - no value presented
 
-    relation C containerAasBrelConB <= self.container(entityType = A).asType(entityType = B).relConB;
-    relation C containerBrelConB <= self.container(entityType = B).relConB; // JNG-5103 cause problem - same C as root returned
+    relation D containerAasBrelDonB <= self.container(type = A).asType(type = B).relDonB;
+    relation D containerBrelDonB <= self.container(type = B).relDonB; // JNG-5103 cause problem - same C as root returned
+
+    relation C containerAasBrelConB <= self.container(type = A).asType(type = B).relConB;
+    relation C containerBrelConB <= self.container(type = B).relConB;
 }
 
 entity D {
-    relation A containerA <= self.container(entityType = B).asType(entityType = A);
-    relation A containerA1 <= self.container(entityType = A);
-    relation B containerB <= self.container(entityType = B);
+    relation A containerA <= self.container(type = B).asType(type = A);
+    relation A containerA1 <= self.container(type = A);
+    relation B containerB <= self.container(type = B);
 
-    relation E containerAasBrelEonB <= self.container(entityType = A).asType(entityType = B).relEonB;
-    relation E containerBrelEonB <= self.container(entityType = B).relEonB;
+    relation E containerAasBrelEonB <= self.container(type = A).asType(type = B).relEonB;
+    relation E containerBrelEonB <= self.container(type = B).relEonB;
 
-    relation D containerAasBrelDonB <= self.container(entityType = A).asType(entityType = B).relDonB;
-    relation D containerBrelDonB <= self.container(entityType = B).relDonB;
+    relation D containerAasBrelDonB <= self.container(type = A).asType(type = B).relDonB;
+    relation D containerBrelDonB <= self.container(type = B).relDonB;
+
 }
 
 entity E {
@@ -45,16 +49,20 @@ entity E {
 // TRANSFER representation
 
 transfer TA maps A as a {
-    relation required TC conA <= a.conA eager:true;
+    relation TC conA <= a.conA eager:true required create:true;
+
+    event create `create`;
 }
 
 transfer TB maps B as b {
-    relation required TD donB <= b.donB eager:true;
-    relation required TC conA <= b.conA eager:true;
+    relation TD donB <= b.donB required eager:true create:true;
+    relation TC conA <= b.conA required eager:true create:true;
 
-    relation TE relEonB <= b.relEonB;
-    relation TC relConB <= b.relConB;
-    relation TD relDonB <= b.relDonB;
+    relation TE relEonB <= b.relEonB create:true;
+    relation TC relConB <= b.relConB create:true;
+    relation TD relDonB <= b.relDonB create:true;
+
+    event create `create`;
 }
 
 transfer TC maps C as c {
@@ -66,6 +74,8 @@ transfer TC maps C as c {
     relation TE containerBrelEonB <= c.containerBrelEonB;
     relation TC containerAasBrelConB <= c.containerAasBrelConB;
     relation TC containerBrelConB <= c.containerBrelConB;
+
+	event create `create`;
 }
 
 transfer TD maps D as d {
@@ -77,11 +87,16 @@ transfer TD maps D as d {
     relation TE containerBrelEonB <= d.containerBrelEonB;
     relation TD containerAasBrelDonB <= d.containerAasBrelDonB;
     relation TD containerBrelDonB <= d.containerBrelDonB;
+
+	event create `create`;
 }
 
 transfer TE maps E as e {
-    field String name <= e.name;
+    field String name <=> e.name;
+
+    event create `create`;
 }
+
 
 // Transaction model
 
@@ -92,26 +107,29 @@ entity ServicePrice {}
 
 entity StockTransaction {
   field AdditionalService[] additionalServices;
-  relation required Partner client;
+  relation Partner client required;
 }
 
 entity AdditionalService {
   relation ServicePrice servicePrice;
-  relation ServicePrice[] servicePriceDerived <= self.container(entityType = StockTransaction).client.servicePrices;
+  relation ServicePrice[] servicePriceDerived <= self.container(type = StockTransaction).client.servicePrices;
 }
 
 transfer TPartner (Partner p) {
-    relation TServicePrice[] servicePrices <= p.servicePrices eager:true;
+    relation TServicePrice[] servicePrices <= p.servicePrices eager:true create:true;
 }
 
 transfer TServicePrice (ServicePrice s) {
+	event create `create`;
 }
 
 transfer TStockTransaction (StockTransaction s) {
-  relation TAdditionalService[] additionalServices <= s.additionalServices eager:true;
-  relation required TPartner client <= s.client choices:Partner.all();
+  relation TAdditionalService[] additionalServices <= s.additionalServices eager:true create:true;
+  relation TPartner client <= s.client required choices:Partner.all();
 }
 
 transfer TAdditionalService (AdditionalService a) {
   relation TServicePrice servicePrice <= a.servicePrice choices : a.servicePriceDerived;
+  
+  event create `create`;
 }

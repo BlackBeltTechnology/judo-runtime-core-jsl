@@ -8,8 +8,8 @@ entity Composition {
 }
 
 transfer TransferComposition (Composition comp) {
-    relation TransferA transferA <= comp.entityA eager:true;
-    relation TransferA[] transferAs <= comp.entityAs eager:true;
+    relation TransferA transferA <= comp.entityA eager:true create:true;
+    relation TransferA[] transferAs <= comp.entityAs eager:true create:true;
 }
 
 // not required Single and Multi
@@ -24,19 +24,21 @@ entity EntityB {
 }
 
 transfer TransferA (EntityA a) {
-    relation TransferB singleEntityB <= a.singleEntityB eager:true;
-    relation TransferB[] multiEntityB <= a.multiEntityB eager:true;
-    field String stringA <= a.stringA input:true;
+    relation TransferB singleEntityB <= a.singleEntityB eager:true create:true;
+    relation TransferB[] multiEntityB <= a.multiEntityB eager:true create:true;
+    field String stringA <=> a.stringA;
+    event create eventCreate;
 }
 
 transfer TransferB (EntityB b) {
-    field String nameB <= b.nameB input:true;
+    field String nameB <=> b.nameB;
+    event create eventCreate;
 }
 
 // required single
 
 entity EntityC {
-    field required EntityD singleRequiredEntityD;
+    field EntityD singleRequiredEntityD required;
 }
 
 entity EntityD {
@@ -44,12 +46,12 @@ entity EntityD {
 }
 
 transfer TransferC (EntityC c) {
-    relation required TransferD singleRequiredEntityD <= c.singleRequiredEntityD eager:true;
-
+    relation TransferD singleRequiredEntityD <= c.singleRequiredEntityD eager:true create:true required;
 }
 
 transfer TransferD (EntityD d) {
-    field String nameD <= d.nameD input:true;
+    field String nameD <=> d.nameD;
+    event create eventCreate;
 }
 
 // Navigation trough transfers
@@ -67,25 +69,27 @@ entity EntityG {
 }
 
 transfer TransferE (EntityE e) {
-    relation TransferF singleEntityF <= e.singleEntityF eager:true;
+    relation TransferF singleEntityF <= e.singleEntityF eager:true create:true;
 }
 
 transfer TransferF (EntityF f) {
-    relation TransferG[] multiEntityG <= f.multiEntityG eager:true;
+    relation TransferG[] multiEntityG <= f.multiEntityG eager:true create:true;
+    event create eventCreate;
 }
 
 transfer TransferG (EntityG g) {
-        field String nameG <= g.nameG input:true;
+    field String nameG <=> g.nameG;
+    event create eventCreate;
 }
 
 entity EntityH {
     field String stringH;
     field EntityJ singleJonH;
     field EntityJ[] collectionJonH;
-    field required EntityJ singleRequiredJonH;
+    field EntityJ singleRequiredJonH required;
 }
 
-entity abstract EntityI {
+entity EntityI abstract {
     field String stringI;
     field EntityK[] multipleKonI;
 }
@@ -99,18 +103,20 @@ entity EntityK {
 }
 
 transfer TransferH(EntityH entityh) {
-    field String stringH <= entityh.stringH input:true;
-    relation TransferJ singleJonH <= entityh.singleJonH eager:true;
-    relation TransferJ[] collectionJonH <= entityh.collectionJonH eager:true;
-    relation required TransferJ singleRequiredJonH <= entityh.singleRequiredJonH eager:true;
+    field String stringH <=> entityh.stringH;
+    relation TransferJ singleJonH <= entityh.singleJonH eager:true create:true;
+    relation TransferJ[] collectionJonH <= entityh.collectionJonH eager:true create:true;
+    relation TransferJ singleRequiredJonH <= entityh.singleRequiredJonH eager:true create:true required;
 }
 
 transfer TransferJ(EntityJ entityj) {
-    field String stringI <= entityj.stringI input:true;
-    field String stringJ <= entityj.stringJ input:true;
-    relation TransferK[] multipleKonI <= entityj.multipleKonI eager:true;
+    field String stringI <=> entityj.stringI;
+    field String stringJ <=> entityj.stringJ;
+    relation TransferK[] multipleKonI <= entityj.multipleKonI eager:true create:true;
+    event create eventCreate;
 }
 
 transfer TransferK(EntityK entityk) {
-    field String stringK <= entityk.stringK input:true;
+    field String stringK <=> entityk.stringK;
+    event create eventCreate;
 }

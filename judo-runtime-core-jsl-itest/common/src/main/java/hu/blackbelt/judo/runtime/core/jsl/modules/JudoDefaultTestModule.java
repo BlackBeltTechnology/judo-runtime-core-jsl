@@ -37,12 +37,14 @@ import hu.blackbelt.judo.meta.rdbms.runtime.RdbmsModel;
 import hu.blackbelt.judo.runtime.core.DataTypeManager;
 import hu.blackbelt.judo.runtime.core.MetricsCollector;
 import hu.blackbelt.judo.runtime.core.accessmanager.api.AccessManager;
-import hu.blackbelt.judo.runtime.core.bootstrap.JudoModelLoader;
-import hu.blackbelt.judo.runtime.core.bootstrap.accessmanager.DefaultAccessManagerProvider;
-import hu.blackbelt.judo.runtime.core.bootstrap.core.DataTypeManagerProvider;
-import hu.blackbelt.judo.runtime.core.bootstrap.core.UUIDIdentifierProviderProvider;
-import hu.blackbelt.judo.runtime.core.bootstrap.dao.rdbms.*;
-import hu.blackbelt.judo.runtime.core.bootstrap.dispatcher.*;
+import hu.blackbelt.judo.runtime.core.guice.JudoModelLoader;
+import hu.blackbelt.judo.runtime.core.guice.accessmanager.DefaultAccessManagerProvider;
+import hu.blackbelt.judo.runtime.core.guice.core.DataTypeManagerProvider;
+import hu.blackbelt.judo.runtime.core.guice.core.UUIDIdentifierProviderProvider;
+import hu.blackbelt.judo.runtime.core.dispatcher.Export;
+import hu.blackbelt.judo.runtime.core.guice.dao.rdbms.*;
+import hu.blackbelt.judo.runtime.core.guice.dispatcher.*;
+import hu.blackbelt.judo.runtime.core.dispatcher.UnsupportedExportImpl;
 import hu.blackbelt.judo.runtime.core.dao.core.collectors.InstanceCollector;
 import hu.blackbelt.judo.runtime.core.dao.rdbms.RdbmsResolver;
 import hu.blackbelt.judo.runtime.core.dao.rdbms.executors.ModifyStatementExecutor;
@@ -65,14 +67,14 @@ import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.function.Consumer;
 
-import static hu.blackbelt.judo.runtime.core.bootstrap.dao.rdbms.RdbmsDAOProvider.RDBMS_DAO_MARK_SELECTED_RANGE_ITEMS;
-import static hu.blackbelt.judo.runtime.core.bootstrap.dao.rdbms.RdbmsDAOProvider.RDBMS_DAO_OPTIMISTIC_LOCK_ENABLED;
-import static hu.blackbelt.judo.runtime.core.bootstrap.dispatcher.DefaultDispatcherProvider.*;
-import static hu.blackbelt.judo.runtime.core.bootstrap.dispatcher.DefaultIdentifierSignerProvider.IDENTIFIER_SIGNER_SECRET;
-import static hu.blackbelt.judo.runtime.core.bootstrap.dispatcher.DefaultMetricsCollectorProvider.*;
-import static hu.blackbelt.judo.runtime.core.bootstrap.dispatcher.DefaultPayloadValidatorProvider.PAYLOAD_VALIDATOR_REQUIRED_STRING_VALIDATOR_OPTION;
-import static hu.blackbelt.judo.runtime.core.bootstrap.dispatcher.ThreadContextProvider.THREAD_CONTEXT_DEBUG_THREAD_FORK;
-import static hu.blackbelt.judo.runtime.core.bootstrap.dispatcher.ThreadContextProvider.THREAD_CONTEXT_INHERITABLE_CONTEXT;
+import static hu.blackbelt.judo.runtime.core.guice.dao.rdbms.RdbmsDAOProvider.RDBMS_DAO_MARK_SELECTED_RANGE_ITEMS;
+import static hu.blackbelt.judo.runtime.core.guice.dao.rdbms.RdbmsDAOProvider.RDBMS_DAO_OPTIMISTIC_LOCK_ENABLED;
+import static hu.blackbelt.judo.runtime.core.guice.dispatcher.DefaultDispatcherProvider.*;
+import static hu.blackbelt.judo.runtime.core.guice.dispatcher.DefaultIdentifierSignerProvider.IDENTIFIER_SIGNER_SECRET;
+import static hu.blackbelt.judo.runtime.core.guice.dispatcher.DefaultMetricsCollectorProvider.*;
+import static hu.blackbelt.judo.runtime.core.guice.dispatcher.DefaultPayloadValidatorProvider.PAYLOAD_VALIDATOR_REQUIRED_STRING_VALIDATOR_OPTION;
+import static hu.blackbelt.judo.runtime.core.guice.dispatcher.ThreadContextProvider.THREAD_CONTEXT_DEBUG_THREAD_FORK;
+import static hu.blackbelt.judo.runtime.core.guice.dispatcher.ThreadContextProvider.THREAD_CONTEXT_INHERITABLE_CONTEXT;
 
 public class JudoDefaultTestModule extends AbstractModule {
 
@@ -201,6 +203,7 @@ public class JudoDefaultTestModule extends AbstractModule {
         bind(ValidatorProvider.class).toProvider(ValidatorProviderProvider.class).asEagerSingleton();
         bind(PayloadValidator.class).toProvider(DefaultPayloadValidatorProvider.class).asEagerSingleton();
         bind(String.class).annotatedWith(Names.named(PAYLOAD_VALIDATOR_REQUIRED_STRING_VALIDATOR_OPTION)).toInstance("ACCEPT_NON_EMPTY");
+        bind(Export.class).to(UnsupportedExportImpl.class);
 
     }
 }

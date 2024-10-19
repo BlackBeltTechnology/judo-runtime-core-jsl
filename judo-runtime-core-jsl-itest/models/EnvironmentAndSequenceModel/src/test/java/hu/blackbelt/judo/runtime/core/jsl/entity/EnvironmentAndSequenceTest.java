@@ -1,6 +1,13 @@
 package hu.blackbelt.judo.runtime.core.jsl.entity;
 
 import com.google.inject.Inject;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.division.Division;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.division.DivisionAttribute;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.division.DivisionDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.division.DivisionForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.employee.Employee;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.employee.EmployeeDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.employee.EmployeeForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.envvarbool.EnvVarBoolDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.envvarbool.EnvVarBoolForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.envvardate.EnvVarDateDao;
@@ -22,9 +29,18 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencem
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.envvartime.EnvVarTimeForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.envvartimestamp.EnvVarTimestampDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.envvartimestamp.EnvVarTimestampForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.position.Position;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.position.PositionDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.position.PositionForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.sequencenames.SequenceNames;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.sequencenames.SequenceNamesDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.sequencenames.SequenceNamesForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.sequences.Sequences;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.sequences.SequencesDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.sequences.SequencesForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.systemenvironmentvariablewithexpression.SystemEnvironmentVariableWithExpression;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.systemenvironmentvariablewithexpression.SystemEnvironmentVariableWithExpressionDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.environmentandsequencemodel.environmentandsequencemodel.systemenvironmentvariablewithexpression.SystemEnvironmentVariableWithExpressionForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.EnvironmentAndSequenceModelDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
@@ -35,9 +51,14 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
+import java.math.BigDecimal;
 import java.time.*;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 /*-
@@ -85,6 +106,9 @@ public class EnvironmentAndSequenceTest {
     EnvVarsDao envVarsDao;
     @Inject
     SequencesDao sequencesDao;
+
+    @Inject
+    SystemEnvironmentVariableWithExpressionDao systemEnvironmentVariableWithExpressionDao;
 
     /**
      * With all judo-types primitives test the !getVariables(“ENVIRONMENT“, “key”) that read the key environment variable, and check the returned values.
@@ -438,4 +462,199 @@ end text"
         assertEquals(2L, s2.getF3().orElseThrow());
     }
 
+    @Test
+    @TestCase("EnvironmentVariableWithExpression")
+    @Requirement(reqs = {
+            "REQ-SYNT-001",
+            "REQ-SYNT-002",
+            "REQ-SYNT-003",
+            "REQ-SYNT-004",
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-MDL-001",
+            "REQ-MDL-003",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-EXPR-002",
+            "REQ-EXPR-006",
+            "REQ-EXPR-007",
+            "REQ-EXPR-009",
+            "REQ-EXPR-012",
+            "REQ-EXPR-018"
+    })
+    public void testEnvironmentVariableWithExpression() throws Exception {
+        EnvironmentVariableMocker.initMocked();
+
+        final int JUDO_ENV_INTEGER = 1;
+        final String JUDO_ENV_BOOLEAN1 = "true";
+        final String JUDO_ENV_BOOLEAN2 = "True";
+        final String JUDO_ENV_STRING = "foo";
+        final double JUDO_ENV_DOUBLE = 3.1415926535;
+        final long JUDO_ENV_LONG = 12345678901234L;
+        final LocalDate JUDO_ENV_DATE = LocalDate.parse("2020-11-19");
+        final OffsetDateTime JUDO_ENV_TIMESTAMP = OffsetDateTime.parse("2020-11-19T16:38:00+00:00");
+        final OffsetDateTime JUDO_ENV_TIMESTAMP_WITH_OFFSET = OffsetDateTime.parse("2020-11-19T16:38:00+15:00");
+        final LocalDateTime JUDO_ENV_TIMESTAMP_WITHOUT_OFFSET = LocalDateTime.parse("2020-11-19T16:38:00");
+        final LocalTime JUDO_ENV_TIME = LocalTime.parse("16:38:01");
+
+        EnvironmentVariables environmentVariables = new EnvironmentVariables()
+                .set("integer", JUDO_ENV_INTEGER)
+                .set("boolean1", JUDO_ENV_BOOLEAN1)
+                .set("boolean2", JUDO_ENV_BOOLEAN2)
+                .set("string", JUDO_ENV_STRING)
+                .set("double", JUDO_ENV_DOUBLE)
+                .set("long", JUDO_ENV_LONG)
+                .set("date", JUDO_ENV_DATE)
+                .set("timestamp", JUDO_ENV_TIMESTAMP)
+                .set("timestampWithOffset", JUDO_ENV_TIMESTAMP_WITH_OFFSET)
+                .set("timestampWithoutOffset", JUDO_ENV_TIMESTAMP_WITHOUT_OFFSET)
+                .set("time", JUDO_ENV_TIME);
+
+        try {
+            environmentVariables
+                    .execute(() -> {
+                        SystemEnvironmentVariableWithExpression envExpression = systemEnvironmentVariableWithExpressionDao.create(SystemEnvironmentVariableWithExpressionForCreate.builder().build());
+
+                        assertEquals(2, envExpression.getInteger().orElseThrow());
+                        assertEquals(false, envExpression.getBoolean1().orElseThrow());
+                        assertEquals(false, envExpression.getBoolean2().orElseThrow());
+                        assertEquals("foopostfix", envExpression.getString().orElseThrow());
+                        assertEquals(new BigDecimal("4.1415926535"), envExpression.getDouble_().orElseThrow());
+                        assertEquals(12345678901235L, envExpression.getLong_().orElseThrow());
+                        assertEquals(OffsetDateTime.parse("2020-11-19T16:38:00+00:00").atZoneSameInstant(ZoneOffset.UTC).toLocalDateTime().plusMinutes(720), envExpression.getTimestamp().orElseThrow());
+                        assertEquals(OffsetDateTime.parse("2020-11-19T16:38:00+15:00").atZoneSameInstant(ZoneOffset.UTC).toLocalDateTime().plusMinutes(720), envExpression.getTimestampWithOffset().orElseThrow());
+                        assertEquals(LocalDateTime.parse("2020-11-19T16:38:00").plusMinutes(720), envExpression.getTimestampWithoutOffset().orElseThrow());
+                        assertEquals(LocalDate.of(2020, 11, 20), envExpression.getDate().orElseThrow());
+                        assertEquals(LocalTime.of(17, 38, 1), envExpression.getTime().orElseThrow());
+
+                    });
+        } finally {
+            environmentVariables.teardown();
+            EnvironmentVariableMocker.deinitMocked();
+        }
+	}
+
+    @Inject
+    SequenceNamesDao sequenceNamesDao;
+
+    @Test
+    @TestCase("GetVariableSequenceNames")
+    @Requirement(reqs = {
+            "REQ-SYNT-001",
+            "REQ-SYNT-002",
+            "REQ-SYNT-003",
+            "REQ-SYNT-004",
+            "REQ-TYPE-001",
+            "REQ-TYPE-005",
+            "REQ-MDL-001",
+            "REQ-MDL-003",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-EXPR-001",
+            "REQ-EXPR-002",
+            "REQ-EXPR-006",
+            "REQ-EXPR-007",
+            "REQ-EXPR-009",
+            "REQ-EXPR-012"
+    })
+    void testGetVariableSequenceNames() {
+        SequenceNames seq = sequenceNamesDao.create(SequenceNamesForCreate.builder().build());
+
+        assertEquals(1, seq.getSequence1().orElseThrow());
+        assertEquals(2, sequenceNamesDao.querySequence1(seq).orElseThrow());
+
+        assertEquals(1, seq.getSequence2().orElseThrow());
+        assertEquals(2, sequenceNamesDao.querySequence2(seq).orElseThrow());
+
+        assertEquals(1, seq.getSequence3().orElseThrow());
+        assertEquals(2, sequenceNamesDao.querySequence3(seq).orElseThrow());
+
+        assertEquals(1, seq.getSequence4().orElseThrow());
+        assertEquals(2, sequenceNamesDao.querySequence4(seq).orElseThrow());
+
+        assertEquals(1, seq.getSequence5().orElseThrow());
+        assertEquals(2, sequenceNamesDao.querySequence5(seq).orElseThrow());
+
+        assertEquals(1, seq.getSequence6().orElseThrow());
+        assertEquals(2, sequenceNamesDao.querySequence6(seq).orElseThrow());
+
+        assertEquals(1, seq.getSequence7().orElseThrow());
+        assertEquals(2, sequenceNamesDao.querySequence7(seq).orElseThrow());
+
+        assertEquals(1, seq.getSequence8().orElseThrow());
+        assertEquals(2, sequenceNamesDao.querySequence8(seq).orElseThrow());
+
+        assertEquals(1, seq.getSequence9().orElseThrow());
+        assertEquals(2, sequenceNamesDao.querySequence9(seq).orElseThrow());
+
+        assertEquals(1, seq.getSequence10().orElseThrow());
+        assertEquals(2, sequenceNamesDao.querySequence10(seq).orElseThrow());
+    }
+
+    @Inject
+    EmployeeDao employeeDao;
+    @Inject
+    DivisionDao divisionDao;
+    @Inject
+    PositionDao positionDao;
+
+    @Test
+    @TestCase("EnvironmentVariableWithFilter")
+    @Requirement(reqs = {
+            "REQ-SYNT-001",
+            "REQ-SYNT-002",
+            "REQ-SYNT-003",
+            "REQ-SYNT-004",
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-MDL-001",
+            "REQ-MDL-003",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-006",
+            "REQ-ENT-008",
+            "REQ-EXPR-002",
+            "REQ-EXPR-003",
+            "REQ-EXPR-003",
+            "REQ-EXPR-004",
+            "REQ-EXPR-006",
+            "REQ-EXPR-007",
+            "REQ-EXPR-008",
+            "REQ-EXPR-009",
+            "REQ-EXPR-012",
+            "REQ-EXPR-022"
+    })
+    void testEnvironmentVariableWithFilter() throws Exception  {
+        EnvironmentVariableMocker.initMocked();
+        EnvironmentVariables environmentVariables = new EnvironmentVariables()
+                .set("email", "test@employee");
+        try {
+            environmentVariables
+                    .execute(() -> {
+                        Division d1 = divisionDao.create(DivisionForCreate.builder().withName("D1").build());
+                        Division d2 = divisionDao.create(DivisionForCreate.builder().withName("D2").build());
+                        Division d3 = divisionDao.create(DivisionForCreate.builder().withName("D3").build());
+
+                        Position p1 = positionDao.create(PositionForCreate.builder().withName("P1").withDivision(d1).build());
+                        Position p2 = positionDao.create(PositionForCreate.builder().withName("P2").withDivision(d2).build());
+                        positionDao.create(PositionForCreate.builder().withName("P3").withDivision(d3).build());
+
+                        Employee testEmployee = employeeDao.create(EmployeeForCreate.builder().withEmail("test@employee").withPositions(List.of(p1, p2)).build());
+
+                        HashSet<Division> set1 = new HashSet<>(employeeDao.queryRangeOfDivisions(testEmployee).selectList());
+                        HashSet<Division> set2 = new HashSet<>(employeeDao.queryRangeOfDivisions(testEmployee).orderBy(DivisionAttribute.NAME).selectList(5));
+
+                        assertThat(set1, equalTo(set2));
+                    });
+        } finally {
+            environmentVariables.teardown();
+            EnvironmentVariableMocker.deinitMocked();
+        }
+    }
 }

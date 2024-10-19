@@ -14,18 +14,18 @@ entity EntityB {
 }
 
 transfer TransferA (EntityA a) {
-    field String nameB <= a.nameA input:true;
+    field String nameB <=> a.nameA;
     relation TransferB relationBonA <= a.relationBonA choices:EntityB.all();
 }
 
 transfer TransferB (EntityB b) {
-    field String nameB <= b.nameB input:true;
+    field String nameB <=> b.nameB;
 }
 
 // Single required relation
 entity EntityC {
     field String nameC;
-    relation required EntityD relationDonC;
+    relation EntityD relationDonC required;
 }
 
 entity EntityD {
@@ -33,12 +33,12 @@ entity EntityD {
 }
 
 transfer TransferC (EntityC c) {
-    field String nameC <= c.nameC input:true;
-    relation required TransferD relationDonC <= c.relationDonC choices:EntityD.all();
+    field String nameC <=> c.nameC;
+    relation TransferD relationDonC <= c.relationDonC choices:EntityD.all() required;
 }
 
 transfer TransferD (EntityD d) {
-    field String nameD <= d.nameD input:true;
+    field String nameD <=> d.nameD;
 }
 
 // Multi relation
@@ -52,12 +52,12 @@ entity EntityF {
 }
 
 transfer TransferE (EntityE e) {
-    field String nameE <= e.nameE input:true;
+    field String nameE <=> e.nameE;
     relation TransferF[] relationFonE <= e.relationFonE choices:EntityF.all();
 }
 
 transfer TransferF (EntityF f) {
-    field String nameF <= f.nameF input:true;
+    field String nameF <=> f.nameF;
 }
 
 // TwoWay Relations
@@ -82,7 +82,7 @@ collection <-> collection
 entity EntityG {
     field String nameG;
     relation EntityH relationOptionalH opposite-add: relationGForOptionalH;
-    relation required EntityH relationRequiredH opposite-add: relationGForRequiredH;
+    relation EntityH relationRequiredH opposite-add: relationGForRequiredH required;
     relation EntityH[] relationCollectionH opposite-add: relationGForCollectionH;
 }
 
@@ -91,14 +91,14 @@ entity EntityH {
 }
 
 transfer TransferG (EntityG g) {
-    field String nameG <= g.nameG input:true;
+    field String nameG <=> g.nameG;
     relation TransferH relationOptionalH <= g.relationOptionalH choices:EntityH.all();
-    relation required TransferH relationRequiredH <= g.relationRequiredH choices:EntityH.all();
+    relation TransferH relationRequiredH <= g.relationRequiredH choices:EntityH.all() required;
     relation TransferH[] relationCollectionH <= g.relationCollectionH choices:EntityH.all();
 }
 
 transfer TransferH (EntityH h) {
-    field String nameH <= h.nameH input:true;
+    field String nameH <=> h.nameH;
     relation TransferG relationGForOptionalH <= h.relationGForOptionalH choices:EntityG.all();
     relation TransferG relationGForRequiredH <= h.relationGForRequiredH choices:EntityG.all();
     relation TransferG relationGForCollectionH <= h.relationGForCollectionH choices:EntityG.all();
@@ -112,20 +112,20 @@ entity EntityI {
 
 entity EntityJ {
     field String nameJ;
-    relation required EntityI relationRequiredIForOptionalJ opposite: relationOptionalJ;
-    relation required EntityI relationRequiredIorCollectionJ opposite: relationCollectionJ;
+    relation EntityI relationRequiredIForOptionalJ opposite: relationOptionalJ required;
+    relation EntityI relationRequiredIorCollectionJ opposite: relationCollectionJ required;
 }
 
 transfer TransferI (EntityI i) {
-    field String nameI <= i.nameI input:true;
+    field String nameI <=> i.nameI;
     relation TransferJ relationOptionalJ <= i.relationOptionalJ choices:EntityJ.all();
     relation TransferJ[] relationCollectionJ <= i.relationCollectionJ choices:EntityJ.all();
 }
 
 transfer TransferJ (EntityJ j) {
-    field String nameJ <= j.nameJ input:true;
-    relation required TransferI relationRequiredIForOptionalJ <= j.relationRequiredIForOptionalJ choices:EntityI.all();
-    relation required TransferI relationRequiredIorCollectionJ <= j.relationRequiredIorCollectionJ choices:EntityI.all();
+    field String nameJ <=> j.nameJ;
+    relation TransferI relationRequiredIForOptionalJ <= j.relationRequiredIForOptionalJ choices:EntityI.all() required;
+    relation TransferI relationRequiredIorCollectionJ <= j.relationRequiredIorCollectionJ choices:EntityI.all() required;
 }
 
 entity EntityK {
@@ -138,11 +138,11 @@ entity EntityL {
 }
 
 transfer TransferK (EntityK k) {
-    field String nameK <= k.nameK input:true;
+    field String nameK <=> k.nameK;
     relation TransferL[] relationCollectionL <= k.relationCollectionL choices:EntityL.all();
 }
 
 transfer TransferL (EntityL l) {
-    field String nameL <= l.nameL input:true;
+    field String nameL <=> l.nameL;
     relation TransferK[] relationCollectionKForCollectionL <= l.relationCollectionKForCollectionL choices:EntityK.all();
 }

@@ -1,0 +1,89 @@
+model TransferRange;
+
+import judo::types;
+
+entity Fruit abstract {
+    field String variety required;
+}
+
+transfer TransferFruit (Fruit fruit) {
+    field String variety <=> fruit.variety  required;
+}
+
+transfer TransferApple (Apple fruit) {
+    field String variety <=> fruit.variety  required;
+}
+
+transfer TransferPear (Pear fruit) {
+    field String variety <=> fruit.variety  required;
+}
+
+entity Apple extends Fruit {}
+
+entity Pear extends Fruit {}
+
+entity Basket {
+    relation Fruit breakfast;
+    relation Fruit galaFruit;
+}
+
+transfer TransferBasket (Basket basket) {
+    relation TransferFruit breakfast <= basket.breakfast choices: Apple.all() eager:true;
+    relation TransferFruit fruits choices: Pear.all();
+    relation TransferFruit galaFruit <= basket.galaFruit choices: Apple.all().filter(a | a.variety == "GALA").asCollection(type = Fruit) eager:true;
+}
+
+// cars
+
+entity Car {
+    field String licensePlate required;
+    field String color;
+    field Wheel[] wheels;
+    relation Wheel spareWheel;
+}
+
+entity Wheel {
+    field Integer produced required;
+}
+
+transfer TransferWheel (Wheel wheel) {
+    field Integer produced <=> wheel.produced  required;
+    event create onCreate;
+}
+
+transfer TransferCar (Car car) {
+    field String licensePlate <=> car.licensePlate  required;
+    field String color <=> car.color;
+    relation TransferWheel[] wheels <= car.wheels create:true;
+    relation TransferWheel spareWheel <= car.spareWheel choices:car.wheels;
+}
+
+// TwoWay Relation
+
+entity Planet {
+    field String name required;
+    field String planetNameOverCreature <= self.creatures.any().planet.name;
+    relation Creature[] creatures opposite: planet;
+    relation Creature[] visitors ;
+    relation Creature[] availableVisitors <= Creature.all().filter(c |  c.planet.name == "Venus");
+}
+
+entity Creature {
+    field String name required;
+    field String planetName <= self.planet.name;
+    relation Planet planet opposite: creatures;
+}
+
+transfer TransferPlanet(Planet planet) {
+    field String name <=> planet.name  required;
+    field String planetNameOverCreature  <= planet.planetNameOverCreature;
+    relation TransferCreature[] creatures  <= planet.creatures choices: Creature.all();
+    relation TransferCreature[] visitors  <= planet.visitors choices: Creature.all().filter(c | c.planet.isUndefined());
+    relation TransferCreature[] availableVisitors <= planet.availableVisitors;
+}
+
+transfer TransferCreature(Creature creature) {
+    field String name <=> creature.name  required;
+    field String planetName <= creature.planetName;
+    relation TransferPlanet planet  <= creature.planet choices:Planet.all();
+}

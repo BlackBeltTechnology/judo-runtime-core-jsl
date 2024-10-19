@@ -27,57 +27,64 @@ entity Tester {
     relation B[] caAsBs;
 
     // kind of
-    field Boolean kindOfA <= self.b.kindOf(entityType = A);        // true
-    field Boolean kindOfB <= self.b.kindOf(entityType = B);        // true
-    field Boolean kindOfCA <= self.b.kindOf(entityType = CA);      // false
-    field Boolean kindOfCA1 <= self.caAsB.kindOf(entityType = CA); // true
-    field Boolean kindOfCB <= self.b.kindOf(entityType = CB);      // false
+    field Boolean kindOfA <= self.b.kindOf(type = A);        // true
+    field Boolean kindOfB <= self.b.kindOf(type = B);        // true
+    field Boolean kindOfCA <= self.b.kindOf(type = CA);      // false
+    field Boolean kindOfCA1 <= self.caAsB.kindOf(type = CA); // true
+    field Boolean kindOfCB <= self.b.kindOf(type = CB);      // false
 
     // type of
-    field Boolean typeOfA <= self.b.typeOf(entityType = A);        // false
-    field Boolean typeOfB <= self.b.typeOf(entityType = B);        // true
-    field Boolean typeOfCA <= self.b.typeOf(entityType = CA);      // false
-    field Boolean typeOfCA1 <= self.caAsB.typeOf(entityType = CA); // true
-    field Boolean typeOfCB <= self.b.typeOf(entityType = CB);      // false
+    field Boolean typeOfA <= self.b.typeOf(type = A);        // false
+    field Boolean typeOfB <= self.b.typeOf(type = B);        // true
+    field Boolean typeOfCA <= self.b.typeOf(type = CA);      // false
+    field Boolean typeOfCA1 <= self.caAsB.typeOf(type = CA); // true
+    field Boolean typeOfCB <= self.b.typeOf(type = CB);      // false
 
     // as type
-    relation A asTypeA <= self.b.asType(entityType = A);         // B
-    relation B asTypeB <= self.b.asType(entityType = B);         // B
-    relation CA asTypeCA <= self.b.asType(entityType = CA);      // undefined
-    relation CA asTypeCA1 <= self.caAsB.asType(entityType = CA); // CA
-    relation CB asTypeCB <= self.b.asType(entityType = CB);      // undefined
+    relation A asTypeA <= self.b.asType(type = A);         // B
+    relation B asTypeB <= self.b.asType(type = B);         // B
+    relation CA asTypeCA <= self.b.asType(type = CA);      // undefined
+    relation CA asTypeCA1 <= self.caAsB.asType(type = CA); // CA
+    relation CB asTypeCB <= self.b.asType(type = CB);      // undefined
 
     // as collection
-    relation A[] asCollectionA <= self.bs.asCollection(entityType = A);         // B-s
-    relation B[] asCollectionB <= self.bs.asCollection(entityType = B);         // B-s
-    relation CA[] asCollectionCA <= self.bs.asCollection(entityType = CA);      // empty
-    relation CA[] asCollectionCA1 <= self.caAsBs.asCollection(entityType = CA); // CA-s
-    relation CB[] asCollectionCB <= self.bs.asCollection(entityType = CB);      // empty
+    relation A[] asCollectionA <= self.bs.asCollection(type = A);         // B-s
+    relation B[] asCollectionB <= self.bs.asCollection(type = B);         // B-s
+    relation CA[] asCollectionCA <= self.bs.asCollection(type = CA);      // empty
+    relation CA[] asCollectionCA1 <= self.caAsBs.asCollection(type = CA); // CA-s
+    relation CB[] asCollectionCB <= self.bs.asCollection(type = CB);      // empty
+
+    // SubTypeExpression
+    relation A[] caAs <= A.all().filter( a | a.nameA.like(pattern = "aca_"));
+    relation B[] caBs <= B.all().filter( a | a.nameA.like(pattern = "aca_"));
+    relation CA[] caCAs <= CA.all().filter( a | a.nameA.like(pattern = "aca_"));
+    relation CB[] caCBs <= CB.all().filter( a | a.nameA.like(pattern = "aca_"));
+    relation B[] caAsCollectionB <= A.all().asCollection(type = B).filter( a | a.nameA.like(pattern = "aca_"));
 
 }
 
 // TRANSFER REPRESENTATION
 
 transfer TA maps A as a {
-    field String nameA <= a.nameA input:true;
+    field String nameA <=> a.nameA;
 }
 
 transfer TB maps B as b {
-    field String nameA <= b.nameA input:true;
-    field String nameB <= b.nameB input:true;
+    field String nameA <=> b.nameA;
+    field String nameB <=> b.nameB;
 }
 
 transfer TCA maps CA as ca {
-    field String nameA <= ca.nameA input:true;
-    field String nameCA <= ca.nameCA input:true;
-    field String nameB <= ca.nameB input:true;
+    field String nameA <=> ca.nameA;
+    field String nameCA <=> ca.nameCA;
+    field String nameB <=> ca.nameB;
 }
 
 
 transfer TCB maps CB as cb {
-    field String nameA <= cb.nameA input:true;
-    field String nameCB <= cb.nameCB input:true;
-    field String nameB <= cb.nameB input:true;
+    field String nameA <=> cb.nameA;
+    field String nameCB <=> cb.nameCB;
+    field String nameB <=> cb.nameB;
 }
 
 
@@ -114,4 +121,11 @@ transfer TransferTester maps Tester as t {
     relation TCA[] asCollectionCA <= t.asCollectionCA;      // empty
     relation TCA[] asCollectionCA1 <= t.asCollectionCA1;    // CA-s
     relation TCB[] asCollectionCB <= t.asCollectionCB;      // empty
+
+    // SubTypeExpression
+    relation TA[] caAs <= t.caAs;
+    relation TB[] caBs <= t.caBs;
+    relation TCA[] caCAs <= t.caCAs;
+    relation TCB[] caCBs <= t.caCBs;
+    relation TB[] caAsCollectionB <= t.caAsCollectionB;
 }

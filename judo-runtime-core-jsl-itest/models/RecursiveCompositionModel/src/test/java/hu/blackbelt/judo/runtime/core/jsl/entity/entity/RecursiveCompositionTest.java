@@ -196,10 +196,10 @@ public class RecursiveCompositionTest {
         EntityB b1 = entityBDao.create(EntityBForCreate.builder().withName("b1")
                 .withBa(EntityAForCreate.builder().withName("a1")
                         .withA(EntityAForCreate.builder().withName("a4").build())
-                        .withAs(List.of(EntityAForCreate.builder().withName("a5").build(), EntityAForCreate.builder().withName("a6").build())).build())
+                        .withAlist(List.of(EntityAForCreate.builder().withName("a5").build(), EntityAForCreate.builder().withName("a6").build())).build())
                 .withBas(List.of(EntityAForCreate.builder().withName("a2")
                         .withA(EntityAForCreate.builder().withName("a5").build()).build(), EntityAForCreate.builder().withName("a3")
-                        .withAs(List.of(EntityAForCreate.builder().withName("a5").build(), EntityAForCreate.builder().withName("a6").build())).build()))
+                        .withAlist(List.of(EntityAForCreate.builder().withName("a5").build(), EntityAForCreate.builder().withName("a6").build())).build()))
                 .build());
 
         assertEquals("b1", b1.getName().orElseThrow());
@@ -208,14 +208,14 @@ public class RecursiveCompositionTest {
         assertTrue(b1.getBas().stream().anyMatch(c -> "a2".equals(c.getName().orElseThrow())));
         assertTrue(b1.getBas().stream().anyMatch(c -> "a3".equals(c.getName().orElseThrow())));
         assertFalse(b1.getA().isPresent());
-        assertEquals(0, b1.getAs().size());
+        assertEquals(0, b1.getAlist().size());
 
         EntityA a1Test = b1.getBa().orElseThrow();
 
         assertEquals("a4", a1Test.getA().orElseThrow().getName().orElseThrow());
-        assertEquals(2, a1Test.getAs().size());
-        assertTrue(a1Test.getAs().stream().anyMatch(c -> "a5".equals(c.getName().orElseThrow())));
-        assertTrue(a1Test.getAs().stream().anyMatch(c -> "a6".equals(c.getName().orElseThrow())));
+        assertEquals(2, a1Test.getAlist().size());
+        assertTrue(a1Test.getAlist().stream().anyMatch(c -> "a5".equals(c.getName().orElseThrow())));
+        assertTrue(a1Test.getAlist().stream().anyMatch(c -> "a6".equals(c.getName().orElseThrow())));
 
         EntityA a2Test = b1.getBas().stream().filter(c -> "a2".equals(c.getName().orElseThrow())).findFirst().orElseThrow();
 
@@ -223,9 +223,9 @@ public class RecursiveCompositionTest {
 
         EntityA a3Test = b1.getBas().stream().filter(c -> "a3".equals(c.getName().orElseThrow())).findFirst().orElseThrow();
 
-        assertEquals(2, a3Test.getAs().size());
-        assertTrue(a3Test.getAs().stream().anyMatch(c -> "a5".equals(c.getName().orElseThrow())));
-        assertTrue(a3Test.getAs().stream().anyMatch(c -> "a6".equals(c.getName().orElseThrow())));
+        assertEquals(2, a3Test.getAlist().size());
+        assertTrue(a3Test.getAlist().stream().anyMatch(c -> "a5".equals(c.getName().orElseThrow())));
+        assertTrue(a3Test.getAlist().stream().anyMatch(c -> "a6".equals(c.getName().orElseThrow())));
 
 
     }
