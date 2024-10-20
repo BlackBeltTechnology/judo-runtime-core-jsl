@@ -78,13 +78,13 @@ public class FilterCountTest {
 
         log.debug("\n" + Strings.repeat("=", 40) + "\nFilter by: this.ancestorBName!like('B')");
         assertEquals(1, aDao.query().filterBy("this.ancestorBName!like('B')").maskedBy(AMask.aMask()).selectList().size());
-        assertEquals(1, aDao.query().filterBy("this.ancestorBName!like('B')").count()); // TODO: https://blackbelt.atlassian.net/browse/JNG-5778
+        assertEquals(1, aDao.query().filterBy("this.ancestorBName!like('B')").count());
         log.debug("\n" + Strings.repeat("=", 40) + "\nFilter by: this.ancestorName!like('PA')");
         assertEquals(1, aDao.query().filterBy("this.ancestorName!like('PA')").maskedBy(AMask.aMask()).selectList().size());
         assertEquals(1, aDao.query().filterBy("this.ancestorName!like('PA')").count());
         log.debug("\n" + Strings.repeat("=", 40) + "\nFilter by: this.bname!like('B')");
         assertEquals(1, aDao.query().filterBy("this.bname!like('B')").maskedBy(AMask.aMask()).selectList().size());
-        assertEquals(1, aDao.query().filterBy("this.bname!like('B')").count()); // TODO: https://blackbelt.atlassian.net/browse/JNG-5778
+        assertEquals(1, aDao.query().filterBy("this.bname!like('B')").count());
         log.debug("\n" + Strings.repeat("=", 40) + "\nFilter by: this.name!like('A')");
         assertEquals(1, aDao.query().filterBy("this.name!like('A')").maskedBy(AMask.aMask()).selectList().size());
         assertEquals(1, aDao.query().filterBy("this.name!like('A')").count());
