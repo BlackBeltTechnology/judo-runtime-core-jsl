@@ -6,18 +6,18 @@ import judo::types;
 
 entity ParentA {
     field String ancestorName;
-//    relation B ancestorB;
-//    field String ancestorBName <= self.ancestorB.name;
+    relation B ancestorB;
+    field String ancestorBName <= self.ancestorB.name;
 }
 
 entity A extends ParentA {
-//    field String name;
-//    field Integer numb;
-//    relation C[] cs;
-//    relation C c;
-//    field String bname <= self.ancestorB.name;
-//    field Integer sum <= self.cs.sum(c | c.num);
-//    field Integer cnum <= self.c.num;
+    field String name;
+    field Integer numb;
+    relation C[] cs;
+    relation C c;
+    field String bname <= self.ancestorB.name;
+    field Integer sum <= self.cs.sum(c | c.num);
+    field Integer cnum <= self.c.num;
 }
 
 entity B {
