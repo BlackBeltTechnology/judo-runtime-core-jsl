@@ -8,35 +8,72 @@ entity A {
 
 entity B extends A {
     field D donB required;
+
+    relation E relEonB;
+    relation C relConB;
+    relation D relDonB;
 }
 
 entity C {
     relation A containerA <= self.container(type = A);
     relation B containerB <= self.container(type = A).asType(type = B);
     relation B containerB1 <= self.container(type = B);
+
+    relation E containerAasBrelEonB <= self.container(type = A).asType(type = B).relEonB;
+    relation E containerBrelEonB <= self.container(type = B).relEonB; // JNG-5103 cause problem - no value presented
+
+    relation D containerAasBrelDonB <= self.container(type = A).asType(type = B).relDonB;
+    relation D containerBrelDonB <= self.container(type = B).relDonB; // JNG-5103 cause problem - same C as root returned
+
+    relation C containerAasBrelConB <= self.container(type = A).asType(type = B).relConB;
+    relation C containerBrelConB <= self.container(type = B).relConB;
 }
 
 entity D {
     relation A containerA <= self.container(type = B).asType(type = A);
     relation A containerA1 <= self.container(type = A);
     relation B containerB <= self.container(type = B);
+
+    relation E containerAasBrelEonB <= self.container(type = A).asType(type = B).relEonB;
+    relation E containerBrelEonB <= self.container(type = B).relEonB;
+
+    relation D containerAasBrelDonB <= self.container(type = A).asType(type = B).relDonB;
+    relation D containerBrelDonB <= self.container(type = B).relDonB;
+
+}
+
+entity E {
+    field String name;
 }
 
 // TRANSFER representation
 
 transfer TA maps A as a {
     relation TC conA <= a.conA eager:true required create:true;
+
+    event create `create`;
 }
 
 transfer TB maps B as b {
     relation TD donB <= b.donB required eager:true create:true;
     relation TC conA <= b.conA required eager:true create:true;
+
+    relation TE relEonB <= b.relEonB create:true;
+    relation TC relConB <= b.relConB create:true;
+    relation TD relDonB <= b.relDonB create:true;
+
+    event create `create`;
 }
 
 transfer TC maps C as c {
     relation TA containerA <= c.containerA;
     relation TB containerB <= c.containerB;
     relation TB containerB1 <= c.containerB1;
+
+    relation TE containerAasBrelEonB <= c.containerAasBrelEonB;
+    relation TE containerBrelEonB <= c.containerBrelEonB;
+    relation TC containerAasBrelConB <= c.containerAasBrelConB;
+    relation TC containerBrelConB <= c.containerBrelConB;
 
 	event create `create`;
 }
@@ -46,7 +83,18 @@ transfer TD maps D as d {
     relation TA containerA1 <= d.containerA1;
     relation TB containerB <= d.containerB;
 
+    relation TE containerAasBrelEonB <= d.containerAasBrelEonB;
+    relation TE containerBrelEonB <= d.containerBrelEonB;
+    relation TD containerAasBrelDonB <= d.containerAasBrelDonB;
+    relation TD containerBrelDonB <= d.containerBrelDonB;
+
 	event create `create`;
+}
+
+transfer TE maps E as e {
+    field String name <=> e.name;
+
+    event create `create`;
 }
 
 

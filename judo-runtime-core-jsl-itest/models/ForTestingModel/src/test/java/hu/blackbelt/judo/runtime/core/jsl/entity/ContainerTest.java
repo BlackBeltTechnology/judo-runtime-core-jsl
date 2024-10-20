@@ -21,20 +21,17 @@ package hu.blackbelt.judo.runtime.core.jsl.entity;
  */
 
 import com.google.inject.Inject;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.a.A;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.b.B;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.b.BDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.b.BForCreate;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.c.C;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.c.CDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.c.CForCreate;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.d.D;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.d.DDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.d.DForCreate;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.e.E;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.e.EDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.containertest.containertest.e.EForCreate;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.ContainerTestDaoModules;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.fortestingmodel.fortestingmodel.a.A;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.fortestingmodel.fortestingmodel.b.B;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.fortestingmodel.fortestingmodel.b.BDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.fortestingmodel.fortestingmodel.b.BForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.fortestingmodel.fortestingmodel.c.C;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.fortestingmodel.fortestingmodel.c.CDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.fortestingmodel.fortestingmodel.c.CForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.fortestingmodel.fortestingmodel.e.E;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.fortestingmodel.fortestingmodel.e.EDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.fortestingmodel.fortestingmodel.e.EForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.ForTestingModelDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import lombok.extern.slf4j.Slf4j;
@@ -47,11 +44,10 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ContainerTest {
 
     @RegisterExtension
-    static JudoRuntimeExtension runtimeExtension = new JudoRuntimeExtension("ContainerTest", new ContainerTestDaoModules());
+    static JudoRuntimeExtension runtimeExtension = new JudoRuntimeExtension("ForTestingModel", new ForTestingModelDaoModules());
 
     @Inject BDao bDao;
     @Inject CDao cDao;
-    @Inject DDao dDao;
     @Inject EDao eDao;
     
     @Test
@@ -76,7 +72,6 @@ public class ContainerTest {
     public void testContainerFunction() {
         B b = bDao.create(BForCreate.builder()
                            .withConA(CForCreate.builder().build())
-                           .withDonB(DForCreate.builder().build())
                            .build());
         C c = b.getConA();
 
@@ -89,15 +84,7 @@ public class ContainerTest {
 
         B b1 = bDao.create(BForCreate.builder()
                             .withConA(CForCreate.builder().build())
-                            .withDonB(DForCreate.builder().build())
                             .build());
-        D d = b1.getDonB();
-        A dA = dDao.queryContainerA(d).orElseThrow();
-        A dA1 = dDao.queryContainerA(d).orElseThrow();
-        B dB = dDao.queryContainerB(d).orElseThrow();
-        assertEquals(b1.identifier().getIdentifier(), dA.identifier().getIdentifier());
-        assertEquals(b1.identifier().getIdentifier(), dA1.identifier().getIdentifier());
-        assertEquals(b1.identifier().getIdentifier(), dB.identifier().getIdentifier());
     }
 
     @Test
@@ -119,13 +106,12 @@ public class ContainerTest {
             "REQ-SYNT-002",
             "REQ-SYNT-003"
     })
-    public void testInheritedContainerFunction() {
+    public void     testInheritedContainerFunction() {
 
         E e = eDao.create(EForCreate.builder().withName("E").build());
 
         B b = bDao.create(BForCreate.builder()
                 .withConA(CForCreate.builder().build())
-                .withDonB(DForCreate.builder().build())
                 .withRelEonB(e)
                 .build()
         );
@@ -146,20 +132,6 @@ public class ContainerTest {
         assertEquals(c1.identifier(), cDao.queryContainerAasBrelConB(c).get().identifier());
         // TODO JNG-5103 Recursive relation contains the c instance always, not the c.container.relConB if it is present
         //assertEquals(c1.identifier(), cDao.queryContainerBrelConB(c).get().identifier()); // not work
-
-        // the container and the relation are in the same entity
-        D d = b.getDonB();
-
-        assertEquals(e.identifier(), dDao.queryContainerAasBrelEonB(d).get().identifier());
-        assertEquals(e.identifier(), dDao.queryContainerBrelEonB(d).get().identifier());
-
-        // Recursive D relation
-        assertFalse(dDao.queryContainerAasBrelDonB(d).isPresent());
-        assertFalse(dDao.queryContainerBrelDonB(d).isPresent());
-
-        D d1 = bDao.createRelDonB(b, DForCreate.builder().build());
-        assertEquals(d1.identifier(), dDao.queryContainerAasBrelDonB(d).get().identifier());
-        assertEquals(d1.identifier(), dDao.queryContainerBrelDonB(d).get().identifier());
 
     }
 

@@ -42,6 +42,7 @@
         <module>TransferConstructorModel</module>
         <module>RecursiveCompositionModel</module>
         <module>RelationCreateWithAttachmentTestModel</module>
+        <module>ForTestingModel</module>
         <module>OptimisticLockModel</module>
         <module>TransferRangeModel</module>
         <module>FilterCountModel</module>
