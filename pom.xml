@@ -40,8 +40,8 @@
             javax.resource;version="[1.6,2)"
         </osgi-transaction-import>
 
-        <judo-tatami-jsl-version>1.1.4.20241020_155644_7e112e2c_feature_JNG_5778_InheritedFieldFilterCountSqlError</judo-tatami-jsl-version>
-        <judo-runtime-core-version>1.0.6.20241020_141842_a0ea0c2c_feature_JNG_5778_InheritedFieldFilterCountSqlError</judo-runtime-core-version>
+        <judo-tatami-jsl-version>1.1.4.20241021_003750_35ec28b8_feature_JNG_5778_InheritedFieldFilterCountSqlError</judo-tatami-jsl-version>
+        <judo-runtime-core-version>1.0.6.20241021_003054_2aa4b950_feature_JNG_5778_InheritedFieldFilterCountSqlError</judo-runtime-core-version>
         <judo-psm-generator-sdk-core-version>1.0.0.20240926_085934_a795815f_develop</judo-psm-generator-sdk-core-version>
 
         <judo-meta-psm-version>1.3.0.20240924_131124_116febb4_develop</judo-meta-psm-version>
