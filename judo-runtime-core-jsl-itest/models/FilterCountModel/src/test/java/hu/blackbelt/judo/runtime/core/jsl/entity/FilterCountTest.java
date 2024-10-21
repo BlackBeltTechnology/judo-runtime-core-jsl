@@ -39,6 +39,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 
 @Slf4j
@@ -67,7 +69,9 @@ public class FilterCountTest {
         A a = aDao.create(AForCreate.builder()
                 .withName("A")
                 .withAncestorName("PA")
-                .withNumb(2).withC(c)
+                .withNumb(2)
+                .withC(c)
+                .withCs(List.of(c))
                 .withAncestorB(b).build());
 
         assertEquals("A", a.getName().orElseThrow());
@@ -91,6 +95,9 @@ public class FilterCountTest {
         log.debug("\n" + Strings.repeat("=", 40) + "\nFilter by: this.cnum == 2");
         assertEquals(1, aDao.query().filterBy("this.cnum == 2").maskedBy(AMask.aMask()).selectList().size());
         assertEquals(1, aDao.query().filterBy("this.cnum == 2").count());
+        log.debug("\n" + Strings.repeat("=", 40) + "\nFilter by: this.sum == 2");
+        assertEquals(1, aDao.query().filterBy("this.sum == 2").maskedBy(AMask.aMask()).selectList().size());
+        assertEquals(1, aDao.query().filterBy("this.sum == 2").count());
 
     }
 
