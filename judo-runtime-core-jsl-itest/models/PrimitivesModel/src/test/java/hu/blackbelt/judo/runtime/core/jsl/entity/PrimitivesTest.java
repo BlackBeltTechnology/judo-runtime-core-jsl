@@ -690,7 +690,7 @@ public class PrimitivesTest {
                 .withStringAttr("%s %.2f %d", "name", 2.34, 1)
                 .build());
 
-        assertEquals("name 2.34 1", entity1.getStringAttr().orElseThrow());
+        assertEquals(String.format("%s %.2f %d", "name", 2.34, 1), entity1.getStringAttr().orElseThrow());
 
         entity1.setStringAttr("%s", "name");
 
@@ -718,7 +718,7 @@ public class PrimitivesTest {
 
         entity1 = myEntityWithOptionalFieldsDao.create(myEntityWithOptionalFields.adaptTo(MyEntityWithOptionalFieldsForCreate.class));
 
-        assertEquals("name 2.34 1", entity1.getStringAttr().orElseThrow());
+        assertEquals(String.format("%s %.2f %d", "name", 2.34, 1), entity1.getStringAttr().orElseThrow());
     }
 
 
@@ -757,11 +757,11 @@ public class PrimitivesTest {
                 .withStringAttr("%s %.2f %d", "name", 2.34, 1)
                 .build());
 
-        assertEquals("name 2.34 1", transfer.getStringAttr().orElseThrow());
+        assertEquals(String.format("%s %.2f %d", "name", 2.34, 1), transfer.getStringAttr().orElseThrow());
 
         entity = myEntityWithOptionalFieldsDao.getById(transfer.identifier().adaptTo(MyEntityWithOptionalFieldsIdentifier.class)).orElseThrow();
 
-        assertEquals("name 2.34 1", entity.getStringAttr().orElseThrow());
+        assertEquals(String.format("%s %.2f %d", "name", 2.34, 1), entity.getStringAttr().orElseThrow());
 
         transfer.setStringAttr("%s", "name");
 
@@ -797,11 +797,11 @@ public class PrimitivesTest {
 
         transfer = myTransferWithOptionalFieldsDao.create(transfer.adaptTo(MyTransferWithOptionalFieldsForCreate.class));
 
-        assertEquals("name 2.34 1", transfer.getStringAttr().orElseThrow());
+        assertEquals(String.format("%s %.2f %d", "name", 2.34, 1), transfer.getStringAttr().orElseThrow());
 
         entity = myEntityWithOptionalFieldsDao.getById(transfer.identifier().adaptTo(MyEntityWithOptionalFieldsIdentifier.class)).orElseThrow();
 
-        assertEquals("name 2.34 1", entity.getStringAttr().orElseThrow());
+        assertEquals(String.format("%s %.2f %d", "name", 2.34, 1), entity.getStringAttr().orElseThrow());
     }
 
     @Inject
