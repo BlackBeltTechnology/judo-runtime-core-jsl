@@ -24,6 +24,9 @@ import com.google.inject.Inject;
 import hu.blackbelt.judo.dao.api.DAO;
 import hu.blackbelt.judo.dispatcher.api.FileType;
 import hu.blackbelt.judo.meta.asm.runtime.AsmUtils;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.item.ItemBuilder;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.item.ItemDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.item.ItemForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.myentitywithoptionalfields.*;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.primitives.primitives.myenum.MyEnum;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.PrimitivesDaoModules;
@@ -31,6 +34,7 @@ import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeFixture;
 import hu.blackbelt.judo.sdk.query.StringFilter;
+import liquibase.pro.packaged.L;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -42,6 +46,8 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
@@ -57,9 +63,13 @@ public class QueryCustomizerFunctionsTest {
     @Inject
     MyEntityWithOptionalFieldsDao myEntityWithOptionalFieldsDao;
 
+    @Inject
+    ItemDao itemDao;
+
     MyEntityWithOptionalFields entity1;
 
     MyEntityWithOptionalFields entity2;
+
 
     @BeforeEach
     protected void init() {
@@ -75,6 +85,7 @@ public class QueryCustomizerFunctionsTest {
                 .withTimeAttr(LocalTime.parse("23:59:59"))
                 .withBinaryAttr(FileType.builder().fileName("test.txt").build())
                 .withEnumAttr(MyEnum.Bombastic)
+                .withItems(createItemListUpTo(2, 50))
                 .build());
 
         entity2 = myEntityWithOptionalFieldsDao.create(MyEntityWithOptionalFieldsForCreate.builder()
@@ -88,6 +99,7 @@ public class QueryCustomizerFunctionsTest {
                 .withTimeAttr(LocalTime.parse("12:34:56"))
                 .withBinaryAttr(FileType.builder().fileName("test.txt").build())
                 .withEnumAttr(MyEnum.Atomic)
+                .withItems(createItemListUpTo(1, 45))
                 .build());
     }
 
@@ -207,6 +219,59 @@ public class QueryCustomizerFunctionsTest {
         assertOrderByDescending(MyEntityWithOptionalFieldsAttribute.DERIVED_TIMESTAMP_ATTR, entity1);
         assertOrderByDescending(MyEntityWithOptionalFieldsAttribute.DERIVED_TIME_ATTR, entity1);
         assertOrderByDescending(MyEntityWithOptionalFieldsAttribute.DERIVED_ENUM_ATTR, entity1);
+    }
+
+
+    @Test
+    @Requirement(reqs = {
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-008",
+            "REQ-ENT-012",
+    })
+    public void testAggregatedDerivedOrderBy() {
+        assertOrderBy(MyEntityWithOptionalFieldsAttribute.SUM_OF_ITEMS_NUMBER, entity2);
+        assertOrderBy(MyEntityWithOptionalFieldsAttribute.AVG_OF_ITEMS_NUMBER, entity2);
+        assertOrderBy(MyEntityWithOptionalFieldsAttribute.MIN_OF_ITEMS_NUMBER, entity2);
+        assertOrderBy(MyEntityWithOptionalFieldsAttribute.MAX_OF_ITEMS_NUMBER, entity2);
+        assertOrderBy(MyEntityWithOptionalFieldsAttribute.SIZE_OF_ITEMS, entity2);
+    }
+
+    @Test
+    @Requirement(reqs = {
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-008",
+            "REQ-ENT-012",
+    })
+    public void testAggregatedDerivedOrderByDescending() {
+        assertOrderByDescending(MyEntityWithOptionalFieldsAttribute.SUM_OF_ITEMS_NUMBER, entity1);
+        assertOrderByDescending(MyEntityWithOptionalFieldsAttribute.AVG_OF_ITEMS_NUMBER, entity1);
+        assertOrderByDescending(MyEntityWithOptionalFieldsAttribute.MIN_OF_ITEMS_NUMBER, entity1);
+        assertOrderByDescending(MyEntityWithOptionalFieldsAttribute.MAX_OF_ITEMS_NUMBER, entity1);
+        assertOrderByDescending(MyEntityWithOptionalFieldsAttribute.SIZE_OF_ITEMS, entity1);
     }
 
     @Test
@@ -341,6 +406,70 @@ public class QueryCustomizerFunctionsTest {
                 .orderByDescending(MyEntityWithOptionalFieldsAttribute.DERIVED_TIMESTAMP_ATTR)
                 .orderByDescending(MyEntityWithOptionalFieldsAttribute.DERIVED_TIME_ATTR)
                 .orderByDescending(MyEntityWithOptionalFieldsAttribute.DERIVED_ENUM_ATTR)
+                .selectOne()
+                .get();
+
+        assertEquals(entity1.identifier().getIdentifier(), orderBy.identifier().getIdentifier());
+    }
+
+    @Test
+    @Requirement(reqs = {
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-008",
+            "REQ-ENT-012",
+    })
+    public void testMultiAggregatedDerivedOrderBy() {
+        MyEntityWithOptionalFields orderBy = myEntityWithOptionalFieldsDao
+                .query()
+                .orderBy(MyEntityWithOptionalFieldsAttribute.SUM_OF_ITEMS_NUMBER)
+                .orderBy(MyEntityWithOptionalFieldsAttribute.AVG_OF_ITEMS_NUMBER)
+                .orderBy(MyEntityWithOptionalFieldsAttribute.MIN_OF_ITEMS_NUMBER)
+                .orderBy(MyEntityWithOptionalFieldsAttribute.MAX_OF_ITEMS_NUMBER)
+                .orderBy(MyEntityWithOptionalFieldsAttribute.SUM_OF_ITEMS_NUMBER)
+                .selectOne()
+                .get();
+
+        assertEquals(entity2.identifier().getIdentifier(), orderBy.identifier().getIdentifier());
+    }
+
+    @Test
+    @Requirement(reqs = {
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-TYPE-001",
+            "REQ-TYPE-002",
+            "REQ-TYPE-004",
+            "REQ-TYPE-005",
+            "REQ-TYPE-006",
+            "REQ-TYPE-007",
+            "REQ-TYPE-008",
+            "REQ-TYPE-009",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-008",
+            "REQ-ENT-012",
+    })
+    public void testMultiAggregatedDerivedOrderByDescending() {
+        MyEntityWithOptionalFields orderBy = myEntityWithOptionalFieldsDao
+                .query()
+                .orderByDescending(MyEntityWithOptionalFieldsAttribute.SUM_OF_ITEMS_NUMBER)
+                .orderByDescending(MyEntityWithOptionalFieldsAttribute.AVG_OF_ITEMS_NUMBER)
+                .orderByDescending(MyEntityWithOptionalFieldsAttribute.MIN_OF_ITEMS_NUMBER)
+                .orderByDescending(MyEntityWithOptionalFieldsAttribute.MAX_OF_ITEMS_NUMBER)
+                .orderByDescending(MyEntityWithOptionalFieldsAttribute.SUM_OF_ITEMS_NUMBER)
                 .selectOne()
                 .get();
 
@@ -642,7 +771,7 @@ public class QueryCustomizerFunctionsTest {
 
 
     }
-    
+
     private void assertOrderBy(MyEntityWithOptionalFieldsAttribute attribute, MyEntityWithOptionalFields firstEntity) {
         MyEntityWithOptionalFields orderBy = myEntityWithOptionalFieldsDao
                 .query()
@@ -661,5 +790,11 @@ public class QueryCustomizerFunctionsTest {
                 .get();
 
         assertEquals(firstEntity.identifier().getIdentifier(), orderByDescending.identifier().getIdentifier());
+    }
+
+    public static List<ItemForCreate> createItemListUpTo(int startNumber, int endNumber) {
+        return IntStream.rangeClosed(startNumber, endNumber)
+                .mapToObj(number -> ItemForCreate.builder().withNumber(number).build())
+                .collect(Collectors.toList());
     }
 }
