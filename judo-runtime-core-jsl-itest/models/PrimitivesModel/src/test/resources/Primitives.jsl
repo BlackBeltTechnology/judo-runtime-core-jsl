@@ -13,6 +13,10 @@ enum MyEnum {
     Crazy = 2;
 }
 
+entity Item {
+    field Integer number;
+}
+
 entity AbstractEntityOptionalFields abstract {
     field Boolean boolAttr;
     field Binary binaryAttr;
@@ -35,6 +39,13 @@ entity AbstractEntityOptionalFields abstract {
     field Time derivedTimeAttr <= self.timeAttr;
     field Timestamp derivedTimestampAttr <= self.timestampAttr;
     field MyEnum derivedEnumAttr <= self.enumAttr;
+
+    field Item[] items;
+    field Integer sumOfItemsNumber <= self.items.sum(i | i.number);
+    field Scaled avgOfItemsNumber <= self.items.avg(i | i.number);
+    field Integer minOfItemsNumber <= self.items.min(i | i.number);
+    field Integer maxOfItemsNumber <= self.items.max(i | i.number);
+    field Integer sizeOfItems <= self.items.size();
 }
 
 entity MyEntityWithOptionalFields extends AbstractEntityOptionalFields {
