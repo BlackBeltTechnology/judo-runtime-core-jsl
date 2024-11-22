@@ -37,8 +37,11 @@ import hu.blackbelt.judo.meta.rdbms.runtime.RdbmsModel;
 import hu.blackbelt.judo.runtime.core.DataTypeManager;
 import hu.blackbelt.judo.runtime.core.MetricsCollector;
 import hu.blackbelt.judo.runtime.core.accessmanager.api.AccessManager;
+import hu.blackbelt.judo.runtime.core.accessmanager.api.AuthenticationInterceptor;
+import hu.blackbelt.judo.runtime.core.accessmanager.api.AuthenticationInterceptorProvider;
 import hu.blackbelt.judo.runtime.core.guice.JudoModelLoader;
 import hu.blackbelt.judo.runtime.core.guice.accessmanager.DefaultAccessManagerProvider;
+import hu.blackbelt.judo.runtime.core.guice.accessmanager.DefaultAuthenticationInterceptorProviderProvider;
 import hu.blackbelt.judo.runtime.core.guice.core.DataTypeManagerProvider;
 import hu.blackbelt.judo.runtime.core.guice.core.UUIDIdentifierProviderProvider;
 import hu.blackbelt.judo.runtime.core.dispatcher.Export;
@@ -165,6 +168,7 @@ public class JudoDefaultTestModule extends AbstractModule {
 
         // Access manager
         bind(AccessManager.class).toProvider(DefaultAccessManagerProvider.class);
+        bind(AuthenticationInterceptorProvider.class).toProvider(DefaultAuthenticationInterceptorProviderProvider.class);
 
         // Context
         bind(Context.class).toProvider(ThreadContextProvider.class).in(Singleton.class);
@@ -203,6 +207,7 @@ public class JudoDefaultTestModule extends AbstractModule {
         bind(ValidatorProvider.class).toProvider(ValidatorProviderProvider.class).asEagerSingleton();
         bind(PayloadValidator.class).toProvider(DefaultPayloadValidatorProvider.class).asEagerSingleton();
         bind(String.class).annotatedWith(Names.named(PAYLOAD_VALIDATOR_REQUIRED_STRING_VALIDATOR_OPTION)).toInstance("ACCEPT_NON_EMPTY");
+
         bind(Export.class).to(UnsupportedExportImpl.class);
 
     }
