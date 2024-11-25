@@ -25,6 +25,7 @@
         <logback-test-config>${maven.multiModuleProjectDirectory}/logback-test.xml</logback-test-config>
         <logback-version>1.5.12</logback-version>
         <lombok-version>1.18.34</lombok-version>
+        <spring-logback-version>1.2.11</spring-logback-version>
 
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
