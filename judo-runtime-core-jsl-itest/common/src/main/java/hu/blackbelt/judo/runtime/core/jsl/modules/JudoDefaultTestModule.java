@@ -91,6 +91,8 @@ public class JudoDefaultTestModule extends AbstractModule {
 
     private QueryFactory queryFactory;
 
+    private Boolean markSelectedRangeItems;
+
     public static class JudoDefaultTestModuleBuilder {
         private Object injectModulesTo = false;
         private JudoModelLoader judoModelLoader = null;
@@ -103,12 +105,13 @@ public class JudoDefaultTestModule extends AbstractModule {
     }
 
     @Builder
-    public JudoDefaultTestModule(Object injectModulesTo, JudoModelLoader judoModelLoader, Boolean bindModelHolder, ExtendableCoercer coercer, QueryFactory queryFactory) {
+    public JudoDefaultTestModule(Object injectModulesTo, JudoModelLoader judoModelLoader, Boolean bindModelHolder, ExtendableCoercer coercer, QueryFactory queryFactory, Boolean markSelectedRangeItems) {
         this.injectModulesTo = injectModulesTo;
         this.judoModelLoader = judoModelLoader;
         this.bindModelHolder = bindModelHolder;
         this.coercer = coercer;
         this.queryFactory = queryFactory;
+        this.markSelectedRangeItems = markSelectedRangeItems;
     }
 
     public String generateNewSecret() {
@@ -187,7 +190,7 @@ public class JudoDefaultTestModule extends AbstractModule {
         bind(DAO.class).toProvider(RdbmsDAOProvider.class).in(Singleton.class);
         bind(Boolean.class).annotatedWith(Names.named(RDBMS_DAO_OPTIMISTIC_LOCK_ENABLED)).toInstance(true);
         bind(Integer.class).annotatedWith(Names.named(RDBMS_DAO_MARK_SELECTED_RANGE_ITEMS)).toInstance(1000);
-        bind(Boolean.class).annotatedWith(Names.named(RDBMS_DAO_MARK_SELECTED_RANGE_ITEMS)).toInstance(false);
+        bind(Boolean.class).annotatedWith(Names.named(RDBMS_DAO_MARK_SELECTED_RANGE_ITEMS)).toInstance(markSelectedRangeItems);
 
         bind(ActorResolver.class).toProvider(DefaultActorResolverProvider.class).in(Singleton.class);
         bind(Boolean.class).annotatedWith(Names.named(ACTOR_RESOLVER_CHECK_MAPPED_ACTORS)).toInstance(Boolean.FALSE);

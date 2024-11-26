@@ -2,6 +2,8 @@ model TransferRange;
 
 import judo::types;
 
+// ### Fruit Model
+
 entity Fruit abstract {
     field String variety required;
 }
@@ -33,7 +35,7 @@ transfer TransferBasket (Basket basket) {
     relation TransferFruit galaFruit <= basket.galaFruit choices: Apple.all().filter(a | a.variety == "GALA").asCollection(type = Fruit) eager:true;
 }
 
-// cars
+// ### Car Model
 
 entity Car {
     field String licensePlate required;
@@ -58,7 +60,7 @@ transfer TransferCar (Car car) {
     relation TransferWheel spareWheel <= car.spareWheel choices:car.wheels;
 }
 
-// TwoWay Relation
+// ### TwoWay Relation Model
 
 entity Planet {
     field String name required;
@@ -86,4 +88,50 @@ transfer TransferCreature(Creature creature) {
     field String name <=> creature.name  required;
     field String planetName <= creature.planetName;
     relation TransferPlanet planet  <= creature.planet choices:Planet.all();
+}
+
+entity Item {
+    field String name;
+}
+
+transfer ItemTransfer(Item i) {
+    field String name <=> i.name;
+
+    event create onCreate;
+}
+
+// ### Single Relation Model
+
+entity SingleRelationEntity {
+    field Item singleCompItem;
+    relation Item singleAssItem;
+
+    // self collection for range
+    relation Item[] items;
+}
+
+
+transfer SingleAssRelationTransferWithDefaultRange(SingleRelationEntity e) {
+    relation ItemTransfer singleCompAssItem <= e.singleCompItem create:true;
+    relation ItemTransfer singleAssAssItem <= e.singleAssItem create:true;
+}
+
+transfer SingleAggRelationTransferWithDefaultRange(SingleRelationEntity e) {
+    relation ItemTransfer singleCompAggItem <= e.singleCompItem eager:true create:true;
+    relation ItemTransfer singleAssAggItem <= e.singleAssItem eager:true create:true;
+}
+
+transfer SingleAssRelationTransferWithDerivedRange(SingleRelationEntity e) {
+    //relation ItemTransfer singleCompAssItem <= e.singleCompItem choices: Item.all().filter(i | i.name.like(pattern = "A%")) create:true; // range is not accessible for composition element
+    relation ItemTransfer singleAssAssItem <= e.singleAssItem choices: Item.all().filter(i | i.name.like(pattern = "A%")) create:true;
+}
+
+transfer SingleAggRelationTransferWithDerivedRange(SingleRelationEntity e) {
+    //relation ItemTransfer singleCompAggItem <= e.singleCompItem choices: Item.all().filter(i | i.name.like(pattern = "A%")) eager:true create:true; // range is not accessible for composition element
+    relation ItemTransfer singleAssAggItem <= e.singleAssItem choices: Item.all().filter(i | i.name.like(pattern = "A%")) eager:true create:true;
+}
+
+transfer SingleRelationTransferWithTransientRange(SingleRelationEntity e) {
+    relation ItemTransfer transientItemWithDerivedRange choices: Item.all().filter(i | i.name.like(pattern = "A%"));
+    relation ItemTransfer transientItemWithAnyRange choices: Item.all();
 }

@@ -27,6 +27,7 @@ import org.testcontainers.containers.JdbcDatabaseContainer;
 import uk.org.lidalia.sysoutslf4j.context.SysOutOverSLF4J;
 
 import java.io.File;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture.DIALECT_HSQLDB;
@@ -36,10 +37,25 @@ import static java.util.Objects.requireNonNullElse;
 @Slf4j
 public class JudoRuntimeFixture {
 
+
+    public static final String MARK_SELECTED_RANGE_ITEMS = "markSelectedRangeItems";
+
     static {
         SLF4JBridgeHandler.install();
         SysOutOverSLF4J.sendSystemOutAndErrToSLF4J();
     }
+
+    public JudoRuntimeFixture(Map<String, Object> context) {
+        if (context == null) {
+            return;
+        }
+
+        if (context.containsKey(MARK_SELECTED_RANGE_ITEMS)) {
+            this.markSelectedRangeItems = (Boolean) context.get(MARK_SELECTED_RANGE_ITEMS);
+        }
+    }
+
+    public JudoRuntimeFixture() {}
 
     public static final String MODEL_SOURCES = "target/generated-test-sources/model";
 
@@ -66,6 +82,8 @@ public class JudoRuntimeFixture {
     ExtendableCoercer coercer;
 
     QueryFactory queryFactory;
+
+    Boolean markSelectedRangeItems = false;
 
     private void initQueryFactory() {
 
@@ -141,10 +159,26 @@ public class JudoRuntimeFixture {
 
     public void init(Module module, Object injectModulesTo) {
 
-        if (postgresqlDialect != null ) {
-            injector = Guice.createInjector(judoPostgresqlTestModules, module, JudoDefaultTestModule.builder().injectModulesTo(injectModulesTo).judoModelLoader(modelHolder).coercer(coercer).queryFactory(queryFactory).build());
-        } else if (hsqldbDialect != null ) {
-            injector = Guice.createInjector(judoHsqldbTestModules, module, JudoDefaultTestModule.builder().injectModulesTo(injectModulesTo).judoModelLoader(modelHolder).coercer(coercer).queryFactory(queryFactory).build());
+        if (postgresqlDialect != null) {
+            injector = Guice.createInjector(judoPostgresqlTestModules, module, JudoDefaultTestModule
+                    .builder()
+                    .injectModulesTo(injectModulesTo)
+                    .judoModelLoader(modelHolder)
+                    .coercer(coercer)
+                    .queryFactory(queryFactory)
+                    .markSelectedRangeItems(markSelectedRangeItems)
+                    .build()
+            );
+        } else if (hsqldbDialect != null) {
+            injector = Guice.createInjector(judoHsqldbTestModules, module, JudoDefaultTestModule
+                    .builder()
+                    .injectModulesTo(injectModulesTo)
+                    .judoModelLoader(modelHolder)
+                    .coercer(coercer)
+                    .queryFactory(queryFactory)
+                    .markSelectedRangeItems(markSelectedRangeItems)
+                    .build()
+            );
         }
     }
 
