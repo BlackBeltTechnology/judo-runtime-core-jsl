@@ -131,7 +131,19 @@ transfer SingleAggRelationTransferWithDerivedRange(SingleRelationEntity e) {
     relation ItemTransfer singleAssAggItem <= e.singleAssItem choices: Item.all().filter(i | i.name.like(pattern = "A%")) eager:true create:true;
 }
 
+transfer SingleAssRelationTransferWithSelfRange(SingleRelationEntity e) {
+    relation ItemTransfer singleAssAssItem <= e.singleAssItem choices: Item.all().filter(i | i.name.like(pattern = "A%")) create:true;
+    relation ItemTransfer[] items <= e.items create:true;
+}
+
+transfer SingleAggRelationTransferWithSelfRange(SingleRelationEntity e) {
+    relation ItemTransfer singleAssAggItem <= e.singleAssItem choices: Item.all().filter(i | i.name.like(pattern = "A%")) eager:true create:true;
+    relation ItemTransfer[] items <= e.items create:true;
+}
+
 transfer SingleRelationTransferWithTransientRange(SingleRelationEntity e) {
     relation ItemTransfer transientItemWithDerivedRange choices: Item.all().filter(i | i.name.like(pattern = "A%"));
     relation ItemTransfer transientItemWithAnyRange choices: Item.all();
+    relation ItemTransfer transientItemWithSelfRange choices: e.items;
+    relation ItemTransfer[] items <= e.items create:true;
 }
