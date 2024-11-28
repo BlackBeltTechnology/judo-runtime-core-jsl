@@ -96,6 +96,7 @@ import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeFixture;
+import liquibase.pro.packaged.J;
 import lombok.extern.slf4j.Slf4j;
 import org.hamcrest.Matchers;
 import org.jetbrains.annotations.NotNull;
@@ -634,8 +635,8 @@ public class TransferRangeTest {
 
         transferAssDao.addCollectionAssAssItem(transferAss, aItems
                 .stream()
-                .filter(i -> i.getName().orElseThrow().equals("A1"))
-                .findAny().orElseThrow()
+                .filter(i -> i.getName().orElseThrow().matches("A1|A2|A3"))
+                .toList()
         );
 
         // check selected
@@ -643,10 +644,12 @@ public class TransferRangeTest {
 
         List<ItemTransfer> selected = getSelectedItems(rangeOfCollectionAssAssItem);
 
-        assertEquals(1, selected.size());
-        assertEquals("A1", selected.get(0).getName().orElseThrow());
+        assertEquals(3, selected.size());
+        assertThat(new HashSet<>(List.of("A1", "A2", "A3")),
+                equalTo(selected.stream().map(s -> s.getName().orElseThrow()).collect(Collectors.toSet()))
+        );
 
-        transferAssDao.removeCollectionAssAssItem(transferAss, selected.get(0));
+        transferAssDao.removeCollectionAssAssItem(transferAss, selected);
 
         rangeOfCollectionAssAssItem = transferAssDao.getRangeOfCollectionAssAssItem(transferAss);
 
@@ -692,8 +695,8 @@ public class TransferRangeTest {
 
         transferAggDao.addCollectionAssAggItem(transferAgg, aItems
                 .stream()
-                .filter(i -> i.getName().orElseThrow().equals("A1"))
-                .findAny().orElseThrow()
+                .filter(i -> i.getName().orElseThrow().matches("A1|A2|A3"))
+                .toList()
         );
 
         // check selected
@@ -701,10 +704,12 @@ public class TransferRangeTest {
 
         List<ItemTransfer> selected = getSelectedItems(rangeOfCollectionAssAggItem);
 
-        assertEquals(1, selected.size());
-        assertEquals("A1", selected.get(0).getName().orElseThrow());
+        assertEquals(3, selected.size());
+        assertThat(new HashSet<>(List.of("A1", "A2", "A3")),
+                equalTo(selected.stream().map(s -> s.getName().orElseThrow()).collect(Collectors.toSet()))
+        );
 
-        transferAggDao.removeCollectionAssAggItem(transferAgg, selected.get(0));
+        transferAggDao.removeCollectionAssAggItem(transferAgg, selected);
 
         rangeOfCollectionAssAggItem = transferAggDao.getRangeOfCollectionAssAggItem(transferAgg);
 
@@ -759,8 +764,8 @@ public class TransferRangeTest {
 
         transferAssDao.addCollectionAssAssItem(transferAss, aItems
                 .stream()
-                .filter(i -> i.getName().orElseThrow().equals("A1"))
-                .findAny().orElseThrow()
+                .filter(i -> i.getName().orElseThrow().matches("A1|A2|A3"))
+                .toList()
         );
 
         // check selected
@@ -768,10 +773,12 @@ public class TransferRangeTest {
 
         List<ItemTransfer> selected = getSelectedItems(rangeOfCollectionAssAssItem);
 
-        assertEquals(1, selected.size());
-        assertEquals("A1", selected.get(0).getName().orElseThrow());
+        assertEquals(3, selected.size());
+        assertThat(new HashSet<>(List.of("A1", "A2", "A3")),
+                equalTo(selected.stream().map(s -> s.getName().orElseThrow()).collect(Collectors.toSet()))
+        );
 
-        transferAssDao.removeCollectionAssAssItem(transferAss, selected.get(0));
+        transferAssDao.removeCollectionAssAssItem(transferAss, selected);
 
         rangeOfCollectionAssAssItem = transferAssDao.getRangeOfCollectionAssAssItem(transferAss);
 
@@ -827,8 +834,8 @@ public class TransferRangeTest {
 
         transferAssDao.addCollectionAssAggItem(transferAss, aItems
                 .stream()
-                .filter(i -> i.getName().orElseThrow().equals("A1"))
-                .findAny().orElseThrow()
+                .filter(i -> i.getName().orElseThrow().matches("A1|A2|A3"))
+                .toList()
         );
 
         // check selected
@@ -836,10 +843,11 @@ public class TransferRangeTest {
 
         List<ItemTransfer> selected = getSelectedItems(rangeOfCollectionAssAssItem);
 
-        assertEquals(1, selected.size());
-        assertEquals("A1", selected.get(0).getName().orElseThrow());
-
-        transferAssDao.removeCollectionAssAggItem(transferAss, selected.get(0));
+        assertEquals(3, selected.size());
+        assertThat(new HashSet<>(List.of("A1", "A2", "A3")),
+                equalTo(selected.stream().map(s -> s.getName().orElseThrow()).collect(Collectors.toSet()))
+        );
+        transferAssDao.removeCollectionAssAggItem(transferAss, selected);
 
         rangeOfCollectionAssAssItem = transferAssDao.getRangeOfCollectionAssAggItem(transferAss);
 
@@ -857,11 +865,13 @@ public class TransferRangeTest {
         List<String> nameOfAItems = aItems.stream().map(i -> i.getName().orElseThrow()).toList();
         List<String> nameOfBItems = bItems.stream().map(i -> i.getName().orElseThrow()).toList();
 
+        List<ItemTransfer> aItemsA1toA3 = aItems
+                .stream()
+                .filter(i -> i.getName().orElseThrow().matches("A1|A2|A3"))
+                .toList();
         CollectionRelationTransferWithTransientRange transferWithTransientRelation = transferTransientDao.create(
                 CollectionRelationTransferWithTransientRangeForCreate.builder().withItems(
-                        aItems.stream()
-                                .filter(i -> i.getName().orElseThrow().matches("A1|A2|A3"))
-                                .toList()
+                        aItemsA1toA3
                 ).build()
         );
 
@@ -883,10 +893,10 @@ public class TransferRangeTest {
                 .noneMatch(m -> m.containsKey("__selected"))
         );
 
-        transferWithTransientRelation.addToTransientItemWithAnyRange(aItems
-                .stream()
-                .filter(i -> i.getName().orElseThrow().equals("A1"))
-                .findAny().orElseThrow()
+        transferWithTransientRelation.addToTransientItemWithAnyRange(
+                aItemsA1toA3.get(0),
+                aItemsA1toA3.get(1),
+                aItemsA1toA3.get(2)
         );
 
         transferWithTransientRelation = transferTransientDao.update(transferWithTransientRelation);
@@ -917,10 +927,10 @@ public class TransferRangeTest {
                 .noneMatch(m -> m.containsKey("__selected"))
         );
 
-        transferWithTransientRelation.addToTransientItemWithDerivedRange(aItems
-                .stream()
-                .filter(i -> i.getName().orElseThrow().equals("A1"))
-                .findAny().orElseThrow()
+        transferWithTransientRelation.addToTransientItemWithAnyRange(
+                aItemsA1toA3.get(0),
+                aItemsA1toA3.get(1),
+                aItemsA1toA3.get(2)
         );
 
         transferWithTransientRelation = transferTransientDao.update(transferWithTransientRelation);
@@ -954,10 +964,10 @@ public class TransferRangeTest {
                 .noneMatch(m -> m.containsKey("__selected"))
         );
 
-        transferWithTransientRelation.addToTransientItemWithAnyRange(aItems
-                .stream()
-                .filter(i -> i.getName().orElseThrow().equals("A1"))
-                .findAny().orElseThrow()
+        transferWithTransientRelation.addToTransientItemWithAnyRange(
+                aItemsA1toA3.get(0),
+                aItemsA1toA3.get(1),
+                aItemsA1toA3.get(2)
         );
 
         transferWithTransientRelation = transferTransientDao.update(transferWithTransientRelation);
