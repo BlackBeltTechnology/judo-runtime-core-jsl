@@ -25,8 +25,28 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferr
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.apple.AppleDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.apple.AppleForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.basket.BasketDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.collectionaggrelationtransferwithdefaultrange.CollectionAggRelationTransferWithDefaultRange;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.collectionaggrelationtransferwithdefaultrange.CollectionAggRelationTransferWithDefaultRangeDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.collectionaggrelationtransferwithdefaultrange.CollectionAggRelationTransferWithDefaultRangeForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.collectionaggrelationtransferwithderivedrange.CollectionAggRelationTransferWithDerivedRange;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.collectionaggrelationtransferwithderivedrange.CollectionAggRelationTransferWithDerivedRangeDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.collectionaggrelationtransferwithderivedrange.CollectionAggRelationTransferWithDerivedRangeForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.collectionaggrelationtransferwithselfrange.CollectionAggRelationTransferWithSelfRange;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.collectionaggrelationtransferwithselfrange.CollectionAggRelationTransferWithSelfRangeDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.collectionaggrelationtransferwithselfrange.CollectionAggRelationTransferWithSelfRangeForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.collectionassrelationtransferwithdefaultrange.CollectionAssRelationTransferWithDefaultRange;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.collectionassrelationtransferwithdefaultrange.CollectionAssRelationTransferWithDefaultRangeDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.collectionassrelationtransferwithdefaultrange.CollectionAssRelationTransferWithDefaultRangeForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.collectionassrelationtransferwithderivedrange.CollectionAssRelationTransferWithDerivedRange;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.collectionassrelationtransferwithderivedrange.CollectionAssRelationTransferWithDerivedRangeDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.collectionassrelationtransferwithderivedrange.CollectionAssRelationTransferWithDerivedRangeForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.collectionassrelationtransferwithselfrange.CollectionAssRelationTransferWithSelfRange;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.collectionassrelationtransferwithselfrange.CollectionAssRelationTransferWithSelfRangeDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.collectionassrelationtransferwithselfrange.CollectionAssRelationTransferWithSelfRangeForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.collectionrelationtransferwithtransientrange.CollectionRelationTransferWithTransientRange;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.collectionrelationtransferwithtransientrange.CollectionRelationTransferWithTransientRangeDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.collectionrelationtransferwithtransientrange.CollectionRelationTransferWithTransientRangeForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.fruit.FruitDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.item.ItemForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.itemtransfer.ItemTransfer;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.itemtransfer.ItemTransferDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.itemtransfer.ItemTransferForCreate;
@@ -39,12 +59,18 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferr
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.singleaggrelationtransferwithderivedrange.SingleAggRelationTransferWithDerivedRange;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.singleaggrelationtransferwithderivedrange.SingleAggRelationTransferWithDerivedRangeDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.singleaggrelationtransferwithderivedrange.SingleAggRelationTransferWithDerivedRangeForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.singleaggrelationtransferwithselfrange.SingleAggRelationTransferWithSelfRange;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.singleaggrelationtransferwithselfrange.SingleAggRelationTransferWithSelfRangeDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.singleaggrelationtransferwithselfrange.SingleAggRelationTransferWithSelfRangeForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.singleassrelationtransferwithdefaultrange.SingleAssRelationTransferWithDefaultRange;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.singleassrelationtransferwithdefaultrange.SingleAssRelationTransferWithDefaultRangeDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.singleassrelationtransferwithdefaultrange.SingleAssRelationTransferWithDefaultRangeForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.singleassrelationtransferwithderivedrange.SingleAssRelationTransferWithDerivedRange;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.singleassrelationtransferwithderivedrange.SingleAssRelationTransferWithDerivedRangeDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.singleassrelationtransferwithderivedrange.SingleAssRelationTransferWithDerivedRangeForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.singleassrelationtransferwithselfrange.SingleAssRelationTransferWithSelfRange;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.singleassrelationtransferwithselfrange.SingleAssRelationTransferWithSelfRangeDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.singleassrelationtransferwithselfrange.SingleAssRelationTransferWithSelfRangeForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.singlerelationtransferwithtransientrange.SingleRelationTransferWithTransientRange;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.singlerelationtransferwithtransientrange.SingleRelationTransferWithTransientRangeDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transferrange.transferrange.singlerelationtransferwithtransientrange.SingleRelationTransferWithTransientRangeForCreate;
@@ -70,11 +96,10 @@ import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeFixture;
-import liquibase.pro.packaged.S;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.math3.analysis.function.Sin;
 import org.hamcrest.Matchers;
 import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.testcontainers.shaded.com.google.common.collect.ImmutableSet;
@@ -82,7 +107,6 @@ import org.testcontainers.shaded.com.google.common.collect.ImmutableSet;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 import static hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeFixture.MARK_SELECTED_RANGE_ITEMS;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -134,6 +158,12 @@ public class TransferRangeTest {
 
     @Inject
     SingleRelationTransferWithTransientRangeDao singleRelationTransferWithTransientRangeDao;
+
+    @Inject
+    SingleAssRelationTransferWithSelfRangeDao singleAssRelationTransferWithSelfRangeDao;
+
+    @Inject
+    SingleAggRelationTransferWithSelfRangeDao singleAggRelationTransferWithSelfRangeDao;
 
     @Test
     public void testSingleAssAndAggRelationTransferWithDefaultRange() {
@@ -271,7 +301,142 @@ public class TransferRangeTest {
     }
 
     @Test
-    public void testSingleTransientRelationTransferWithDerivedRange() {
+    public void testSingleAssociationAssociationRelationTransferWithSelfRelatedRange() {
+        SingleAssRelationTransferWithSelfRangeDao transferAssDao = singleAssRelationTransferWithSelfRangeDao;
+
+        List<ItemTransfer> aItems = createItemListUpTo("A", 1, 10);
+        List<ItemTransfer> bItems = createItemListUpTo("B", 1, 10);
+
+        List<String> nameOfAItems = aItems.stream().map(i -> i.getName().orElseThrow()).toList();
+        List<String> nameOfBItems = bItems.stream().map(i -> i.getName().orElseThrow()).toList();
+
+        HashSet<String> itemNames = new HashSet<>(nameOfAItems);
+        itemNames.addAll(nameOfBItems);
+
+        SingleAssRelationTransferWithSelfRange transferAss = transferAssDao.create(
+                SingleAssRelationTransferWithSelfRangeForCreate.builder().withItems(
+                        aItems.stream()
+                                .filter(i -> i.getName().orElseThrow().matches("A1|A2|A3"))
+                                .toList()
+                ).build()
+        );
+
+        List<ItemTransfer> rangeOfSingleAssAssItem = transferAssDao.getRangeOfSingleAssAssItem(transferAss);
+
+        List<String> notRelatedItemElementNames = itemNames.stream().filter(n -> !n.matches("A1|A2|A3")).toList();
+        assertTrue(rangeOfSingleAssAssItem.stream()
+                .map(ItemTransfer::getName)
+                .map(Optional::orElseThrow)
+                .noneMatch(notRelatedItemElementNames::contains)
+        );
+
+        assertThat(
+                rangeOfSingleAssAssItem.stream()
+                        .map(itemTransfer -> itemTransfer.getName().orElseThrow())
+                        .collect(Collectors.toSet()),
+                equalTo(nameOfAItems.stream()
+                        .filter(n -> n.matches("A1|A2|A3"))
+                        .collect(Collectors.toSet()))
+        );
+
+        // check none of the range element is selected
+        assertTrue(rangeOfSingleAssAssItem.stream()
+                .map(ItemTransfer::toMap)
+                .noneMatch(m -> m.containsKey("__selected"))
+        );
+
+        transferAssDao.setSingleAssAssItem(transferAss, aItems
+                .stream()
+                .filter(i -> i.getName().orElseThrow().equals("A1"))
+                .findAny().orElseThrow()
+        );
+
+        // check selected
+        rangeOfSingleAssAssItem = transferAssDao.getRangeOfSingleAssAssItem(transferAss);
+
+        List<ItemTransfer> selected = getSelectedItems(rangeOfSingleAssAssItem);
+
+        assertEquals(1, selected.size());
+        assertEquals("A1", selected.get(0).getName().orElseThrow());
+
+        transferAssDao.unsetSingleAssAssItem(transferAss);
+
+        rangeOfSingleAssAssItem = transferAssDao.getRangeOfSingleAssAssItem(transferAss);
+
+        assertEquals(0, getSelectedItems(rangeOfSingleAssAssItem).size());
+
+    }
+
+    @Test
+    public void testSingleAssociationAggregationRelationTransferWithSelfRelatedRange() {
+        SingleAggRelationTransferWithSelfRangeDao transferAssDao = singleAggRelationTransferWithSelfRangeDao;
+
+        List<ItemTransfer> aItems = createItemListUpTo("A", 1, 10);
+        List<ItemTransfer> bItems = createItemListUpTo("B", 1, 10);
+
+        List<String> nameOfAItems = aItems.stream().map(i -> i.getName().orElseThrow()).toList();
+        List<String> nameOfBItems = bItems.stream().map(i -> i.getName().orElseThrow()).toList();
+
+        HashSet<String> itemNames = new HashSet<>(nameOfAItems);
+        itemNames.addAll(nameOfBItems);
+
+        SingleAggRelationTransferWithSelfRange transferAss = transferAssDao.create(
+                SingleAggRelationTransferWithSelfRangeForCreate.builder().withItems(
+                        aItems.stream()
+                                .filter(i -> i.getName().orElseThrow().matches("A1|A2|A3"))
+                                .map(i -> ItemTransferForCreate.from(i.toMap()))
+                                .toList()
+                ).build()
+        );
+
+        List<ItemTransfer> rangeOfSingleAssAssItem = transferAssDao.getRangeOfSingleAssAggItem(transferAss);
+
+        List<String> notRelatedItemElementNames = itemNames.stream().filter(n -> !n.matches("A1|A2|A3")).toList();
+        assertTrue(rangeOfSingleAssAssItem.stream()
+                .map(ItemTransfer::getName)
+                .map(Optional::orElseThrow)
+                .noneMatch(notRelatedItemElementNames::contains)
+        );
+
+        assertThat(
+                rangeOfSingleAssAssItem.stream()
+                        .map(itemTransfer -> itemTransfer.getName().orElseThrow())
+                        .collect(Collectors.toSet()),
+                equalTo(nameOfAItems.stream()
+                        .filter(n -> n.matches("A1|A2|A3"))
+                        .collect(Collectors.toSet()))
+        );
+
+        // check none of the range element is selected
+        assertTrue(rangeOfSingleAssAssItem.stream()
+                .map(ItemTransfer::toMap)
+                .noneMatch(m -> m.containsKey("__selected"))
+        );
+
+        transferAssDao.setSingleAssAggItem(transferAss, aItems
+                .stream()
+                .filter(i -> i.getName().orElseThrow().equals("A1"))
+                .findAny().orElseThrow()
+        );
+
+        // check selected
+        rangeOfSingleAssAssItem = transferAssDao.getRangeOfSingleAssAggItem(transferAss);
+
+        List<ItemTransfer> selected = getSelectedItems(rangeOfSingleAssAssItem);
+
+        assertEquals(1, selected.size());
+        assertEquals("A1", selected.get(0).getName().orElseThrow());
+
+        transferAssDao.unsetSingleAssAggItem(transferAss);
+
+        rangeOfSingleAssAssItem = transferAssDao.getRangeOfSingleAssAggItem(transferAss);
+
+        assertEquals(0, getSelectedItems(rangeOfSingleAssAssItem).size());
+
+    }
+
+    @Test
+    public void testSingleTransientRelationTransferWithRange() {
         SingleRelationTransferWithTransientRangeDao transferTransientDao = singleRelationTransferWithTransientRangeDao;
 
         List<ItemTransfer> aItems = createItemListUpTo("A", 1, 10);
@@ -391,9 +556,464 @@ public class TransferRangeTest {
 
     }
 
-    // Negative Single Relation RangeTests
+    @Inject
+    CollectionAssRelationTransferWithDefaultRangeDao collectionAssRelationTransferWithDefaultRangeDao;
+
+    @Inject
+    CollectionAggRelationTransferWithDefaultRangeDao collectionAggRelationTransferWithDefaultRangeDao;
+
+    @Inject
+    CollectionAssRelationTransferWithDerivedRangeDao collectionAssRelationTransferWithDerivedRangeDao;
+
+    @Inject
+    CollectionAggRelationTransferWithDerivedRangeDao collectionAggRelationTransferWithDerivedRangeDao;
+
+    @Inject
+    CollectionRelationTransferWithTransientRangeDao collectionRelationTransferWithTransientRangeDao;
+
+    @Inject
+    CollectionAssRelationTransferWithSelfRangeDao collectionAssRelationTransferWithSelfRangeDao;
+
+    @Inject
+    CollectionAggRelationTransferWithSelfRangeDao collectionAggRelationTransferWithSelfRangeDao;
+
+    @Test
+    public void testCollectionAssAndAggRelationTransferWithDefaultRange() {
+        CollectionAssRelationTransferWithDefaultRangeDao transferAssDao = collectionAssRelationTransferWithDefaultRangeDao;
+        CollectionAggRelationTransferWithDefaultRangeDao transferAggDao = collectionAggRelationTransferWithDefaultRangeDao;
+
+        // Collection Compositon Association Range
+        CollectionAssRelationTransferWithDefaultRange transferAss = transferAssDao.create(
+                CollectionAssRelationTransferWithDefaultRangeForCreate.builder().build()
+        );
+
+        CollectionAggRelationTransferWithDefaultRange transferAgg = transferAggDao.create(
+                CollectionAggRelationTransferWithDefaultRangeForCreate.builder().build()
+        );
+        // no range methods for default range
+        assertFalse(hasMethodWithName("getRangeOf", transferAssDao));
+        assertFalse(hasMethodWithName("getRangeOf", transferAggDao));
+    }
+
+    @Test
+    public void testCollectionAssociationAssociationRelationTransferWithDerivedRange() {
+        CollectionAssRelationTransferWithDerivedRangeDao transferAssDao = collectionAssRelationTransferWithDerivedRangeDao;
+
+        List<ItemTransfer> aItems = createItemListUpTo("A", 1, 10);
+        List<ItemTransfer> bItems = createItemListUpTo("B", 1, 10);
+
+        List<String> nameOfAItems = aItems.stream().map(i -> i.getName().orElseThrow()).toList();
+        List<String> nameOfBItems = bItems.stream().map(i -> i.getName().orElseThrow()).toList();
+
+        // Collection Compositon Association Range
+        CollectionAssRelationTransferWithDerivedRange transferAss = transferAssDao.create(
+                CollectionAssRelationTransferWithDerivedRangeForCreate.builder().build()
+        );
+
+        assertTrue(hasMethodWithName("getRangeOfCollectionAssAssItem", transferAssDao));
+
+        List<ItemTransfer> rangeOfCollectionAssAssItem = transferAssDao.getRangeOfCollectionAssAssItem(transferAss);
+
+        assertTrue(rangeOfCollectionAssAssItem.stream()
+                .map(ItemTransfer::getName)
+                .map(Optional::orElseThrow)
+                .noneMatch(nameOfBItems::contains)
+        );
+        assertThat(
+                rangeOfCollectionAssAssItem.stream()
+                        .map(itemTransfer -> itemTransfer.getName().orElseThrow())
+                        .collect(Collectors.toSet()),
+                equalTo(new HashSet<>(nameOfAItems))
+        );
+
+        // check none of the range element is selected
+        assertTrue(rangeOfCollectionAssAssItem.stream()
+                .map(ItemTransfer::toMap)
+                .noneMatch(m -> m.containsKey("__selected"))
+        );
+
+        transferAssDao.addCollectionAssAssItem(transferAss, aItems
+                .stream()
+                .filter(i -> i.getName().orElseThrow().equals("A1"))
+                .findAny().orElseThrow()
+        );
+
+        // check selected
+        rangeOfCollectionAssAssItem = transferAssDao.getRangeOfCollectionAssAssItem(transferAss);
+
+        List<ItemTransfer> selected = getSelectedItems(rangeOfCollectionAssAssItem);
+
+        assertEquals(1, selected.size());
+        assertEquals("A1", selected.get(0).getName().orElseThrow());
+
+        transferAssDao.removeCollectionAssAssItem(transferAss, selected.get(0));
+
+        rangeOfCollectionAssAssItem = transferAssDao.getRangeOfCollectionAssAssItem(transferAss);
+
+        assertEquals(0, getSelectedItems(rangeOfCollectionAssAssItem).size());
+
+    }
+
+    @Test
+    public void testCollectionAssociationAggregationRelationTransferWithDerivedRange() {
+        CollectionAggRelationTransferWithDerivedRangeDao transferAggDao = collectionAggRelationTransferWithDerivedRangeDao;
+
+        List<ItemTransfer> aItems = createItemListUpTo("A", 1, 10);
+        List<ItemTransfer> bItems = createItemListUpTo("B", 1, 10);
+
+        List<String> nameOfAItems = aItems.stream().map(i -> i.getName().orElseThrow()).toList();
+        List<String> nameOfBItems = bItems.stream().map(i -> i.getName().orElseThrow()).toList();
+
+        CollectionAggRelationTransferWithDerivedRange transferAgg = transferAggDao.create(
+                CollectionAggRelationTransferWithDerivedRangeForCreate.builder().build()
+        );
+
+        assertTrue(hasMethodWithName("getRangeOfCollectionAssAggItem", transferAggDao));
+
+        List<ItemTransfer> rangeOfCollectionAssAggItem = transferAggDao.getRangeOfCollectionAssAggItem(transferAgg);
+
+        assertTrue(rangeOfCollectionAssAggItem.stream()
+                .map(ItemTransfer::getName)
+                .map(Optional::orElseThrow)
+                .noneMatch(nameOfBItems::contains)
+        );
+        assertThat(
+                rangeOfCollectionAssAggItem.stream()
+                        .map(itemTransfer -> itemTransfer.getName().orElseThrow())
+                        .collect(Collectors.toSet()),
+                equalTo(new HashSet<>(nameOfAItems))
+        );
+
+        // check none of the range element is selected
+        assertTrue(rangeOfCollectionAssAggItem.stream()
+                .map(ItemTransfer::toMap)
+                .noneMatch(m -> m.containsKey("__selected"))
+        );
+
+        transferAggDao.addCollectionAssAggItem(transferAgg, aItems
+                .stream()
+                .filter(i -> i.getName().orElseThrow().equals("A1"))
+                .findAny().orElseThrow()
+        );
+
+        // check selected
+        rangeOfCollectionAssAggItem = transferAggDao.getRangeOfCollectionAssAggItem(transferAgg);
+
+        List<ItemTransfer> selected = getSelectedItems(rangeOfCollectionAssAggItem);
+
+        assertEquals(1, selected.size());
+        assertEquals("A1", selected.get(0).getName().orElseThrow());
+
+        transferAggDao.removeCollectionAssAggItem(transferAgg, selected.get(0));
+
+        rangeOfCollectionAssAggItem = transferAggDao.getRangeOfCollectionAssAggItem(transferAgg);
+
+        assertEquals(0, getSelectedItems(rangeOfCollectionAssAggItem).size());
+
+    }
+
+    @Test
+    public void testCollectionAssociationAssociationRelationTransferWithSelfRelatedRange() {
+        CollectionAssRelationTransferWithSelfRangeDao transferAssDao = collectionAssRelationTransferWithSelfRangeDao;
+
+        List<ItemTransfer> aItems = createItemListUpTo("A", 1, 10);
+        List<ItemTransfer> bItems = createItemListUpTo("B", 1, 10);
+
+        List<String> nameOfAItems = aItems.stream().map(i -> i.getName().orElseThrow()).toList();
+        List<String> nameOfBItems = bItems.stream().map(i -> i.getName().orElseThrow()).toList();
+
+        HashSet<String> itemNames = new HashSet<>(nameOfAItems);
+        itemNames.addAll(nameOfBItems);
+
+        CollectionAssRelationTransferWithSelfRange transferAss = transferAssDao.create(
+                CollectionAssRelationTransferWithSelfRangeForCreate.builder().withItems(
+                        aItems.stream()
+                                .filter(i -> i.getName().orElseThrow().matches("A1|A2|A3"))
+                                .toList()
+                ).build()
+        );
+
+        List<ItemTransfer> rangeOfCollectionAssAssItem = transferAssDao.getRangeOfCollectionAssAssItem(transferAss);
+
+        List<String> notRelatedItemElementNames = itemNames.stream().filter(n -> !n.matches("A1|A2|A3")).toList();
+        assertTrue(rangeOfCollectionAssAssItem.stream()
+                .map(ItemTransfer::getName)
+                .map(Optional::orElseThrow)
+                .noneMatch(notRelatedItemElementNames::contains)
+        );
+
+        assertThat(
+                rangeOfCollectionAssAssItem.stream()
+                        .map(itemTransfer -> itemTransfer.getName().orElseThrow())
+                        .collect(Collectors.toSet()),
+                equalTo(nameOfAItems.stream()
+                        .filter(n -> n.matches("A1|A2|A3"))
+                        .collect(Collectors.toSet()))
+        );
+
+        // check none of the range element is selected
+        assertTrue(rangeOfCollectionAssAssItem.stream()
+                .map(ItemTransfer::toMap)
+                .noneMatch(m -> m.containsKey("__selected"))
+        );
+
+        transferAssDao.addCollectionAssAssItem(transferAss, aItems
+                .stream()
+                .filter(i -> i.getName().orElseThrow().equals("A1"))
+                .findAny().orElseThrow()
+        );
+
+        // check selected
+        rangeOfCollectionAssAssItem = transferAssDao.getRangeOfCollectionAssAssItem(transferAss);
+
+        List<ItemTransfer> selected = getSelectedItems(rangeOfCollectionAssAssItem);
+
+        assertEquals(1, selected.size());
+        assertEquals("A1", selected.get(0).getName().orElseThrow());
+
+        transferAssDao.removeCollectionAssAssItem(transferAss, selected.get(0));
+
+        rangeOfCollectionAssAssItem = transferAssDao.getRangeOfCollectionAssAssItem(transferAss);
+
+        assertEquals(0, getSelectedItems(rangeOfCollectionAssAssItem).size());
+
+    }
+
+    @Test
+    public void testCollectionAssociationAggregationRelationTransferWithSelfRelatedRange() {
+        CollectionAggRelationTransferWithSelfRangeDao transferAssDao = collectionAggRelationTransferWithSelfRangeDao;
+
+        List<ItemTransfer> aItems = createItemListUpTo("A", 1, 10);
+        List<ItemTransfer> bItems = createItemListUpTo("B", 1, 10);
+
+        List<String> nameOfAItems = aItems.stream().map(i -> i.getName().orElseThrow()).toList();
+        List<String> nameOfBItems = bItems.stream().map(i -> i.getName().orElseThrow()).toList();
+
+        HashSet<String> itemNames = new HashSet<>(nameOfAItems);
+        itemNames.addAll(nameOfBItems);
+
+        CollectionAggRelationTransferWithSelfRange transferAss = transferAssDao.create(
+                CollectionAggRelationTransferWithSelfRangeForCreate.builder().withItems(
+                        aItems.stream()
+                                .filter(i -> i.getName().orElseThrow().matches("A1|A2|A3"))
+                                .map(i -> ItemTransferForCreate.from(i.toMap()))
+                                .toList()
+                ).build()
+        );
+
+        List<ItemTransfer> rangeOfCollectionAssAssItem = transferAssDao.getRangeOfCollectionAssAggItem(transferAss);
+
+        List<String> notRelatedItemElementNames = itemNames.stream().filter(n -> !n.matches("A1|A2|A3")).toList();
+        assertTrue(rangeOfCollectionAssAssItem.stream()
+                .map(ItemTransfer::getName)
+                .map(Optional::orElseThrow)
+                .noneMatch(notRelatedItemElementNames::contains)
+        );
+
+        assertThat(
+                rangeOfCollectionAssAssItem.stream()
+                        .map(itemTransfer -> itemTransfer.getName().orElseThrow())
+                        .collect(Collectors.toSet()),
+                equalTo(nameOfAItems.stream()
+                        .filter(n -> n.matches("A1|A2|A3"))
+                        .collect(Collectors.toSet()))
+        );
+
+        // check none of the range element is selected
+        assertTrue(rangeOfCollectionAssAssItem.stream()
+                .map(ItemTransfer::toMap)
+                .noneMatch(m -> m.containsKey("__selected"))
+        );
+
+        transferAssDao.addCollectionAssAggItem(transferAss, aItems
+                .stream()
+                .filter(i -> i.getName().orElseThrow().equals("A1"))
+                .findAny().orElseThrow()
+        );
+
+        // check selected
+        rangeOfCollectionAssAssItem = transferAssDao.getRangeOfCollectionAssAggItem(transferAss);
+
+        List<ItemTransfer> selected = getSelectedItems(rangeOfCollectionAssAssItem);
+
+        assertEquals(1, selected.size());
+        assertEquals("A1", selected.get(0).getName().orElseThrow());
+
+        transferAssDao.removeCollectionAssAggItem(transferAss, selected.get(0));
+
+        rangeOfCollectionAssAssItem = transferAssDao.getRangeOfCollectionAssAggItem(transferAss);
+
+        assertEquals(0, getSelectedItems(rangeOfCollectionAssAssItem).size());
+
+    }
+
+    @Test
+    public void testCollectionTransientRelationTransferWithRange() {
+        CollectionRelationTransferWithTransientRangeDao transferTransientDao = collectionRelationTransferWithTransientRangeDao;
+
+        List<ItemTransfer> aItems = createItemListUpTo("A", 1, 10);
+        List<ItemTransfer> bItems = createItemListUpTo("B", 1, 10);
+
+        List<String> nameOfAItems = aItems.stream().map(i -> i.getName().orElseThrow()).toList();
+        List<String> nameOfBItems = bItems.stream().map(i -> i.getName().orElseThrow()).toList();
+
+        CollectionRelationTransferWithTransientRange transferWithTransientRelation = transferTransientDao.create(
+                CollectionRelationTransferWithTransientRangeForCreate.builder().withItems(
+                        aItems.stream()
+                                .filter(i -> i.getName().orElseThrow().matches("A1|A2|A3"))
+                                .toList()
+                ).build()
+        );
+
+        // Any Transient Range
+        List<ItemTransfer> rangeOfTransientItemWithAnyRange = transferTransientDao.getRangeOfTransientItemWithAnyRange(transferWithTransientRelation);
+
+        HashSet<String> itemNames = new HashSet<>(nameOfAItems);
+        itemNames.addAll(nameOfBItems);
+        assertThat(
+                rangeOfTransientItemWithAnyRange.stream()
+                        .map(itemTransfer -> itemTransfer.getName().orElseThrow())
+                        .collect(Collectors.toSet()),
+                equalTo(itemNames)
+        );
+
+        // check none of the range element is selected
+        assertTrue(rangeOfTransientItemWithAnyRange.stream()
+                .map(ItemTransfer::toMap)
+                .noneMatch(m -> m.containsKey("__selected"))
+        );
+
+        transferWithTransientRelation.addToTransientItemWithAnyRange(aItems
+                .stream()
+                .filter(i -> i.getName().orElseThrow().equals("A1"))
+                .findAny().orElseThrow()
+        );
+
+        transferWithTransientRelation = transferTransientDao.update(transferWithTransientRelation);
+
+        // check selected
+        rangeOfTransientItemWithAnyRange = transferTransientDao.getRangeOfTransientItemWithAnyRange(transferWithTransientRelation);
+        // check none of the range element is selected
+        assertEquals(0, getSelectedItems(rangeOfTransientItemWithAnyRange).size());
+        // Derived Transient Range
+        List<ItemTransfer> rangeOfTransientItemWithDerivedRangeItem = transferTransientDao.getRangeOfTransientItemWithDerivedRange(transferWithTransientRelation);
+
+        assertTrue(rangeOfTransientItemWithDerivedRangeItem.stream()
+                .map(ItemTransfer::getName)
+                .map(Optional::orElseThrow)
+                .noneMatch(nameOfBItems::contains)
+        );
+
+        assertThat(
+                rangeOfTransientItemWithDerivedRangeItem.stream()
+                        .map(itemTransfer -> itemTransfer.getName().orElseThrow())
+                        .collect(Collectors.toSet()),
+                equalTo(new HashSet<>(nameOfAItems))
+        );
+
+        // check none of the range element is selected
+        assertTrue(rangeOfTransientItemWithDerivedRangeItem.stream()
+                .map(ItemTransfer::toMap)
+                .noneMatch(m -> m.containsKey("__selected"))
+        );
+
+        transferWithTransientRelation.addToTransientItemWithDerivedRange(aItems
+                .stream()
+                .filter(i -> i.getName().orElseThrow().equals("A1"))
+                .findAny().orElseThrow()
+        );
+
+        transferWithTransientRelation = transferTransientDao.update(transferWithTransientRelation);
+
+        // check selected
+        rangeOfTransientItemWithDerivedRangeItem = transferTransientDao.getRangeOfTransientItemWithAnyRange(transferWithTransientRelation);
+        // check none of the range element is selected
+        assertEquals(0, getSelectedItems(rangeOfTransientItemWithDerivedRangeItem).size());
+        // Self Range for transient relation
+        List<ItemTransfer> rangeOfTransientItemWithSelfRange = transferTransientDao.getRangeOfTransientItemWithSelfRange(transferWithTransientRelation);
+
+        List<String> notItemElements = itemNames.stream().filter(n -> !n.matches("A1|A2|A3")).toList();
+        assertTrue(rangeOfTransientItemWithSelfRange.stream()
+                .map(ItemTransfer::getName)
+                .map(Optional::orElseThrow)
+                .noneMatch(notItemElements::contains)
+        );
+
+        assertThat(
+                rangeOfTransientItemWithSelfRange.stream()
+                        .map(itemTransfer -> itemTransfer.getName().orElseThrow())
+                        .collect(Collectors.toSet()),
+                equalTo(nameOfAItems.stream()
+                        .filter(n -> n.matches("A1|A2|A3"))
+                        .collect(Collectors.toSet()))
+        );
+
+        // check none of the range element is selected
+        assertTrue(rangeOfTransientItemWithSelfRange.stream()
+                .map(ItemTransfer::toMap)
+                .noneMatch(m -> m.containsKey("__selected"))
+        );
+
+        transferWithTransientRelation.addToTransientItemWithAnyRange(aItems
+                .stream()
+                .filter(i -> i.getName().orElseThrow().equals("A1"))
+                .findAny().orElseThrow()
+        );
+
+        transferWithTransientRelation = transferTransientDao.update(transferWithTransientRelation);
+        // check selected
+        rangeOfTransientItemWithSelfRange = transferTransientDao.getRangeOfTransientItemWithAnyRange(transferWithTransientRelation);
+        // check none of the range element is selected
+        assertEquals(0, getSelectedItems(rangeOfTransientItemWithSelfRange).size());
+
+    }
+
+    // Negative Collection Relation RangeTests
+
+    @Test
+    @Disabled
+    public void testCollectionAssRelationTransferRangeValidations(JudoRuntimeFixture fixture) {
+        CollectionAssRelationTransferWithDerivedRangeDao transferAssDerivedDao = collectionAssRelationTransferWithDerivedRangeDao;
+        CollectionAssRelationTransferWithSelfRangeDao transferAssSelfDao = collectionAssRelationTransferWithSelfRangeDao;
 
 
+        List<ItemTransfer> aItems = createItemListUpTo("A", 1, 10);
+        List<ItemTransfer> bItems = createItemListUpTo("B", 1, 10);
+
+        List<String> nameOfAItems = aItems.stream().map(i -> i.getName().orElseThrow()).toList();
+        List<String> nameOfBItems = bItems.stream().map(i -> i.getName().orElseThrow()).toList();
+
+
+        // derived range
+        CollectionAssRelationTransferWithDerivedRange transferAssDerived = transferAssDerivedDao.create(
+                CollectionAssRelationTransferWithDerivedRangeForCreate.builder().build()
+        );
+
+        // try to set an element out of range
+        // no range validation here
+        transferAssDerivedDao.addCollectionAssAssItem(transferAssDerived, bItems.get(0));
+
+        // self range
+        CollectionAssRelationTransferWithSelfRange transferAssSelf = transferAssSelfDao.create(
+                CollectionAssRelationTransferWithSelfRangeForCreate.builder().withItems(
+                        aItems.stream()
+                                .filter(i -> i.getName().orElseThrow().matches("A1|A2|A3"))
+                                .toList()
+                ).build()
+        );
+
+        // try to set an element out of range
+        // no range validation here
+        // TODO
+        transferAssSelfDao.addCollectionAssAssItem(transferAssSelf, bItems.get(0));
+
+
+        transferAssSelfDao.createCollectionAssAssItem(
+                transferAssSelf,
+                ItemTransferForCreate.builder().withName("B2").build()
+        );
+
+    }
 
 
     public boolean hasMethodWithName(String methodName,Object object) {
@@ -438,8 +1058,6 @@ public class TransferRangeTest {
             "REQ-SRV-002"
     })
     public void testRangeOnFruit() {
-
-
         Apple galaApple =  appleDao.create(AppleForCreate.builder().withVariety("GALA").build());
         Apple pinkLadyApple =  appleDao.create(AppleForCreate.builder().withVariety("PINK_LADY").build());
         Pear williamsPear =  pearDao.create(PearForCreate.builder().withVariety("WILLIAMS").build());
@@ -480,6 +1098,8 @@ public class TransferRangeTest {
                 hasProperty("code", Matchers.equalTo("NOT_ACCEPTED_BY_RANGE")),
                 hasProperty("location", Matchers.equalTo("breakfast")))
         ));
+
+
     }
 
     @Test

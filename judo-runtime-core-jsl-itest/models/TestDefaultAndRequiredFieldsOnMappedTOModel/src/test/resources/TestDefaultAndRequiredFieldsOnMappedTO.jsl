@@ -63,15 +63,15 @@ transfer TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFi
 
 // Mapped Transfer Object with required fields
 transfer TransferWithRequiredFieldsMapsEntityWithOptionalFields (EntityWithOptionalFields mappedEntity) {
-    field Integer intAttr <=> mappedEntity.integerAttr  required;
-    field Scaled scaledAttr <=> mappedEntity.scaledAttr  required;
-    field SmallString stringAttr <=> mappedEntity.stringAttr  required;
-    field PhoneNumber regexAttr <=> mappedEntity.regexAttr  required;
-    field Boolean boolAttr <=> mappedEntity.boolAttr  required;
-    field Date dateAttr <=> mappedEntity.dateAttr  required;
-    field Timestamp timestampAttr <=> mappedEntity.timestampAttr  required;
-    field Time timeAttr <=> mappedEntity.timeAttr  required;
-    field Enum enumAttr <=> mappedEntity.enumAttr  required;
+    field Integer intAttr <=> mappedEntity.integerAttr required;
+    field Scaled scaledAttr <=> mappedEntity.scaledAttr required;
+    field SmallString stringAttr <=> mappedEntity.stringAttr required;
+    field PhoneNumber regexAttr <=> mappedEntity.regexAttr required;
+    field Boolean boolAttr <=> mappedEntity.boolAttr required;
+    field Date dateAttr <=> mappedEntity.dateAttr required;
+    field Timestamp timestampAttr <=> mappedEntity.timestampAttr required;
+    field Time timeAttr <=> mappedEntity.timeAttr required;
+    field Enum enumAttr <=> mappedEntity.enumAttr required;
 
 }
 
@@ -143,15 +143,15 @@ transfer TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFi
 
 // Mapped Transfer Object with required fields
 transfer TransferWithRequiredFieldsMapsEntityWithRequiredFields (EntityWithRequiredFields mappedEntity) {
-    field Integer intAttr <=> mappedEntity.integerAttr  required;
-    field Scaled scaledAttr <=> mappedEntity.scaledAttr  required;
-    field SmallString stringAttr <=> mappedEntity.stringAttr  required;
-    field PhoneNumber regexAttr <=> mappedEntity.regexAttr  required;
-    field Boolean boolAttr <=> mappedEntity.boolAttr  required;
-    field Date dateAttr <=> mappedEntity.dateAttr  required;
-    field Timestamp timestampAttr <=> mappedEntity.timestampAttr  required;
-    field Time timeAttr <=> mappedEntity.timeAttr  required;
-    field Enum enumAttr <=> mappedEntity.enumAttr  required;
+    field Integer intAttr <=> mappedEntity.integerAttr required;
+    field Scaled scaledAttr <=> mappedEntity.scaledAttr required;
+    field SmallString stringAttr <=> mappedEntity.stringAttr required;
+    field PhoneNumber regexAttr <=> mappedEntity.regexAttr required;
+    field Boolean boolAttr <=> mappedEntity.boolAttr required;
+    field Date dateAttr <=> mappedEntity.dateAttr required;
+    field Timestamp timestampAttr <=> mappedEntity.timestampAttr required;
+    field Time timeAttr <=> mappedEntity.timeAttr required;
+    field Enum enumAttr <=> mappedEntity.enumAttr required;
 }
 
 // Mapped Transfer Object with required fields with default
@@ -222,15 +222,15 @@ transfer TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFi
 
 // Mapped Transfer Object with required fields
 transfer TransferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefault (EntityWithOptionalFieldsWithDefault mappedEntity) {
-    field Integer intAttr <=> mappedEntity.integerAttr  required;
-    field Scaled scaledAttr <=> mappedEntity.scaledAttr  required;
-    field SmallString stringAttr <=> mappedEntity.stringAttr  required;
-    field PhoneNumber regexAttr <=> mappedEntity.regexAttr  required;
-    field Boolean boolAttr <=> mappedEntity.boolAttr  required;
-    field Date dateAttr <=> mappedEntity.dateAttr  required;
-    field Timestamp timestampAttr <=> mappedEntity.timestampAttr  required;
-    field Time timeAttr <=> mappedEntity.timeAttr  required;
-    field Enum enumAttr <=> mappedEntity.enumAttr  required;
+    field Integer intAttr <=> mappedEntity.integerAttr required;
+    field Scaled scaledAttr <=> mappedEntity.scaledAttr required;
+    field SmallString stringAttr <=> mappedEntity.stringAttr required;
+    field PhoneNumber regexAttr <=> mappedEntity.regexAttr required;
+    field Boolean boolAttr <=> mappedEntity.boolAttr required;
+    field Date dateAttr <=> mappedEntity.dateAttr required;
+    field Timestamp timestampAttr <=> mappedEntity.timestampAttr required;
+    field Time timeAttr <=> mappedEntity.timeAttr required;
+    field Enum enumAttr <=> mappedEntity.enumAttr required;
 }
 
 // Mapped Transfer Object with required fields with default
@@ -301,15 +301,15 @@ transfer TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFi
 
 // Mapped Transfer Object with required fields
 transfer TransferWithRequiredFieldsMapsEntityWithRequiredFieldsWithDefault (EntityWithRequiredFieldsWithDefault mappedEntity) {
-    field Integer intAttr <=> mappedEntity.integerAttr  required;
-    field Scaled scaledAttr <=> mappedEntity.scaledAttr  required;
-    field SmallString stringAttr <=> mappedEntity.stringAttr  required;
-    field PhoneNumber regexAttr <=> mappedEntity.regexAttr  required;
-    field Boolean boolAttr <=> mappedEntity.boolAttr  required;
-    field Date dateAttr <=> mappedEntity.dateAttr  required;
-    field Timestamp timestampAttr <=> mappedEntity.timestampAttr  required;
-    field Time timeAttr <=> mappedEntity.timeAttr  required;
-    field Enum enumAttr <=> mappedEntity.enumAttr  required;
+    field Integer intAttr <=> mappedEntity.integerAttr required;
+    field Scaled scaledAttr <=> mappedEntity.scaledAttr required;
+    field SmallString stringAttr <=> mappedEntity.stringAttr required;
+    field PhoneNumber regexAttr <=> mappedEntity.regexAttr required;
+    field Boolean boolAttr <=> mappedEntity.boolAttr required;
+    field Date dateAttr <=> mappedEntity.dateAttr required;
+    field Timestamp timestampAttr <=> mappedEntity.timestampAttr required;
+    field Time timeAttr <=> mappedEntity.timeAttr required;
+    field Enum enumAttr <=> mappedEntity.enumAttr required;
 }
 
 // Mapped Transfer Object with required fields with default
@@ -332,7 +332,7 @@ transfer TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFi
 
 transfer TransferMapsFieldTwice (EntityWithRequiredFieldsWithDefault mappedEntity) {
     field Integer intAttr <=> mappedEntity.integerAttr;
-    field Integer integerAttr <=> mappedEntity.integerAttr  required;
+    field Integer integerAttr <=> mappedEntity.integerAttr required;
 }
 
 query String queryStringAttribute() <= EntityWithOptionalFields.all().any().stringAttr;

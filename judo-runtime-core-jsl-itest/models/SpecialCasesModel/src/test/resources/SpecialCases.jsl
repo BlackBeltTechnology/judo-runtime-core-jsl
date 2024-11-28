@@ -181,19 +181,19 @@ entity Containment2 {
 }
 
 transfer ContainerTransfer (Container c) {
-    field String name <=> c.name  required;
+    field String name <=> c.name required;
     relation Containment1Transfer derivedContainment1 <= c.derivedContainment1 eager:true;
     relation Containment1Transfer transientRel;
 }
 
 transfer Containment1Transfer (Containment1 c) {
-    field String name <=> c.name  required;
+    field String name <=> c.name required;
     relation Containment2Transfer containmet2 <= c.containmet2 eager:true create:true required;
     event create eventCreate;
 }
 
 transfer Containment2Transfer (Containment2 c) {
-    field String name <=> c.name  required;
+    field String name <=> c.name required;
     event create eventCreate;
 }
 

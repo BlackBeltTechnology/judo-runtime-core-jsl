@@ -9,15 +9,16 @@ entity Fruit abstract {
 }
 
 transfer TransferFruit (Fruit fruit) {
-    field String variety <=> fruit.variety  required;
+    field String variety <=> fruit.variety required;
+     event create onCreate;
 }
 
 transfer TransferApple (Apple fruit) {
-    field String variety <=> fruit.variety  required;
+    field String variety <=> fruit.variety required;
 }
 
 transfer TransferPear (Pear fruit) {
-    field String variety <=> fruit.variety  required;
+    field String variety <=> fruit.variety required;
 }
 
 entity Apple extends Fruit {}
@@ -30,9 +31,9 @@ entity Basket {
 }
 
 transfer TransferBasket (Basket basket) {
-    relation TransferFruit breakfast <= basket.breakfast choices: Apple.all() eager:true;
+    relation TransferFruit breakfast <= basket.breakfast choices: Apple.all() eager:true create:true;
     relation TransferFruit fruits choices: Pear.all();
-    relation TransferFruit galaFruit <= basket.galaFruit choices: Apple.all().filter(a | a.variety == "GALA").asCollection(type = Fruit) eager:true;
+    relation TransferFruit galaFruit <= basket.galaFruit choices: Apple.all().filter(a | a.variety == "GALA").asCollection(type = Fruit) eager:true create:true;
 }
 
 // ### Car Model
@@ -49,12 +50,12 @@ entity Wheel {
 }
 
 transfer TransferWheel (Wheel wheel) {
-    field Integer produced <=> wheel.produced  required;
+    field Integer produced <=> wheel.produced required;
     event create onCreate;
 }
 
 transfer TransferCar (Car car) {
-    field String licensePlate <=> car.licensePlate  required;
+    field String licensePlate <=> car.licensePlate required;
     field String color <=> car.color;
     relation TransferWheel[] wheels <= car.wheels create:true;
     relation TransferWheel spareWheel <= car.spareWheel choices:car.wheels;
@@ -77,7 +78,7 @@ entity Creature {
 }
 
 transfer TransferPlanet(Planet planet) {
-    field String name <=> planet.name  required;
+    field String name <=> planet.name required;
     field String planetNameOverCreature  <= planet.planetNameOverCreature;
     relation TransferCreature[] creatures  <= planet.creatures choices: Creature.all();
     relation TransferCreature[] visitors  <= planet.visitors choices: Creature.all().filter(c | c.planet.isUndefined());
@@ -85,7 +86,7 @@ transfer TransferPlanet(Planet planet) {
 }
 
 transfer TransferCreature(Creature creature) {
-    field String name <=> creature.name  required;
+    field String name <=> creature.name required;
     field String planetName <= creature.planetName;
     relation TransferPlanet planet  <= creature.planet choices:Planet.all();
 }
@@ -132,18 +133,65 @@ transfer SingleAggRelationTransferWithDerivedRange(SingleRelationEntity e) {
 }
 
 transfer SingleAssRelationTransferWithSelfRange(SingleRelationEntity e) {
-    relation ItemTransfer singleAssAssItem <= e.singleAssItem choices: Item.all().filter(i | i.name.like(pattern = "A%")) create:true;
+    relation ItemTransfer singleAssAssItem <= e.singleAssItem choices: e.items create:true;
     relation ItemTransfer[] items <= e.items create:true;
 }
 
 transfer SingleAggRelationTransferWithSelfRange(SingleRelationEntity e) {
-    relation ItemTransfer singleAssAggItem <= e.singleAssItem choices: Item.all().filter(i | i.name.like(pattern = "A%")) eager:true create:true;
-    relation ItemTransfer[] items <= e.items create:true;
+    relation ItemTransfer singleAssAggItem <= e.singleAssItem choices: e.items eager:true create:true;
+    relation ItemTransfer[] items <= e.items create:true eager:true;
 }
 
 transfer SingleRelationTransferWithTransientRange(SingleRelationEntity e) {
     relation ItemTransfer transientItemWithDerivedRange choices: Item.all().filter(i | i.name.like(pattern = "A%"));
     relation ItemTransfer transientItemWithAnyRange choices: Item.all();
     relation ItemTransfer transientItemWithSelfRange choices: e.items;
+    relation ItemTransfer[] items <= e.items create:true;
+}
+
+// ### Multi Relation Model
+
+entity CollectionRelationEntity {
+    field Item[] collectionCompItem;
+    relation Item[] collectionAssItem;
+
+    // self collection for range
+    relation Item[] items;
+}
+
+transfer CollectionAssRelationTransferWithDefaultRange(CollectionRelationEntity e) {
+    relation ItemTransfer[] collectionCompAssItem <= e.collectionCompItem create:true;
+    relation ItemTransfer[] collectionAssAssItem <= e.collectionAssItem create:true;
+}
+
+transfer CollectionAggRelationTransferWithDefaultRange(CollectionRelationEntity e) {
+    relation ItemTransfer[] collectionCompAggItem <= e.collectionCompItem eager:true create:true;
+    relation ItemTransfer[] collectionAssAggItem <= e.collectionAssItem eager:true create:true;
+}
+
+transfer CollectionAssRelationTransferWithDerivedRange(CollectionRelationEntity e) {
+    //relation ItemTransfer[] collectionCompAssItem <= e.collectionCompItem choices: Item.all().filter(i | i.name.like(pattern = "A%")) create:true; // range is not accessible for composition element
+    relation ItemTransfer[] collectionAssAssItem <= e.collectionAssItem choices: Item.all().filter(i | i.name.like(pattern = "A%")) create:true;
+}
+
+transfer CollectionAggRelationTransferWithDerivedRange(CollectionRelationEntity e) {
+    //relation ItemTransfer[] collectionCompAggItem <= e.collectionCompItem choices: Item.all().filter(i | i.name.like(pattern = "A%")) eager:true create:true; // range is not accessible for composition element
+    relation ItemTransfer[] collectionAssAggItem <= e.collectionAssItem choices: Item.all().filter(i | i.name.like(pattern = "A%")) eager:true create:true;
+}
+
+transfer CollectionAssRelationTransferWithSelfRange(CollectionRelationEntity e) {
+    relation ItemTransfer[] collectionAssAssItem <= e.collectionAssItem choices: e.items create:true;
+    relation ItemTransfer[] items <= e.items create:true;
+}
+
+transfer CollectionAggRelationTransferWithSelfRange(CollectionRelationEntity e) {
+    relation ItemTransfer[] collectionAssAggItem <= e.collectionAssItem choices: e.items eager:true create:true;
+    relation ItemTransfer[] items <= e.items create:true eager:true;
+}
+
+transfer CollectionRelationTransferWithTransientRange(CollectionRelationEntity e) {
+    relation ItemTransfer[] transientItemWithDerivedRange choices: Item.all().filter(i | i.name.like(pattern = "A%"));
+    relation ItemTransfer[] transientItemWithAnyRange choices: Item.all();
+    relation ItemTransfer[] transientItemWithSelfRange choices: e.items;
     relation ItemTransfer[] items <= e.items create:true;
 }
