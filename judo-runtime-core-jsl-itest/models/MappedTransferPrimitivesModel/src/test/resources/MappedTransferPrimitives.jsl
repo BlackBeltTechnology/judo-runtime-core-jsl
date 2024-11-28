@@ -62,7 +62,7 @@ transfer TransferOptionalPrimitives (EntityForMapping mappedEntity) {
 }
 
 entity EntityForMappingRequired {
-        field Integer integerAttr  required;
+        field Integer integerAttr required;
         field Scaled scaledAttr required;
         field String stringAttr required;
         field PhoneNumber regexAttr required;
@@ -75,16 +75,16 @@ entity EntityForMappingRequired {
 }
 
 transfer TransferRequiredPrimitives (EntityForMappingRequired mappedEntity) {
-    field Integer integerAttr <=> mappedEntity.integerAttr  required;
-    field Scaled scaledAttr <=> mappedEntity.scaledAttr  required;
-    field String stringAttr <=> mappedEntity.stringAttr  required;
-    field PhoneNumber regexAttr <=> mappedEntity.regexAttr  required;
-    field Boolean boolAttr <=> mappedEntity.boolAttr  required;
-    field Date dateAttr <=> mappedEntity.dateAttr  required;
-    field Timestamp timestampAttr <=> mappedEntity.timestampAttr  required;
-    field Time timeAttr <=> mappedEntity.timeAttr  required;
-    field Enum enumAttr <=> mappedEntity.enumAttr  required;
-    field Binary binaryAttr <=> mappedEntity.binaryAttr  required;
+    field Integer integerAttr <=> mappedEntity.integerAttr required;
+    field Scaled scaledAttr <=> mappedEntity.scaledAttr required;
+    field String stringAttr <=> mappedEntity.stringAttr required;
+    field PhoneNumber regexAttr <=> mappedEntity.regexAttr required;
+    field Boolean boolAttr <=> mappedEntity.boolAttr required;
+    field Date dateAttr <=> mappedEntity.dateAttr required;
+    field Timestamp timestampAttr <=> mappedEntity.timestampAttr required;
+    field Time timeAttr <=> mappedEntity.timeAttr required;
+    field Enum enumAttr <=> mappedEntity.enumAttr required;
+    field Binary binaryAttr <=> mappedEntity.binaryAttr required;
 }
 
 entity EntityWithPrimitiveDefaults {
@@ -141,15 +141,15 @@ transfer TransferPrimitiveDefaults(EntityRequiredWithPrimitiveDefaults mappedEnt
 }
 
 transfer TransferWithRequiredPrimitiveDefaults(EntityRequiredWithPrimitiveDefaults mappedEntity) {
-    field Integer integerAttr <=> mappedEntity.integerAttr  required;
-    field Scaled scaledAttr <=> mappedEntity.scaledAttr  required;
-    field String stringAttr <=> mappedEntity.stringAttr  required;
-    field PhoneNumber regexAttr <=> mappedEntity.regexAttr  required;
-    field Boolean boolAttr <=> mappedEntity.boolAttr  required;
-    field Date dateAttr <=> mappedEntity.dateAttr  required;
-    field Timestamp timestampAttr <=> mappedEntity.timestampAttr  required;
-    field Time timeAttr <=> mappedEntity.timeAttr  required;
-    field Enum enumAttr <=> mappedEntity.enumAttr  required;
+    field Integer integerAttr <=> mappedEntity.integerAttr required;
+    field Scaled scaledAttr <=> mappedEntity.scaledAttr required;
+    field String stringAttr <=> mappedEntity.stringAttr required;
+    field PhoneNumber regexAttr <=> mappedEntity.regexAttr required;
+    field Boolean boolAttr <=> mappedEntity.boolAttr required;
+    field Date dateAttr <=> mappedEntity.dateAttr required;
+    field Timestamp timestampAttr <=> mappedEntity.timestampAttr required;
+    field Time timeAttr <=> mappedEntity.timeAttr required;
+    field Enum enumAttr <=> mappedEntity.enumAttr required;
 }
 
 
@@ -176,7 +176,7 @@ transfer TransferWithPrimitiveDefaultExpressions(EntityWithPrimitiveDefaultExpre
 }
 
 entity RequiredForNotRequiredTransfer {
-        field Integer integerAttr  required;
+        field Integer integerAttr required;
         field Scaled scaledAttr required;
         field String stringAttr required;
         field PhoneNumber regexAttr required;
