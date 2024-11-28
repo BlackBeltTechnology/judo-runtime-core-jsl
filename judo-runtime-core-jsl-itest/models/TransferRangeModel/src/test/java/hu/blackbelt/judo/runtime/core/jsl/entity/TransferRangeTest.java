@@ -981,7 +981,7 @@ public class TransferRangeTest {
     // Negative Collection Relation RangeTests
 
     @Test
-    @Disabled
+    @Disabled("https://blackbelt.atlassian.net/browse/JNG-6034")
     public void testCollectionAssRelationTransferRangeValidations(JudoRuntimeFixture fixture) {
         CollectionAssRelationTransferWithDerivedRangeDao transferAssDerivedDao = collectionAssRelationTransferWithDerivedRangeDao;
         CollectionAssRelationTransferWithSelfRangeDao transferAssSelfDao = collectionAssRelationTransferWithSelfRangeDao;
