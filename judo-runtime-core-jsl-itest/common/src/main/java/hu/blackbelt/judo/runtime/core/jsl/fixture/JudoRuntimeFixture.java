@@ -3,17 +3,20 @@ package hu.blackbelt.judo.runtime.core.jsl.fixture;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
+import com.google.inject.util.Modules;
 import hu.blackbelt.judo.meta.expression.builder.jql.JqlExpressionBuilderConfig;
 import hu.blackbelt.judo.meta.expression.builder.jql.asm.AsmJqlExtractor;
+import hu.blackbelt.judo.runtime.core.dao.rdbms.Dialect;
+import hu.blackbelt.judo.runtime.core.dao.rdbms.RdbmsInit;
+import hu.blackbelt.judo.runtime.core.guice.JudoDefaultModule;
 import hu.blackbelt.judo.runtime.core.guice.JudoModelLoader;
 import hu.blackbelt.judo.runtime.core.dao.rdbms.hsqldb.HsqldbDialect;
 import hu.blackbelt.judo.runtime.core.dao.rdbms.hsqldb.HsqldbRdbmsInit;
 import hu.blackbelt.judo.runtime.core.dao.rdbms.liquibase.SimpleLiquibaseExecutor;
 import hu.blackbelt.judo.runtime.core.dao.rdbms.postgresql.PostgresqlDialect;
 import hu.blackbelt.judo.runtime.core.dao.rdbms.postgresql.PostgresqlRdbmsInit;
-import hu.blackbelt.judo.runtime.core.jsl.modules.JudoDefaultTestModule;
-import hu.blackbelt.judo.runtime.core.jsl.modules.JudoHsqldbTestModules;
-import hu.blackbelt.judo.runtime.core.jsl.modules.JudoPostgresqlTestModules;
+import hu.blackbelt.judo.runtime.core.guice.dao.rdbms.hsqldb.JudoHsqldbModule;
+import hu.blackbelt.judo.runtime.core.guice.dao.rdbms.postgresql.JudoPostgresqlModule;
 import hu.blackbelt.judo.runtime.core.query.QueryFactory;
 import hu.blackbelt.mapper.api.ExtendableCoercer;
 import hu.blackbelt.mapper.impl.DefaultCoercer;
@@ -69,13 +72,10 @@ public class JudoRuntimeFixture {
 
     JdbcDatabaseContainer sqlContainer;
 
-    JudoPostgresqlTestModules judoPostgresqlTestModules;
+    Dialect dialect;
 
-    JudoHsqldbTestModules judoHsqldbTestModules;
-
-    HsqldbDialect hsqldbDialect;
-
-    PostgresqlDialect postgresqlDialect;
+    JudoDefaultModule.JudoDefaultModuleBuilder judoDefaultModuleBuilder;
+    Module databaseModule;
 
     SimpleLiquibaseExecutor simpleLiquibaseExecutor;
 
@@ -104,82 +104,60 @@ public class JudoRuntimeFixture {
 
     }
 
-    private void initJudoHsqldbModules(JudoDatasourceFixture datasource) {
-
+    private void initModules(JudoDatasourceFixture datasource, Dialect dialect) {
+        RdbmsInit init = null;
         simpleLiquibaseExecutor = new SimpleLiquibaseExecutor();
-        HsqldbRdbmsInit init = HsqldbRdbmsInit.builder()
-                .liquibaseExecutor(simpleLiquibaseExecutor)
-                .liquibaseModel(modelHolder.getLiquibaseModel())
-                .build();
+        if (dialect instanceof HsqldbDialect) {
+            init = HsqldbRdbmsInit.builder()
+                    .liquibaseExecutor(simpleLiquibaseExecutor)
+                    .liquibaseModel(modelHolder.getLiquibaseModel())
+                    .build();
+            databaseModule = JudoHsqldbModule
+                    .builder().build();
+        }
+        if (dialect instanceof PostgresqlDialect) {
+            init = PostgresqlRdbmsInit.builder()
+                    .liquibaseExecutor(simpleLiquibaseExecutor)
+                    .liquibaseModel(modelHolder.getLiquibaseModel())
+                    .build();
+            databaseModule = JudoPostgresqlModule
+                    .builder().build();
+        }
         init.execute(datasource.getDataSource());
 
-        judoHsqldbTestModules = JudoHsqldbTestModules
-                .builder()
-                .dataSource(datasource.getDataSource())
-                .hsqldbRdbmsInit(init)
-                .build();
-    }
+        judoDefaultModuleBuilder = JudoDefaultModule.builder()
+                .judoModelLoader(modelHolder);
 
-    private void initJudoPostgresqlModules(JudoDatasourceFixture datasource) {
-
-        simpleLiquibaseExecutor = new SimpleLiquibaseExecutor();
-        PostgresqlRdbmsInit init = PostgresqlRdbmsInit.builder()
-                .liquibaseExecutor(simpleLiquibaseExecutor)
-                .liquibaseModel(modelHolder.getLiquibaseModel())
-                .build();
-        init.execute(datasource.getDataSource());
-
-        sqlContainer = datasource.getSqlContainer();
-        judoPostgresqlTestModules = JudoPostgresqlTestModules.builder()
-                .databaseName(sqlContainer.getDatabaseName())
-                .user(sqlContainer.getUsername())
-                .password(sqlContainer.getPassword())
-                .port(sqlContainer.getFirstMappedPort())
-                .dataSource(datasource.getDataSource())
-                .postgresqlRdbmsInit(init)
-                .build();
     }
 
     public void prepare(String modelName, JudoDatasourceFixture datasource) throws Exception {
 
         if (DIALECT_POSTGRESQL.equals(datasource.getDialect())) {
-            postgresqlDialect = new PostgresqlDialect();
-            modelHolder = JudoModelLoader.loadFromDirectory(modelName, new File(MODEL_SOURCES), postgresqlDialect, true);
-            initQueryFactory();
-            initJudoPostgresqlModules(datasource);
+            dialect = new PostgresqlDialect();
         } else if (DIALECT_HSQLDB.equals(datasource.getDialect())) {
-            hsqldbDialect = new HsqldbDialect();
-            modelHolder = JudoModelLoader.loadFromDirectory(modelName, new File(MODEL_SOURCES), hsqldbDialect, true);
-            initQueryFactory();
-            initJudoHsqldbModules(datasource);
+            dialect = new HsqldbDialect();
         } else {
             throw new IllegalArgumentException("Unsupported dialect: " + datasource.getDialect());
         }
+        modelHolder = JudoModelLoader.loadFromDirectory(modelName, new File(MODEL_SOURCES), dialect, true, false);
+        initQueryFactory();
+        initModules(datasource, dialect);
     }
 
     public void init(Module module, Object injectModulesTo) {
+        judoDefaultModuleBuilder = judoDefaultModuleBuilder
+                .injectModulesTo(injectModulesTo)
+                .judoModelLoader(modelHolder)
+                .extendableCoercer(coercer)
+                .queryFactory(queryFactory)
+                .rdbmsDaoMarkSelectedRangeItems(markSelectedRangeItems);
 
-        if (postgresqlDialect != null) {
-            injector = Guice.createInjector(judoPostgresqlTestModules, module, JudoDefaultTestModule
-                    .builder()
-                    .injectModulesTo(injectModulesTo)
-                    .judoModelLoader(modelHolder)
-                    .coercer(coercer)
-                    .queryFactory(queryFactory)
-                    .markSelectedRangeItems(markSelectedRangeItems)
-                    .build()
-            );
-        } else if (hsqldbDialect != null) {
-            injector = Guice.createInjector(judoHsqldbTestModules, module, JudoDefaultTestModule
-                    .builder()
-                    .injectModulesTo(injectModulesTo)
-                    .judoModelLoader(modelHolder)
-                    .coercer(coercer)
-                    .queryFactory(queryFactory)
-                    .markSelectedRangeItems(markSelectedRangeItems)
-                    .build()
-            );
-        }
+        Module modules = Modules.combine(
+                module,
+                judoDefaultModuleBuilder.build(),
+                databaseModule
+        );
+        injector = Guice.createInjector(modules);
     }
 
     public void tearDown() {
