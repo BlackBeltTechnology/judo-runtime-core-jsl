@@ -21,6 +21,7 @@ package hu.blackbelt.judo.runtime.core.jsl.fixture;
  */
 
 import com.google.common.collect.ImmutableMap;
+import com.zaxxer.hikari.HikariDataSource;
 import hu.blackbelt.judo.meta.rdbms.RdbmsTable;
 import hu.blackbelt.judo.meta.rdbms.runtime.RdbmsModel;
 import hu.blackbelt.judo.meta.rdbms.runtime.RdbmsUtils;
@@ -149,7 +150,10 @@ public class JudoDatasourceFixture {
         } else {
             throw new IllegalStateException("Unsupported dialect: " + dialect);
         }
-        transactionManager = new DataSourceTransactionManager(dataSource);
+//        HikariDataSource hikariDataSource = new HikariDataSource();
+//        hikariDataSource.setDataSource(dataSource);
+//        dataSource = hikariDataSource;
+//        transactionManager = new DataSourceTransactionManager(dataSource);
     }
 
     public <T extends Throwable> T assertThrowsInTransaction(final Class<T> expectedType, final Executable executable) {
