@@ -20,6 +20,10 @@ package hu.blackbelt.judo.runtime.core.jsl.entity;
  * #L%
  */
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import com.google.inject.Inject;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.ternarytest.ternarytest.aaa.AAA;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.ternarytest.ternarytest.aaa.AAADao;
@@ -29,17 +33,16 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.TernaryTestDaoModules
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import lombok.extern.slf4j.Slf4j;
+import org.hamcrest.CoreMatchers;
+import org.hamcrest.MatcherAssert;
+import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.MatcherAssert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
 public class TernaryTest {
@@ -70,7 +73,7 @@ public class TernaryTest {
 
         final String stringValue = "STRING";
         final Integer integerValue = 10;
-        final Double doubleValue = 3.14159265;
+        final double doubleValue = 3.14159265;
         final LocalDate dateValue = LocalDate.of(2020, 10, 20);
         final LocalDateTime timestampValue = LocalDateTime.of(2020, 10, 20, 16, 30, 5, 0);
 
@@ -93,6 +96,7 @@ public class TernaryTest {
         assertThat(a.getDate().orElseThrow(), equalTo(dateValue));
         assertThat(a.getTimestamp().orElseThrow(), equalTo(timestampValue));
         assertThat(a.getUnknownCondition().orElseThrow(), equalTo(stringValue));
+        assertThat(a.getEnum1().orElseThrow(), equalTo(Enum.Literal1));
 
 
         assertEquals("true", a.getTs().orElseThrow());
@@ -117,7 +121,7 @@ public class TernaryTest {
                 .withBooleanR(false)
                 .withDateR(dateValue)
                 .withTimestampR(timestampValue)
-                .withEnumR(Enum.Literal2)
+                .withEnumO(Enum.Literal2)
                 .build()
         );
 
@@ -131,6 +135,7 @@ public class TernaryTest {
         assertTrue(a1.getDate().isEmpty());
         assertTrue(a1.getTimestamp().isEmpty());
         assertThat(a1.getUnknownCondition().orElseThrow(), equalTo(stringValue));
+        assertThat(a1.getEnum1().orElseThrow(), equalTo(Enum.Literal2));
 
 
         // TODO https://blackbelt.atlassian.net/browse/JNG-5543
