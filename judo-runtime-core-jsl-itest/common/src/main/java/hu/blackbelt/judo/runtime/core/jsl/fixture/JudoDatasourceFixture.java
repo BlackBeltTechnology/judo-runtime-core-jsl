@@ -150,10 +150,6 @@ public class JudoDatasourceFixture {
         } else {
             throw new IllegalStateException("Unsupported dialect: " + dialect);
         }
-//        HikariDataSource hikariDataSource = new HikariDataSource();
-//        hikariDataSource.setDataSource(dataSource);
-//        dataSource = hikariDataSource;
-//        transactionManager = new DataSourceTransactionManager(dataSource);
     }
 
     public <T extends Throwable> T assertThrowsInTransaction(final Class<T> expectedType, final Executable executable) {
