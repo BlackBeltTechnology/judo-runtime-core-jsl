@@ -50,7 +50,7 @@ entity AAA {
     field Enum enumR;
     field Enum enumO;
 
-    //field Enum enum1 <= self.booleanR ? self.enumR : self.enumO; // TODO JNG-5544 error in runtime
+    field Enum enum1 <= self.booleanR ? self.enumR : self.enumO;
 
     field String FirstLetterIsUpper;
     field String FirstLetterIsUpperWithDefault default: "Hello";
