@@ -121,7 +121,9 @@ public class JudoRuntimeFixture {
                     .liquibaseModel(modelHolder.getLiquibaseModel())
                     .build();
             databaseModule = JudoPostgresqlModule
-                    .builder().build();
+                    .builder()
+                    .dataSource(datasource.getDataSource())
+                    .build();
         }
         init.execute(datasource.getDataSource());
 
