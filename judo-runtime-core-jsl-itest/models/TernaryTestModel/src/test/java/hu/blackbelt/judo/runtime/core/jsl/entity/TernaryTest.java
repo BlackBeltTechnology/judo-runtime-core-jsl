@@ -72,15 +72,15 @@ public class TernaryTest {
     public void testTernaries() {
 
         final String stringValue = "STRING";
-        final Integer integerValue = 10;
-        final double doubleValue = 3.14159265;
+        final int integerValue = 10;
+        final BigDecimal doubleValue = BigDecimal.valueOf(3.14159265);
         final LocalDate dateValue = LocalDate.of(2020, 10, 20);
         final LocalDateTime timestampValue = LocalDateTime.of(2020, 10, 20, 16, 30, 5, 0);
 
         AAA a = aDao.create(AAAForCreate.builder()
                 .withStringR(stringValue)
                 .withIntegerR(integerValue)
-                .withDoubleR(BigDecimal.valueOf(doubleValue))
+                .withDoubleR(doubleValue)
                 .withBooleanR(true)
                 .withDateR(dateValue)
                 .withTimestampR(timestampValue)
@@ -91,7 +91,7 @@ public class TernaryTest {
         assertThat(a.getConstantString().orElseThrow(), equalTo("X"));
         assertThat(a.getString().orElseThrow(), equalTo(stringValue));
         assertThat(a.getInteger().orElseThrow(), equalTo(integerValue));
-        assertThat(a.getDouble_().orElseThrow(), equalTo(BigDecimal.valueOf(doubleValue)));
+        assertThat(a.getDouble_().orElseThrow(), equalTo(doubleValue));
         assertThat(a.getBoolean_().orElseThrow(), equalTo(true));
         assertThat(a.getDate().orElseThrow(), equalTo(dateValue));
         assertThat(a.getTimestamp().orElseThrow(), equalTo(timestampValue));
@@ -117,7 +117,7 @@ public class TernaryTest {
         AAA a1 = aDao.create(AAAForCreate.builder()
                 .withStringR(stringValue)
                 .withIntegerR(integerValue)
-                .withDoubleR(BigDecimal.valueOf(doubleValue))
+                .withDoubleR(doubleValue)
                 .withBooleanR(false)
                 .withDateR(dateValue)
                 .withTimestampR(timestampValue)
