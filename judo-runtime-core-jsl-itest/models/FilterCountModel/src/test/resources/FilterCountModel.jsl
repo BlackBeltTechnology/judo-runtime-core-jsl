@@ -29,7 +29,7 @@ entity B {
 
 entity C {
     field Integer num;
-    relation D d;
+    field D d;
 }
 
 entity D {
