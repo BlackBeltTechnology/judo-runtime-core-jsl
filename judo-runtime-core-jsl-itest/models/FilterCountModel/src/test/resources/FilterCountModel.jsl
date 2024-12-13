@@ -18,6 +18,8 @@ entity A extends ParentA {
     field String bname <= self.ancestorB.name;
     field Integer sum <= self.cs.sum(c | c.num);
     field Integer cnum <= self.c.num;
+    relation C earliestC <= self.cs.first(c | c.d.date).any();
+    relation C latestC <= self.cs.last(c | c.d.date).any();
 }
 
 entity B {
@@ -27,4 +29,9 @@ entity B {
 
 entity C {
     field Integer num;
+    field D d;
+}
+
+entity D {
+    field Date date;
 }
