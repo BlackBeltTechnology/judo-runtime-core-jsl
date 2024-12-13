@@ -79,6 +79,7 @@ public class FilterCountTest {
                                     .withAncestorB(b)
                                     .build());
         assertEquals(LocalDate.of(2024, 12, 13), aDao.queryEarliestC(a).orElseThrow().getD().orElseThrow().getDate().orElseThrow());
+        assertEquals(LocalDate.of(2024, 12, 14), aDao.queryLatestC(a).orElseThrow().getD().orElseThrow().getDate().orElseThrow());
 
         assertEquals("A", a.getName().orElseThrow());
         assertEquals("PA", a.getAncestorName().orElseThrow());
