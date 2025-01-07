@@ -1,0 +1,80 @@
+model RelationWithDefaultsModel;
+
+import judo::types;
+
+
+entity Item {
+    field String name;
+    field Integer number;
+}
+
+// item transfer
+
+transfer ItemTransfer(Item i) {
+    field String name <=> i.name;
+    field Integer number <=> i.number;
+
+    event create createEvent;
+
+}
+
+// optional entity without default
+
+entity CollectorWithSingleOptionalRelation {
+    relation Item opItem;
+}
+
+// related transfers (optional, optional with default, required, required with default)
+
+transfer CollectorWithSingleOptionalRelationOptionalTransfer(CollectorWithSingleOptionalRelation c) {
+    relation ItemTransfer opItem <= c.opItem create:true;
+}
+
+transfer CollectorWithSingleOptionalRelationOptionalDefaultTransfer(CollectorWithSingleOptionalRelation c) {
+    relation ItemTransfer opItem <= c.opItem create:true default: Item.all().filter(i | i.number < 4).any();
+}
+
+transfer CollectorWithSingleOptionalRelationRequiredTransfer(CollectorWithSingleOptionalRelation c) {
+    relation ItemTransfer reqItem <= c.opItem required;
+}
+
+transfer CollectorWithSingleOptionalRelationRequiredDefaultTransfer(CollectorWithSingleOptionalRelation c) {
+    relation ItemTransfer reqItem <= c.opItem create:true default: Item.all().filter(i | i.number < 4).any() required;
+}
+
+// required entity without default
+
+entity CollectorWithSingleRequiredRelation {
+    relation Item reqItem required;
+}
+
+// related transfers (optional, optional with default, required, required with default)
+
+transfer CollectorWithSingleRequiredRelationOptionalTransfer(CollectorWithSingleRequiredRelation c) {
+    relation ItemTransfer opItem <= c.reqItem create:true;
+}
+
+transfer CollectorWithSingleRequiredRelationOptionalDefaultTransfer(CollectorWithSingleRequiredRelation c) {
+    relation ItemTransfer opItem <= c.reqItem create:true default: Item.all().filter(i | i.number < 4).any();
+}
+
+transfer CollectorWithSingleRequiredRelationRequiredTransfer(CollectorWithSingleRequiredRelation c) {
+    relation ItemTransfer reqItem <= c.reqItem create:true required;
+}
+
+transfer CollectorWithSingleRequiredRelationRequiredDefaultTransfer(CollectorWithSingleRequiredRelation c) {
+    relation ItemTransfer reqItem <= c.reqItem create:true default: Item.all().filter(i | i.number < 4).any() required;
+}
+
+
+// optional entity with default
+
+entity CollectorWithSingleOptionalDefaultRelation {
+    relation Item optItem default: Item.all().filter(i | i.number < 4).any();
+}
+
+// optional entity with default
+
+entity CollectorWithSingleRequiredDefaultRelation {
+    relation Item reqItem default: Item.all().filter(i | i.number < 4).any() required;
+}
