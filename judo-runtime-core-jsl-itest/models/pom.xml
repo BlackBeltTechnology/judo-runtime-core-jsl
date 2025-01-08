@@ -19,6 +19,7 @@
         <module>ContainerTestModel</module>
         <module>ContainsTestModel</module>
         <module>EntityRelationshipsModel</module>
+        <module>RelationWithDefaultsModel</module>
         <module>EnvironmentAndSequenceModel</module>
         <module>FilterModel</module>
         <module>FunctionsModels</module>
@@ -150,12 +151,6 @@
         <dependency>
             <groupId>hu.blackbelt.judo.runtime</groupId>
             <artifactId>judo-runtime-core-guice-postgresql</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>hu.blackbelt.judo.runtime</groupId>
-            <artifactId>judo-runtime-core-jsl-itest-common</artifactId>
-            <version>${project.version}</version>
         </dependency>
 
         <dependency>
