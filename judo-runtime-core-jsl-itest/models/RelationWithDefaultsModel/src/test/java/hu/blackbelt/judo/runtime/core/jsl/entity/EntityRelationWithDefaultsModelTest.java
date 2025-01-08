@@ -52,7 +52,7 @@ public class EntityRelationWithDefaultsModelTest {
     CollectorWithSingleOptionalDefaultRelationDao collectorWithSingleOptionalDefaultRelationDao;
 
     @Test
-    @Disabled
+    @Disabled("https://blackbelt.atlassian.net/browse/JNG-6081")
     public void singleOptionalDefaultRelationTest() {
         // shortname
         CollectorWithSingleOptionalDefaultRelationDao collectorDao = collectorWithSingleOptionalDefaultRelationDao;
@@ -68,7 +68,7 @@ public class EntityRelationWithDefaultsModelTest {
     CollectorWithSingleRequiredDefaultRelationDao collectorWithSingleRequiredDefaultRelationDao;
 
     @Test
-    @Disabled
+    @Disabled("https://blackbelt.atlassian.net/browse/JNG-6081")
     public void singleRequiredDefaultRelationTest() {
         // shortname
         CollectorWithSingleRequiredDefaultRelationDao collectorDao = collectorWithSingleRequiredDefaultRelationDao;
