@@ -43,8 +43,8 @@
             javax.resource;version="[1.6,2)"
         </osgi-transaction-import>
 
-        <judo-tatami-jsl-version>1.1.4.20250108_040655_7eaccc8f_develop</judo-tatami-jsl-version>
-        <judo-runtime-core-version>1.0.6.20250107_191013_98013fb2_develop</judo-runtime-core-version>
+        <judo-tatami-jsl-version>1.1.4.20250108_092533_8651a69c_feature_JNG_6078_PayloadValidator_throws_an_error_for_relations_with_the_default_element</judo-tatami-jsl-version>
+        <judo-runtime-core-version>1.0.6.20250107_193610_64679e04_feature_JNG_6078_PayloadValidator_throws_an_error_for_relations_with_the_default_element</judo-runtime-core-version>
         <judo-psm-generator-sdk-core-version>1.0.0.20241216_144906_8009d231_develop</judo-psm-generator-sdk-core-version>
 
         <judo-meta-psm-version>1.3.0.20241202_042213_d30645b4_develop</judo-meta-psm-version>
