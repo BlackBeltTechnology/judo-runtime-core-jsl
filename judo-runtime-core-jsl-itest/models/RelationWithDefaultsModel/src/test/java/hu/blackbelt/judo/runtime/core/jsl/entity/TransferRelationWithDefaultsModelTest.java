@@ -265,8 +265,8 @@ public class TransferRelationWithDefaultsModelTest {
     // req - op
 
     // TODO: Creation should throw an error if the required entity relation remains empty in the transfer optional.
-    //  @Test
-    @Disabled()
+    @Test
+    @Disabled("https://blackbelt.atlassian.net/browse/JNG-6083")
     public void singleRequiredRelationOptionalTransfer() {
         // shortname
         CollectorWithSingleRequiredRelationOptionalTransferDao collectorDao = collectorWithSingleRequiredRelationOptionalTransferDao;
@@ -358,7 +358,6 @@ public class TransferRelationWithDefaultsModelTest {
     // req - req
 
     @Test
-    @Disabled()
     public void singleRequiredRelationRequiredTransfer() {
         // shortname
         CollectorWithSingleRequiredRelationRequiredTransferDao collectorDao = collectorWithSingleRequiredRelationRequiredTransferDao;
