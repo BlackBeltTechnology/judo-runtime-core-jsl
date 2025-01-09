@@ -73,8 +73,16 @@ entity CollectorWithSingleOptionalDefaultRelation {
     relation Item optItem default: Item.all().filter(i | i.number < 4).any();
 }
 
-// optional entity with default
+// inherited relation default
+entity CollectorWithSingleOptionalDefaultRelationExtended extends CollectorWithSingleOptionalDefaultRelation {
+}
 
+// required entity with default
 entity CollectorWithSingleRequiredDefaultRelation {
     relation Item reqItem default: Item.all().filter(i | i.number < 4).any() required;
 }
+
+// inherited relation default
+entity CollectorWithSingleRequiredDefaultRelationExtended extends CollectorWithSingleRequiredDefaultRelation {
+}
+
