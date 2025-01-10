@@ -21,6 +21,18 @@ package hu.blackbelt.judo.runtime.core.jsl.entity;
  */
 
 import com.google.inject.Inject;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.relationwithdefaultsmodel.relationwithdefaultsmodel.collectorwithsingleoptionaldefaultrelationoptionaldefaulttransfer.CollectorWithSingleOptionalDefaultRelationOptionalDefaultTransfer;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.relationwithdefaultsmodel.relationwithdefaultsmodel.collectorwithsingleoptionaldefaultrelationoptionaldefaulttransfer.CollectorWithSingleOptionalDefaultRelationOptionalDefaultTransferDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.relationwithdefaultsmodel.relationwithdefaultsmodel.collectorwithsingleoptionaldefaultrelationoptionaldefaulttransfer.CollectorWithSingleOptionalDefaultRelationOptionalDefaultTransferForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.relationwithdefaultsmodel.relationwithdefaultsmodel.collectorwithsingleoptionaldefaultrelationoptionaltransfer.CollectorWithSingleOptionalDefaultRelationOptionalTransfer;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.relationwithdefaultsmodel.relationwithdefaultsmodel.collectorwithsingleoptionaldefaultrelationoptionaltransfer.CollectorWithSingleOptionalDefaultRelationOptionalTransferDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.relationwithdefaultsmodel.relationwithdefaultsmodel.collectorwithsingleoptionaldefaultrelationoptionaltransfer.CollectorWithSingleOptionalDefaultRelationOptionalTransferForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.relationwithdefaultsmodel.relationwithdefaultsmodel.collectorwithsingleoptionaldefaultrelationrequireddefaulttransfer.CollectorWithSingleOptionalDefaultRelationRequiredDefaultTransfer;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.relationwithdefaultsmodel.relationwithdefaultsmodel.collectorwithsingleoptionaldefaultrelationrequireddefaulttransfer.CollectorWithSingleOptionalDefaultRelationRequiredDefaultTransferDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.relationwithdefaultsmodel.relationwithdefaultsmodel.collectorwithsingleoptionaldefaultrelationrequireddefaulttransfer.CollectorWithSingleOptionalDefaultRelationRequiredDefaultTransferForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.relationwithdefaultsmodel.relationwithdefaultsmodel.collectorwithsingleoptionaldefaultrelationrequiredtransfer.CollectorWithSingleOptionalDefaultRelationRequiredTransfer;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.relationwithdefaultsmodel.relationwithdefaultsmodel.collectorwithsingleoptionaldefaultrelationrequiredtransfer.CollectorWithSingleOptionalDefaultRelationRequiredTransferDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.relationwithdefaultsmodel.relationwithdefaultsmodel.collectorwithsingleoptionaldefaultrelationrequiredtransfer.CollectorWithSingleOptionalDefaultRelationRequiredTransferForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.relationwithdefaultsmodel.relationwithdefaultsmodel.collectorwithsingleoptionalrelationoptionaldefaulttransfer.CollectorWithSingleOptionalRelationOptionalDefaultTransfer;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.relationwithdefaultsmodel.relationwithdefaultsmodel.collectorwithsingleoptionalrelationoptionaldefaulttransfer.CollectorWithSingleOptionalRelationOptionalDefaultTransferDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.relationwithdefaultsmodel.relationwithdefaultsmodel.collectorwithsingleoptionalrelationoptionaldefaulttransfer.CollectorWithSingleOptionalRelationOptionalDefaultTransferForCreate;
@@ -47,9 +59,11 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.relationwithdefaultsmod
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.relationwithdefaultsmodel.relationwithdefaultsmodel.itemtransfer.ItemTransfer;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.relationwithdefaultsmodel.relationwithdefaultsmodel.itemtransfer.ItemTransferDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.relationwithdefaultsmodel.relationwithdefaultsmodel.itemtransfer.ItemTransferForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.relationwithdefaultsmodel.relationwithdefaultsmodel.itemtransfer.ItemTransferQueryCustomizer;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.RelationWithDefaultsModelDaoModules;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
+import hu.blackbelt.judo.sdk.query.NumberFilter;
 import hu.blackbelt.judo.sdk.query.StringFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Disabled;
@@ -75,16 +89,16 @@ public class TransferRelationWithDefaultsModelTest {
 
     // Variations
     /*
-    op - op
-    op - op default
-    op - req
-    op - req default
+    opt - opt
+    opt - opt default
+    opt - req
+    opt - req default
      */
 
     @Inject
     CollectorWithSingleOptionalRelationOptionalTransferDao collectorWithSingleOptionalRelationOptionalTransferDao;
 
-    // op - op
+    // opt - opt
 
     @Test
     public void singleOptionalRelationOptionalTransferTest() {
@@ -93,7 +107,7 @@ public class TransferRelationWithDefaultsModelTest {
 
         CollectorWithSingleOptionalRelationOptionalTransfer collector = collectorDao.create(CollectorWithSingleOptionalRelationOptionalTransferForCreate.builder().build());
 
-        assertTrue(collectorDao.queryOpItem(collector).isEmpty());
+        assertTrue(collectorDao.queryOptItem(collector).isEmpty());
 
     }
 
@@ -101,7 +115,7 @@ public class TransferRelationWithDefaultsModelTest {
     CollectorWithSingleOptionalRelationOptionalDefaultTransferDao collectorWithSingleOptionalDefaultRelationTransferDao;
 
 
-    // op - op default
+    // opt - opt default
 
     @Test
     public void singleOptionalRelationOptionalDefaultTransferTest() {
@@ -112,58 +126,58 @@ public class TransferRelationWithDefaultsModelTest {
         ItemTransfer item = itemTransferDao.create(ItemTransferForCreate.builder().withName("A").withNumber(1).build());
         CollectorWithSingleOptionalRelationOptionalDefaultTransfer collector = collectorDao.create(CollectorWithSingleOptionalRelationOptionalDefaultTransferForCreate.builder().build());
 
-        assertEquals(item.identifier(), collectorDao.queryOpItem(collector).orElseThrow().identifier());
+        assertEquals(item.identifier(), collectorDao.queryOptItem(collector).orElseThrow().identifier());
 
         // Default element is undefined and no value added during the creation
         itemTransferDao.delete(item);
         collector = collectorDao.create(CollectorWithSingleOptionalRelationOptionalDefaultTransferForCreate.builder().build());
 
-        assertTrue(collectorDao.queryOpItem(collector).isEmpty());
+        assertTrue(collectorDao.queryOptItem(collector).isEmpty());
 
         // No matching default element and no value added during the creation
         item = itemTransferDao.create(ItemTransferForCreate.builder().withName("A").withNumber(5).build());
         collector = collectorDao.create(CollectorWithSingleOptionalRelationOptionalDefaultTransferForCreate.builder().build());
 
-        assertTrue(collectorDao.queryOpItem(collector).isEmpty());
+        assertTrue(collectorDao.queryOptItem(collector).isEmpty());
 
         itemTransferDao.delete(item);
 
         // Default element is not undefined and value added during the creation
         item = itemTransferDao.create(ItemTransferForCreate.builder().withName("A").withNumber(1).build());
         collector = collectorDao.create(CollectorWithSingleOptionalRelationOptionalDefaultTransferForCreate.builder()
-                .withOpItem(ItemTransfer.builder().withName("A1").withNumber(11).build())
+                .withOptItem(ItemTransfer.builder().withName("A1").withNumber(11).build())
                 .build()
         );
         ItemTransfer itemA1 = itemTransferDao.query().filterByName(StringFilter.equalTo("A1")).selectOne().orElseThrow();
-        assertEquals(itemA1.identifier(), collectorDao.queryOpItem(collector).orElseThrow().identifier());
+        assertEquals(itemA1.identifier(), collectorDao.queryOptItem(collector).orElseThrow().identifier());
 
         itemTransferDao.deleteAll(item, itemA1);
 
         // Default element is undefined and value added during the creation
         collector = collectorDao.create(CollectorWithSingleOptionalRelationOptionalDefaultTransferForCreate.builder()
-                .withOpItem(ItemTransfer.builder().withName("A1").withNumber(11).build())
+                .withOptItem(ItemTransfer.builder().withName("A1").withNumber(11).build())
                 .build()
         );
         itemA1 = itemTransferDao.query().filterByName(StringFilter.equalTo("A1")).selectOne().orElseThrow();
-        assertEquals(itemA1.identifier(), collectorDao.queryOpItem(collector).orElseThrow().identifier());
+        assertEquals(itemA1.identifier(), collectorDao.queryOptItem(collector).orElseThrow().identifier());
 
         itemTransferDao.delete(itemA1);
 
         // No matching default element and value added during the creation
         item = itemTransferDao.create(ItemTransferForCreate.builder().withName("A").withNumber(5).build());
         collector = collectorDao.create(CollectorWithSingleOptionalRelationOptionalDefaultTransferForCreate.builder()
-                .withOpItem(ItemTransfer.builder().withName("A1").withNumber(11).build())
+                .withOptItem(ItemTransfer.builder().withName("A1").withNumber(11).build())
                 .build()
         );
         itemA1 = itemTransferDao.query().filterByName(StringFilter.equalTo("A1")).selectOne().orElseThrow();
-        assertEquals(itemA1.identifier(), collectorDao.queryOpItem(collector).orElseThrow().identifier());
+        assertEquals(itemA1.identifier(), collectorDao.queryOptItem(collector).orElseThrow().identifier());
 
     }
 
     @Inject
     CollectorWithSingleOptionalRelationRequiredTransferDao singleOptionalRelationRequiredTransferDao;
 
-    // op - req
+    // opt - req
 
     @Test
     public void singleRequiredRelationRequiredTransferTest() {
@@ -182,7 +196,7 @@ public class TransferRelationWithDefaultsModelTest {
     @Inject
     CollectorWithSingleOptionalRelationRequiredDefaultTransferDao collectorWithSingleOptionalRelationRequiredDefaultTransferDao;
 
-    // op - req default
+    // opt - req default
 
     @Test
     public void singleOptionalRelationRequiredDefaultTransferTest() {
@@ -250,8 +264,8 @@ public class TransferRelationWithDefaultsModelTest {
 
     // Variations
     /*
-    req - op
-    req - op default
+    req - opt
+    req - opt default
     req - req
     req - req default
      */
@@ -262,7 +276,7 @@ public class TransferRelationWithDefaultsModelTest {
     @Inject
     CollectorWithSingleRequiredRelationDao collectorWithSingleRequiredRelationDao;
 
-    // req - op
+    // req - opt
 
     // TODO: Creation should throw an error if the required entity relation remains empty in the transfer optional.
     @Test
@@ -274,7 +288,7 @@ public class TransferRelationWithDefaultsModelTest {
         // Should throw error
         CollectorWithSingleRequiredRelationOptionalTransfer collector = collectorDao.create(CollectorWithSingleRequiredRelationOptionalTransferForCreate.builder().build());
 
-        assertTrue(collectorDao.queryOpItem(collector).isEmpty());
+        assertTrue(collectorDao.queryOptItem(collector).isEmpty());
 
         // Empty query result for required reference: reqItem
         collectorWithSingleRequiredRelationDao.queryReqItem((UUID) collector.identifier().getIdentifier());
@@ -285,7 +299,7 @@ public class TransferRelationWithDefaultsModelTest {
     @Inject
     CollectorWithSingleRequiredRelationOptionalDefaultTransferDao collectorWithSingleRequiredRelationOptionalDefaultTransferDao;
 
-    // req - op default
+    // req - opt default
 
     @Test
     public void singleRequiredRelationOptionalDefaultTransferTest() {
@@ -296,24 +310,26 @@ public class TransferRelationWithDefaultsModelTest {
         ItemTransfer item = itemTransferDao.create(ItemTransferForCreate.builder().withName("A").withNumber(1).build());
         CollectorWithSingleRequiredRelationOptionalDefaultTransfer collector = collectorDao.create(CollectorWithSingleRequiredRelationOptionalDefaultTransferForCreate.builder().build());
 
-        assertEquals(item.identifier(), collectorDao.queryOpItem(collector).orElseThrow().identifier());
+        assertEquals(item.identifier(), collectorDao.queryOptItem(collector).orElseThrow().identifier());
 
         // Default element is undefined and no value added during the creation
         collectorDao.delete(collector);
         itemTransferDao.delete(item);
         // TODO Should throw error
+        // TODO JNG-6083
         collector = collectorDao.create(CollectorWithSingleRequiredRelationOptionalDefaultTransferForCreate.builder().build());
 
-        //assertTrue(collectorDao.queryOpItem(collector).isEmpty());
+        //assertTrue(collectorDao.queryOptItem(collector).isEmpty());
         // Empty query result for required reference: reqItem
         //collectorWithSingleRequiredRelationDao.queryReqItem((UUID) collector.identifier().getIdentifier());
 
         // No matching default element and no value added during the creation
         item = itemTransferDao.create(ItemTransferForCreate.builder().withName("A").withNumber(5).build());
         // TODO Should throw error
+        // TODO JNG-6083
         collector = collectorDao.create(CollectorWithSingleRequiredRelationOptionalDefaultTransferForCreate.builder().build());
 
-        //assertTrue(collectorDao.queryOpItem(collector).isEmpty());
+        //assertTrue(collectorDao.queryOptItem(collector).isEmpty());
         //collectorWithSingleRequiredRelationDao.queryReqItem((UUID) collector.identifier().getIdentifier());
 
         itemTransferDao.delete(item);
@@ -321,22 +337,22 @@ public class TransferRelationWithDefaultsModelTest {
         // Default element is not undefined and value added during the creation
         item = itemTransferDao.create(ItemTransferForCreate.builder().withName("A").withNumber(1).build());
         collector = collectorDao.create(CollectorWithSingleRequiredRelationOptionalDefaultTransferForCreate.builder()
-                .withOpItem(ItemTransfer.builder().withName("A1").withNumber(11).build())
+                .withOptItem(ItemTransfer.builder().withName("A1").withNumber(11).build())
                 .build()
         );
         ItemTransfer itemA1 = itemTransferDao.query().filterByName(StringFilter.equalTo("A1")).selectOne().orElseThrow();
-        assertEquals(itemA1.identifier(), collectorDao.queryOpItem(collector).orElseThrow().identifier());
+        assertEquals(itemA1.identifier(), collectorDao.queryOptItem(collector).orElseThrow().identifier());
 
         collectorDao.delete(collector);
         itemTransferDao.deleteAll(item, itemA1);
 
         // Default element is undefined and value added during the creation
         collector = collectorDao.create(CollectorWithSingleRequiredRelationOptionalDefaultTransferForCreate.builder()
-                .withOpItem(ItemTransfer.builder().withName("A1").withNumber(11).build())
+                .withOptItem(ItemTransfer.builder().withName("A1").withNumber(11).build())
                 .build()
         );
         itemA1 = itemTransferDao.query().filterByName(StringFilter.equalTo("A1")).selectOne().orElseThrow();
-        assertEquals(itemA1.identifier(), collectorDao.queryOpItem(collector).orElseThrow().identifier());
+        assertEquals(itemA1.identifier(), collectorDao.queryOptItem(collector).orElseThrow().identifier());
 
         collectorDao.delete(collector);
         itemTransferDao.delete(itemA1);
@@ -344,11 +360,11 @@ public class TransferRelationWithDefaultsModelTest {
         // No matching default element and value added during the creation
         item = itemTransferDao.create(ItemTransferForCreate.builder().withName("A").withNumber(5).build());
         collector = collectorDao.create(CollectorWithSingleRequiredRelationOptionalDefaultTransferForCreate.builder()
-                .withOpItem(ItemTransfer.builder().withName("A1").withNumber(11).build())
+                .withOptItem(ItemTransfer.builder().withName("A1").withNumber(11).build())
                 .build()
         );
         itemA1 = itemTransferDao.query().filterByName(StringFilter.equalTo("A1")).selectOne().orElseThrow();
-        assertEquals(itemA1.identifier(), collectorDao.queryOpItem(collector).orElseThrow().identifier());
+        assertEquals(itemA1.identifier(), collectorDao.queryOptItem(collector).orElseThrow().identifier());
 
     }
 
@@ -440,5 +456,298 @@ public class TransferRelationWithDefaultsModelTest {
 //        itemTransferDao.delete(itemA1);
 
     }
+
+    @Inject
+    CollectorWithSingleOptionalDefaultRelationOptionalTransferDao collectorWithSingleOptionalDefaultRelationOptionalTransferDao;
+
+    // Variations
+    /*
+    opt default - opt
+    opt default - opt default
+    opt default - req
+    opt default - req default
+     */
+
+    // opt default - opt
+
+    @Test
+    public void SingleOptionalDefaultRelationOptionalTransferTest() {
+        CollectorWithSingleOptionalDefaultRelationOptionalTransferDao collectorDao = collectorWithSingleOptionalDefaultRelationOptionalTransferDao;
+
+        // Default element is not undefined and no value added during the creation
+        ItemTransfer item = itemTransferDao.create(ItemTransferForCreate.builder().withName("A").withNumber(1).build());
+        CollectorWithSingleOptionalDefaultRelationOptionalTransfer collector = collectorDao.create(CollectorWithSingleOptionalDefaultRelationOptionalTransferForCreate.builder().build());
+
+        assertEquals(item.identifier(), collectorDao.queryOptItem(collector).orElseThrow().identifier());
+
+        // Default element is undefined and no value added during the creation
+        itemTransferDao.delete(item);
+        collector = collectorDao.create(CollectorWithSingleOptionalDefaultRelationOptionalTransferForCreate.builder().build());
+
+        assertTrue(collectorDao.queryOptItem(collector).isEmpty());
+
+        // No matching default element and no value added during the creation
+        item = itemTransferDao.create(ItemTransferForCreate.builder().withName("A").withNumber(5).build());
+        collector = collectorDao.create(CollectorWithSingleOptionalDefaultRelationOptionalTransferForCreate.builder().build());
+
+        assertTrue(collectorDao.queryOptItem(collector).isEmpty());
+
+        itemTransferDao.delete(item);
+
+        // Default element is not undefined and value added during the creation
+        item = itemTransferDao.create(ItemTransferForCreate.builder().withName("A").withNumber(1).build());
+        collector = collectorDao.create(CollectorWithSingleOptionalDefaultRelationOptionalTransferForCreate.builder()
+                .withOptItem(ItemTransfer.builder().withName("A1").withNumber(11).build())
+                .build()
+        );
+        ItemTransfer itemA1 = itemTransferDao.query().filterByName(StringFilter.equalTo("A1")).selectOne().orElseThrow();
+        assertEquals(itemA1.identifier(), collectorDao.queryOptItem(collector).orElseThrow().identifier());
+
+        itemTransferDao.deleteAll(item, itemA1);
+
+        // Default element is undefined and value added during the creation
+        collector = collectorDao.create(CollectorWithSingleOptionalDefaultRelationOptionalTransferForCreate.builder()
+                .withOptItem(ItemTransfer.builder().withName("A1").withNumber(11).build())
+                .build()
+        );
+        itemA1 = itemTransferDao.query().filterByName(StringFilter.equalTo("A1")).selectOne().orElseThrow();
+        assertEquals(itemA1.identifier(), collectorDao.queryOptItem(collector).orElseThrow().identifier());
+
+        itemTransferDao.delete(itemA1);
+
+        // No matching default element and value added during the creation
+        item = itemTransferDao.create(ItemTransferForCreate.builder().withName("A").withNumber(5).build());
+        collector = collectorDao.create(CollectorWithSingleOptionalDefaultRelationOptionalTransferForCreate.builder()
+                .withOptItem(ItemTransfer.builder().withName("A1").withNumber(11).build())
+                .build()
+        );
+        itemA1 = itemTransferDao.query().filterByName(StringFilter.equalTo("A1")).selectOne().orElseThrow();
+        assertEquals(itemA1.identifier(), collectorDao.queryOptItem(collector).orElseThrow().identifier());
+
+    }
+
+    @Inject
+    CollectorWithSingleOptionalDefaultRelationOptionalDefaultTransferDao collectorWithSingleOptionalDefaultRelationOptionalDefaultTransferDao;
+
+    // opt default - opt default
+
+    @Test
+    public void SingleOptionalDefaultRelationOptionalDefaultTransferTest() {
+        CollectorWithSingleOptionalDefaultRelationOptionalDefaultTransferDao collectorDao = collectorWithSingleOptionalDefaultRelationOptionalDefaultTransferDao;
+
+        // Default element is not undefined and no value added during the creation
+        ItemTransfer item = itemTransferDao.create(ItemTransferForCreate.builder().withName("A1").withNumber(1).build());
+        CollectorWithSingleOptionalDefaultRelationOptionalDefaultTransfer collector = collectorDao.create(CollectorWithSingleOptionalDefaultRelationOptionalDefaultTransferForCreate.builder().build());
+
+        assertEquals(item.identifier(), collectorDao.queryOptItem(collector).orElseThrow().identifier());
+
+        // Default element is undefined and no value added during the creation
+        itemTransferDao.delete(item);
+        collector = collectorDao.create(CollectorWithSingleOptionalDefaultRelationOptionalDefaultTransferForCreate.builder().build());
+
+        assertTrue(collectorDao.queryOptItem(collector).isEmpty());
+
+        // No matching default element and no value added during the creation
+        item = itemTransferDao.create(ItemTransferForCreate.builder().withName("A").withNumber(1).build());
+        collector = collectorDao.create(CollectorWithSingleOptionalDefaultRelationOptionalDefaultTransferForCreate.builder().build());
+
+        //TODO should be null instead of entity default
+        // TODO JNG-6106
+        //assertTrue(collectorDao.queryOptItem(collector).isEmpty());
+
+        itemTransferDao.delete(item);
+
+        // Default element is not undefined and value added during the creation
+        item = itemTransferDao.create(ItemTransferForCreate.builder().withName("A1").withNumber(1).build());
+        collector = collectorDao.create(CollectorWithSingleOptionalDefaultRelationOptionalDefaultTransferForCreate.builder()
+                .withOptItem(ItemTransfer.builder().withName("A1").withNumber(11).build())
+                .build()
+        );
+        ItemTransfer itemA1 = itemTransferDao.query().filterByName(StringFilter.equalTo("A1")).filterByNumber(NumberFilter.equalTo(11)).selectOne().orElseThrow();
+        assertEquals(itemA1.identifier(), collectorDao.queryOptItem(collector).orElseThrow().identifier());
+
+        itemTransferDao.deleteAll(item, itemA1);
+
+        // Default element is undefined and value added during the creation
+        collector = collectorDao.create(CollectorWithSingleOptionalDefaultRelationOptionalDefaultTransferForCreate.builder()
+                .withOptItem(ItemTransfer.builder().withName("A1").withNumber(11).build())
+                .build()
+        );
+        itemA1 = itemTransferDao.query().filterByName(StringFilter.equalTo("A1")).selectOne().orElseThrow();
+        assertEquals(itemA1.identifier(), collectorDao.queryOptItem(collector).orElseThrow().identifier());
+
+        itemTransferDao.delete(itemA1);
+
+        // No matching default element and value added during the creation
+        item = itemTransferDao.create(ItemTransferForCreate.builder().withName("A").withNumber(5).build());
+        collector = collectorDao.create(CollectorWithSingleOptionalDefaultRelationOptionalDefaultTransferForCreate.builder()
+                .withOptItem(ItemTransfer.builder().withName("A1").withNumber(11).build())
+                .build()
+        );
+        itemA1 = itemTransferDao.query().filterByName(StringFilter.equalTo("A1")).selectOne().orElseThrow();
+        assertEquals(itemA1.identifier(), collectorDao.queryOptItem(collector).orElseThrow().identifier());
+
+    }
+
+    @Inject
+    CollectorWithSingleOptionalDefaultRelationRequiredTransferDao collectorWithSingleOptionalDefaultRelationRequiredTransferDao;
+
+    // opt default - req
+
+    @Test
+    @Disabled("JNG-6103")
+    // TODO should refactor after default rework
+    public void SingleOptionalDefaultRelationRequiredTransferTest() {
+        // shortname
+        CollectorWithSingleOptionalDefaultRelationRequiredTransferDao collectorDao = collectorWithSingleOptionalDefaultRelationRequiredTransferDao;
+
+        // Default element is not undefined and no value added during the creation
+        ItemTransfer item = itemTransferDao.create(ItemTransferForCreate.builder().withName("A").withNumber(1).build());
+
+        // TODO should use the entity default here, instead of validation error
+        // TODO JNG-6104
+        CollectorWithSingleOptionalDefaultRelationRequiredTransfer collector = collectorDao.create(CollectorWithSingleOptionalDefaultRelationRequiredTransferForCreate.builder().build());
+
+        assertEquals(item.identifier(), collectorDao.queryReqItem(collector).identifier());
+
+        // Default element is undefined and no value added during the creation
+        collectorDao.delete(collector);
+        itemTransferDao.delete(item);
+
+        // Error
+        IllegalStateException thrown = assertThrows(IllegalStateException.class, () -> collectorDao.create(CollectorWithSingleOptionalDefaultRelationRequiredTransferForCreate.builder().build()));
+        assertTrue(thrown.getMessage().contains("Default reference value is undefined"));
+
+        // No matching default element and no value added during the creation // Error
+        item = itemTransferDao.create(ItemTransferForCreate.builder().withName("A").withNumber(5).build());
+        thrown = assertThrows(IllegalStateException.class, () -> collectorDao.create(CollectorWithSingleOptionalDefaultRelationRequiredTransferForCreate.builder().build()));
+        assertTrue(thrown.getMessage().contains("Default reference value is undefined"));
+
+        itemTransferDao.delete(item);
+        // Default element is not undefined and value added during the creation
+        item = itemTransferDao.create(ItemTransferForCreate.builder().withName("A").withNumber(1).build());
+        collector = collectorDao.create(CollectorWithSingleOptionalDefaultRelationRequiredTransferForCreate.builder()
+                .withReqItem(ItemTransfer.builder().withName("A1").withNumber(11).build())
+                .build()
+        );
+
+        ItemTransferQueryCustomizer filterItemA1 = itemTransferDao.query().filterByName(StringFilter.equalTo("A1")).filterByNumber(NumberFilter.equalTo(11));
+        ItemTransfer itemA1 = filterItemA1.selectOne().orElseThrow();
+        assertEquals(itemA1.identifier(), collectorDao.queryReqItem(collector).identifier());
+
+        collectorDao.delete(collector);
+        itemTransferDao.deleteAll(item, itemA1);
+
+        // Default element is undefined and value added during the creation
+        // TODO Default is undefined, IllegalStateException Default reference value is undefined
+        // TODO JNG-4194
+//        collector = collectorDao.create(CollectorWithSingleOptionalDefaultRelationRequiredTransferForCreate.builder()
+//                .withReqItem(ItemTransfer.builder().withName("A1").withNumber(11).build())
+//                .build()
+//        );
+//
+//        itemA1 = filterItemA1.selectOne().orElseThrow();
+//        assertEquals(itemA1.identifier(), collectorDao.queryReqItem(collector).identifier());
+//        itemTransferDao.delete(itemA1);
+
+        // TODO Default is undefined, IllegalStateException Default reference value is undefined
+        // TODO JNG-4194
+        // No matching default element and value added during the creation
+//        item = itemTransferDao.create(ItemTransferForCreate.builder().withName("A").withNumber(5).build());
+//        collector = collectorDao.create(CollectorWithSingleOptionalDefaultRelationRequiredTransferForCreate.builder()
+//                .withReqItem(ItemTransfer.builder().withName("A1").withNumber(11).build())
+//                .build()
+//        );
+//
+//        itemA1 = filterItemA1.selectOne().orElseThrow();
+//        assertEquals(itemA1.identifier(), collectorDao.queryReqItem(collector).identifier());
+//        itemTransferDao.delete(itemA1);
+
+    }
+
+    @Inject
+    CollectorWithSingleOptionalDefaultRelationRequiredDefaultTransferDao collectorWithSingleOptionalDefaultRelationRequiredDefaultTransferDao;
+
+    // opt default - req
+
+    @Test
+    public void SingleOptionalDefaultRelationRequiredDefaultTransferTest() {
+        // shortname
+        CollectorWithSingleOptionalDefaultRelationRequiredDefaultTransferDao collectorDao = collectorWithSingleOptionalDefaultRelationRequiredDefaultTransferDao;
+
+        // Default element is not undefined and no value added during the creation
+        ItemTransfer item = itemTransferDao.create(ItemTransferForCreate.builder().withName("A1").withNumber(1).build());
+
+        // TODO should use the entity default here, instead of validation error
+        // TODO JNG-6104
+        CollectorWithSingleOptionalDefaultRelationRequiredDefaultTransfer collector = collectorDao.create(CollectorWithSingleOptionalDefaultRelationRequiredDefaultTransferForCreate.builder().build());
+
+        assertEquals(item.identifier(), collectorDao.queryReqItem(collector).identifier());
+
+        // Default element is undefined and no value added during the creation
+        collectorDao.delete(collector);
+        itemTransferDao.delete(item);
+
+        // Error
+        IllegalStateException thrown = assertThrows(IllegalStateException.class, () -> collectorDao.create(CollectorWithSingleOptionalDefaultRelationRequiredDefaultTransferForCreate.builder().build()));
+        assertTrue(thrown.getMessage().contains("Default reference value is undefined"));
+
+        // No matching default element and no value added during the creation // Error
+        item = itemTransferDao.create(ItemTransferForCreate.builder().withName("A").withNumber(5).build());
+        thrown = assertThrows(IllegalStateException.class, () -> collectorDao.create(CollectorWithSingleOptionalDefaultRelationRequiredDefaultTransferForCreate.builder().build()));
+        assertTrue(thrown.getMessage().contains("Default reference value is undefined"));
+
+        itemTransferDao.delete(item);
+        // Default element is not undefined and value added during the creation
+        item = itemTransferDao.create(ItemTransferForCreate.builder().withName("A1").withNumber(1).build());
+        collector = collectorDao.create(CollectorWithSingleOptionalDefaultRelationRequiredDefaultTransferForCreate.builder()
+                .withReqItem(ItemTransfer.builder().withName("A1").withNumber(11).build())
+                .build()
+        );
+
+        ItemTransferQueryCustomizer filterItemA1 = itemTransferDao.query().filterByName(StringFilter.equalTo("A1")).filterByNumber(NumberFilter.equalTo(11));
+        ItemTransfer itemA1 = filterItemA1.selectOne().orElseThrow();
+        assertEquals(itemA1.identifier(), collectorDao.queryReqItem(collector).identifier());
+
+        collectorDao.delete(collector);
+        itemTransferDao.deleteAll(item, itemA1);
+
+        // Default element is undefined and value added during the creation
+        // TODO Default is undefined, IllegalStateException Default reference value is undefined
+        // TODO JNG-4194
+//        collector = collectorDao.create(CollectorWithSingleOptionalDefaultRelationRequiredDefaultTransferForCreate.builder()
+//                .withReqItem(ItemTransfer.builder().withName("A1").withNumber(11).build())
+//                .build()
+//        );
+//
+//        itemA1 = filterItemA1.selectOne().orElseThrow();
+//        assertEquals(itemA1.identifier(), collectorDao.queryReqItem(collector).identifier());
+//        itemTransferDao.delete(itemA1);
+
+        // TODO Default is undefined, IllegalStateException Default reference value is undefined
+        // TODO JNG-4194
+        // No matching default element and value added during the creation
+//        item = itemTransferDao.create(ItemTransferForCreate.builder().withName("A").withNumber(5).build());
+//        collector = collectorDao.create(CollectorWithSingleOptionalDefaultRelationRequiredDefaultTransferForCreate.builder()
+//                .withReqItem(ItemTransfer.builder().withName("A1").withNumber(11).build())
+//                .build()
+//        );
+//
+//        itemA1 = filterItemA1.selectOne().orElseThrow();
+//        assertEquals(itemA1.identifier(), collectorDao.queryReqItem(collector).identifier());
+//        itemTransferDao.delete(itemA1);
+
+    }
+
+    // TODO Should add after or during the default rework
+    // TODO JNG-6105
+    // Variations
+    /*
+    req default - opt
+    req default - opt default
+    req default - req
+    req default - req default
+     */
+
 
 }
