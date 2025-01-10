@@ -316,6 +316,7 @@ public class TransferRelationWithDefaultsModelTest {
         collectorDao.delete(collector);
         itemTransferDao.delete(item);
         // TODO Should throw error
+        // TODO JNG-6083
         collector = collectorDao.create(CollectorWithSingleRequiredRelationOptionalDefaultTransferForCreate.builder().build());
 
         //assertTrue(collectorDao.queryOptItem(collector).isEmpty());
@@ -325,6 +326,7 @@ public class TransferRelationWithDefaultsModelTest {
         // No matching default element and no value added during the creation
         item = itemTransferDao.create(ItemTransferForCreate.builder().withName("A").withNumber(5).build());
         // TODO Should throw error
+        // TODO JNG-6083
         collector = collectorDao.create(CollectorWithSingleRequiredRelationOptionalDefaultTransferForCreate.builder().build());
 
         //assertTrue(collectorDao.queryOptItem(collector).isEmpty());
@@ -549,7 +551,8 @@ public class TransferRelationWithDefaultsModelTest {
         item = itemTransferDao.create(ItemTransferForCreate.builder().withName("A").withNumber(1).build());
         collector = collectorDao.create(CollectorWithSingleOptionalDefaultRelationOptionalDefaultTransferForCreate.builder().build());
 
-        //TODO should be null insted of entity default
+        //TODO should be null instead of entity default
+        // TODO JNG-6106
         //assertTrue(collectorDao.queryOptItem(collector).isEmpty());
 
         itemTransferDao.delete(item);
@@ -592,7 +595,7 @@ public class TransferRelationWithDefaultsModelTest {
     // opt default - req
 
     @Test
-    @Disabled
+    @Disabled("JNG-6103")
     // TODO should refactor after default rework
     public void SingleOptionalDefaultRelationRequiredTransferTest() {
         // shortname
@@ -602,6 +605,7 @@ public class TransferRelationWithDefaultsModelTest {
         ItemTransfer item = itemTransferDao.create(ItemTransferForCreate.builder().withName("A").withNumber(1).build());
 
         // TODO should use the entity default here, instead of validation error
+        // TODO JNG-6104
         CollectorWithSingleOptionalDefaultRelationRequiredTransfer collector = collectorDao.create(CollectorWithSingleOptionalDefaultRelationRequiredTransferForCreate.builder().build());
 
         assertEquals(item.identifier(), collectorDao.queryReqItem(collector).identifier());
@@ -675,6 +679,7 @@ public class TransferRelationWithDefaultsModelTest {
         ItemTransfer item = itemTransferDao.create(ItemTransferForCreate.builder().withName("A1").withNumber(1).build());
 
         // TODO should use the entity default here, instead of validation error
+        // TODO JNG-6104
         CollectorWithSingleOptionalDefaultRelationRequiredDefaultTransfer collector = collectorDao.create(CollectorWithSingleOptionalDefaultRelationRequiredDefaultTransferForCreate.builder().build());
 
         assertEquals(item.identifier(), collectorDao.queryReqItem(collector).identifier());
@@ -735,6 +740,7 @@ public class TransferRelationWithDefaultsModelTest {
     }
 
     // TODO Should add after or during the default rework
+    // TODO JNG-6105
     // Variations
     /*
     req default - opt
