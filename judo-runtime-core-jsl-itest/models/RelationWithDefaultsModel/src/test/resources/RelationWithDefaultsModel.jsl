@@ -21,25 +21,25 @@ transfer ItemTransfer(Item i) {
 // optional entity without default
 
 entity CollectorWithSingleOptionalRelation {
-    relation Item opItem;
+    relation Item optItem;
 }
 
 // related transfers (optional, optional with default, required, required with default)
 
 transfer CollectorWithSingleOptionalRelationOptionalTransfer(CollectorWithSingleOptionalRelation c) {
-    relation ItemTransfer opItem <= c.opItem create:true;
+    relation ItemTransfer optItem <= c.optItem create:true;
 }
 
 transfer CollectorWithSingleOptionalRelationOptionalDefaultTransfer(CollectorWithSingleOptionalRelation c) {
-    relation ItemTransfer opItem <= c.opItem create:true default: Item.all().filter(i | i.number < 4).any();
+    relation ItemTransfer optItem <= c.optItem create:true default: Item.all().filter(i | i.number < 4).any();
 }
 
 transfer CollectorWithSingleOptionalRelationRequiredTransfer(CollectorWithSingleOptionalRelation c) {
-    relation ItemTransfer reqItem <= c.opItem required;
+    relation ItemTransfer reqItem <= c.optItem required;
 }
 
 transfer CollectorWithSingleOptionalRelationRequiredDefaultTransfer(CollectorWithSingleOptionalRelation c) {
-    relation ItemTransfer reqItem <= c.opItem create:true default: Item.all().filter(i | i.number < 4).any() required;
+    relation ItemTransfer reqItem <= c.optItem create:true default: Item.all().filter(i | i.number < 4).any() required;
 }
 
 // required entity without default
@@ -51,11 +51,11 @@ entity CollectorWithSingleRequiredRelation {
 // related transfers (optional, optional with default, required, required with default)
 
 transfer CollectorWithSingleRequiredRelationOptionalTransfer(CollectorWithSingleRequiredRelation c) {
-    relation ItemTransfer opItem <= c.reqItem create:true;
+    relation ItemTransfer optItem <= c.reqItem create:true;
 }
 
 transfer CollectorWithSingleRequiredRelationOptionalDefaultTransfer(CollectorWithSingleRequiredRelation c) {
-    relation ItemTransfer opItem <= c.reqItem create:true default: Item.all().filter(i | i.number < 4).any();
+    relation ItemTransfer optItem <= c.reqItem create:true default: Item.all().filter(i | i.number < 4).any();
 }
 
 transfer CollectorWithSingleRequiredRelationRequiredTransfer(CollectorWithSingleRequiredRelation c) {
@@ -75,6 +75,24 @@ entity CollectorWithSingleOptionalDefaultRelation {
 
 // inherited relation default
 entity CollectorWithSingleOptionalDefaultRelationExtended extends CollectorWithSingleOptionalDefaultRelation {
+}
+
+// transfer
+
+transfer CollectorWithSingleOptionalDefaultRelationOptionalTransfer(CollectorWithSingleOptionalDefaultRelation c) {
+    relation ItemTransfer optItem <= c.optItem create:true;
+}
+
+transfer CollectorWithSingleOptionalDefaultRelationOptionalDefaultTransfer(CollectorWithSingleOptionalDefaultRelation c) {
+    relation ItemTransfer optItem <= c.optItem create:true default: Item.all().filter(i | i.name == "A1").any();
+}
+
+transfer CollectorWithSingleOptionalDefaultRelationRequiredTransfer(CollectorWithSingleOptionalDefaultRelation c) {
+    relation ItemTransfer reqItem <= c.optItem create:true required;
+}
+
+transfer CollectorWithSingleOptionalDefaultRelationRequiredDefaultTransfer(CollectorWithSingleOptionalDefaultRelation c) {
+    relation ItemTransfer reqItem <= c.optItem create:true default: Item.all().filter(i | i.name == "A1").any() required;
 }
 
 // required entity with default
