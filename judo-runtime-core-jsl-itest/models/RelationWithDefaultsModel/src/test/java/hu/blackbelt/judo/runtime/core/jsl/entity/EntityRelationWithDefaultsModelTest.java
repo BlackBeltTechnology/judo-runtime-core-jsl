@@ -20,7 +20,10 @@ package hu.blackbelt.judo.runtime.core.jsl.entity;
  * #L%
  */
 
+import java.util.Collection;
+
 import com.google.inject.Inject;
+import hu.blackbelt.judo.dao.api.ValidationResult;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.relationwithdefaultsmodel.relationwithdefaultsmodel.collectorwithsingleoptionaldefaultrelation.CollectorWithSingleOptionalDefaultRelation;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.relationwithdefaultsmodel.relationwithdefaultsmodel.collectorwithsingleoptionaldefaultrelation.CollectorWithSingleOptionalDefaultRelationDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.relationwithdefaultsmodel.relationwithdefaultsmodel.collectorwithsingleoptionaldefaultrelation.CollectorWithSingleOptionalDefaultRelationForCreate;
@@ -37,13 +40,17 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.relationwithdefaultsmod
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.relationwithdefaultsmodel.relationwithdefaultsmodel.item.ItemDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.relationwithdefaultsmodel.relationwithdefaultsmodel.item.ItemForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.RelationWithDefaultsModelDaoModules;
+import hu.blackbelt.judo.runtime.core.exception.ValidationException;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
+import hu.blackbelt.judo.runtime.core.validator.Validator;
 import hu.blackbelt.judo.sdk.query.StringFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Slf4j
 public class EntityRelationWithDefaultsModelTest {
@@ -134,14 +141,16 @@ public class EntityRelationWithDefaultsModelTest {
                 .delete(item);
 
         // Error
-        IllegalStateException thrown = assertThrows(IllegalStateException.class, () -> collectorDao.create(CollectorWithSingleRequiredDefaultRelationForCreate.builder().build()));
-        assertTrue(thrown.getMessage().contains("Default reference value is undefined"));
+        ValidationException validationException =
+                assertThrows(ValidationException.class, () -> collectorDao.create(CollectorWithSingleRequiredDefaultRelationForCreate.builder().build()));
+        assertMissingRequiredRelation(validationException, "reqItem");
 
         // No matching default element and no value added during the creation // Error
         item = itemDao
                 .create(ItemForCreate.builder().withName("A").withNumber(5).build());
-        thrown = assertThrows(IllegalStateException.class, () -> collectorDao.create(CollectorWithSingleRequiredDefaultRelationForCreate.builder().build()));
-        assertTrue(thrown.getMessage().contains("Default reference value is undefined"));
+        ValidationException validationException1 =
+                assertThrows(ValidationException.class, () -> collectorDao.create(CollectorWithSingleRequiredDefaultRelationForCreate.builder().build()));
+        assertMissingRequiredRelation(validationException1, "reqItem");
 
         itemDao
                 .delete(item);
@@ -162,33 +171,29 @@ public class EntityRelationWithDefaultsModelTest {
                 .deleteAll(item, itemA1);
 
         // Default element is undefined and value added during the creation
-        // TODO Default is undefined, IllegalStateException Default reference value is undefined
-        // TODO JNG-4194
-//        collector = collectorDao.create(CollectorWithSingleRequiredDefaultRelationForCreate.builder()
-//                .withReqItem(Item.builder().withName("A1").withNumber(11).build())
-//                .build()
-//        );
-//
-//        itemA1 = itemDao
-//        .query().filterByName(StringFilter.equalTo("A1")).selectOne().orElseThrow();
-//        assertEquals(itemA1.identifier(), collectorDao.queryReqItem(collector).identifier());
-//        itemDao
-//        .delete(itemA1);
+        collector = collectorDao.create(CollectorWithSingleRequiredDefaultRelationForCreate.builder()
+                .withReqItem(Item.builder().withName("A1").withNumber(11).build())
+                .build()
+        );
 
-        // TODO Default is undefined, IllegalStateException Default reference value is undefined
-        // TODO JNG-4194
+        itemA1 = itemDao.query().filterByName(StringFilter.equalTo("A1")).selectOne().orElseThrow();
+        assertEquals(itemA1.identifier(), collectorDao.queryReqItem(collector).identifier());
+
+        collectorDao.delete(collector);
+        itemDao.delete(itemA1);
+
         // No matching default element and value added during the creation
-//        item = itemDao
-//        .create(ItemForCreate.builder().withName("A").withNumber(5).build());
-//        collector = collectorDao.create(CollectorWithSingleRequiredDefaultRelationForCreate.builder()
-//                .withReqItem(Item.builder().withName("A1").withNumber(11).build())
-//                .build()
-//        );
-//
-//        itemA1 = itemDao
-//        .query().filterByName(StringFilter.equalTo("A1")).selectOne().orElseThrow();
-//        assertEquals(itemA1.identifier(), collectorDao.queryReqItem(collector).identifier());
-//        itemDao.delete(itemA1);
+        item = itemDao.create(ItemForCreate.builder().withName("A").withNumber(5).build());
+        collector = collectorDao.create(CollectorWithSingleRequiredDefaultRelationForCreate.builder()
+                .withReqItem(Item.builder().withName("A1").withNumber(11).build())
+                .build()
+        );
+
+        itemA1 = itemDao.query().filterByName(StringFilter.equalTo("A1")).selectOne().orElseThrow();
+        assertEquals(itemA1.identifier(), collectorDao.queryReqItem(collector).identifier());
+
+        collectorDao.delete(collector);
+        itemDao.delete(itemA1);
     }
 
     // Inherited default on entity
@@ -273,14 +278,16 @@ public class EntityRelationWithDefaultsModelTest {
                 .delete(item);
 
         // Error
-        IllegalStateException thrown = assertThrows(IllegalStateException.class, () -> collectorDao.create(CollectorWithSingleRequiredDefaultRelationExtendedForCreate.builder().build()));
-        assertTrue(thrown.getMessage().contains("Default reference value is undefined"));
+        ValidationException validationException =
+                assertThrows(ValidationException.class, () -> collectorDao.create(CollectorWithSingleRequiredDefaultRelationExtendedForCreate.builder().build()));
+        assertMissingRequiredRelation(validationException, "reqItem");
 
         // No matching default element and no value added during the creation // Error
         item = itemDao
                 .create(ItemForCreate.builder().withName("A").withNumber(5).build());
-        thrown = assertThrows(IllegalStateException.class, () -> collectorDao.create(CollectorWithSingleRequiredDefaultRelationExtendedForCreate.builder().build()));
-        assertTrue(thrown.getMessage().contains("Default reference value is undefined"));
+        ValidationException validationException1 =
+                assertThrows(ValidationException.class, () -> collectorDao.create(CollectorWithSingleRequiredDefaultRelationExtendedForCreate.builder().build()));
+        assertMissingRequiredRelation(validationException1, "reqItem");
 
         itemDao
                 .delete(item);
@@ -301,34 +308,39 @@ public class EntityRelationWithDefaultsModelTest {
                 .deleteAll(item, itemA1);
 
         // Default element is undefined and value added during the creation
-        // TODO Default is undefined, IllegalStateException Default reference value is undefined
-        // TODO JNG-4194
-//        collector = collectorDao.create(CollectorWithSingleRequiredDefaultRelationExtendedForCreate.builder()
-//                .withReqItem(Item.builder().withName("A1").withNumber(11).build())
-//                .build()
-//        );
-//
-//        itemA1 = itemDao
-//        .query().filterByName(StringFilter.equalTo("A1")).selectOne().orElseThrow();
-//        assertEquals(itemA1.identifier(), collectorDao.queryReqItem(collector).identifier());
-//        itemDao
-//        .delete(itemA1);
+        collector = collectorDao.create(CollectorWithSingleRequiredDefaultRelationExtendedForCreate.builder()
+                .withReqItem(Item.builder().withName("A1").withNumber(11).build())
+                .build()
+        );
 
-        // TODO Default is undefined, IllegalStateException Default reference value is undefined
-        // TODO JNG-4194
+        itemA1 = itemDao.query().filterByName(StringFilter.equalTo("A1")).selectOne().orElseThrow();
+        assertEquals(itemA1.identifier(), collectorDao.queryReqItem(collector).identifier());
+
+        collectorDao.delete(collector);
+        itemDao.delete(itemA1);
+
         // No matching default element and value added during the creation
-//        item = itemDao
-//        .create(ItemForCreate.builder().withName("A").withNumber(5).build());
-//        collector = collectorDao.create(CollectorWithSingleRequiredDefaultRelationExtendedForCreate.builder()
-//                .withReqItem(Item.builder().withName("A1").withNumber(11).build())
-//                .build()
-//        );
-//
-//        itemA1 = itemDao
-//        .query().filterByName(StringFilter.equalTo("A1")).selectOne().orElseThrow();
-//        assertEquals(itemA1.identifier(), collectorDao.queryReqItem(collector).identifier());
-//        itemDao.delete(itemA1);
+        item = itemDao.create(ItemForCreate.builder().withName("A").withNumber(5).build());
+        collector = collectorDao.create(CollectorWithSingleRequiredDefaultRelationExtendedForCreate.builder()
+                .withReqItem(Item.builder().withName("A1").withNumber(11).build())
+                .build()
+        );
 
+        itemA1 = itemDao.query().filterByName(StringFilter.equalTo("A1")).selectOne().orElseThrow();
+        assertEquals(itemA1.identifier(), collectorDao.queryReqItem(collector).identifier());
+
+        collectorDao.delete(collector);
+        itemDao.delete(itemA1);
+
+    }
+
+    private static void assertMissingRequiredRelation(ValidationException validationException, String name) {
+        Collection<ValidationResult> validationResults = validationException.getValidationResults();
+        assertEquals(1, validationResults.size());
+        ValidationResult validationResult = validationResults.stream().findAny().orElseThrow();
+        assertEquals(Validator.ERROR_MISSING_REQUIRED_RELATION, validationResult.getCode());
+        assertEquals(ValidationResult.Level.ERROR, validationResult.getLevel());
+        assertEquals(name, validationResult.getLocation());
     }
 
 }
