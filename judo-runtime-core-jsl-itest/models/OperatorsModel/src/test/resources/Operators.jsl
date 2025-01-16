@@ -47,7 +47,7 @@ entity DefaultOperators {
     field Scaled onePointNineModOnePointNine default:1.9 mod 1.9;
     field Scaled onePointNineModOne default:1.9 mod 1;
     field Integer oneDivOne default:1 div 1;
-    field Scaled oneDivOnePointNine default:1 div 1.9;
+    field Scaled oneDivOnePointNine default:((1 div 1.9) * 1000).floor() div 1000.0;
     field Scaled onePointNineDivOnePointNine default:1.9 div 1.9;
     field Scaled onePointNineDivOne default:1.9 div 1;
 
