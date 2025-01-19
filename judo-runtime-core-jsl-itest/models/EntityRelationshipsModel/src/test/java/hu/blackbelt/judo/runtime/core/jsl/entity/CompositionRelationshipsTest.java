@@ -64,6 +64,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationship
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityf4.EntityF4ForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityg.EntityG;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityg.EntityGForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityg.EntityGMask;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityh.EntityH;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityh.EntityHDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityh.EntityHForCreate;
@@ -96,7 +97,6 @@ import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
@@ -514,9 +514,7 @@ public class CompositionRelationshipsTest {
     }
 
     @Test
-    @Disabled("JNG-4194")
     void testCompositionWithUndefinedRequiredFields() {
-        // TODO: JNG-4194
         EntityFForCreate fForCreate = EntityFForCreate.builder().build();
 
         // Default attribute value is undefined on required attribute: _name_Default_EntityG
@@ -536,10 +534,9 @@ public class CompositionRelationshipsTest {
 
         EntityF f13 = entityFDao.create(EntityFForCreate.builder().build());
 
-        // Default attribute value is undefined on required attribute: _name_Default_EntityG
-        // TODO: JNG-5046
-        EntityG g13 = entityFDao.createG(f13, EntityGForCreate.builder().withName("Entity").build());
-        f13 = entityFDao.getById(f13.identifier()).orElseThrow();
+        entityFDao.createG(f13, EntityGForCreate.builder().withName("Entity").build());
+        f13 = entityFDao.getById((UUID) f13.identifier().getIdentifier()).orElseThrow();
+        EntityG g13 = f13.getG().orElseThrow();
         assertTrue(g13.getName().equals("Entity"));
         assertTrue(f13.getG().orElseThrow().getName().equals("Entity"));
 
@@ -552,10 +549,10 @@ public class CompositionRelationshipsTest {
         entityHDao.delete(f2.getH().orElseThrow());
 
         EntityF2 f21 = entityF2Dao.create(EntityF2ForCreate.builder().build());
-        EntityH h2 = entityF2Dao.createH(f21, EntityHForCreate.builder().withAlwaysUndefined("Entity").build());
+        entityF2Dao.createH(f21, EntityHForCreate.builder().withAlwaysUndefined("Entity").build());
         f21 = entityF2Dao.getById(f21.identifier()).orElseThrow();
+        EntityH h2 = f21.getH().orElseThrow();
         assertTrue(f21.getH().orElseThrow().getAlwaysUndefined().orElseThrow().equals("Entity"));
-        // TODO: JNG-5046
         assertTrue(h2.getAlwaysUndefined().orElseThrow().equals("Entity"));
         entityHDao.delete(h2);
 
@@ -579,12 +576,13 @@ public class CompositionRelationshipsTest {
         entityHDao.delete(h2);
 
         EntityF3 f32 = entityF3Dao.create(EntityF3ForCreate.builder().build());
-        // Default attribute value is undefined on required attribute: _name_Default_EntityG
-        // TODO: JNG-5046
-        EntityG g3 = entityF3Dao.createG(f32, EntityGForCreate.builder().withName("Entity2").build());
+        entityF3Dao.createG(f32, EntityGForCreate.builder().withName("Entity2").build());
         f32 = entityF3Dao.getById(f32.identifier()).orElseThrow();
+        List<EntityG> f32Gs = f32.getG();
+        assertEquals(1, f32Gs.size());
+        EntityG g3 = f32Gs.stream().findAny().orElseThrow();
         assertTrue(g3.getName().equals("Entity2"));
-        assertTrue(f32.getG().get(0).getName().equals("Entity2"));
+        assertTrue(f32Gs.get(0).getName().equals("Entity2"));
 
         EntityF4ForCreate f4ForCreate = EntityF4ForCreate.builder().build();
 
@@ -594,11 +592,13 @@ public class CompositionRelationshipsTest {
         assertTrue(f4.getH().get(0).getAlwaysUndefined().orElseThrow().equals("Entity"));
 
         EntityF4 f42 = entityF4Dao.create(EntityF4ForCreate.builder().build());
-        EntityH h4 = entityF4Dao.createH(f42, EntityHForCreate.builder().withAlwaysUndefined("Entity").build());
+        entityF4Dao.createH(f42, EntityHForCreate.builder().withAlwaysUndefined("Entity").build());
         f42 = entityF4Dao.getById(f42.identifier()).orElseThrow();
-        // TODO: JNG-5046
+        List<EntityH> f42Hs = f42.getH();
+        assertEquals(1, f42Hs.size());
+        EntityH h4 = f42Hs.stream().findAny().orElseThrow();
         assertTrue(h4.getAlwaysUndefined().orElseThrow().equals("Entity"));
-        assertTrue(f42.getH().get(0).getAlwaysUndefined().orElseThrow().equals("Entity"));
+        assertTrue(f42Hs.get(0).getAlwaysUndefined().orElseThrow().equals("Entity"));
     }
 
     @Test
@@ -987,7 +987,7 @@ public class CompositionRelationshipsTest {
         j1 = entityJDao.getById(j1.identifier()).orElseThrow();
 
         EntityJ finalJ = j;
-        IllegalStateException thrown = Assertions.assertThrows(
+        IllegalStateException thrown = assertThrows(
                 IllegalStateException.class,
                 () -> entityJDao.delete(finalJ)
         );

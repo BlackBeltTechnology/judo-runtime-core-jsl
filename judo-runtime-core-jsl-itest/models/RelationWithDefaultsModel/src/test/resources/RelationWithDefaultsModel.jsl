@@ -104,3 +104,22 @@ entity CollectorWithSingleRequiredDefaultRelation {
 entity CollectorWithSingleRequiredDefaultRelationExtended extends CollectorWithSingleRequiredDefaultRelation {
 }
 
+// transfers
+
+transfer CollectorWithSingleRequiredDefaultRelationOptionalTransfer(CollectorWithSingleRequiredDefaultRelation c) {
+    relation ItemTransfer optItem <= c.reqItem create:true;
+}
+
+transfer CollectorWithSingleRequiredDefaultRelationOptionalDefaultTransfer(CollectorWithSingleRequiredDefaultRelation c) {
+    relation ItemTransfer optItem <= c.reqItem create:true default: Item.all().filter(i | i.name == "A1").any();
+}
+
+transfer CollectorWithSingleRequiredDefaultRelationRequiredTransfer(CollectorWithSingleRequiredDefaultRelation c) {
+    relation ItemTransfer reqItem <= c.reqItem create:true required;
+}
+
+transfer CollectorWithSingleRequiredDefaultRelationRequiredDefaultTransfer(CollectorWithSingleRequiredDefaultRelation c) {
+    relation ItemTransfer reqItem <= c.reqItem create:true default: Item.all().filter(i | i.name == "A1").any() required;
+}
+
+
