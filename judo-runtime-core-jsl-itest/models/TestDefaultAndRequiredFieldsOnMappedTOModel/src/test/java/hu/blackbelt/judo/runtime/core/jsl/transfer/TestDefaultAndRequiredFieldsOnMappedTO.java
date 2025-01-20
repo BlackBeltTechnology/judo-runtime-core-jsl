@@ -1,7 +1,18 @@
 package hu.blackbelt.judo.runtime.core.jsl.transfer;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
 import com.google.inject.Inject;
 import hu.blackbelt.judo.dao.api.ValidationResult;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.entitywithcomposition.EntityWithComposition;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.entitywithcomposition.EntityWithCompositionDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.entitywithcomposition.EntityWithCompositionForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.entitywithcomposition.EntityWithCompositionMask;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.entitywithoptionalfields.EntityWithOptionalFields;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.entitywithoptionalfields.EntityWithOptionalFieldsDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.entitywithoptionalfields.EntityWithOptionalFieldsIdentifier;
@@ -14,7 +25,13 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredf
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.entitywithrequiredfieldswithdefault.EntityWithRequiredFieldsWithDefault;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.entitywithrequiredfieldswithdefault.EntityWithRequiredFieldsWithDefaultDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.entitywithrequiredfieldswithdefault.EntityWithRequiredFieldsWithDefaultIdentifier;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.entitywithrequiredstringwithdefault.EntityWithRequiredStringWithDefault;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.enum_.Enum;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.mappedentitywithcomposition.MappedEntityWithComposition;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.mappedentitywithcomposition.MappedEntityWithCompositionDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.mappedentitywithcomposition.MappedEntityWithCompositionForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.mappedentitywithcomposition.MappedEntityWithCompositionMask;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.mappedentitywithrequiredstringwithdefault.MappedEntityWithRequiredStringWithDefault;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.querystringattribute.QueryStringAttributeDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.transfermapsfieldtwice.TransferMapsFieldTwice;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.testdefaultandrequiredfieldsonmappedto.testdefaultandrequiredfieldsonmappedto.transfermapsfieldtwice.TransferMapsFieldTwiceDao;
@@ -90,12 +107,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Slf4j
 public class TestDefaultAndRequiredFieldsOnMappedTO {
@@ -111,7 +125,6 @@ public class TestDefaultAndRequiredFieldsOnMappedTO {
 
     @Inject
     TransferWithOptionalFieldsWithDefaultMapsEntityWithOptionalFieldsDao transferWithOptionalFieldsWithDefaultMapsEntityWithOptionalFieldsDao;
-
 
     @Inject
     TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsDao transferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsDao;
@@ -131,7 +144,6 @@ public class TestDefaultAndRequiredFieldsOnMappedTO {
     @Inject
     TransferWithOptionalFieldsMapsEntityWithRequiredFieldsDao transferWithOptionalFieldsMapsEntityWithRequiredFieldsDao;
 
-
     @Inject
     TransferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsDao transferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsDao;
 
@@ -143,6 +155,7 @@ public class TestDefaultAndRequiredFieldsOnMappedTO {
 
     @Inject
     TransferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsDao transferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsDao;
+
     @Inject
     TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsDao transferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsDao;
 
@@ -169,6 +182,7 @@ public class TestDefaultAndRequiredFieldsOnMappedTO {
 
     @Inject
     EntityWithRequiredFieldsWithDefaultDao entityWithRequiredFieldsWithDefaultDao;
+
     @Inject
     TransferWithOptionalFieldsMapsEntityWithRequiredFieldsWithDefaultDao transferWithOptionalFieldsMapsEntityWithRequiredFieldsWithDefaultDao;
 
@@ -192,6 +206,12 @@ public class TestDefaultAndRequiredFieldsOnMappedTO {
 
     @Inject
     TransferMapsFieldTwiceDao transferMapsFieldTwiceDao;
+
+    @Inject
+    EntityWithCompositionDao entityWithCompositionDao;
+
+    @Inject
+    MappedEntityWithCompositionDao mappedEntityWithCompositionDao;
 
     /**
      * This test check the mapped transfer object maps an entity with contains primitive optional field.
@@ -1408,4 +1428,76 @@ public class TestDefaultAndRequiredFieldsOnMappedTO {
         assertEquals(Optional.of(1), transferMapsFieldTwice.getIntAttr());
         assertEquals(1, transferMapsFieldTwice.getIntegerAttr());
     }
+
+    @Test
+    void testCreateWithUpdate() {
+        /////////////////////////////////////////
+        // ENTITY
+        EntityWithComposition ewc = entityWithCompositionDao.create(EntityWithCompositionForCreate.create());
+
+        // with update call create 2 composition instances of which one with default value
+        ewc.getEntityWithRequiredStringWithDefaults().addAll(List.of(
+                EntityWithRequiredStringWithDefault.builder().withStr("other").build(),
+                EntityWithRequiredStringWithDefault.builder().build()
+        ));
+        entityWithCompositionDao.update(ewc, EntityWithCompositionMask.entityWithCompositionMask());
+
+        ewc = entityWithCompositionDao.getById((UUID) ewc.identifier().getIdentifier()).orElseThrow();
+        List<EntityWithRequiredStringWithDefault> ewrswd = ewc.getEntityWithRequiredStringWithDefaults();
+        assertEquals(2, ewrswd.size());
+        assertTrue(ewrswd.stream().anyMatch(b -> "str".equals(b.getStr())));
+        assertTrue(ewrswd.stream().anyMatch(b -> "other".equals(b.getStr())));
+
+        // with update call create another composition instance of with default value
+        ewc.getEntityWithRequiredStringWithDefaults().add(EntityWithRequiredStringWithDefault.create());
+        entityWithCompositionDao.update(ewc, EntityWithCompositionMask.entityWithCompositionMask());
+        ewc = entityWithCompositionDao.getById((UUID) ewc.identifier().getIdentifier()).orElseThrow();
+        ewrswd = ewc.getEntityWithRequiredStringWithDefaults();
+        assertEquals(3, ewrswd.size());
+        assertEquals(2, ewrswd.stream().filter(b -> "str".equals(b.getStr())).count());
+        assertTrue(ewrswd.stream().anyMatch(b -> "other".equals(b.getStr())));
+
+        // with update call delete previous elements and create a new composition instance with default value
+        ewc.setEntityWithRequiredStringWithDefaults(List.of(EntityWithRequiredStringWithDefault.create()));
+        entityWithCompositionDao.update(ewc, EntityWithCompositionMask.entityWithCompositionMask());
+        ewc = entityWithCompositionDao.getById((UUID) ewc.identifier().getIdentifier()).orElseThrow();
+        ewrswd = ewc.getEntityWithRequiredStringWithDefaults();
+        assertEquals(1, ewrswd.size());
+        assertTrue(ewrswd.stream().anyMatch(b -> "str".equals(b.getStr())));
+
+        /////////////////////////////////////////
+        // TRANSFER
+        MappedEntityWithComposition mewc = mappedEntityWithCompositionDao.create(MappedEntityWithCompositionForCreate.create());
+
+        // with update call create 2 composition instances of which one with default value
+        mewc.getMappedEntityWithRequiredStringWithDefaults().addAll(List.of(
+                MappedEntityWithRequiredStringWithDefault.builder().withStr("other").build(),
+                MappedEntityWithRequiredStringWithDefault.builder().build()
+        ));
+        mappedEntityWithCompositionDao.update(mewc, MappedEntityWithCompositionMask.mappedEntityWithCompositionMask());
+
+        mewc = mappedEntityWithCompositionDao.getById((UUID) mewc.identifier().getIdentifier()).orElseThrow();
+        List<MappedEntityWithRequiredStringWithDefault> mewrswd = mewc.getMappedEntityWithRequiredStringWithDefaults();
+        assertEquals(2, mewrswd.size());
+        assertTrue(mewrswd.stream().anyMatch(b -> "str".equals(b.getStr())));
+        assertTrue(mewrswd.stream().anyMatch(b -> "other".equals(b.getStr())));
+
+        // with update call create another composition instance of with default value
+        mewc.getMappedEntityWithRequiredStringWithDefaults().add(MappedEntityWithRequiredStringWithDefault.create());
+        mappedEntityWithCompositionDao.update(mewc, MappedEntityWithCompositionMask.mappedEntityWithCompositionMask());
+        mewc = mappedEntityWithCompositionDao.getById((UUID) mewc.identifier().getIdentifier()).orElseThrow();
+        mewrswd = mewc.getMappedEntityWithRequiredStringWithDefaults();
+        assertEquals(3, mewrswd.size());
+        assertEquals(2, mewrswd.stream().filter(b -> "str".equals(b.getStr())).count());
+        assertTrue(mewrswd.stream().anyMatch(b -> "other".equals(b.getStr())));
+
+        // with update call delete previous elements and create a new composition instance with default value
+        mewc.setMappedEntityWithRequiredStringWithDefaults(List.of(MappedEntityWithRequiredStringWithDefault.create()));
+        mappedEntityWithCompositionDao.update(mewc, MappedEntityWithCompositionMask.mappedEntityWithCompositionMask());
+        mewc = mappedEntityWithCompositionDao.getById((UUID) mewc.identifier().getIdentifier()).orElseThrow();
+        mewrswd = mewc.getMappedEntityWithRequiredStringWithDefaults();
+        assertEquals(1, mewrswd.size());
+        assertTrue(mewrswd.stream().anyMatch(b -> "str".equals(b.getStr())));
+    }
+
 }
