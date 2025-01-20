@@ -3,7 +3,7 @@ model Primitives;
 import judo::types;
 
 type numeric Scaled precision:9 scale:2;
-type string PhoneNumber min-size:0 max-size:32 regex:"^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]\\d{3}[\\s.-]\\d{4}$";   // escape sequencing does not work in regexp....
+type string PhoneNumber min-size:0 max-size:32 regex:"^(\\+\\d{1,2}\\s)?\\(?\\d{2,3}\\)?[\\s.-]\\d{3}[\\s.-]\\d{4}$";   // escape sequencing does not work in regexp....
 type binary Binary mime-type:["text/plain"] max-file-size:1 GB;
 type string SmallString min-size:0 max-size:128;
 
@@ -146,13 +146,16 @@ entity EntityWithNotValidScaleDefaultValue {
         field Scaled scaledAttrWithWrongScale default:2.3466;
 }
 
-// TODO JNG-JNG-4899 Cause issue when the PrimitivesDaoModule injection
-// entity EntityWithNotValidStringDefaultValue {
-//         field SmallString stringAttr default:"To large string literal. To large string literal.To large string literal.To large string literal.To large string literal.Too larg";
-// }
+entity EntityWithNotValidStringDefaultValue {
+        field SmallString stringAttr default:"Too large string literal. Too large string literal. Too large string literal. Too large string literal. Too large string literal. Too large";
+}
 
 entity EntityWithNotValidRegexDefaultValue {
         field PhoneNumber regexAttrWrongPattern default:"+36-30 123 1234";
+}
+
+transfer MappedEntityWithNotValidRegexDefaultValue (EntityWithNotValidRegexDefaultValue m) {
+        field PhoneNumber regexAttrWrongPattern <=> m.regexAttrWrongPattern;
 }
 
 transfer MyTransferWithOptionalFields(MyEntityWithOptionalFields ent) {
