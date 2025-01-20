@@ -137,12 +137,8 @@ public class TernaryTest {
         assertThat(a1.getUnknownCondition().orElseThrow(), equalTo(stringValue));
         assertThat(a1.getEnum1().orElseThrow(), equalTo(Enum.Literal2));
 
-
-        // TODO https://blackbelt.atlassian.net/browse/JNG-5543
-        //assertTrue(a1.getFirstLetterIsUpper().isEmpty());
-        //assertTrue(a1.getFirstLetterIsUpperWithDefault().isPresent());
-
-
+        assertTrue(a1.getFirstLetterIsUpper().isEmpty());
+        assertTrue(a1.getFirstLetterIsUpperWithDefault().isPresent());
     }
 
 }
