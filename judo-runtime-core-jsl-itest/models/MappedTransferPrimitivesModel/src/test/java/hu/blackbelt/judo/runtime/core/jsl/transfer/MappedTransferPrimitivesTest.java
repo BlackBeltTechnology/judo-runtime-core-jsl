@@ -317,7 +317,6 @@ public class MappedTransferPrimitivesTest {
      */
     @Test
     @TestCase("TransferMissingRequiredFieldsInEntitiesButNotRequiredInTransferThrowExceptions")
-    @Disabled("JNG-4824")
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-TYPE-002",
@@ -336,7 +335,6 @@ public class MappedTransferPrimitivesTest {
             "REQ-SRV-002",
     })
     public void testMissingRequiredFieldsInEntitiesButNotRequiredInTransferThrowExceptions() {
-        //TODO JNG-4824
         ValidationException thrown = assertThrows(
                 ValidationException.class,
                 () -> transferWithRequiredEntityPrimitivesDao.create(TransferWithRequiredEntityPrimitivesForCreate.builder().build())
@@ -813,7 +811,6 @@ public class MappedTransferPrimitivesTest {
      */
     @Test
     @TestCase("TransferCreationWithRequiredPrimitiveDefaults")
-    @Disabled("JNG-4888")
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-TYPE-002",
@@ -832,14 +829,20 @@ public class MappedTransferPrimitivesTest {
             "REQ-EXPR-001",
     })
     public void testTransferCreationWithRequiredPrimitiveDefaults() {
-        ValidationException exception = assertThrows(ValidationException.class, () -> transferWithRequiredPrimitiveDefaultsDao.create(TransferWithRequiredPrimitiveDefaultsForCreate.builder().build()));
-        assertEquals(9, exception.getValidationResults().size());
-        Set<String> validationCodes = exception.getValidationResults().stream().map(ValidationResult::getCode).collect(Collectors.toSet());
-        assertThat(validationCodes.size(), equalTo(1));
-        assertThat(validationCodes.stream().findAny().get(), equalTo("MISSING_REQUIRED_ATTRIBUTE"));
-        assertEquals(0, transferWithRequiredPrimitiveDefaultsDao.countAll());
-
         TransferWithRequiredPrimitiveDefaults transferWithRequiredPrimitiveDefaults =
+                transferWithRequiredPrimitiveDefaultsDao.create(TransferWithRequiredPrimitiveDefaultsForCreate.create());
+
+        assertEquals(1, transferWithRequiredPrimitiveDefaults.getIntegerAttr());
+        assertEquals(2.34, transferWithRequiredPrimitiveDefaults.getScaledAttr());
+        assertEquals("test", transferWithRequiredPrimitiveDefaults.getStringAttr());
+        assertEquals("+36 (30) 123 1234", transferWithRequiredPrimitiveDefaults.getRegexAttr());
+        assertEquals(true, transferWithRequiredPrimitiveDefaults.getBoolAttr());
+        assertEquals(LocalDate.of(2022, 7, 11), transferWithRequiredPrimitiveDefaults.getDateAttr());
+        assertEquals(LocalTime.parse("23:59:59"), transferWithRequiredPrimitiveDefaults.getTimeAttr());
+        assertEquals(LocalDateTime.parse("2022-07-11T19:09:33"), transferWithRequiredPrimitiveDefaults.getTimestampAttr());
+        assertEquals(Enum.EnumA, transferWithRequiredPrimitiveDefaults.getEnumAttr());
+
+        transferWithRequiredPrimitiveDefaults =
                 transferWithRequiredPrimitiveDefaultsDao.create(
                         TransferWithRequiredPrimitiveDefaultsForCreate.builder()
                                                              .withIntegerAttr(2)

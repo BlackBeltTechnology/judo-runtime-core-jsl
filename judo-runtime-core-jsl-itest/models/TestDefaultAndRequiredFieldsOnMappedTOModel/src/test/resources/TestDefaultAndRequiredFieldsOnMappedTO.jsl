@@ -337,3 +337,21 @@ transfer TransferMapsFieldTwice (EntityWithRequiredFieldsWithDefault mappedEntit
 
 query String queryStringAttribute() <= EntityWithOptionalFields.all().any().stringAttr;
 
+// testing creating with update
+entity EntityWithComposition {
+    field EntityWithRequiredStringWithDefault[] entityWithRequiredStringWithDefaults;
+}
+
+entity EntityWithRequiredStringWithDefault {
+    field String str default:"str" required;
+}
+
+transfer MappedEntityWithComposition (EntityWithComposition entityWithComposition) {
+    relation MappedEntityWithRequiredStringWithDefault[] mappedEntityWithRequiredStringWithDefaults <= entityWithComposition.entityWithRequiredStringWithDefaults eager create delete;
+}
+
+transfer MappedEntityWithRequiredStringWithDefault (EntityWithRequiredStringWithDefault entityWithRequiredStringWithDefault) {
+    field String str <=> entityWithRequiredStringWithDefault.str required;
+    event create createEvent;
+    event delete deleteEvent;
+}
