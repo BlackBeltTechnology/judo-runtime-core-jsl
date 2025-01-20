@@ -431,7 +431,6 @@ end text"
      */
     @Test
     @TestCase("TC013")
-    @Disabled("https://blackbelt.atlassian.net/browse/JNG-4671")
     @Requirement(reqs = {
             "REQ-SYNT-001",
             "REQ-SYNT-002",
