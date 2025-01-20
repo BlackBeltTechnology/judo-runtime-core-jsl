@@ -1442,7 +1442,7 @@ public class TestDefaultAndRequiredFieldsOnMappedTO {
         ));
         entityWithCompositionDao.update(ewc, EntityWithCompositionMask.entityWithCompositionMask());
 
-        ewc = entityWithCompositionDao.getById((UUID) ewc.identifier().getIdentifier()).orElseThrow();
+        ewc = entityWithCompositionDao.getById(ewc.identifier()).orElseThrow();
         List<EntityWithRequiredStringWithDefault> ewrswd = ewc.getEntityWithRequiredStringWithDefaults();
         assertEquals(2, ewrswd.size());
         assertTrue(ewrswd.stream().anyMatch(b -> "str".equals(b.getStr())));
@@ -1451,7 +1451,7 @@ public class TestDefaultAndRequiredFieldsOnMappedTO {
         // with update call create another composition instance of with default value
         ewc.getEntityWithRequiredStringWithDefaults().add(EntityWithRequiredStringWithDefault.create());
         entityWithCompositionDao.update(ewc, EntityWithCompositionMask.entityWithCompositionMask());
-        ewc = entityWithCompositionDao.getById((UUID) ewc.identifier().getIdentifier()).orElseThrow();
+        ewc = entityWithCompositionDao.getById(ewc.identifier()).orElseThrow();
         ewrswd = ewc.getEntityWithRequiredStringWithDefaults();
         assertEquals(3, ewrswd.size());
         assertEquals(2, ewrswd.stream().filter(b -> "str".equals(b.getStr())).count());
@@ -1460,7 +1460,7 @@ public class TestDefaultAndRequiredFieldsOnMappedTO {
         // with update call delete previous elements and create a new composition instance with default value
         ewc.setEntityWithRequiredStringWithDefaults(List.of(EntityWithRequiredStringWithDefault.create()));
         entityWithCompositionDao.update(ewc, EntityWithCompositionMask.entityWithCompositionMask());
-        ewc = entityWithCompositionDao.getById((UUID) ewc.identifier().getIdentifier()).orElseThrow();
+        ewc = entityWithCompositionDao.getById(ewc.identifier()).orElseThrow();
         ewrswd = ewc.getEntityWithRequiredStringWithDefaults();
         assertEquals(1, ewrswd.size());
         assertTrue(ewrswd.stream().anyMatch(b -> "str".equals(b.getStr())));
@@ -1476,7 +1476,7 @@ public class TestDefaultAndRequiredFieldsOnMappedTO {
         ));
         mappedEntityWithCompositionDao.update(mewc, MappedEntityWithCompositionMask.mappedEntityWithCompositionMask());
 
-        mewc = mappedEntityWithCompositionDao.getById((UUID) mewc.identifier().getIdentifier()).orElseThrow();
+        mewc = mappedEntityWithCompositionDao.getById(mewc.identifier()).orElseThrow();
         List<MappedEntityWithRequiredStringWithDefault> mewrswd = mewc.getMappedEntityWithRequiredStringWithDefaults();
         assertEquals(2, mewrswd.size());
         assertTrue(mewrswd.stream().anyMatch(b -> "str".equals(b.getStr())));
@@ -1485,7 +1485,7 @@ public class TestDefaultAndRequiredFieldsOnMappedTO {
         // with update call create another composition instance of with default value
         mewc.getMappedEntityWithRequiredStringWithDefaults().add(MappedEntityWithRequiredStringWithDefault.create());
         mappedEntityWithCompositionDao.update(mewc, MappedEntityWithCompositionMask.mappedEntityWithCompositionMask());
-        mewc = mappedEntityWithCompositionDao.getById((UUID) mewc.identifier().getIdentifier()).orElseThrow();
+        mewc = mappedEntityWithCompositionDao.getById(mewc.identifier()).orElseThrow();
         mewrswd = mewc.getMappedEntityWithRequiredStringWithDefaults();
         assertEquals(3, mewrswd.size());
         assertEquals(2, mewrswd.stream().filter(b -> "str".equals(b.getStr())).count());
@@ -1494,7 +1494,7 @@ public class TestDefaultAndRequiredFieldsOnMappedTO {
         // with update call delete previous elements and create a new composition instance with default value
         mewc.setMappedEntityWithRequiredStringWithDefaults(List.of(MappedEntityWithRequiredStringWithDefault.create()));
         mappedEntityWithCompositionDao.update(mewc, MappedEntityWithCompositionMask.mappedEntityWithCompositionMask());
-        mewc = mappedEntityWithCompositionDao.getById((UUID) mewc.identifier().getIdentifier()).orElseThrow();
+        mewc = mappedEntityWithCompositionDao.getById(mewc.identifier()).orElseThrow();
         mewrswd = mewc.getMappedEntityWithRequiredStringWithDefaults();
         assertEquals(1, mewrswd.size());
         assertTrue(mewrswd.stream().anyMatch(b -> "str".equals(b.getStr())));
