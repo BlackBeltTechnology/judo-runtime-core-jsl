@@ -45,7 +45,7 @@
 
         <judo-tatami-jsl-version>1.1.4.20250122_041346_1bd71f15_develop</judo-tatami-jsl-version>
         <judo-runtime-core-version>1.0.6.20250121_041727_a7ed3b10_develop</judo-runtime-core-version>
-        <judo-psm-generator-sdk-core-version>1.0.0.20250120_155000_c1ecf32d_feature_JNG_6119_Generate_initializer_for_unmapped_transfer_objects</judo-psm-generator-sdk-core-version>
+        <judo-psm-generator-sdk-core-version>1.0.0.20250122_142541_21664fec_feature_JNG_6119_Generate_initializer_for_unmapped_transfer_objects</judo-psm-generator-sdk-core-version>
 
         <judo-meta-psm-version>1.3.0.20241202_042213_d30645b4_develop</judo-meta-psm-version>
 
