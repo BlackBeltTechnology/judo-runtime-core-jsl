@@ -103,3 +103,20 @@ entity EntityL {
     field String name;
     relation EntityK relK required;
 }
+
+// Composition with back reference
+
+entity EntityM {
+    field String name;
+    field EntityN compN;
+}
+
+entity EntityN {
+    field String name;
+    field EntityO[] compColO;
+}
+
+entity EntityO {
+    field String name;
+    relation EntityN[] relN;
+}
