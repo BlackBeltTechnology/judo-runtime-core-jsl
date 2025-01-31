@@ -20,13 +20,6 @@ package hu.blackbelt.judo.runtime.core.jsl.entity;
  * #L%
  */
 
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Collectors;
-
 import com.google.inject.Inject;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.composition.Composition;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.composition.CompositionDao;
@@ -81,29 +74,37 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationship
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityk.EntityKForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityl.EntityLDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityl.EntityLForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entitym.EntityM;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entitym.EntityMDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entitym.EntityMForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityn.EntityN;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityn.EntityNDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityn.EntityNForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityo.EntityO;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityo.EntityODao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.entityo.EntityOForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.CompositionRelationshipsDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
+import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeFixture;
 import lombok.extern.slf4j.Slf4j;
 import org.hamcrest.CoreMatchers;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasProperty;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
 public class CompositionRelationshipsTest {
@@ -1006,4 +1007,62 @@ public class CompositionRelationshipsTest {
         assertTrue(entityKDao.getById(j1.getCompK().orElseThrow().identifier()).isPresent());
 
     }
+
+    @Inject
+    EntityMDao entityMDao;
+
+    @Inject
+    EntityNDao entityNDao;
+
+    @Inject
+    EntityODao entityODao;
+
+    @Test
+    void testDeleteCompositionChainWithCollectionBackReference(JudoRuntimeFixture runtimeFixture) {
+        EntityN referredN = entityNDao.create(EntityNForCreate.builder().withName("ReferredN").build());
+
+        EntityM entityM = entityMDao.create(EntityMForCreate
+                .builder()
+                .withName("W")
+                .withCompN(EntityNForCreate
+                        .builder()
+                        .withName("N")
+                        .withCompColO(List.of(
+                                EntityOForCreate.builder().withName("O1").build(),
+                                EntityOForCreate.builder().withName("O2").build(),
+                                EntityOForCreate.builder().withName("O3").build()
+                        ))
+                        .build()
+                )
+                .build()
+        );
+
+        EntityN entityN = entityM.getCompN().orElseThrow();
+        EntityO entityO1 = getEntityOWithTheNameOf("O1", entityN);
+        EntityO entityO2 = getEntityOWithTheNameOf("O2", entityN);
+        EntityO entityO3 = getEntityOWithTheNameOf("O3", entityN);
+
+        entityODao.addRelN(entityO1, entityN);
+        entityODao.addRelN(entityO2, entityN);
+        entityODao.addRelN(entityO3, entityN);
+        entityODao.addRelN(entityO3, referredN);
+
+        assertEquals(entityN.identifier(), entityODao.queryRelN(entityO1).selectOne().orElseThrow().identifier());
+        assertEquals(entityN.identifier(), entityODao.queryRelN(entityO2).selectOne().orElseThrow().identifier());
+        assertEquals(2, entityODao.queryRelN(entityO3).selectList().size());
+
+        entityMDao.delete(entityM);
+
+        assertEquals(1, entityNDao.countAll());
+        assertTrue(entityNDao.getById(referredN.identifier()).isPresent());
+        assertEquals(0, entityMDao.countAll());
+        assertEquals(0, entityODao.countAll());
+
+    }
+
+    private static @NotNull EntityO getEntityOWithTheNameOf(String name, EntityN entityN) {
+        return entityN.getCompColO().stream().filter(n -> name.equals(n.getName().orElseThrow())).findAny().orElseThrow();
+    }
+
 }
+
