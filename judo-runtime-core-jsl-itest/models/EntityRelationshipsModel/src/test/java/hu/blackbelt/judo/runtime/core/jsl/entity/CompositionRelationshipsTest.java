@@ -1023,21 +1023,24 @@ public class CompositionRelationshipsTest {
 
         EntityM entityM = entityMDao.create(EntityMForCreate
                 .builder()
-                .withName("W")
-                .withCompN(EntityNForCreate
+                .withName("M")
+                .withCompN(List.of(
+                        EntityNForCreate
                         .builder()
-                        .withName("N")
+                        .withName("N1")
                         .withCompColO(List.of(
                                 EntityOForCreate.builder().withName("O1").build(),
                                 EntityOForCreate.builder().withName("O2").build(),
                                 EntityOForCreate.builder().withName("O3").build()
                         ))
                         .build()
+                    )
                 )
                 .build()
+
         );
 
-        EntityN entityN = entityM.getCompN().orElseThrow();
+        EntityN entityN = getEntityNWithTheNameOf("N1", entityM);
         EntityO entityO1 = getEntityOWithTheNameOf("O1", entityN);
         EntityO entityO2 = getEntityOWithTheNameOf("O2", entityN);
         EntityO entityO3 = getEntityOWithTheNameOf("O3", entityN);
@@ -1062,6 +1065,10 @@ public class CompositionRelationshipsTest {
 
     private static @NotNull EntityO getEntityOWithTheNameOf(String name, EntityN entityN) {
         return entityN.getCompColO().stream().filter(n -> name.equals(n.getName().orElseThrow())).findAny().orElseThrow();
+    }
+
+    private static @NotNull EntityN getEntityNWithTheNameOf(String name, EntityM entityM) {
+        return entityM.getCompN().stream().filter(n -> name.equals(n.getName().orElseThrow())).findAny().orElseThrow();
     }
 
 }

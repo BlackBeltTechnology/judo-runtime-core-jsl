@@ -108,7 +108,7 @@ entity EntityL {
 
 entity EntityM {
     field String name;
-    field EntityN compN;
+    field EntityN[] compN;
 }
 
 entity EntityN {
