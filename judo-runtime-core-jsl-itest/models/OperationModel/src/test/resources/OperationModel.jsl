@@ -1,0 +1,94 @@
+model OperationModel;
+
+import judo::types;
+
+transfer UnmappedTransfer {
+	action void staticVoidAction() static;
+
+	action void staticVoidActionWithUnmappedInput(UnmappedInputParameter param) static;
+
+	action void staticVoidActionWithMappedInput(MappedInputParameter param choices:InputParameterEntity.all()) static;
+
+	action UnmappedOutputParameter staticUnmappedOutputAction() static;
+
+	action MappedOutputParameter staticMappedOutputAction() static;
+
+	action UnmappedOutputParameter staticUnmappedOutputActionWithUnmappedInput(UnmappedInputParameter param) static;
+
+	action MappedOutputParameter staticMappedOutputActionWithUnmappedInput(UnmappedInputParameter param) static;
+
+	action UnmappedOutputParameter staticUnmappedOutputActionWithMappedInput(MappedInputParameter param choices:InputParameterEntity.all()) static;
+
+	action MappedOutputParameter staticMappedOutputActionWithMappedInput(MappedInputParameter param choices:InputParameterEntity.all()) static;
+}
+
+transfer MappedTransfer maps Entity as e {
+
+	action void voidAction();
+	action void staticVoidAction() static;
+
+	action void voidActionWithUnmappedInput(UnmappedInputParameter param);
+	action void staticVoidActionWithUnmappedInput(UnmappedInputParameter param) static;
+
+	action void voidActionWithMappedInput(MappedInputParameter param choices:InputParameterEntity.all());
+	action void staticVoidActionWithMappedInput(MappedInputParameter param choices:InputParameterEntity.all()) static;
+
+	action UnmappedOutputParameter unmappedOutputAction();
+	action UnmappedOutputParameter staticUnmappedOutputAction() static;
+
+	action MappedOutputParameter mappedOutputAction() update: true delete: true;
+	action MappedOutputParameter staticMappedOutputAction() static;
+
+	action UnmappedOutputParameter unmappedOutputActionWithUnmappedInput(UnmappedInputParameter param);
+	action UnmappedOutputParameter staticUnmappedOutputActionWithUnmappedInput(UnmappedInputParameter param) static;
+
+	action MappedOutputParameter mappedOutputActionWithUnmappedInput(UnmappedInputParameter param) update: true delete: true;;
+	action MappedOutputParameter staticMappedOutputActionWithUnmappedInput(UnmappedInputParameter param) static;
+
+	action UnmappedOutputParameter unmappedOutputActionWithMappedInput(MappedInputParameter param choices:InputParameterEntity.all());
+	action UnmappedOutputParameter staticUnmappedOutputActionWithMappedInput(MappedInputParameter param choices:InputParameterEntity.all()) static;
+
+	action MappedOutputParameter mappedOutputActionWithMappedInput(MappedInputParameter param choices:InputParameterEntity.all()) update: true delete: true;;
+	action MappedOutputParameter staticMappedOutputActionWithMappedInput(MappedInputParameter param choices:InputParameterEntity.all()) static;
+}
+
+transfer MappedFaultTransfer maps Entity as e {
+	action void faults() throws Fault1, Fault2;
+	action void staticFaults() throws Fault1, Fault2 static;
+}
+
+transfer UnmappedFaultTransfer {
+	action void staticFaults() throws Fault1, Fault2 static;
+}
+
+entity Entity {
+}
+
+entity InputParameterEntity {
+}
+
+entity OutputParameterEntity {
+}
+
+
+transfer UnmappedOutputParameter {
+}
+
+transfer UnmappedInputParameter {
+}
+
+
+transfer MappedOutputParameter maps OutputParameterEntity as o {
+	event update updateMappedOutputParameter;
+	event delete deleteMappedOutputParameter;
+}
+
+transfer MappedInputParameter maps InputParameterEntity as i {
+}
+
+
+error Fault1 {
+}
+
+error Fault2 {
+}

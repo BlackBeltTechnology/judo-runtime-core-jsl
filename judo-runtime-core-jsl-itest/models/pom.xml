@@ -46,6 +46,7 @@
         <module>OptimisticLockModel</module>
         <module>TransferRangeModel</module>
         <module>FilterCountModel</module>
+        <module>OperationModel</module>
     </modules>
 
     <build>
