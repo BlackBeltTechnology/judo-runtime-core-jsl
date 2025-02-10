@@ -231,7 +231,7 @@ public class MappedTransferAssociationAssociationTest {
                         .build()
         );
 
-        assertEquals(tb1.identifier().getIdentifier(), transferADao.queryRelationBonA(transferA).orElseThrow().identifier().getIdentifier());
+        assertEquals(tb1.identifier().getIdentifierAs(UUID.class), transferADao.queryRelationBonA(transferA).orElseThrow().identifier().getIdentifier());
 
         EntityA a = entityADao.getById(transferA.identifier().adaptTo(EntityAIdentifier.class)).orElseThrow();
         EntityB b1 = entityBDao.getById(tb1.identifier().adaptTo(EntityBIdentifier.class)).orElseThrow();
@@ -409,7 +409,7 @@ public class MappedTransferAssociationAssociationTest {
         transferC = transferCDao.getById(transferC.identifier()).orElseThrow();
 
         assertEquals(td2.identifier().getIdentifier(), transferCDao.queryRelationDonC(transferC).identifier().getIdentifier());
-        assertTrue(transferDDao.existsById((UUID) td1.identifier().getIdentifier()));
+        assertTrue(transferDDao.existsById(td1.identifier().getIdentifierAs(UUID.class)));
 
     }
 
@@ -490,7 +490,7 @@ public class MappedTransferAssociationAssociationTest {
         assertThat(maskedFs.stream().map(TransferF::getNameF).map(Optional::orElseThrow).toList(), hasItems("tf1", "tf2", "tf3"));
         transferE = transferEDao.getById(transferE.identifier()).orElseThrow();
 
-        List<String> relationFonEs = transferEDao.queryRelationFonE(transferE).selectList().stream().map(ee -> ee.getNameF()).filter(Optional::isPresent).map(Optional::get).toList();
+        List<String> relationFonEs = transferEDao.queryRelationFonE(transferE.identifier().getIdentifierAs(UUID.class)).selectList().stream().map(ee -> ee.getNameF()).filter(Optional::isPresent).map(Optional::get).toList();
         assertEquals(3, relationFonEs.size());
         assertEquals(new HashSet<>(relationFonEs), Set.of("tf1", "tf2", "tf3"));
 

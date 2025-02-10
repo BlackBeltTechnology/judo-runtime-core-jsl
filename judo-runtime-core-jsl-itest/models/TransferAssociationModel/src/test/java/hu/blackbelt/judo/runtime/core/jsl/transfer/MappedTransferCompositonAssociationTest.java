@@ -61,6 +61,7 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.UUID;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -347,7 +348,7 @@ public class MappedTransferCompositonAssociationTest {
         company.setMainBankAccounts(bankAccount1);
         company = mappedCompanyDao.update(company);
 
-        assertEquals(company.identifier().getIdentifier(), mappedBankAccountDao.queryCompany(bankAccount1).orElseThrow().identifier().getIdentifier());
+        assertEquals(company.identifier().getIdentifierAs(UUID.class), mappedBankAccountDao.queryCompany(bankAccount1).orElseThrow().identifier().getIdentifier());
         assertTrue(mappedBankAccountDao.queryCompany(bankAccount2).isEmpty());
 
         assertEquals(bankAccount1.identifier().getIdentifier(), mappedCompanyDao.queryMainBankAccounts(company).orElseThrow().identifier().getIdentifier());
