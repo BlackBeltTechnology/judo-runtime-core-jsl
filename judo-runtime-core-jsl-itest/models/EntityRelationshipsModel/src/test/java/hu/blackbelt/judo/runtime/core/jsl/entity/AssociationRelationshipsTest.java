@@ -129,7 +129,7 @@ public class AssociationRelationshipsTest {
 
         entityADao.setSingleConA(entityA, entityC);
 
-        assertEquals(entityC.identifier().getIdentifier(), entityADao.querySingleConA((UUID) entityA.identifier().getIdentifier(), EntityCMask.entityCMask()).orElseThrow().identifier().getIdentifier());
+        assertEquals(entityC.identifier().getIdentifier(), entityADao.querySingleConA(entityA.identifier().getIdentifierAs(UUID.class), EntityCMask.entityCMask()).orElseThrow().identifier().getIdentifier());
 
         entityADao.unsetSingleConA(entityA);
 
@@ -199,7 +199,7 @@ public class AssociationRelationshipsTest {
 
         assertNotEquals(f4.identifier().getIdentifier(), f1.identifier().getIdentifier());
         assertEquals(2, entityEDao.queryMultipleFOnE(entityE).count());
-        assertThat(ListOfMultipleFOnEIds(entityE), hasItems(f3.identifier().getIdentifier(), f4.identifier().getIdentifier()));
+        assertThat(ListOfMultipleFOnEIds(entityE), hasItems(f3.identifier().getIdentifierAs(UUID.class), f4.identifier().getIdentifier()));
 
         // add method's with one instance
 
@@ -250,7 +250,7 @@ public class AssociationRelationshipsTest {
 
         entityA = entityADao.getById(entityA.identifier()).orElseThrow();
 
-        assertEquals(c2.identifier().getIdentifier(), entityADao.querySingleConA(entityA).orElseThrow().identifier().getIdentifier());
+        assertEquals(c2.identifier().getIdentifierAs(UUID.class), entityADao.querySingleConA(entityA).orElseThrow().identifier().getIdentifier());
         assertTrue(entityCDao.existsById((UUID) c1.identifier().getIdentifier()));
 
     }
@@ -273,7 +273,7 @@ public class AssociationRelationshipsTest {
         assertEquals(c2.identifier().getIdentifier(), entityADao.querySingleRequiredConA(entityA).identifier().getIdentifier());
         assertTrue(entityCDao.existsById((UUID) entityC.identifier().getIdentifier()));
         assertEquals(1, entityCDao.queryTwoWayMultipleAonC(c2).count());
-        assertEquals(entityA.identifier().getIdentifier(), entityCDao.queryTwoWayMultipleAonC(c2).selectOne().orElseThrow().identifier().getIdentifier());
+        assertEquals(entityA.identifier().getIdentifier(), entityCDao.queryTwoWayMultipleAonC(c2).selectOne().orElseThrow().identifier().getIdentifierAs(UUID.class));
 
     }
 
@@ -477,8 +477,8 @@ public class AssociationRelationshipsTest {
 
         checkAMask(aDao.getById(a.identifier(), maskForGetByID).orElseThrow());
         checkAMask(aDao.getById((UUID) a.identifier().getIdentifier(), maskForGetByID).orElseThrow());
-        assertEquals(1, aDao.findAllById(List.of((UUID) a.identifier().getIdentifier()), maskForGetByID).size());
-        checkAMask(aDao.findAllById(List.of((UUID) a.identifier().getIdentifier()), maskForGetByID).get(0));
+        assertEquals(1, aDao.findAllById(List.of(a.identifier().getIdentifierAs(UUID.class)), maskForGetByID).size());
+        checkAMask(aDao.findAllById(List.of(a.identifier().getIdentifierAs(UUID.class)), maskForGetByID).get(0));
 
         //Check recursive association mask
         maskForGetByID = AMask.aMask()
@@ -490,7 +490,7 @@ public class AssociationRelationshipsTest {
         ;
 
         checkRecursiveAMask(aDao.getById(a.identifier(), maskForGetByID).orElseThrow());
-        checkRecursiveAMask(aDao.getById((UUID) a.identifier().getIdentifier(), maskForGetByID).orElseThrow());
+        checkRecursiveAMask(aDao.getById(a.identifier().getIdentifierAs(UUID.class), maskForGetByID).orElseThrow());
         assertEquals(1, aDao.findAllById(List.of((UUID) a.identifier().getIdentifier()), maskForGetByID).size());
         checkRecursiveAMask(aDao.findAllById(List.of((UUID) a.identifier().getIdentifier()), maskForGetByID).get(0));
 
