@@ -352,7 +352,7 @@ class MappedTransferNavigationTest {
         transferPersonDao.addParents(person2, List.of(mother1, father1));
         transferPersonDao.addParents(person3, List.of(person1));
 
-        List<TransferPerson> people = transferPersonDao.findAllById(List.of((UUID) person1.identifier().getIdentifier(), (UUID) person2.identifier().getIdentifier(), (UUID) person3.identifier().getIdentifier()));
+        List<TransferPerson> people = transferPersonDao.findAllById(List.of(person1.identifier().getIdentifierAs(UUID.class), (UUID) person2.identifier().getIdentifier(), (UUID) person3.identifier().getIdentifier()));
         Assertions.assertEquals(3, people.size());
         Optional<TransferPerson> person1Loaded = people.stream().filter(p -> p.identifier().getIdentifier().equals(person1.identifier().getIdentifier())).findAny();
         assertTrue(person1Loaded.isPresent());

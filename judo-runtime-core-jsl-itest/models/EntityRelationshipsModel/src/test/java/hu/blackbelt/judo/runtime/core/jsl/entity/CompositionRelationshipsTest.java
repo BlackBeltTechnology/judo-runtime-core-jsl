@@ -195,7 +195,7 @@ public class CompositionRelationshipsTest {
             "REQ-ENT-012"
     })
     void testNullOutOptionalRelationRemovesNested() {
-        assertNotEquals(singleConA.identifier().getIdentifier(), entityADao.querySingleConA(entityA).orElseThrow().identifier().getIdentifier());
+        assertNotEquals(singleConA.identifier().getIdentifierAs(UUID.class), entityADao.querySingleConA(entityA).orElseThrow().identifier().getIdentifierAs(UUID.class));
         assertEquals(4, entityCDao.query().selectList().size());
 
         entityA.setSingleConA(null);
@@ -225,7 +225,7 @@ public class CompositionRelationshipsTest {
             "REQ-ENT-012"
     })
     void testDeleteRequiredRelationThrowsException() {
-        EntityC c = entityADao.querySingleRequiredConA((UUID) entityA.identifier().getIdentifier(), EntityCMask.entityCMask().withStringC());
+        EntityC c = entityADao.querySingleRequiredConA(entityA.identifier().getIdentifierAs(UUID.class), EntityCMask.entityCMask().withStringC());
         assertNull(c.getStringB());
         assertNull(c.getMultipleDonB());
         assertNotNull(c.getStringC());
