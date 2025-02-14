@@ -53,6 +53,7 @@
                         <springPrefix>hu.blackbelt.judo.runtime.core.jsl.spring.test.spring</springPrefix>
                         <generateOptionalTypes>true</generateOptionalTypes>
                         <generatePayloadValidator>true</generatePayloadValidator>
+                        <identifierType>java.io.Serializable</identifierType>
                     </templateParameters>
 
                     <psm>

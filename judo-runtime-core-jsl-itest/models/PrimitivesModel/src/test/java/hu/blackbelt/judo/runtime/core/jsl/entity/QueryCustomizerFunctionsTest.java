@@ -40,6 +40,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -691,7 +692,7 @@ public class QueryCustomizerFunctionsTest {
     public void testQueryCustomizerAppend(JudoRuntimeFixture runtimeFixture) {
         AsmUtils asmUtils = new AsmUtils(runtimeFixture.modelHolder.getAsmModel().getResourceSet());
 
-        DAO.QueryCustomizer<java.util.UUID> queryCustomizer = DAO.QueryCustomizer.<java.util.UUID>builder()
+        DAO.QueryCustomizer<Serializable> queryCustomizer = DAO.QueryCustomizer.<Serializable>builder()
                 .orderBy(DAO.OrderBy.builder().descending(false).attribute(asmUtils.resolveAttribute("Primitives.Primitives.MyEntityWithOptionalFields#stringAttr").orElseThrow()).build())
                 .filter("this.stringAttr!like('tes%') and this.stringAttr!like('%t')")
                 .mask(Map.of("stringAttr", true))
@@ -708,7 +709,7 @@ public class QueryCustomizerFunctionsTest {
         assertEquals(entity1.getStringAttr(), result.getStringAttr());
         assertNull(result.getScaledAttr());
 
-        queryCustomizer = DAO.QueryCustomizer.<java.util.UUID>builder()
+        queryCustomizer = DAO.QueryCustomizer.<Serializable>builder()
                 .orderBy(DAO.OrderBy.builder().descending(false).attribute(asmUtils.resolveAttribute("Primitives.Primitives.MyEntityWithOptionalFields#stringAttr").orElseThrow()).build())
                 .filter("this.stringAttr!like('tes%') and this.stringAttr!like('%t')")
                 .build();
@@ -723,7 +724,7 @@ public class QueryCustomizerFunctionsTest {
         assertEquals(entity1.getStringAttr(), result.getStringAttr());
         assertNotNull(result.getScaledAttr());
 
-        queryCustomizer = DAO.QueryCustomizer.<java.util.UUID>builder()
+        queryCustomizer = DAO.QueryCustomizer.<Serializable>builder()
                 .orderBy(DAO.OrderBy.builder().descending(false).attribute(asmUtils.resolveAttribute("Primitives.Primitives.MyEntityWithOptionalFields#stringAttr").orElseThrow()).build())
                 .build();
 
@@ -743,7 +744,7 @@ public class QueryCustomizerFunctionsTest {
     public void testQueryCustomizerAppendWithOrFilter(JudoRuntimeFixture runtimeFixture) {
         AsmUtils asmUtils = new AsmUtils(runtimeFixture.modelHolder.getAsmModel().getResourceSet());
 
-        DAO.QueryCustomizer<java.util.UUID> queryCustomizer = DAO.QueryCustomizer.<java.util.UUID>builder()
+        DAO.QueryCustomizer<Serializable> queryCustomizer = DAO.QueryCustomizer.<Serializable>builder()
                 .orderBy(DAO.OrderBy.builder().descending(false).attribute(asmUtils.resolveAttribute("Primitives.Primitives.MyEntityWithOptionalFields#stringAttr").orElseThrow()).build())
                 .filter("this.stringAttr == 'test' or this.stringAttr == 'Another'")
                 .mask(Map.of("stringAttr", true))
