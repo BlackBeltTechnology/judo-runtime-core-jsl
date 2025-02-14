@@ -35,3 +35,24 @@ entity C {
 entity D {
     field Date date;
 }
+
+// size after navigation
+
+entity Parent {
+    field String name;
+    field Child[] children;
+}
+
+entity Child {
+    field String name;
+    relation Toy[] toys;
+}
+
+entity Toy {
+    field String name;
+}
+
+entity ExpressionContainer {
+    field Integer numberOfChildren <= Parent.all().children.size(); // sql error during runtime
+    //field Integer numberOfToys <= Parent.all().children.toys.size(); // check after fix
+}

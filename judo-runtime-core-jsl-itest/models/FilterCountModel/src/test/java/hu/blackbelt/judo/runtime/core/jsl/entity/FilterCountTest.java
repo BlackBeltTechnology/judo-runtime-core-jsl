@@ -35,7 +35,17 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filtercountmodel.filter
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filtercountmodel.filtercountmodel.c.C;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filtercountmodel.filtercountmodel.c.CDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filtercountmodel.filtercountmodel.c.CForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filtercountmodel.filtercountmodel.child.ChildDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filtercountmodel.filtercountmodel.child.ChildForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filtercountmodel.filtercountmodel.d.DForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filtercountmodel.filtercountmodel.expressioncontainer.ExpressionContainer;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filtercountmodel.filtercountmodel.expressioncontainer.ExpressionContainerDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filtercountmodel.filtercountmodel.expressioncontainer.ExpressionContainerForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filtercountmodel.filtercountmodel.parent.ParentDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filtercountmodel.filtercountmodel.parent.ParentForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filtercountmodel.filtercountmodel.toy.Toy;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filtercountmodel.filtercountmodel.toy.ToyDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filtercountmodel.filtercountmodel.toy.ToyForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.FilterCountModelDaoModules;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeFixture;
@@ -117,6 +127,38 @@ public class FilterCountTest {
         return cDao.create(CForCreate.builder()
                                      .withNum(num)
                                      .build());
+    }
+
+    @Inject
+    ParentDao parentDao;
+
+    @Inject
+    ChildDao childrenDao;
+
+    @Inject
+    ToyDao toyDao;
+
+    @Inject
+    ExpressionContainerDao expressionContainerDao;
+
+    // Test for https://blackbelt.atlassian.net/browse/JNG-6157
+    @Test
+    void testSizeInNavigatedExpression() {
+        Toy toy = toyDao.create(ToyForCreate.builder().withName("TeddyBear").build());
+
+        parentDao.create(ParentForCreate
+                .builder()
+                .withName("Ted")
+                .withChildren(List.of(
+                        ChildForCreate.builder().withName("Jeremy").build())
+                )
+                .build()
+        );
+        
+        ExpressionContainer expressionContainer = expressionContainerDao.create(ExpressionContainerForCreate.builder().build());
+
+        assertEquals(1, expressionContainer.getNumberOfChildren());
+
     }
 
 }
