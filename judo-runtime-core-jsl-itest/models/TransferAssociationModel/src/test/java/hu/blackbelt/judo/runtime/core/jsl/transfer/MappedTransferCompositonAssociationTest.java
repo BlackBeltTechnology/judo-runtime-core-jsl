@@ -362,7 +362,7 @@ public class MappedTransferCompositonAssociationTest {
         assertEquals(bankAccount2.identifier().getIdentifier(), mappedCompanyDao.queryMainBankAccounts(company).orElseThrow().identifier().getIdentifier());
 
         //Give back the range elements
-        List<MappedBankAccount> rangeOfMainBankAccounts = mappedCompanyDao.getRangeOfMainBankAccounts(company, MappedBankAccountMask.mappedBankAccountMask());
+        List<MappedBankAccount> rangeOfMainBankAccounts = mappedCompanyDao.getRangeOfMainBankAccounts(company, MappedBankAccountMask.mappedBankAccountMask(), false);
         assertEquals(2, rangeOfMainBankAccounts.size());
 
         // Check range validation

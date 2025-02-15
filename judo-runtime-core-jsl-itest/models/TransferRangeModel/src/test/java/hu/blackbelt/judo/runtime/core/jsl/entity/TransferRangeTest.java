@@ -228,7 +228,7 @@ public class TransferRangeTest {
         );
 
         // check selected
-        rangeOfSingleAssAssItem = transferAssDao.getRangeOfSingleAssAssItem(transferAss);
+        rangeOfSingleAssAssItem = transferAssDao.getRangeOfSingleAssAssItem(transferAss, null, true);
 
         List<ItemTransfer> selected = getSelectedItems(rangeOfSingleAssAssItem);
 
@@ -237,7 +237,7 @@ public class TransferRangeTest {
 
         transferAssDao.unsetSingleAssAssItem(transferAss);
 
-        rangeOfSingleAssAssItem = transferAssDao.getRangeOfSingleAssAssItem(transferAss);
+        rangeOfSingleAssAssItem = transferAssDao.getRangeOfSingleAssAssItem(transferAss, null, true);
 
         assertEquals(0, getSelectedItems(rangeOfSingleAssAssItem).size());
 
@@ -286,7 +286,7 @@ public class TransferRangeTest {
         );
 
         // check selected
-        rangeOfSingleAssAggItem = transferAggDao.getRangeOfSingleAssAggItem(transferAgg);
+        rangeOfSingleAssAggItem = transferAggDao.getRangeOfSingleAssAggItem(transferAgg, null, true);
 
         List<ItemTransfer> selected = getSelectedItems(rangeOfSingleAssAggItem);
 
@@ -295,7 +295,7 @@ public class TransferRangeTest {
 
         transferAggDao.unsetSingleAssAggItem(transferAgg);
 
-        rangeOfSingleAssAggItem = transferAggDao.getRangeOfSingleAssAggItem(transferAgg);
+        rangeOfSingleAssAggItem = transferAggDao.getRangeOfSingleAssAggItem(transferAgg, null, true);
 
         assertEquals(0, getSelectedItems(rangeOfSingleAssAggItem).size());
 
@@ -353,7 +353,7 @@ public class TransferRangeTest {
         );
 
         // check selected
-        rangeOfSingleAssAssItem = transferAssDao.getRangeOfSingleAssAssItem(transferAss);
+        rangeOfSingleAssAssItem = transferAssDao.getRangeOfSingleAssAssItem(transferAss, null, true);
 
         List<ItemTransfer> selected = getSelectedItems(rangeOfSingleAssAssItem);
 
@@ -362,7 +362,7 @@ public class TransferRangeTest {
 
         transferAssDao.unsetSingleAssAssItem(transferAss);
 
-        rangeOfSingleAssAssItem = transferAssDao.getRangeOfSingleAssAssItem(transferAss);
+        rangeOfSingleAssAssItem = transferAssDao.getRangeOfSingleAssAssItem(transferAss, null, true);
 
         assertEquals(0, getSelectedItems(rangeOfSingleAssAssItem).size());
 
@@ -421,7 +421,7 @@ public class TransferRangeTest {
         );
 
         // check selected
-        rangeOfSingleAssAssItem = transferAssDao.getRangeOfSingleAssAggItem(transferAss);
+        rangeOfSingleAssAssItem = transferAssDao.getRangeOfSingleAssAggItem(transferAss, null, true);
 
         List<ItemTransfer> selected = getSelectedItems(rangeOfSingleAssAssItem);
 
@@ -430,7 +430,7 @@ public class TransferRangeTest {
 
         transferAssDao.unsetSingleAssAggItem(transferAss);
 
-        rangeOfSingleAssAssItem = transferAssDao.getRangeOfSingleAssAggItem(transferAss);
+        rangeOfSingleAssAssItem = transferAssDao.getRangeOfSingleAssAggItem(transferAss, null, true);
 
         assertEquals(0, getSelectedItems(rangeOfSingleAssAssItem).size());
 
@@ -481,7 +481,7 @@ public class TransferRangeTest {
         transferWithTransientRelation = transferTransientDao.update(transferWithTransientRelation);
 
         // check selected
-        rangeOfTransientItemWithAnyRange = transferTransientDao.getRangeOfTransientItemWithAnyRange(transferWithTransientRelation);
+        rangeOfTransientItemWithAnyRange = transferTransientDao.getRangeOfTransientItemWithAnyRange(transferWithTransientRelation, null, true);
         // check none of the range element is selected
         assertEquals(0, getSelectedItems(rangeOfTransientItemWithAnyRange).size());
         // Derived Transient Range
@@ -515,7 +515,7 @@ public class TransferRangeTest {
         transferWithTransientRelation = transferTransientDao.update(transferWithTransientRelation);
 
         // check selected
-        rangeOfTransientItemWithDerivedRangeItem = transferTransientDao.getRangeOfTransientItemWithAnyRange(transferWithTransientRelation);
+        rangeOfTransientItemWithDerivedRangeItem = transferTransientDao.getRangeOfTransientItemWithAnyRange(transferWithTransientRelation, null, true);
         // check none of the range element is selected
         assertEquals(0, getSelectedItems(rangeOfTransientItemWithDerivedRangeItem).size());
         // Self Range for transient relation
@@ -551,7 +551,7 @@ public class TransferRangeTest {
 
         transferWithTransientRelation = transferTransientDao.update(transferWithTransientRelation);
         // check selected
-        rangeOfTransientItemWithSelfRange = transferTransientDao.getRangeOfTransientItemWithAnyRange(transferWithTransientRelation);
+        rangeOfTransientItemWithSelfRange = transferTransientDao.getRangeOfTransientItemWithAnyRange(transferWithTransientRelation, null, true);
         // check none of the range element is selected
         assertEquals(0, getSelectedItems(rangeOfTransientItemWithSelfRange).size());
 
@@ -640,7 +640,7 @@ public class TransferRangeTest {
         );
 
         // check selected
-        rangeOfCollectionAssAssItem = transferAssDao.getRangeOfCollectionAssAssItem(transferAss);
+        rangeOfCollectionAssAssItem = transferAssDao.getRangeOfCollectionAssAssItem(transferAss, null, true);
 
         List<ItemTransfer> selected = getSelectedItems(rangeOfCollectionAssAssItem);
 
@@ -700,7 +700,7 @@ public class TransferRangeTest {
         );
 
         // check selected
-        rangeOfCollectionAssAggItem = transferAggDao.getRangeOfCollectionAssAggItem(transferAgg);
+        rangeOfCollectionAssAggItem = transferAggDao.getRangeOfCollectionAssAggItem(transferAgg, null, true);
 
         List<ItemTransfer> selected = getSelectedItems(rangeOfCollectionAssAggItem);
 
@@ -711,7 +711,7 @@ public class TransferRangeTest {
 
         transferAggDao.removeCollectionAssAggItem(transferAgg, selected);
 
-        rangeOfCollectionAssAggItem = transferAggDao.getRangeOfCollectionAssAggItem(transferAgg);
+        rangeOfCollectionAssAggItem = transferAggDao.getRangeOfCollectionAssAggItem(transferAgg, null, true);
 
         assertEquals(0, getSelectedItems(rangeOfCollectionAssAggItem).size());
 
@@ -769,7 +769,7 @@ public class TransferRangeTest {
         );
 
         // check selected
-        rangeOfCollectionAssAssItem = transferAssDao.getRangeOfCollectionAssAssItem(transferAss);
+        rangeOfCollectionAssAssItem = transferAssDao.getRangeOfCollectionAssAssItem(transferAss, null, true);
 
         List<ItemTransfer> selected = getSelectedItems(rangeOfCollectionAssAssItem);
 
@@ -780,7 +780,7 @@ public class TransferRangeTest {
 
         transferAssDao.removeCollectionAssAssItem(transferAss, selected);
 
-        rangeOfCollectionAssAssItem = transferAssDao.getRangeOfCollectionAssAssItem(transferAss);
+        rangeOfCollectionAssAssItem = transferAssDao.getRangeOfCollectionAssAssItem(transferAss, null, true);
 
         assertEquals(0, getSelectedItems(rangeOfCollectionAssAssItem).size());
 
@@ -839,7 +839,7 @@ public class TransferRangeTest {
         );
 
         // check selected
-        rangeOfCollectionAssAssItem = transferAssDao.getRangeOfCollectionAssAggItem(transferAss);
+        rangeOfCollectionAssAssItem = transferAssDao.getRangeOfCollectionAssAggItem(transferAss, null, true);
 
         List<ItemTransfer> selected = getSelectedItems(rangeOfCollectionAssAssItem);
 
@@ -849,7 +849,7 @@ public class TransferRangeTest {
         );
         transferAssDao.removeCollectionAssAggItem(transferAss, selected);
 
-        rangeOfCollectionAssAssItem = transferAssDao.getRangeOfCollectionAssAggItem(transferAss);
+        rangeOfCollectionAssAssItem = transferAssDao.getRangeOfCollectionAssAggItem(transferAss, null, true);
 
         assertEquals(0, getSelectedItems(rangeOfCollectionAssAssItem).size());
 
@@ -902,7 +902,7 @@ public class TransferRangeTest {
         transferWithTransientRelation = transferTransientDao.update(transferWithTransientRelation);
 
         // check selected
-        rangeOfTransientItemWithAnyRange = transferTransientDao.getRangeOfTransientItemWithAnyRange(transferWithTransientRelation);
+        rangeOfTransientItemWithAnyRange = transferTransientDao.getRangeOfTransientItemWithAnyRange(transferWithTransientRelation, null, true);
         // check none of the range element is selected
         assertEquals(0, getSelectedItems(rangeOfTransientItemWithAnyRange).size());
         // Derived Transient Range
@@ -936,7 +936,7 @@ public class TransferRangeTest {
         transferWithTransientRelation = transferTransientDao.update(transferWithTransientRelation);
 
         // check selected
-        rangeOfTransientItemWithDerivedRangeItem = transferTransientDao.getRangeOfTransientItemWithAnyRange(transferWithTransientRelation);
+        rangeOfTransientItemWithDerivedRangeItem = transferTransientDao.getRangeOfTransientItemWithAnyRange(transferWithTransientRelation, null, true);
         // check none of the range element is selected
         assertEquals(0, getSelectedItems(rangeOfTransientItemWithDerivedRangeItem).size());
         // Self Range for transient relation
@@ -972,7 +972,7 @@ public class TransferRangeTest {
 
         transferWithTransientRelation = transferTransientDao.update(transferWithTransientRelation);
         // check selected
-        rangeOfTransientItemWithSelfRange = transferTransientDao.getRangeOfTransientItemWithAnyRange(transferWithTransientRelation);
+        rangeOfTransientItemWithSelfRange = transferTransientDao.getRangeOfTransientItemWithAnyRange(transferWithTransientRelation, null, true);
         // check none of the range element is selected
         assertEquals(0, getSelectedItems(rangeOfTransientItemWithSelfRange).size());
 
