@@ -40,9 +40,6 @@ import static java.util.Objects.requireNonNullElse;
 @Slf4j
 public class JudoRuntimeFixture {
 
-
-    public static final String MARK_SELECTED_RANGE_ITEMS = "markSelectedRangeItems";
-
     static {
         SLF4JBridgeHandler.install();
         SysOutOverSLF4J.sendSystemOutAndErrToSLF4J();
@@ -51,10 +48,6 @@ public class JudoRuntimeFixture {
     public JudoRuntimeFixture(Map<String, Object> context) {
         if (context == null) {
             return;
-        }
-
-        if (context.containsKey(MARK_SELECTED_RANGE_ITEMS)) {
-            this.markSelectedRangeItems = (Boolean) context.get(MARK_SELECTED_RANGE_ITEMS);
         }
     }
 
