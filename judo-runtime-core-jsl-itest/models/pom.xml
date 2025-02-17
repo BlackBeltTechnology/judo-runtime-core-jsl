@@ -73,6 +73,7 @@
 
                             <generateOptionalTypes>true</generateOptionalTypes>
                             <generatePayloadValidator>true</generatePayloadValidator>
+                            <identifierType>java.io.Serializable</identifierType>
                         </templateParameters>
                     </configuration>
                     <dependencies>

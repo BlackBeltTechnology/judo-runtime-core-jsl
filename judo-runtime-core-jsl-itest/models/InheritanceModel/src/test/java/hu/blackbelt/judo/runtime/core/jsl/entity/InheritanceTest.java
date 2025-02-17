@@ -62,6 +62,7 @@ import org.hamcrest.Matcher;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -426,7 +427,7 @@ public class InheritanceTest {
         parentADao.createRelationEntities(parentA1, List.of(RelationEntityForCreate.builder().withName("R1").build()
                                                 , RelationEntityForCreate.builder().withName("R2").build()));
         parentADao.createRelationEntities(parentA2, List.of(RelationEntityForCreate.builder().withName("R3").build()));
-        List<UUID> uuids = new ArrayList<>();
+        List<Serializable> uuids = new ArrayList<>();
         List<ParentA> parentAS = parentADao.findAllById(uuids);
         assertEquals(0, parentAS.size());
 
@@ -521,7 +522,7 @@ public class InheritanceTest {
         parentATransferDao.createRelationTransfers(parentA1, List.of(RelationTransferForCreate.builder().withName("R1").build()
                 , RelationTransferForCreate.builder().withName("R2").build()));
         parentATransferDao.createRelationTransfers(parentA2, List.of(RelationTransferForCreate.builder().withName("R3").build()));
-        List<UUID> uuids = new ArrayList<>();
+        List<Serializable> uuids = new ArrayList<>();
         List<ParentATransfer> parentAS = parentATransferDao.findAllById(uuids);
         assertEquals(0, parentAS.size());
 
