@@ -109,7 +109,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeFixture.MARK_SELECTED_RANGE_ITEMS;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -119,10 +118,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @Slf4j
 public class TransferRangeTest {
 
-    final static Map<String, Object> context = new HashMap<>(Map.of(MARK_SELECTED_RANGE_ITEMS, true));
-
     @RegisterExtension
-    static JudoRuntimeExtension runtimeExtension = new JudoRuntimeExtension("TransferRange", new TransferRangeDaoModules(), context);
+    static JudoRuntimeExtension runtimeExtension = new JudoRuntimeExtension("TransferRange", new TransferRangeDaoModules(), null);
 
     @Inject
     AppleDao appleDao;
