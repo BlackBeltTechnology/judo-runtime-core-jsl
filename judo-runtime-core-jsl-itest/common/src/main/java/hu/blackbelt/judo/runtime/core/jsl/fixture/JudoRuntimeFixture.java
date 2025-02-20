@@ -76,8 +76,6 @@ public class JudoRuntimeFixture {
 
     QueryFactory queryFactory;
 
-    Boolean markSelectedRangeItems = false;
-
     private void initQueryFactory() {
 
         coercer = new DefaultCoercer();
@@ -144,8 +142,7 @@ public class JudoRuntimeFixture {
                 .injectModulesTo(injectModulesTo)
                 .judoModelLoader(modelHolder)
                 .extendableCoercer(coercer)
-                .queryFactory(queryFactory)
-                .rdbmsDaoMarkSelectedRangeItems(markSelectedRangeItems);
+                .queryFactory(queryFactory);
 
         Module modules = Modules.combine(
                 module,
