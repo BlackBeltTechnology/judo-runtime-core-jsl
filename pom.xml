@@ -44,7 +44,7 @@
         </osgi-transaction-import>
 
         <judo-tatami-jsl-version>1.1.4.20250215_042500_565a50e6_develop</judo-tatami-jsl-version>
-        <judo-runtime-core-version>1.0.6.20250215_041745_428b4a33_develop</judo-runtime-core-version>
+        <judo-runtime-core-version>1.0.6.20250225_161631_84114b97_feature_JNG_6157_Sql_error_when_size_function_used_after_navigation</judo-runtime-core-version>
         <judo-psm-generator-sdk-core-version>1.0.0.20250215_041323_90b176ac_develop</judo-psm-generator-sdk-core-version>
 
         <judo-meta-psm-version>1.3.0.20241202_042213_d30645b4_develop</judo-meta-psm-version>

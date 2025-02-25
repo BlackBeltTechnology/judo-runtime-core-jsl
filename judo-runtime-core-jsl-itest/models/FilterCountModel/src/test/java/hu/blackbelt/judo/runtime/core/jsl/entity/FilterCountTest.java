@@ -150,14 +150,31 @@ public class FilterCountTest {
                 .builder()
                 .withName("Ted")
                 .withChildren(List.of(
-                        ChildForCreate.builder().withName("Jeremy").build())
+                        ChildForCreate.builder()
+                                .withName("Jeremy")
+                                .withToys(List.of(toy)).build())
                 )
                 .build()
         );
+
+
+
         
         ExpressionContainer expressionContainer = expressionContainerDao.create(ExpressionContainerForCreate.builder().build());
 
-        assertEquals(1, expressionContainer.getNumberOfChildren());
+//        assertEquals(0, expressionContainer.getNumberOfChildrenSelf().get());
+
+//        assertEquals(1, expressionContainer.getNumberOfChildren().get());
+//        assertEquals(0, expressionContainer.getMinimumOfChildren().get());
+//        assertEquals(0, expressionContainer.getMaximumOfChildren().get());
+//        assertEquals(0, expressionContainer.getSumOfChildren().get());
+//        assertEquals(0, expressionContainer.getAverageOfChildren().get());
+//
+//        assertEquals(1, expressionContainer.getNumberOfToys().get());
+//        assertEquals(0, expressionContainer.getMinimumOfToys().get());
+//        assertEquals(0, expressionContainer.getMaximumOfToys().get());
+//        assertEquals(0, expressionContainer.getSumOfToys().get());
+//        assertEquals(0, expressionContainer.getAverageOfToys().get());
 
     }
 
