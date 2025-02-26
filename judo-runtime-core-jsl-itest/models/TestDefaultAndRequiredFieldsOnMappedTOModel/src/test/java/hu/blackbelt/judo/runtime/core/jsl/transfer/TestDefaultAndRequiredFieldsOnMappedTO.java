@@ -504,7 +504,7 @@ public class TestDefaultAndRequiredFieldsOnMappedTO {
 
         TransferWithOptionalFieldsWithDefaultMapsEntityWithOptionalFields t2 = getTransferWithOptionalFieldsWithDefaultMapsEntityWithOptionalFields(createTypes, TransferWithOptionalFieldsWithDefaultMapsEntityWithOptionalFieldsForCreate.builder().build());
 
-        assertEquals( 1, transferWithOptionalFieldsWithDefaultMapsEntityWithOptionalFieldsDao.countAll());
+        assertEquals(1, transferWithOptionalFieldsWithDefaultMapsEntityWithOptionalFieldsDao.countAll());
         assertEquals(Optional.of(1), t2.getIntAttr());
         assertEquals(Optional.of(2.34), t2.getScaledAttr());
         assertEquals(Optional.of("Hello there"), t2.getStringAttr());
@@ -554,7 +554,7 @@ public class TestDefaultAndRequiredFieldsOnMappedTO {
 
         TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFields t2Expression = getTransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFields(createTypes, TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsForCreate.builder().build());
 
-        assertEquals( 1, transferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsDao.countAll());
+        assertEquals(1, transferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsDao.countAll());
         assertEquals(Optional.empty(), t2Expression.getStringAttr());
 
         e1Optional = entityWithOptionalFieldsDao.getById(t2Expression.adaptTo(EntityWithOptionalFieldsIdentifier.class));
@@ -685,14 +685,14 @@ public class TestDefaultAndRequiredFieldsOnMappedTO {
         assertEquals(1, exception.getValidationResults().size());
         validationResult = exception.getValidationResults().stream().findAny().orElseThrow();
         assertEquals("MISSING_REQUIRED_ATTRIBUTE", validationResult.getCode());
-        assertTrue(((String)validationResult.getLocation()).contains("stringAttr"));
+        assertTrue(((String) validationResult.getLocation()).contains("stringAttr"));
     }
 
     private TransferWithOptionalFieldsMapsEntityWithOptionalFields getTransferWithOptionalFieldsMapsEntityWithOptionalFields(CreateTypes createTypes, TransferWithOptionalFieldsMapsEntityWithOptionalFieldsForCreate transferWithOptionalFieldsMapsEntityWithOptionalFieldsForCreate) {
         TransferWithOptionalFieldsMapsEntityWithOptionalFieldsContainer transferWithOptionalFieldsMapsEntityWithOptionalFieldsContainer
                 = transferWithOptionalFieldsMapsEntityWithOptionalFieldsContainerDao.create(TransferWithOptionalFieldsMapsEntityWithOptionalFieldsContainerForCreate.builder().build());
         if (Objects.requireNonNull(createTypes) == CreateTypes.AGGREGATION_CREATE) {
-            return  transferWithOptionalFieldsMapsEntityWithOptionalFieldsContainerDao.createEntityWithOptionalFieldsCompositionAggregation(transferWithOptionalFieldsMapsEntityWithOptionalFieldsContainer, transferWithOptionalFieldsMapsEntityWithOptionalFieldsForCreate);
+            return transferWithOptionalFieldsMapsEntityWithOptionalFieldsContainerDao.createEntityWithOptionalFieldsCompositionAggregation(transferWithOptionalFieldsMapsEntityWithOptionalFieldsContainer, transferWithOptionalFieldsMapsEntityWithOptionalFieldsForCreate);
         } else if (createTypes == CreateTypes.ASSOCIATION_CREATE) {
             return transferWithOptionalFieldsMapsEntityWithOptionalFieldsContainerDao.createEntityWithOptionalFieldsAssociationAssociation(transferWithOptionalFieldsMapsEntityWithOptionalFieldsContainer, transferWithOptionalFieldsMapsEntityWithOptionalFieldsForCreate);
         } else {
@@ -728,7 +728,7 @@ public class TestDefaultAndRequiredFieldsOnMappedTO {
         TransferWithRequiredFieldsMapsEntityWithOptionalFieldsContainer transferWithRequiredFieldsMapsEntityWithOptionalFieldsContainer
                 = transferWithRequiredFieldsMapsEntityWithOptionalFieldsContainerDao.create(TransferWithRequiredFieldsMapsEntityWithOptionalFieldsContainerForCreate.builder().build());
         if (Objects.requireNonNull(createTypes) == CreateTypes.AGGREGATION_CREATE) {
-            return  transferWithRequiredFieldsMapsEntityWithOptionalFieldsContainerDao.createEntityWithOptionalFieldsCompositionAggregation(transferWithRequiredFieldsMapsEntityWithOptionalFieldsContainer, transferWithRequiredFieldsMapsEntityWithOptionalFieldsForCreate);
+            return transferWithRequiredFieldsMapsEntityWithOptionalFieldsContainerDao.createEntityWithOptionalFieldsCompositionAggregation(transferWithRequiredFieldsMapsEntityWithOptionalFieldsContainer, transferWithRequiredFieldsMapsEntityWithOptionalFieldsForCreate);
         } else if (createTypes == CreateTypes.ASSOCIATION_CREATE) {
             return transferWithRequiredFieldsMapsEntityWithOptionalFieldsContainerDao.createEntityWithOptionalFieldsAssociationAssociation(transferWithRequiredFieldsMapsEntityWithOptionalFieldsContainer, transferWithRequiredFieldsMapsEntityWithOptionalFieldsForCreate);
         } else {
@@ -741,7 +741,7 @@ public class TestDefaultAndRequiredFieldsOnMappedTO {
         TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsContainer transferWithRequiredFieldsMapsEntityWithOptionalFieldsContainer
                 = transferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsContainerDao.create(TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsContainerForCreate.builder().build());
         if (Objects.requireNonNull(createTypes) == CreateTypes.AGGREGATION_CREATE) {
-            return  transferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsContainerDao.createEntityWithOptionalFieldsCompositionAggregation(transferWithRequiredFieldsMapsEntityWithOptionalFieldsContainer, transferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsForCreate);
+            return transferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsContainerDao.createEntityWithOptionalFieldsCompositionAggregation(transferWithRequiredFieldsMapsEntityWithOptionalFieldsContainer, transferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsForCreate);
         } else if (createTypes == CreateTypes.ASSOCIATION_CREATE) {
             return transferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsContainerDao.createEntityWithOptionalFieldsAssociationAssociation(transferWithRequiredFieldsMapsEntityWithOptionalFieldsContainer, transferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsForCreate);
         } else {
@@ -754,7 +754,7 @@ public class TestDefaultAndRequiredFieldsOnMappedTO {
         TransferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsContainer transferWithRequiredFieldsMapsEntityWithOptionalFieldsContainer
                 = transferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsContainerDao.create(TransferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsContainerForCreate.builder().build());
         if (Objects.requireNonNull(createTypes) == CreateTypes.AGGREGATION_CREATE) {
-            return  transferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsContainerDao.createEntityWithOptionalFieldsCompositionAggregation(transferWithRequiredFieldsMapsEntityWithOptionalFieldsContainer, transferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsForCreate);
+            return transferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsContainerDao.createEntityWithOptionalFieldsCompositionAggregation(transferWithRequiredFieldsMapsEntityWithOptionalFieldsContainer, transferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsForCreate);
         } else if (createTypes == CreateTypes.ASSOCIATION_CREATE) {
             return transferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsContainerDao.createEntityWithOptionalFieldsAssociationAssociation(transferWithRequiredFieldsMapsEntityWithOptionalFieldsContainer, transferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsForCreate);
         } else {
@@ -948,7 +948,7 @@ public class TestDefaultAndRequiredFieldsOnMappedTO {
         assertEquals(1, exception.getValidationResults().size());
         validationResult = exception.getValidationResults().stream().findAny().orElseThrow();
         assertEquals("MISSING_REQUIRED_ATTRIBUTE", validationResult.getCode());
-        assertTrue(((String)validationResult.getLocation()).contains("stringAttr"));
+        assertTrue(((String) validationResult.getLocation()).contains("stringAttr"));
 
         exception = assertThrows(ValidationException.class, () -> getTransferWithRequiredFieldsMapsEntityWithRequiredFields(createTypes, TransferWithRequiredFieldsMapsEntityWithRequiredFieldsForCreate.builder().build()));
         assertEquals(9, exception.getValidationResults().size());
@@ -1072,7 +1072,7 @@ public class TestDefaultAndRequiredFieldsOnMappedTO {
         assertEquals(1, exception.getValidationResults().size());
         validationResult = exception.getValidationResults().stream().findAny().orElseThrow();
         assertEquals("MISSING_REQUIRED_ATTRIBUTE", validationResult.getCode());
-        assertTrue(((String)validationResult.getLocation()).contains("stringAttr"));
+        assertTrue(((String) validationResult.getLocation()).contains("stringAttr"));
     }
 
     // transferWithOptionalFieldsMapsEntityWithRequiredFieldsDao
@@ -1080,7 +1080,7 @@ public class TestDefaultAndRequiredFieldsOnMappedTO {
         TransferWithOptionalFieldsMapsEntityWithRequiredFieldsContainer transferWithOptionalFieldsMapsEntityWithRequiredFieldsContainer
                 = transferWithOptionalFieldsMapsEntityWithRequiredFieldsContainerDao.create(TransferWithOptionalFieldsMapsEntityWithRequiredFieldsContainerForCreate.builder().build());
         if (Objects.requireNonNull(createTypes) == CreateTypes.AGGREGATION_CREATE) {
-            return  transferWithOptionalFieldsMapsEntityWithRequiredFieldsContainerDao.createEntityWithRequiredFieldsCompositionAggregation(transferWithOptionalFieldsMapsEntityWithRequiredFieldsContainer, transferWithOptionalFieldsMapsEntityWithRequiredFieldsForCreate);
+            return transferWithOptionalFieldsMapsEntityWithRequiredFieldsContainerDao.createEntityWithRequiredFieldsCompositionAggregation(transferWithOptionalFieldsMapsEntityWithRequiredFieldsContainer, transferWithOptionalFieldsMapsEntityWithRequiredFieldsForCreate);
         } else if (createTypes == CreateTypes.ASSOCIATION_CREATE) {
             return transferWithOptionalFieldsMapsEntityWithRequiredFieldsContainerDao.createEntityWithRequiredFieldsAssociationAssociation(transferWithOptionalFieldsMapsEntityWithRequiredFieldsContainer, transferWithOptionalFieldsMapsEntityWithRequiredFieldsForCreate);
         } else {
@@ -1118,7 +1118,7 @@ public class TestDefaultAndRequiredFieldsOnMappedTO {
         TransferWithRequiredFieldsMapsEntityWithRequiredFieldsContainer transferWithRequiredFieldsMapsEntityWithRequiredFieldsContainer
                 = transferWithRequiredFieldsMapsEntityWithRequiredFieldsContainerDao.create(TransferWithRequiredFieldsMapsEntityWithRequiredFieldsContainerForCreate.builder().build());
         if (Objects.requireNonNull(createTypes) == CreateTypes.AGGREGATION_CREATE) {
-            return  transferWithRequiredFieldsMapsEntityWithRequiredFieldsContainerDao.createEntityWithRequiredFieldsCompositionAggregation(transferWithRequiredFieldsMapsEntityWithRequiredFieldsContainer, transferWithRequiredFieldsMapsEntityWithRequiredFieldsForCreate);
+            return transferWithRequiredFieldsMapsEntityWithRequiredFieldsContainerDao.createEntityWithRequiredFieldsCompositionAggregation(transferWithRequiredFieldsMapsEntityWithRequiredFieldsContainer, transferWithRequiredFieldsMapsEntityWithRequiredFieldsForCreate);
         } else if (createTypes == CreateTypes.ASSOCIATION_CREATE) {
             return transferWithRequiredFieldsMapsEntityWithRequiredFieldsContainerDao.createEntityWithRequiredFieldsAssociationAssociation(transferWithRequiredFieldsMapsEntityWithRequiredFieldsContainer, transferWithRequiredFieldsMapsEntityWithRequiredFieldsForCreate);
         } else {
@@ -1131,7 +1131,7 @@ public class TestDefaultAndRequiredFieldsOnMappedTO {
         TransferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsContainer transferWithRequiredFieldsMapsEntityWithRequiredFieldsContainer
                 = transferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsContainerDao.create(TransferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsContainerForCreate.builder().build());
         if (Objects.requireNonNull(createTypes) == CreateTypes.AGGREGATION_CREATE) {
-            return  transferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsContainerDao.createEntityWithRequiredFieldsCompositionAggregation(transferWithRequiredFieldsMapsEntityWithRequiredFieldsContainer, transferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsForCreate);
+            return transferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsContainerDao.createEntityWithRequiredFieldsCompositionAggregation(transferWithRequiredFieldsMapsEntityWithRequiredFieldsContainer, transferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsForCreate);
         } else if (createTypes == CreateTypes.ASSOCIATION_CREATE) {
             return transferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsContainerDao.createEntityWithRequiredFieldsAssociationAssociation(transferWithRequiredFieldsMapsEntityWithRequiredFieldsContainer, transferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsForCreate);
         } else {
@@ -1143,7 +1143,7 @@ public class TestDefaultAndRequiredFieldsOnMappedTO {
         TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsContainer transferWithRequiredFieldsMapsEntityWithRequiredFieldsContainer
                 = transferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsContainerDao.create(TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsContainerForCreate.builder().build());
         if (Objects.requireNonNull(createTypes) == CreateTypes.AGGREGATION_CREATE) {
-            return  transferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsContainerDao.createEntityWithRequiredFieldsCompositionAggregation(transferWithRequiredFieldsMapsEntityWithRequiredFieldsContainer, transferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsForCreate);
+            return transferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsContainerDao.createEntityWithRequiredFieldsCompositionAggregation(transferWithRequiredFieldsMapsEntityWithRequiredFieldsContainer, transferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsForCreate);
         } else if (createTypes == CreateTypes.ASSOCIATION_CREATE) {
             return transferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsContainerDao.createEntityWithRequiredFieldsAssociationAssociation(transferWithRequiredFieldsMapsEntityWithRequiredFieldsContainer, transferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsForCreate);
         } else {
@@ -1321,7 +1321,7 @@ public class TestDefaultAndRequiredFieldsOnMappedTO {
         TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefault t2Expression = getTransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefault(createTypes, TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefaultForCreate.builder().build());
 
         assertEquals(Optional.empty(), t2Expression.getStringAttr());
-        assertEquals( 1, transferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefaultDao.countAll());
+        assertEquals(1, transferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefaultDao.countAll());
 
         e1Optional = entityWithOptionalFieldsWithDefaultDao.getById(t2Expression.adaptTo(EntityWithOptionalFieldsWithDefaultIdentifier.class));
 
@@ -1443,7 +1443,7 @@ public class TestDefaultAndRequiredFieldsOnMappedTO {
         assertEquals(1, exception.getValidationResults().size());
         validationResult = exception.getValidationResults().stream().findAny().orElseThrow();
         assertEquals("MISSING_REQUIRED_ATTRIBUTE", validationResult.getCode());
-        assertTrue(((String)validationResult.getLocation()).contains("stringAttr"));
+        assertTrue(((String) validationResult.getLocation()).contains("stringAttr"));
     }
 
     // transferWithOptionalFieldsMapsEntityWithOptionalFieldsWithDefault
@@ -1451,7 +1451,7 @@ public class TestDefaultAndRequiredFieldsOnMappedTO {
         TransferWithOptionalFieldsMapsEntityWithOptionalFieldsWithDefaultContainer transferWithOptionalFieldsMapsEntityWithOptionalFieldsWithDefaultContainer
                 = transferWithOptionalFieldsMapsEntityWithOptionalFieldsWithDefaultContainerDao.create(TransferWithOptionalFieldsMapsEntityWithOptionalFieldsWithDefaultContainerForCreate.builder().build());
         if (Objects.requireNonNull(createTypes) == CreateTypes.AGGREGATION_CREATE) {
-            return  transferWithOptionalFieldsMapsEntityWithOptionalFieldsWithDefaultContainerDao.createEntityWithOptionalFieldsWithDefaultCompositionAggregation(transferWithOptionalFieldsMapsEntityWithOptionalFieldsWithDefaultContainer, transferWithOptionalFieldsMapsEntityWithOptionalFieldsWithDefaultForCreate);
+            return transferWithOptionalFieldsMapsEntityWithOptionalFieldsWithDefaultContainerDao.createEntityWithOptionalFieldsWithDefaultCompositionAggregation(transferWithOptionalFieldsMapsEntityWithOptionalFieldsWithDefaultContainer, transferWithOptionalFieldsMapsEntityWithOptionalFieldsWithDefaultForCreate);
         } else if (createTypes == CreateTypes.ASSOCIATION_CREATE) {
             return transferWithOptionalFieldsMapsEntityWithOptionalFieldsWithDefaultContainerDao.createEntityWithOptionalFieldsWithDefaultAssociationAssociation(transferWithOptionalFieldsMapsEntityWithOptionalFieldsWithDefaultContainer, transferWithOptionalFieldsMapsEntityWithOptionalFieldsWithDefaultForCreate);
         } else {
@@ -1490,7 +1490,7 @@ public class TestDefaultAndRequiredFieldsOnMappedTO {
         TransferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefaultContainer transferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefaultContainer
                 = transferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefaultContainerDao.create(TransferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefaultContainerForCreate.builder().build());
         if (Objects.requireNonNull(createTypes) == CreateTypes.AGGREGATION_CREATE) {
-            return  transferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefaultContainerDao.createEntityWithOptionalFieldsWithDefaultCompositionAggregation(transferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefaultContainer, transferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefaultForCreate);
+            return transferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefaultContainerDao.createEntityWithOptionalFieldsWithDefaultCompositionAggregation(transferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefaultContainer, transferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefaultForCreate);
         } else if (createTypes == CreateTypes.ASSOCIATION_CREATE) {
             return transferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefaultContainerDao.createEntityWithOptionalFieldsWithDefaultAssociationAssociation(transferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefaultContainer, transferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefaultForCreate);
         } else {
@@ -1503,7 +1503,7 @@ public class TestDefaultAndRequiredFieldsOnMappedTO {
         TransferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefaultContainer transferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefaultContainer
                 = transferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefaultContainerDao.create(TransferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefaultContainerForCreate.builder().build());
         if (Objects.requireNonNull(createTypes) == CreateTypes.AGGREGATION_CREATE) {
-            return  transferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefaultContainerDao.createEntityWithOptionalFieldsWithDefaultCompositionAggregation(transferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefaultContainer, transferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefaultForCreate);
+            return transferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefaultContainerDao.createEntityWithOptionalFieldsWithDefaultCompositionAggregation(transferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefaultContainer, transferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefaultForCreate);
         } else if (createTypes == CreateTypes.ASSOCIATION_CREATE) {
             return transferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefaultContainerDao.createEntityWithOptionalFieldsWithDefaultAssociationAssociation(transferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefaultContainer, transferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefaultForCreate);
         } else {
@@ -1515,7 +1515,7 @@ public class TestDefaultAndRequiredFieldsOnMappedTO {
         TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefaultContainer transferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefaultContainer
                 = transferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefaultContainerDao.create(TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefaultContainerForCreate.builder().build());
         if (Objects.requireNonNull(createTypes) == CreateTypes.AGGREGATION_CREATE) {
-            return  transferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefaultContainerDao.createEntityWithOptionalFieldsWithDefaultCompositionAggregation(transferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefaultContainer, transferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefaultForCreate);
+            return transferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefaultContainerDao.createEntityWithOptionalFieldsWithDefaultCompositionAggregation(transferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefaultContainer, transferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefaultForCreate);
         } else if (createTypes == CreateTypes.ASSOCIATION_CREATE) {
             return transferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefaultContainerDao.createEntityWithOptionalFieldsWithDefaultAssociationAssociation(transferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefaultContainer, transferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefaultForCreate);
         } else {
@@ -1704,7 +1704,7 @@ public class TestDefaultAndRequiredFieldsOnMappedTO {
         assertEquals(1, exception.getValidationResults().size());
         validationResult = exception.getValidationResults().stream().findAny().orElseThrow();
         assertEquals("MISSING_REQUIRED_ATTRIBUTE", validationResult.getCode());
-        assertTrue(((String)validationResult.getLocation()).contains("stringAttr"));
+        assertTrue(((String) validationResult.getLocation()).contains("stringAttr"));
 
         TransferWithRequiredFieldsMapsEntityWithRequiredFieldsWithDefault t3 = getTransferWithRequiredFieldsMapsEntityWithRequiredFieldsWithDefault(createTypes, TransferWithRequiredFieldsMapsEntityWithRequiredFieldsWithDefaultForCreate.builder().build());
         assertEquals(1, transferWithRequiredFieldsMapsEntityWithRequiredFieldsWithDefaultDao.countAll());
@@ -1801,13 +1801,13 @@ public class TestDefaultAndRequiredFieldsOnMappedTO {
         assertEquals(1, exception.getValidationResults().size());
         validationResult = exception.getValidationResults().stream().findAny().orElseThrow();
         assertEquals("MISSING_REQUIRED_ATTRIBUTE", validationResult.getCode());
-        assertTrue(((String)validationResult.getLocation()).contains("stringAttr"));
+        assertTrue(((String) validationResult.getLocation()).contains("stringAttr"));
 
         exception = assertThrows(ValidationException.class, () -> getTransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefault(createTypes, TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefaultForCreate.create()));
         assertEquals(1, exception.getValidationResults().size());
         validationResult = exception.getValidationResults().stream().findAny().orElseThrow();
         assertEquals("MISSING_REQUIRED_ATTRIBUTE", validationResult.getCode());
-        assertTrue(((String)validationResult.getLocation()).contains("stringAttr"));
+        assertTrue(((String) validationResult.getLocation()).contains("stringAttr"));
     }
 
     // TransferWithOptionalFieldsMapsEntityWithRequiredFieldsWithDefault
@@ -1815,7 +1815,7 @@ public class TestDefaultAndRequiredFieldsOnMappedTO {
         TransferWithOptionalFieldsMapsEntityWithRequiredFieldsWithDefaultContainer transferWithOptionalFieldsMapsEntityWithRequiredFieldsWithDefaultContainer
                 = transferWithOptionalFieldsMapsEntityWithRequiredFieldsWithDefaultContainerDao.create(TransferWithOptionalFieldsMapsEntityWithRequiredFieldsWithDefaultContainerForCreate.builder().build());
         if (Objects.requireNonNull(createTypes) == CreateTypes.AGGREGATION_CREATE) {
-            return  transferWithOptionalFieldsMapsEntityWithRequiredFieldsWithDefaultContainerDao.createEntityWithRequiredFieldsWithDefaultCompositionAggregation(transferWithOptionalFieldsMapsEntityWithRequiredFieldsWithDefaultContainer, transferWithOptionalFieldsMapsEntityWithRequiredFieldsWithDefaultForCreate);
+            return transferWithOptionalFieldsMapsEntityWithRequiredFieldsWithDefaultContainerDao.createEntityWithRequiredFieldsWithDefaultCompositionAggregation(transferWithOptionalFieldsMapsEntityWithRequiredFieldsWithDefaultContainer, transferWithOptionalFieldsMapsEntityWithRequiredFieldsWithDefaultForCreate);
         } else if (createTypes == CreateTypes.ASSOCIATION_CREATE) {
             return transferWithOptionalFieldsMapsEntityWithRequiredFieldsWithDefaultContainerDao.createEntityWithRequiredFieldsWithDefaultAssociationAssociation(transferWithOptionalFieldsMapsEntityWithRequiredFieldsWithDefaultContainer, transferWithOptionalFieldsMapsEntityWithRequiredFieldsWithDefaultForCreate);
         } else {
@@ -1841,7 +1841,7 @@ public class TestDefaultAndRequiredFieldsOnMappedTO {
         TransferWithRequiredFieldsMapsEntityWithRequiredFieldsWithDefaultContainer transferWithRequiredFieldsMapsEntityWithRequiredFieldsWithDefaultContainer
                 = transferWithRequiredFieldsMapsEntityWithRequiredFieldsWithDefaultContainerDao.create(TransferWithRequiredFieldsMapsEntityWithRequiredFieldsWithDefaultContainerForCreate.builder().build());
         if (Objects.requireNonNull(createTypes) == CreateTypes.AGGREGATION_CREATE) {
-            return  transferWithRequiredFieldsMapsEntityWithRequiredFieldsWithDefaultContainerDao.createEntityWithRequiredFieldsWithDefaultCompositionAggregation(transferWithRequiredFieldsMapsEntityWithRequiredFieldsWithDefaultContainer, transferWithRequiredFieldsMapsEntityWithRequiredFieldsWithDefaultForCreate);
+            return transferWithRequiredFieldsMapsEntityWithRequiredFieldsWithDefaultContainerDao.createEntityWithRequiredFieldsWithDefaultCompositionAggregation(transferWithRequiredFieldsMapsEntityWithRequiredFieldsWithDefaultContainer, transferWithRequiredFieldsMapsEntityWithRequiredFieldsWithDefaultForCreate);
         } else if (createTypes == CreateTypes.ASSOCIATION_CREATE) {
             return transferWithRequiredFieldsMapsEntityWithRequiredFieldsWithDefaultContainerDao.createEntityWithRequiredFieldsWithDefaultAssociationAssociation(transferWithRequiredFieldsMapsEntityWithRequiredFieldsWithDefaultContainer, transferWithRequiredFieldsMapsEntityWithRequiredFieldsWithDefaultForCreate);
         } else {
@@ -1854,31 +1854,31 @@ public class TestDefaultAndRequiredFieldsOnMappedTO {
         TransferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsWithDefaultContainer transferWithRequiredFieldsMapsEntityWithRequiredFieldsWithDefaultContainer
                 = transferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsWithDefaultContainerDao.create(TransferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsWithDefaultContainerForCreate.builder().build());
         if (Objects.requireNonNull(createTypes) == CreateTypes.AGGREGATION_CREATE) {
-            return  transferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsWithDefaultContainerDao.createEntityWithRequiredFieldsWithDefaultCompositionAggregation(transferWithRequiredFieldsMapsEntityWithRequiredFieldsWithDefaultContainer, transferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsWithDefaultForCreate);
+            return transferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsWithDefaultContainerDao.createEntityWithRequiredFieldsWithDefaultCompositionAggregation(transferWithRequiredFieldsMapsEntityWithRequiredFieldsWithDefaultContainer, transferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsWithDefaultForCreate);
         } else if (createTypes == CreateTypes.ASSOCIATION_CREATE) {
             return transferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsWithDefaultContainerDao.createEntityWithRequiredFieldsWithDefaultAssociationAssociation(transferWithRequiredFieldsMapsEntityWithRequiredFieldsWithDefaultContainer, transferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsWithDefaultForCreate);
         } else {
             return transferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsWithDefaultDao.create(transferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsWithDefaultForCreate);
         }
     }
-    
+
     private TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefault getTransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefault(CreateTypes createTypes, TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefaultForCreate transferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefaultForCreate) {
         TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefaultContainer transferWithRequiredFieldsMapsEntityWithRequiredFieldsWithDefaultContainer
                 = transferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefaultContainerDao.create(TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefaultContainerForCreate.builder().build());
         if (Objects.requireNonNull(createTypes) == CreateTypes.AGGREGATION_CREATE) {
-            return  transferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefaultContainerDao.createEntityWithRequiredFieldsWithDefaultCompositionAggregation(transferWithRequiredFieldsMapsEntityWithRequiredFieldsWithDefaultContainer, transferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefaultForCreate);
+            return transferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefaultContainerDao.createEntityWithRequiredFieldsWithDefaultCompositionAggregation(transferWithRequiredFieldsMapsEntityWithRequiredFieldsWithDefaultContainer, transferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefaultForCreate);
         } else if (createTypes == CreateTypes.ASSOCIATION_CREATE) {
             return transferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefaultContainerDao.createEntityWithRequiredFieldsWithDefaultAssociationAssociation(transferWithRequiredFieldsMapsEntityWithRequiredFieldsWithDefaultContainer, transferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefaultForCreate);
         } else {
             return transferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefaultDao.create(transferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefaultForCreate);
         }
     }
-    
+
     private TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefault getTransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefault(CreateTypes createTypes, TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefaultForCreate transferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefaultForCreate) {
         TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefaultContainer transferWithRequiredFieldsMapsEntityWithRequiredFieldsWithDefaultContainer
                 = transferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefaultContainerDao.create(TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefaultContainerForCreate.builder().build());
         if (Objects.requireNonNull(createTypes) == CreateTypes.AGGREGATION_CREATE) {
-            return  transferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefaultContainerDao.createEntityWithRequiredFieldsWithDefaultCompositionAggregation(transferWithRequiredFieldsMapsEntityWithRequiredFieldsWithDefaultContainer, transferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefaultForCreate);
+            return transferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefaultContainerDao.createEntityWithRequiredFieldsWithDefaultCompositionAggregation(transferWithRequiredFieldsMapsEntityWithRequiredFieldsWithDefaultContainer, transferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefaultForCreate);
         } else if (createTypes == CreateTypes.ASSOCIATION_CREATE) {
             return transferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefaultContainerDao.createEntityWithRequiredFieldsWithDefaultAssociationAssociation(transferWithRequiredFieldsMapsEntityWithRequiredFieldsWithDefaultContainer, transferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefaultForCreate);
         } else {
