@@ -41,6 +41,10 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filtercountmodel.filter
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filtercountmodel.filtercountmodel.expressioncontainer.ExpressionContainer;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filtercountmodel.filtercountmodel.expressioncontainer.ExpressionContainerDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filtercountmodel.filtercountmodel.expressioncontainer.ExpressionContainerForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filtercountmodel.filtercountmodel.expressioncontainertransfer.ExpressionContainerTransfer;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filtercountmodel.filtercountmodel.expressioncontainertransfer.ExpressionContainerTransferDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filtercountmodel.filtercountmodel.expressioncontainertransfer.ExpressionContainerTransferForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filtercountmodel.filtercountmodel.parent.Parent;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filtercountmodel.filtercountmodel.parent.ParentDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filtercountmodel.filtercountmodel.parent.ParentForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filtercountmodel.filtercountmodel.toy.Toy;
@@ -53,7 +57,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
 public class FilterCountTest {
@@ -141,27 +145,102 @@ public class FilterCountTest {
     @Inject
     ExpressionContainerDao expressionContainerDao;
 
+    @Inject
+    ExpressionContainerTransferDao expressionContainerTransferDao;
+
     // Test for https://blackbelt.atlassian.net/browse/JNG-6157
     @Test
     void testSizeInNavigatedExpression() {
         Toy toy = toyDao.create(ToyForCreate.builder().withName("TeddyBear").build());
+        Toy toy2 = toyDao.create(ToyForCreate.builder().withName("TeddyBear2").build());
+        Toy toy3 = toyDao.create(ToyForCreate.builder().withName("TeddyBear3").build());
+        Toy toy4 = toyDao.create(ToyForCreate.builder().withName("TeddyBear3").build());
 
-        parentDao.create(ParentForCreate
+        ExpressionContainer expressionContainer = expressionContainerDao.create(ExpressionContainerForCreate.builder().build());
+        ExpressionContainerTransfer expressionContainerTransfer = expressionContainerTransferDao
+                .create(ExpressionContainerTransferForCreate.builder().build());
+
+        assertFalse(expressionContainer.getB().orElseThrow());
+        assertFalse(expressionContainerTransfer.getMappedB().orElseThrow());
+
+        Parent jason = parentDao.create(ParentForCreate
                 .builder()
-                .withName("Ted")
+                .withName("Jason")
                 .withChildren(List.of(
                         ChildForCreate.builder()
-                                .withName("Jeremy")
+                                .withName("Jason")
+                                .withAge(10)
                                 .withToys(List.of(toy)).build())
                 )
                 .build()
         );
 
+        Parent ted = parentDao.create(ParentForCreate
+                .builder()
+                .withName("Ted")
+                .withChildren(List.of(
+                        ChildForCreate.builder()
+                                .withName("Jeremy")
+                                .withAge(15)
+                                .withToys(List.of(toy2)).build())
+                )
+                .build()
+        );
+
+        Parent jason2 = parentDao.create(ParentForCreate
+                .builder()
+                .withName("Jason")
+                .withChildren(List.of(
+                        ChildForCreate.builder()
+                                .withName("Jack")
+                                .withAge(20)
+                                .withToys(List.of(toy3, toy4)).build(),
+                        ChildForCreate.builder()
+                                .withName("Oliver")
+                                .withAge(5)
+                                .withToys(List.of(toy3, toy4)).build())
+                )
+                .build()
+        );
+
+        assertFalse(expressionContainer.getB().orElseThrow());
+        assertFalse(expressionContainerTransfer.getMappedB().orElseThrow());
+
+        expressionContainerDao.setParent(expressionContainer, jason);
+        expressionContainer = expressionContainerDao.getById(expressionContainer.identifier()).orElseThrow();
 
 
-        
-        ExpressionContainer expressionContainer = expressionContainerDao.create(ExpressionContainerForCreate.builder().build());
 
+        assertTrue(expressionContainer.getB().orElseThrow());
+        assertTrue(expressionContainerTransfer.getMappedB().orElseThrow());
+        assertEquals(3, expressionContainer.getNumberOfParent().orElseThrow());
+        assertTrue(expressionContainer.getNumberOfParentNameJasonIsTwo().orElseThrow());
+        assertEquals(4, expressionContainer.getNumberOfChildren().orElseThrow());
+        assertEquals(5, expressionContainer.getMinimumOfChildren().orElseThrow());
+        assertEquals(20, expressionContainer.getMaximumOfChildren().orElseThrow());
+        assertEquals(50, expressionContainer.getSumOfChildren().orElseThrow());
+        assertEquals(12.5, expressionContainer.getAverageOfChildren().orElseThrow());
+
+        //        expressionContainerTransferDao.setParent(expressionContainerTransfer, jason);
+
+        assertEquals(3, expressionContainerTransfer.getNumberOfParent().orElseThrow());
+        assertEquals(3, expressionContainerTransfer.getMappedNumberOfParent().orElseThrow());
+        assertTrue(expressionContainerTransfer.getNumberOfParentNameJasonIsTwo().orElseThrow());
+        assertTrue(expressionContainerTransfer.getMappedNumberOfParentNameJasonIsTwo().orElseThrow());
+        assertEquals(4, expressionContainerTransfer.getNumberOfChildren().orElseThrow());
+        assertEquals(4, expressionContainerTransfer.getMappedNumberOfChildren().orElseThrow());
+        assertEquals(5, expressionContainerTransfer.getMinimumOfChildren().orElseThrow());
+        assertEquals(5, expressionContainerTransfer.getMappedMinimumOfChildren().orElseThrow());
+        assertEquals(20, expressionContainerTransfer.getMaximumOfChildren().orElseThrow());
+        assertEquals(20, expressionContainerTransfer.getMappedMaximumOfChildren().orElseThrow());
+        assertEquals(50, expressionContainerTransfer.getSumOfChildren().orElseThrow());
+        assertEquals(50, expressionContainerTransfer.getMappedSumOfChildren().orElseThrow());
+        assertEquals(12.5, expressionContainerTransfer.getAverageOfChildren().orElseThrow());
+        assertEquals(12.5, expressionContainerTransfer.getMappedAverageOfChildren().orElseThrow());
+
+
+//        assertEquals(2, expressionContainer.getNumberOfToys().get());
+//        assertEquals(true, expressionContainer.getNumberOfToysIsTwo().get());
 //        assertEquals(0, expressionContainer.getNumberOfChildrenSelf().get());
 
 //        assertEquals(1, expressionContainer.getNumberOfChildren().get());
