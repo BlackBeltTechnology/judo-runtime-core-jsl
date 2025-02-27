@@ -17,6 +17,11 @@ enum Enum {
 // Entity with optional fields                                                        //
 ////////////////////////////////////////////////////////////////////////////////////////
 
+entity EntityWithOptionalFieldsContainer {
+    field EntityWithOptionalFields entityWithOptionalFieldsComposition;
+    relation EntityWithOptionalFields entityWithOptionalFieldsAssociation;
+}
+
 entity EntityWithOptionalFields {
         field Integer integerAttr;
         field Scaled scaledAttr;
@@ -41,10 +46,16 @@ transfer TransferWithOptionalFieldsMapsEntityWithOptionalFields (EntityWithOptio
     field Time timeAttr <=> mappedEntity.timeAttr;
     field Enum enumAttr <=> mappedEntity.enumAttr;
 
+    event create onCreate;
+}
+
+transfer TransferWithOptionalFieldsMapsEntityWithOptionalFieldsContainer(EntityWithOptionalFieldsContainer mappedEntity) {
+    relation TransferWithOptionalFieldsMapsEntityWithOptionalFields entityWithOptionalFieldsCompositionAggregation <= mappedEntity.entityWithOptionalFieldsComposition eager create;
+    relation TransferWithOptionalFieldsMapsEntityWithOptionalFields entityWithOptionalFieldsAssociationAssociation <= mappedEntity.entityWithOptionalFieldsAssociation create;
 }
 
 // Mapped Transfer Object with optional fields with default
-transfer TransferWithOptionalFieldsWithDefaultMapsEntityWithOptionalFields (EntityWithOptionalFields mappedEntity) {
+transfer TransferWithOptionalFieldsWithDefaultMapsEntityWithOptionalFields(EntityWithOptionalFields mappedEntity) {
     field Integer intAttr <=> mappedEntity.integerAttr  default:1;
     field Scaled scaledAttr <=> mappedEntity.scaledAttr  default:2.34;
     field SmallString stringAttr <=> mappedEntity.stringAttr  default:"Hello there";
@@ -54,11 +65,25 @@ transfer TransferWithOptionalFieldsWithDefaultMapsEntityWithOptionalFields (Enti
     field Timestamp timestampAttr <=> mappedEntity.timestampAttr  default:`2022-07-11T19:09:33Z`;
     field Time timeAttr <=> mappedEntity.timeAttr  default:`23:59:59`;
     field Enum enumAttr <=> mappedEntity.enumAttr  default:Enum#EnumA;
+    
+    event create onCreate;
+}
+
+transfer TransferWithOptionalFieldsWithDefaultMapsEntityWithOptionalFieldsContainer(EntityWithOptionalFieldsContainer mappedEntity) {
+    relation TransferWithOptionalFieldsWithDefaultMapsEntityWithOptionalFields entityWithOptionalFieldsCompositionAggregation <= mappedEntity.entityWithOptionalFieldsComposition eager create;
+    relation TransferWithOptionalFieldsWithDefaultMapsEntityWithOptionalFields entityWithOptionalFieldsAssociationAssociation <= mappedEntity.entityWithOptionalFieldsAssociation create;
 }
 
 // Mapped Transfer Object with optional fields with default expression
 transfer TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFields (EntityWithOptionalFields mappedEntity) {
     field SmallString stringAttr <=> mappedEntity.stringAttr  default:queryStringAttribute();
+    
+    event create onCreate;
+}
+
+transfer TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsContainer(EntityWithOptionalFieldsContainer mappedEntity) {
+    relation TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFields entityWithOptionalFieldsCompositionAggregation <= mappedEntity.entityWithOptionalFieldsComposition eager create;
+    relation TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFields entityWithOptionalFieldsAssociationAssociation <= mappedEntity.entityWithOptionalFieldsAssociation create;
 }
 
 // Mapped Transfer Object with required fields
@@ -72,11 +97,17 @@ transfer TransferWithRequiredFieldsMapsEntityWithOptionalFields (EntityWithOptio
     field Timestamp timestampAttr <=> mappedEntity.timestampAttr required;
     field Time timeAttr <=> mappedEntity.timeAttr required;
     field Enum enumAttr <=> mappedEntity.enumAttr required;
+    
+    event create onCreate;
+}
 
+transfer TransferWithRequiredFieldsMapsEntityWithOptionalFieldsContainer(EntityWithOptionalFieldsContainer mappedEntity) {
+    relation TransferWithRequiredFieldsMapsEntityWithOptionalFields entityWithOptionalFieldsCompositionAggregation <= mappedEntity.entityWithOptionalFieldsComposition eager create;
+    relation TransferWithRequiredFieldsMapsEntityWithOptionalFields entityWithOptionalFieldsAssociationAssociation <= mappedEntity.entityWithOptionalFieldsAssociation create;
 }
 
 // Mapped Transfer Object with required fields with default
-transfer TransferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFields (EntityWithOptionalFields mappedEntity) {
+transfer TransferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFields(EntityWithOptionalFields mappedEntity) {
     field Integer intAttr <=> mappedEntity.integerAttr  default:1 required;
     field Scaled scaledAttr <=> mappedEntity.scaledAttr  default:2.34 required;
     field SmallString stringAttr <=> mappedEntity.stringAttr  default:"Hello there" required;
@@ -86,16 +117,35 @@ transfer TransferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFields (Enti
     field Timestamp timestampAttr <=> mappedEntity.timestampAttr  default:`2022-07-11T19:09:33Z` required;
     field Time timeAttr <=> mappedEntity.timeAttr  default:`23:59:59` required;
     field Enum enumAttr <=> mappedEntity.enumAttr  default:Enum#EnumA required;
+    
+    event create onCreate;
+}
+
+transfer TransferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsContainer(EntityWithOptionalFieldsContainer mappedEntity) {
+    relation TransferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFields entityWithOptionalFieldsCompositionAggregation <= mappedEntity.entityWithOptionalFieldsComposition eager create;
+    relation TransferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFields entityWithOptionalFieldsAssociationAssociation <= mappedEntity.entityWithOptionalFieldsAssociation create;
 }
 
 // Mapped Transfer Object with required fields with default expression
 transfer TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFields (EntityWithOptionalFields mappedEntity) {
     field SmallString stringAttr <=> mappedEntity.stringAttr required  default:queryStringAttribute();
+    
+    event create onCreate;
+}
+
+transfer TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsContainer(EntityWithOptionalFieldsContainer mappedEntity) {
+    relation TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFields entityWithOptionalFieldsCompositionAggregation <= mappedEntity.entityWithOptionalFieldsComposition eager create;
+    relation TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFields entityWithOptionalFieldsAssociationAssociation <= mappedEntity.entityWithOptionalFieldsAssociation create;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////
 // Entity with required fields                                                        //
 ////////////////////////////////////////////////////////////////////////////////////////
+
+entity EntityWithRequiredFieldsContainer {
+    field EntityWithRequiredFields entityWithRequiredFieldsComposition;
+    relation EntityWithRequiredFields entityWithRequiredFieldsAssociation;
+}
 
 entity EntityWithRequiredFields {
         field Integer integerAttr required;
@@ -121,6 +171,13 @@ transfer TransferWithOptionalFieldsMapsEntityWithRequiredFields (EntityWithRequi
     field Timestamp timestampAttr <=> mappedEntity.timestampAttr;
     field Time timeAttr <=> mappedEntity.timeAttr;
     field Enum enumAttr <=> mappedEntity.enumAttr;
+    
+    event create onCreate;
+}
+
+transfer TransferWithOptionalFieldsMapsEntityWithRequiredFieldsContainer(EntityWithRequiredFieldsContainer mappedEntity) {
+    relation TransferWithOptionalFieldsMapsEntityWithRequiredFields entityWithRequiredFieldsCompositionAggregation <= mappedEntity.entityWithRequiredFieldsComposition eager create;
+    relation TransferWithOptionalFieldsMapsEntityWithRequiredFields entityWithRequiredFieldsAssociationAssociation <= mappedEntity.entityWithRequiredFieldsAssociation create;
 }
 
 // Mapped Transfer Object with optional fields with default
@@ -134,11 +191,25 @@ transfer TransferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFields (Enti
     field Timestamp timestampAttr <=> mappedEntity.timestampAttr  default:`2022-07-11T19:09:33Z`;
     field Time timeAttr <=> mappedEntity.timeAttr  default:`23:59:59`;
     field Enum enumAttr <=> mappedEntity.enumAttr  default:Enum#EnumA;
+    
+    event create onCreate;
+}
+
+transfer TransferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsContainer(EntityWithRequiredFieldsContainer mappedEntity) {
+    relation TransferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFields entityWithRequiredFieldsCompositionAggregation <= mappedEntity.entityWithRequiredFieldsComposition eager create;
+    relation TransferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFields entityWithRequiredFieldsAssociationAssociation <= mappedEntity.entityWithRequiredFieldsAssociation create;
 }
 
 // Mapped Transfer Object with optional fields with default expression
 transfer TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFields (EntityWithRequiredFields mappedEntity) {
     field SmallString stringAttr <=> mappedEntity.stringAttr  default:queryStringAttribute();
+    
+    event create onCreate;
+}
+
+transfer TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsContainer(EntityWithRequiredFieldsContainer mappedEntity) {
+    relation TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFields entityWithRequiredFieldsCompositionAggregation <= mappedEntity.entityWithRequiredFieldsComposition eager create;
+    relation TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFields entityWithRequiredFieldsAssociationAssociation <= mappedEntity.entityWithRequiredFieldsAssociation create;
 }
 
 // Mapped Transfer Object with required fields
@@ -152,6 +223,13 @@ transfer TransferWithRequiredFieldsMapsEntityWithRequiredFields (EntityWithRequi
     field Timestamp timestampAttr <=> mappedEntity.timestampAttr required;
     field Time timeAttr <=> mappedEntity.timeAttr required;
     field Enum enumAttr <=> mappedEntity.enumAttr required;
+    
+    event create onCreate;
+}
+
+transfer TransferWithRequiredFieldsMapsEntityWithRequiredFieldsContainer(EntityWithRequiredFieldsContainer mappedEntity) {
+    relation TransferWithRequiredFieldsMapsEntityWithRequiredFields entityWithRequiredFieldsCompositionAggregation <= mappedEntity.entityWithRequiredFieldsComposition eager create;
+    relation TransferWithRequiredFieldsMapsEntityWithRequiredFields entityWithRequiredFieldsAssociationAssociation <= mappedEntity.entityWithRequiredFieldsAssociation create;
 }
 
 // Mapped Transfer Object with required fields with default
@@ -165,16 +243,35 @@ transfer TransferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFields (Enti
     field Timestamp timestampAttr <=> mappedEntity.timestampAttr  default:`2022-07-11T19:09:33Z` required;
     field Time timeAttr <=> mappedEntity.timeAttr  default:`23:59:59` required;
     field Enum enumAttr <=> mappedEntity.enumAttr  default:Enum#EnumA required;
+    
+    event create onCreate;
+}
+
+transfer TransferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsContainer(EntityWithRequiredFieldsContainer mappedEntity) {
+    relation TransferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFields entityWithRequiredFieldsCompositionAggregation <= mappedEntity.entityWithRequiredFieldsComposition eager create;
+    relation TransferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFields entityWithRequiredFieldsAssociationAssociation <= mappedEntity.entityWithRequiredFieldsAssociation create;
 }
 
 // Mapped Transfer Object with required fields with default expression
 transfer TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFields (EntityWithRequiredFields mappedEntity) {
     field SmallString stringAttr <=> mappedEntity.stringAttr  default:queryStringAttribute() required;
+    
+    event create onCreate;
+}
+
+transfer TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsContainer(EntityWithRequiredFieldsContainer mappedEntity) {
+    relation TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFields entityWithRequiredFieldsCompositionAggregation <= mappedEntity.entityWithRequiredFieldsComposition eager create;
+    relation TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFields entityWithRequiredFieldsAssociationAssociation <= mappedEntity.entityWithRequiredFieldsAssociation create;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////
 // Entity with optional fields with default value                                     //
 ////////////////////////////////////////////////////////////////////////////////////////
+
+entity EntityWithOptionalFieldsWithDefaultContainer {
+    field EntityWithOptionalFieldsWithDefault entityWithOptionalFieldsWithDefaultComposition;
+    relation EntityWithOptionalFieldsWithDefault entityWithOptionalFieldsWithDefaultAssociation;
+}
 
 entity EntityWithOptionalFieldsWithDefault {
     field Integer integerAttr default:1;
@@ -200,6 +297,13 @@ transfer TransferWithOptionalFieldsMapsEntityWithOptionalFieldsWithDefault (Enti
     field Timestamp timestampAttr <=> mappedEntity.timestampAttr;
     field Time timeAttr <=> mappedEntity.timeAttr;
     field Enum enumAttr <=> mappedEntity.enumAttr;
+    
+    event create onCreate;
+}
+
+transfer TransferWithOptionalFieldsMapsEntityWithOptionalFieldsWithDefaultContainer(EntityWithOptionalFieldsWithDefaultContainer mappedEntity) {
+    relation TransferWithOptionalFieldsMapsEntityWithOptionalFieldsWithDefault entityWithOptionalFieldsWithDefaultCompositionAggregation <= mappedEntity.entityWithOptionalFieldsWithDefaultComposition eager create;
+    relation TransferWithOptionalFieldsMapsEntityWithOptionalFieldsWithDefault entityWithOptionalFieldsWithDefaultAssociationAssociation <= mappedEntity.entityWithOptionalFieldsWithDefaultAssociation create;
 }
 
 // Mapped Transfer Object with optional fields with default
@@ -213,11 +317,25 @@ transfer TransferWithOptionalFieldsWithDefaultMapsEntityWithOptionalFieldsWithDe
     field Timestamp timestampAttr <=> mappedEntity.timestampAttr  default:`2022-07-12T19:09:33Z`;
     field Time timeAttr <=> mappedEntity.timeAttr  default:`23:59:58`;
     field Enum enumAttr <=> mappedEntity.enumAttr  default:Enum#EnumB;
+    
+    event create onCreate;
+}
+
+transfer TransferWithOptionalFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefaultContainer(EntityWithOptionalFieldsWithDefaultContainer mappedEntity) {
+    relation TransferWithOptionalFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefault entityWithOptionalFieldsWithDefaultCompositionAggregation <= mappedEntity.entityWithOptionalFieldsWithDefaultComposition eager create;
+    relation TransferWithOptionalFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefault entityWithOptionalFieldsWithDefaultAssociationAssociation <= mappedEntity.entityWithOptionalFieldsWithDefaultAssociation create;
 }
 
 // Mapped Transfer Object with optional fields with default expression
 transfer TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefault (EntityWithOptionalFieldsWithDefault mappedEntity) {
     field SmallString stringAttr <=> mappedEntity.stringAttr  default:queryStringAttribute();
+    
+     event create onCreate;
+}
+
+transfer TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefaultContainer(EntityWithOptionalFieldsWithDefaultContainer mappedEntity) {
+    relation TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefault entityWithOptionalFieldsWithDefaultCompositionAggregation <= mappedEntity.entityWithOptionalFieldsWithDefaultComposition eager create;
+    relation TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefault entityWithOptionalFieldsWithDefaultAssociationAssociation <= mappedEntity.entityWithOptionalFieldsWithDefaultAssociation create;
 }
 
 // Mapped Transfer Object with required fields
@@ -231,6 +349,13 @@ transfer TransferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefault (Enti
     field Timestamp timestampAttr <=> mappedEntity.timestampAttr required;
     field Time timeAttr <=> mappedEntity.timeAttr required;
     field Enum enumAttr <=> mappedEntity.enumAttr required;
+    
+     event create onCreate;
+}
+
+transfer TransferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefaultContainer(EntityWithOptionalFieldsWithDefaultContainer mappedEntity) {
+    relation TransferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefault entityWithOptionalFieldsWithDefaultCompositionAggregation <= mappedEntity.entityWithOptionalFieldsWithDefaultComposition eager create;
+    relation TransferWithRequiredFieldsMapsEntityWithOptionalFieldsWithDefault entityWithOptionalFieldsWithDefaultAssociationAssociation <= mappedEntity.entityWithOptionalFieldsWithDefaultAssociation create;
 }
 
 // Mapped Transfer Object with required fields with default
@@ -244,16 +369,35 @@ transfer TransferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsWithDe
     field Timestamp timestampAttr <=> mappedEntity.timestampAttr  default:`2022-07-12T19:09:33Z` required;
     field Time timeAttr <=> mappedEntity.timeAttr  default:`23:59:58` required;
     field Enum enumAttr <=> mappedEntity.enumAttr  default:Enum#EnumB required;
+    
+    event create onCreate;
+}
+
+transfer TransferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefaultContainer(EntityWithOptionalFieldsWithDefaultContainer mappedEntity) {
+    relation TransferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefault entityWithOptionalFieldsWithDefaultCompositionAggregation <= mappedEntity.entityWithOptionalFieldsWithDefaultComposition eager create;
+    relation TransferWithRequiredFieldsWithDefaultMapsEntityWithOptionalFieldsWithDefault entityWithOptionalFieldsWithDefaultAssociationAssociation <= mappedEntity.entityWithOptionalFieldsWithDefaultAssociation create;
 }
 
 // Mapped Transfer Object with required fields with default expression
 transfer TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefault (EntityWithOptionalFieldsWithDefault mappedEntity) {
     field SmallString stringAttr <=> mappedEntity.stringAttr  default:queryStringAttribute() required;
+
+    event create onCreate;
+}
+
+transfer TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefaultContainer(EntityWithOptionalFieldsWithDefaultContainer mappedEntity) {
+    relation TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefault entityWithOptionalFieldsWithDefaultCompositionAggregation <= mappedEntity.entityWithOptionalFieldsWithDefaultComposition eager create;
+    relation TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithOptionalFieldsWithDefault entityWithOptionalFieldsWithDefaultAssociationAssociation <= mappedEntity.entityWithOptionalFieldsWithDefaultAssociation create;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////
 // Entity with required fields with default value                                     //
 ////////////////////////////////////////////////////////////////////////////////////////
+
+entity EntityWithRequiredFieldsWithDefaultContainer {
+    field EntityWithRequiredFieldsWithDefault entityWithRequiredFieldsWithDefaultComposition;
+    relation EntityWithRequiredFieldsWithDefault entityWithRequiredFieldsWithDefaultAssociation;
+}
 
 entity EntityWithRequiredFieldsWithDefault {
     field Integer integerAttr default:1 required;
@@ -279,6 +423,13 @@ transfer TransferWithOptionalFieldsMapsEntityWithRequiredFieldsWithDefault (Enti
     field Timestamp timestampAttr <=> mappedEntity.timestampAttr;
     field Time timeAttr <=> mappedEntity.timeAttr;
     field Enum enumAttr <=> mappedEntity.enumAttr;
+    
+    event create onCreate;
+}
+
+transfer TransferWithOptionalFieldsMapsEntityWithRequiredFieldsWithDefaultContainer(EntityWithRequiredFieldsWithDefaultContainer mappedEntity) {
+    relation TransferWithOptionalFieldsMapsEntityWithRequiredFieldsWithDefault entityWithRequiredFieldsWithDefaultCompositionAggregation <= mappedEntity.entityWithRequiredFieldsWithDefaultComposition eager create;
+    relation TransferWithOptionalFieldsMapsEntityWithRequiredFieldsWithDefault entityWithRequiredFieldsWithDefaultAssociationAssociation <= mappedEntity.entityWithRequiredFieldsWithDefaultAssociation create;
 }
 
 // Mapped Transfer Object with optional fields with default
@@ -292,12 +443,27 @@ transfer TransferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsWithDe
     field Timestamp timestampAttr <=> mappedEntity.timestampAttr  default:`2022-07-12T19:09:33Z`;
     field Time timeAttr <=> mappedEntity.timeAttr  default:`23:59:58`;
     field Enum enumAttr <=> mappedEntity.enumAttr  default:Enum#EnumB;
+    
+    event create onCreate;
+}
+
+transfer TransferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsWithDefaultContainer(EntityWithRequiredFieldsWithDefaultContainer mappedEntity) {
+    relation TransferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsWithDefault entityWithRequiredFieldsWithDefaultCompositionAggregation <= mappedEntity.entityWithRequiredFieldsWithDefaultComposition eager create;
+    relation TransferWithOptionalFieldsWithDefaultMapsEntityWithRequiredFieldsWithDefault entityWithRequiredFieldsWithDefaultAssociationAssociation <= mappedEntity.entityWithRequiredFieldsWithDefaultAssociation create;
 }
 
 // Mapped Transfer Object with optional fields with default expression
 transfer TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefault (EntityWithRequiredFieldsWithDefault mappedEntity) {
     field SmallString stringAttr <=> mappedEntity.stringAttr  default:queryStringAttribute();
+    
+    event create onCreate;
 }
+
+transfer TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefaultContainer(EntityWithRequiredFieldsWithDefaultContainer mappedEntity) {
+    relation TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefault entityWithRequiredFieldsWithDefaultCompositionAggregation <= mappedEntity.entityWithRequiredFieldsWithDefaultComposition eager create;
+    relation TransferWithOptionalFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefault entityWithRequiredFieldsWithDefaultAssociationAssociation <= mappedEntity.entityWithRequiredFieldsWithDefaultAssociation create;
+}
+
 
 // Mapped Transfer Object with required fields
 transfer TransferWithRequiredFieldsMapsEntityWithRequiredFieldsWithDefault (EntityWithRequiredFieldsWithDefault mappedEntity) {
@@ -310,6 +476,13 @@ transfer TransferWithRequiredFieldsMapsEntityWithRequiredFieldsWithDefault (Enti
     field Timestamp timestampAttr <=> mappedEntity.timestampAttr required;
     field Time timeAttr <=> mappedEntity.timeAttr required;
     field Enum enumAttr <=> mappedEntity.enumAttr required;
+    
+    event create onCreate;
+}
+
+transfer TransferWithRequiredFieldsMapsEntityWithRequiredFieldsWithDefaultContainer(EntityWithRequiredFieldsWithDefaultContainer mappedEntity) {
+    relation TransferWithRequiredFieldsMapsEntityWithRequiredFieldsWithDefault entityWithRequiredFieldsWithDefaultCompositionAggregation <= mappedEntity.entityWithRequiredFieldsWithDefaultComposition eager create;
+    relation TransferWithRequiredFieldsMapsEntityWithRequiredFieldsWithDefault entityWithRequiredFieldsWithDefaultAssociationAssociation <= mappedEntity.entityWithRequiredFieldsWithDefaultAssociation create;
 }
 
 // Mapped Transfer Object with required fields with default
@@ -323,11 +496,25 @@ transfer TransferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsWithDe
     field Timestamp timestampAttr <=> mappedEntity.timestampAttr  default:`2022-07-12T19:09:33Z` required;
     field Time timeAttr <=> mappedEntity.timeAttr  default:`23:59:58` required;
     field Enum enumAttr <=> mappedEntity.enumAttr  default:Enum#EnumB required;
+    
+    event create onCreate;
+}
+
+transfer TransferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsWithDefaultContainer(EntityWithRequiredFieldsWithDefaultContainer mappedEntity) {
+    relation TransferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsWithDefault entityWithRequiredFieldsWithDefaultCompositionAggregation <= mappedEntity.entityWithRequiredFieldsWithDefaultComposition eager create;
+    relation TransferWithRequiredFieldsWithDefaultMapsEntityWithRequiredFieldsWithDefault entityWithRequiredFieldsWithDefaultAssociationAssociation <= mappedEntity.entityWithRequiredFieldsWithDefaultAssociation create;
 }
 
 // Mapped Transfer Object with required fields with default expression
 transfer TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefault (EntityWithRequiredFieldsWithDefault mappedEntity) {
     field SmallString stringAttr <=> mappedEntity.stringAttr  default:queryStringAttribute() required;
+    
+    event create onCreate;
+}
+
+transfer TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefaultContainer(EntityWithRequiredFieldsWithDefaultContainer mappedEntity) {
+    relation TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefault entityWithRequiredFieldsWithDefaultCompositionAggregation <= mappedEntity.entityWithRequiredFieldsWithDefaultComposition eager create;
+    relation TransferWithRequiredFieldsWithDefaultExpressionMapsEntityWithRequiredFieldsWithDefault entityWithRequiredFieldsWithDefaultAssociationAssociation <= mappedEntity.entityWithRequiredFieldsWithDefaultAssociation create;
 }
 
 transfer TransferMapsFieldTwice (EntityWithRequiredFieldsWithDefault mappedEntity) {
