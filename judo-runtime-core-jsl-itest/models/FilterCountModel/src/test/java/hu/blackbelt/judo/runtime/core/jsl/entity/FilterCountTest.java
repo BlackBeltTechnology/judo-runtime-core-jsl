@@ -35,6 +35,15 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filtercountmodel.filter
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filtercountmodel.filtercountmodel.child.ChildForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filtercountmodel.filtercountmodel.childtransfer.ChildTransferForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filtercountmodel.filtercountmodel.d.DForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filtercountmodel.filtercountmodel.entityi.EntityI;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filtercountmodel.filtercountmodel.entityi.EntityIDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filtercountmodel.filtercountmodel.entityi.EntityIForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filtercountmodel.filtercountmodel.entityj.EntityJ;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filtercountmodel.filtercountmodel.entityj.EntityJDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filtercountmodel.filtercountmodel.entityj.EntityJForCreate;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filtercountmodel.filtercountmodel.entityk.EntityK;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filtercountmodel.filtercountmodel.entityk.EntityKDao;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filtercountmodel.filtercountmodel.entityk.EntityKForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filtercountmodel.filtercountmodel.expressioncontainer.ExpressionContainer;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filtercountmodel.filtercountmodel.expressioncontainer.ExpressionContainerDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filtercountmodel.filtercountmodel.expressioncontainer.ExpressionContainerForCreate;
@@ -157,6 +166,12 @@ public class FilterCountTest {
 
     @Inject
     ToyTransferDao toyTransferDao;
+
+    @Inject
+    EntityIDao entityIDao;
+
+    @Inject
+    EntityJDao entityJDao;
 
     // Test for https://blackbelt.atlassian.net/browse/JNG-6157
     @Test
@@ -456,6 +471,120 @@ public class FilterCountTest {
         assertEquals(150, expressionContainerTransfer.getMappedSumOfToys().orElseThrow());
         assertEquals(37.5, expressionContainerTransfer.getAverageOfToys().orElseThrow());
         assertEquals(37.5, expressionContainerTransfer.getMappedAverageOfToys().orElseThrow());
+
+        EntityJ entityJ1 = entityJDao.create(EntityJForCreate.builder()
+                .withNumber(1)
+                .build());
+
+        EntityJ entityJ2 = entityJDao.create(EntityJForCreate.builder()
+                .withNumber(2)
+                .build());
+
+        EntityJ entityJ3 = entityJDao.create(EntityJForCreate.builder()
+                .withNumber(3)
+                .build());
+
+        entityIDao.create(EntityIForCreate.builder()
+                .withNumber(10)
+                .withJs(List.of(entityJ1, entityJ2, entityJ3))
+                .build());
+
+        expressionContainer = expressionContainerDao.getById(expressionContainer.identifier()).orElseThrow();
+        List<EntityJ> entityJS = expressionContainer.getJs();
+
+//        assertEquals(3, entityJS.size());
+//        assertEquals(6, expressionContainer.getTestAttributeFromAllJ().orElseThrow());
+    }
+
+    @Inject
+    EntityKDao entityKDao;
+
+    @Test
+    void testSizeInTwoWayRelation() {
+        EntityJ entityJ1 = entityJDao.create(EntityJForCreate.builder()
+            .withNumber(1)
+            .build());
+
+        EntityJ entityJ2 = entityJDao.create(EntityJForCreate.builder()
+                .withNumber(2)
+                .build());
+
+        EntityJ entityJ3 = entityJDao.create(EntityJForCreate.builder()
+                .withNumber(3)
+                .build());
+
+        entityIDao.create(EntityIForCreate.builder()
+                .withNumber(10)
+                .withJs(List.of(entityJ1, entityJ2, entityJ3))
+                .build());
+
+        Toy toy = toyDao.create(ToyForCreate.builder()
+                .withName("TeddyBear")
+                .withPrice(20)
+                .build());
+
+        Toy toy2 = toyDao.create(ToyForCreate.builder()
+                .withName("TeddyBear2")
+                .withPrice(40)
+                .build());
+
+        Toy toy3 = toyDao.create(ToyForCreate.builder()
+                .withName("TeddyBear3")
+                .withPrice(30)
+                .build());
+
+        Toy toy4 = toyDao.create(ToyForCreate.builder()
+                .withName("TeddyBear4")
+                .withPrice(60)
+                .build());
+
+        Parent jason = parentDao.create(ParentForCreate
+                .builder()
+                .withName("Jason")
+                .withChildren(List.of(
+                        ChildForCreate.builder()
+                                .withName("Jason")
+                                .withAge(10)
+                                .withToys(List.of(toy)).build())
+                )
+                .build()
+        );
+
+        parentDao.create(ParentForCreate
+                .builder()
+                .withName("Ted")
+                .withChildren(List.of(
+                        ChildForCreate.builder()
+                                .withName("Jeremy")
+                                .withAge(15)
+                                .withToys(List.of(toy2)).build())
+                )
+                .build()
+        );
+
+        parentDao.create(ParentForCreate
+                .builder()
+                .withName("Jason")
+                .withChildren(List.of(
+                        ChildForCreate.builder()
+                                .withName("Jack")
+                                .withAge(20)
+                                .withToys(List.of(toy3, toy4)).build(),
+                        ChildForCreate.builder()
+                                .withName("Oliver")
+                                .withAge(5)
+                                .withToys(List.of(toy3, toy4)).build())
+                )
+                .build()
+        );
+
+
+        EntityK entityK = entityKDao.create(EntityKForCreate.builder().build());
+        //assertEquals(4, entityK.getNumberOfChildren().orElseThrow());
+        assertEquals(6, entityK.getTestAttributeFromAllJ().orElseThrow());
+
+//        assertEquals(3, entityJS.size());
+//        assertEquals(6, expressionContainer.getTestAttributeFromAllJ().orElseThrow());
 
     }
 

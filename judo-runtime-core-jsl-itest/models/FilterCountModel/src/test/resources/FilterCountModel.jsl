@@ -56,6 +56,21 @@ entity Toy {
     field Integer price;
 }
 
+entity EntityI {
+    field Integer number;
+    relation EntityJ[] js opposite:i;
+}
+
+entity EntityJ {
+    field Integer number;
+    relation EntityI i opposite:js;
+}
+
+entity EntityK {
+    field Integer testAttributeFromAllJ <= EntityJ.all().filter(j | j.number < 100).i.js.sum(j | j.number);
+    //field Integer numberOfChildren <= Parent.all().children.size();
+}
+
 entity ExpressionContainer {
     relation Parent parent;
     field Boolean b <= Parent.all().children.size() > 0 and self.parent.children.size() > 0;
@@ -76,6 +91,8 @@ entity ExpressionContainer {
     field Integer maximumOfToys <= Parent.all().children.toys.max(i | i.price);
     field Integer sumOfToys <= Parent.all().children.toys.sum(i | i.price);
     field Double averageOfToys <= Parent.all().children.toys.avg(i | i.price);
+    field Integer testAttributeFromAllJ <= EntityJ.all().filter(j | j.number < 100).i.js.sum(j | j.number);
+    relation EntityJ[] js <= EntityJ.all().i.js eager:true;
 }
 
 transfer ParentTransfer(Parent parent) {
