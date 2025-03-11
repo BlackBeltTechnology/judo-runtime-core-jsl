@@ -4,6 +4,8 @@ import judo::types;
 
 // Filter Count Test
 
+type numeric Double precision : 15 scale : 4;
+
 entity ParentA {
     field String ancestorName;
     relation B ancestorB;
@@ -34,4 +36,121 @@ entity C {
 
 entity D {
     field Date date;
+}
+
+// size after navigation
+
+entity Parent {
+    field String name;
+    field Child[] children;
+}
+
+entity Child {
+    field String name;
+    field Integer age;
+    relation Toy[] toys;
+}
+
+entity Toy {
+    field String name;
+    field Integer price;
+}
+
+entity EntityI {
+    field Integer number;
+    relation EntityJ[] js opposite:i;
+}
+
+entity EntityJ {
+    field Integer number;
+    relation EntityI i opposite:js;
+}
+
+entity EntityK {
+    field Integer testAttributeFromAllJ <= EntityJ.all().filter(j | j.number < 100).i.js.sum(j | j.number);
+    //field Integer numberOfChildren <= Parent.all().children.size();
+}
+
+entity ExpressionContainer {
+    relation Parent parent;
+    field Boolean b <= Parent.all().children.size() > 0 and self.parent.children.size() > 0;
+    field Integer numberOfParent <= Parent.all().size();
+    field Boolean numberOfParentNameJasonIsTwo <= Parent.all().filter(p | p.name == "Jason").size() == 2;
+    field Integer numberOfChildren <= Parent.all().children.size();
+    field Integer minimumOfChildren <= Parent.all().children.min(i | i.age);
+    field Integer maximumOfChildren <= Parent.all().children.max(i | i.age);
+    field Integer sumOfChildren <= Parent.all().children.sum(i | i.age);
+    field Double averageOfChildren <= Parent.all().children.avg(i | i.age);
+    field Boolean numberOfToysWithParentNameJasonIsThree <= Parent.all().filter(parent | parent.name == "Jason").children.toys.size() == 3;
+    field Boolean numberOfToysWithParentNameAndChildJasonIsOne <= Parent.all().filter(parent | parent.name == "Jason").children.filter(child | child.name == "Jason").toys.size() == 1;
+    field Boolean numberOfToysWithChildFilterIsOne <= Parent.all().children.filter(child | child.name == "Jason").toys.size() == 1;
+    relation Toy[] toysWithParentNameJason <= Parent.all().filter(parent | parent.name == "Jason").children.toys  eager:true;
+    field Integer numberOfToysParentNameJason <= Parent.all().filter(parent | parent.name == "Jason").children.toys.size();
+    field Integer numberOfToys <= Parent.all().children.toys.size();
+    field Integer minimumOfToys <= Parent.all().children.toys.min(i | i.price);
+    field Integer maximumOfToys <= Parent.all().children.toys.max(i | i.price);
+    field Integer sumOfToys <= Parent.all().children.toys.sum(i | i.price);
+    field Double averageOfToys <= Parent.all().children.toys.avg(i | i.price);
+    field Integer testAttributeFromAllJ <= EntityJ.all().filter(j | j.number < 100).i.js.sum(j | j.number);
+    relation EntityJ[] js <= EntityJ.all().i.js eager:true;
+}
+
+transfer ParentTransfer(Parent parent) {
+    field String name <=> parent.name;
+    relation ChildTransfer[] children <= parent.children eager:true create:true;
+}
+
+transfer ChildTransfer(Child child) {
+    field String name <=> child.name;
+    field Integer age <=> child.age;
+    relation ToyTransfer[] toys <= child.toys create:true;
+
+    event create `create`;
+}
+
+transfer ToyTransfer(Toy toy) {
+    field String name <=> toy.name;
+    field Integer price <=> toy.price;
+
+    event create `create`;
+}
+
+transfer ExpressionContainerTransfer(ExpressionContainer expressionContainer) {
+    relation ParentTransfer parent <= expressionContainer.parent choices:Parent.all();
+    field Integer numberOfParent <= Parent.all().size();
+    field Boolean numberOfParentNameJasonIsTwo <= Parent.all().filter(p | p.name == "Jason").size() == 2;
+    field Integer numberOfChildren <= Parent.all().children.size();
+    field Integer minimumOfChildren <= Parent.all().children.min(i | i.age);
+    field Integer maximumOfChildren <= Parent.all().children.max(i | i.age);
+    field Integer sumOfChildren <= Parent.all().children.sum(i | i.age);
+    field Double averageOfChildren <= Parent.all().children.avg(i | i.age);
+    field Integer numberOfToys <= Parent.all().children.toys.size();
+    field Boolean numberOfToysWithParentNameJasonIsThree <= Parent.all().filter(parent | parent.name == "Jason").children.toys.size() == 3;
+    field Boolean numberOfToysWithParentNameAndChildJasonIsOne <= Parent.all().filter(parent | parent.name == "Jason").children.filter(child | child.name == "Jason").toys.size() == 1;
+    field Boolean numberOfToysWithChildFilterIsOne <= Parent.all().children.filter(child | child.name == "Jason").toys.size() == 1;
+    relation ToyTransfer[] toysWithParentNameJason <= Parent.all().filter(parent | parent.name == "Jason").children.toys  eager:true;
+    field Integer numberOfToysParentNameJason <= Parent.all().filter(parent | parent.name == "Jason").children.toys.size();
+    field Integer minimumOfToys <= Parent.all().children.toys.min(i | i.price);
+    field Integer maximumOfToys <= Parent.all().children.toys.max(i | i.price);
+    field Integer sumOfToys <= Parent.all().children.toys.sum(i | i.price);
+    field Double averageOfToys <= Parent.all().children.toys.avg(i | i.price);
+
+    field Boolean mappedB <= expressionContainer.b;
+    field Integer mappedNumberOfParent <= expressionContainer.numberOfParent;
+    field Boolean mappedNumberOfParentNameJasonIsTwo <= expressionContainer.numberOfParentNameJasonIsTwo;
+    field Integer mappedNumberOfChildren <= expressionContainer.numberOfChildren;
+    field Integer mappedMinimumOfChildren <= expressionContainer.minimumOfChildren;
+    field Integer mappedMaximumOfChildren <= expressionContainer.maximumOfChildren;
+    field Integer mappedSumOfChildren <= expressionContainer.sumOfChildren;
+    field Double mappedAverageOfChildren <= expressionContainer.averageOfChildren;
+    field Integer mappedNumberOfToys <= expressionContainer.numberOfToys;
+    field Boolean mappedNumberOfToysWithParentNameJasonIsThree <= expressionContainer.numberOfToysWithParentNameJasonIsThree;
+    field Boolean mappedNumberOfToysWithParentNameAndChildJasonIsOne <= expressionContainer.numberOfToysWithParentNameAndChildJasonIsOne;
+    relation ToyTransfer[] mappedToysWithParentNameJason <= expressionContainer.toysWithParentNameJason eager:true;
+    field Integer mappedNumberOfToysParentNameJason <= expressionContainer.numberOfToysParentNameJason;
+    field Boolean mappedNumberOfToysWithChildFilterIsOne <= expressionContainer.numberOfToysWithChildFilterIsOne;
+    field Integer mappedMinimumOfToys <= expressionContainer.minimumOfToys;
+    field Integer mappedMaximumOfToys <= expressionContainer.maximumOfToys;
+    field Integer mappedSumOfToys <= expressionContainer.sumOfToys;
+    field Double mappedAverageOfToys <= expressionContainer.averageOfToys;
 }
