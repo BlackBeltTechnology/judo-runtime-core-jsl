@@ -43,6 +43,16 @@ entity D {
 entity Parent {
     field String name;
     field Child[] children;
+    relation Parent[] parents <= Parent.all() eager:true;
+    field String childName <= Parent.all().filter(p | p.name == "Ted").children.any().name;
+
+    // TODO: JNG-6157
+    //field Integer number <= self.parents.children.size();
+    //field Integer numberOfToysOfParentNameJason <= Parent.all().filter(parent | parent.name == "Jason").children.toys.size();
+    //field Integer minOfToysOfParentNameJason <= Parent.all().filter(parent | parent.name == "Jason").children.toys.min(i | i.price);
+    //field Integer maxOfParentNameJasonIsTwo <= Parent.all().filter(parent | parent.name == "Jason").children.toys.max(i | i.price);
+    //field Integer sumOfParentNameJasonIsTwo <= Parent.all().filter(parent | parent.name == "Jason").children.toys.sum(i | i.price);
+    //field Double averageOfParentNameJasonIsTwo <= Parent.all().filter(parent | parent.name == "Jason").children.toys.avg(i | i.price);
 }
 
 entity Child {
@@ -66,11 +76,6 @@ entity EntityJ {
     relation EntityI i opposite:js;
 }
 
-entity EntityK {
-    field Integer testAttributeFromAllJ <= EntityJ.all().filter(j | j.number < 100).i.js.sum(j | j.number);
-    //field Integer numberOfChildren <= Parent.all().children.size();
-}
-
 entity ExpressionContainer {
     relation Parent parent;
     field Boolean b <= Parent.all().children.size() > 0 and self.parent.children.size() > 0;
@@ -91,13 +96,30 @@ entity ExpressionContainer {
     field Integer maximumOfToys <= Parent.all().children.toys.max(i | i.price);
     field Integer sumOfToys <= Parent.all().children.toys.sum(i | i.price);
     field Double averageOfToys <= Parent.all().children.toys.avg(i | i.price);
-    field Integer testAttributeFromAllJ <= EntityJ.all().filter(j | j.number < 100).i.js.sum(j | j.number);
+    field Integer circularNavigationSize <= EntityJ.all().filter(j | j.number < 9).i.js.size();
+    field Integer circularNavigationMinimum <= EntityJ.all().filter(j | j.number < 9).i.js.min(j | j.number);
+    field Integer circularNavigationMaximum <= EntityJ.all().filter(j | j.number < 9).i.js.max(j | j.number);
+    field Integer circularNavigationSum <= EntityJ.all().filter(j | j.number < 9).i.js.sum(j | j.number);
+    field Double circularNavigationAverage <= EntityJ.all().filter(j | j.number < 9).i.js.avg(j | j.number);
     relation EntityJ[] js <= EntityJ.all().i.js eager:true;
 }
 
 transfer ParentTransfer(Parent parent) {
     field String name <=> parent.name;
     relation ChildTransfer[] children <= parent.children eager:true create:true;
+
+    // TODO: JNG-6157
+    //field Integer numberOfToysOfParentNameJason <= Parent.all().filter(parent | parent.name == "Jason").children.toys.size();
+    //field Integer minOfToysOfParentNameJason <= Parent.all().filter(parent | parent.name == "Jason").children.toys.min(i | i.price);
+    //field Integer maxOfParentNameJasonIsTwo <= Parent.all().filter(parent | parent.name == "Jason").children.toys.max(i | i.price);
+    //field Integer sumOfParentNameJasonIsTwo <= Parent.all().filter(parent | parent.name == "Jason").children.toys.sum(i | i.price);
+    //field Double averageOfParentNameJasonIsTwo <= Parent.all().filter(parent | parent.name == "Jason").children.toys.avg(i | i.price);
+//
+    //field Integer mappedNumberOfToysOfParentNameJason <= parent.numberOfToysOfParentNameJason;
+    //field Integer mappedMinOfToysOfParentNameJason <= parent.minOfToysOfParentNameJason;
+    //field Integer mappedMaxOfParentNameJasonIsTwo <= parent.maxOfParentNameJasonIsTwo;
+    //field Integer mappedSumOfParentNameJasonIsTwo <= parent.sumOfParentNameJasonIsTwo;
+    //field Double mappedAverageOfParentNameJasonIsTwo <= parent.averageOfParentNameJasonIsTwo;
 }
 
 transfer ChildTransfer(Child child) {
@@ -113,6 +135,16 @@ transfer ToyTransfer(Toy toy) {
     field Integer price <=> toy.price;
 
     event create `create`;
+}
+
+transfer TransferI(EntityI entityI) {
+    field Integer number <= entityI.number;
+    relation TransferJ[] js <= entityI.js;
+}
+
+transfer TransferJ(EntityJ entityJ) {
+    field Integer number <= entityJ.number;
+    relation TransferI i <= entityJ.i;
 }
 
 transfer ExpressionContainerTransfer(ExpressionContainer expressionContainer) {
@@ -134,6 +166,12 @@ transfer ExpressionContainerTransfer(ExpressionContainer expressionContainer) {
     field Integer maximumOfToys <= Parent.all().children.toys.max(i | i.price);
     field Integer sumOfToys <= Parent.all().children.toys.sum(i | i.price);
     field Double averageOfToys <= Parent.all().children.toys.avg(i | i.price);
+    field Integer circularNavigationSize <= EntityJ.all().filter(j | j.number < 9).i.js.size();
+    field Integer circularNavigationMinimum <= EntityJ.all().filter(j | j.number < 9).i.js.min(j | j.number);
+    field Integer circularNavigationMaximum <= EntityJ.all().filter(j | j.number < 9).i.js.max(j | j.number);
+    field Integer circularNavigationSum <= EntityJ.all().filter(j | j.number < 9).i.js.sum(j | j.number);
+    field Double circularNavigationAverage <= EntityJ.all().filter(j | j.number < 9).i.js.avg(j | j.number);
+    relation TransferJ[] js <= EntityJ.all().i.js eager:true;
 
     field Boolean mappedB <= expressionContainer.b;
     field Integer mappedNumberOfParent <= expressionContainer.numberOfParent;
@@ -153,4 +191,10 @@ transfer ExpressionContainerTransfer(ExpressionContainer expressionContainer) {
     field Integer mappedMaximumOfToys <= expressionContainer.maximumOfToys;
     field Integer mappedSumOfToys <= expressionContainer.sumOfToys;
     field Double mappedAverageOfToys <= expressionContainer.averageOfToys;
+    field Integer mappedCircularNavigationSize <= expressionContainer.circularNavigationSize;
+    field Integer mappedCircularNavigationMinimum <= expressionContainer.circularNavigationMinimum;
+    field Integer mappedCircularNavigationMaximum <= expressionContainer.circularNavigationMaximum;
+    field Integer mappedCircularNavigationSum <= expressionContainer.circularNavigationSum;
+    field Double mappedCircularNavigationAverage <= expressionContainer.circularNavigationAverage;
+    relation TransferJ[] mappedJs <= expressionContainer.js eager:true;
 }

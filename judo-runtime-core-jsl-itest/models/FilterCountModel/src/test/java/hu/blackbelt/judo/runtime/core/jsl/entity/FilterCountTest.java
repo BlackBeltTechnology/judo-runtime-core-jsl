@@ -35,15 +35,11 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filtercountmodel.filter
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filtercountmodel.filtercountmodel.child.ChildForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filtercountmodel.filtercountmodel.childtransfer.ChildTransferForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filtercountmodel.filtercountmodel.d.DForCreate;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filtercountmodel.filtercountmodel.entityi.EntityI;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filtercountmodel.filtercountmodel.entityi.EntityIDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filtercountmodel.filtercountmodel.entityi.EntityIForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filtercountmodel.filtercountmodel.entityj.EntityJ;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filtercountmodel.filtercountmodel.entityj.EntityJDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filtercountmodel.filtercountmodel.entityj.EntityJForCreate;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filtercountmodel.filtercountmodel.entityk.EntityK;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filtercountmodel.filtercountmodel.entityk.EntityKDao;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filtercountmodel.filtercountmodel.entityk.EntityKForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filtercountmodel.filtercountmodel.expressioncontainer.ExpressionContainer;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filtercountmodel.filtercountmodel.expressioncontainer.ExpressionContainerDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.filtercountmodel.filtercountmodel.expressioncontainer.ExpressionContainerForCreate;
@@ -282,7 +278,7 @@ public class FilterCountTest {
                 .build()
         );
 
-        parentDao.create(ParentForCreate
+        Parent jason2 = parentDao.create(ParentForCreate
                 .builder()
                 .withName("Jason")
                 .withChildren(List.of(
@@ -297,6 +293,8 @@ public class FilterCountTest {
                 )
                 .build()
         );
+
+        assertEquals("Jeremy", jason2.getChildName().orElseThrow());
 
         assertFalse(expressionContainer.getB().orElseThrow());
         assertFalse(expressionContainerTransfer.getMappedB().orElseThrow());
@@ -472,6 +470,32 @@ public class FilterCountTest {
         assertEquals(37.5, expressionContainerTransfer.getAverageOfToys().orElseThrow());
         assertEquals(37.5, expressionContainerTransfer.getMappedAverageOfToys().orElseThrow());
 
+        expressionContainer = expressionContainerDao.getById(expressionContainer.identifier()).orElseThrow();
+
+        assertEquals(0, expressionContainer.getCircularNavigationSize().orElseThrow());
+        assertTrue(expressionContainer.getCircularNavigationMinimum().isEmpty());
+        assertTrue(expressionContainer.getCircularNavigationMaximum().isEmpty());
+        assertTrue(expressionContainer.getCircularNavigationSum().isEmpty());
+        assertTrue(expressionContainer.getCircularNavigationAverage().isEmpty());
+
+        // TODO: JNG-6157
+//        assertEquals(0, expressionContainer.getJs().size());
+//        assertEquals(0, expressionContainerDao.queryJs(expressionContainer).count());
+
+        expressionContainerTransfer = expressionContainerTransferDao.getById(expressionContainerTransfer.identifier()).orElseThrow();
+
+        assertEquals(0, expressionContainerTransfer.getCircularNavigationSize().orElseThrow());
+        assertTrue(expressionContainerTransfer.getCircularNavigationMinimum().isEmpty());
+        assertTrue(expressionContainerTransfer.getCircularNavigationMaximum().isEmpty());
+        assertTrue(expressionContainerTransfer.getCircularNavigationSum().isEmpty());
+        assertTrue(expressionContainerTransfer.getCircularNavigationAverage().isEmpty());
+
+        assertEquals(0, expressionContainerTransfer.getMappedCircularNavigationSize().orElseThrow());
+        assertTrue(expressionContainerTransfer.getMappedCircularNavigationMinimum().isEmpty());
+        assertTrue(expressionContainerTransfer.getMappedCircularNavigationMaximum().isEmpty());
+        assertTrue(expressionContainerTransfer.getMappedCircularNavigationSum().isEmpty());
+        assertTrue(expressionContainerTransfer.getMappedCircularNavigationAverage().isEmpty());
+
         EntityJ entityJ1 = entityJDao.create(EntityJForCreate.builder()
                 .withNumber(1)
                 .build());
@@ -484,107 +508,44 @@ public class FilterCountTest {
                 .withNumber(3)
                 .build());
 
+        EntityJ entityJ4 = entityJDao.create(EntityJForCreate.builder()
+                .withNumber(10)
+                .build());
+
+        entityJDao.create(EntityJForCreate.builder()
+                .withNumber(4)
+                .build());
+
         entityIDao.create(EntityIForCreate.builder()
                 .withNumber(10)
-                .withJs(List.of(entityJ1, entityJ2, entityJ3))
+                .withJs(List.of(entityJ1, entityJ2, entityJ3, entityJ4))
                 .build());
 
         expressionContainer = expressionContainerDao.getById(expressionContainer.identifier()).orElseThrow();
-        List<EntityJ> entityJS = expressionContainer.getJs();
 
-//        assertEquals(3, entityJS.size());
-//        assertEquals(6, expressionContainer.getTestAttributeFromAllJ().orElseThrow());
-    }
+        assertEquals(3, expressionContainer.getCircularNavigationSize().orElseThrow());
+        assertEquals(1, expressionContainer.getCircularNavigationMinimum().orElseThrow());
+        assertEquals(3, expressionContainer.getCircularNavigationMaximum().orElseThrow());
+        assertEquals(6, expressionContainer.getCircularNavigationSum().orElseThrow());
+        assertEquals(2, expressionContainer.getCircularNavigationAverage().orElseThrow());
 
-    @Inject
-    EntityKDao entityKDao;
+        // TODO: JNG-6157
+//        assertEquals(4, expressionContainer.getJs().size());
+//        assertEquals(4, expressionContainerDao.queryJs(expressionContainer).count());
 
-    @Test
-    void testSizeInTwoWayRelation() {
-        EntityJ entityJ1 = entityJDao.create(EntityJForCreate.builder()
-            .withNumber(1)
-            .build());
+        expressionContainerTransfer = expressionContainerTransferDao.getById(expressionContainerTransfer.identifier()).orElseThrow();
 
-        EntityJ entityJ2 = entityJDao.create(EntityJForCreate.builder()
-                .withNumber(2)
-                .build());
+        assertEquals(3, expressionContainerTransfer.getCircularNavigationSize().orElseThrow());
+        assertEquals(1, expressionContainerTransfer.getCircularNavigationMinimum().orElseThrow());
+        assertEquals(3, expressionContainerTransfer.getCircularNavigationMaximum().orElseThrow());
+        assertEquals(6, expressionContainerTransfer.getCircularNavigationSum().orElseThrow());
+        assertEquals(2, expressionContainerTransfer.getCircularNavigationAverage().orElseThrow());
 
-        EntityJ entityJ3 = entityJDao.create(EntityJForCreate.builder()
-                .withNumber(3)
-                .build());
-
-        entityIDao.create(EntityIForCreate.builder()
-                .withNumber(10)
-                .withJs(List.of(entityJ1, entityJ2, entityJ3))
-                .build());
-
-        Toy toy = toyDao.create(ToyForCreate.builder()
-                .withName("TeddyBear")
-                .withPrice(20)
-                .build());
-
-        Toy toy2 = toyDao.create(ToyForCreate.builder()
-                .withName("TeddyBear2")
-                .withPrice(40)
-                .build());
-
-        Toy toy3 = toyDao.create(ToyForCreate.builder()
-                .withName("TeddyBear3")
-                .withPrice(30)
-                .build());
-
-        Toy toy4 = toyDao.create(ToyForCreate.builder()
-                .withName("TeddyBear4")
-                .withPrice(60)
-                .build());
-
-        Parent jason = parentDao.create(ParentForCreate
-                .builder()
-                .withName("Jason")
-                .withChildren(List.of(
-                        ChildForCreate.builder()
-                                .withName("Jason")
-                                .withAge(10)
-                                .withToys(List.of(toy)).build())
-                )
-                .build()
-        );
-
-        parentDao.create(ParentForCreate
-                .builder()
-                .withName("Ted")
-                .withChildren(List.of(
-                        ChildForCreate.builder()
-                                .withName("Jeremy")
-                                .withAge(15)
-                                .withToys(List.of(toy2)).build())
-                )
-                .build()
-        );
-
-        parentDao.create(ParentForCreate
-                .builder()
-                .withName("Jason")
-                .withChildren(List.of(
-                        ChildForCreate.builder()
-                                .withName("Jack")
-                                .withAge(20)
-                                .withToys(List.of(toy3, toy4)).build(),
-                        ChildForCreate.builder()
-                                .withName("Oliver")
-                                .withAge(5)
-                                .withToys(List.of(toy3, toy4)).build())
-                )
-                .build()
-        );
-
-
-        EntityK entityK = entityKDao.create(EntityKForCreate.builder().build());
-        //assertEquals(4, entityK.getNumberOfChildren().orElseThrow());
-        assertEquals(6, entityK.getTestAttributeFromAllJ().orElseThrow());
-
-//        assertEquals(3, entityJS.size());
-//        assertEquals(6, expressionContainer.getTestAttributeFromAllJ().orElseThrow());
+        assertEquals(3, expressionContainerTransfer.getMappedCircularNavigationSize().orElseThrow());
+        assertEquals(1, expressionContainerTransfer.getMappedCircularNavigationMinimum().orElseThrow());
+        assertEquals(3, expressionContainerTransfer.getMappedCircularNavigationMaximum().orElseThrow());
+        assertEquals(6, expressionContainerTransfer.getMappedCircularNavigationSum().orElseThrow());
+        assertEquals(2, expressionContainerTransfer.getMappedCircularNavigationAverage().orElseThrow());
 
     }
 
