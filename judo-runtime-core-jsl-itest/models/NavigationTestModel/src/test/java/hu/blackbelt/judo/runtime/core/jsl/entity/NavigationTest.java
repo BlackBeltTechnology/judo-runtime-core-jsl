@@ -473,7 +473,6 @@ class NavigationTest {
     }
 
     @Test
-    @Disabled("https://blackbelt.atlassian.net/browse/JNG-5576")
     @TestCase("CollectionToObjectNavigationFromAll")
     @Requirement(reqs = {
             "REQ-TYPE-001",
@@ -518,13 +517,12 @@ class NavigationTest {
                 .stream().map(Base1::getRelA)
                 .map(A1::getNumber)
                 .reduce(0, Integer::sum));
-        // TODO JNG-5576
+
         DerivedAttributeCollector derivedAttributeCollector = derivedAttributeCollectorDao.create(DerivedAttributeCollectorForCreate.builder().build());
-        assertEquals(6, derivedAttributeCollector.getSumRelAonAllBase1());
+        assertEquals(6, derivedAttributeCollector.getSumRelAonAllBase1().orElseThrow());
     }
 
     @Test
-    @Disabled("https://blackbelt.atlassian.net/browse/JNG-5576")
     @TestCase("CollectionToCollectionNavigationFromAll")
     @Requirement(reqs = {
             "REQ-TYPE-001",
@@ -578,9 +576,9 @@ class NavigationTest {
                 .stream().flatMap(b -> b.getBs().stream())
                 .map(B1::getNumber)
                 .reduce(0, Integer::sum));
-        // TODO JNG-5576
+
         DerivedAttributeCollector derivedAttributeCollector = derivedAttributeCollectorDao.create(DerivedAttributeCollectorForCreate.builder().build());
-        assertEquals(21, derivedAttributeCollector.getSumBsonAllBase1());
+        assertEquals(21, derivedAttributeCollector.getSumBsonAllBase1().orElseThrow());
     }
 
     @Test
@@ -648,7 +646,6 @@ class NavigationTest {
     }
 
     @Test
-    @Disabled("https://blackbelt.atlassian.net/browse/JNG-5576")
     @TestCase("ObjectToCollectionAsTypeFromSelf")
     @Requirement(reqs = {
             "REQ-TYPE-001",
@@ -682,13 +679,12 @@ class NavigationTest {
                 )
                 .build()
         );
-        // TODO JNG-5576
-        //assertEquals(6, base1.getSumNativeBs().orElseThrow());
+
+        assertEquals(6, base1.getSumNativeBs().orElseThrow());
 
     }
 
     @Test
-    @Disabled("https://blackbelt.atlassian.net/browse/JNG-5576")
     @TestCase("CollectionAsTypeFromAll")
     @Requirement(reqs = {
             "REQ-TYPE-001",
@@ -717,8 +713,7 @@ class NavigationTest {
                 .build()
         );
 
-        // TODO JNG-5576
-        //assertEquals(6, base1.getSumAllNativeA().orElseThrow());
+        assertEquals(6, base1.getSumAllNativeA().orElseThrow());
     }
 
     @Test
@@ -844,11 +839,10 @@ class NavigationTest {
                 .create(TwoWayCollectorForCreate
                         .builder()
                         .build());
-        // TODO JNG-5576
-        //assertEquals(10, collector.getSumAllBsFromA().orElseThrow());
+
+        assertEquals(6, collector.getSumAllBsFromA().orElseThrow());
         assertEquals(6, collector.getSumAllBsFromAFiltered().orElseThrow());
-        // TODO JNG-5576
-        //assertEquals(6, collector.getSumAllAFromBs().orElseThrow());
+        assertEquals(10, collector.getSumAllAFromBs().orElseThrow());
 
     }
 
