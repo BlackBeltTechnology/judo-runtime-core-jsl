@@ -227,7 +227,6 @@ entity Base1 {
 }
 
 entity DerivedAttributeCollector {
-    // TODO JNG-5576
     field Integer sumRelAonAllBase1 <= Base1.all().relA.sum(e | e.number);
     field Integer sumBsonAllBase1 <= Base1.all().bs.sum(e | e.number);
 }
@@ -254,9 +253,8 @@ entity Base2 {
 
     field Integer numNativeA2 <= self.a.asType(type = A2).number;
 
-    // TODO JNG-5576
-    //field Integer sumNativeBs <= self.bs.asCollection(type = B2).sum(e | e.number);
-    //field Integer sumAllNativeA <= NativeA2.all().asCollection(type = A2).sum(e | e.number);
+    field Integer sumNativeBs <= self.bs.asCollection(type = B2).sum(e | e.number);
+    field Integer sumAllNativeA <= NativeA2.all().asCollection(type = A2).sum(e | e.number);
 
 }
 
@@ -281,7 +279,7 @@ entity B3 {
 }
 
 entity TwoWayCollector {
-    //field Integer sumAllBsFromA <= B3.all().a.bs.sum(e | e.number); // TODO JNG-5576
+    field Integer sumAllBsFromA <= B3.all().a.bs.sum(e | e.number);
     field Integer sumAllBsFromAFiltered <= B3.all().filter(b | B3.all().a.bs.contains(instance = b) ).sum(e | e.number);
-    //field Integer sumAllAFromBs <= A3.all().bs.a.sum(e | e.number); // TODO JNG-5576
+    field Integer sumAllAFromBs <= A3.all().bs.a.sum(e | e.number);
 }
