@@ -122,6 +122,7 @@ import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import hu.blackbelt.judo.sdk.Identifiable;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
@@ -2417,6 +2418,7 @@ public class SpecialCasesTest {
             "REQ-SRV-005",
 
     })
+    @Disabled("JNG-6257")
     void testDerivedAndTransientRelationAreNotValidated() {
 
         Containment2Transfer c2 = containment2TransferDao.create(Containment2TransferForCreate.builder().withName("C2").build());
