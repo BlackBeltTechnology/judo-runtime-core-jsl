@@ -122,7 +122,6 @@ import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import hu.blackbelt.judo.sdk.Identifiable;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
@@ -2401,7 +2400,7 @@ public class SpecialCasesTest {
     Containment2TransferDao containment2TransferDao;
 
     @Test
-    @TestCase("DerivedAndTransientRelationAreNotValidated")
+    @TestCase("DerivedNotValidated")
     @Requirement(reqs = {
             "REQ-TYPE-001",
             "REQ-TYPE-004",
@@ -2418,34 +2417,133 @@ public class SpecialCasesTest {
             "REQ-SRV-005",
 
     })
-    @Disabled("JNG-6257")
-    void testDerivedAndTransientRelationAreNotValidated() {
+    void testDerivedNotValidated() {
 
         Containment2Transfer c2 = containment2TransferDao.create(Containment2TransferForCreate.builder().withName("C2").build());
-
-        Containment1Transfer c1 = containment1TransferDao.create(Containment1TransferForCreate.builder().withName("C1").withContainmet2(Containment2TransferForCreate.builderFrom(c2).build()).build());
+        containment1TransferDao.create(Containment1TransferForCreate.builder().withName("C1").withContainment2(Containment2TransferForCreate.builderFrom(c2).build()).build());
 
         containerTransferDao.create(ContainerTransferForCreate.builder().withName("Container").build());
 
-        ContainerTransfer container = containerTransferDao.query().filterBy("this.name == 'Container'").maskedBy(ContainerTransferMask.containerTransferMask().withName().withDerivedContainment1(Containment1TransferMask.containment1TransferMask())).selectOne().orElseThrow();
+        ContainerTransfer container = containerTransferDao.query().filterBy("this.name == 'Container'")
+                .maskedBy(ContainerTransferMask.containerTransferMask()
+                        .withName()
+                        .withDerivedContainment1(Containment1TransferMask
+                        .containment1TransferMask())
+                )
+                .selectOne()
+                .orElseThrow();
 
-        container = ContainerTransfer.from(identifierRemove(container.toMap(),"derivedContainment1"));
+        container = ContainerTransfer.from(removeKeys(List.of("__identifier","__entityType","__version"), "derivedContainment1", container.toMap()));
 
         // Derived doesn't have identifier
-        container = containerTransferDao.update(container);
-
-        container.setTransientRel(Containment1Transfer.builder().build());
-
-        // Transient relation doesn't have any required field
-        container = containerTransferDao.update(container);
-
+        // Check the derived is not validated.
+        final ContainerTransfer containerFinal = container;
+        assertDoesNotThrow(() -> containerTransferDao.update(containerFinal));
     }
 
-    Map<String, Object> identifierRemove(Map<String, Object> map, String relationName) {
+    @Test
+    @TestCase("TransientRelationValidation")
+    @Requirement(reqs = {
+            "REQ-TYPE-001",
+            "REQ-TYPE-004",
+            "REQ-ENT-001",
+            "REQ-ENT-002",
+            "REQ-ENT-004",
+            "REQ-ENT-005",
+            "REQ-MDL-001",
+            "REQ-MDL-002",
+            "REQ-MDL-003",
+            "REQ-EXPR-022",
+            "REQ-SRV-002",
+            "REQ-SRV-003",
+            "REQ-SRV-005",
+
+    })
+    void testTransientRelationValidation() {
+
+        Containment2Transfer c2 = containment2TransferDao.create(Containment2TransferForCreate.builder().withName("C2").build());
+
+        containment1TransferDao.create(Containment1TransferForCreate.builder().withName("C1").withContainment2(Containment2TransferForCreate.builderFrom(c2).build()).build());
+
+        containerTransferDao.create(ContainerTransferForCreate.builder().withName("Container").build());
+
+        ContainerTransfer container = containerTransferDao.query().filterBy("this.name == 'Container'")
+                .maskedBy(ContainerTransferMask.containerTransferMask()
+                        .withName()
+                        .withDerivedContainment1(Containment1TransferMask.containment1TransferMask()))
+                .selectOne()
+                .orElseThrow();
+
+        container.setTransientRel(Containment1Transfer.builder().build());
+        // Transient relation doesn't have any required field
+        final ContainerTransfer finalContainer = container;
+        ValidationException thrown = assertThrows(
+                ValidationException.class,
+                () -> containerTransferDao.update(finalContainer));
+
+        assertThat(thrown.getValidationResults(), containsInAnyOrder(
+                allOf(
+                        hasProperty("code", equalTo("MISSING_REQUIRED_ATTRIBUTE")),
+                        hasProperty("location", equalTo("transientRel.name"))),
+                allOf(
+                        hasProperty("code", equalTo("MISSING_REQUIRED_RELATION")),
+                        hasProperty("location", equalTo("transientRel.containment2")))
+        ));
+
+        ValidationException thrown1 = assertThrows(
+                ValidationException.class,
+                () -> containerTransferDao.createTransientRel(container, Containment1TransferForCreate.builder().build())
+        );
+
+        assertThat(thrown1.getValidationResults(), containsInAnyOrder(
+                allOf(
+                        hasProperty("code", equalTo("MISSING_REQUIRED_ATTRIBUTE")),
+                        hasProperty("location", equalTo("transientRel/name"))),
+                allOf(
+                        hasProperty("code", equalTo("MISSING_REQUIRED_RELATION")),
+                        hasProperty("location", equalTo("transientRel/containment2")))
+        ));
+
+        // sub relations
+        container.setTransientRel(Containment1Transfer.builder()
+                .withName("L1")
+                .withContainment2(c2)
+                .withTransientRel(Containment2Transfer.builder().build())
+                .build()
+        );
+
+        ValidationException thrown2 = assertThrows(
+                ValidationException.class,
+                () -> containerTransferDao.update(finalContainer)
+        );
+
+        assertThat(thrown2.getValidationResults(), containsInAnyOrder(
+                allOf(
+                        hasProperty("code", equalTo("MISSING_REQUIRED_ATTRIBUTE")),
+                        hasProperty("location", equalTo("transientRel.transientRel.name")))
+        ));
+
+        ValidationException thrown3 = assertThrows(
+                ValidationException.class,
+                () -> containerTransferDao.createTransientRel(container, Containment1TransferForCreate.builder()
+                        .withName("L1")
+                        .withContainment2(c2.adaptTo(Containment2TransferForCreate.class))
+                        .withTransientRel(Containment2TransferForCreate.builder().build())
+                        .build())
+        );
+
+        assertThat(thrown3.getValidationResults(), containsInAnyOrder(
+                allOf(
+                        hasProperty("code", equalTo("MISSING_REQUIRED_ATTRIBUTE")),
+                        hasProperty("location", equalTo("transientRel/transientRel.name")))
+        ));
+    }
+
+    Map<String, Object> removeKeys(List<String> keys, String relationName, Map<String, Object> map) {
         Map<String, Object> relationMap = (Map<String, Object>) map.get(relationName);
-        relationMap.remove("__identifier");
-        relationMap.remove("__entityType");
-        relationMap.remove("__version");
+        for (String key : keys) {
+            relationMap.remove(keys);
+        }
         return map;
     }
 
