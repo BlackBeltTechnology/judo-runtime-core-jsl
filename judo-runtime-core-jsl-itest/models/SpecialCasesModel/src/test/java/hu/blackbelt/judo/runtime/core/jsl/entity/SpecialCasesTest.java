@@ -2498,10 +2498,10 @@ public class SpecialCasesTest {
         assertThat(thrown1.getValidationResults(), containsInAnyOrder(
                 allOf(
                         hasProperty("code", equalTo("MISSING_REQUIRED_ATTRIBUTE")),
-                        hasProperty("location", equalTo("transientRel/name"))),
+                        hasProperty("location", equalTo("name"))),
                 allOf(
                         hasProperty("code", equalTo("MISSING_REQUIRED_RELATION")),
-                        hasProperty("location", equalTo("transientRel/containment2")))
+                        hasProperty("location", equalTo("containment2")))
         ));
 
         // sub relations
@@ -2535,7 +2535,7 @@ public class SpecialCasesTest {
         assertThat(thrown3.getValidationResults(), containsInAnyOrder(
                 allOf(
                         hasProperty("code", equalTo("MISSING_REQUIRED_ATTRIBUTE")),
-                        hasProperty("location", equalTo("transientRel/transientRel.name")))
+                        hasProperty("location", equalTo("transientRel.name")))
         ));
     }
 
