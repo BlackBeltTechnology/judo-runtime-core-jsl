@@ -692,7 +692,7 @@ public class QueryCustomizerFunctionsTest {
     public void testQueryCustomizerAppend(JudoRuntimeFixture runtimeFixture) {
         AsmUtils asmUtils = new AsmUtils(runtimeFixture.modelHolder.getAsmModel().getResourceSet());
 
-        DAO.QueryCustomizer<Serializable> queryCustomizer = DAO.QueryCustomizer.<Serializable>builder()
+        DAO.QueryCustomizer queryCustomizer = DAO.QueryCustomizer.builder()
                 .orderBy(DAO.OrderBy.builder().descending(false).attribute(asmUtils.resolveAttribute("Primitives.Primitives.MyEntityWithOptionalFields#stringAttr").orElseThrow()).build())
                 .filter("this.stringAttr!like('tes%') and this.stringAttr!like('%t')")
                 .mask(Map.of("stringAttr", true))
@@ -709,7 +709,7 @@ public class QueryCustomizerFunctionsTest {
         assertEquals(entity1.getStringAttr(), result.getStringAttr());
         assertNull(result.getScaledAttr());
 
-        queryCustomizer = DAO.QueryCustomizer.<Serializable>builder()
+        queryCustomizer = DAO.QueryCustomizer.builder()
                 .orderBy(DAO.OrderBy.builder().descending(false).attribute(asmUtils.resolveAttribute("Primitives.Primitives.MyEntityWithOptionalFields#stringAttr").orElseThrow()).build())
                 .filter("this.stringAttr!like('tes%') and this.stringAttr!like('%t')")
                 .build();
@@ -724,7 +724,7 @@ public class QueryCustomizerFunctionsTest {
         assertEquals(entity1.getStringAttr(), result.getStringAttr());
         assertNotNull(result.getScaledAttr());
 
-        queryCustomizer = DAO.QueryCustomizer.<Serializable>builder()
+        queryCustomizer = DAO.QueryCustomizer.builder()
                 .orderBy(DAO.OrderBy.builder().descending(false).attribute(asmUtils.resolveAttribute("Primitives.Primitives.MyEntityWithOptionalFields#stringAttr").orElseThrow()).build())
                 .build();
 
@@ -744,7 +744,7 @@ public class QueryCustomizerFunctionsTest {
     public void testQueryCustomizerAppendWithOrFilter(JudoRuntimeFixture runtimeFixture) {
         AsmUtils asmUtils = new AsmUtils(runtimeFixture.modelHolder.getAsmModel().getResourceSet());
 
-        DAO.QueryCustomizer<Serializable> queryCustomizer = DAO.QueryCustomizer.<Serializable>builder()
+        DAO.QueryCustomizer queryCustomizer = DAO.QueryCustomizer.builder()
                 .orderBy(DAO.OrderBy.builder().descending(false).attribute(asmUtils.resolveAttribute("Primitives.Primitives.MyEntityWithOptionalFields#stringAttr").orElseThrow()).build())
                 .filter("this.stringAttr == 'test' or this.stringAttr == 'Another'")
                 .mask(Map.of("stringAttr", true))
