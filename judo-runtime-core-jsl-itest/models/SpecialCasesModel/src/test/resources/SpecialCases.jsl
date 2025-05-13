@@ -165,39 +165,6 @@ entity Ref {
 
 // Check that derived relations are not validated.
 
-entity Container {
-    field String name required;
-    relation Containment1 derivedContainment1 <= Containment1.all().any();
-}
-
-entity Containment1 {
-    field String name required;
-    relation Containment2 containment2 required;
-}
-
-
-entity Containment2 {
-    field String name required;
-}
-
-transfer ContainerTransfer (Container c) {
-    field String name <=> c.name required;
-    relation Containment1Transfer derivedContainment1 <= c.derivedContainment1 eager:true;
-    relation Containment1Transfer transientRel;
-}
-
-transfer Containment1Transfer (Containment1 c) {
-    field String name <=> c.name required;
-    relation Containment2Transfer containment2 <= c.containment2 eager:true create:true required;
-    relation Containment2Transfer transientRel;
-    event create eventCreate;
-}
-
-transfer Containment2Transfer (Containment2 c) {
-    field String name <=> c.name required;
-    event create eventCreate;
-}
-
 enum Continent {
     Africa = 1;
     Asia = 2;
