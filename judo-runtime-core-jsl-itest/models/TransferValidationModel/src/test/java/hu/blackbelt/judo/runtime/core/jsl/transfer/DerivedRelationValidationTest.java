@@ -63,9 +63,9 @@ public class DerivedRelationValidationTest {
         TC c2 = tcDao.create(TCForCreate.builder().withName("C2").build());
         tbDao.create(TBForCreate.builder().withName("C1").withAggregatedC(TCForCreate.builderFrom(c2).build()).build());
 
-        taDao.create(TAForCreate.builder().withName("Container").build());
+        taDao.create(TAForCreate.builder().withName("TA").build());
 
-        TA container = taDao.query().filterBy("this.name == 'Container'")
+        TA container = taDao.query().filterBy("this.name == 'TA'")
                 .maskedBy(TAMask.tAMask()
                         .withName()
                         .withDerivedB(TBMask
@@ -74,7 +74,7 @@ public class DerivedRelationValidationTest {
                 .selectOne()
                 .orElseThrow();
 
-        container = TA.from(removeKeys(List.of("__identifier","__entityType","__version"), "derivedContainment1", container.toMap()));
+        container = TA.from(removeKeys(List.of("__identifier","__entityType","__version"), "derivedB", container.toMap()));
 
         // Derived doesn't have identifier
         // Check the derived is not validated.
