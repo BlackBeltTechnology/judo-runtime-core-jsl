@@ -1,0 +1,52 @@
+model TransferValidation;
+
+import judo::types;
+
+entity A {
+    field String name required;
+    relation B derivedB <= B.all().any();
+}
+
+entity B {
+    field String name required;
+    relation C relC required;
+}
+
+entity C {
+    field String name required;
+}
+
+transfer TA (A a) {
+    field String name <=> a.name required;
+    relation TB derivedB <= a.derivedB eager:true;
+    // Transfer relation
+    relation TB transientB;
+}
+
+transfer TB (B b) {
+    field String name <=> b.name required;
+    relation TC aggregatedC <= b.relC eager:true create:true required;
+
+    // Transfer relation
+    relation TC transientC;
+    event create eventCreate;
+}
+
+transfer TC (C c) {
+    field String name <=> c.name required;
+    event create eventCreate;
+}
+
+// identifier violation test
+
+entity AccountEntity {
+    field String name required;
+    identifier String email required;
+    relation IdentifierEntity idRel opposite: accounts required;
+}
+
+entity IdentifierEntity {
+    field Date created;
+    identifier String salt required;
+    relation AccountEntity[] accounts opposite: idRel;
+}
