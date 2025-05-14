@@ -5,6 +5,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transfervalidation.tran
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transfervalidation.transfervalidation.ta.TADao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transfervalidation.transfervalidation.ta.TAForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transfervalidation.transfervalidation.ta.TAMask;
+import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transfervalidation.transfervalidation.ta.TAMask;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transfervalidation.transfervalidation.tb.TBDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transfervalidation.transfervalidation.tb.TBForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.transfervalidation.transfervalidation.tb.TBMask;

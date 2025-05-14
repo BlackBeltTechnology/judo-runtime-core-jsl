@@ -28,9 +28,11 @@ public class IdentifierValidationTest {
     @Inject
     IdentifierEntityDao identifierEntityDao;
 
+    // TODO Cannot reproduce the https://blackbelt.atlassian.net/browse/JNG-6256 ticket
+
     @Test
     public void testIdentifiersInTwoWayRelationOnEntity() {
-        // account with inline identifier
+        // Account with inline identifier
         AccountEntity testAcc = accountEntityDao.create(AccountEntityForCreate
                 .builder()
                 .withName("testAcc")
@@ -48,14 +50,12 @@ public class IdentifierValidationTest {
         IdentifierEntity identifier = identifierEntityDao.create(IdentifierEntityForCreate.builder().withSalt("2a741295bb1").build());
 
         // Set the idRel to an another identifier
-
         accountEntityDao.setIdRel(testAcc, identifier);
         testAcc = accountEntityDao.update(testAcc);
 
         assertEquals("2a741295bb1", accountEntityDao.queryIdRel(testAcc).getSalt());
 
         // Create an account with attached identifier
-
         AccountEntity testAcc2 = accountEntityDao.create(AccountEntityForCreate
                 .builder()
                 .withName("testAcc2")
