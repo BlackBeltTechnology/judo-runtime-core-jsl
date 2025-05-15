@@ -31,7 +31,6 @@
         <module>PrimitivesModel</module>
         <module>QueryModel</module>
         <module>SalesModels</module>
-<!--        <module>SampleModels</module> -->
         <module>StaticQueryModels</module>
         <module>SpecialCasesModel</module>
         <module>TaskModel</module>
@@ -47,6 +46,7 @@
         <module>TransferRangeModel</module>
         <module>FilterCountModel</module>
         <module>OperationModel</module>
+        <module>TransferValidationModel</module>
     </modules>
 
     <build>
