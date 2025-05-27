@@ -140,11 +140,6 @@ public class MappedTransferPagingTest {
         assertThat(list1to3IdsWithReservedLastItem, equalTo(List.of(listIds.get('A'), listIds.get('B'), listIds.get('C'))));
 
         // Lists 1 to 4 ['A', 'B']
-        TransferListQueryCustomizer transferListQueryCustomizer = transferListDao
-                .query()
-                .orderBy(TransferListAttribute.NAME)
-                .filterBy("this.name == 'List_A' or this.name == 'List_B'");
-
         List<Serializable> lists2Of4Ids = transferListDao
                 .query()
                 .orderBy(TransferListAttribute.NAME)
