@@ -1242,24 +1242,40 @@ public class MappedTransferAssociationAggregationTest {
     }
 
     @Test
-    void testDeepCopyCreate() {
+    void testAttachmentAsComposition() {
 
         TK transferK1 = tkDao.create(TKForCreate.builder().withStringK("K1").build());
         TK transferK2 = tkDao.create(TKForCreate.builder().withStringK("K2").build());
         TJ transferJ = tjDao.create(TJForCreate.builder().withStringJ("J1").withMultipleKonI(List.of(TKForCreate.builderFrom(transferK1).build(), TKForCreate.builderFrom(transferK2).build())).build());
         TH transferH = thDao.create(THForCreate.builder().withSingleRequiredJonH(TJForCreate.builderFrom(transferJ).build()).withStringH("H1").build());
 
-        assertNotEquals(transferJ.identifier().getIdentifier() ,transferH.getSingleRequiredJonH().identifier().getIdentifier());
+        assertEquals(transferJ.identifier().getIdentifier() ,transferH.getSingleRequiredJonH().identifier().getIdentifier());
         assertEquals("H1", transferH.getStringH().orElseThrow());
 
         List<TK> ksTransfer = transferH.getSingleRequiredJonH().getMultipleKonI();
 
         TK testK1Transfer = ksTransfer.stream().filter(d -> d.getStringK().orElseThrow().equals("K1")).findFirst().orElseThrow();
         TK testK2Transfer = ksTransfer.stream().filter(d -> d.getStringK().orElseThrow().equals("K2")).findFirst().orElseThrow();
-        assertNotEquals(transferK1.identifier().getIdentifier(), testK1Transfer.identifier().getIdentifier());
+
+        assertEquals(transferK1.identifier().getIdentifier(), testK1Transfer.identifier().getIdentifier());
         assertEquals(transferK1.getStringK().orElseThrow(), testK1Transfer.getStringK().orElseThrow());
-        assertNotEquals(transferK2.identifier().getIdentifier(), testK2Transfer.identifier().getIdentifier());
+
+        assertEquals(transferK2.identifier().getIdentifier(), testK2Transfer.identifier().getIdentifier());
         assertEquals(transferK2.getStringK().orElseThrow(), testK2Transfer.getStringK().orElseThrow());
+
+        // Test composition relation cannot be attached twice. If a compositon
+
+        TJ transferJ2 = tjDao.create(TJForCreate.builder().withStringJ("J1").withMultipleKonI(List.of(TKForCreate.builderFrom(transferK1).build(), TKForCreate.builderFrom(transferK2).build())).build());
+
+        assertEquals(0, tjDao.queryMultipleKonI(transferJ).count());
+        assertEquals(2, tjDao.queryMultipleKonI(transferJ2).count());
+
+        thDao.delete(transferH);
+
+        assertEquals(2, tjDao.queryMultipleKonI(transferJ2).count());
+        assertEquals(2, tkDao.countAll());
+        assertEquals(1, tjDao.countAll());
+        assertEquals(0, thDao.countAll());
 
     }
 
