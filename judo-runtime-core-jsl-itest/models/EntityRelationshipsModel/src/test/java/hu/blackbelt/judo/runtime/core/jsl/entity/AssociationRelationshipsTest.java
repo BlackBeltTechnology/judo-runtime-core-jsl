@@ -251,7 +251,7 @@ public class AssociationRelationshipsTest {
         entityA = entityADao.getById(entityA.identifier()).orElseThrow();
 
         assertEquals(c2.identifier().getIdentifierAs(UUID.class), entityADao.querySingleConA(entityA).orElseThrow().identifier().getIdentifier());
-        assertTrue(entityCDao.existsById((UUID) c1.identifier().getIdentifier()));
+        assertTrue(entityCDao.existsById(c1.identifier().getIdentifier()));
 
     }
 
@@ -271,7 +271,7 @@ public class AssociationRelationshipsTest {
         entityA = entityADao.getById(entityA.identifier()).orElseThrow();
 
         assertEquals(c2.identifier().getIdentifier(), entityADao.querySingleRequiredConA(entityA).identifier().getIdentifier());
-        assertTrue(entityCDao.existsById((UUID) entityC.identifier().getIdentifier()));
+        assertTrue(entityCDao.existsById(entityC.identifier().getIdentifier()));
         assertEquals(1, entityCDao.queryTwoWayMultipleAonC(c2).count());
         assertEquals(entityA.identifier().getIdentifier(), entityCDao.queryTwoWayMultipleAonC(c2).selectOne().orElseThrow().identifier().getIdentifierAs(UUID.class));
 
@@ -476,7 +476,7 @@ public class AssociationRelationshipsTest {
                                         .addByName("name")));
 
         checkAMask(aDao.getById(a.identifier(), maskForGetByID).orElseThrow());
-        checkAMask(aDao.getById((UUID) a.identifier().getIdentifier(), maskForGetByID).orElseThrow());
+        checkAMask(aDao.getById(a.identifier().getIdentifier(), maskForGetByID).orElseThrow());
         assertEquals(1, aDao.findAllById(List.of(a.identifier().getIdentifierAs(UUID.class)), maskForGetByID).size());
         checkAMask(aDao.findAllById(List.of(a.identifier().getIdentifierAs(UUID.class)), maskForGetByID).get(0));
 
@@ -491,10 +491,10 @@ public class AssociationRelationshipsTest {
 
         checkRecursiveAMask(aDao.getById(a.identifier(), maskForGetByID).orElseThrow());
         checkRecursiveAMask(aDao.getById(a.identifier().getIdentifierAs(UUID.class), maskForGetByID).orElseThrow());
-        assertEquals(1, aDao.findAllById(List.of((UUID) a.identifier().getIdentifier()), maskForGetByID).size());
-        checkRecursiveAMask(aDao.findAllById(List.of((UUID) a.identifier().getIdentifier()), maskForGetByID).get(0));
+        assertEquals(1, aDao.findAllById(List.of(a.identifier().getIdentifier()), maskForGetByID).size());
+        checkRecursiveAMask(aDao.findAllById(List.of(a.identifier().getIdentifier()), maskForGetByID).get(0));
 
-        B maskedB = aDao.queryB((UUID) a.identifier().getIdentifier(), BMask.bMask().addByName("c", CMask.cMask().addByName("name"))).orElseThrow();
+        B maskedB = aDao.queryB(a.identifier().getIdentifier(), BMask.bMask().addByName("c", CMask.cMask().addByName("name"))).orElseThrow();
 
         assertNull(maskedB.getName());
         assertNotNull(maskedB.getC());

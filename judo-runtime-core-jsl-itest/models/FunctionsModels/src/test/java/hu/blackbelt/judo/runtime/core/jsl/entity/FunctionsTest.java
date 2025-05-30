@@ -175,17 +175,10 @@ public class FunctionsTest {
 
     @BeforeEach
     protected void init() {
-
-        Entity entity = entityDao
-                .create(EntityForCreate.builder().build());
-        EntityWithPrimitiveDefaults entityWithPrimitiveDefaults = entityWithPrimitiveDefaultsDao
-                .create(EntityWithPrimitiveDefaultsForCreate.builder().build());
-
         anyTypeFunctions = anyTypeFunctionsDao.create(AnyTypeFunctionsForCreate.builder()
-                .withEntity(EntityForCreate.builderFrom(entity).build())
-                .withEntityWithPrimitives(EntityWithPrimitiveDefaultsForCreate.builderFrom(entityWithPrimitiveDefaults).build())
+                .withEntity(EntityForCreate.builder().build())
+                .withEntityWithPrimitives(EntityWithPrimitiveDefaultsForCreate.builder().build())
                 .build());
-
     }
 
     @Test
@@ -750,17 +743,10 @@ public class FunctionsTest {
     })
     public void testInstance() {
         Parent parent1 = parentDao.create(ParentForCreate.builder().withName("James Webb").build());
-        Child child1 = childDao.create(ChildForCreate.builder().withName("Erika Young").withAge(11L).build());
 
         InstanceFunctions instanceFunctions = instanceFunctionsDao.create(InstanceFunctionsForCreate.builder()
                         .withParent(ParentForCreate.builder().withName("Another Person").build())
                         .withChild(ChildForCreate.builder().withName("Another Child").withAge(31L).build())
-                        .build());
-
-        Parent parent = parentDao.getById(child1.identifier().adaptTo(ParentIdentifier.class)).orElseThrow();
-
-        InstanceFunctions instanceFunctions1 = instanceFunctionsDao.create(InstanceFunctionsForCreate.builder()
-                        .withParent(ParentForCreate.builderFrom(parent).build())
                         .build());
 
         assertTrue(instanceFunctions.getTypeOfParent().get());

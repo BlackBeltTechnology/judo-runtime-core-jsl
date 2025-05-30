@@ -418,11 +418,8 @@ public class InheritanceTest {
 
     @Test
     void testMultipleQueryByID() {
-        CompositionEntity compositionEntity1 = compositionEntityDao.create(CompositionEntityForCreate.builder().withName("C1").build());
-        CompositionEntity compositionEntity2 = compositionEntityDao.create(CompositionEntityForCreate.builder().withName("C2").build());
-
-        ParentA parentA1 = parentADao.create(ParentAForCreate.builder().withNameA("A1").withEntity(CompositionEntityForCreate.builderFrom(compositionEntity1).build()).build());
-        ParentA parentA2 = parentADao.create(ParentAForCreate.builder().withNameA("A2").withEntity(CompositionEntityForCreate.builderFrom(compositionEntity2).build()).build());
+        ParentA parentA1 = parentADao.create(ParentAForCreate.builder().withNameA("A1").withEntity(CompositionEntityForCreate.builder().withName("C1").build()).build());
+        ParentA parentA2 = parentADao.create(ParentAForCreate.builder().withNameA("A2").withEntity(CompositionEntityForCreate.builder().withName("C2").build()).build());
         ParentA parentA3 = parentADao.create(ParentAForCreate.builder().withNameA("A3").build());
         parentADao.createRelationEntities(parentA1, List.of(RelationEntityForCreate.builder().withName("R1").build()
                                                 , RelationEntityForCreate.builder().withName("R2").build()));
@@ -431,7 +428,7 @@ public class InheritanceTest {
         List<ParentA> parentAS = parentADao.findAllById(uuids);
         assertEquals(0, parentAS.size());
 
-        uuids.add((UUID) parentA1.identifier().getIdentifier());
+        uuids.add(parentA1.identifier().getIdentifier());
 
         parentAS = parentADao.findAllById(uuids);
 
@@ -449,8 +446,8 @@ public class InheritanceTest {
         assertEquals(1, relationEntities.stream()
                 .filter(r -> r.getName().orElseThrow().equals("R2")).count());
 
-        uuids.add(parentA2.identifier().getIdentifierAs(UUID.class));
-        uuids.add((UUID) parentA3.identifier().getIdentifier());
+        uuids.add(parentA2.identifier().getIdentifier());
+        uuids.add(parentA3.identifier().getIdentifier());
 
         parentAS = parentADao.findAllById(uuids);
 
@@ -485,7 +482,7 @@ public class InheritanceTest {
         // E is a descandent of ParentA
         E entityE = eDao.create(EForCreate.builder().withNameA("AInherited").build());
 
-        uuids.add((UUID) entityE.identifier().getIdentifier());
+        uuids.add(entityE.identifier().getIdentifier());
 
         parentAS = parentADao.findAllById(uuids);
 
@@ -498,7 +495,7 @@ public class InheritanceTest {
         // ParentB is not a descandent of ParentA
         ParentB parentB = parentBDao.create(ParentBForCreate.builder().build());
 
-        uuids.add((UUID) parentB.identifier().getIdentifier());
+        uuids.add(parentB.identifier().getIdentifier());
 
         parentAS = parentADao.findAllById(uuids);
 
@@ -512,12 +509,8 @@ public class InheritanceTest {
 
     @Test
     void testMultipleQueryByIDOnTransfer() {
-
-        CompositionTransfer compositionTransfer1 = compositionTransferDao.create(CompositionTransferForCreate.builder().withName("C1").build());
-        CompositionTransfer compositionTransfer2 = compositionTransferDao.create(CompositionTransferForCreate.builder().withName("C2").build());
-
-        ParentATransfer parentA1 = parentATransferDao.create(ParentATransferForCreate.builder().withNameA("A1").withEntity(CompositionTransferForCreate.builderFrom(compositionTransfer1).build()).build());
-        ParentATransfer parentA2 = parentATransferDao.create(ParentATransferForCreate.builder().withNameA("A2").withEntity(CompositionTransferForCreate.builderFrom(compositionTransfer2).build()).build());
+        ParentATransfer parentA1 = parentATransferDao.create(ParentATransferForCreate.builder().withNameA("A1").withEntity(CompositionTransferForCreate.builder().withName("C1").build()).build());
+        ParentATransfer parentA2 = parentATransferDao.create(ParentATransferForCreate.builder().withNameA("A2").withEntity(CompositionTransferForCreate.builder().withName("C2").build()).build());
         ParentATransfer parentA3 = parentATransferDao.create(ParentATransferForCreate.builder().withNameA("A3").build());
         parentATransferDao.createRelationTransfers(parentA1, List.of(RelationTransferForCreate.builder().withName("R1").build()
                 , RelationTransferForCreate.builder().withName("R2").build()));
@@ -526,7 +519,7 @@ public class InheritanceTest {
         List<ParentATransfer> parentAS = parentATransferDao.findAllById(uuids);
         assertEquals(0, parentAS.size());
 
-        uuids.add((UUID) parentA1.identifier().getIdentifier());
+        uuids.add(parentA1.identifier().getIdentifier());
 
         parentAS = parentATransferDao.findAllById(uuids);
 
@@ -544,8 +537,8 @@ public class InheritanceTest {
         assertEquals(1, relationEntities.stream()
                 .filter(r -> r.getName().orElseThrow().equals("R2")).count());
 
-        uuids.add(parentA2.identifier().getIdentifierAs(UUID.class));
-        uuids.add((UUID) parentA3.identifier().getIdentifier());
+        uuids.add(parentA2.identifier().getIdentifier());
+        uuids.add(parentA3.identifier().getIdentifier());
 
         parentAS = parentATransferDao.findAllById(uuids);
 
@@ -580,7 +573,7 @@ public class InheritanceTest {
         // E is a descandent of ParentATransfer
         TransferE transferE = transferEDao.create(TransferEForCreate.builder().withNameA("AInherited").build());
 
-        uuids.add((UUID) transferE.identifier().getIdentifier());
+        uuids.add(transferE.identifier().getIdentifier());
 
         parentAS = parentATransferDao.findAllById(uuids);
 
@@ -593,7 +586,7 @@ public class InheritanceTest {
         // ParentB is not a descandent of ParentATransfer
         ParentBTransfer parentB = parentBTransferDao.create(ParentBTransferForCreate.builder().build());
 
-        uuids.add((UUID) parentB.identifier().getIdentifier());
+        uuids.add(parentB.identifier().getIdentifier());
 
         parentAS = parentATransferDao.findAllById(uuids);
 
@@ -606,42 +599,42 @@ public class InheritanceTest {
 
     @Test
     void testExistsByID() {
-        CompositionEntity compositionEntity = compositionEntityDao.create(CompositionEntityForCreate.builder().withName("C1").build());
-
         RelationEntity relationEntity = RelationEntity.builder().withName("R1").build();
 
-        ParentA parentA1 = parentADao.create(ParentAForCreate.builder().withNameA("A1").withEntity(CompositionEntityForCreate.builderFrom(compositionEntity).build()).build());
+        ParentA parentA1 = parentADao.create(ParentAForCreate.builder().withNameA("A1").withEntity(CompositionEntityForCreate.builder().withName("C1").build()).build());
         parentADao.createRelationEntities(parentA1, List.of(RelationEntityForCreate.builderFrom(relationEntity).build()));
 
-        assertTrue(parentADao.existsById(parentA1.identifier().getIdentifierAs(UUID.class)));
+        CompositionEntity compositionEntity = parentA1.getEntity().orElseThrow();
+
+        assertTrue(parentADao.existsById(parentA1.identifier().getIdentifier()));
         parentA1 = parentADao.getById(parentA1.identifier()).orElseThrow();
         assertEquals("A1", parentA1.getNameA().orElseThrow());
 
-        assertTrue(compositionTransferDao.existsById((UUID) parentA1.getEntity().orElseThrow().identifier().getIdentifier()));
+        assertTrue(compositionTransferDao.existsById(parentA1.getEntity().orElseThrow().identifier().getIdentifier()));
         assertEquals("C1", parentA1.getEntity().orElseThrow().getName().orElseThrow());
 
         relationEntity = parentADao.queryRelationEntities(parentA1).selectOne().orElseThrow();
-        assertTrue(relationEntityDao.existsById((UUID) relationEntity.identifier().getIdentifier()));
+        assertTrue(relationEntityDao.existsById(relationEntity.identifier().getIdentifier()));
         assertEquals("R1", relationEntity.getName().orElseThrow());
 
         parentADao.delete(parentA1);
 
-        assertFalse(parentADao.existsById((UUID) parentA1.identifier().getIdentifier()));
-        assertFalse(compositionEntityDao.existsById((UUID) parentA1.getEntity().orElseThrow().identifier().getIdentifier()));
-        assertTrue(compositionEntityDao.existsById(compositionEntity.identifier().getIdentifierAs(UUID.class)));
-        assertTrue(relationEntityDao.existsById((UUID) relationEntity.identifier().getIdentifier()));
+        assertFalse(parentADao.existsById(parentA1.identifier().getIdentifier()));
+        assertFalse(compositionEntityDao.existsById(parentA1.getEntity().orElseThrow().identifier().getIdentifier()));
+        assertFalse(compositionEntityDao.existsById(compositionEntity.identifier()));
+        assertTrue(relationEntityDao.existsById(relationEntity.identifier().getIdentifier()));
         assertEquals("R1", relationEntity.getName().orElseThrow());
 
         E entityE = eDao.create(EForCreate.builder().withNameA("E1").build());
 
-        assertTrue(eDao.existsById((UUID) entityE.identifier().getIdentifier()));
+        assertTrue(eDao.existsById(entityE.identifier().getIdentifier()));
 
         entityE = eDao.getById(entityE.identifier()).orElseThrow();
 
         assertEquals("E1", entityE.getNameA().orElseThrow());
 
-        assertTrue(parentADao.existsById((UUID) entityE.identifier().getIdentifier()));
-        assertTrue(parentADao.existsById(entityE.identifier().adaptTo(ParentAIdentifier.class).getIdentifierAs(UUID.class)));
+        assertTrue(parentADao.existsById(entityE.identifier().getIdentifier()));
+        assertTrue(parentADao.existsById(entityE.identifier().adaptTo(ParentAIdentifier.class).getIdentifier()));
 
         ParentA parentA = parentADao.getById(entityE.identifier().adaptTo(ParentAIdentifier.class)).orElseThrow();
 
@@ -649,37 +642,37 @@ public class InheritanceTest {
 
         eDao.delete(entityE);
 
-        assertFalse(eDao.existsById((UUID) entityE.identifier().getIdentifier()));
+        assertFalse(eDao.existsById(entityE.identifier().getIdentifier()));
 
         assertFalse(parentADao.existsById(null));
 
         ParentB parentB = parentBDao.create(ParentBForCreate.builder().build());
 
-        assertFalse(parentADao.existsById((UUID) parentB.identifier().getIdentifier()));
+        assertFalse(parentADao.existsById(parentB.identifier().getIdentifier()));
     }
 
     @Test
     void testExistsByIDOnTransfer() {
-        CompositionTransfer compositionTransfer1 = compositionTransferDao.create(CompositionTransferForCreate.builder().withName("C1").build());
-
         RelationTransfer relationTransfer1 = RelationTransfer.builder().withName("R1").build();
 
-        ParentATransfer parentA1 = parentATransferDao.create(ParentATransferForCreate.builder().withNameA("A1").withEntity(CompositionTransferForCreate.builderFrom(compositionTransfer1).build()).build());
+        ParentATransfer parentA1 = parentATransferDao.create(ParentATransferForCreate.builder().withNameA("A1").withEntity(CompositionTransferForCreate.builder().withName("C1").build()).build());
         parentATransferDao.createRelationTransfers(parentA1, List.of(RelationTransferForCreate.builderFrom(relationTransfer1).build()));
 
-        assertTrue(parentATransferDao.existsById((UUID) parentA1.identifier().getIdentifier()));
+        CompositionTransfer compositionTransfer1 = compositionTransferDao.create(CompositionTransferForCreate.builder().withName("C1").build());
+
+        assertTrue(parentATransferDao.existsById(parentA1.identifier().getIdentifier()));
         parentA1 = parentATransferDao.getById(parentA1.identifier()).orElseThrow();
         assertEquals("A1", parentA1.getNameA().orElseThrow());
 
-        assertTrue(compositionTransferDao.existsById((UUID) parentA1.getEntity().orElseThrow().identifier().getIdentifier()));
+        assertTrue(compositionTransferDao.existsById(parentA1.getEntity().orElseThrow().identifier().getIdentifier()));
         assertEquals("C1", parentA1.getEntity().orElseThrow().getName().orElseThrow());
 
         relationTransfer1 = parentATransferDao.queryRelationTransfers(parentA1).selectOne().orElseThrow();
-        assertTrue(relationTransferDao.existsById((UUID) relationTransfer1.identifier().getIdentifier()));
+        assertTrue(relationTransferDao.existsById(relationTransfer1.identifier().getIdentifier()));
         assertEquals("R1", relationTransfer1.getName().orElseThrow());
 
-        assertTrue(parentADao.existsById(parentA1.identifier().getIdentifierAs(UUID.class)));
-        assertTrue(parentADao.existsById((UUID) parentA1.identifier().adaptTo(ParentAIdentifier.class).getIdentifier()));
+        assertTrue(parentADao.existsById(parentA1.identifier().getIdentifier()));
+        assertTrue(parentADao.existsById(parentA1.identifier().adaptTo(ParentAIdentifier.class).getIdentifier()));
 
         ParentA parentAEntity = parentADao.getById(parentA1.identifier().adaptTo(ParentAIdentifier.class)).orElseThrow();
         RelationEntity relationEntity = parentADao.queryRelationEntities(parentAEntity).selectOne().orElseThrow();
@@ -690,42 +683,41 @@ public class InheritanceTest {
 
         parentATransferDao.delete(parentA1);
 
-        assertFalse(parentATransferDao.existsById((UUID) parentA1.identifier().getIdentifier()));
-        assertFalse(compositionTransferDao.existsById((UUID) parentA1.getEntity().orElseThrow().identifier().getIdentifier()));
-        assertTrue(compositionTransferDao.existsById((UUID) compositionTransfer1.identifier().getIdentifier()));
-        assertTrue(relationTransferDao.existsById((UUID) relationTransfer1.identifier().getIdentifier()));
+        assertFalse(parentATransferDao.existsById(parentA1.identifier().getIdentifier()));
+        assertFalse(compositionTransferDao.existsById(parentA1.getEntity().orElseThrow().identifier().getIdentifier()));
+        assertTrue(compositionTransferDao.existsById(compositionTransfer1.identifier().getIdentifier()));
+        assertTrue(relationTransferDao.existsById(relationTransfer1.identifier().getIdentifier()));
         assertEquals("R1", relationTransfer1.getName().orElseThrow());
 
         TransferE transferE = transferEDao.create(TransferEForCreate.builder().withNameA("E1").build());
 
-        assertTrue(transferEDao.existsById((UUID) transferE.identifier().getIdentifier()));
+        assertTrue(transferEDao.existsById(transferE.identifier().getIdentifier()));
 
         transferE = transferEDao.getById(transferE.identifier()).orElseThrow();
         assertEquals("E1", transferE.getNameA().orElseThrow());
 
-        assertTrue(eDao.existsById((UUID) transferE.identifier().getIdentifier()));
-        assertTrue(eDao.existsById((UUID) transferE.identifier().adaptTo(EIdentifier.class).getIdentifier()));
+        assertTrue(eDao.existsById(transferE.identifier().getIdentifier()));
+        assertTrue(eDao.existsById(transferE.identifier().adaptTo(EIdentifier.class).getIdentifier()));
 
         E entityE = eDao.getById(transferE.identifier().adaptTo(EIdentifier.class)).orElseThrow();
         assertEquals("E1", entityE.getNameA().orElseThrow());
 
-        assertTrue(parentATransferDao.existsById((UUID) transferE.identifier().getIdentifier()));
-        assertTrue(parentATransferDao.existsById((UUID) transferE.identifier().adaptTo(ParentATransferIdentifier.class).getIdentifier()));
+        assertTrue(parentATransferDao.existsById(transferE.identifier().getIdentifier()));
+        assertTrue(parentATransferDao.existsById(transferE.identifier().adaptTo(ParentATransferIdentifier.class).getIdentifier()));
         ParentATransfer parentATransfer = parentATransferDao.getById(transferE.identifier().adaptTo(ParentATransferIdentifier.class)).orElseThrow();
 
         assertEquals("E1", parentATransfer.getNameA().orElseThrow());
 
         transferEDao.delete(transferE);
 
-        assertFalse(transferEDao.existsById((UUID) transferE.identifier().getIdentifier()));
+        assertFalse(transferEDao.existsById(transferE.identifier().getIdentifier()));
 
         assertFalse(parentATransferDao.existsById(null));
 
         ParentBTransfer parentB = parentBTransferDao.create(ParentBTransferForCreate.builder().build());
 
-        assertFalse(parentATransferDao.existsById((UUID) parentB.identifier().getIdentifier()));
+        assertFalse(parentATransferDao.existsById(parentB.identifier().getIdentifier()));
     }
-
 
     Matcher matchMissingAttribute(String attrName) {
         return allOf(

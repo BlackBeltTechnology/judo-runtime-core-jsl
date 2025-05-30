@@ -569,7 +569,7 @@ public class CompositionRelationshipsTest {
         EntityF f13 = entityFDao.create(EntityFForCreate.builder().build());
 
         entityFDao.createG(f13, EntityGForCreate.builder().withName("Entity").build());
-        f13 = entityFDao.getById((UUID) f13.identifier().getIdentifier()).orElseThrow();
+        f13 = entityFDao.getById(f13.identifier().getIdentifier()).orElseThrow();
         EntityG g13 = f13.getG().orElseThrow();
         assertEquals("Entity", g13.getName());
         assertEquals("Entity", f13.getG().orElseThrow().getName());
