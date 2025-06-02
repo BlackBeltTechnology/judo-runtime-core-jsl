@@ -621,7 +621,7 @@ public class InheritanceTest {
 
         assertFalse(parentADao.existsById(parentA1.identifier().getIdentifier()));
         assertFalse(compositionEntityDao.existsById(parentA1.getEntity().orElseThrow().identifier().getIdentifier()));
-        assertFalse(compositionEntityDao.existsById(compositionEntity.identifier()));
+        assertFalse(compositionEntityDao.existsById(compositionEntity.identifier().getIdentifier()));
         assertTrue(relationEntityDao.existsById(relationEntity.identifier().getIdentifier()));
         assertEquals("R1", relationEntity.getName().orElseThrow());
 
