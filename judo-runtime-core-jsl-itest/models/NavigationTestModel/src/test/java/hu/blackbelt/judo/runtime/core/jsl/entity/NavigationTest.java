@@ -373,7 +373,7 @@ class NavigationTest {
         personDao.addParents(person2, List.of(mother1, father1));
         personDao.addParents(person3, List.of(person1));
 
-        List<Person> people = personDao.findAllById(List.of((UUID) person1.identifier().getIdentifier(), (UUID) person2.identifier().getIdentifier(), (UUID) person3.identifier().getIdentifier()));
+        List<Person> people = personDao.findAllById(List.of(person1.identifier().getIdentifier(), person2.identifier().getIdentifier(), person3.identifier().getIdentifier()));
         assertEquals(3, people.size());
         Optional<Person> person1Loaded = people.stream().filter(p -> p.identifier().getIdentifier().equals(person1.identifier().getIdentifier())).findAny();
         assertTrue(person1Loaded.isPresent());

@@ -43,7 +43,6 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercomposito
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.transfercomposition.TransferComposition;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.transfercomposition.TransferCompositionDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.transfercomposition.TransferCompositionForCreate;
-import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.transferd.TransferD;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.transferd.TransferDDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.transferd.TransferDForCreate;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercompositonaggregation.mappedtransfercompositonaggregation.transfere.TransferE;
@@ -66,6 +65,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.mappedtransfercomposito
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.MappedTransferCompositonAggregationDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
+import hu.blackbelt.judo.runtime.core.SerializableIdentifierProvider;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import lombok.extern.slf4j.Slf4j;
@@ -73,7 +73,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -127,6 +129,11 @@ public class MappedTransferCompositonAggregationTest {
     @Inject
     CompositionDao compositionDao;
 
+    @Inject
+    SerializableIdentifierProvider identifierProvider;
+    public static final String ENTITY_TYPE_KEY = "__entityType";
+    public static final String VERSION = "__version";
+
     /**
      * The test checks the aggregation mapped single field with entity type work well on transfer object.
      *
@@ -157,21 +164,22 @@ public class MappedTransferCompositonAggregationTest {
     })
     public void testSingleCompositionAggregationOnTransfer() {
 
-        TransferB transferB = transferBDao.create(TransferBForCreate.builder().withNameB("B1").build());
-
-        assertEquals(1, transferBDao.query().selectList().size());
-
         TransferA transferA = transferADao.create(TransferAForCreate.builder()
-                .withSingleEntityB(TransferBForCreate.builderFrom(transferB).build())
+                .withSingleEntityB(TransferBForCreate.builder().withNameB("B1").build())
                 .build()
         );
 
-        assertEquals(2,transferBDao.query().selectList().size());
-        assertEquals(2,entityBDao.query().selectList().size());
+        TransferA referenceForLambda = transferA;
+        assertDoesNotThrow(() -> referenceForLambda.getSingleEntityB().orElseThrow());
+
+        TransferB transferB = transferA.getSingleEntityB().orElseThrow();
+
+        assertEquals(1, transferBDao.query().selectList().size());
+        assertEquals(1, entityBDao.query().selectList().size());
 
         // Check transferA contains transferB
-        assertNotEquals(transferB.identifier().getIdentifier(),transferA.getSingleEntityB().orElseThrow().identifier().getIdentifier());
-        assertNotEquals(
+        assertEquals(transferB.identifier().getIdentifier(), transferA.getSingleEntityB().orElseThrow().identifier().getIdentifier());
+        assertEquals(
                 entityBDao.getById(transferB.adaptTo(EntityBIdentifier.class)).orElseThrow().identifier().getIdentifier(),
                 entityADao.getById(transferA.adaptTo(EntityAIdentifier.class)).orElseThrow().getSingleEntityB().orElseThrow().identifier().getIdentifier()
         );
@@ -179,13 +187,12 @@ public class MappedTransferCompositonAggregationTest {
         // Check transferA cannot bind a different B element
         transferA.setSingleEntityB(transferBDao.create(TransferBForCreate.builder().withNameB("B2").build()));
 
-        TransferA referenceForLambda = transferA;
-        IllegalStateException thrown = assertThrows(
+        IllegalStateException thrown1 = assertThrows(
                 IllegalStateException.class,
                 () -> transferADao.update(referenceForLambda)
         );
-        assertTrue(thrown.getMessage().contains("Identifier cannot be different on containment reference element"));
-        assertTrue(thrown.getMessage().contains("#singleEntityB"));
+        assertTrue(thrown1.getMessage().contains("Identifier cannot be different on containment reference element"));
+        assertTrue(thrown1.getMessage().contains("#singleEntityB"));
 
         // Check transferA can set to null
         transferA.setSingleEntityB(null);
@@ -193,20 +200,20 @@ public class MappedTransferCompositonAggregationTest {
 
         assertTrue(transferA.getSingleEntityB().isEmpty());
         assertTrue(entityADao.getById(transferA.adaptTo(EntityAIdentifier.class)).orElseThrow().getSingleEntityB().isEmpty());
-        assertFalse(transferBDao.getById(transferB.identifier()).isEmpty());
-        assertFalse(entityBDao.getById(transferB.identifier().adaptTo(EntityBIdentifier.class)).isEmpty());
+        assertTrue(transferBDao.getById(transferB.identifier()).isEmpty());
+        assertTrue(entityBDao.getById(transferB.identifier().adaptTo(EntityBIdentifier.class)).isEmpty());
 
         // Check transferA cannot bind a new B element
         transferB = transferBDao.create(TransferBForCreate.builder().withNameB("B2").build());
         transferA.setSingleEntityB(transferB);
 
-        transferA = transferADao.update(transferA);
-        final TransferA finalTransferA = transferA;
-
-        IllegalArgumentException thrown2 = assertThrows(
-                IllegalArgumentException.class,
-                () -> transferADao.createSingleEntityB(finalTransferA, TransferBForCreate.builder().withNameB("B2").build())
+        final TransferA finalTransferA1 = transferA;
+        IllegalStateException thrown2 = assertThrows(
+                IllegalStateException.class,
+                () -> transferADao.update(finalTransferA1)
         );
+        assertTrue(thrown2.getMessage().contains("Existing reference element cannot be set as a composition"));
+        assertTrue(thrown2.getMessage().contains("#singleEntityB"));
 
     }
 
@@ -239,18 +246,13 @@ public class MappedTransferCompositonAggregationTest {
             "REQ-SRV-001"
     })
     public void testSingleRequiredCompositionAggregationOnTransfer() {
-
-        TransferD transferD = transferDDao.create(TransferDForCreate.builder().withNameD("D1").build());
-
-        assertEquals(1, transferDDao.query().selectList().size());
-
         TransferC transferC = transferCDao.create(TransferCForCreate.builder()
-                .withSingleRequiredEntityD(TransferDForCreate.builderFrom(transferD).build())
+                .withSingleRequiredEntityD(TransferDForCreate.builder().withNameD("D1").build())
                 .build()
         );
 
-        assertEquals(2,transferDDao.query().selectList().size());
-        assertEquals(2,entityDDao.query().selectList().size());
+        assertEquals(1, transferDDao.query().selectList().size());
+        assertEquals(1, entityDDao.query().selectList().size());
 
         //Try to create without required element
 
@@ -303,38 +305,35 @@ public class MappedTransferCompositonAggregationTest {
             "REQ-SRV-001"
     })
     public void testMultiCompositionAggregationOnTransfer() {
-
-        TransferB transferB1 = transferBDao.create(TransferBForCreate.builder().withNameB("B1").build());
-        TransferB transferB2 = transferBDao.create(TransferBForCreate.builder().withNameB("B2").build());
-        TransferB transferB3 = transferBDao.create(TransferBForCreate.builder().withNameB("B3").build());
-
-        assertEquals(3, transferBDao.query().selectList().size());
-
         TransferA transferA = transferADao.create(TransferAForCreate.builder()
                 .withMultiEntityB(List.of(
-                        TransferBForCreate.builderFrom(transferB1).build(),
-                        TransferBForCreate.builderFrom(transferB2).build(),
-                        TransferBForCreate.builderFrom(transferB3).build()))
+                        TransferBForCreate.builder().withNameB("B1").build(),
+                        TransferBForCreate.builder().withNameB("B2").build(),
+                        TransferBForCreate.builder().withNameB("B3").build())
+                )
                 .build()
         );
+        TransferB transferB1 = transferA.getMultiEntityB().stream().filter(r -> r.getNameB().orElseThrow().equals("B1")).findAny().orElseThrow();
+        TransferB transferB2 = transferA.getMultiEntityB().stream().filter(r -> r.getNameB().orElseThrow().equals("B2")).findAny().orElseThrow();
+        TransferB transferB3 = transferA.getMultiEntityB().stream().filter(r -> r.getNameB().orElseThrow().equals("B3")).findAny().orElseThrow();
 
-        assertEquals(6, transferBDao.query().selectList().size());
-        assertEquals(6, entityBDao.query().selectList().size());
+        assertEquals(3, transferBDao.query().selectList().size());
+        assertEquals(3, entityBDao.query().selectList().size());
 
-        assertFalse(transferA.getMultiEntityB().stream().map(t -> t.identifier().getIdentifier()).toList().contains(transferB1.identifier().getIdentifier()));
-        assertFalse(transferA.getMultiEntityB().stream().map(t -> t.identifier().getIdentifier()).toList().contains(transferB2.identifier().getIdentifier()));
-        assertFalse(transferA.getMultiEntityB().stream().map(t -> t.identifier().getIdentifier()).toList().contains(transferB3.identifier().getIdentifier()));
+        assertTrue(transferA.getMultiEntityB().stream().map(t -> t.identifier().getIdentifier()).toList().contains(transferB1.identifier().getIdentifier()));
+        assertTrue(transferA.getMultiEntityB().stream().map(t -> t.identifier().getIdentifier()).toList().contains(transferB2.identifier().getIdentifier()));
+        assertTrue(transferA.getMultiEntityB().stream().map(t -> t.identifier().getIdentifier()).toList().contains(transferB3.identifier().getIdentifier()));
 
         // Check the entity level
         EntityB entityB1 = entityBDao.getById(transferB1.adaptTo(EntityBIdentifier.class)).orElseThrow();
         EntityB entityB2 = entityBDao.getById(transferB2.adaptTo(EntityBIdentifier.class)).orElseThrow();
         EntityB entityB3 = entityBDao.getById(transferB3.adaptTo(EntityBIdentifier.class)).orElseThrow();
 
-        assertFalse(entityADao.getById(transferA.adaptTo(EntityAIdentifier.class)).orElseThrow().getMultiEntityB().stream().map(t -> t.identifier().getIdentifier()).toList()
+        assertTrue(entityADao.getById(transferA.adaptTo(EntityAIdentifier.class)).orElseThrow().getMultiEntityB().stream().map(t -> t.identifier().getIdentifier()).toList()
                 .contains(entityB1.identifier().getIdentifier()));
-        assertFalse(entityADao.getById(transferA.adaptTo(EntityAIdentifier.class)).orElseThrow().getMultiEntityB().stream().map(t -> t.identifier().getIdentifier()).toList()
+        assertTrue(entityADao.getById(transferA.adaptTo(EntityAIdentifier.class)).orElseThrow().getMultiEntityB().stream().map(t -> t.identifier().getIdentifier()).toList()
                 .contains(entityB2.identifier().getIdentifier()));
-        assertFalse(entityADao.getById(transferA.adaptTo(EntityAIdentifier.class)).orElseThrow().getMultiEntityB().stream().map(t -> t.identifier().getIdentifier()).toList()
+        assertTrue(entityADao.getById(transferA.adaptTo(EntityAIdentifier.class)).orElseThrow().getMultiEntityB().stream().map(t -> t.identifier().getIdentifier()).toList()
                 .contains(entityB3.identifier().getIdentifier()));
 
         //Delete one element
@@ -348,11 +347,11 @@ public class MappedTransferCompositonAggregationTest {
 
         // Add new List empty
         transferADao.createMultiEntityB(transferA, List.of());
-        assertEquals(3, transferADao.countMultiEntityB(transferA));
+        assertEquals(2, transferADao.countMultiEntityB(transferA));
 
         // Create new List with elements
         transferADao.createMultiEntityB(transferA, List.of(TransferBForCreate.builder().build()));
-        assertEquals(4, transferADao.countMultiEntityB(transferA));
+        assertEquals(3, transferADao.countMultiEntityB(transferA));
 
     }
 
@@ -386,8 +385,6 @@ public class MappedTransferCompositonAggregationTest {
             "REQ-SRV-001"
     })
     public void testCompositionAggregationNavigationOnTransfer() {
-
-
         TransferE transferE = transferEDao.create(TransferEForCreate
                 .builder()
                 .withSingleEntityF(TransferFForCreate
@@ -410,12 +407,12 @@ public class MappedTransferCompositonAggregationTest {
     }
 
     @Test
-    void testDeepCopyCreate() {
+    void testCompositionWithRemovedIdsOnCreate() {
 
         TransferK transferK1 = transferKDao.create(TransferKForCreate.builder().withStringK("K1").build());
         TransferK transferK2 = transferKDao.create(TransferKForCreate.builder().withStringK("K2").build());
-        TransferJ transferJ = transferJDao.create(TransferJForCreate.builder().withStringJ("J1").withMultipleKonI(List.of(TransferKForCreate.builderFrom(transferK1).build(), TransferKForCreate.builderFrom(transferK2).build())).build());
-        TransferH transferH = transferHDao.create(TransferHForCreate.builder().withSingleRequiredJonH(TransferJForCreate.builderFrom(transferJ).build()).withStringH("H1").build());
+        TransferJ transferJ = transferJDao.create(TransferJForCreate.builder().withStringJ("J1").withMultipleKonI(List.of(removeIdFrom(transferK1), removeIdFrom(transferK2))).build());
+        TransferH transferH = transferHDao.create(TransferHForCreate.builder().withSingleRequiredJonH(removeIdsFrom(transferJ)).withStringH("H1").build());
 
         assertNotEquals(transferJ.identifier().getIdentifier() ,transferH.getSingleRequiredJonH().identifier().getIdentifier());
         assertEquals("H1", transferH.getStringH().orElseThrow());
@@ -431,8 +428,28 @@ public class MappedTransferCompositonAggregationTest {
 
     }
 
+    TransferJForCreate removeIdsFrom(TransferJ j) {
+        Map<String, Object> entityCMap = j.toMap();
+        removeIdFromMap(entityCMap);
+        var multipleDonBs = (Collection<Map<String, Object>>) entityCMap.get("multipleKonI");
+        multipleDonBs.forEach(this::removeIdFromMap);
+        return TransferJForCreate.from(entityCMap);
+    }
+
+    TransferKForCreate removeIdFrom(TransferK k) {
+        Map<String, Object> entityDMap = k.toMap();
+        removeIdFromMap(entityDMap);
+        return TransferKForCreate.from(entityDMap);
+    }
+
+    private void removeIdFromMap(Map<String, Object> map) {
+        map.remove(identifierProvider.getName());
+        map.remove(VERSION);
+        map.remove(ENTITY_TYPE_KEY);
+    }
+
     @Test
-    void testDeepCopyUpdate() {
+    void testCompositionsWithRemovedIdsOnUpdate() {
         TransferH h2Transfer = transferHDao.create(TransferHForCreate.builder().withSingleRequiredJonH(TransferJForCreate.builder().build()).build());
         assertEquals(Optional.empty(), h2Transfer.getSingleJonH());
         assertEquals(0, h2Transfer.getCollectionJonH().size());
@@ -453,7 +470,7 @@ public class MappedTransferCompositonAggregationTest {
 
         TransferJ j3Transfer = transferJDao.create(TransferJForCreate.builder().withStringJ("J3").build());
         TransferJ j4Transfer = transferJDao.create(TransferJForCreate.builder().withStringJ("J4").withMultipleKonI(List.of(TransferKForCreate.builder().withStringK("K").build())).build());
-        TransferH h3Transfer = transferHDao.create(TransferHForCreate.builder().withSingleJonH(TransferJForCreate.builderFrom(j3Transfer).build()).withSingleRequiredJonH(TransferJForCreate.builderFrom(j4Transfer).build()).build());
+        TransferH h3Transfer = transferHDao.create(TransferHForCreate.builder().withSingleJonH(removeIdsFrom(j3Transfer)).withSingleRequiredJonH(removeIdsFrom(j4Transfer)).build());
 
         assertEquals(7, transferJDao.countAll());
         assertEquals(3, transferKDao.countAll());
@@ -464,42 +481,54 @@ public class MappedTransferCompositonAggregationTest {
         h3Transfer = transferHDao.update(h3Transfer);
 
         assertEquals(7, transferJDao.countAll());
-        // TODO: JNG-5213 update does not create new EntityD instance
+        // TODO: JNG-5213 update does not create new EntityK instance
         //assertEquals(3, transferKDao.countAll());
         assertEquals("J3Updated", h3Transfer.getSingleJonH().orElseThrow().getStringJ().orElseThrow());
         assertEquals("J4Updated", h3Transfer.getSingleRequiredJonH().getStringJ().orElseThrow());
         //assertEquals("KUpdated", h3Transfer.getSingleRequiredJonH().getMultipleKonI().get(0).getStringK().orElseThrow());
 
+        TransferH h4 = transferHDao.create(TransferHForCreate.builder().withSingleRequiredJonH(TransferJForCreate.builder().build()).build());
+        assertEquals(Optional.empty(), h4.getSingleJonH());
+        assertEquals(0, h4.getCollectionJonH().size());
 
-        TransferH a4 = transferHDao.create(TransferHForCreate.builder().withSingleRequiredJonH(TransferJForCreate.builder().build()).build());
-        assertEquals(Optional.empty(), a4.getSingleJonH());
-        assertEquals(0, a4.getCollectionJonH().size());
+        TransferJ j5 = transferJDao.create(TransferJForCreate.builder().withStringJ("J5").build());
+        TransferJ j6 = transferJDao.create(TransferJForCreate.builder().withStringJ("J6").withMultipleKonI(List.of(TransferKForCreate.builder().withStringK("K4").build())).build());
 
-        TransferJ c5 = transferJDao.create(TransferJForCreate.builder().withStringJ("C5").build());
-        TransferJ c6 = transferJDao.create(TransferJForCreate.builder().withStringJ("C6").withMultipleKonI(List.of(TransferKForCreate.builder().withStringK("D4").build())).build());
+        h4.setSingleJonH(j5);
 
-        a4.setSingleJonH(c5);
-        a4.setCollectionJonH(List.of(c6));
-        final TransferH a5 = transferHDao.update(a4);
+        IllegalStateException exception = assertThrows(IllegalStateException.class, () ->
+                transferHDao.update(h4)
+        );
+        assertTrue(exception.getMessage().contains("Existing reference element cannot be set as a composition"));
+        assertTrue(exception.getMessage().contains("singleJonH"));
+
+        h4.setSingleJonH(null);
+        h4.setCollectionJonH(List.of(j6));
+
+        exception = assertThrows(IllegalStateException.class, () ->
+                transferHDao.update(h4)
+        );
+        assertTrue(exception.getMessage().contains("Existing reference element cannot be set as a composition"));
+        assertTrue(exception.getMessage().contains("collectionJonH"));
+
+        h4.setSingleJonH(TransferJ.builder().withStringJ("J5").build());
+        h4.setCollectionJonH(List.of(TransferJ.builder().withStringJ("J6").withMultipleKonI(List.of(TransferK.builder().withStringK("K4").build())).build()));
+
+        TransferH h5 = transferHDao.update(h4);
 
         assertEquals(12, transferJDao.countAll());
         //assertEquals(5, transferKDao.countAll());
 
-        assertEquals("C5", a5.getSingleJonH().orElseThrow().getStringJ().orElseThrow());
-        assertEquals("C6", a5.getCollectionJonH().get(0).getStringJ().orElseThrow());
-        assertEquals("D4", a5.getCollectionJonH().get(0).getMultipleKonI().get(0).getStringK().orElseThrow());
+        assertEquals("J5", h5.getSingleJonH().orElseThrow().getStringJ().orElseThrow());
+        assertEquals("J6", h5.getCollectionJonH().get(0).getStringJ().orElseThrow());
+        assertEquals("K4", h5.getCollectionJonH().get(0).getMultipleKonI().get(0).getStringK().orElseThrow());
 
-        TransferJ c7 = transferJDao.create(TransferJForCreate.builder().withStringJ("C7").build());
-        TransferJ c8 = transferJDao.create(TransferJForCreate.builder().withStringJ("C8").withMultipleKonI(List.of(TransferKForCreate.builder().withStringK("D5").build())).build());
+    }
 
-        a5.setSingleJonH(c7);
-        a5.setCollectionJonH(List.of(c8));
-
-        IllegalStateException thrown = assertThrows(
-                IllegalStateException.class,
-                () -> transferHDao.update(a5)
-        );
-
+    TransferBForCreate removeIdFrom(TransferB b) {
+        Map<String, Object> entityDMap = b.toMap();
+        removeIdFromMap(entityDMap);
+        return TransferBForCreate.from(entityDMap);
     }
 
     @Test
@@ -510,14 +539,14 @@ public class MappedTransferCompositonAggregationTest {
         TransferB b4 = transferBDao.create(TransferBForCreate.builder().withNameB("B4").build());
 
         TransferA transferA = transferADao.create(TransferAForCreate.builder()
-                .addToMultiEntityB(TransferBForCreate.builderFrom(b2).build())
+                .addToMultiEntityB(removeIdFrom(b2))
                 .build());
 
         assertEquals(1, transferA.getMultiEntityB().size());
         assertEquals(1, transferA.getMultiEntityB().stream().filter(entityC -> entityC.getNameB().orElseThrow().equals("B2")).count());
 
         transferA = transferADao.create(TransferAForCreate.builder()
-                .addToMultiEntityB(TransferBForCreate.builderFrom(b2).build(), TransferBForCreate.builderFrom(b3).build())
+                .addToMultiEntityB(removeIdFrom(b2), removeIdFrom(b3))
                 .build());
 
         assertEquals(2, transferA.getMultiEntityB().size());
@@ -525,24 +554,24 @@ public class MappedTransferCompositonAggregationTest {
         assertEquals(1, transferA.getMultiEntityB().stream().filter(entityC -> entityC.getNameB().orElseThrow().equals("B3")).count());
 
         transferA = transferADao.create(TransferAForCreate.builder()
-                .addToMultiEntityB(TransferBForCreate.builderFrom(b2).build(), TransferBForCreate.builderFrom(b2).build())
+                .addToMultiEntityB(removeIdFrom(b2), removeIdFrom(b2))
                 .build());
 
         assertEquals(2, transferA.getMultiEntityB().size());
         assertEquals(2, transferA.getMultiEntityB().stream().filter(entityC -> entityC.getNameB().orElseThrow().equals("B2")).count());
 
         transferA = transferADao.create(TransferAForCreate.builder()
-                .addToMultiEntityB(TransferBForCreate.builderFrom(b2).build())
-                .addToMultiEntityB(TransferBForCreate.builderFrom(b2).build())
+                .addToMultiEntityB(removeIdFrom(b2))
+                .addToMultiEntityB(removeIdFrom(b2))
                 .build());
 
         assertEquals(2, transferA.getMultiEntityB().size());
         assertEquals(2, transferA.getMultiEntityB().stream().filter(entityC -> entityC.getNameB().orElseThrow().equals("B2")).count());
 
         transferA = transferADao.create(TransferAForCreate.builder()
-                .addToMultiEntityB(TransferBForCreate.builderFrom(b2).build())
-                .addToMultiEntityB(TransferBForCreate.builderFrom(b3).build())
-                .addToMultiEntityB(TransferBForCreate.builderFrom(b4).build())
+                .addToMultiEntityB(removeIdFrom(b2))
+                .addToMultiEntityB(removeIdFrom(b3))
+                .addToMultiEntityB(removeIdFrom(b4))
                 .build());
 
         assertEquals(3, transferA.getMultiEntityB().size());
@@ -551,9 +580,9 @@ public class MappedTransferCompositonAggregationTest {
         assertEquals(1, transferA.getMultiEntityB().stream().filter(entityC -> entityC.getNameB().orElseThrow().equals("B4")).count());
 
         transferA = transferADao.create(TransferAForCreate.builder()
-                .withMultiEntityB(List.of(TransferBForCreate.builderFrom(b1).build(), TransferBForCreate.builderFrom(b2).build()))
-                .addToMultiEntityB(TransferBForCreate.builderFrom(b3).build())
-                .addToMultiEntityB(TransferBForCreate.builderFrom(b4).build())
+                .withMultiEntityB(List.of(removeIdFrom(b1), removeIdFrom(b2)))
+                .addToMultiEntityB(removeIdFrom(b3))
+                .addToMultiEntityB(removeIdFrom(b4))
                 .build());
 
         assertEquals(4, transferA.getMultiEntityB().size());
@@ -563,8 +592,8 @@ public class MappedTransferCompositonAggregationTest {
         assertEquals(1, transferA.getMultiEntityB().stream().filter(entityC -> entityC.getNameB().orElseThrow().equals("B4")).count());
 
         transferA = transferADao.create(TransferAForCreate.builder()
-                .withMultiEntityB(List.of(TransferBForCreate.builderFrom(b1).build(), TransferBForCreate.builderFrom(b2).build()))
-                .addToMultiEntityB(TransferBForCreate.builderFrom(b3).build(), TransferBForCreate.builderFrom(b4).build())
+                .withMultiEntityB(List.of(removeIdFrom(b1), removeIdFrom(b2)))
+                .addToMultiEntityB(removeIdFrom(b3), removeIdFrom(b4))
                 .build());
 
         assertEquals(4, transferA.getMultiEntityB().size());
@@ -580,7 +609,7 @@ public class MappedTransferCompositonAggregationTest {
         TransferB b3 = transferBDao.create(TransferBForCreate.builder().withNameB("B3").build());
         TransferA transferA1 = transferADao.create(TransferAForCreate.builder()
                 .withSingleEntityB(TransferBForCreate.builder().withNameB("B1").build())
-                .withMultiEntityB(List.of(TransferBForCreate.builderFrom(b2).build(), TransferBForCreate.builderFrom(b3).build()))
+                .withMultiEntityB(List.of(removeIdFrom(b2), removeIdFrom(b3)))
                 .build());
 
         assertEquals("B1", transferA1.getSingleEntityB().orElseThrow().getNameB().orElseThrow());

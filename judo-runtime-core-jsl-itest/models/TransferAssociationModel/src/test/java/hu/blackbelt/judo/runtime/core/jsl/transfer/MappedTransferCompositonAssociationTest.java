@@ -54,6 +54,7 @@ import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
+import hu.blackbelt.judo.sdk.query.StringFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -124,21 +125,17 @@ public class MappedTransferCompositonAssociationTest {
             "REQ-SRV-001"
     })
     public void testSingleCompositionAssociationOnTransfer() {
-
-        TransferB transferB = transferBDao.create(TransferBForCreate.builder().withNameB("B1").build());
-
-        assertEquals(1, transferBDao.query().selectList().size());
-
         TransferA transferA = transferADao.create(TransferAForCreate.builder()
-                .withSingleEntityB(transferB).build()
+                .withSingleEntityB(TransferB.builder().withNameB("B1").build()).build()
         );
+        TransferB transferB = transferADao.querySingleEntityB(transferA).orElseThrow();
 
-        assertEquals(2,transferBDao.query().selectList().size());
-        assertEquals(2,entityBDao.query().selectList().size());
+        assertEquals(1,transferBDao.countAll());
+        assertEquals(1,entityBDao.countAll());
 
         // Check transferA contains transferB
-        assertNotEquals(transferB.identifier().getIdentifier(), transferADao.querySingleEntityB(transferA).orElseThrow().identifier().getIdentifier());
-        assertNotEquals(
+        assertEquals(transferB.identifier().getIdentifier(), transferADao.querySingleEntityB(transferA).orElseThrow().identifier().getIdentifier());
+        assertEquals(
                 entityBDao.getById(transferB.adaptTo(EntityBIdentifier.class)).orElseThrow().identifier().getIdentifier(),
                 entityADao.querySingleEntityB((entityADao.getById(transferA.adaptTo(EntityAIdentifier.class)).orElseThrow())).orElseThrow().identifier().getIdentifier()
         );
@@ -155,13 +152,12 @@ public class MappedTransferCompositonAssociationTest {
         transferBDao.delete(transferB);
         transferA = transferADao.update(transferA);
 
-        assertFalse(transferADao.querySingleEntityB(transferA).isEmpty());
-        assertFalse(entityADao.getById(transferA.adaptTo(EntityAIdentifier.class)).orElseThrow().getSingleEntityB().isEmpty());
+        assertTrue(transferADao.querySingleEntityB(transferA).isEmpty());
+        assertTrue(entityADao.getById(transferA.adaptTo(EntityAIdentifier.class)).orElseThrow().getSingleEntityB().isEmpty());
         assertTrue(transferBDao.getById(transferB.identifier()).isEmpty());
         assertTrue(entityBDao.getById(transferB.identifier().adaptTo(EntityBIdentifier.class)).isEmpty());
 
     }
-
 
     /**
      * The test checks the association mapped single reqiured field with entity type work well on transfer object.
@@ -192,18 +188,13 @@ public class MappedTransferCompositonAssociationTest {
             "REQ-SRV-001"
     })
     public void testSingleRequiredCompositionAssociationOnTransfer() {
-
-        TransferD transferD = transferDDao.create(TransferDForCreate.builder().withNameD("D1").build());
-
-        assertEquals(1, transferDDao.query().selectList().size());
-
-        TransferC transferC = transferCDao.create(TransferCForCreate.builder().withSingleRequiredEntityD(transferD).build()
+        TransferC transferC = transferCDao.create(TransferCForCreate.builder().withSingleRequiredEntityD(TransferD.builder().withNameD("D1").build()).build()
         );
 
-        assertEquals(2,transferDDao.query().selectList().size());
-        assertEquals(2,entityDDao.query().selectList().size());
+        assertEquals(1, transferDDao.query().selectList().size());
+        assertEquals(1, entityDDao.query().selectList().size());
 
-        //Try to create without required element
+        //Try to create without a required element
         ValidationException thrown = assertThrows(
                 ValidationException.class,
                 () -> transferCDao.create(TransferCForCreate.builder().build())
@@ -254,24 +245,26 @@ public class MappedTransferCompositonAssociationTest {
             "REQ-SRV-001"
     })
     public void testMultiCompositionAssociationOnTransfer() {
-
-        TransferB transferB1 = transferBDao.create(TransferBForCreate.builder().withNameB("B1").build());
-        TransferB transferB2 = transferBDao.create(TransferBForCreate.builder().withNameB("B2").build());
-        TransferB transferB3 = transferBDao.create(TransferBForCreate.builder().withNameB("B3").build());
+        TransferA transferA = transferADao.create(TransferAForCreate.builder()
+                .withMultiEntityB(List.of(
+                        TransferB.builder().withNameB("B1").build(),
+                        TransferB.builder().withNameB("B2").build(),
+                        TransferB.builder().withNameB("B3").build()
+                ))
+                .build()
+        );
+        TransferB transferB1 = transferADao.queryMultiEntityB(transferA).filterByNameB(StringFilter.equalTo("B1")).selectOne().orElseThrow();
+        TransferB transferB2 = transferADao.queryMultiEntityB(transferA).filterByNameB(StringFilter.equalTo("B2")).selectOne().orElseThrow();
+        TransferB transferB3 = transferADao.queryMultiEntityB(transferA).filterByNameB(StringFilter.equalTo("B3")).selectOne().orElseThrow();
 
         assertEquals(3, transferBDao.query().selectList().size());
-
-        TransferA transferA = transferADao.create(TransferAForCreate.builder().withMultiEntityB(List.of(transferB1, transferB2, transferB3)).build()
-        );
-
-        assertEquals(6, transferBDao.query().selectList().size());
-        assertEquals(6, entityBDao.query().selectList().size());
+        assertEquals(3, entityBDao.query().selectList().size());
 
         // Check transferA contains transferB
         List<Serializable> multiTransferBIDS = transferADao.queryMultiEntityB(transferA).selectList().stream().map(t -> t.identifier().getIdentifier()).toList();
-        assertFalse(multiTransferBIDS.contains(transferB1.identifier().getIdentifier()));
-        assertFalse(multiTransferBIDS.contains(transferB2.identifier().getIdentifier()));
-        assertFalse(multiTransferBIDS.contains(transferB3.identifier().getIdentifier()));
+        assertTrue(multiTransferBIDS.contains(transferB1.identifier().getIdentifier()));
+        assertTrue(multiTransferBIDS.contains(transferB2.identifier().getIdentifier()));
+        assertTrue(multiTransferBIDS.contains(transferB3.identifier().getIdentifier()));
 
         // Check the entity level
         EntityB entityB1 = entityBDao.getById(transferB1.adaptTo(EntityBIdentifier.class)).orElseThrow();
@@ -280,9 +273,9 @@ public class MappedTransferCompositonAssociationTest {
 
         List<Serializable> multiEntityBIDS = entityADao.getById(transferA.adaptTo(EntityAIdentifier.class)).orElseThrow().getMultiEntityB().stream().map(t -> t.identifier().getIdentifier()).toList();
 
-        assertFalse(multiEntityBIDS.contains(entityB1.identifier().getIdentifier()));
-        assertFalse(multiEntityBIDS.contains(entityB2.identifier().getIdentifier()));
-        assertFalse(multiEntityBIDS.contains(entityB3.identifier().getIdentifier()));
+        assertTrue(multiEntityBIDS.contains(entityB1.identifier().getIdentifier()));
+        assertTrue(multiEntityBIDS.contains(entityB2.identifier().getIdentifier()));
+        assertTrue(multiEntityBIDS.contains(entityB3.identifier().getIdentifier()));
 
         //Delete one element
         transferBDao.delete(transferB3);
@@ -292,16 +285,15 @@ public class MappedTransferCompositonAssociationTest {
 
         transferA = transferADao.getById(transferA.identifier()).orElseThrow();
 
-        assertEquals(3, transferADao.countMultiEntityB(transferA));
+        assertEquals(2, transferADao.countMultiEntityB(transferA));
 
         // Add new List empty
         transferADao.createMultiEntityB(transferA, List.of());
-        assertEquals(3, transferADao.countMultiEntityB(transferA));
+        assertEquals(2, transferADao.countMultiEntityB(transferA));
 
         // Create new List with elements
         transferADao.createMultiEntityB(transferA, List.of(TransferBForCreate.builder().build()));
-        assertEquals(4, transferADao.countMultiEntityB(transferA));
-
+        assertEquals(3, transferADao.countMultiEntityB(transferA));
 
     }
 
