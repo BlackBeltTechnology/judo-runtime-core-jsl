@@ -137,7 +137,7 @@ public class MappedTransferOptimisticLockTest {
         final LocalDateTime ts2 = LocalDateTime.now();
 
         TransferStudent p1UpdatedAsTransferStudent = transferStudentDao.getById(p1.identifier()).orElseThrow();
-        TransferPerson p1UpdatedAsTransferPerson = transferTransferPersonDao.getById((UUID) p1.identifier().getIdentifier()).orElseThrow();
+        TransferPerson p1UpdatedAsTransferPerson = transferTransferPersonDao.getById(p1.identifier().getIdentifier()).orElseThrow();
         final LocalDateTime p1UpdatedAsTransferStudentTs = getUpdateTimestamp(p1UpdatedAsTransferStudent);
         final LocalDateTime p1UpdatedAsTransferPersonTs = getUpdateTimestamp(p1UpdatedAsTransferPerson);
 
@@ -148,7 +148,7 @@ public class MappedTransferOptimisticLockTest {
 
 
         TransferStudent p2UpdatedAsTransferStudent = transferStudentDao.getById(p2.identifier()).orElseThrow();
-        TransferPerson p2UpdatedAsTransferPerson = transferTransferPersonDao.getById((UUID) p2.identifier().getIdentifier()).orElseThrow();
+        TransferPerson p2UpdatedAsTransferPerson = transferTransferPersonDao.getById(p2.identifier().getIdentifier()).orElseThrow();
         final LocalDateTime p2UpdatedAsTransferStudentTs = getUpdateTimestamp(p2UpdatedAsTransferStudent);
         final LocalDateTime p2UpdatedAsTransferPersonTs = getUpdateTimestamp(p2UpdatedAsTransferPerson);
 

@@ -175,15 +175,9 @@ public class MappedTransferFunctionsTest {
 
     @BeforeEach
     protected void init() {
-
-        TransferEntity tentity = transferEntityDao
-                .create(TransferEntityForCreate.builder().build());
-        TransferEntityWithPrimitiveDefaults entityWithPrimitiveDefaults = transferEntityWithPrimitiveDefaultsDao
-                .create(TransferEntityWithPrimitiveDefaultsForCreate.builder().build());
-
         transferAnyTypeFunctions = transferAnyTypeFunctionsDao.create(TransferAnyTypeFunctionsForCreate.builder()
-                .withEntity(TransferEntityForCreate.builderFrom(tentity).build())
-                .withEntityWithPrimitives(TransferEntityWithPrimitiveDefaultsForCreate.builderFrom(entityWithPrimitiveDefaults).build())
+                .withEntity(TransferEntityForCreate.builder().build())
+                .withEntityWithPrimitives(TransferEntityWithPrimitiveDefaultsForCreate.builder().build())
                 .build());
     }
 
@@ -758,17 +752,10 @@ public class MappedTransferFunctionsTest {
     })
     public void testInstanceOnMappedTransfer() {
         TransferParent parent1 = transferParentDao.create(TransferParentForCreate.builder().withName("James Webb").build());
-        TransferChild child1 = transferChildDao.create(TransferChildForCreate.builder().withName("Erika Young").withAge(11L).build());
 
         TransferInstanceFunctions instanceFunctions = transferInstanceFunctionsDao.create(TransferInstanceFunctionsForCreate.builder()
                         .withParent(TransferParentForCreate.builder().withName("Another Person").build())
                         .withChild(TransferChildForCreate.builder().withName("Another Child").withAge(31L).build())
-                        .build());
-
-        TransferParent transferParent = transferParentDao.getById(child1.identifier().adaptTo(TransferParentIdentifier.class)).orElseThrow();
-
-        TransferInstanceFunctions instanceFunctions1 = transferInstanceFunctionsDao.create(TransferInstanceFunctionsForCreate.builder()
-                        .withParent(TransferParentForCreate.builderFrom(transferParent).build())
                         .build());
 
         assertTrue(instanceFunctions.getTypeOfParent().get());
