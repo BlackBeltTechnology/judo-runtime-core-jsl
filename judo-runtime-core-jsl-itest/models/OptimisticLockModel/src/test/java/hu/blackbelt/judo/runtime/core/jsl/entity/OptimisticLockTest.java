@@ -133,7 +133,7 @@ public class OptimisticLockTest {
         final LocalDateTime ts2 = LocalDateTime.now();
 
         Student p1UpdatedAsStudent = studentDao.getById(p1.identifier()).orElseThrow();
-        Person p1UpdatedAsPerson = personDao.getById((UUID) p1.identifier().getIdentifier()).orElseThrow();
+        Person p1UpdatedAsPerson = personDao.getById(p1.identifier().getIdentifier()).orElseThrow();
         final LocalDateTime p1UpdatedAsStudentTs = getUpdateTimestamp(p1UpdatedAsStudent);
         final LocalDateTime p1UpdatedAsPersonTs = getUpdateTimestamp(p1UpdatedAsPerson);
 
@@ -144,7 +144,7 @@ public class OptimisticLockTest {
 
 
         Student p2UpdatedAsStudent = studentDao.getById(p2.identifier()).orElseThrow();
-        Person p2UpdatedAsPerson = personDao.getById((UUID) p2.identifier().getIdentifier()).orElseThrow();
+        Person p2UpdatedAsPerson = personDao.getById(p2.identifier().getIdentifier()).orElseThrow();
         final LocalDateTime p2UpdatedAsStudentTs = getUpdateTimestamp(p2UpdatedAsStudent);
         final LocalDateTime p2UpdatedAsPersonTs = getUpdateTimestamp(p2UpdatedAsPerson);
 

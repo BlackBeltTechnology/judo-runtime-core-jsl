@@ -131,7 +131,7 @@ public class PagingTest {
         assertThat(list5to8Ids, equalTo(java.util.List.of(listIds.get('E'), listIds.get('F'), listIds.get('G'), listIds.get('H'))));
 
         //lastItem
-        List d = listDao.getById((UUID) listIds.get('D')).orElseThrow();
+        List d = listDao.getById(listIds.get('D')).orElseThrow();
         list5to8Ids = listDao.query().orderBy(ListAttribute.NAME).selectList(4, d).stream().map(List::identifier).map(ListIdentifier::getIdentifier).toList();
         assertThat(list5to8Ids, equalTo(java.util.List.of(listIds.get('E'), listIds.get('F'), listIds.get('G'), listIds.get('H'))));
 
@@ -177,7 +177,7 @@ public class PagingTest {
         assertThat(reversedList5to8Ids, equalTo(java.util.List.of(listIds.get('V'), listIds.get('U'), listIds.get('T'), listIds.get('S'))));
 
         //lastItem
-        List w = listDao.getById((UUID) listIds.get('W')).orElseThrow();
+        List w = listDao.getById(listIds.get('W')).orElseThrow();
         reversedList5to8Ids = listDao
                 .query()
                 .orderByDescending(ListAttribute.NAME)

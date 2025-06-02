@@ -295,7 +295,7 @@ public class MappedTransferAssociationAssociationTest {
         transferA = transferADao.getById(transferA.identifier()).orElseThrow();
 
         assertEquals(tb2.identifier().getIdentifier(), transferADao.queryRelationBonA(transferA).orElseThrow().identifier().getIdentifier());
-        assertTrue(transferBDao.existsById((UUID) tb1.identifier().getIdentifier()));
+        assertTrue(transferBDao.existsById(tb1.identifier().getIdentifier()));
 
     }
 

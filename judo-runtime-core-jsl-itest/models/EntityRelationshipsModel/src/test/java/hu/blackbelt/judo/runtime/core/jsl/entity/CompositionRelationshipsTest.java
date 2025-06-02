@@ -21,6 +21,7 @@ package hu.blackbelt.judo.runtime.core.jsl.entity;
  */
 
 import com.google.inject.Inject;
+import hu.blackbelt.judo.dao.api.IdentifierProvider;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.composition.Composition;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.composition.CompositionDao;
 import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationships.compositionrelationships.composition.CompositionForCreate;
@@ -86,6 +87,7 @@ import hu.blackbelt.judo.psm.generator.sdk.core.test.api.compositionrelationship
 import hu.blackbelt.judo.psm.generator.sdk.core.test.guice.CompositionRelationshipsDaoModules;
 import hu.blackbelt.judo.requirement.report.annotation.Requirement;
 import hu.blackbelt.judo.requirement.report.annotation.TestCase;
+import hu.blackbelt.judo.runtime.core.SerializableIdentifierProvider;
 import hu.blackbelt.judo.runtime.core.exception.ValidationException;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeExtension;
 import hu.blackbelt.judo.runtime.core.jsl.fixture.JudoRuntimeFixture;
@@ -97,10 +99,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -151,24 +150,31 @@ public class CompositionRelationshipsTest {
     EntityD entityD1;
     EntityD entityD2;
 
+    @Inject
+    SerializableIdentifierProvider identifierProvider;
+    public static final String ENTITY_TYPE_KEY = "__entityType";
+    public static final String VERSION = "__version";
+
     @BeforeEach
     protected void init() {
-
-        entityD1 = entityDDao.create(EntityDForCreate.builder().withStringD("D1")
-                .build());
-        entityD2 = entityDDao.create(EntityDForCreate.builder().withStringD("D2")
-                .build());
-        singleRequiredConA = entityCDao.create(EntityCForCreate.builder()
-                .withStringC("TEST-C")
-                .withMultipleDonB(List.of(EntityDForCreate.builderFrom(entityD1).build(), EntityDForCreate.builderFrom(entityD2).build()))
-                .build());
-        singleConA = entityCDao.create(EntityCForCreate.builder()
-                .build());
         entityA = entityADao.create(EntityAForCreate.builder()
                 .withStringA("TEST-A")
-                .withSingleRequiredConA(EntityCForCreate.builderFrom(singleRequiredConA).build())
-                .withSingleConA(EntityCForCreate.builderFrom(singleConA).build())
+                .withSingleRequiredConA(
+                        EntityCForCreate.builder()
+                        .withStringC("TEST-C")
+                        .withMultipleDonB(List.of(
+                                EntityDForCreate.builder().withStringD("D1").build(),
+                                EntityDForCreate.builder().withStringD("D2").build()))
+                        .build())
+                .withSingleConA(
+                        EntityCForCreate.builder().build()
+                )
                 .build());
+
+        singleConA = entityA.getSingleConA().orElseThrow();
+        singleRequiredConA = entityA.getSingleRequiredConA();
+        entityD1 = singleRequiredConA.getMultipleDonB().stream().filter(d -> d.getStringD().orElseThrow().equals("D1")).findAny().orElseThrow();
+        entityD2 = singleRequiredConA.getMultipleDonB().stream().filter(d -> d.getStringD().orElseThrow().equals("D2")).findAny().orElseThrow();
     }
 
     @Test
@@ -195,14 +201,14 @@ public class CompositionRelationshipsTest {
             "REQ-ENT-012"
     })
     void testNullOutOptionalRelationRemovesNested() {
-        assertNotEquals(singleConA.identifier().getIdentifierAs(UUID.class), entityADao.querySingleConA(entityA).orElseThrow().identifier().getIdentifierAs(UUID.class));
-        assertEquals(4, entityCDao.query().selectList().size());
+        assertEquals(singleConA.identifier().getIdentifierAs(UUID.class), entityADao.querySingleConA(entityA).orElseThrow().identifier().getIdentifierAs(UUID.class));
+        assertEquals(2, entityCDao.query().selectList().size());
 
         entityA.setSingleConA(null);
         entityADao.update(entityA);
 
         assertEquals(Optional.empty(), entityADao.querySingleConA(entityA));
-        assertEquals(3, entityCDao.query().selectList().size());
+        assertEquals(1, entityCDao.query().selectList().size());
     }
 
     @Test
@@ -212,8 +218,8 @@ public class CompositionRelationshipsTest {
             "REQ-ENT-012"
     })
     void testDeleteOptionalRelation() {
-        assertNotEquals(singleConA.identifier().getIdentifier(), entityADao.querySingleConA(entityA).orElseThrow().identifier().getIdentifier());
-        assertEquals(4, entityCDao.query().selectList().size());
+        assertEquals(singleConA.identifier().getIdentifier(), entityADao.querySingleConA(entityA).orElseThrow().identifier().getIdentifier());
+        assertEquals(2, entityCDao.query().selectList().size());
 
         entityCDao.delete(singleConA);
     }
@@ -287,8 +293,8 @@ public class CompositionRelationshipsTest {
         assertNotEquals(null, maskedA.getSingleRequiredConA());
         assertEquals(Optional.of("TEST-C"), singleRequiredConA.getStringC());
         assertEquals(2, singleRequiredConA.getMultipleDonB().size());
-        assertNotEquals(Optional.of(entityD1), singleRequiredConA.getMultipleDonB().stream().filter(d -> d.identifier().getIdentifier().equals(entityD1.identifier().getIdentifier())).findFirst());
-        assertNotEquals(Optional.of(entityD2), singleRequiredConA.getMultipleDonB().stream().filter(d -> d.identifier().getIdentifier().equals(entityD2.identifier().getIdentifier())).findFirst());
+        assertEquals(Optional.of(entityD1), singleRequiredConA.getMultipleDonB().stream().filter(d -> d.identifier().getIdentifier().equals(entityD1.identifier().getIdentifier())).findFirst());
+        assertEquals(Optional.of(entityD2), singleRequiredConA.getMultipleDonB().stream().filter(d -> d.identifier().getIdentifier().equals(entityD2.identifier().getIdentifier())).findFirst());
     }
 
     @Test
@@ -310,7 +316,7 @@ public class CompositionRelationshipsTest {
         assertEquals(1, maskedAs.size());
         assertNull(maskedA.getSingleConA());
         assertNull(maskedA.getStringA());
-        assertNotEquals(singleRequiredConA.identifier().getIdentifier(), maskedA.getSingleRequiredConA().identifier().getIdentifier());
+        assertEquals(singleRequiredConA.identifier().getIdentifier(), maskedA.getSingleRequiredConA().identifier().getIdentifier());
         assertNull(requiredC.getStringB());
         assertEquals(Optional.of("TEST-C"), requiredC.getStringC());
     }
@@ -411,7 +417,7 @@ public class CompositionRelationshipsTest {
         assertEquals(Optional.empty(), requiredC.getStringB());
         assertEquals(Optional.empty(), singleC.getStringB());
         assertEquals(Optional.empty(), singleC.getStringC());
-        assertNotEquals(Optional.of(singleConA), entityA2.getSingleConA());
+        assertEquals(Optional.of(singleConA), entityA2.getSingleConA());
 
         requiredC.setStringB("Hello!");
         singleC.setStringB("NEW-B");
@@ -496,21 +502,23 @@ public class CompositionRelationshipsTest {
     }
 
     @Test
-    void testDeepCopyConstructor() {
-        //When we add a composition Entity we must copy it, because that comp entity belong the created entity
+    void testCompositionWithRemovedIds() {
+        // When we add a composition Entity, we must delete its identifier because that comp entity belong the created entity
+        // Build entities for the test
 
-        //Build entities for the test
         entityD1 = entityDDao.create(EntityDForCreate.builder()
                 .build());
         entityD2 = entityDDao.create(EntityDForCreate.builder()
                 .build());
+
         singleRequiredConA = entityCDao.create(EntityCForCreate.builder()
                 .withStringC("C")
-                .withMultipleDonB(List.of(entityD1.adaptTo(EntityDForCreate.class), entityD2.adaptTo(EntityDForCreate.class)))
+                .withMultipleDonB(List.of(removeIdFrom(entityD1), removeIdFrom(entityD2)))
                 .build());
+
         entityA = entityADao.create(EntityAForCreate.builder()
                 .withStringA("A")
-                .withSingleRequiredConA(singleRequiredConA.adaptTo(EntityCForCreate.class))
+                .withSingleRequiredConA(removeIdsFrom(singleRequiredConA))
                 .build());
 
         assertNotEquals(entityA.getSingleRequiredConA().identifier().getIdentifier(), singleRequiredConA.identifier().getIdentifier());
@@ -520,6 +528,25 @@ public class CompositionRelationshipsTest {
 
     }
 
+    EntityCForCreate removeIdsFrom(EntityC entityC) {
+        Map<String, Object> entityCMap = entityC.toMap();
+        removeIdFromMap(entityCMap);
+        var multipleDonBs = (Collection<Map<String, Object>>) entityCMap.get("multipleDonB");
+        multipleDonBs.forEach(this::removeIdFromMap);
+        return EntityCForCreate.from(entityCMap);
+    }
+
+    EntityDForCreate removeIdFrom(EntityD entityD) {
+        Map<String, Object> entityDMap = entityD.toMap();
+        removeIdFromMap(entityDMap);
+        return EntityDForCreate.from(entityDMap);
+    }
+
+    private void removeIdFromMap(Map<String, Object> map) {
+        map.remove(identifierProvider.getName());
+        map.remove(VERSION);
+        map.remove(ENTITY_TYPE_KEY);
+    }
     @Test
     void testCompositionWithUndefinedRequiredFields() {
         EntityFForCreate fForCreate = EntityFForCreate.builder().build();
@@ -542,7 +569,7 @@ public class CompositionRelationshipsTest {
         EntityF f13 = entityFDao.create(EntityFForCreate.builder().build());
 
         entityFDao.createG(f13, EntityGForCreate.builder().withName("Entity").build());
-        f13 = entityFDao.getById((UUID) f13.identifier().getIdentifier()).orElseThrow();
+        f13 = entityFDao.getById(f13.identifier().getIdentifier()).orElseThrow();
         EntityG g13 = f13.getG().orElseThrow();
         assertEquals("Entity", g13.getName());
         assertEquals("Entity", f13.getG().orElseThrow().getName());
@@ -609,62 +636,102 @@ public class CompositionRelationshipsTest {
     }
 
     @Test
-    void testDeepCopyCreate() {
-        assertNotEquals(singleConA.identifier().getIdentifier(), entityA.getSingleConA().orElseThrow().identifier().getIdentifier());
-        assertNotEquals(singleRequiredConA.identifier().getIdentifier(), entityA.getSingleRequiredConA().identifier().getIdentifier());
-        assertEquals("TEST-A", entityA.getStringA().orElseThrow());
+    void testCompositionIsNotAttachableForCreate() {
 
-        Collection<EntityD> ds = entityA.getSingleRequiredConA().getMultipleDonB();
+        entityD1 = entityDDao.create(EntityDForCreate.builder().withStringD("D1")
+                .build());
+        entityD2 = entityDDao.create(EntityDForCreate.builder().withStringD("D2")
+                .build());
 
-        EntityD testD1 = ds.stream().filter(d -> "D1".equals(d.getStringD().orElseThrow())).findFirst().orElseThrow();
-        EntityD testD2 = ds.stream().filter(d -> "D2".equals(d.getStringD().orElseThrow())).findFirst().orElseThrow();
-        assertNotEquals(entityD1.identifier().getIdentifier(), testD1.identifier().getIdentifier());
-        assertEquals(entityD1.getStringD().orElseThrow(), testD1.getStringD().orElseThrow());
-        assertNotEquals(entityD2.identifier().getIdentifier(), testD2.identifier().getIdentifier());
-        assertEquals(entityD2.getStringD().orElseThrow(), testD2.getStringD().orElseThrow());
+        singleConA = entityCDao.create(EntityCForCreate.builder()
+                .build());
+
+        singleRequiredConA = entityCDao.create(EntityCForCreate.builder()
+                .build());
+
+        // Composition Collection
+        IllegalStateException exception = assertThrows(IllegalStateException.class, () ->
+                entityCDao.create(EntityCForCreate.builder()
+                        .withStringC("TEST-C")
+                        .withMultipleDonB(List.of(EntityDForCreate.builderFrom(entityD1).build(), EntityDForCreate.builderFrom(entityD2).build()))
+                        .build())
+        );
+
+        assertTrue(exception.getMessage().contains("Identifier cannot be set on new composition reference element"));
+        assertTrue(exception.getMessage().contains("multipleDonB"));
+
+        // Single Composition
+
+        exception = assertThrows(IllegalStateException.class, () ->
+                entityADao.create(EntityAForCreate.builder()
+                        .withStringA("TEST-A")
+                        .withSingleRequiredConA(EntityCForCreate.builder().build())
+                        .withSingleConA(EntityCForCreate.builderFrom(singleConA).build())
+                        .build())
+        );
+
+        assertTrue(exception.getMessage().contains("Identifier cannot be set on new composition reference element"));
+        assertTrue(exception.getMessage().contains("singleConA"));
+
+        // Single Required Composition
+
+        exception = assertThrows(IllegalStateException.class, () ->
+                entityADao.create(EntityAForCreate.builder()
+                        .withStringA("TEST-A")
+                        .withSingleRequiredConA(EntityCForCreate.builderFrom(singleRequiredConA).build())
+                        .build())
+        );
+
+        assertTrue(exception.getMessage().contains("Identifier cannot be set on new composition reference element"));
+        assertTrue(exception.getMessage().contains("singleRequiredConA"));
+
     }
 
     @Test
-    void testDeepCopyUpdate() {
+    void testCompositionIsNotAttachableForUpdate() {
         EntityA a2 = entityADao.create(EntityAForCreate.builder().withSingleRequiredConA(EntityCForCreate.builder().build()).build());
         assertEquals(Optional.empty(), a2.getSingleConA());
         assertEquals(0, a2.getCollectionConA().size());
 
-        assertEquals(5, entityCDao.countAll());
-        assertEquals(6, entityDDao.countAll());
+        assertEquals(3, entityCDao.countAll());
+        assertEquals(2, entityDDao.countAll());
 
         a2.setSingleConA(EntityC.builder().withStringC("C1").build());
         a2.setCollectionConA(List.of(EntityC.builder().withStringC("C2").withMultipleDonB(List.of(EntityD.builder().withStringD("D3").build())).build()));
 
         a2 = entityADao.update(a2);
 
-        assertEquals(7, entityCDao.countAll());
-        assertEquals(7, entityDDao.countAll());
+        assertEquals(5, entityCDao.countAll());
+        assertEquals(3, entityDDao.countAll());
         assertEquals("C1", a2.getSingleConA().orElseThrow().getStringC().orElseThrow());
         assertEquals("C2", a2.getCollectionConA().get(0).getStringC().orElseThrow());
         assertEquals("D3", a2.getCollectionConA().get(0).getMultipleDonB().get(0).getStringD().orElseThrow());
 
         EntityC c3 = entityCDao.create(EntityCForCreate.builder().withStringC("C3").build());
         EntityC c4 = entityCDao.create(EntityCForCreate.builder().withStringC("C4").withMultipleDonB(List.of(EntityDForCreate.builder().withStringD("D3").build())).build());
-        EntityA a3 = entityADao.create(EntityAForCreate.builder().withCollectionConA(List.of(c3.adaptTo(EntityCForCreate.class), c4.adaptTo(EntityCForCreate.class))).withSingleConA(c3.adaptTo(EntityCForCreate.class)).withSingleRequiredConA(c4.adaptTo(EntityCForCreate.class)).build());
 
-        assertEquals(13, entityCDao.countAll());
-        assertEquals(10, entityDDao.countAll());
+        IllegalStateException exception = assertThrows(IllegalStateException.class, () ->
+                entityADao.create(EntityAForCreate.builder().withCollectionConA(List.of(c3.adaptTo(EntityCForCreate.class), c4.adaptTo(EntityCForCreate.class))).withSingleConA(c3.adaptTo(EntityCForCreate.class)).withSingleRequiredConA(c4.adaptTo(EntityCForCreate.class)).build())
+        );
+
+        assertTrue(exception.getMessage().contains("Identifier cannot be set on new composition reference element"));
+
+        EntityA a3 = entityADao.create(EntityAForCreate.builder().withSingleRequiredConA(EntityCForCreate.builder().withStringC("C4").build()).build());
+
+        assertEquals(8, entityCDao.countAll());
+        assertEquals(4, entityDDao.countAll());
 
         a3.setSingleConA(EntityC.builder().withStringC("C3Updated").build());
         a3.setSingleRequiredConA(EntityC.builder().withStringC("C4Updated").withMultipleDonB(List.of(EntityD.builder().withStringD("D3Updated").build())).build());
 
         a3 = entityADao.update(a3);
 
-        assertEquals(13, entityCDao.countAll());
-        // TODO: JNG-5213 update does not create new EntityD instance
-        //assertEquals(10, entityDDao.countAll());
+        assertEquals(9, entityCDao.countAll());
         assertEquals("C3Updated", a3.getSingleConA().orElseThrow().getStringC().orElseThrow());
         assertEquals("C4Updated", a3.getSingleRequiredConA().getStringC().orElseThrow());
-        //assertEquals("D3Updated", a3.getSingleRequiredConA().getMultipleDonB().get(0).getStringD().orElseThrow());
-
 
         EntityA a4 = entityADao.create(EntityAForCreate.builder().withSingleRequiredConA(EntityCForCreate.builder().build()).build());
+        EntityC a4SingleRequiredConA = a4.getSingleRequiredConA();
         assertEquals(Optional.empty(), a4.getSingleConA());
         assertEquals(0, a4.getCollectionConA().size());
 
@@ -672,23 +739,33 @@ public class CompositionRelationshipsTest {
         EntityC c6 = entityCDao.create(EntityCForCreate.builder().withStringC("C6").withMultipleDonB(List.of(EntityDForCreate.builder().withStringD("D4").build())).build());
 
         a4.setSingleConA(c5);
+
+        exception = assertThrows(IllegalStateException.class, () ->
+                entityADao.update(a4)
+        );
+        assertTrue(exception.getMessage().contains("Identifier cannot be set on new composition reference element"));
+        assertTrue(exception.getMessage().contains("singleConA"));
+
+        a4.setSingleConA(null);
         a4.setCollectionConA(List.of(c6));
+
+        exception = assertThrows(IllegalStateException.class, () ->
+                entityADao.update(a4)
+        );
+        assertTrue(exception.getMessage().contains("Identifier cannot be set on new composition reference element"));
+        assertTrue(exception.getMessage().contains("collectionConA"));
+
+        a4.setSingleConA(EntityC.builder().withStringC("C5").build());
+        a4.setCollectionConA(List.of(EntityC.builder().withStringC("C6").withMultipleDonB(List.of(EntityD.builder().withStringD("D4").build())).build()));
+
         final EntityA a5 = entityADao.update(a4);
 
-        assertEquals(18, entityCDao.countAll());
-        //assertEquals(12, entityDDao.countAll());
+        assertEquals(14, entityCDao.countAll());
 
         assertEquals("C5", a5.getSingleConA().orElseThrow().getStringC().orElseThrow());
         assertEquals("C6", a5.getCollectionConA().get(0).getStringC().orElseThrow());
         assertEquals("D4", a5.getCollectionConA().get(0).getMultipleDonB().get(0).getStringD().orElseThrow());
 
-        EntityC c7 = entityCDao.create(EntityCForCreate.builder().withStringC("C7").build());
-        EntityC c8 = entityCDao.create(EntityCForCreate.builder().withStringC("C8").withMultipleDonB(List.of(EntityDForCreate.builder().withStringD("D5").build())).build());
-
-        a5.setSingleConA(c7);
-        a5.setCollectionConA(List.of(c8));
-
-        assertThrows(IllegalStateException.class, () -> entityADao.update(a5));
     }
 
     @Test
@@ -700,7 +777,7 @@ public class CompositionRelationshipsTest {
 
         EntityA entityA = entityADao.create(EntityAForCreate.builder()
                 .withSingleRequiredConA(EntityCForCreate.builder().withStringC("C1").build())
-                .addToCollectionConA(EntityCForCreate.builderFrom(c2).build())
+                .addToCollectionConA(removeIdsFrom(c2))
                 .build());
 
         assertEquals(1, entityA.getCollectionConA().size());
@@ -708,7 +785,7 @@ public class CompositionRelationshipsTest {
 
         entityA = entityADao.create(EntityAForCreate.builder()
                 .withSingleRequiredConA(EntityCForCreate.builder().withStringC("C1").build())
-                .addToCollectionConA(EntityCForCreate.builderFrom(c2).build(), EntityCForCreate.builderFrom(c3).build())
+                .addToCollectionConA(removeIdsFrom(c2), removeIdsFrom(c3))
                 .build());
 
         assertEquals(2, entityA.getCollectionConA().size());
@@ -717,7 +794,7 @@ public class CompositionRelationshipsTest {
 
         entityA = entityADao.create(EntityAForCreate.builder()
                 .withSingleRequiredConA(EntityCForCreate.builder().withStringC("C1").build())
-                .addToCollectionConA(EntityCForCreate.builderFrom(c2).build(), EntityCForCreate.builderFrom(c2).build())
+                .addToCollectionConA(removeIdsFrom(c2), removeIdsFrom(c2))
                 .build());
 
         assertEquals(2, entityA.getCollectionConA().size());
@@ -725,8 +802,8 @@ public class CompositionRelationshipsTest {
 
         entityA = entityADao.create(EntityAForCreate.builder()
                 .withSingleRequiredConA(EntityCForCreate.builder().withStringC("C1").build())
-                .addToCollectionConA(EntityCForCreate.builderFrom(c2).build())
-                .addToCollectionConA(EntityCForCreate.builderFrom(c2).build())
+                .addToCollectionConA(removeIdsFrom(c2))
+                .addToCollectionConA(removeIdsFrom(c2))
                 .build());
 
         assertEquals(2, entityA.getCollectionConA().size());
@@ -734,9 +811,9 @@ public class CompositionRelationshipsTest {
 
         entityA = entityADao.create(EntityAForCreate.builder()
                 .withSingleRequiredConA(EntityCForCreate.builder().withStringC("C1").build())
-                .addToCollectionConA(EntityCForCreate.builderFrom(c2).build())
-                .addToCollectionConA(EntityCForCreate.builderFrom(c3).build())
-                .addToCollectionConA(EntityCForCreate.builderFrom(c4).build())
+                .addToCollectionConA(removeIdsFrom(c2))
+                .addToCollectionConA(removeIdsFrom(c3))
+                .addToCollectionConA(removeIdsFrom(c4))
                 .build());
 
         assertEquals(3, entityA.getCollectionConA().size());
@@ -746,9 +823,9 @@ public class CompositionRelationshipsTest {
 
         entityA = entityADao.create(EntityAForCreate.builder()
                 .withSingleRequiredConA(EntityCForCreate.builder().withStringC("C1").build())
-                .withCollectionConA(List.of(EntityCForCreate.builderFrom(c1).build(), EntityCForCreate.builderFrom(c2).build()))
-                .addToCollectionConA(EntityCForCreate.builderFrom(c3).build())
-                .addToCollectionConA(EntityCForCreate.builderFrom(c4).build())
+                .withCollectionConA(List.of(removeIdsFrom(c1), removeIdsFrom(c2)))
+                .addToCollectionConA(removeIdsFrom(c3))
+                .addToCollectionConA(removeIdsFrom(c4))
                 .build());
 
         assertEquals(4, entityA.getCollectionConA().size());
@@ -759,8 +836,8 @@ public class CompositionRelationshipsTest {
 
         entityA = entityADao.create(EntityAForCreate.builder()
                 .withSingleRequiredConA(EntityCForCreate.builder().withStringC("C1").build())
-                .withCollectionConA(List.of(EntityCForCreate.builderFrom(c1).build(), EntityCForCreate.builderFrom(c2).build()))
-                .addToCollectionConA(EntityCForCreate.builderFrom(c3).build(), EntityCForCreate.builderFrom(c4).build())
+                .withCollectionConA(List.of(removeIdsFrom(c1), removeIdsFrom(c2)))
+                .addToCollectionConA(removeIdsFrom(c3), removeIdsFrom(c4))
                 .build());
 
         assertEquals(4, entityA.getCollectionConA().size());
@@ -776,7 +853,7 @@ public class CompositionRelationshipsTest {
         EntityC c3 = entityCDao.create(EntityCForCreate.builder().withStringC("C3").build());
         EntityA entityA1 = entityADao.create(EntityAForCreate.builder()
                 .withSingleRequiredConA(EntityCForCreate.builder().withStringC("C1").build())
-                .withCollectionConA(List.of(EntityCForCreate.builderFrom(c2).build(), EntityCForCreate.builderFrom(c3).build()))
+                .withCollectionConA(List.of(removeIdsFrom(c2), removeIdsFrom(c3)))
                 .build());
 
         assertEquals("C1", entityA1.getSingleRequiredConA().getStringC().orElseThrow());

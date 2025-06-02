@@ -114,6 +114,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
+import java.io.Serializable;
 import java.util.*;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -941,7 +942,7 @@ public class SpecialCasesTest {
         assertEquals(1, entityFDao.getAll().stream().filter(entityF -> entityF.getStringF().equals("F5")).count());
         assertEquals(1, entityFDao.getAll().stream().filter(entityF -> entityF.getStringF().equals("F6")).count());
 
-        entityFDao.deleteAll((UUID) entityF1.identifier().getIdentifier(),(UUID) entityF2.identifier().getIdentifier());
+        entityFDao.deleteAll(entityF1.identifier().getIdentifier(),entityF2.identifier().getIdentifier());
 
         assertEquals(4, entityFDao.countAll());
         assertEquals(0, entityFDao.getAll().stream().filter(entityF -> entityF.getStringF().equals("F1")).count());
@@ -951,7 +952,7 @@ public class SpecialCasesTest {
         assertEquals(1, entityFDao.getAll().stream().filter(entityF -> entityF.getStringF().equals("F5")).count());
         assertEquals(1, entityFDao.getAll().stream().filter(entityF -> entityF.getStringF().equals("F6")).count());
 
-        entityFDao.deleteAll((UUID) entityF3.identifier().getIdentifier(), (UUID) entityF4.identifier().getIdentifier(), (UUID) entityF5.identifier().getIdentifier(), (UUID) entityF6.identifier().getIdentifier());
+        entityFDao.deleteAll(entityF3.identifier().getIdentifier(), entityF4.identifier().getIdentifier(), entityF5.identifier().getIdentifier(), entityF6.identifier().getIdentifier());
 
         assertEquals(0, entityFDao.countAll());
         assertEquals(0, entityFDao.getAll().stream().filter(entityF -> entityF.getStringF().equals("F1")).count());
@@ -970,7 +971,7 @@ public class SpecialCasesTest {
         assertEquals(1, entityFDao.getAll().stream().filter(entityF -> entityF.getStringF().equals("F2")).count());
         assertEquals(1, entityFDao.getAll().stream().filter(entityF -> entityF.getStringF().equals("F3")).count());
 
-        entityFDao.deleteAll((UUID) entityF1.identifier().getIdentifier(), (UUID) entityF2.identifier().getIdentifier(), (UUID) entityF3.identifier().getIdentifier());
+        entityFDao.deleteAll(entityF1.identifier().getIdentifier(), entityF2.identifier().getIdentifier(), entityF3.identifier().getIdentifier());
 
         assertEquals(0, entityFDao.countAll());
         assertEquals(0, entityFDao.getAll().stream().filter(entityF -> entityF.getStringF().equals("F1")).count());
@@ -987,9 +988,9 @@ public class SpecialCasesTest {
 
         ValidationException thrown = assertThrows(
                 ValidationException.class,
-                () -> entityFDao.deleteAll((UUID) entityF1final.identifier().getIdentifier(),
-                        (UUID) entityF2final.identifier().getIdentifier(),
-                        (UUID) entityF3final.identifier().getIdentifier()));
+                () -> entityFDao.deleteAll(entityF1final.identifier().getIdentifier(),
+                        entityF2final.identifier().getIdentifier(),
+                        entityF3final.identifier().getIdentifier()));
 
         assertThat(thrown.getValidationResults(), containsInAnyOrder(allOf(
                 hasProperty("code", equalTo("ENTITY_NOT_FOUND")))));
@@ -1888,7 +1889,7 @@ public class SpecialCasesTest {
         Assertions.assertEquals(1, entityFDao.getAll().stream().filter(entityE -> entityE.getStringF().equals("F5")).count());
         Assertions.assertEquals(1, entityFDao.getAll().stream().filter(entityE -> entityE.getStringF().equals("F6")).count());
 
-        transferFDao.deleteAll((UUID) transferF1.identifier().getIdentifier(), (UUID) transferF2.identifier().getIdentifier());
+        transferFDao.deleteAll(transferF1.identifier().getIdentifier(), transferF2.identifier().getIdentifier());
 
         Assertions.assertEquals(4, transferFDao.countAll());
         Assertions.assertEquals(0, transferFDao.getAll().stream().filter(transferF -> transferF.getStringF().equals("F1")).count());
@@ -1906,10 +1907,10 @@ public class SpecialCasesTest {
         Assertions.assertEquals(1, entityFDao.getAll().stream().filter(entityE -> entityE.getStringF().equals("F5")).count());
         Assertions.assertEquals(1, entityFDao.getAll().stream().filter(entityE -> entityE.getStringF().equals("F6")).count());
 
-        transferFDao.deleteAll((UUID) transferF3.identifier().getIdentifier()
-                , (UUID) transferF4.identifier().getIdentifier()
-                , (UUID) transferF5.identifier().getIdentifier()
-                , (UUID) transferF6.identifier().getIdentifier());
+        transferFDao.deleteAll(transferF3.identifier().getIdentifier()
+                , transferF4.identifier().getIdentifier()
+                , transferF5.identifier().getIdentifier()
+                , transferF6.identifier().getIdentifier());
 
         Assertions.assertEquals(0, transferFDao.countAll());
         Assertions.assertEquals(0, transferFDao.getAll().stream().filter(transferF -> transferF.getStringF().equals("F1")).count());
@@ -1941,7 +1942,7 @@ public class SpecialCasesTest {
         Assertions.assertEquals(1, entityFDao.getAll().stream().filter(entityE -> entityE.getStringF().equals("F2")).count());
         Assertions.assertEquals(1, entityFDao.getAll().stream().filter(entityE -> entityE.getStringF().equals("F3")).count());
 
-        transferFDao.deleteAll((UUID) transferF1.identifier().getIdentifier(), (UUID) transferF2.identifier().getIdentifier(), (UUID) transferF3.identifier().getIdentifier());
+        transferFDao.deleteAll(transferF1.identifier().getIdentifier(), transferF2.identifier().getIdentifier(), transferF3.identifier().getIdentifier());
 
         Assertions.assertEquals(0, transferFDao.countAll());
         Assertions.assertEquals(0, transferFDao.getAll().stream().filter(transferF -> transferF.getStringF().equals("F1")).count());
@@ -1963,9 +1964,9 @@ public class SpecialCasesTest {
 
         ValidationException thrown = assertThrows(
                 ValidationException.class,
-                () -> transferFDao.deleteAll((UUID) transferF1final.identifier().getIdentifier(),
-                        (UUID) transferF2final.identifier().getIdentifier(),
-                        (UUID) transferF3final.identifier().getIdentifier()));
+                () -> transferFDao.deleteAll(transferF1final.identifier().getIdentifier(),
+                        transferF2final.identifier().getIdentifier(),
+                        transferF3final.identifier().getIdentifier()));
 
         assertThat(thrown.getValidationResults(), containsInAnyOrder(allOf(
                 hasProperty("code", equalTo("ENTITY_NOT_FOUND")))));
@@ -2000,7 +2001,7 @@ public class SpecialCasesTest {
             "REQ-MDL-003",
             "REQ-SRV-002",
     })
-    public void TestUUIDMethods() {
+    public void TestSerializableMethods() {
 
         E eOpRel = eDao.create(EForCreate.builder().build(), EMask.eMask());
         E eReqRel = eDao.create(EForCreate.builder().build(), EMask.eMask());
@@ -2026,7 +2027,7 @@ public class SpecialCasesTest {
 
         // queries
 
-        UUID uuidF = (UUID) f.identifier().getIdentifier();
+        Serializable uuidF = f.identifier().getIdentifier();
 
         assertEquals(eOpRel.identifier().getIdentifier(), fDao.queryRelE(uuidF).get().identifier().getIdentifier());
         assertEquals(eReqRel.identifier().getIdentifier(), fDao.queryReqRelE(uuidF).identifier().getIdentifier());
@@ -2050,7 +2051,7 @@ public class SpecialCasesTest {
 
 
         // Not related identifier added
-        UUID uuidEOpRel = (UUID) eOpRel.identifier().getIdentifier();
+        Serializable uuidEOpRel = eOpRel.identifier().getIdentifier();
         assertFalse(fDao.getById(uuidEOpRel, FMask.fMask()).isPresent());
         assertFalse(eDao.getById(uuidF, EMask.eMask()).isPresent());
 
