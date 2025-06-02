@@ -212,7 +212,7 @@ public class MappedTransferCompositonAggregationTest {
                 IllegalStateException.class,
                 () -> transferADao.update(finalTransferA1)
         );
-        assertTrue(thrown2.getMessage().contains("Identifier cannot be set on new composition reference element"));
+        assertTrue(thrown2.getMessage().contains("Existing reference element cannot be set as a composition"));
         assertTrue(thrown2.getMessage().contains("#singleEntityB"));
 
     }
@@ -499,7 +499,7 @@ public class MappedTransferCompositonAggregationTest {
         IllegalStateException exception = assertThrows(IllegalStateException.class, () ->
                 transferHDao.update(h4)
         );
-        assertTrue(exception.getMessage().contains("Identifier cannot be set on new composition reference element"));
+        assertTrue(exception.getMessage().contains("Existing reference element cannot be set as a composition"));
         assertTrue(exception.getMessage().contains("singleJonH"));
 
         h4.setSingleJonH(null);
@@ -508,7 +508,7 @@ public class MappedTransferCompositonAggregationTest {
         exception = assertThrows(IllegalStateException.class, () ->
                 transferHDao.update(h4)
         );
-        assertTrue(exception.getMessage().contains("Identifier cannot be set on new composition reference element"));
+        assertTrue(exception.getMessage().contains("Existing reference element cannot be set as a composition"));
         assertTrue(exception.getMessage().contains("collectionJonH"));
 
         h4.setSingleJonH(TransferJ.builder().withStringJ("J5").build());

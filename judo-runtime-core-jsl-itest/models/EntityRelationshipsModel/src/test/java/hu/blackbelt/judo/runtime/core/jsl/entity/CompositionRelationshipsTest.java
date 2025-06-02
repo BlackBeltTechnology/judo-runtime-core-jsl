@@ -657,7 +657,7 @@ public class CompositionRelationshipsTest {
                         .build())
         );
 
-        assertTrue(exception.getMessage().contains("Identifier cannot be set on new composition reference element"));
+        assertTrue(exception.getMessage().contains("Existing reference element cannot be set as a composition"));
         assertTrue(exception.getMessage().contains("multipleDonB"));
 
         // Single Composition
@@ -670,7 +670,7 @@ public class CompositionRelationshipsTest {
                         .build())
         );
 
-        assertTrue(exception.getMessage().contains("Identifier cannot be set on new composition reference element"));
+        assertTrue(exception.getMessage().contains("Existing reference element cannot be set as a composition"));
         assertTrue(exception.getMessage().contains("singleConA"));
 
         // Single Required Composition
@@ -682,7 +682,7 @@ public class CompositionRelationshipsTest {
                         .build())
         );
 
-        assertTrue(exception.getMessage().contains("Identifier cannot be set on new composition reference element"));
+        assertTrue(exception.getMessage().contains("Existing reference element cannot be set as a composition"));
         assertTrue(exception.getMessage().contains("singleRequiredConA"));
 
     }
@@ -714,7 +714,7 @@ public class CompositionRelationshipsTest {
                 entityADao.create(EntityAForCreate.builder().withCollectionConA(List.of(c3.adaptTo(EntityCForCreate.class), c4.adaptTo(EntityCForCreate.class))).withSingleConA(c3.adaptTo(EntityCForCreate.class)).withSingleRequiredConA(c4.adaptTo(EntityCForCreate.class)).build())
         );
 
-        assertTrue(exception.getMessage().contains("Identifier cannot be set on new composition reference element"));
+        assertTrue(exception.getMessage().contains("Existing reference element cannot be set as a composition"));
 
         EntityA a3 = entityADao.create(EntityAForCreate.builder().withSingleRequiredConA(EntityCForCreate.builder().withStringC("C4").build()).build());
 
@@ -743,7 +743,7 @@ public class CompositionRelationshipsTest {
         exception = assertThrows(IllegalStateException.class, () ->
                 entityADao.update(a4)
         );
-        assertTrue(exception.getMessage().contains("Identifier cannot be set on new composition reference element"));
+        assertTrue(exception.getMessage().contains("Existing reference element cannot be set as a composition"));
         assertTrue(exception.getMessage().contains("singleConA"));
 
         a4.setSingleConA(null);
@@ -752,7 +752,7 @@ public class CompositionRelationshipsTest {
         exception = assertThrows(IllegalStateException.class, () ->
                 entityADao.update(a4)
         );
-        assertTrue(exception.getMessage().contains("Identifier cannot be set on new composition reference element"));
+        assertTrue(exception.getMessage().contains("Existing reference element cannot be set as a composition"));
         assertTrue(exception.getMessage().contains("collectionConA"));
 
         a4.setSingleConA(EntityC.builder().withStringC("C5").build());
