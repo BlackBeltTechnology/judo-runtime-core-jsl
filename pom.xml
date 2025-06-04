@@ -23,9 +23,10 @@
 
         <!--suppress UnresolvedMavenProperty -->
         <logback-test-config>${maven.multiModuleProjectDirectory}/logback-test.xml</logback-test-config>
-        <logback-version>1.5.12</logback-version>
+        <logback-version>1.5.18</logback-version>
         <lombok-version>1.18.34</lombok-version>
-        <spring-logback-version>1.2.11</spring-logback-version>
+        <spring-version>6.2.7</spring-version>
+        <springboot-version>3.5.0</springboot-version>
 
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
@@ -43,11 +44,11 @@
             javax.resource;version="[1.6,2)"
         </osgi-transaction-import>
 
-        <judo-tatami-jsl-version>1.1.4.20250602_123155_fee06a7b_feature_JNG_6310_UpdateEpsilon</judo-tatami-jsl-version>
-        <judo-runtime-core-version>1.0.6.20250602_122610_28abe296_feature_JNG_6310_UpdateEpsilon</judo-runtime-core-version>
-        <judo-psm-generator-sdk-core-version>1.0.0.20250602_091445_38409a47_feature_JNG_6310_UpdateEpsilon</judo-psm-generator-sdk-core-version>
+        <judo-tatami-jsl-version>1.1.4.20250604_124343_c00f0575_feature_JNG_6310_UpdateEpsilon</judo-tatami-jsl-version>
+        <judo-runtime-core-version>1.0.6.20250604_173456_21d07cdf_feature_JNG_6310_UpdateEpsilon</judo-runtime-core-version>
+        <judo-psm-generator-sdk-core-version>1.0.0.20250604_125133_32c11fa7_feature_JNG_6310_UpdateEpsilon</judo-psm-generator-sdk-core-version>
 
-        <judo-meta-psm-version>1.3.0.20250602_090705_7981ad0b_feature_JNG_6310_UpdateEpsilon</judo-meta-psm-version>
+        <judo-meta-psm-version>1.3.0.20250604_124553_89a572bf_feature_JNG_6310_UpdateEpsilon</judo-meta-psm-version>
 
         <!-- Code Quality-->
         <sonar-maven-plugin-version>3.9.1.2184</sonar-maven-plugin-version>
@@ -56,7 +57,7 @@
         <sonar.language>java</sonar.language>
         <sonar.java.source>${java.version}</sonar.java.source>
         <jacoco.version>0.8.12</jacoco.version>
-        <judo-requirement-report-version>1.0.0.20250601_200033_0b82672c_feature_JNG_6310_UpdateEpsilon</judo-requirement-report-version>
+        <judo-requirement-report-version>1.0.0-SNAPSHOT</judo-requirement-report-version>
     </properties>
 
     <url>http://github.com/${project-repositoryId}</url>
@@ -105,7 +106,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.10.1</version>
+                    <version>3.13.0</version>
                 </plugin>
 
                 <plugin>
@@ -460,19 +461,19 @@
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>testcontainers</artifactId>
-            <version>1.17.3</version>
+            <version>1.21.1</version>
         </dependency>
 
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>1.17.3</version>
+            <version>1.21.1</version>
         </dependency>
 
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>postgresql</artifactId>
-            <version>1.17.3</version>
+            <version>1.21.1</version>
         </dependency>
 
         <dependency>
@@ -482,25 +483,25 @@
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>${slf4j-version}</version>
-            <scope>provided</scope>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.slf4j</groupId>-->
+<!--            <artifactId>slf4j-api</artifactId>-->
+<!--            <version>${slf4j-version}</version>-->
+<!--            <scope>provided</scope>-->
+<!--        </dependency>-->
 
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <version>${logback-version}</version>
-            <scope>provided</scope>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>ch.qos.logback</groupId>-->
+<!--            <artifactId>logback-classic</artifactId>-->
+<!--            <version>${logback-version}</version>-->
+<!--            <scope>provided</scope>-->
+<!--        </dependency>-->
 
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-core</artifactId>
-            <version>${logback-version}</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>ch.qos.logback</groupId>-->
+<!--            <artifactId>logback-core</artifactId>-->
+<!--            <version>${logback-version}</version>-->
+<!--        </dependency>-->
 
         <dependency>
             <groupId>com.mattbertolini</groupId>
@@ -610,7 +611,7 @@
                     <plugin>
                         <groupId>org.simplify4u.plugins</groupId>
                         <artifactId>sign-maven-plugin</artifactId>
-                        <version>1.0.1</version>
+                        <version>1.1.0</version>
                         <executions>
                             <execution>
                                 <goals>
