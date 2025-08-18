@@ -45,10 +45,10 @@
         </osgi-transaction-import>
 
         <judo-tatami-jsl-version>1.1.4.20250815_042235_bcc3cc6d_develop</judo-tatami-jsl-version>
-        <judo-runtime-core-version>1.0.6.20250814_191741_81631608_develop</judo-runtime-core-version>
-        <judo-psm-generator-sdk-core-version>1.0.0.20250806_045945_a0c5ba2f_develop</judo-psm-generator-sdk-core-version>
+        <judo-runtime-core-version>1.0.6.20250818_024652_34874920_feature_JNG_6322_Minimiize_Karaf_Size</judo-runtime-core-version>
+        <judo-psm-generator-sdk-core-version>1.0.0.20250818_022801_22fda07a_feature_JNG_6322_Minimiize_Karaf_Size</judo-psm-generator-sdk-core-version>
 
-        <judo-meta-psm-version>1.3.0.20250806_044805_33ba0f00_develop</judo-meta-psm-version>
+        <judo-meta-psm-version>1.3.0.20250818_022014_86b433d3_feature_JNG_6322_Minimiize_Karaf_Size</judo-meta-psm-version>
 
         <!-- Code Quality-->
         <sonar-maven-plugin-version>3.9.1.2184</sonar-maven-plugin-version>
