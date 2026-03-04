@@ -66,6 +66,21 @@ Key facts:
 - [judo-runtime-core-jsl-itest/models/TransferRangeModel/pom.xml](judo-runtime-core-jsl-itest/models/TransferRangeModel/pom.xml): Transfer object range tests
 - [judo-runtime-core-jsl-itest/models/TransferValidationModel/pom.xml](judo-runtime-core-jsl-itest/models/TransferValidationModel/pom.xml): Transfer object validation tests
 
+## Depends on
+
+- [judo-meta-asm](../../models/judo-meta-asm): models/judo-meta-asm
+- [judo-meta-liquibase](../../models/judo-meta-liquibase): models/judo-meta-liquibase
+- [judo-meta-psm](../../models/judo-meta-psm): models/judo-meta-psm
+- [judo-dao-api](../judo-dao-api): runtime/judo-dao-api
+- [judo-dispatcher-api](../judo-dispatcher-api): runtime/judo-dispatcher-api
+- [judo-runtime-core](../judo-runtime-core): runtime/judo-runtime-core
+- [judo-sdk-common](../judo-sdk-common): runtime/judo-sdk-common
+- [judo-tatami-base](../judo-tatami-base): runtime/judo-tatami-base
+- [judo-tatami-jsl](../judo-tatami-jsl): runtime/judo-tatami-jsl
+- [mapper](../mapper): runtime/mapper
+- [judo-psm-generator-sdk-core](../../template/judo-psm-generator-sdk-core): template/judo-psm-generator-sdk-core
+- [judo-requirement-report](../../tools/judo-requirement-report): tools/judo-requirement-report
+
 ## Optional
 
 - [pom.xml](pom.xml): Root reactor POM with dependency versions, plugin management, and profiles
