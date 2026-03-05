@@ -68,18 +68,18 @@ Key facts:
 
 ## Depends on
 
-- [judo-meta-asm](../../models/judo-meta-asm): models/judo-meta-asm
-- [judo-meta-liquibase](../../models/judo-meta-liquibase): models/judo-meta-liquibase
-- [judo-meta-psm](../../models/judo-meta-psm): models/judo-meta-psm
-- [judo-dao-api](../judo-dao-api): runtime/judo-dao-api
-- [judo-dispatcher-api](../judo-dispatcher-api): runtime/judo-dispatcher-api
-- [judo-runtime-core](../judo-runtime-core): runtime/judo-runtime-core
-- [judo-sdk-common](../judo-sdk-common): runtime/judo-sdk-common
-- [judo-tatami-base](../judo-tatami-base): runtime/judo-tatami-base
-- [judo-tatami-jsl](../judo-tatami-jsl): runtime/judo-tatami-jsl
-- [mapper](../mapper): runtime/mapper
-- [judo-psm-generator-sdk-core](../../template/judo-psm-generator-sdk-core): template/judo-psm-generator-sdk-core
-- [judo-requirement-report](../../tools/judo-requirement-report): tools/judo-requirement-report
+- [judo-meta-asm](../../models/judo-meta-asm): ASM metamodel — Ecore-based architecture model with builders and validation
+- [judo-meta-liquibase](../../models/judo-meta-liquibase): Liquibase database change management metamodel
+- [judo-meta-psm](../../models/judo-meta-psm): PSM metamodel — foundational platform-specific data model
+- [judo-dao-api](../judo-dao-api): Core DAO interfaces for CRUD, query, navigation, and validation
+- [judo-dispatcher-api](../judo-dispatcher-api): Dispatcher API contracts for routing API calls to runtime actions
+- [judo-runtime-core](../judo-runtime-core): Multi-module runtime engine — data access, business logic, REST, and security
+- [judo-sdk-common](../judo-sdk-common): Base classes for generated SDK — entity identity, DAO base, and query filters
+- [judo-tatami-base](../judo-tatami-base): PSM transformation pipeline — models to schemas, expressions, and configurations
+- [judo-tatami-jsl](../judo-tatami-jsl): JSL-to-runtime model transformation engine (PSM, ASM, UI, RDBMS, etc.)
+- [mapper](../mapper): Type mapper and coercer library with 60+ built-in converters
+- [judo-psm-generator-sdk-core](../../template/judo-psm-generator-sdk-core): Generates SDK core layer — DAOs, DTOs, builders, and DI wiring from PSM
+- [judo-requirement-report](../../tools/judo-requirement-report): Annotation processor generating CSV requirement traceability reports
 
 ## Optional
 
