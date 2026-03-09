@@ -1,0 +1,89 @@
+# JUDO Runtime Core JSL
+
+> Extends judo-runtime-core with JSL (JUDO Specific Language) support, providing the full pipeline from JSL model parsing through to generated DAOs, SDK types, and database schema for both Guice and Spring Boot.
+
+Key facts:
+- Java 21, Maven 3.9.4 multi-module project (4 top-level modules, 36 integration test submodules)
+- Model transformation pipeline: JSL source → Platform Specific Model (PSM) → generated code
+- Supports Guice and Spring Boot dependency injection frameworks
+- Tests run against HSQLDB (in-memory) and PostgreSQL (via TestContainers)
+- Part of the [judo-community](https://github.com/BlackBeltTechnology/judo-community) ecosystem
+- License: Eclipse Public License 2.0 (EPL-2.0)
+
+## Docs
+
+- [README.md](README.md): Project overview, module diagram, transformation pipeline, and quick start
+- [AGENTS.md](AGENTS.md): Comprehensive developer guide with build commands, directory structure, technology stack, and coding conventions
+- [CONTRIBUTING.md](CONTRIBUTING.md): Development setup and contribution guidelines
+- [.github/CIFLOW.md](.github/CIFLOW.md): CI/CD workflow details, branching strategy, and version numbering
+
+## Modules — Core
+
+- [judo-runtime-core-jsl/pom.xml](judo-runtime-core-jsl/pom.xml): Core API definitions, packaged as an OSGi bundle
+- [judo-runtime-core-jsl-guice/pom.xml](judo-runtime-core-jsl-guice/pom.xml): Guice DI integration with JSLTransformationModelLoader for JSL-to-PSM transformation
+
+## Modules — Test Infrastructure
+
+- [judo-runtime-core-jsl-itest/pom.xml](judo-runtime-core-jsl-itest/pom.xml): Integration tests parent POM
+- [judo-runtime-core-jsl-itest/common/pom.xml](judo-runtime-core-jsl-itest/common/pom.xml): Shared test fixtures (JudoRuntimeExtension, datasource helpers, TestContainers setup)
+- [judo-runtime-core-jsl-spring-itest/pom.xml](judo-runtime-core-jsl-spring-itest/pom.xml): Spring Boot integration tests demonstrating DAO usage and transaction management
+
+## Modules — Integration Test Models
+
+- [judo-runtime-core-jsl-itest/models/AbstractModel/pom.xml](judo-runtime-core-jsl-itest/models/AbstractModel/pom.xml): Abstract entity tests
+- [judo-runtime-core-jsl-itest/models/AllTypeOfTransferObjectsModel/pom.xml](judo-runtime-core-jsl-itest/models/AllTypeOfTransferObjectsModel/pom.xml): Transfer object type coverage
+- [judo-runtime-core-jsl-itest/models/CastingFunctionsModel/pom.xml](judo-runtime-core-jsl-itest/models/CastingFunctionsModel/pom.xml): Type casting function tests
+- [judo-runtime-core-jsl-itest/models/ContainerTestModel/pom.xml](judo-runtime-core-jsl-itest/models/ContainerTestModel/pom.xml): Container relationship tests
+- [judo-runtime-core-jsl-itest/models/ContainsTestModel/pom.xml](judo-runtime-core-jsl-itest/models/ContainsTestModel/pom.xml): Contains operation tests
+- [judo-runtime-core-jsl-itest/models/EntityRelationshipsModel/pom.xml](judo-runtime-core-jsl-itest/models/EntityRelationshipsModel/pom.xml): Entity relationship tests
+- [judo-runtime-core-jsl-itest/models/EnvironmentAndSequenceModel/pom.xml](judo-runtime-core-jsl-itest/models/EnvironmentAndSequenceModel/pom.xml): Environment variables and sequence tests
+- [judo-runtime-core-jsl-itest/models/FilterCountModel/pom.xml](judo-runtime-core-jsl-itest/models/FilterCountModel/pom.xml): Filter count operation tests
+- [judo-runtime-core-jsl-itest/models/FilterModel/pom.xml](judo-runtime-core-jsl-itest/models/FilterModel/pom.xml): Filtering and query tests
+- [judo-runtime-core-jsl-itest/models/FunctionsModels/pom.xml](judo-runtime-core-jsl-itest/models/FunctionsModels/pom.xml): Built-in function tests
+- [judo-runtime-core-jsl-itest/models/InheritanceModel/pom.xml](judo-runtime-core-jsl-itest/models/InheritanceModel/pom.xml): Entity inheritance tests
+- [judo-runtime-core-jsl-itest/models/MappedTransferPrimitivesModel/pom.xml](judo-runtime-core-jsl-itest/models/MappedTransferPrimitivesModel/pom.xml): Mapped transfer object primitive tests
+- [judo-runtime-core-jsl-itest/models/NavigationTestModel/pom.xml](judo-runtime-core-jsl-itest/models/NavigationTestModel/pom.xml): Navigation and traversal tests
+- [judo-runtime-core-jsl-itest/models/OperationModel/pom.xml](judo-runtime-core-jsl-itest/models/OperationModel/pom.xml): Operation and action tests
+- [judo-runtime-core-jsl-itest/models/OperatorsModel/pom.xml](judo-runtime-core-jsl-itest/models/OperatorsModel/pom.xml): Operator expression tests
+- [judo-runtime-core-jsl-itest/models/OptimisticLockModel/pom.xml](judo-runtime-core-jsl-itest/models/OptimisticLockModel/pom.xml): Optimistic locking tests
+- [judo-runtime-core-jsl-itest/models/PagingModel/pom.xml](judo-runtime-core-jsl-itest/models/PagingModel/pom.xml): Pagination tests
+- [judo-runtime-core-jsl-itest/models/PrimitivesModel/pom.xml](judo-runtime-core-jsl-itest/models/PrimitivesModel/pom.xml): Primitive type tests
+- [judo-runtime-core-jsl-itest/models/QueryModel/pom.xml](judo-runtime-core-jsl-itest/models/QueryModel/pom.xml): Query and data retrieval tests
+- [judo-runtime-core-jsl-itest/models/RecursiveCompositionModel/pom.xml](judo-runtime-core-jsl-itest/models/RecursiveCompositionModel/pom.xml): Recursive composition tests
+- [judo-runtime-core-jsl-itest/models/RelationCreateWithAttachmentTestModel/pom.xml](judo-runtime-core-jsl-itest/models/RelationCreateWithAttachmentTestModel/pom.xml): Relation creation with attachment tests
+- [judo-runtime-core-jsl-itest/models/RelationWithDefaultsModel/pom.xml](judo-runtime-core-jsl-itest/models/RelationWithDefaultsModel/pom.xml): Relation default value tests
+- [judo-runtime-core-jsl-itest/models/SalesModels/pom.xml](judo-runtime-core-jsl-itest/models/SalesModels/pom.xml): Sales domain model tests
+- [judo-runtime-core-jsl-itest/models/SampleModels/pom.xml](judo-runtime-core-jsl-itest/models/SampleModels/pom.xml): Sample model tests
+- [judo-runtime-core-jsl-itest/models/SpecialCasesModel/pom.xml](judo-runtime-core-jsl-itest/models/SpecialCasesModel/pom.xml): Edge case and special scenario tests
+- [judo-runtime-core-jsl-itest/models/StaticQueryModels/pom.xml](judo-runtime-core-jsl-itest/models/StaticQueryModels/pom.xml): Static query tests
+- [judo-runtime-core-jsl-itest/models/TaskModel/pom.xml](judo-runtime-core-jsl-itest/models/TaskModel/pom.xml): Task domain model tests
+- [judo-runtime-core-jsl-itest/models/TernaryTestModel/pom.xml](judo-runtime-core-jsl-itest/models/TernaryTestModel/pom.xml): Ternary expression tests
+- [judo-runtime-core-jsl-itest/models/TestDefaultAndRequiredFieldsOnMappedTOModel/pom.xml](judo-runtime-core-jsl-itest/models/TestDefaultAndRequiredFieldsOnMappedTOModel/pom.xml): Default and required field validation tests
+- [judo-runtime-core-jsl-itest/models/TransactionManagementModel/pom.xml](judo-runtime-core-jsl-itest/models/TransactionManagementModel/pom.xml): Transaction management tests
+- [judo-runtime-core-jsl-itest/models/TransferAggregationModel/pom.xml](judo-runtime-core-jsl-itest/models/TransferAggregationModel/pom.xml): Transfer object aggregation tests
+- [judo-runtime-core-jsl-itest/models/TransferAssociationModel/pom.xml](judo-runtime-core-jsl-itest/models/TransferAssociationModel/pom.xml): Transfer object association tests
+- [judo-runtime-core-jsl-itest/models/TransferConstructorModel/pom.xml](judo-runtime-core-jsl-itest/models/TransferConstructorModel/pom.xml): Transfer object constructor tests
+- [judo-runtime-core-jsl-itest/models/TransferRangeModel/pom.xml](judo-runtime-core-jsl-itest/models/TransferRangeModel/pom.xml): Transfer object range tests
+- [judo-runtime-core-jsl-itest/models/TransferValidationModel/pom.xml](judo-runtime-core-jsl-itest/models/TransferValidationModel/pom.xml): Transfer object validation tests
+
+## Depends on
+
+- [judo-meta-asm](../../models/judo-meta-asm): ASM metamodel — Ecore-based architecture model with builders and validation
+- [judo-meta-liquibase](../../models/judo-meta-liquibase): Liquibase database change management metamodel
+- [judo-meta-psm](../../models/judo-meta-psm): PSM metamodel — foundational platform-specific data model
+- [judo-dao-api](../judo-dao-api): Core DAO interfaces for CRUD, query, navigation, and validation
+- [judo-dispatcher-api](../judo-dispatcher-api): Dispatcher API contracts for routing API calls to runtime actions
+- [judo-runtime-core](../judo-runtime-core): Multi-module runtime engine — data access, business logic, REST, and security
+- [judo-sdk-common](../judo-sdk-common): Base classes for generated SDK — entity identity, DAO base, and query filters
+- [judo-tatami-base](../judo-tatami-base): PSM transformation pipeline — models to schemas, expressions, and configurations
+- [judo-tatami-jsl](../judo-tatami-jsl): JSL-to-runtime model transformation engine (PSM, ASM, UI, RDBMS, etc.)
+- [mapper](../mapper): Type mapper and coercer library with 60+ built-in converters
+- [judo-psm-generator-sdk-core](../../template/judo-psm-generator-sdk-core): Generates SDK core layer — DAOs, DTOs, builders, and DI wiring from PSM
+- [judo-requirement-report](../../tools/judo-requirement-report): Annotation processor generating CSV requirement traceability reports
+
+## Optional
+
+- [pom.xml](pom.xml): Root reactor POM with dependency versions, plugin management, and profiles
+- [.github/workflows/build.yml](.github/workflows/build.yml): CI/CD pipeline (build, test, deploy)
+- [LICENSE.txt](LICENSE.txt): Eclipse Public License 2.0 text
+- [logback-test.xml](logback-test.xml): Test logging configuration
