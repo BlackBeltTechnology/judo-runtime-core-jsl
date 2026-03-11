@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>judo-runtime-core-jsl-itest-model-PrimitivesModel</name>
+	<name>hu.blackbelt.judo.runtime-judo-runtime-core-jsl-itest-model-FilterCountModel</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -22,7 +22,7 @@
 	</natures>
 	<filteredResources>
 		<filter>
-			<id>1761313513173</id>
+			<id>1761313513143</id>
 			<name></name>
 			<type>30</type>
 			<matcher>
