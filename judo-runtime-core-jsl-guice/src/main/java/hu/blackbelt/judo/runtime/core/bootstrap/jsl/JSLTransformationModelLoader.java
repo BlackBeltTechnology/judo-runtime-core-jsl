@@ -31,6 +31,7 @@ import com.google.common.collect.ImmutableList;
 import hu.blackbelt.judo.meta.jsl.jsldsl.runtime.JslDslModel;
 import hu.blackbelt.judo.meta.jsl.runtime.JslParser;
 import hu.blackbelt.judo.meta.jsl.runtime.JslStreamSource;
+import hu.blackbelt.judo.tatami.core.TransformationMode;
 import hu.blackbelt.judo.tatami.core.workflow.work.TransformationContext;
 import hu.blackbelt.judo.tatami.core.workflow.work.WorkReport;
 import hu.blackbelt.judo.tatami.core.workflow.work.WorkStatus;
@@ -49,6 +50,7 @@ public class JSLTransformationModelLoader {
                         .jslModel(model)
                         .dialectList(ImmutableList.of(dialect))
                         .modelName(model.getName())
+                        .transformationMode(TransformationMode.ZETA)
         );
         try {
             WorkReport workReport = defaultWorkflow.startDefaultWorkflow();
