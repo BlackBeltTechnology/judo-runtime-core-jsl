@@ -433,6 +433,12 @@
                 <artifactId>judo-tatami-jsl-workflow</artifactId>
                 <version>${judo-tatami-jsl-version}</version>
             </dependency>
+            <dependency>
+                <groupId>hu.blackbelt.judo.tatami</groupId>
+                <artifactId>judo-tatami-jsl-workflow-etl</artifactId>
+                <version>${judo-tatami-jsl-version}</version>
+                <type>pom</type>
+            </dependency>
 
             <dependency>
                 <groupId>hu.blackbelt.judo</groupId>

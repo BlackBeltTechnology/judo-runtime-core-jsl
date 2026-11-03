@@ -6,4 +6,4 @@ but the declared package is `hu.blackbelt.judo.runtime.core.guice.jsl` — the t
 
 | File | Purpose |
 |---|---|
-| `JSLTransformationModelLoader.java` | Drives `JslDefaultWorkflow` in `TransformationMode.ZETA` to a `TransformationContext`; exports `loadAndTransformJslModels` overloads. → see `JSLTransformationModelLoader.java.AGENTS.md` |
+| `JSLTransformationModelLoader.java` | Drives `JslDefaultWorkflow` to a `TransformationContext`; mode from `TransformationMode.fromSystemProperty()` (default ZETA); exports `loadAndTransformJslModels` overloads. → see `JSLTransformationModelLoader.java.AGENTS.md` |

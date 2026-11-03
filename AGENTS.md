@@ -42,7 +42,7 @@ unless `-DskipModules=true` — which builds the parent POM alone.
 | Module | Role |
 |---|---|
 | `judo-runtime-core-jsl` | OSGi bundle. Carries no Java sources; it publishes the `hu.blackbelt.judo.runtime.core.jsl.*` package coordinate and pins the DAO/mapper/validation API surface that JSL-generated code compiles against. |
-| `judo-runtime-core-jsl-guice` | OSGi bundle. The transformation driver — `JSLTransformationModelLoader` runs the `judo-tatami-jsl` JSL→PSM workflow and hands the result to the `judo-runtime-core-guice` assembly. |
+| `judo-runtime-core-jsl-guice` | OSGi bundle. The transformation driver — `JSLTransformationModelLoader` runs the `judo-tatami-jsl` JSL→PSM workflow and hands the result to the `judo-runtime-core-guice` assembly. Mode from `judo.transformation.mode` (default ZETA); ETL needs aggregate `judo-tatami-jsl-workflow-etl` on classpath (test-scoped here; `etl-addons-absent` surefire execution proves the fail-fast). |
 | `judo-runtime-core-jsl-itest` | Pom aggregator. Nested reactor holding the Guice-side integration suite; splits into `common` and `models`. |
 | `judo-runtime-core-jsl-spring-itest` | Jar. A runnable Spring Boot application built from a JSL model under `src/main/resources/model/`, exercising the Spring generator path, the `judo-runtime-core-spring*` autoconfiguration and declarative transaction management. |
 
