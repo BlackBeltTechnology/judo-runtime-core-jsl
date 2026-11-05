@@ -31,6 +31,7 @@ import com.google.common.collect.ImmutableList;
 import hu.blackbelt.judo.meta.jsl.jsldsl.runtime.JslDslModel;
 import hu.blackbelt.judo.meta.jsl.runtime.JslParser;
 import hu.blackbelt.judo.meta.jsl.runtime.JslStreamSource;
+import hu.blackbelt.judo.tatami.core.TransformationMode;
 import hu.blackbelt.judo.tatami.core.workflow.work.TransformationContext;
 import hu.blackbelt.judo.tatami.core.workflow.work.WorkReport;
 import hu.blackbelt.judo.tatami.core.workflow.work.WorkStatus;
@@ -39,6 +40,13 @@ import hu.blackbelt.judo.tatami.jsl.workflow.JslDefaultWorkflow;
 
 import static hu.blackbelt.judo.tatami.jsl.workflow.DefaultWorkflowSave.saveModels;
 
+/**
+ * Loads JSL models and runs the JSL default workflow. The engine comes from the {@code judo.transformation.mode}
+ * system property ({@link TransformationMode#fromSystemProperty()}): ZETA when unset or invalid; ETL needs the optional
+ * add-ons ({@code hu.blackbelt.judo.tatami:judo-tatami-jsl-workflow-etl}, type pom) on the classpath, otherwise the
+ * first stage fails with {@code EtlEngineMissingException} naming the missing artifact. Downstream stages read the same
+ * property. See change: split-etl-artifacts.
+ */
 public class JSLTransformationModelLoader {
 
     public static TransformationContext loadAndTransformJslModels(JslDslModel model, String dialect, File outputDirectory) {
@@ -49,6 +57,7 @@ public class JSLTransformationModelLoader {
                         .jslModel(model)
                         .dialectList(ImmutableList.of(dialect))
                         .modelName(model.getName())
+                        .transformationMode(TransformationMode.fromSystemProperty())
         );
         try {
             WorkReport workReport = defaultWorkflow.startDefaultWorkflow();
