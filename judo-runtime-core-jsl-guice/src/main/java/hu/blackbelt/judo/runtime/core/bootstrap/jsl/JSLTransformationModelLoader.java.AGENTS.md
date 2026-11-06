@@ -12,4 +12,12 @@ Model name taken from `model.getName()`, not the caller. On `WorkStatus.FAILED` 
 - Invalid property value is ignored → ZETA.
 - Path quirk (pre-existing): file lives under `bootstrap/jsl/` but Java package is `hu.blackbelt.judo.runtime.core.guice.jsl`.
 
-See change: split-etl-artifacts.
+## Asm2Query stage off
+
+- Sets `.ignoreAsm2Query(true)` on `DefaultWorkflowSetupParameters` (workflow default is false). No consumer of the query model here.
+- Returned `TransformationContext` holds no `QueryModel`; ASM, expression, RDBMS (per dialect) models present as before.
+- `DefaultWorkflowSave.saveModels` writes no `<name>-query.model`.
+- Runtime builds its own query model at boot; persisted query model comes from the maven-plugin generated output (jsl-itest), not from this loader.
+- Test: `JSLTransformationModelLoaderTest.asm2QueryStageIsOffByDefault` (TP-49).
+
+See change: split-etl-artifacts, persisted-query-model.

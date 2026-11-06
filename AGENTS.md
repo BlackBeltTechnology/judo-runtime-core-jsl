@@ -51,7 +51,7 @@ Inside `judo-runtime-core-jsl-itest`:
 | Module | Role |
 |---|---|
 | `common` | Jar. The shared harness: `JudoRuntimeExtension` (JUnit 5 lifecycle + `ParameterResolver`), `JudoRuntimeFixture` (injector, model load, transactions), `JudoDatasourceFixture` (HSQLDB or TestContainers PostgreSQL, HikariCP pooling, inter-test truncation), the `JudoDatasourceSingletonExtension` / `JudoDatasourceByClassExtension` lifecycle variants, and `YugabytedbSQLContainer`. |
-| `models` | Pom aggregator over the 34 per-feature test model modules below. |
+| `models` | Pom aggregator over the 34 per-feature test model modules below. Its `pom.xml` runs every model's suite twice: `default-test` (`judo.queryModel.mode` unset = `build`) and surefire execution `query-model-load` (`judo.queryModel.mode=load`, strict; reports in `target/surefire-reports-query-model-load`; skip with `-DskipQueryModelLoadRun=true`). Generated models (`judo-tatami-jsl-workflow-maven-plugin`) include `<name>-query.model`. `JudoRuntimeFixture` gets its `QueryFactory` via `QueryModelLoadOrBuild`. See change: persisted-query-model. |
 
 Each `models/*` module is a jar carrying one `.jsl` model under
 `src/test/resources` plus the JUnit 5 tests that assert its runtime behaviour;

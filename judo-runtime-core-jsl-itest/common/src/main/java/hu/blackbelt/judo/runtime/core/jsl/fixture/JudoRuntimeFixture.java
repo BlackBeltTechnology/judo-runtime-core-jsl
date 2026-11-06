@@ -17,11 +17,16 @@ import hu.blackbelt.judo.runtime.core.dao.rdbms.postgresql.PostgresqlDialect;
 import hu.blackbelt.judo.runtime.core.dao.rdbms.postgresql.PostgresqlRdbmsInit;
 import hu.blackbelt.judo.runtime.core.guice.dao.rdbms.hsqldb.JudoHsqldbModule;
 import hu.blackbelt.judo.runtime.core.guice.dao.rdbms.postgresql.JudoPostgresqlModule;
+import hu.blackbelt.judo.runtime.core.query.CustomJoinDefinition;
 import hu.blackbelt.judo.runtime.core.query.QueryFactory;
+import hu.blackbelt.judo.runtime.core.query.QueryModelLoadOrBuild;
 import hu.blackbelt.mapper.api.ExtendableCoercer;
 import hu.blackbelt.mapper.impl.DefaultCoercer;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EReference;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
@@ -35,7 +40,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture.DIALECT_HSQLDB;
 import static hu.blackbelt.judo.runtime.core.jsl.fixture.JudoDatasourceFixture.DIALECT_POSTGRESQL;
-import static java.util.Objects.requireNonNullElse;
 
 @Slf4j
 public class JudoRuntimeFixture {
@@ -76,24 +80,66 @@ public class JudoRuntimeFixture {
 
     QueryFactory queryFactory;
 
+    /**
+     * System property selecting the default {@link #queryModelMode} (same name as the guice testkit and esm-itest fixtures').
+     */
+    public static final String QUERY_MODEL_MODE_PROPERTY = "judo.queryModel.mode";
+
+    /**
+     * Query model mode of the runtime: {@code build} (default: the query factory is built from the live models, the
+     * {@code <name>-query.model} file is never opened), {@code load} (strict: the query factory is restored from the
+     * generated {@code <name>-query.model}, or {@link #prepare(String, JudoDatasourceFixture)} fails with no fallback build)
+     * or {@code auto}. Set it before {@code prepare(...)}.
+     */
+    @Getter
+    @Setter
+    private String queryModelMode = System.getProperty(QUERY_MODEL_MODE_PROPERTY, "build");
+
+    /**
+     * The query factory goes through {@link QueryModelLoadOrBuild}, the same decision the runtime takes at boot, with the
+     * digests of the model files as loaded: in {@code build} it is built from the live models (JQL extraction with
+     * {@code resolveOnlyCurrentLambdaScope=false}), in strict {@code load} it is restored from the generated query file.
+     * See change: persisted-query-model.
+     */
     private void initQueryFactory() {
 
         coercer = new DefaultCoercer();
 
-        JqlExpressionBuilderConfig jqlExpressionBuilderConfig = new JqlExpressionBuilderConfig();
-        jqlExpressionBuilderConfig.setResolveOnlyCurrentLambdaScope(false);
+        final java.util.function.Supplier<QueryFactory> build = () -> {
+            JqlExpressionBuilderConfig jqlExpressionBuilderConfig = new JqlExpressionBuilderConfig();
+            jqlExpressionBuilderConfig.setResolveOnlyCurrentLambdaScope(false);
 
-        final AsmJqlExtractor asmJqlExtractor = new AsmJqlExtractor(modelHolder.getAsmModel().getResourceSet(),
-                modelHolder.getMeasureModel().getResourceSet(), URI.createURI("expr:" + modelHolder.getAsmModel().getName()), jqlExpressionBuilderConfig);
+            final AsmJqlExtractor asmJqlExtractor = new AsmJqlExtractor(modelHolder.getAsmModel().getResourceSet(),
+                    modelHolder.getMeasureModel().getResourceSet(), URI.createURI("expr:" + modelHolder.getAsmModel().getName()), jqlExpressionBuilderConfig);
 
-        queryFactory = new QueryFactory(
-                modelHolder.getAsmModel().getResourceSet(),
-                modelHolder.getMeasureModel().getResourceSet(),
-                asmJqlExtractor.extractExpressions(),
-                coercer,
-                requireNonNullElse(null, new ConcurrentHashMap<>()));
+            // own map per runtime: custom joins disable the restore of the query model
+            return new QueryFactory(
+                    modelHolder.getAsmModel().getResourceSet(),
+                    modelHolder.getMeasureModel().getResourceSet(),
+                    asmJqlExtractor.extractExpressions(),
+                    coercer,
+                    customJoinDefinitions);
+        };
 
+        queryFactory = QueryModelLoadOrBuild.queryModelLoadOrBuild()
+                .asmModel(modelHolder.getAsmModel())
+                .asmDigest(modelHolder.getAsmDigest())
+                .measureModel(modelHolder.getMeasureModel())
+                .measureDigest(modelHolder.getMeasureDigest())
+                .expressionModel(modelHolder.getExpressionModel())
+                .expressionDigest(modelHolder.getExpressionDigest())
+                .persistedQueryModel(modelHolder.getPersistedQueryModel())
+                .customJoinDefinitions(customJoinDefinitions)
+                .mode(queryModelMode)
+                .buildQueryFactory(build)
+                .build()
+                .get();
     }
+
+    // One map per runtime, passed to the load-or-build decision and to the built QueryFactory. A join put into
+    // getQueryFactory().getCustomJoinDefinitions() after construction has no effect on that factory, but it would make
+    // a later strict-load decision of the same runtime fail (custom joins disable restore), as in the esm-itest fixture.
+    private final Map<EReference, CustomJoinDefinition> customJoinDefinitions = new ConcurrentHashMap<>();
 
     private void initModules(JudoDatasourceFixture datasource, Dialect dialect) {
         RdbmsInit init = null;

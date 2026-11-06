@@ -6,4 +6,4 @@ but the declared package is `hu.blackbelt.judo.runtime.core.guice.jsl` — the t
 
 | File | Purpose |
 |---|---|
-| `JSLTransformationModelLoader.java` | Drives `JslDefaultWorkflow` to a `TransformationContext`; mode from `TransformationMode.fromSystemProperty()` (default ZETA); exports `loadAndTransformJslModels` overloads. → see `JSLTransformationModelLoader.java.AGENTS.md` |
+| `JSLTransformationModelLoader.java` | Drives `JslDefaultWorkflow` to a `TransformationContext`; mode from `TransformationMode.fromSystemProperty()` (default ZETA); exports `loadAndTransformJslModels` overloads; asm2query stage off (`ignoreAsm2Query=true`): no `QueryModel` in context, no `<name>-query.model` saved. See change: persisted-query-model. → see `JSLTransformationModelLoader.java.AGENTS.md` |
