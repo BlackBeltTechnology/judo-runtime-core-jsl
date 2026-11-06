@@ -31,6 +31,7 @@ import com.google.common.collect.ImmutableList;
 import hu.blackbelt.judo.meta.jsl.jsldsl.runtime.JslDslModel;
 import hu.blackbelt.judo.meta.jsl.runtime.JslParser;
 import hu.blackbelt.judo.meta.jsl.runtime.JslStreamSource;
+import hu.blackbelt.judo.tatami.core.TransformationMode;
 import hu.blackbelt.judo.tatami.core.workflow.work.TransformationContext;
 import hu.blackbelt.judo.tatami.core.workflow.work.WorkReport;
 import hu.blackbelt.judo.tatami.core.workflow.work.WorkStatus;
@@ -39,6 +40,17 @@ import hu.blackbelt.judo.tatami.jsl.workflow.JslDefaultWorkflow;
 
 import static hu.blackbelt.judo.tatami.jsl.workflow.DefaultWorkflowSave.saveModels;
 
+/**
+ * Loads JSL models and runs the JSL default workflow. The engine comes from the {@code judo.transformation.mode}
+ * system property ({@link TransformationMode#fromSystemProperty()}): ZETA when unset or invalid; ETL needs the optional
+ * add-ons ({@code hu.blackbelt.judo.tatami:judo-tatami-jsl-workflow-etl}, type pom) on the classpath, otherwise the
+ * first stage fails with {@code EtlEngineMissingException} naming the missing artifact. Downstream stages read the same
+ * property. See change: split-etl-artifacts.
+ *
+ * <p>The asm2query stage is off ({@code ignoreAsm2Query=true}): nothing consuming this loader's context uses the query model,
+ * so the context holds no {@code QueryModel} and the saved output has no {@code <name>-query.model}. See change:
+ * persisted-query-model.</p>
+ */
 public class JSLTransformationModelLoader {
 
     public static TransformationContext loadAndTransformJslModels(JslDslModel model, String dialect, File outputDirectory) {
@@ -49,6 +61,10 @@ public class JSLTransformationModelLoader {
                         .jslModel(model)
                         .dialectList(ImmutableList.of(dialect))
                         .modelName(model.getName())
+                        .transformationMode(TransformationMode.fromSystemProperty())
+                        // no consumer of the query model here: the stage is off, no QueryModel in the context and no
+                        // <name>-query.model in the saved output (the runtime builds its own query model at boot)
+                        .ignoreAsm2Query(true)
         );
         try {
             WorkReport workReport = defaultWorkflow.startDefaultWorkflow();

@@ -23,6 +23,46 @@
                     </instructions>
                 </configuration>
             </plugin>
+            <!-- split-etl-artifacts 7.1: the ETL add-ons are test-scoped; the "add-ons absent" case runs in its own
+                 execution with them removed from the test classpath. -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <!-- Plugin-level, so it also applies to a bare `mvn surefire:test` (default-cli), which CI runs for
+                     the PostgreSQL pass. The add-on-absent test runs only in its own execution below.
+                     See change: split-etl-artifacts. -->
+                <configuration>
+                    <excludes>
+                        <exclude>**/JSLTransformationModelLoaderEtlAbsentTest.java</exclude>
+                    </excludes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>etl-addons-absent</id>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                        <configuration>
+                            <excludes combine.self="override"/>
+                            <includes>
+                                <include>**/JSLTransformationModelLoaderEtlAbsentTest.java</include>
+                            </includes>
+                            <classpathDependencyExcludes>
+                                <classpathDependencyExclude>hu.blackbelt.judo.tatami:judo-tatami-jsl-jsl2psm-etl</classpathDependencyExclude>
+                                <classpathDependencyExclude>hu.blackbelt.judo.tatami:judo-tatami-jsl-jsl2ui-etl</classpathDependencyExclude>
+                                <classpathDependencyExclude>hu.blackbelt.judo.tatami:judo-tatami-psm2asm-etl</classpathDependencyExclude>
+                                <classpathDependencyExclude>hu.blackbelt.judo.tatami:judo-tatami-psm2measure-etl</classpathDependencyExclude>
+                                <classpathDependencyExclude>hu.blackbelt.judo.tatami:judo-tatami-asm2rdbms-etl</classpathDependencyExclude>
+                                <classpathDependencyExclude>hu.blackbelt.judo.tatami:judo-tatami-asm2keycloak-etl</classpathDependencyExclude>
+                                <classpathDependencyExclude>hu.blackbelt.judo.tatami:judo-tatami-rdbms2liquibase-etl</classpathDependencyExclude>
+                                <classpathDependencyExclude>hu.blackbelt.judo.tatami:judo-tatami-psm-validation-etl</classpathDependencyExclude>
+                                <classpathDependencyExclude>hu.blackbelt.judo.tatami:judo-tatami-asm-validation-etl</classpathDependencyExclude>
+                                <classpathDependencyExclude>hu.blackbelt.judo.tatami:judo-tatami-expression-asm-validation-etl</classpathDependencyExclude>
+                            </classpathDependencyExcludes>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
         <pluginManagement>
             <plugins>
@@ -90,6 +130,14 @@
         <dependency>
             <groupId>hu.blackbelt.judo.tatami</groupId>
             <artifactId>judo-tatami-jsl-workflow</artifactId>
+        </dependency>
+
+        <!-- ETL add-ons for the judo.transformation.mode=ETL loader tests (split-etl-artifacts 7.1) -->
+        <dependency>
+            <groupId>hu.blackbelt.judo.tatami</groupId>
+            <artifactId>judo-tatami-jsl-workflow-etl</artifactId>
+            <type>pom</type>
+            <scope>test</scope>
         </dependency>
 
     </dependencies>
