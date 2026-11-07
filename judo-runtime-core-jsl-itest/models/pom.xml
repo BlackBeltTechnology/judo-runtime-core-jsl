@@ -12,6 +12,11 @@
 
     <name>JUDO Runtime Core :: JUDO Language Specification DSL Integration Tests :: Model</name>
 
+    <properties>
+        <!-- true: only the default (build mode) test execution runs, without the strict query model load run -->
+        <skipQueryModelLoadRun>false</skipQueryModelLoadRun>
+    </properties>
+
     <modules>
         <module>AbstractModel</module>
         <module>AllTypeOfTransferObjectsModel</module>
@@ -137,6 +142,36 @@
 
             </plugins>
         </pluginManagement>
+        <plugins>
+            <!--
+                The suite of every model runs twice (persisted-query-model, TP-27): default-test with the default query
+                model mode (judo.queryModel.mode=build: the QueryFactory is built from the loaded models, the generated
+                <name>-query.model is never opened) and query-model-load with the strict mode (load: the QueryFactory is
+                restored from the generated <name>-query.model, a missing or stale file fails the run, no fallback).
+                -DskipQueryModelLoadRun=true leaves out the second run; a single run of any mode:
+                -Djudo.queryModel.mode=<mode> -DskipQueryModelLoadRun=true.
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>query-model-load</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                        <configuration>
+                            <skip>${skipQueryModelLoadRun}</skip>
+                            <reportsDirectory>${project.build.directory}/surefire-reports-query-model-load</reportsDirectory>
+                            <systemPropertyVariables>
+                                <judo.queryModel.mode>load</judo.queryModel.mode>
+                            </systemPropertyVariables>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
 
     <dependencies>
